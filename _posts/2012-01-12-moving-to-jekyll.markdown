@@ -12,7 +12,7 @@ categories:
 
 I have decided to start my website and blog on Jekyll on the basis that Scott Chamberlain has posted this blog on his move from Blogger and Wordpress to Jekyll.
 
-http://schamberlain.github.com/2012/01/moving-from-blogger-wordpress-to-jekyll/
+<http://schamberlain.github.com/2012/01/moving-from-blogger-wordpress-to-jekyll/>
 
 I am especially enticed by Scott's statements:
 
