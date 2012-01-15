@@ -1,7 +1,7 @@
 --- 
-name: moving-to-jekyll
+name: started-a-blog-with-jekyll
 layout: post
-title: Moving to jekyll
+title: Started a blog with Jekyll
 date: 2012-01-13
 categories: 
 - thoughts
