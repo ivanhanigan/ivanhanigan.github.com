@@ -28,6 +28,8 @@ and
 
 So I have simply cloned Scott's website and started changing the content to my own.  
 
-Hoping to find all the pieces of the puzzle in the next few weeks and have the conversion completed as soon as possible.  Then I'll try to resist the temptation to tweak the colour schemes endlessly and just keep my focus on the scientific research at hand! Disentangle Things!
+Hoping to find all the pieces of the puzzle in the next few weeks and have the conversion completed as soon as possible.  Then I'll try to resist the temptation to tweak the colour schemes endlessly and just keep my focus on the scientific research at hand! 
+
+Disentangle Things!
 
 Thanks Scott!
