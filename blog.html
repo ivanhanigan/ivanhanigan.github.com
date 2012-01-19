@@ -1,0 +1,39 @@
+---
+layout: default
+title: Ivan Hanigan
+---
+
+
+<div class="full">
+  <h1 class="entry-title">DisentangleThings</h1>
+  <div class="entry-content full-content">
+    <h2> 
+    A blog that reflects my scientific attempts to disentangle health effects of environmental impacts from social and economic forces.  	
+    </h2>
+    <div class="clear"></div>
+  </div>
+</div>
+
+<ol class="archive">
+{% for post in site.posts %}
+  <li>
+    <div class="excerpt">
+      <strong class="entry-title">
+        <a href="{{ post.url }}" title="{{ post.title }}" rel="bookmark">{{ post.title }}</a>
+      </strong>
+      <span class="date small">
+        <abbr class="published" title="{{ post.date }}">{{ post.date | date_to_string }}</abbr>
+      </span>
+      <p class="alt-font">
+        Posted in&nbsp;
+        {% for category in post.categories %}
+        <a href="/categories/{{ category }}" title="{{ category }}" rel="category tag">{{ category }}</a>
+        {% endfor %}
+      </p>
+      <p class="comments-link">
+        <a href='{{post.url}}#disqus_thread'>Comments</a>
+      </p>
+    </div>
+  </li>
+{% endfor %}
+</ol>

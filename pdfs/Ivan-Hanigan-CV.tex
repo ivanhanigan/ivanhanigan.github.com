@@ -1,0 +1,469 @@
+%  I:\My Dropbox\personal\Employment\CV\Ivan-Hanigan-CV.tex
+%%% A template to produce a nice-looking Curriculum Vitae.
+%%% Kieran Healy <kjhealy@gmail.com>
+%%% Most recent version is at http://kjhealy.github.com/kjh-vita
+%%%
+%%% ------------------------------------------------------------------------
+%%% Requirements (should be included in a modern tex distribution):
+%%% ------------------------------------------------------------------------
+%%% xelatex
+%%% fontspec.sty
+%%% hyperrref.sty
+%%% xunicode.sty
+%%% color.sty
+%%% url.sty
+%%% fancyhdr.sty
+%%%
+%%% ------------------------------------------------------------------------
+%%% Optional
+%%% ------------------------------------------------------------------------
+%%% git
+%%% vc.sty
+%%% revnum.sty
+%%% Fonts
+%%%
+%%% ------------------------------------------------------------------------
+%%% Note
+%%%------------------------------------------------------------------------
+%%% Because this is a hand-tweaked file, be on the look out for \medksip, 
+%%% \bigskip and \newpage commands here and there, which are used to balance
+%%% the layout or avoid widows & orphans, etc. You should of course add or 
+%%% remove these as needed.
+%%%------------------------------------------------------------------------
+
+% \documentclass[11pt]{article}
+\documentclass[a4paper,11pt]{article}
+%%%------------------------------------------------------------------------
+%%% Metadata
+%%%------------------------------------------------------------------------
+
+%% Change as needed. Or just add me as a coauthor. Only some of these are 
+%% used below in the hyperref declaration and address banner section.
+\def\myauthor{Ivan C. Hanigan}
+\def\mytitle{Vita}
+\def\mycopyright{\myauthor}
+\def\mykeywords{}
+\def\mybibliostyle{plain}
+\def\mybibliocommand{}
+\def\mysubtitle{}
+\def\myaffiliation{Australian National University}
+\def\myaddress{National Centre for Epidemiology and Population Health}
+\def\myemail{ivan.hanigan@anu.edu.au}
+%\def\myweb{http://www.kieranhealy.org}
+\def\myphone{02 61257767, 0428265976}
+\def\myfax{02 6125 0740}
+\def\myversion{}
+\def\myrevision{}
+
+
+\def\myaffiliation{Australian National University}
+\def\myauthor{Ivan C. Hanigan}
+\date{\today} % not used (revision control instead)
+\def\mykeywords{Ivan, Hanigan, Ivan Hanigan, Vita, CV, Resume, Human Ecology}
+
+%%%------------------------------------------------------------------------  
+%%% Git version tracking 
+%%%------------------------------------------------------------------------
+
+%% If you don't use git or the vc package (from CTAN), comment this out.
+%% If you comment it out, be sure to remove the \rfoot comment below, too.
+% \input{vc}
+
+%%%------------------------------------------------------------------------
+%%% Required style files
+%%%------------------------------------------------------------------------
+\usepackage{url,fancyhdr}
+%%\usepackage{revnum} % for reverse-numbered publications (revnumerate environment) if needed.
+
+%% needed for xelatex to work
+\usepackage{fontspec}
+\usepackage{xunicode}
+
+%% color for the links 
+\usepackage[usenames,dvipsnames]{color}
+
+%% hyperlinks
+\usepackage[xetex, 
+	colorlinks=true,
+	urlcolor=BlueViolet,
+	plainpages=false,
+  	pdfpagelabels,
+  	bookmarksnumbered,
+  	pdftitle={\mytitle},
+  	pagebackref,
+  	pdfauthor={\myauthor},
+  	pdfkeywords={\mykeywords}
+  	]{hyperref}
+
+%%%------------------------------------------------------------------------
+%%% Document
+%%%------------------------------------------------------------------------
+\begin{document}
+
+%% Choose fonts for use with xelatex
+%% Minion and Myriad are widely available, from Adobe. 
+%% Pragmata is available to buy at http://www.fsd.it/fonts/pragma.htm
+%% and is worth every penny. Any good monospace font will work fine, though.
+%% Consolas or inconsolata are good alternatives.
+\setromanfont[Mapping={tex-text},Numbers={OldStyle},Ligatures={Common}]{Minion Pro} 
+\setsansfont[Mapping=tex-text,Colour=AA0000]{Myriad Pro}
+% \setmonofont[Mapping=tex-text,Scale=0.9]{Pragmata} 
+
+
+%%%------------------------------------------------------------------------
+%%% Local commands
+%%%------------------------------------------------------------------------
+
+%% Marginal header
+%% Note: as the document goes on you may need to introduce a (gradually increasing)
+%% \vspace element to keep the marginal header pleasingly aligned with the first 
+%% item in the body text. Like this: \marginhead{{\vskip 0.4em}Grants}, or 
+%% \marginhead{{\vskip 0.8em}Service}. Experiment as needed.
+\newcommand{\marginhead}[1]{\marginpar{\textsf{{\footnotesize\vspace{-1em}\flushright #1}}}}
+
+
+%% custom ampersand (font consistent with the one chosen above)
+\newcommand{\amper}{{\fontspec[Scale=.95,Colour=AA0000]{Minion Pro Medium}\selectfont\&\,}}
+
+%% No bullets on labels
+\renewcommand{\labelitemi}{~} 
+
+%% Custom hanging indent for vita items
+\def\ind{\hangindent=1 true cm\hangafter=1 \noindent}
+%\def\ind{\hangindent=18pt\hangafter=1 \noindent}
+\def\labelitemi{~}
+\renewcommand{\labelitemii}{~}
+
+%%%------------------------------------------------------------------------
+%%% Page layout
+%%%------------------------------------------------------------------------
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead{}
+\fancyfoot{}
+\rhead{{\scriptsize\thepage}}
+
+%% git revision control footer 
+% \rfoot{\texttt{\scriptsize \VCRevision\ on \VCDateTEX}} % git revision info inserted via external script -- see docs for vc package for details. comment out this line if you're not using vc, and also remove the \input{vc} line above.
+
+%%%------------------------------------------------------------------------
+%%% Address and contact block
+%%%------------------------------------------------------------------------
+\begin{minipage}[t]{2.95in}
+ \flushright {\footnotesize \href{http://nceph.anu.edu.au}{National Centre for Epidemiology and Population Health} \\ Australian National University, \\ \vspace{-0.05in} Canberra, \textsc{ACT} 0200}  
+  
+\end{minipage}
+\hfill     
+%\begin{minipage}[t]{0.0in}
+% dummy (needed here)
+%\end{minipage}
+\hfill
+\begin{minipage}[t]{1.7in}
+  \flushright \footnotesize Phone: \myphone \\ 
+  Fax: \myfax  \\ 
+  {\scriptsize  \texttt{\href{mailto:\myemail}{\myemail}}} \\
+%  {\scriptsize  \texttt{\href{\myweb}{\myweb}}}
+\end{minipage}
+
+
+\medskip
+
+%% Name 
+\noindent{\Large {\textsc{Ivan C Hanigan. August 2011}}}
+
+%\noindent{\Large {\textsc{August 2011}}}
+
+\reversemarginpar
+
+\medskip       
+
+\medskip
+\marginhead{Date of Birth}	
+{\vskip 0.1em}
+\noindent 8th September, 1977
+
+\marginhead{Family Status}	
+{\vskip 0.4em}
+\noindent Married with two children
+
+\marginhead{Nationality}
+{\vskip 0.6em}
+\noindent Australian
+
+\marginhead{Objective}
+%\noindent Multidisciplinary data manager and analyst seeking to expand on over 10 years research experience with scientific work that will complement my part-time PhD.
+{\vskip 0.7em}
+\noindent To use my skills in data management and analysis, particularly spatial analysis, to improve sustainable public health.  
+
+%% Appointments
+\medskip
+\marginhead{Skills}
+{\vskip 0.3em}
+\noindent I am a multidisciplinary data manager and analyst with over 10 years research experience at one of Australia's leading universities. I am adept in manipulation of large databases for statistical modelling in population health research.  I also have experience of scenario-based modelling in climate change risk assessments for Government consultancies.
+The integration of gridded, point-source and area-based administrative data has become a speciality.
+I have been the lead author on three peer reviewed papers in international journals, and
+contributing author on numerous journal papers, reports and conference posters.  
+%I am also undertaking a multi-disciplinary PhD, on a part time basis.\\
+Programming skills include the R language for statistical computing and graphics, SQL using Postgres and PostGIS.  I also have experience with ArcGIS, Python, Stata and SPSS.
+
+%\medskip
+
+\noindent Please also check my online CV for an updated publication list at \\
+\emph{\href{http://www.mendeley.com/profiles/ivan-hanigan/}{http://www.mendeley.com/profiles/ivan-hanigan}}
+%\vspace{0.01in}} 
+
+%\medskip
+\marginhead{Appointments}
+
+%\medskip
+
+\bigskip
+{\vskip 0.2em}
+\noindent\emph{Australian National University \vspace{0.01in}}
+
+\ind 2008--Present.  Data Manager, National Centre for Epidemiology and Population Health (NCEPH). 
+
+\ind 2008--2009. Data Manager and Analyst, Environment, Climate and Health Group (NCEPH).
+
+%\medskip
+\noindent\emph{University of Tasmania \vspace{0.01in}}
+
+\ind 2008--Present. Data Manager and Analyst, Bushfire Smoke, Heatwaves and Health Project,    School of Plant Science.
+
+%\medskip
+
+\noindent\emph{Charles Darwin University \vspace{0.01in}}
+
+\ind 2006--2007.  Data Manager and Analyst, Bushfire Smoke and Health Project, School of Environmental Research.
+
+%\medskip
+
+\noindent\emph{Australian National University \vspace{0.01in}}
+
+\ind 2001--2006.  Research Assistant to the Environmental Epidemiology Group (NCEPH).
+
+\bigskip
+
+%% Education
+
+\marginhead{Education}
+{\vskip 0.3em}
+\noindent\emph{Australian National University \vspace{0.01in}}
+
+\ind 2009--Present: Part-time PhD: \emph{Human Impacts of Environmental Change} \\
+NCEPH and CSIRO. 
+%\vspace{-0.1in}  \\
+
+%\begin{itemize}
+ 	%\item \small Winner of the American Sociological Association's Dissertation
+% 	  Award for 2002.
+%\end{itemize}      
+
+
+\ind 1998-2005: Bachelor of Arts: Geography and Human Ecology \\First Class Honours, School of Resources, Environment and Society. ANU.
+
+
+\medskip
+
+%\bigskip
+ 
+%% Publications
+\marginhead{{\vskip 0.4em}Journal articles}
+\medskip
+%\noindent\emph{Book \vspace{0.01in}}
+
+%\ind  Kieran Healy. 2006. \emph{\href{http://www.lastbestgifts.com}{Last Best Gifts: Altruism and the Market for Human Blood and Organs}}. Chicago:~University of Chicago Press. \vspace{-0.075in}
+ 
+\normalsize
+
+%\bigskip
+%\noindent\emph{Journal articles \vspace{0.05in}}
+ 
+%% Use revnumerate environment if numbered publications are needed. 
+%% (Include it above in the preamble).
+%% \renewcommand{\labelenumi}{\textsc{a}\theenumi.}
+%% \begin{revnumerate}
+
+%\ind Hall, G, Hanigan, IC, Dear, KBG, and Vally, H. 2010. ``\href{http://journals.cambridge.org/abstract_S0950268810001901.}{The influence of weather on community gastroenteritis in Australia}.'' \emph{Epidemiology and Infection.} 
+
+\ind Johnston FH, Hanigan IC, Henderson SB, Morgan, GG and Bowman, DMJS (in press). Extreme air pollution events from bushfires and dust storms and their association with mortality in Sydney, Australia 1994-2007.  Environmental Research (in press accepted 7 May 2011).
+
+\ind Johnston, FH, Hanigan, IC, Henderson, SB, Morgan, GG, Portner, T, Williamson,GJ, and Bowman, DMJS. Creating an integrated historical record of extreme particulate air pollution events in Australian cities from 1994 to 2007. Journal of the Air and Waste Management Association 2011;61(4).
+
+\ind Hall, GV, Hanigan, IC, Dear, KBG, and Vally, H. The influence of weather on community gastroenteritis in Australia. Epidemiology and Infection 2011;139(6).
+
+\ind Edwards, F, Dixon,J, Friel,S, Hall, G, Larsen, K, Lockie, S, Wood, B, Lawrence,M, Hanigan, IC, Hogan, A, Hattersley, L. Climate change adaptation at the intersection of food and health. Asia-Pacific journal of public health 2011;23(2). 
+
+\ind Bambrick H, Woodruff R and Hanigan IC. Climate change could threaten blood supply by altering the distribution of vector-borne disease: an Australian case-study.  Global Health Action 2009. DOI: 10.3402/gha.v2i0.2059.
+
+\ind Johnston, FH, Hanigan, IC, Bowman, DMJS. Pollen Loads and Allergic Rhinitis in Darwin, Australia: A Potential Health Outcome of the Grass-Fire Cycle. Ecohealth 2009. DOI: 10.1007/s10393-009-0225-1. 
+
+\ind Hanigan, IC, Johnston, FH, Morgan, GG. Vegetation fire smoke, indigenous status and cardio-respiratory hospital admissions in Darwin, Australia, 1996-2005. Environmental Health 2008;7(42).
+
+\ind Hanigan, IC, Johnston, FH. Respiratory hospital admissions were associated with ambient airborne pollen in Darwin, Australia, 2004-2005. Clinical and Experimental Allergy 2007;37(10).
+
+\ind Johnston, FH, Bailie, RS, Pilotto, LS, Hanigan, IC. Ambient biomass smoke and cardio-respiratory hospital admissions in Darwin, Australia. BMC Public Health 2007;7(1).
+
+\ind D’Souza, RM, Bambrick, H, Kjellstrom, T, Kelsall, L, Guest, C, Hanigan, IC. Seasonal variation in acute hospital admissions and emergency room presentations among children in the ACT. Journal of Paediatrics and Child Health 2007;43.
+
+\ind Dear, KBG, Ranmuthugala, G, Kjellstrom, T, Skinner, C, Hanigan, IC. Effects of temperature and ozone on daily mortality experienced in France during the August 2003 heat wave. Archives of Environmental and Occupational Health 2006;60(4).
+
+\ind Hanigan, IC, Hall, GV, Dear, KBG. A comparison of methods for calculating population exposure estimates of daily weather for health research. International Journal of Health Geographics 2006;5(38).
+
+\ind Nicholls, N, Butler, C, Hanigan, IC. Inter-annual rainfall variations and suicide in New South Wales, Australia, 1964-2001. International Journal of Biometeorology 2006;50(3).
+%\end{revnumerate}
+\newpage
+%\bigskip 
+{\vskip 0.4em}
+\marginhead{{\vskip 0.4em}Manuscripts being prepared}
+\medskip
+\ind Hanigan, IC, Butler, CD, Kokic, PN, Hutchinson, MF. Suicide and Drought in New South Wales, Australia, 1970-2007.  To be submitted to the Proceedings of the National Academy of Science USA. 
+
+\ind Johnston, FH, Hanigan, IC, Morgan, GG. Effect of air pollution control on death rates in Launceston, Australia, 1994-2007: an Intervention study.  To be submitted to the Lancet. 
+ 
+\ind Vally, H, Peel, M, Dowse, G, Cameron, S, Codde, J, Hanigan, IC, Lindsay, M. Use of Geographic Information Systems to Investigate Ross River Virus Infection and Proximity to Mosquito-Breeding Habitat in South-Western Australia. Submitted to Aust New Zealand J Pub Health.
+
+\ind Martin, KL, Johnston, FH, Hanigan, IC, Morgan, GG, Henderson, SB. Air pollution events from bushfires and their association with hospital admissions in Sydney, Newcastle and Wollongong Australia 1994-2007.  
+
+\ind Morgan, G, Hanigan, IC, Wilson, L, Jalaludin, B, Johnston, F, Abu-Rayya, H, Gaskin, C, Broome, R. The impact of extreme heat on mortality and morbidity in five climatic regions of New South Wales: A case crossover analysis.
+
+
+%\end{revnumerate}
+%
+%\bigskip
+\marginhead{{\vskip 0.4em}Journal Supplement Publications}
+\medskip
+%\noindent\emph{Other journal publications \vspace{0.05in}}
+% \renewcommand{\labelenumi}{\textsc{c}\theenumi.}
+% \begin{revnumerate}
+
+\ind Hanigan, IC, Johnston, FH, Morgan, GG, Dingle, JK, Bowman, DMJS.  Assessing the Relationship Between Exposure to Vegetation Fire Smoke and Hospital Admissions when Empirical Air Quality Measurements are Limited: Darwin, Australia, 1996-2005.  Epidemiology 2008;19(6) Supplement:S266 [ISEE 2008 Conference Abstracts Supplement]
+
+\ind D'Souza RM, Becker NG, Hall G, Kjellstrom T, Bambrick H, Kelsall L, Hanigan I, Guest C. Climatic factors associated with hospitalisations and emergency room presentations for diarrhoea in children. Epidemiology 2005;16(5):S60 [ISEE 2005 Conference Abstracts Supplement].
+
+\ind D'Souza RM, Becker NG, Kjellstrom T, Bambrick H, Woodruff R, Kelsall L, Hanigan I, Guest C. Influence of climatic factors on hospitalisations and emergency room presentations for asthma and other (non-asthma) respiratory conditions in children. Epidemiology 2005;16(5):S50 [ISEE 2005 Conference Abstracts Supplement].
+
+
+
+%\newpage
+%\noindent\emph{Reports \vspace{0.05in}}
+%\bigskip 
+\medskip
+%\marginhead{{\vskip 0.4em}Reports}
+\marginhead{Reports}
+%\renewcommand{\labelenumi}{\textsc{r}\theenumi.}
+%\begin{revnumerate}
+{\vskip 0.4em}
+\ind Bambrick H, Woodruff R and Hanigan IC Effective emissions targets needed to protect Australia’s blood supply.  The Australia Institute Policy Brief No. 11 2010
+
+\ind McMichael AJ, Berry H, Butler C, Capon A, Dear KBG, Hanigan IC, Harley DO, Kjellstrom T, Lucas R, Strazdins L. 2009. Assessing the scale and nature of health vulnerability to climate change.  Background report for Campbell-Lendrum D and Bertollini R, Protecting health from climate change: global research priorities.  World Health Organisation, Geneva.
+
+\ind Bambrick H, Dear K, Woodruff R, Hanigan I, McMichael A.  The impacts of climate change on three health outcomes: temperature-related mortality and hospitalisations, salmonellosis and other bacterial gastroenteritis, and population at risk from dengue.  Garnaut Climate Change Review, Commonwealth of Australia 2008.
+
+\ind Berry H, Kelly B, Hanigan I, Coates J, McMichael A, Welsh J, Kjellstrom T. Rural Mental Health Impacts of Climate Change. Garnaut Climate Change Review 2008.
+
+\ind D’Souza RM, Hennessy K, Cope M, McMichael AJ, Page C, Whetton P, Physick B, Hanigan I. A scoping study of the impact of climate change on air pollution over Sydney. Consultancy for NSW Environmental Protection Agency. 2003.
+
+\ind Hanigan I.  Hotspots of Pathogens in Drinking Water Catchments: Case Study of Googong Catchment.  ECOWISE Environmental Pty. Ltd. and ActewAGL, Canberra. 2003.
+
+% %\end{revnumerate}
+ \bigskip
+
+%% Presentations
+\medskip
+\marginhead{{\vskip 0.4em}Conference posters and presentations}
+\medskip
+\ind Johnston, F, Hanigan, IC, Henderson, S, Morgan, G, Bowman, D. The association between mortality and air pollution events from bushfires and dust storms in Sydney, 1994-2007. Royal College of Physicians Annual Scientific Meeting. Darwin.  2011. [Poster]
+
+\ind Morgan, G, Hanigan, IC, Wilson, L, Abu-Rayya, H, Gaskin, C, Johnston, F, Lloyd,G, Broome, R, and Jalaludin, B. The effects of heat waves on mortality and hospitalisation in Sydney, Australia 1994-2009. 23th Congress of the International Society for Environmental Epidemiology, Barcelona, 2011. [Poster].
+
+\ind Johnston FH, Hanigan IC, Henderson SB, Morgan GG and Bowman DMJS. Preliminary Results from the Australian Landscape Fire Smoke Project. International Society for Environmental Epidemiology. Annual Scientific Meeting. Seoul Korea Sept 2010. [Poster]
+
+\ind Bambrick, H, Dear, K, Hanigan IC. (2009) Deaths in a sunburnt country: Differential mortality responses to temperatures in a 'hot' country. IOP Conf. Ser. Earth Environ. Sci. 6 142013. 2009. [Poster]
+
+\ind Banwell, C, Dixon, J, Bambrick, H, Hinde, S, Kjellstrom, T, Lucas, R, Hanigan, IC. Socio-cultural reflections on comfort and heat in Australia with implications for climate change adaptation. IOP Conf. Ser. Earth Environ. Sci. 6 572023. 2009. [Poster]
+
+\ind Johnston FH, Hanigan IC.  Tropical Plant Pollens and Allergic Rhinitis.  The Thoracic Society of Australia and New Zealand Annual Scientific Meeting.  Darwin, 6-7 April 2009. [Poster]
+% \href{http://www.thoracic.org.au/asm2009pa01.pdf}{Link}.
+
+\ind McMichael A.J. and Hanigan I.C. Drought and Drying: The Human Dimension. Risks to Wellbeing and Health. Drought – Past and Future. ANU Water Initiative. ANU, Canberra. Nov 14, 2008. [Oral]
+%\href{http://www.water.anu.edu.au/events/dpf/program.php}{Link}. 
+
+\ind Hanigan IC, Johnston FH, Morgan GG, Dingle JK, Bowman DMJS. Assessing the Relationship Between Exposure to Vegetation Fire Smoke and Hospital Admissions when Empirical Air Quality Measurements are Limited: Darwin, Australia, 1996-2005. Joint Annual Conference of the International Society for Environmental Epidemiology and International Society of Exposure Analysis. Pasadena, California, Oct 2008. [Oral]
+
+\ind Hanigan I, and Nicholls N. Geo-coded (Australian) meteorological data: sources, content, uses. Climate Change And Health Short Course: Research and policy issues in relation to health impacts and adaptations.  Australian National University, Canberra. 4-6 December 2007. [Oral]
+
+\ind Johnston F, Hanigan I, Morgan G. Vegetation fire smoke, indigenous status and cardio-respiratory hospital admissions in Darwin, Australia, 1996-2005. 14th International Union of Air Pollution Prevention and Environmental Protection Associations World Congress Brisbane 9 - 13 September 2007. [Oral]
+% \href{http://www.iuappa2007.com/abstract/152.htm}{Link}.
+
+\ind Physick B, Cope M, Lee S, Hurley P, Dear KBG, D’Souza RM, Hanigan I. Optimum Exposure Fields for Epidemiology and Health Forecasting. 28th NATO/CCMS International Technical Meeting on Air Pollution Modelling and its Application. Liepzig, Germany. 15-19 May, 2006. [Poster]
+
+\ind Hanigan I. Integrating health, population and environmental data across long time‑series. The workshop on Environmental Stress and Impacts on Health. Australian National University, Canberra. November 24-25, 2005. [Oral]
+
+\ind Hanigan I. Applying Geographical Information Systems (GIS) to Health and Demographic data: A Case Study of Sydney. The 2nd Innovations (Atmospheric Environment and Health Collaboration) Workshop: National and sub-national data sources in environmental health. The Australian National University, Canberra. May 5-6, 2003. [Oral]
+
+\ind Hanigan I, Whiteway T, Balzer I, Wade A, Page D. Identifying potential “hotspots” for pathogens in the Googong Catchment, Australian Water Association 20th Convention, 6-10 April 2003, Perth. [Oral]
+
+\ind Page, DW, Hanigan, I, van Leeuwen, JA, Spark, KM, and Mulcahy, DE.  Assessment of the treatability of dissolved organic matter (DOM) from terrestrial and freshwater sources, with alum, Australian Water Association 20th Convention, 6-10 April 2003, Perth. [Poster]
+
+
+%\end{revnumerate}
+
+\bigskip
+
+%\newpage
+
+\marginhead{{\vskip 0.4em}Community Service}
+\medskip
+\noindent I offer training in software programming, data analysis and data management for staff and students.
+
+\noindent I organise weekly topics and speakers for the ANU GIS Forum meetings.
+
+\noindent I contribute to ANU wide data management meetings with the Australian Data Archives and the National Supercomputer facility.
+
+\noindent I contributed Drought Severity data to several papers by members of the Collaboration on Drought, Drying and Rural Mental Health.
+
+\marginhead{{\vskip 0.4em}Technical courses attended}
+\medskip
+
+\ind Australian Weather and Society Integrated Studies Workshop.  29th – 2nd February 2007.  Emergency Management Australia, Mount Macedon, VIC.
+
+\ind Spatial Analysis in Environmental and Social Epidemiology.  5th  - 8th  September 2005. The Australian National University, Canberra.
+
+\ind Formatting long documents in Microsoft Word, 2004, The Australian National University Information Literacy.
+
+\ind Endnote Referencing Software training, 2004, The Australian National University Information Literacy.
+
+\ind Air Pollution Exposure: measurement, modelling and assessment.  2nd - 3rd  December 2004, The Australian National University, Canberra. 
+
+\ind Climate Change and Health: Research Methods and Policy Issues.  29th September – 2nd  October 2003, The Australian National University, Canberra.
+
+
+\bigskip
+
+\marginhead{{\vskip 0.4em}Grants and Awards}
+\medskip
+\noindent I contributed my CV toward the Data Manager position on several currently funded grants at NCEPH and the University of Tasmania.
+  
+\ind Oct 2006 NCEPH director’s prize for best publication for the month.
+
+\ind June 2003 NCEPH director’s prize for best presentation at annual student workshop.
+
+\ind Jan 2003 Cooperative Research Centre Water Quality and Treatment Summer Scholar.
+
+\bigskip 
+
+%\newpage
+
+\marginhead{{\vskip 0.9em}Referees}
+\medskip
+
+\medskip
+
+\ind Associate Professor Colin Butler, Epidemiologist, ANU NCEPH.  \\ Ph: 02 6125 7175, Email: colin.butler@anu.edu.au
+
+\ind Associate Professor Keith Dear, Senior Fellow Biostatistics, ANU NCEPH. \\ Ph: 02 6125 4865, Email: Keith.Dear@anu.edu.au
+
+\ind Dr Fay Johnston, Epidemiologist, UTAS Menzies School of Health Research. \\ Ph: 0407612247, Email: Fay.Johnston@utas.edu.au
+
+\end{document}
