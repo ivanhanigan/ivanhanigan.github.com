@@ -4,8 +4,10 @@ layout: post
 title: About My Research
 date: 2012-01-19
 categories: 
-- overview
-- me
+- thoughts
+- blogger
+- wordpress
+- jekyll
 ---
 
 I am enticed by the work out there at the moment that challenges us to use the tools of open science (open software and open access publication) to make science more reproducible, transparent and awesome.  Science December 2, 2011, Volume: 334, Issue: 6060 (URL [here][]) has a special section on replication and reproducibility.  Especially Roger Pengs perspective on:
