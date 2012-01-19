@@ -9,8 +9,8 @@ categories:
 - wordpress
 - jekyll
 ---
-I am enticed by the work out there at the moment that challenges us to use the tools of open science (open software and open access publication) to make science more reproducible, transparent and awesome.  Science December 2, 2011, Volume: 334, Issue: 6060 (URL [here][]) has a special section on replication and reproducibility.  Especially Roger Pengs perspective on:
-"limitations in our ability to evaluate published findings. Reproducibility has the potential to serve as a minimum standard for judging scientific claims when full independent replication of a study is not possible." 
+I am enticed by the work out there at the moment that challenges us to use the tools of open science (open software and open access publication) to make science more reproducible, transparent and awesome.  Science December 2 2011 Volume 334 (URL [here][]) has a special section on replication and reproducibility.  Especially Roger Pengs perspective on:
+limitations in our ability to evaluate published findings. Reproducibility has the potential to serve as a minimum standard for judging scientific claims when full independent replication of a study is not possible.
 
 At the moment I am keenly aware of barriers to replicability due to the voluminous generation of data and the multitude of analysis workflow decisions that can affect the results of the kind of integrated analyses I am involved with ... choices include those relating to: which health outcomes are selected? which exposure estimates? of which environmental dataset?  
 
