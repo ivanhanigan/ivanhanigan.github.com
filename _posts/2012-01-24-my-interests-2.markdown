@@ -34,7 +34,11 @@ I am interested in systems analysis, especially of environmental health systems 
 * explanations
 * predictions 
 
-I also focus on Sucide and Drought in Southern Australia and Atmospherics, including:
+I also focus on 
+
+* Sucide and Drought in Southern Australia 
+
+and Atmospherics, including:
 
 * pollution events from Bushfires, dust storms, aeroallergen peaks
 * average exposures and extremes to temperature, humidity, rainfall... combinations of these
@@ -44,6 +48,7 @@ I also dabble in other environmental health issues such as mosquito diseases and
 My Tools
 --------
 I try do all my data integrations and analysis in R/Sweave.  I am currently planning to investigate the following tools
+
 * R/Sweave/make
 * packages
 * python
@@ -54,5 +59,6 @@ I try do all my data integrations and analysis in R/Sweave.  I am currently plan
 * disentangleThings
 
 My Intentions
+-------------
 
 In this blog I will write about my experiences as I dealve into these new areas and write a PhD about them (and my research topics, knotted problems to be disentangled as we go). I am not a very adept programmer, but hopefully these tools will help enable me to deal with the intergrated analyses I hope to do.
