@@ -1,4 +1,4 @@
-﻿--- 
+--- 
 name: my-interests
 layout: post
 title: My Interests
