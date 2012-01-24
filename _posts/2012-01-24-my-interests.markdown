@@ -1,7 +1,7 @@
 --- 
 name: my-interests
 layout: post
-title: My interests
+title: My Interests
 date: 2012-01-24
 categories: 
 - overview
