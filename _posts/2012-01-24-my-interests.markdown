@@ -1,4 +1,4 @@
---- 
+﻿--- 
 name: my-interests
 layout: post
 title: My Interests
@@ -39,6 +39,7 @@ I also focus on Sucide and Drought in Southern Australia and Atmospherics, inclu
 
 * pollution events from Bushfires, dust storms, aeroallergen peaks
 * average exposures and extremes to temperature, humidity, rainfall... combinations of these
+
 I also dabble in other environmental health issues such as mosquito diseases and drinking water pathogens.
  
 My Tools
