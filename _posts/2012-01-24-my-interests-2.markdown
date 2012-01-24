@@ -18,7 +18,7 @@ categories:
 - RanalyticFlow
 - systems
 ---
-Myresearch interests revolve around making data analysis easier and science more reproducible. I'd like it if every step in the methodical exploration of (or prediction from) data is easily documented, reproduced, transformed, integrated and fun ... (if such a thing is possible).   
+My research interests revolve around making data analysis easier and science more reproducible. I'd like it if every step in the methodical exploration of (or prediction from) data is easily documented, reproduced, transformed, integrated and fun ... (if such a thing is possible).   
 
 I conceptualise data analyses as grouped networks of the many choices and revisions an analyst makes through a complex workflow in a project, clusters of which make up the many projects, databases and codebases analysts use everyday.
 
