@@ -5,6 +5,5 @@ title: Publications
 
 ### Publications
 
-1. Hanigan, IC, Hall, GV, Dear, KBG. A comparison of methods for calculating population exposure estimates of daily weather for health research. _Int J Health Geographics_ 2006;5(38). <http://www.ij-healthgeographics.com/content/5/1/38> (or this one [pdf][pdf1])
-
-[pdf1]: /pdfs/Hanigan2006IntJHlthGeo.pdf
+<p><iframe allowtransparency="true" frameborder="0" src="http://www.mendeley.com/groups/553831/_/widget/0/20/" style="width: 550px; height: 750px;"></iframe></p>
+<p style="width: 450px;"><a href="http://www.mendeley.com/groups/553831/my-publications/" title="My Publications on Mendeley">My Publications</a> is a group in <a href="http://www.mendeley.com/groups/environmental-sciences/" title="Environmental Sciences on Mendeley">Environmental Sciences</a> on <a href="http://www.mendeley.com/" title="Mendeley">Mendeley</a></p>
