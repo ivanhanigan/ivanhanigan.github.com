@@ -11,6 +11,6 @@ categories:
 
 # Climate change and contemporary fiction 
 
-Dr Tom Ford [blogs] [1] about how climate and climate change are entangled in contemporary fiction.  He does a really good job of disentangling esoteric and specialist environmental science knowledge with social science waffle and voodoo. Here is a whole new category of post modern and existetialist.
+Dr Tom Ford [blogs] [1] about how climate and climate change are entangled in contemporary fiction. For a social scientist he does a really good job of disentangling esoteric and specialist environmental science knowledge with sliterary waffle and voodoo. Is this a whole new category of post modern and existentialist?
 
 [1]: http://climatechangefiction.blogspot.com.au "Climate Change and Contemporary Fiction"
