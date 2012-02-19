@@ -7,7 +7,7 @@ title: Research
 
 ### Suicide and Drought in Australia
 
-![A sunflower research site](/images/research_sunflowers.png)
+![A striking drought image](/images/McMichaelDDRMHconf2008.jpg)
 
 ### Air pollution, weather and mortality or morbidity
 
