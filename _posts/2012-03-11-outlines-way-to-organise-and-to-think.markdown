@@ -46,7 +46,7 @@ To conclude I'll just mention the most interesting features I've found in outlin
 * Lifting and grafting: easy reshuffling of the order
 * Checked nodes: chosen nodes can be exported while the rest remain invisible
 
-[1]: http://127.0.0.1:4000/2012/02/the-organisation-of-material "The Organisation of Material"
+[1]: http://ivanhanigan.github.com/2012/02/the-organisation-of-material/ "The Organisation of Material"
 [2]: http://en.wikipedia.org/wiki/Outliner "Wikipedia Outliners"
 [3]: http://code.google.com/p/keynote-nf/ "Keynote-NF"
 [4]: http://www.jstatsoft.org/v46/i03/ "jstatsoft"
