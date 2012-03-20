@@ -32,7 +32,7 @@ Stackoverflow user [Shane] [1] posted [this excellent comment to stackoverflow] 
 * func.R and 
 * do.R
 
-[John Myles White's] [5] ProjectTemplate has 'create.project(minimal = TRUE)' which creates the layout: 
+[John Myles White's] [7] leads the [ProjectTemplate] [8] package that has 'create.project(minimal = TRUE)' which creates the layout: 
 * cache, 
 * config, 
 * data, 
@@ -55,7 +55,7 @@ In the words of [JD Long] [13] in response to [Shane] [2] "The choice of the spe
 [5]: http://stackoverflow.com/a/2287177 "Weiss approach"
 [6]: http://stackoverflow.com/a/1434424 "Reich approach"
 [7]: http://www.johnmyleswhite.com/about/ "John Myles White" 
-[8]: http://projecttemplate.net/architecture.html "ProjectTemplate
+[8]: http://projecttemplate.net/architecture.html "ProjectTemplate"
 [9]: http://upsilon.cc/~zack/blog/posts/2008/10/from_Vim_to_Emacs_-_part_1/ "Why Emacs"
 [10]: http://orgmode.org/worg/ "worg" 
 [11]: http://www.jstatsoft.org/v46/i03/paper "Orgmode takes over the data analysis world"
