@@ -50,7 +50,7 @@ In the words of [JD Long] [13] in response to [Shane] [2] "The choice of the spe
 
 [1]: http://stackoverflow.com/users/163053/shane "Shane"
 [2]: http://stackoverflow.com/a/2292913 "Shane's Post"
-[3]: http://stackoverflow.com/users/275887/bernd-w https://github.com/berndweiss "Bernd Weiss"
+[3]: https://github.com/berndweiss "Bernd Weiss"
 [4]: http://stackoverflow.com/users/136862/josh-reich "Josh Reich"
 [5]: http://stackoverflow.com/a/2287177 "Weiss approach"
 [6]: http://stackoverflow.com/a/1434424 "Reich approach"
