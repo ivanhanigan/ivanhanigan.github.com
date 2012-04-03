@@ -26,7 +26,7 @@ I was struck by the difference in this method to the KISS or Keep It Sensibly Si
 
 Complex Thought
 ---------------
-I love the idea that I can train myself to acheive a kind of Science Zen that unveils all kinds of complex multifactorial causal mechanisms... but I think the Danger of Vacillation Chamberlin speaks about:
+I love the idea that I can train myself to acheive a kind of Science Zen that unveils all kinds of complex multifactorial causal mechanisms... but I fear the Danger of Vacillation Chamberlin speaks about:
 
 "Like a pair of delicately poised scales, every added particle on the one side or the other produces its effect in oscillation. But such a pair of scales may be altogether too sensitive to be of practical value in the rough affairs of life".
 
