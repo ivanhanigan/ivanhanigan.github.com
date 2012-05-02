@@ -8,13 +8,13 @@ categories:
 - opinion
 ---
 
-Dengue Virus (DV) and climate
+Dengue Fever (DF) and climate
 ----
-DV is a mosquito borne disease that has high public health impact and is potentially strongly influenced by climate.
+DF is a mosquito borne virus that has high public health impact and is potentially strongly influenced by climate.
 
 There is an interesting story attached to this map from a paper by Russell et al 2009 [1] that draws together documentary references to historic Dengue Fever (DF) transmission, some as far south as Gosford and Bourke in NSW.
 
-![Historical evidence for transmission of Dengue Virus](/images/McMichaelDDRMHconf2008.jpg)
+![Russel map of Dengue Virus](/images/Russell2009MJA.jpg)
 
 This asserted southerly extent is much further south than that delineated in the Potential Climatic Niche model of Hales et al 2002 [2] and is used as a basis to refute the veracity (and utility) of such a model.
 
