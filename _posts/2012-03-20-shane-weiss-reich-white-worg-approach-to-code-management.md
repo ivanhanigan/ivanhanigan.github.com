@@ -49,7 +49,7 @@ I've just added reports.  If a project is a little bit bigger than minimal I'll 
 
 Which Code Editor is the Best?
 ------------------------------
-And finally the meta work holding the project together is the code editor.  Despite the old joke which describes Emacs as ["a great operating system, lacking only a decent editor"] [8], this editor has killer functions for managing code.  Check out [worg the Emacs Org-Mode Community] [10]. Recently proponents of worg wrote [this article] [11].  Previously I've REALLY enjoyed [NPPtoR] [12] (only available under windoof).
+And finally the meta work holding the project together is the code editor.  Despite the old joke which describes Emacs as ["a great operating system, lacking only a decent editor"] [9], this editor has killer functions for managing code.  Check out [worg the Emacs Org-Mode Community] [10]. Recently proponents of worg wrote [this article] [11].  Previously I've REALLY enjoyed [NPPtoR] [12] (only available under windoof).
 
 In the words of [JD Long] [13] in response to [Shane] [2] "The choice of the specific tool is more idiosyncratic and not near as important as using SOMETHING."
 
