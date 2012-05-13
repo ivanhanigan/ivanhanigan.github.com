@@ -45,7 +45,7 @@ Bernd and Jeromy Anglim had an interesting discussion about this workflow in [th
 * src, and 
 * README
 
-I've just added reports.  If a project is a little bit bigger than minimal I'll add admin, metadata, versions etc etc. I contributed that idea to the ProjectTemplate discussion list... but those guys seem to  or just bolt on whatever bits suit my needs as I go. 
+I've just added reports.  If a project is a little bit bigger than minimal I'll add admin, metadata, versions etc etc. I contributed that idea to the ProjectTemplate discussion list... but those guys seem to mostly use the default minimal = FALSE which creates all the possible directories including reports.  I'll try to keep it simple and just bolt on whatever bits suit my needs as I go. 
 
 Which Code Editor is the Best?
 ------------------------------
