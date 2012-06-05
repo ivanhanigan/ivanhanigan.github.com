@@ -30,7 +30,7 @@ What Russell may be doing is just connecting the two points - Brooklyn and Bourk
 
 (Thanks to my epidemiological friends for scouring the historical references with a thoroughly incredulous eye).
 
-[1]: http://www.google.com "Russell, Richard C, Bart J Currie, Michael D Lindsay, John S Mackenzie, Scott A Ritchie, and Peter I Whelan. Dengue and climate change in Australia: predictions for the future should incorporate knowledge from the past. Medical Journal of Australia 190, no. 5 (2009)"
+[1]: http://www.google.com "Russell, Richard C, Bart J Currie, Michael D Lindsay, John S Mackenzie, Scott A Ritchie, and Peter I Whelan. Dengue and climate change in Australia: predictions for the future should incorporate knowledge from the past. Medical Journal of Australia 190, no. 5 (2009): 265-8."
 
-[2]: http://www.google.com "Hales, S., N. de Wet, J. Maindonald, and A. Woodward. Potential effect of population and climate changes on global distribution of dengue fever: an empirical model. The Lancet 360, no. 9336 (2002)"
+[2]: http://www.google.com "Hales, S., N. de Wet, J. Maindonald, and A. Woodward. Potential effect of population and climate changes on global distribution of dengue fever: an empirical model. The Lancet 360, no. 9336 (2002): 830–834."
 
