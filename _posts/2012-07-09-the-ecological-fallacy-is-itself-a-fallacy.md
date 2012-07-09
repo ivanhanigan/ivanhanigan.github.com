@@ -11,7 +11,7 @@ categories:
 The Ecological Fallacy
 ----
 
-The term 'Ecological fallacy' is used in Epidemiology and some other disciplines (such as Sociology) to refer to improperly inferring a causal association (or lack of association) at an individual-level based on a group-level relationship [1]. 
+The term 'Ecological fallacy' is used in Epidemiology and some other disciplines (such as Sociology) to refer to [improperly inferring a causal association (or lack of association) at an individual-level based on a group-level relationship] [1]. 
 
-[1]: "Marc Gellman, J. Rick Turner. Encyclopedia of Behavioral Medicine Springer, 2012."
+[1]: http://www.springer.com/medicine/book/978-1-4419-1004-2 "Marc Gellman, J. Rick Turner. Encyclopedia of Behavioral Medicine Springer, 2012."
 
