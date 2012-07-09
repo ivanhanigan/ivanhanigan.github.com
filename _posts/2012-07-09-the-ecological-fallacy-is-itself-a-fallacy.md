@@ -36,6 +36,7 @@ Quantitative Geography
 ----
 
 There is also a closely related concept that should be noted.  That of the Modifiable Areal Unit Problem [(MAUP)] [5] as discussed in quantitative geography.  There is a large amount of geographical literature on the MAUP.  In this problem domain areal units (also called zones, regions, areas or polygons) inherently pose three problems to a researcher attempting to infer causal associations: scale, zonal and temporal:
+
 * Scale; this issues is evident in the example above where phenomena investigated using data viewed at one scale may appear quite different (even opposite) using data aggregated at a different scale.
 * Zonal; the zonal problem appears where phenomena investigated using data viewed using two sets of differing areas at a single scale can differ.
 * Temporal; a third problem arises when analyzing data on modifiable areas when people keep modifying them by redrawing the boundaries over time.  
@@ -54,5 +55,5 @@ The term 'Ecological Fallacy' is itself a fallacy and non-Ecologists should be m
 [7]: http://www.ncbi.nlm.nih.gov/pubmed/7137430 "Morgenstern, H. (1982). Uses of ecologic analysis in epidemiologic research. American Journal of Public Health, 72(12)"
 [8]: http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full "Robinson, W.S. (1950). Ecological Correlations and the Behavior of Individuals. American Sociological Review (American Sociological Review, Vol. 15, No. 3) 15 (3): 351???357."
 [9]: http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full "Robinson, W. S. (2009). Ecological correlations and the behavior of individuals. International Journal of Epidemiology, 38(2)"
-[10]: http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full "Grotenhuis, Manfred, Rob Eisinga, and SV Subramanian. Robinson???s Ecological Correlations and the Behavior of Individuals: methodological corrections. International journal of epidemiology 40, no. 4 2011: 1123-5."
+[10]: http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full "Grotenhuis, Manfred, Rob Eisinga, and SV Subramanian. Robinson's Ecological Correlations and the Behavior of Individuals: methodological corrections. International journal of epidemiology 40, no. 4 2011: 1123-5."
 
