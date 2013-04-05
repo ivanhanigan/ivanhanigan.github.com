@@ -10,15 +10,13 @@ I am a huge fan of the R language for statistics and graphics.
 
 I sometimes hear people say they don't like R but then admit that they have never tried to use it, or if they have it was close to ten years ago (and a lot has changed).
 
-I think that multi-disciplinary work will inevitably mean we find a mix of software in use, and they'll all have strenghts and weakndess.
+In recent discussions at work I got the impression some people have got a bit predjudiced against R and other software that they don't actually use, primarily because of the added difficulty of software that requires a bit of programming.
 
-But it seems like we get a bit predujiced against software that we don't use.
+I think that multi-disciplinary work will inevitably mean we find a mix of software in use, and they'll all have strengths and weaknesses.  A major strength of R is that one can weave together a report that includes the data, code, graphs and interpretations for an analysis, rather than copy-and-pasting these elements together as is required with other software toolboxes.
 
-I hope we can work toward a kind of 'tower of babel'.
+For example a simple analysis in Rstudio using the 'R Markdown document' is below. 
 
-For all the R doubters out there I encourage you to have a go.  Especially have a try of the recent developments in Rstudio like this 'R Markdown document'. Markdown is a simple formatting syntax for authoring web pages (click the **MD** toolbar button for help on Markdown).
-
-When you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+You can load and explore data in the document by placing 'Code Chunks' in the document, then when you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ---
     summary(cars)
@@ -43,3 +41,5 @@ You can also embed plots, for example:
 -----
 
 ![plot of chunk unnamed-chunk-2](/images/unnamed-chunk-2.png)
+
+I hope we can work toward a kind of 'tower of babel'.

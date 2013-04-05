@@ -5,4 +5,4 @@ title: CV
 
 # [Click here for a pdf](/pdfs/Ivan-Hanigan-CV.pdf)
 
-# [Click here for a source (via KJ Healy](/pdfs/Ivan-Hanigan-CV.tex)
+![CV screenshot](/pdfs/Ivan-Hanigan-CV-shot.png)

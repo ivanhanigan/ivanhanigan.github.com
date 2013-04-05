@@ -3,22 +3,9 @@ layout: default
 title: Research
 ---
 
-## Current Research
+## Suicide and Drought in Australia
 
-### Suicide and Drought in Australia
+## Air pollution, weather and mortality or morbidity
 
-![A striking drought image](/images/McMichaelDDRMHconf2008.jpg)
+## Comparison of Methods for Estimating Population Exposure to Weather for Health Studies
 
-### Air pollution, weather and mortality or morbidity
-
-
-## Past Research
-
-### Comparison of Methods for Estimating Population Exposure to Weather for Health Studies
-
-
-### Publishing
-
-See the publications here [here][]
-
-[here]: /publications
