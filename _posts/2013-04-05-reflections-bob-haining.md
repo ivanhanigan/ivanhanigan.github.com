@@ -1,7 +1,7 @@
 --- 
 name: reflections-bob-haining
 layout: post
-title: Reflections on a class with Prof Bob Haining
+title: Reflections on Spatial Regression Class with Prof Bob Haining
 date: 2013-04-05
 categories: 
 - spatial dependence
