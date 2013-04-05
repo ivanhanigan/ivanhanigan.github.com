@@ -6,7 +6,11 @@
 #+LATEX: \tableofcontents
 -----
 * Introduction
-For a set of regions need to find the list of each region's neighbours.
+I've got a timeseries model I am fitting to a city dataset with about 45 zones.
+The data are daily, stratified by Zone, Age and Sex.
+Following on from learning about spatiallly correlated errors I want to see if the Standard Error on the estimated $\beta_{1}$ from the timeseries model is affected.
+
+I think the simplest option is to use the spatial lag model, which can be fitted with just adding a term that is the average of the set of each Zone's neighbours outcome level on each day. For this I need to find the list of each region's neighbours.  Then I'll use this to assign each zone/day/age group their neighbours values and then collapse that to get their daily means.
 * Load some test data
 #+name:load-test-data
 #+begin_src R :session *R* :tangle no :exports code :eval yes 
@@ -84,22 +88,29 @@ For a set of regions need to find the list of each region's neighbours.
 file:images/Fig1.png
 
 * function to return adjacency list as a dataframe
-But I actually want this as a dataframe
+I THINK I actually want this as a dataframe so I can merge it with the master table of outcome data.
 
 #+name:adjacency_df
 #+begin_src R :session *R* :tangle no :exports code :eval yes
-################################################################
-# name:adjacency_df
-adjacency_df <- function(NB, shp, zone_id)
-  {
-    adjacencydf <- as.data.frame(matrix(NA, nrow = 0, ncol = 2))
-    for(i in 1:length(NB))
+  ################################################################
+  # name:adjacency_df
+  adjacency_df <- function(NB, shp, zone_id)
     {
-      if(length(shp[[zone_id]][NB[[i]]]) == 0) next
-      adjacencydf <- rbind(adjacencydf, cbind(as.character(shp[[zone_id]][i]),as.character(shp[[zone_id]][NB[[i]]])))
+      adjacencydf <- as.data.frame(matrix(NA, nrow = 0, ncol = 2))
+      for(i in 1:length(NB))
+      {
+        if(length(shp[[zone_id]][NB[[i]]]) == 0) next
+        adjacencydf <- rbind(
+                             adjacencydf,
+                             cbind(
+                                   as.character(shp[[zone_id]][i]),
+                                   as.character(shp[[zone_id]][NB[[i]]])
+                                   )
+                             )
+      }
+      return(adjacencydf)
     }
-    return(adjacencydf)
-  }
+  
 #+end_src
 
 * test-adjacency df
