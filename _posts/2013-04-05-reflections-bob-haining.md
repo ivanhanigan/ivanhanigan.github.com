@@ -138,19 +138,19 @@ categories:
 
 
 
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 Introduction</a></li>
-<li><a href="#sec-2">2 Beta is OK but SE may be biased</a></li>
-<li><a href="#sec-3">3 The Spatial Error Model</a></li>
-<li><a href="#sec-4">4 The Spatial Lag Model</a></li>
-<li><a href="#sec-5">5 Spatially Lagged Independent Variable(s)</a></li>
-<li><a href="#sec-6">6 Discussion</a></li>
-</ul>
-</div>
-</div>
+<!-- <div id="table-of-contents"> -->
+<!-- <h2>Table of Contents</h2> -->
+<!-- <div id="text-table-of-contents"> -->
+<!-- <ul> -->
+<!-- <li><a href="#sec-1">1 Introduction</a></li> -->
+<!-- <li><a href="#sec-2">2 Beta is OK but SE may be biased</a></li> -->
+<!-- <li><a href="#sec-3">3 The Spatial Error Model</a></li> -->
+<!-- <li><a href="#sec-4">4 The Spatial Lag Model</a></li> -->
+<!-- <li><a href="#sec-5">5 Spatially Lagged Independent Variable(s)</a></li> -->
+<!-- <li><a href="#sec-6">6 Discussion</a></li> -->
+<!-- </ul> -->
+<!-- </div> -->
+<!-- </div> -->
 
 <div id="outline-container-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>

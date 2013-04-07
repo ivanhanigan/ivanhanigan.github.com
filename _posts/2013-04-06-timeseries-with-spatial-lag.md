@@ -141,19 +141,19 @@ categories:
 
 <hr/>
 
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 Introduction</a></li>
-<li><a href="#sec-2">2 Load some test data</a></li>
-<li><a href="#sec-3">3 spdep calculates neighbours</a></li>
-<li><a href="#sec-4">4 plot these</a></li>
-<li><a href="#sec-5">5 function to return adjacency list as a dataframe</a></li>
-<li><a href="#sec-6">6 test-adjacency df</a></li>
-</ul>
-</div>
-</div>
+<!-- <div id="table-of-contents"> -->
+<!-- <h2>Table of Contents</h2> -->
+<!-- <div id="text-table-of-contents"> -->
+<!-- <ul> -->
+<!-- <li><a href="#sec-1">1 Introduction</a></li> -->
+<!-- <li><a href="#sec-2">2 Load some test data</a></li> -->
+<!-- <li><a href="#sec-3">3 spdep calculates neighbours</a></li> -->
+<!-- <li><a href="#sec-4">4 plot these</a></li> -->
+<!-- <li><a href="#sec-5">5 function to return adjacency list as a dataframe</a></li> -->
+<!-- <li><a href="#sec-6">6 test-adjacency df</a></li> -->
+<!-- </ul> -->
+<!-- </div> -->
+<!-- </div> -->
 
 <div id="outline-container-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
