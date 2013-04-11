@@ -1,0 +1,96 @@
+#+TITLE:     Reflections on a class with Prof Bob Haining
+#+AUTHOR:    ivan hanigan
+#+EMAIL:     ivan_hanigan@Django
+#+DATE:      2013-04-05
+#+LaTeX_HEADER: \usepackage{amssymb,amsmath}
+
+* Introduction
+I recently attended a class on spatial regression with Prof Bob
+Haining.  He described the issue of spatially correlated errors and
+the problems this poses in spatial regression.
+
+The key issue is that spatial data often violates the assumption in
+regression models that the errors are independent. 
+
+A simple regression model applied to spatial data based on ZONES:
+
+$Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + e_{i}$
+
+But with spatial data it is likely that the errors are spatially
+correlated.  This is likely to mean the point estimate of beta 1 is OK
+but the Standard Error is wrong.
+
+This might be due to the scale of the study units, which may not
+capture the variation of exposure and outcome adequately. Or there
+might be unmeasured explanatory variables that have not been accounted
+for.
+
+I am mostly concerned with EXPLANATORY modelling in which a particular
+exposure of interest is to be assessed.  Examples include a weather
+variable (temperature), an air pollutant (PM10) or some measure of
+socio-economic deprivation in an area (SEIFA scores in Australian
+census data).  In these models I tend to include a number of
+'nuisance' parameters to control for confounding; or interaction terms
+to account for effect modification.  In this type of model the
+performance of the model over-all is not that important, I just want
+to control for the most important confounders so that my estimate of
+the exposure of interest is as rigorous as possible.
+
+Therefore the problem that spatially correlated errors pose for these models is
+slightly different to that which affects models aimed at PREDICTION: I
+am not concerned so much with the model's fit to the data, rather the
+confidence around the point-estimate of the parameter for the exposure
+of interest.
+
+Simplistically I took away the following messages:
+
+* The Spatial Error Model
+So we could model allowing for correlated errors:
+
+$Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \eta_{i}$
+
+Where:
+
+$\eta_{i}$ = Spatially autocorrelated errors.
+
+* The Spatial Lag Model
+Or we could include a term for the neighbours, thus absorbing the correlated errors:
+
+$Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \rho(Neighbours Y_{ij}) + e_{i}$
+
+Where:
+
+$\rho_(Neighbours Y_{ij})$ = is an additional explanatory variable which is the value of the dependent variable in neighbouring areas. 
+
+* Spatially Lagged Independent Variable(s)
+This is almost a variation of the spatial lag model, except that we
+include a term for the exposure variable in the neighbours, and
+therefore 'smooth' the effect of the exposure from what was observed
+in any area to make it relevant to it's neighbours as well:
+
+$Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \beta_{2L} X_{2ij} + e_{i}$
+
+Where:
+
+$\beta_{2L} X_{2ij}$ = is the independent variable X2 that is spatially lagged.
+
+* Discussion
+** How to decide which model to fit?
+So the burning question is how to choose between the various spatial
+models? Prof Haining had some suggestions, but he noted that sometimes
+two could be equally appropriate.  He suggested that the spatial lag
+model makes the strong assumption that there is a relationship between
+the outcome in a neighbouring area with the index zone.  This suggests
+some kind of contagion or dispersion effect.  He was not keen to fit
+this model in circumstances where the causal mechanism did not support
+such a relationship, suggesting the spatially weighted error model was
+more suited, but that "in practice they often give the same result".
+
+In my situation where I am not concerned with the actual
+autocorrelation but with tightening up the standard error on my
+exposure of interest, I think I might plead forgiveness and try
+fitting the spatial lag model as it seems easier.
+
+* Conclusion
+Stay tuned.
+

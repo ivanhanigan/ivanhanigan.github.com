@@ -8,7 +8,7 @@ categories:
 ---
 <head>
 <title>Reflections on a class with Prof Bob Haining</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Reflections on a class with Prof Bob Haining"/>
 <meta name="generator" content="Org-mode"/>
 <meta name="generated" content="2013-04-05"/>
@@ -135,7 +135,7 @@ categories:
 </div>
 
 <div id="content">
-
+<!-- <h1 class="title">Reflections on a class with Prof Bob Haining</h1> -->
 
 
 <!-- <div id="table-of-contents"> -->
@@ -143,11 +143,15 @@ categories:
 <!-- <div id="text-table-of-contents"> -->
 <!-- <ul> -->
 <!-- <li><a href="#sec-1">1 Introduction</a></li> -->
-<!-- <li><a href="#sec-2">2 Beta is OK but SE may be biased</a></li> -->
-<!-- <li><a href="#sec-3">3 The Spatial Error Model</a></li> -->
-<!-- <li><a href="#sec-4">4 The Spatial Lag Model</a></li> -->
-<!-- <li><a href="#sec-5">5 Spatially Lagged Independent Variable(s)</a></li> -->
-<!-- <li><a href="#sec-6">6 Discussion</a></li> -->
+<!-- <li><a href="#sec-2">2 The Spatial Error Model</a></li> -->
+<!-- <li><a href="#sec-3">3 The Spatial Lag Model</a></li> -->
+<!-- <li><a href="#sec-4">4 Spatially Lagged Independent Variable(s)</a></li> -->
+<!-- <li><a href="#sec-5">5 Discussion</a> -->
+<!-- <ul> -->
+<!-- <li><a href="#sec-5-1">5.1 How to decide which model to fit?</a></li> -->
+<!-- </ul> -->
+<!-- </li> -->
+<!-- <li><a href="#sec-6">6 Conclusion</a></li> -->
 <!-- </ul> -->
 <!-- </div> -->
 <!-- </div> -->
@@ -156,8 +160,50 @@ categories:
 <h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 
-<p>I recently attended a class on spatial regression with Prof Bob Haining.  
-He described the issue of spatially correlated errors and the problems this poses.
+<p>I recently attended a class on spatial regression with Prof Bob
+Haining.  He described the issue of spatially correlated errors and
+the problems this poses in spatial regression.
+</p>
+<p>
+The key issue is that spatial data often violates the assumption in
+regression models that the errors are independent. 
+</p>
+<p>
+A simple regression model applied to spatial data based on ZONES:
+</p>
+
+
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + e_{i}\)
+
+<p>
+But with spatial data it is likely that the errors are spatially
+correlated.  This is likely to mean the point estimate of beta 1 is OK
+but the Standard Error is wrong.
+</p>
+<p>
+This might be due to the scale of the study units, which may not
+capture the variation of exposure and outcome adequately. Or there
+might be unmeasured explanatory variables that have not been accounted
+for.
+</p>
+<p>
+I am mostly concerned with EXPLANATORY modelling in which a particular
+exposure of interest is to be assessed.  Examples include a weather
+variable (temperature), an air pollutant (PM10) or some measure of
+socio-economic deprivation in an area (SEIFA scores in Australian
+census data).  In these models I tend to include a number of
+'nuisance' parameters to control for confounding; or interaction terms
+to account for effect modification.  In this type of model the
+performance of the model over-all is not that important, I just want
+to control for the most important confounders so that my estimate of
+the exposure of interest is as rigorous as possible.
+</p>
+<p>
+Therefore the problem that spatially correlated errors pose for these models is
+slightly different to that which affects models aimed at PREDICTION: I
+am not concerned so much with the model's fit to the data, rather the
+confidence around the point-estimate of the parameter for the exposure
+of interest.
 </p>
 <p>
 Simplistically I took away the following messages:
@@ -167,34 +213,14 @@ Simplistically I took away the following messages:
 </div>
 
 <div id="outline-container-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> Beta is OK but SE may be biased</h2>
+<h2 id="sec-2"><span class="section-number-2">2</span> The Spatial Error Model</h2>
 <div class="outline-text-2" id="text-2">
-
-
-<p>
-A standard regression model assumes independent errors:
-</p>
-
-
-\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + e_{i}\)
-
-<p>
-But with spatial data it is likely that the errors are spatially correlated.  
-This is likely to mean the point estimate of beta 1 is OK but the Standard Error is wrong.
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> The Spatial Error Model</h2>
-<div class="outline-text-2" id="text-3">
 
 <p>So we could model allowing for correlated errors:
 </p>
 
 
-\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + \eta_{i}\)
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \eta_{i}\)
 
 <p>
 Where:
@@ -206,15 +232,15 @@ Where:
 
 </div>
 
-<div id="outline-container-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> The Spatial Lag Model</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> The Spatial Lag Model</h2>
+<div class="outline-text-2" id="text-3">
 
 <p>Or we could include a term for the neighbours, thus absorbing the correlated errors:
 </p>
 
 
-\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + \rho(Neighbours Y_{ij}) + e_{i}\)
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \rho(Neighbours Y_{ij}) + e_{i}\)
 
 <p>
 Where:
@@ -226,15 +252,18 @@ Where:
 
 </div>
 
-<div id="outline-container-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> Spatially Lagged Independent Variable(s)</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Spatially Lagged Independent Variable(s)</h2>
+<div class="outline-text-2" id="text-4">
 
-<p>Then we could include a term for the exposure variable in the neighbours:
+<p>This is almost a variation of the spatial lag model, except that we
+include a term for the exposure variable in the neighbours, and
+therefore 'smooth' the effect of the exposure from what was observed
+in any area to make it relevant to it's neighbours as well:
 </p>
 
 
-\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + \beta_{2L} X_{2ij} + e_{i}\)
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \beta_{2L} X_{2ij} + e_{i}\)
 
 <p>
 Where:
@@ -246,16 +275,47 @@ Where:
 
 </div>
 
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Discussion</h2>
+<div class="outline-text-2" id="text-5">
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> How to decide which model to fit?</h3>
+<div class="outline-text-3" id="text-5-1">
+
+<p>So the burning question is how to choose between the various spatial
+models? Prof Haining had some suggestions, but he noted that sometimes
+two could be equally appropriate.  He suggested that the spatial lag
+model makes the strong assumption that there is a relationship between
+the outcome in a neighbouring area with the index zone.  This suggests
+some kind of contagion or dispersion effect.  He was not keen to fit
+this model in circumstances where the causal mechanism did not support
+such a relationship, suggesting the spatially weighted error model was
+more suited, but that "in practice they often give the same result".
+</p>
+<p>
+In my situation where I am not concerned with the actual
+autocorrelation but with tightening up the standard error on my
+exposure of interest, I think I might plead forgiveness and try
+fitting the spatial lag model as it seems easier.
+</p>
+</div>
+</div>
+
+</div>
+
 <div id="outline-container-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> Discussion</h2>
+<h2 id="sec-6"><span class="section-number-2">6</span> Conclusion</h2>
 <div class="outline-text-2" id="text-6">
 
-
-<p>
-Stay tuned.
+<p>Stay tuned.
 </p>
 </div>
 </div>
 </div>
 
 </body>
+</html>
