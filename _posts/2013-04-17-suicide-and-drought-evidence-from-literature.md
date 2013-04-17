@@ -7,6 +7,7 @@ categories:
 - Suicide
 ---
 
+# Suicide and Drought
 This essay evolved as I was asked to write something for the [High-level Meeting on National Drought Policy (HMNDP)](http://www.hmndp.org/) in Geneva with [Mark Howden, Steven Crimp and Bryson Bates](http://www.hmndp.org/presentations/12.03-HMNDP-Parallel5-Howden.pdf).  It is a summary of material Colin Butler and I wrote for our paper with Phil Kokic and Mike Hutchinson [on Suicide and Drought published in PNAS last year](http://www.pnas.org/cgi/content/abstract/1112965109v1).
 
 There has been substantial public interest within Australia in recent decades of the putative relationship between drought and rural mental health, including suicide. The topic has frequently been raised by the media, by rural politicians and by mental health support groups [1]. There have also been recent media reports in India indicating substantial concerns about drought and rural suicide in that country, including [2] from May 2012.
