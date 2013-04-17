@@ -24,7 +24,7 @@ A third study [9] found no association between drought and suicide in Victoria b
 
 In contrast a longer running study did find an association using 38 years of data (1970-2007) to explore potential drought effects, especially on farmers and farm workers [10]. The drought exposures were calculated from climatic data for 11 subregions of New South Wales, and stratified by rural/urban region, age and sex. A strong association was observed in rural males aged 10-49. Surprisingly the suicide risk decreased in rural females aged over 30.
 
-increase suicide in farmers and farm workers.
+
 This study provides clear evidence to support the hypothesis that male farmers, farm workers and farming families are at risk of depression and suicide due to droughts. The resulting statistical model estimated that around 9 % of rural suicides in males aged 30-49 were due to drought over the entire study period. This estimate is an average over the course of the 38 years of the study, as the majority of years are not droughts - the percentage is much greater than 9 % in the actual drought years, since these are episodic and confined to a distinct minority of years.
 The statistical model also controlled for other well-known trends in suicide data, including that times of unusually high maximum temperatures increased suicide risk, that there was a increased risk in spring and early summer, and that there was a marked drop in suicide rates over the last decade.
 #  Discussion
