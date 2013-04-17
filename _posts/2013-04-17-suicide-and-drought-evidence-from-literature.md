@@ -53,3 +53,6 @@ Psychiatry Res , 78(1-2):9{19, 1998.
 
 - [8]	A Page, S Morrell, and R Taylor. Suicide and political regime in New South Wales and Australia during the 20th century. Journal of Epidemiology and Community Health, 56, 2002. 
 
+- [9]	Robyn Guiney. Farming suicides during the Victorian drought: 2001-2007. The Australian Journal of Rural Health, 20(1):11–5, February 2012.
+
+- [10]	I. C. Hanigan, C. D. Butler, P. N. Kokic, and M. F. Hutchinson. Suicide and drought in New South Wales, Australia, 1970-2007. Proceedings of the National Academy of Sciences, pages 1112965109–, August 2012.
