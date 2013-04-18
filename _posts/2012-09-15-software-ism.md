@@ -43,3 +43,37 @@ You can also embed plots, for example:
 ![plot of chunk unnamed-chunk-2](/images/unnamed-chunk-2.png)
 
 I hope we can work toward a kind of 'tower of babel'.
+--- 
+name: software-ism
+layout: post
+title: software-ism
+date: 2012-09-15
+categories: 
+- software
+---
+I am a huge fan of the R language for statistics and graphics.
+
+I sometimes hear people say they don't like R but then admit that they have never tried to use it, or if they have it was close to ten years ago (and a lot has changed).
+
+In recent discussions at work I got the impression some people have got a bit predjudiced against R and other software that they don't actually use, primarily because of the added difficulty of software that requires a bit of programming.
+
+I think that multi-disciplinary work will inevitably mean we find a mix of software in use, and they'll all have strengths and weaknesses.  A major strength of R is that one can weave together a report that includes the data, code, graphs and interpretations for an analysis, rather than copy-and-pasting these elements together as is required with other software toolboxes.
+
+For example a simple analysis in Rstudio using the 'R Markdown document' is below. 
+
+You can load and explore data in the document by placing 'Code Chunks' in the document, then when you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+---
+    summary(cars)
+--- 
+
+
+| speed | dist |
+|--------------|----------------
+| Min.   : 4.0 | Min.   :  2.00  
+| 1st Qu.:12.0 | 1st Qu.: 26.00  
+| Median :15.0 | Median : 36.00  
+| Mean   :15.4 | Mean   : 42.98  
+| 3rd Qu.:19.0 | 3rd Qu.: 56.00  
+| Max.   :25.0 | Max.   :120.00  
+---

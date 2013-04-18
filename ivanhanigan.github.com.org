@@ -118,3 +118,63 @@ You can load and explore data in the document by placing 'Code Chunks' in the do
   | Max.   :25.0 | Max.   :120.00  
   ---  
 #+end_src
+** pioz-et-al-2012-model-selection
+#+begin_src markdown :tangle _posts/2013-04-18-pioz-et-al-2012-model-selection.md :exports none :eval no :padline no
+---
+name: pioz-et-al-2012-model-selection
+layout: default
+title: Pioz et al 2012 model selection
+categories:
+- Spatial Dependence
+- Modelling
+- Disentangle
+---
+
+In the [GIS forum SPDEP study group](http://gis-forum.github.io/study.html) we've been discussing the Bluetongue paper [http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did](http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did-environmental-factors-influencing-the-velocity-of-blueton)
+
+I'd like to know more about the the Lagrange Multiplier tests and Francis
+raised the [seminal Anselin 1988 paper for that](http://ivanhanigan.github.io/2013/04/reflections-bob-haining/#comment-864167749)
+
+
+But in this post I just wanted to summarise their model selection procedure in a flow diagram
+
+
+![pioz_modelling.png](/images/pioz_modelling.png)
+
+
+#+end_src
+*** COMMENT pioz_modelling-code
+#+name:pioz_modelling
+#+begin_src R :session *R* :tangle no :exports none :eval yes
+    ################################################################
+    # name:pioz_modelling
+    require(disentangle)
+    nodes <- newnode("data", "variable selection/transformation", newgraph = T)
+    nodes  <- newnode("model building dataset (75%)",
+                      inputs = "data"
+                      )
+    nodes  <- newnode("validation dataset (25%)", "data")
+    nodes  <- newnode("OLS","model building dataset (75%)")
+  #  nodes  <- newnode("diagnostics", "OLS")
+    nodes  <- newnode("semi-variogram of the OLS residuals", "OLS", c("200km radius"))
+    nodes <- newnode("inverse distance weighting", "assumption")
+    nodes  <- newnode("spatial lag model", c("200km radius", "inverse distance weighting"))
+    nodes  <- newnode("spatial error model",  c("200km radius", "inverse distance weighting", "robust Lagrange Multiplier"))
+    nodes <- newnode("robust Lagrange Multiplier", c("spatial lag model", "spatial error model"))
+    nodes <- newnode("three thematic sets of variables", "variable selection/transformation")
+    nodes <- newnode("AIC to select variables", c("spatial error model", "three thematic sets of variables"), "minimal model")
+  
+    nodes <- newnode("compare dir, magnt and sig", c("OLS", "minimal model"))
+    nodes <- newnode("coefficient of determination","literature several pseudo-R2 have")
+    nodes <- newnode("assess fit", c("minimal model","RMSE", "coefficient of determination"))
+    nodes <- newnode("assess fit with validation dataset", c("validation dataset (25%)", "RMSE", "coefficient of determination"))
+    nodes <- newnode("assess each covariate",  "minimal model", "LR tests, loop drop-one-test-repeat")
+    nodes <- newnode("compare the OLS and spatial error results for variables", c("OLS", "LR tests, loop drop-one-test-repeat"))
+    dev.copy(png,"images/pioz_modelling.png", height = 1000, width = 700, res = 105)
+    dev.off(); dev.off()
+#+end_src
+
+#+RESULTS: pioz_modelling
+: 1
+
+    
