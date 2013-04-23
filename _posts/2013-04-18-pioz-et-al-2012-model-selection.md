@@ -1,6 +1,6 @@
 ---
 name: pioz-et-al-2012-model-selection
-layout: default
+layout: post
 title: Pioz et al 2012 model selection
 categories:
 - Spatial Dependence
