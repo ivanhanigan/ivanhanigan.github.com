@@ -1,0 +1,107 @@
+#+TITLE:     data dredging
+#+AUTHOR:    ivan hanigan
+#+EMAIL:     ivan_hanigan@Django
+#+DATE:      2013-05-09 
+#+LaTeX_HEADER: \usepackage{amssymb,amsmath}
+
+* Data Dredging
+[[http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did-environmental-factors-influencing-the-velocity-of-blueton][The Bluetongue paper]] we've been discussing at the [[http://gis-forum.github.io/study.html][ANU GIS forum]]  correctly points out that with the "the large number of candidate variables ... a huge number of models could be considered."
+
+They go on to say that:
+
+"Thus, for practical reasons, we ... isolate independently for each of  three thematic sets of variables (host-, meteorological- and landscape-related covariates) a combination of variables best fitting the data."
+
+I don't really get this.  Why not fit the huge number of models (RAM and disk speed permitting) and let AIC or BIC  sift out any combinations that perform well?  For example in a simple instance with four explanatory variables and no interactions the rich model would be:
+
+$Y_{i} = \beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + \beta_{3} X_{3} + \beta_{4} X_{4}$
+
+Lu, Sonya and I are working on a function to do all the possible combos (interaction terms are possible to include too).  So far we have this code and a link to an old [[https://stat.ethz.ch/pipermail/r-help/2007-January/124023.html][Hadley Wickham quote]].
+That's from 2007, and still haven't herd about any tool developed that really does this. 
+
+So far we have this code:
+
+#+begin_src R :session *R* :tangle no :exports reports :eval no
+  combos  <- function(yvar, xvars, compulsory = NA)
+    {
+      formlas <- NULL
+      for(j in length(xvars):1)
+        {
+          combns <- combn(xvars, j)
+          for(i in 1:ncol(combns))
+            {
+              terms2include <- combns[,i]
+              if(!is.na(compulsory[1]))
+                {
+                  terms2include  <- c(terms2include, compulsory)
+                }
+              formla <- reformulate(terms2include,                                  
+                                    response = yvar
+                                    )
+              formlas <- c(formlas,formla)     
+            }
+        }
+      return(formlas)
+    }
+#+end_src
+
+The resulting list of candidate models are:
+
+#+begin_src R :session *R* :tangle no :exports reports :eval yes
+  formlas <- combos(yvar = "deaths",
+                    xvars = c("x1", "x2", "x3", "x4")
+                    )
+  paste(formlas)
+  
+#+end_src
+
+
+| deaths ~ x1 + x2 + x3 + x4 |
+| deaths ~ x1 + x2 + x3      |
+| deaths ~ x1 + x2 + x4      |
+| deaths ~ x1 + x3 + x4      |
+| deaths ~ x2 + x3 + x4      |
+| deaths ~ x1 + x2           |
+| deaths ~ x1 + x3           |
+| deaths ~ x1 + x4           |
+| deaths ~ x2 + x3           |
+| deaths ~ x2 + x4           |
+| deaths ~ x3 + x4           |
+| deaths ~ x1                |
+| deaths ~ x2                |
+| deaths ~ x3                |
+| deaths ~ x4                |
+
+
+* Compulsory inclusions
+In some instances you may want to include a variable in all models so the compulsory option can be used.  For example in spatio-temporal models we could include a term for zone and time while assessing the mix of explanatory variables:
+
+#+begin_src R :session *R* :tangle no :exports reports :eval yes
+  formlas <- combos(yvar = "deaths",
+                    xvars = c("x1", "x2", "x3", "x4"),
+                    compulsory = c("zone", "ns(time, df = 3)")
+                    )
+  paste(formlas)
+  
+#+end_src
+
+
+| deaths ~ x1 + x2 + x3 + x4 + zone + ns(time, df = 3) |
+| deaths ~ x1 + x2 + x3 + zone + ns(time, df = 3)      |
+| deaths ~ x1 + x2 + x4 + zone + ns(time, df = 3)      |
+| deaths ~ x1 + x3 + x4 + zone + ns(time, df = 3)      |
+| deaths ~ x2 + x3 + x4 + zone + ns(time, df = 3)      |
+| deaths ~ x1 + x2 + zone + ns(time, df = 3)           |
+| deaths ~ x1 + x3 + zone + ns(time, df = 3)           |
+| deaths ~ x1 + x4 + zone + ns(time, df = 3)           |
+| deaths ~ x2 + x3 + zone + ns(time, df = 3)           |
+| deaths ~ x2 + x4 + zone + ns(time, df = 3)           |
+| deaths ~ x3 + x4 + zone + ns(time, df = 3)           |
+| deaths ~ x1 + zone + ns(time, df = 3)                |
+| deaths ~ x2 + zone + ns(time, df = 3)                |
+| deaths ~ x3 + zone + ns(time, df = 3)                |
+| deaths ~ x4 + zone + ns(time, df = 3)                |
+
+
+
+* AIC vs BIC vs LRTests
+Well now we get into a sort of philosophical debate on how to rank all these models.  That'll have to wait for another day.
