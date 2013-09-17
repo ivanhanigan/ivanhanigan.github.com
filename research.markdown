@@ -11,11 +11,11 @@ This is an Open Notebook with [Selected Content - Delayed](http://onsclaims.wiki
   ![ONS-SCD.png](/images/ONS-SCD.png)
 
 
-- OpenSoftware-RestrictedData
-- Bioacoustics and Pumilio
+- [OpenSoftware-RestrictedData](http://opensoftware-restricteddata.git.io)
+- [Bioacoustics and Pumilio](/pumilio.html)
+- [Farmer Suicide and Drought](http://www.pnas.org/content/early/2012/08/08/1112965109.full.pdf+html) 
 - Energymark: transformations in Energy use
 - Farmer Transformations: transformational adaptation in a sample of farmers
 - PhD thesis: Disentangling the Health Impacts of Environmental Change from Social Factors      
-- Farmer Suicide and Drought 
 - Rates, Standardisation and Adjustment
 - Spatio-temporal regression models
