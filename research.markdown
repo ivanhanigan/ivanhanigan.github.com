@@ -4,12 +4,11 @@ layout: default
 title: Open Notebook
 ---
 
-## Welcome to my Open Notebook
-
-This is an Open Notebook with [Selected Content - Delayed](http://onsclaims.wikispaces.com/).  In this model a portion of the open notebook and associated supporting raw data are available after some delay. I'll try to use this for regular updates on progress for each project.
-  
-  ![ONS-SCD.png](/images/ONS-SCD.png)
-
+#### Data Documentation
+#### TransformSurveyTools
+- Notes
+- Report
+- [Tools](https://github.com/ivanhanigan/TransformSurveyTools)
 
 #### [OpenSoftware-RestrictedData](http://opensoftware-restricteddata.github.io)
 ####  Pumilio-Bushfm: Bioacoustics Server
