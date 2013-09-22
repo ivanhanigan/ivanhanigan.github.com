@@ -15,3 +15,4 @@ title: Open Notebook
 *  Pumilio-Bushfm: Bioacoustics Server: [Notes](/pumilio-bushfm-index.html),  [Report](http://ivanhanigan.github.io/pumilio-bushfm)
 * Spatio-temporal regression models
 * TransformSurveyTools: Notes, Report, [Tools](https://github.com/ivanhanigan/TransformSurveyTools)
+* Workflow: [Notes](/workflow.html)
