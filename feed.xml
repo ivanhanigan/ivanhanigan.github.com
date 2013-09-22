@@ -1,19 +1,722 @@
----
-layout: rss-feed
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 	<channel>
-		<title>{{ site.name }}</title>
-		<description>{{ site.description }}</description>
-		<link>{{ site.url }}</link>
-		{% for post in site.posts limit:10 %}
+		<title>Recology</title>
+		<description>An exploration of using R for ecology, evolution, and open science.</description>
+		<link>http://schamberlain.github.com</link>
+		
 			<item>
-				<title>{{ post.title }}</title>
-				<description>{{ post.content | xml_escape }}</description>
-				<published>{{ post.date }}</published>
-				<link>{{ site.url }}{{ post.url }}</link>
+				<title>workflow-flowcharts-update</title>
+				<description>&lt;h1&gt;Workflow flowcharts - Update&lt;/h1&gt;
+
+&lt;p&gt;A while back I posted about my work with the Rgraphviz toolbox toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
+This update includes notes from a discussion I had with Keith about this.&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(disentangle)
+nodes &amp;lt;- newnode(&quot;NAME&quot;, &quot;INPUT&quot;, &quot;OUTPUT&quot;, newgraph =T)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+				<published>Sun Sep 22 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/09/workflow-flowcharts-update/</link>
 			</item>
-		{% endfor %}
+		
+			<item>
+				<title>toward-a-unified-ecology-dataset</title>
+				<description>&lt;h1&gt;Ecology datasets&lt;/h1&gt;
+
+&lt;p&gt;These are my notes from a meeting that Kathryn and I had with a group of Ecologists at the ANU (primarily Luciana Porforio and Nasreen Khan).  We asked them to discuss how they search for and use Ecology datasets, especially how to best package up the parts of an ecological field data collection (ie weather, vegetation, biodiversity, soils, topography etc).&lt;/p&gt;
+
+&lt;p&gt;Lu started off the discussion by stating that the most important thing to acknowledge is that every ecologist will start off with a main research question and then search for data that will address their specific research question.  It is difficult to work from a 'top-down' perspective that hopes to pre-empt the range of possible questions.  Lu felt that it may therefore be best to just keep all the data together in the biggest bundle that is possible and the end user can pick it apart once downloaded.&lt;/p&gt;
+
+&lt;p&gt;We explained that LTERN datasets can be quite expansive with many dimensions and it seemed preferable to at least untangle the main 'themes' for packaging up.&lt;/p&gt;
+
+&lt;p&gt;Nasreen pointed out that there is always a protocol for how data are collected and this should give the data collection it's structure.  However I felt that ecology collections are so diverse they have been made (by necessity) very flexible and specific to the needs of the individual plot network.  Therefore generalisations across data collections are very hard to make (apart from easy things like &quot;weather&quot; or &quot;aboveground dead biomass&quot;).&lt;/p&gt;
+
+&lt;h1&gt;Toward a Unified Ecology&lt;/h1&gt;
+
+&lt;p&gt;I always fall back on the text book &quot;Toward a Unified Ecology: Timothy F. H. Allen, Thomas W. Hoekstra 1992&quot;.  I wondered if it can guide us?  On pages 42-53 they describe the following framework and use the image below (the letters in the middle disc correspond to the criteria ie O = Organism).  In this framework it is possible to summarise ANY ecological study as they ALWAYS incorporate these scale-independent criteria:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Organism: genetic integrity, discrete body, autonomy from other organisms&lt;/li&gt;
+&lt;li&gt;Population: relative similarity within the group&lt;/li&gt;
+&lt;li&gt;Community: inter-species competition, interference, mutualism&lt;/li&gt;
+&lt;li&gt;Ecosystem: biotic and abiotic interactions&lt;/li&gt;
+&lt;li&gt;Landscape: spatial structure/contiguity&lt;/li&gt;
+&lt;li&gt;Biome: characteristic physiognomy, disturbance and climate&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;I thought that if these dimensions were identified in a data collection first then they might become the discrete packages by which each plot network publishes their collection?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/datadoco-layercake.png&quot; alt=&quot;datadoco-layercake.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Aekos&lt;/h1&gt;
+
+&lt;p&gt;Over at &lt;a href=&quot;http://www.aekos.org.au/why_aekos#diversity&quot;&gt;AEKOS&lt;/a&gt; they have a similar conceptual framework&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Observations can range from that of individual organisms and
+interactions, through to populations, communities, ecosystems and
+across broad global landscapes.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;Conclusions&lt;/h1&gt;
+
+&lt;p&gt;This is an open issue.  More discussions are needed internally for the Data Custodians.&lt;/p&gt;
+
+&lt;p&gt;Lu also pointed out that the end users are the key stakeholders and perhaps more input from them (via surveys and workshops?) is needed?&lt;/p&gt;
+</description>
+				<published>Fri Sep 20 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/09/toward-a-unified-ecology-dataset/</link>
+			</item>
+		
+			<item>
+				<title>energymark</title>
+				<description>&lt;h1&gt;Energymark&lt;/h1&gt;
+</description>
+				<published>Thu Sep 19 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/09/energymark/</link>
+			</item>
+		
+			<item>
+				<title>pumilio-bushfm-test-dev-prod</title>
+				<description>&lt;h1&gt;Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook&lt;/h1&gt;
+
+&lt;h4&gt;Aims:&lt;/h4&gt;
+
+&lt;p&gt;It was suggested I could document the pumilio test build as an OpenNotebook.
+I imagined that I could link this blog to github repo and doco hosted on gh-pages.&lt;/p&gt;
+
+&lt;h4&gt;Methods:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;For ie the emacs html output now goes to &lt;a href=&quot;http://ivanhanigan.github.io/pumilio-bushfm/&quot;&gt;http://ivanhanigan.github.io/pumilio-bushfm/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;then collaborators can clone/fork &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;and comment/complain at &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm/wiki&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm/wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Results:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud&lt;/li&gt;
+&lt;li&gt;Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).&lt;/li&gt;
+&lt;li&gt;then when I tried to upload a big sound file it broke :-(&lt;/li&gt;
+&lt;li&gt;I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo nano /etc/mysql/my.cnf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;BUT&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...&lt;/li&gt;
+&lt;li&gt;so I think I can &lt;a href=&quot;http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition&quot;&gt;just remount /var&lt;/a&gt; onto the larger /mnt secondary disk.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Wed Sep 18 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/09/pumilio-bushfm-test-dev-prod/</link>
+			</item>
+		
+			<item>
+				<title>Starting my Open Notebook Science Blog</title>
+				<description>&lt;p&gt;Many examples are emerging of scientists who are transitioning to a
+much more open model of research.  This is in part externally driven
+by funding bodies (such as the Aussie Research Council asking for deposit of funded data and papers) and journals
+(&lt;a href=&quot;http://www.nature.com/ng/journal/v45/n5/full/ng.2621.html&quot;&gt;ie. Nature journals removing length restrictions on Methods sections.&lt;/a&gt;). Also the increased value being placed on transparency of reproducible analysis to safeguard against error and fraud is becoming an internal driver within science communities.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Open_Notebook_Science&quot;&gt;Open Notebook Science&lt;/a&gt;
+(ONS) style is an extreme of transparent approaches to research.
+According to the wikipedia page it is the &quot;practice of making the
+entire primary record of a research project publicly available online
+as it is recorded&quot;.&lt;/p&gt;
+
+&lt;p&gt;That's pretty extreme!  In my view a lot of stuff in the research project should probably be archived quickly and left to rot.&lt;/p&gt;
+
+&lt;p&gt;I like the range of options available.  I think I'll go for &lt;a href=&quot;http://onsclaims.wikispaces.com/&quot;&gt;SCD or &quot;Seclected Content / Delayed&quot;&lt;/a&gt; and show their image below.  In this model a portion of the open notebook and associated supporting raw data are available after some delay. I'll try to use this blog for weekly updates on progress for each project, and provide links off my 'Open Notebook' and 'Software' Tabs.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ONS-SCD.png&quot; alt=&quot;ONS-SCD.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>Fri Sep 13 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/09/ons/</link>
+			</item>
+		
+			<item>
+				<title>Worflow flowcharts</title>
+				<description>&lt;h2&gt;What is the issue&lt;/h2&gt;
+
+&lt;p&gt;Most people seem to collect multiple datasets together in a single spot that can be split into 2 or more separate data packages.  I think this is a natural set up from an analysts perspective, where the results of multiple steps accumulate as 'stepping stones' toward the file they end up analysing.&lt;/p&gt;
+
+&lt;p&gt;I was first taught GIS by Isabelle Balzer at Ecowise Environmental Services in Canberra.  She showed me the method of keeping a table (sticky-taped to the desk!) of all the files and transformations that were going on. This was a method that didn't allow any multitasking!  I call this the 'Balzerian Method' (I am sure others used it before Isabelle, but I think Balzerian is a great word).&lt;/p&gt;
+
+&lt;p&gt;I think the data wharehouse at my work is an example, and probably we'll find the key challenge for big data will be for analysts to disentangle their own filing systems.&lt;/p&gt;
+
+&lt;p&gt;In my experience the way people store research data is often one (or a couple, or all) of these three types:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;a database with heaps of tables and views&lt;/li&gt;
+&lt;li&gt;a directory (and sub-directories) with heaps of files&lt;/li&gt;
+&lt;li&gt;a spreadsheet workbook with heaps of sheets (and links to other workbooks)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;I am developing a tool based on the open source graphviz softawre. The tool I am developing addresses the challenge of graphing the links between these sequential steps.&lt;/p&gt;
+
+&lt;h4&gt;Code:introducing newnode&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# NB this only works easily on linux
+require(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+require(disentangle)
+# the core of the tool is Rgraphviz, I just built a wrapper function
+# to add newnodes to a graph of nodes
+# always start with (newgraph = T) because the newnode function ADDS
+# nodes to a graph, unless told otherwise, and fails if no 'nodes'
+# object exists
+nodes  &amp;lt;- newnode(name=&quot;NAME&quot;,inputs=&quot;INPUT&quot;,outputs=&quot;OUTPUT&quot;, newgraph = T)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/newnode1.png&quot; alt=&quot;images/newnode1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Code:adding nodes&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# now we can add nodes, and we can pass multiple inputs or outputs
+nodes  &amp;lt;- newnode(name=&quot;OUTPUT&quot;,inputs=c(&quot;NAME&quot;,&quot;ANOTHER THING&quot;))
+# outputs are optional
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/newnode2.png&quot; alt=&quot;images/newnode2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It can be used in two or three ways.&lt;/p&gt;
+
+&lt;h2&gt;Example one, the composite view:&lt;/h2&gt;
+
+&lt;p&gt;So if there is a Balzerian filelist table available, convert it to a spreadsheet.  This is als similar to a labbook from Chemistry but follows a very rigid structure: NAME,        INPUTS,           OUTPUTS,         DESCRIPTION.  The first method I'll show will take one of these tables and map out the steps in the workflow.&lt;/p&gt;
+
+&lt;h4&gt;Code: Composite Worflow Files List&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#    so if there is a Balzerian filelist table available,
+# either make a spreadsheet with names, inputs and outputs 
+# fileslist &amp;lt;- read.csv(&quot;exampleFilesList.csv&quot;, stringsAsFactors = F)
+# or 
+filesList &amp;lt;- read.csv(textConnection(
+'NAME,        INPUTS,           OUTPUTS,         DESCRIPTION
+FileA,        TableXYZ,         Input1,          Transformed variable
+FileB,        TableABC,         Input2,          Collapsed dimensions
+analysisFile, &quot;Input1,Input2&quot;,  analysisResults, Merged inputs and analysed
+'), stringsAsFactors = F, strip.white = T)
+filesList
+
+for(i in 1:nrow(filesList))
+{
+  nodes &amp;lt;- newnode(name = filesList[i,&quot;NAME&quot;],
+                   inputs = strsplit(filesList$INPUTS, &quot;,&quot;)[[i]],
+                   outputs = strsplit(filesList$OUTPUTS, &quot;,&quot;)[[i]],
+                   newgraph = (i == 1)
+  )
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;shows this result&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/fileRelationships.png&quot; alt=&quot;fileRelationships.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Example two, tracking the steps while analysing data:&lt;/h2&gt;
+
+&lt;p&gt;Structure a script into sections and document each section before evaluating the code to execute the step.  This works well with orgmode/ESS, Sweave or knitr style workflows.
+For example:&lt;/p&gt;
+
+&lt;h4&gt;Code: Ad Hoc Files Lists Flowcharts&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#### step one ####
+nodes &amp;lt;- newnode(name=&quot;FileA&quot;, inputs=&quot;TableXYZ&quot;, outputs=&quot;Input1&quot;,
+                 newgraph =T) # this is required to tell newnode to
+                              # start a new graph, rather than add to
+                              # the nodes
+FileA  &amp;lt;- read.table(&quot;TableXYZ.txt&quot;)
+Input1 &amp;lt;- log(FileA$columnZ)
+
+#### step two ####
+nodes &amp;lt;- newnode(name=&quot;FileB&quot;, inputs=&quot;TableABC&quot;, outputs=&quot;Input2&quot;)
+FileB  &amp;lt;- read.table(&quot;TableABC.txt&quot;)
+Input2 &amp;lt;- ddply(FileB, &quot;id&quot;, summarise,
+                duration = max(year) - min(year),
+                nteams = length(unique(team)))
+
+#### step three ####
+nodes &amp;lt;- newnode(name=&quot;analysisFile&quot;, inputs=c(&quot;Input1&quot;,&quot;Input2&quot;),
+                 outputs=&quot;analysisResults&quot;)
+analysisFile  &amp;lt;- merge(Input1, Input2, by=&quot;id&quot;)
+analysisResults  &amp;lt;- lm(y ~ duration + nteams, data = analysisFile)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Example three: visualising relationships&lt;/h2&gt;
+
+&lt;p&gt;It is not aimed at visualising the linked structure of a tree or semi-lattice but can be used in such a way but changing the nodename and inputs concept to parent/child relationships.&lt;/p&gt;
+
+&lt;p&gt;As an example I'll describe how a list of database tables might be displayed as a tree. I am a great fan of Josh Reich due to his &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;LCFD workflow&lt;/a&gt;, and I also like his work on the &lt;a href=&quot;https://www.simple.com/&quot;&gt;Simple Bank&lt;/a&gt; so when I stumbled on this &lt;a href=&quot;http://blog.i2pi.com/post/52812976752/joshs-postgresql-database-conventions&quot;&gt;blog post&lt;/a&gt; in which he says:&lt;/p&gt;
+
+&lt;p&gt;&quot;Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won’t usually need your flowchart; it’ll be obvious.&quot;&lt;/p&gt;
+
+&lt;p&gt;I was switched on and I started thinking about how the graphVis tool could be used to describe a list of tables and views from a database.&lt;/p&gt;
+
+&lt;p&gt;Say that two groups studied the same file TableXYZ with different inputs.  One of these groups wrote a seminal paper in the field, while their rivals wrote an inferior paper with a different result.  Imagine now a subsequent group who gathered the data from the previous work into the following database tables and conducted a replication study, with a new sensitivity analysis to explain why the original two papers produced different results.&lt;/p&gt;
+
+&lt;p&gt;Let's assume this database has all the data from all the groups in it and we want to get a pictorial view so we can disentangle which files belong to which study.  First get the following list of tables as INPUTS, grouping them by 'NAME' will give the tree structure and showing their results as OUTPUTS allows the subsequent replication study to use them as inputs and assume the position at the bottom of the flowchart.&lt;/p&gt;
+
+&lt;h4&gt;Code: database tables and different studies&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;filesList &amp;lt;- read.csv(textConnection(
+'NAME                 ,             INPUTS         , OUTPUTS
+The Seminal Study     ,              FileA         , 
+The Seminal Study     ,              FileB         , 
+The Seminal Study     ,       analysisFile         , 
+The Seminal Study     ,           TableXYZ         , 
+The Seminal Study     ,           TableABC         , 
+The Seminal Study     ,      Input1,Input2         ,
+The Seminal Study     ,             Input1         , 
+The Seminal Study     ,             Input2         , 
+The Seminal Study     ,      The Seminal Study     , analysisResults 
+The Inferior Rivals   ,                FileC       , 
+The Inferior Rivals   ,        analysisFileX       , 
+The Inferior Rivals   ,             TableXYZ       , 
+The Inferior Rivals   ,               InputX       , 
+The Inferior Rivals   ,    The Inferior Rivals     , analysisResultsX       
+The Replication Study ,    &quot;Input1,Input2,TableXYZ&quot;,  analysisResultsR     
+The Replication Study ,    &quot;Input1,InputX,TableXYZ&quot;,  sensitivityResult 
+'), stringsAsFactors = F, strip.white = T)
+
+for(i in 1:nrow(filesList))
+{
+  nodes &amp;lt;- newnode(name = filesList[i,&quot;NAME&quot;],
+                   inputs = strsplit(filesList$INPUTS, &quot;,&quot;)[[i]],
+                   outputs = strsplit(filesList$OUTPUTS, &quot;,&quot;)[[i]],
+                   newgraph = (i == 1)
+  )
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;the result&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/filesRelationships2.png&quot; alt=&quot;filesRelationships2.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>Wed Jul 31 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/07/worflow-flowcharts/</link>
+			</item>
+		
+			<item>
+				<title>animated-maps</title>
+				<description>&lt;h1&gt;Animated maps to allow exploration of alternate levels of 'jitter'&lt;/h1&gt;
+
+&lt;p&gt;In a &lt;a href=&quot;http://www.ncbi.nlm.nih.gov/pubmed/22672028&quot;&gt;previous project&lt;/a&gt; we published a map of point locations that had been 'jittered', ie adding random noise to the latitude and longitude.  We did this by testing out a few maps and deciding on one that we thought protected privacy adequately whilst not destroying the spatial pattern we wished to display (evocatively).&lt;/p&gt;
+
+&lt;p&gt;I always wondered about a way to interactively do this and I think the animation package might do the trick, with the ability to step thru levels of jittering with the pause, fwd and back buttons.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/jitter/index.html&quot;&gt;Clink here for the same data shown in a new animation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1&gt;Reference&lt;/h1&gt;
+
+&lt;p&gt;Vally, H., Peel, M., Dowse, G. K., Cameron, S., Codde, J. P., Hanigan, I., &amp;amp; Lindsay, M. D. a. (2012). Geographic Information Systems used to describe the link between the risk of Ross River virus infection and proximity to the Leschenault estuary, WA. Australian and New Zealand Journal of Public Health, 36(3), 229–235. doi:10.1111/j.1753-6405.2012.00869.x&lt;/p&gt;
+</description>
+				<published>Tue Jul 30 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/07/animated-maps/</link>
+			</item>
+		
+			<item>
+				<title>spatio-temporal-animations</title>
+				<description>&lt;h2&gt;Space time animations are cool&lt;/h2&gt;
+
+&lt;p&gt;This is a graphic I made a few years ago of temperature in Sydney.  It is a GAM with smoothing splines on longitude, latitude and time (t):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(mgcv)
+fit &amp;lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c(&quot;tp&quot;,&quot;cr&quot;)), data=jan06)  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/button/spacetimegamSydney3hrTemp.gif&quot; alt=&quot;spacetimegamSydney3hrTemp.gif&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/button/index.html&quot;&gt;Clink here for an example of where I think this kind of animation should go now&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The addition of stop/play/fwd/reverse buttons adds potential for exploratory insights.&lt;/p&gt;
+
+&lt;p&gt;The secret to getting the play/pause/next buttons is to insert graphing code between:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;saveHTML(..., outdir = getwd())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Unfortunately the rest of the code that accompanies the graphic above is too specific to my workflow that it is not reproducible.  That was back before (during the time that) I became obsessed with the prospect of &lt;a href=&quot;http://swish-climate-impact-assessment.github.io/&quot;&gt;creating reproducible data analysis workflows&lt;/a&gt;.&lt;/p&gt;
+</description>
+				<published>Thu Jun 06 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/06/spatio-temporal-animations/</link>
+			</item>
+		
+			<item>
+				<title>Complex Model Selection (or Data Dredging)</title>
+				<description>&lt;p&gt;&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot; xml:lang=&quot;en&quot;&gt;
+&lt;head&gt;&lt;/p&gt;
+
+&lt;!--&lt;title&gt;data dredging&lt;/title&gt;--&gt;
+
+
+&lt;p&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;data dredging&quot;/&gt;
+&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-05-09 &quot;/&gt;
+&lt;meta name=&quot;author&quot; content=&quot;ivan hanigan&quot;/&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
+
+
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = &quot;code-highlighted&quot;;
+     elem.className   = &quot;code-highlighted&quot;;
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;http://orgmode.org/mathjax/MathJax.js&quot;&gt;
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: [&quot;MMLorHTML.js&quot;], jax: [&quot;input/TeX&quot;],
+            jax: [&quot;input/TeX&quot;, &quot;output/HTML-CSS&quot;],
+        extensions: [&quot;tex2jax.js&quot;,&quot;TeX/AMSmath.js&quot;,&quot;TeX/AMSsymbols.js&quot;,
+                     &quot;TeX/noUndefined.js&quot;],
+        tex2jax: {
+            inlineMath: [ [&quot;\\(&quot;,&quot;\\)&quot;] ],
+            displayMath: [ ['$$','$$'], [&quot;\\[&quot;,&quot;\\]&quot;], [&quot;\\begin{displaymath}&quot;,&quot;\\end{displaymath}&quot;] ],
+            skipTags: [&quot;script&quot;,&quot;noscript&quot;,&quot;style&quot;,&quot;textarea&quot;,&quot;pre&quot;,&quot;code&quot;],
+            ignoreClass: &quot;tex2jax_ignore&quot;,
+            processEscapes: false,
+            processEnvironments: true,
+            preview: &quot;TeX&quot;
+        },
+        showProcessingMessages: true,
+        displayAlign: &quot;center&quot;,
+        displayIndent: &quot;2em&quot;,
+
+        &quot;HTML-CSS&quot;: {
+             scale: 100,
+             availableFonts: [&quot;STIX&quot;,&quot;TeX&quot;],
+             preferredFont: &quot;TeX&quot;,
+             webFont: &quot;TeX&quot;,
+             imageFont: &quot;TeX&quot;,
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    &quot;MML&quot;,
+                 Firefox: &quot;MML&quot;,
+                 Opera:   &quot;HTML&quot;,
+                 other:   &quot;HTML&quot;
+             }
+        }
+    });
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;p&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Toward Automated Model Selection&lt;/h1&gt;
+
+&lt;!--
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Data Dredging&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2 Compulsory inclusions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3 AIC vs BIC vs LRTests&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+--&gt;
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;!--&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; Data Dredging&lt;/h2&gt;--&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did-environmental-factors-influencing-the-velocity-of-blueton&quot;&gt;The Bluetongue paper&lt;/a&gt; we've been discussing at the &lt;a href=&quot;http://gis-forum.github.io/study.html&quot;&gt;ANU GIS forum&lt;/a&gt;  correctly points out that with the &quot;the large number of candidate variables &amp;hellip; a huge number of models could be considered.&quot;
+&lt;/p&gt;
+&lt;p&gt;
+They go on to say that:
+&lt;/p&gt;
+&lt;p&gt;
+&quot;Thus, for practical reasons, we &amp;hellip; isolate independently for each of  three thematic sets of variables (host-, meteorological- and landscape-related covariates) a combination of variables best fitting the data.&quot;
+&lt;/p&gt;
+&lt;p&gt;
+I don't really get this.  Why not fit the huge number of models (RAM and disk speed permitting) and let AIC or BIC  sift out any combinations that perform well?  For example in a simple instance with four explanatory variables and no interactions the rich model would be:
+&lt;/p&gt;
+
+
+\(Y_{i} = \beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + \beta_{3} X_{3} + \beta_{4} X_{4}\)
+
+&lt;p&gt;
+Lu, Sonya and I are working on a function to do all the possible combos (interaction terms are possible to include too).  So far we have this code and a link to an old &lt;a href=&quot;https://stat.ethz.ch/pipermail/r-help/2007-January/124023.html&quot;&gt;Hadley Wickham quote&lt;/a&gt;.
+That's from 2007, and still haven't herd about any tool developed that really does this. 
+&lt;/p&gt;
+&lt;p&gt;
+So far we have this code:
+&lt;/p&gt;
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #268bd2;&quot;&gt;combos&lt;/span&gt;  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;function&lt;/span&gt;(yvar, xvars, compulsory = &lt;span style=&quot;color: #b58900;&quot;&gt;NA&lt;/span&gt;)
+  {
+    formlas &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&quot;color: #b58900;&quot;&gt;NULL&lt;/span&gt;
+    &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(j &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; length(xvars):1)
+      {
+        combns &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; combn(xvars, j)
+        &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(i &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; 1:ncol(combns))
+          {
+            terms2include &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; combns[,i]
+            &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!is.na(compulsory[1]))
+              {
+                terms2include  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(terms2include, compulsory)
+              }
+            formla &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; reformulate(terms2include,                                  
+                                  response = yvar
+                                  )
+            formlas &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(formlas,formla)     
+          }
+      }
+    &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;return&lt;/span&gt;(formlas)
+  }
+&lt;/pre&gt;
+
+
+&lt;p&gt;
+The resulting list of candidate models are:
+&lt;/p&gt;
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;formlas &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; combos(yvar = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;deaths&quot;&lt;/span&gt;,
+                  xvars = c(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x1&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x2&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x3&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x4&quot;&lt;/span&gt;)
+                  )
+paste(formlas)
+
+&lt;/pre&gt;
+
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x2 + x3 + x4&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x2 + x3&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x2 + x4&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x3 + x4&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x2 + x3 + x4&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x2&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x3&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x4&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x2 + x3&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x2 + x4&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x3 + x4&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x2&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x3&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x4&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-2&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; Compulsory inclusions&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
+
+&lt;p&gt;In some instances you may want to include a variable in all models so the compulsory option can be used.  For example in spatio-temporal models we could include a term for zone and time while assessing the mix of explanatory variables:
+&lt;/p&gt;
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;formlas &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; combos(yvar = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;deaths&quot;&lt;/span&gt;,
+                  xvars = c(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x1&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x2&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x3&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x4&quot;&lt;/span&gt;),
+                  compulsory = c(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;zone&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;ns(time, df = 3)&quot;&lt;/span&gt;)
+                  )
+paste(formlas)
+
+&lt;/pre&gt;
+
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x2 + x3 + x4 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x2 + x3 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x2 + x4 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x3 + x4 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x2 + x3 + x4 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x2 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x3 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + x4 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x2 + x3 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x2 + x4 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x3 + x4 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x1 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x2 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x3 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;deaths ~ x4 + zone + ns(time, df = 3)&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-3&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; AIC vs BIC vs LRTests&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
+
+&lt;p&gt;Well now we get into a sort of philosophical debate on how to rank all these models.  That'll have to wait for another day.
+&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;
+&lt;/html&gt;&lt;/p&gt;
+</description>
+				<published>Thu May 09 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/05/data-dredging/</link>
+			</item>
+		
+			<item>
+				<title>Pioz et al 2012 model selection</title>
+				<description>&lt;p&gt;In the &lt;a href=&quot;http://gis-forum.github.io/study.html&quot;&gt;GIS forum SPDEP study group&lt;/a&gt; we've been discussing the Bluetongue paper &lt;a href=&quot;http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did-environmental-factors-influencing-the-velocity-of-blueton&quot;&gt;http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I'd like to know more about the the Lagrange Multiplier tests and Francis
+raised the &lt;a href=&quot;http://ivanhanigan.github.io/2013/04/reflections-bob-haining/#comment-864167749&quot;&gt;seminal Anselin 1988 paper for that&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;But in this post I just wanted to summarise their model selection procedure in a flow diagram&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/pioz_modelling.png&quot; alt=&quot;pioz_modelling.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>Thu Apr 18 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/04/pioz-et-al-2012-model-selection/</link>
+			</item>
+		
 	</channel>
 </rss>
