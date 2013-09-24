@@ -4,13 +4,91 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-09-23T10:57:25+10:00</updated>
+ <updated>2013-09-24T21:26:18+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>workflow-flowcharts-update</title>
+   <link href="http://ivanhanigan.github.com/2013/09/workflow-flowcharts-update/"/>
+   <updated>2013-09-23T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2013/09/workflow-flowcharts-update</id>
+   <content type="html">&lt;h1&gt;Workflow flowcharts - Update&lt;/h1&gt;
+
+&lt;p&gt;A while back I posted about &lt;a href=&quot;/2013/07/worflow-flowcharts/&quot;&gt;my work with the Rgraphviz toolbox&lt;/a&gt; toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
+This update includes notes from a discussion I had with Keith about this.&lt;/p&gt;
+
+&lt;h4&gt;The basic use case is described by this code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(disentangle)
+# Decide on the first step and create the starting node of the flowchart 
+nodes &amp;lt;- newnode(name=&quot;NAME&quot;, inputs=&quot;INPUT&quot;, newgraph=T)
+# FirstStep.
+# Comment: do a bit of work
+NAME &amp;lt;- myWorkFunction(INPUT)
+# Decide on next step
+nodes &amp;lt;- newnode(name=&quot;OUTPUT&quot;, inputs=c(&quot;NAME&quot;,&quot;ANOTHER THING&quot;))
+# Do the second step
+OUTPUT &amp;lt;- mySecondFunction(NAME, ANOTHER_THING)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/workflow-flowchart1.png&quot; alt=&quot;workflow-flowchart1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So as the scripted workflow develops, so does the flow chart. The alternative I described previously is to make a list of all the steps in a Balzerian Filelist Table.&lt;/p&gt;
+
+&lt;h4&gt;Keith's comments:&lt;/h4&gt;
+
+&lt;p&gt;Keith gave me some great comments on that post.  I'll just jot them down here for now but will have to come back and re-write parts of my function and the descriptive blog post to address these at another time.&lt;/p&gt;
+
+&lt;p&gt;First section:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I said that multiple datasets used in an analysis could be broken down into discrete data packages.  Keith asked if I thought they &quot;should be&quot;.&lt;/li&gt;
+&lt;li&gt;questioned whether the data warehouse at my work really is &quot;Big Data&quot;&lt;/li&gt;
+&lt;li&gt;I need to cite the graphviz and Rgraphviz software better&lt;/li&gt;
+&lt;li&gt;the function currently requires users to speciify newgraph = T to start, and fails to do anything if &quot;nodes&quot; object doesn't exist.  This is uneccessary.  should make it create &quot;nodes&quot; if doesn't exist. Then the newgraph argument is only needed to delete an old graph and start again.&lt;/li&gt;
+&lt;li&gt;is it required that any of these actually be new?  if not then &quot;newnode&quot; seems a poor name for the function&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;From section &quot;Code:adding nodes&quot;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the line where output is the name is confusing.  Keith felt that output was not the name of the newnode (but it really is).&lt;/li&gt;
+&lt;li&gt;the name of the nodes object is hardcoded to be &quot;nodes&quot;.  therefore don't need to give it as an argument&lt;/li&gt;
+&lt;li&gt;proposed better syntac: newnode(name= &quot;ANOTHER THING&quot;, output = &quot;OUTPUT&quot;) which I think will also work?&lt;/li&gt;
+&lt;li&gt;wouldn't it be great if links could be labelled? maybe better to focus on links rather than nodes? this seems more logical because links are transitions and where the action is, not at the nodes.&lt;/li&gt;
+&lt;li&gt;it might be helpful to review common actions to see what graph structures each implies.&lt;/li&gt;
+&lt;li&gt;RE lab-book from Chemistry: most people would not be familiar with how lab-books are written.&lt;/li&gt;
+&lt;li&gt;can newnode build circuits/cycles?  can it add links between existing nodes?&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Section after &quot;shows this result&quot;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tablexyz -&gt; FileA -&gt; Input1 should be one step because fileA is not used again. ditto fileB.&lt;/li&gt;
+&lt;li&gt;analysisResults is a different kind of thing. this is confusing.&lt;/li&gt;
+&lt;li&gt;why do I have to type &quot;nodes &amp;lt;-&quot; every time?  if it has to have this name It could be hidden&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Under example two, &quot;Step three&quot;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;huh? does input1 have &quot;id&quot;?&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&quot;the result&quot; graph is  a bit dense and hard to follow.  Perhaps simpler labels?  ie instead of FileA just &quot;A&quot;?&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>introduction-to-ons-theory-and-practice</title>
@@ -36,24 +114,6 @@
 
 
 &lt;p&gt;These benefits come from the enhanced potential for theoretical discussions and sharing ideas.  This is especially valuable around difficult theories, unknown issues or esoteric theories that are known only to a specialist in a field.&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>workflow-flowcharts-update</title>
-   <link href="http://ivanhanigan.github.com/2013/09/workflow-flowcharts-update/"/>
-   <updated>2013-09-22T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2013/09/workflow-flowcharts-update</id>
-   <content type="html">&lt;h1&gt;Workflow flowcharts - Update&lt;/h1&gt;
-
-&lt;p&gt;A while back I posted about my work with the Rgraphviz toolbox toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
-This update includes notes from a discussion I had with Keith about this.&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(disentangle)
-nodes &amp;lt;- newnode(&quot;NAME&quot;, &quot;INPUT&quot;, &quot;OUTPUT&quot;, newgraph =T)
-&lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
  
@@ -869,7 +929,7 @@ Psychiatry Res , 78(1-2):9{19, 1998.&lt;/p&gt;&lt;/li&gt;
 &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=iso-8859-1&quot;/&gt;
 &lt;meta name=&quot;title&quot; content=&quot;adjacency example &quot;/&gt;
 &lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
-&lt;meta name=&quot;generated&quot; content=&quot;2013-04-06 09:34:17 EST&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-09-24T21:01+1000&quot;/&gt;
 &lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
 &lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
 &lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
@@ -877,6 +937,30 @@ Psychiatry Res , 78(1-2):9{19, 1998.&lt;/p&gt;&lt;/li&gt;
 
 
 &lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
 &lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
  function CodeHighlightOn(elem, id)
  {
@@ -901,6 +985,56 @@ Psychiatry Res , 78(1-2):9{19, 1998.&lt;/p&gt;&lt;/li&gt;
 
 
 &lt;script type=&quot;text/javascript&quot; src=&quot;http://orgmode.org/mathjax/MathJax.js&quot;&gt;
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
 &lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
     MathJax.Hub.Config({
         // Only one of the two following lines, depending on user settings
@@ -954,24 +1088,24 @@ Psychiatry Res , 78(1-2):9{19, 1998.&lt;/p&gt;&lt;/li&gt;
 
 
 &lt;div id=&quot;content&quot;&gt;
-
+&lt;h1 class=&quot;title&quot;&gt;adjacency example &lt;/h1&gt;
 
 
 &lt;hr/&gt;
 
-&lt;!-- &lt;div id=&quot;table-of-contents&quot;&gt; --&gt;
-&lt;!-- &lt;h2&gt;Table of Contents&lt;/h2&gt; --&gt;
-&lt;!-- &lt;div id=&quot;text-table-of-contents&quot;&gt; --&gt;
-&lt;!-- &lt;ul&gt; --&gt;
-&lt;!-- &lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Introduction&lt;/a&gt;&lt;/li&gt; --&gt;
-&lt;!-- &lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2 Load some test data&lt;/a&gt;&lt;/li&gt; --&gt;
-&lt;!-- &lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3 spdep calculates neighbours&lt;/a&gt;&lt;/li&gt; --&gt;
-&lt;!-- &lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4 plot these&lt;/a&gt;&lt;/li&gt; --&gt;
-&lt;!-- &lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5 function to return adjacency list as a dataframe&lt;/a&gt;&lt;/li&gt; --&gt;
-&lt;!-- &lt;li&gt;&lt;a href=&quot;#sec-6&quot;&gt;6 test-adjacency df&lt;/a&gt;&lt;/li&gt; --&gt;
-&lt;!-- &lt;/ul&gt; --&gt;
-&lt;!-- &lt;/div&gt; --&gt;
-&lt;!-- &lt;/div&gt; --&gt;
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2 Load some test data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3 spdep calculates neighbours&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4 plot these&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5 function to return adjacency list as a dataframe&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-6&quot;&gt;6 test-adjacency df&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
 &lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; Introduction&lt;/h2&gt;
@@ -996,9 +1130,10 @@ I think the simplest option is to use the spatial lag model, which can be fitted
 
 &lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;we have access to a classic dataset for studying spatial dependence&lt;/span&gt;
 &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;in the spdep package&lt;/span&gt;
-&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(spdep)
-&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(rgdal)
-&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(maps)
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(spdep))    install.packages(spdep); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(spdep)     
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(rgdal))    install.packages(rgdal); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(rgdal) 
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(maptools)) install.packages(maptools); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(maptools) 
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(maps))     install.packages(maps); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(maps) 
 fn &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; system.file(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;etc/shapes/eire.shp&quot;&lt;/span&gt;, package=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;spdep&quot;&lt;/span&gt;)[1]
 prj &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; CRS(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;+proj=utm +zone=30 +units=km&quot;&lt;/span&gt;)
 eire &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; readShapeSpatial(fn, ID=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;names&quot;&lt;/span&gt;, proj4string=prj)
@@ -1012,7 +1147,6 @@ head(eire@data)
 
 
 &lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;caption&gt;&lt;/caption&gt;
 &lt;colgroup&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;
 &lt;/colgroup&gt;
 &lt;thead&gt;
@@ -1083,7 +1217,7 @@ dev.off()
 
 
 &lt;p&gt;
-&lt;img src=&quot;images/Fig1.png&quot;  alt=&quot;images/Fig1.png&quot; /&gt;
+&lt;img src=&quot;/images/Fig1.png&quot;  alt=&quot;images/Fig1.png&quot; /&gt;
 &lt;/p&gt;
 &lt;/div&gt;
 
@@ -1139,7 +1273,6 @@ adj
 
 
 &lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;caption&gt;&lt;/caption&gt;
 &lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;
 &lt;/colgroup&gt;
 &lt;tbody&gt;
@@ -1164,7 +1297,99 @@ adj
 &lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Dublin&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Dublin&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Dublin&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Wicklow&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;...&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Dataframe Truncated&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Galway&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Clare&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Galway&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Mayo&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Galway&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Galway&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Galway&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kerry&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Cork&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kerry&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Limerick&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Carlow&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Dublin&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Laoghis&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Wicklow&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kilkenny&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Carlow&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kilkenny&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Laoghis&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kilkenny&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kilkenny&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Waterford&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Kilkenny&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Wexford&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Laoghis&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Carlow&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Laoghis&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Laoghis&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kilkenny&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Laoghis&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Laoghis&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Leitrim&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Cavan&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Leitrim&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Donegal&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Leitrim&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Longford&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Leitrim&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Leitrim&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Sligo&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Limerick&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Clare&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Limerick&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Cork&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Limerick&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kerry&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Limerick&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Longford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Cavan&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Longford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Leitrim&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Longford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Longford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Westmeath&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Louth&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Louth&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Monaghan&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Mayo&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Galway&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Mayo&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Mayo&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Sligo&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Cavan&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Dublin&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Louth&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Monaghan&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Westmeath&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Monaghan&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Cavan&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Monaghan&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Louth&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Monaghan&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Galway&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Laoghis&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Westmeath&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Galway&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Leitrim&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Longford&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Mayo&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Sligo&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Westmeath&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Sligo&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Leitrim&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Sligo&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Mayo&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Sligo&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Clare&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Cork&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Galway&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kilkenny&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Laoghis&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Limerick&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Waterford&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Waterford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Cork&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Waterford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kilkenny&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Waterford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Tipperary&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Waterford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Wexford&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Westmeath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Cavan&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Westmeath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Longford&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Westmeath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Meath&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Westmeath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Offaly&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Westmeath&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Roscommon&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Wexford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Carlow&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Wexford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kilkenny&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Wexford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Waterford&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Wexford&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Wicklow&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Wicklow&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Carlow&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Wicklow&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Dublin&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Wicklow&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Kildare&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Wicklow&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;Wexford&lt;/td&gt;&lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
@@ -1173,7 +1398,8 @@ adj
 &lt;/div&gt;
 
 
-&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/body&gt;
+&lt;/html&gt;&lt;/p&gt;
 </content>
  </entry>
  
