@@ -9,9 +9,114 @@
 				<title>reflections-bob-haining-update</title>
 				<description>&lt;!-- &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; --&gt;
 
+<<<<<<< HEAD
 
 &lt;!-- &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; --&gt;
 
+=======
+&lt;p&gt;A while back I posted about &lt;a href=&quot;/2013/07/worflow-flowcharts/&quot;&gt;my work with the Rgraphviz toolbox&lt;/a&gt; toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
+This update includes notes from a discussion I had with Keith about this.&lt;/p&gt;
+
+&lt;h4&gt;The basic use case is described by this code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(disentangle)
+# Decide on the first step and create the starting node of the flowchart 
+nodes &amp;lt;- newnode(name=&quot;NAME&quot;, inputs=&quot;INPUT&quot;, newgraph=T)
+# FirstStep.
+# Comment: do a bit of work
+NAME &amp;lt;- myWorkFunction(INPUT)
+# Decide on next step
+nodes &amp;lt;- newnode(name=&quot;OUTPUT&quot;, inputs=c(&quot;NAME&quot;,&quot;ANOTHER THING&quot;))
+# Do the second step
+OUTPUT &amp;lt;- mySecondFunction(NAME, ANOTHER_THING)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/workflow-flowchart1.png&quot; alt=&quot;workflow-flowchart1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So as the scripted workflow develops, so does the flow chart. The alternative I described previously is to make a list of all the steps in a Balzerian Filelist Table.&lt;/p&gt;
+
+&lt;h4&gt;Keith's comments:&lt;/h4&gt;
+
+&lt;p&gt;Keith gave me some great comments on that post.  I'll just jot them down here for now but will have to come back and re-write parts of my function and the descriptive blog post to address these at another time.&lt;/p&gt;
+
+&lt;p&gt;First section:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I said that multiple datasets used in an analysis could be broken down into discrete data packages.  Keith asked if I thought they &quot;should be&quot;.&lt;/li&gt;
+&lt;li&gt;questioned whether the data warehouse at my work really is &quot;Big Data&quot;&lt;/li&gt;
+&lt;li&gt;I need to cite the graphviz and Rgraphviz software better&lt;/li&gt;
+&lt;li&gt;the function currently requires users to speciify newgraph = T to start, and fails to do anything if &quot;nodes&quot; object doesn't exist.  This is uneccessary.  should make it create &quot;nodes&quot; if doesn't exist. Then the newgraph argument is only needed to delete an old graph and start again.&lt;/li&gt;
+&lt;li&gt;is it required that any of these actually be new?  if not then &quot;newnode&quot; seems a poor name for the function&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;From section &quot;Code:adding nodes&quot;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the line where output is the name is confusing.  Keith felt that output was not the name of the newnode (but it really is).&lt;/li&gt;
+&lt;li&gt;the name of the nodes object is hardcoded to be &quot;nodes&quot;.  therefore don't need to give it as an argument&lt;/li&gt;
+&lt;li&gt;proposed better syntac: newnode(name= &quot;ANOTHER THING&quot;, output = &quot;OUTPUT&quot;) which I think will also work?&lt;/li&gt;
+&lt;li&gt;wouldn't it be great if links could be labelled? maybe better to focus on links rather than nodes? this seems more logical because links are transitions and where the action is, not at the nodes.&lt;/li&gt;
+&lt;li&gt;it might be helpful to review common actions to see what graph structures each implies.&lt;/li&gt;
+&lt;li&gt;RE lab-book from Chemistry: most people would not be familiar with how lab-books are written.&lt;/li&gt;
+&lt;li&gt;can newnode build circuits/cycles?  can it add links between existing nodes?&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Section after &quot;shows this result&quot;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tablexyz -&gt; FileA -&gt; Input1 should be one step because fileA is not used again. ditto fileB.&lt;/li&gt;
+&lt;li&gt;analysisResults is a different kind of thing. this is confusing.&lt;/li&gt;
+&lt;li&gt;why do I have to type &quot;nodes &amp;lt;-&quot; every time?  if it has to have this name It could be hidden&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Under example two, &quot;Step three&quot;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;huh? does input1 have &quot;id&quot;?&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&quot;the result&quot; graph is  a bit dense and hard to follow.  Perhaps simpler labels?  ie instead of FileA just &quot;A&quot;?&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Mon Sep 23 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/09/workflow-flowcharts-update/</link>
+			</item>
+		
+			<item>
+				<title>introduction-to-ons-theory-and-practice</title>
+				<description>&lt;p&gt;The reasons why ONS is so appealing to me can be broken into two parts.  The first is about the problems which it solves, the second is about the benefits it might bring.&lt;/p&gt;
+
+&lt;h4&gt;The Problems&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Identifying errors (either from miscalculations or from methodological mistakes)&lt;/li&gt;
+&lt;li&gt;Uncovering fraud&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;The Benefits&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sharing interests and skills&lt;/li&gt;
+&lt;li&gt;Quickly finding out about new discoveries and failures&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;These benefits come from the enhanced potential for theoretical discussions and sharing ideas.  This is especially valuable around difficult theories, unknown issues or esoteric theories that are known only to a specialist in a field.&lt;/p&gt;
+</description>
+				<published>Mon Sep 23 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/09/introduction-to-ons-theory-and-practice/</link>
+			</item>
+		
+			<item>
+				<title>using-orgmode-and-jekyll-for-open-notebook</title>
+				<description>&lt;h1&gt;Using Orgmode and Jekyll for Open Notebook&lt;/h1&gt;
+>>>>>>> 18af2f03ea5833e6b7cae2095ff35e7bcd7eff4a
 
 &lt;!--                &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt; --&gt;
 
@@ -32,6 +137,26 @@
 &lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
 &lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
 
+<<<<<<< HEAD
+=======
+&lt;p&gt;Cheers!&lt;/p&gt;
+</description>
+				<published>Sun Sep 22 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/09/using-orgmode-and-jekyll-for-open-notebook/</link>
+			</item>
+		
+			<item>
+				<title>transformational-adaptation</title>
+				<description>&lt;p&gt;Energymark is about transformational adaptations as opposed to incremental adaptation..&lt;/p&gt;
+</description>
+				<published>Sun Sep 22 00:00:00 +1000 2013</published>
+				<link>http://schamberlain.github.com/2013/09/transformational-adaptation/</link>
+			</item>
+		
+			<item>
+				<title>toward-a-unified-ecology-dataset</title>
+				<description>&lt;h1&gt;Ecology datasets&lt;/h1&gt;
+>>>>>>> 18af2f03ea5833e6b7cae2095ff35e7bcd7eff4a
 
 
 &lt;script type=&quot;text/javascript&quot;&gt;
@@ -465,6 +590,7 @@ OUTPUT &amp;lt;- mySecondFunction(NAME, ANOTHER_THING)
 				<link>http://schamberlain.github.com/2013/09/introduction-to-ons-theory-and-practice/</link>
 			</item>
 		
+<<<<<<< HEAD
 			<item>
 				<title>using-orgmode-and-jekyll-for-open-notebook</title>
 				<description>&lt;h1&gt;Using Orgmode and Jekyll for Open Notebook&lt;/h1&gt;
@@ -793,5 +919,7 @@ for(i in 1:nrow(filesList))
 				<link>http://schamberlain.github.com/2013/07/worflow-flowcharts/</link>
 			</item>
 		
+=======
+>>>>>>> 18af2f03ea5833e6b7cae2095ff35e7bcd7eff4a
 	</channel>
 </rss>
