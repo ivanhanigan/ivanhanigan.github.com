@@ -57,14 +57,74 @@
   <div class="entry-content full-content">
     <h1>Workflow flowcharts - Update</h1>
 
-<p>A while back I posted about my work with the Rgraphviz toolbox toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
+<p>A while back I posted about <a href="/2013/07/worflow-flowcharts/">my work with the Rgraphviz toolbox</a> toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
 This update includes notes from a discussion I had with Keith about this.</p>
 
-<h4>Code:</h4>
+<h4>The basic use case is described by this code:</h4>
 
 <pre><code>require(disentangle)
-nodes &lt;- newnode("NAME", "INPUT", "OUTPUT", newgraph =T)
+# Decide on the first step and create the starting node of the flowchart 
+nodes &lt;- newnode(name="NAME", inputs="INPUT", newgraph=T)
+# FirstStep.
+# Comment: do a bit of work
+NAME &lt;- myWorkFunction(INPUT)
+# Decide on next step
+nodes &lt;- newnode(name="OUTPUT", inputs=c("NAME","ANOTHER THING"))
+# Do the second step
+OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
 </code></pre>
+
+<p></p>
+
+
+<p><img src="/images/workflow-flowchart1.png" alt="workflow-flowchart1.png" /></p>
+
+<p>So as the scripted workflow develops, so does the flow chart. The alternative I described previously is to make a list of all the steps in a Balzerian Filelist Table.</p>
+
+<h4>Keith's comments:</h4>
+
+<p>Keith gave me some great comments on that post.  I'll just jot them down here for now but will have to come back and re-write parts of my function and the descriptive blog post to address these at another time.</p>
+
+<p>First section:</p>
+
+<ul>
+<li>I said that multiple datasets used in an analysis could be broken down into discrete data packages.  Keith asked if I thought they "should be".</li>
+<li>questioned whether the data warehouse at my work really is "Big Data"</li>
+<li>I need to cite the graphviz and Rgraphviz software better</li>
+<li>the function currently requires users to speciify newgraph = T to start, and fails to do anything if "nodes" object doesn't exist.  This is uneccessary.  should make it create "nodes" if doesn't exist. Then the newgraph argument is only needed to delete an old graph and start again.</li>
+<li>is it required that any of these actually be new?  if not then "newnode" seems a poor name for the function</li>
+</ul>
+
+
+<p>From section "Code:adding nodes":</p>
+
+<ul>
+<li>the line where output is the name is confusing.  Keith felt that output was not the name of the newnode (but it really is).</li>
+<li>the name of the nodes object is hardcoded to be "nodes".  therefore don't need to give it as an argument</li>
+<li>proposed better syntac: newnode(name= "ANOTHER THING", output = "OUTPUT") which I think will also work?</li>
+<li>wouldn't it be great if links could be labelled? maybe better to focus on links rather than nodes? this seems more logical because links are transitions and where the action is, not at the nodes.</li>
+<li>it might be helpful to review common actions to see what graph structures each implies.</li>
+<li>RE lab-book from Chemistry: most people would not be familiar with how lab-books are written.</li>
+<li>can newnode build circuits/cycles?  can it add links between existing nodes?</li>
+</ul>
+
+
+<p>Section after "shows this result"</p>
+
+<ul>
+<li>tablexyz -> FileA -> Input1 should be one step because fileA is not used again. ditto fileB.</li>
+<li>analysisResults is a different kind of thing. this is confusing.</li>
+<li>why do I have to type "nodes &lt;-" every time?  if it has to have this name It could be hidden</li>
+</ul>
+
+
+<p>Under example two, "Step three"</p>
+
+<ul>
+<li><p>huh? does input1 have "id"?</p></li>
+<li><p>"the result" graph is  a bit dense and hard to follow.  Perhaps simpler labels?  ie instead of FileA just "A"?</p></li>
+</ul>
+
 
     <div class="clear"></div>
   </div>
@@ -84,7 +144,7 @@ nodes &lt;- newnode("NAME", "INPUT", "OUTPUT", newgraph =T)
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Sun Sep 22 00:00:00 +1000 2013">22 Sep 2013</abbr>
+      <abbr class="published" title="Mon Sep 23 00:00:00 +1000 2013">23 Sep 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -147,103 +207,105 @@ nodes &lt;- newnode("NAME", "INPUT", "OUTPUT", newgraph =T)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
+                <li><a href="/categories/DataDocumentation">DataDocumentation (1)</a></li>
                 
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
+                <li><a href="/categories/workflow">workflow (3)</a></li>
                 
                 <li><a href="/categories/outlines">outlines (1)</a></li>
                 
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                <li><a href="/categories/ons">ons (1)</a></li>
                 
                 <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
-                <li><a href="/categories/software">software (1)</a></li>
-                
-                <li><a href="/categories/GIS">GIS (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (2)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (3)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
+                <li><a href="/categories/overview">overview (4)</a></li>
                 
                 <li><a href="/categories/data science">data science (1)</a></li>
                 
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
                 <li><a href="/categories/spatial">spatial (2)</a></li>
                 
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
                 
-                <li><a href="/categories/overview">overview (4)</a></li>
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
                 
-                <li><a href="/categories/blogger">blogger (1)</a></li>
+                <li><a href="/categories/tools">tools (1)</a></li>
                 
-                <li><a href="/categories/DataDocumentation">DataDocumentation (1)</a></li>
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (4)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
                 
                 <li><a href="/categories/python">python (1)</a></li>
                 
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
                 
                 <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
                 
                 <li><a href="/categories/ecology">ecology (1)</a></li>
                 
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/drought">drought (1)</a></li>
-                
                 <li><a href="/categories/systems">systems (1)</a></li>
                 
                 <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                
+                <li><a href="/categories/GIS">GIS (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                
+                <li><a href="/categories/Modelling">Modelling (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
                 
               </ul>
             </div>
@@ -254,11 +316,23 @@ nodes &lt;- newnode("NAME", "INPUT", "OUTPUT", newgraph =T)
               <ul>
                 
                 <li>
+                  <a href="/2013/09/reflections-bob-haining-update/" title="reflections-bob-haining-update" rel="bookmark">reflections-bob-haining-update</a>
+                </li>
+                
+                <li>
                   <a href="/2013/09/workflow-flowcharts-update/" title="workflow-flowcharts-update" rel="bookmark">workflow-flowcharts-update</a>
                 </li>
                 
                 <li>
+                  <a href="/2013/09/introduction-to-ons-theory-and-practice/" title="introduction-to-ons-theory-and-practice" rel="bookmark">introduction-to-ons-theory-and-practice</a>
+                </li>
+                
+                <li>
                   <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/09/transformational-adaptation/" title="transformational-adaptation" rel="bookmark">transformational-adaptation</a>
                 </li>
                 
                 <li>
