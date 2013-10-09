@@ -4,13 +4,102 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-10-05T21:04:31+10:00</updated>
+ <updated>2013-10-10T10:33:19+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>wickhams-tidy-tools-only-get-you-90-pct-the-way</title>
+   <link href="http://schamberlain.github.com/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/"/>
+   <updated>2013-10-10T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way</id>
+   <content type="html">&lt;h4&gt;Hadley Wickham's tidy tools&lt;/h4&gt;
+
+&lt;p&gt;In this video at 8 mins 50 seconds he says &quot;these four tools do 90% of the job&quot;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;subset,&lt;/li&gt;
+&lt;li&gt;transform,&lt;/li&gt;
+&lt;li&gt;summarise, and&lt;/li&gt;
+&lt;li&gt;arrange&lt;/li&gt;
+&lt;li&gt;TODO I noticed &lt;a href=&quot;http://www.rstudio.com/training/curriculum/data-manipulation.html&quot;&gt;at the website for an Rstudio  course&lt;/a&gt; transform has been replaced by mutate as one of the &quot;four basic verbs of data manipulation&quot;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;iframe src=&quot;//player.vimeo.com/video/33727555&quot; width=&quot;500&quot; height=&quot;281&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt; &lt;p&gt;&lt;a href=&quot;http://vimeo.com/33727555&quot;&gt;Tidy Data&lt;/a&gt; from &lt;a href=&quot;http://vimeo.com/user2150538&quot;&gt;Drew Conway&lt;/a&gt; on &lt;a href=&quot;https://vimeo.com&quot;&gt;Vimeo&lt;/a&gt;.&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;So I thought what's the other 10?  Here's a few contenders for my work:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;merge&lt;/li&gt;
+&lt;li&gt;reshape::cast and reshape::melt&lt;/li&gt;
+&lt;li&gt;unlist&lt;/li&gt;
+&lt;li&gt;t() transpose&lt;/li&gt;
+&lt;li&gt;sprintf or paste&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;R-subset&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# Filter rows by criteria
+subset(airquality, Temp &amp;gt; 90, select = c(Ozone, Temp))
+
+## NB This is a convenience function intended for use interactively.  For
+## programming it is better to use the standard subsetting functions like
+## ‘[’, and in particular the non-standard evaluation of argument
+## ‘subset’ can have unanticipated consequences.
+
+with(airquality,
+     airquality[Temp &amp;gt; 90, c(&quot;Ozone&quot;, &quot;Temp&quot;)]
+     )
+
+# OR
+
+airquality[airquality$Temp &amp;gt; 90,  c(&quot;Ozone&quot;, &quot;Temp&quot;)]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R-transform&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# New columns that are functions of other columns       
+df &amp;lt;- transform(airquality,
+                new = -Ozone,
+                Temp2 = (Temp-32)/1.8
+                )
+head(df)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R-summarise&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# New data.frame where columns are functions of existing columns
+require(plyr)    
+df &amp;lt;- ddply(.data = airquality,
+            .variables = &quot;Month&quot;,
+            .fun = summarise,
+            tmax = max(Temp),
+            tav = mean(Temp),
+            ndays = length(unique(Day))
+            )
+head(df)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R-arrange&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# Re-order the rows of a data.frame
+df &amp;lt;- arrange(airquality, Temp, Ozone)
+head(df)
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>reviewing-lessons</title>
@@ -45,7 +134,7 @@ What is this lesson all about?  This might start with a synopsis overview and wi
 &lt;li&gt;&lt;p&gt;Thesis:
 This is where I might pick out the key topics that are being presented, and write down my prior knowledge and preconceptions about the topic.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Antithesis:
-What's the main message(s) of the presenter?  What are their priorities?  What secondary (surrogate) priorities emerge around the main points?  If I bring questions to the lesson are they answered by the presenter?  If not why?&lt;/p&gt;&lt;/li&gt;
+What's the main message(s) of the presenter?  What are their priorities?  What secondary (surrogate) topics emerge around the main points?  If I bring questions to the lesson are they answered by the presenter?  If not why?&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Synthesis:
 My new understanding of the topic.&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - Posts Tagged &ldquo;animation&rdquo;</title>
+    <title>Ivan Hanigan - wickhams-tidy-tools-only-get-you-90-pct-the-way</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -42,230 +42,144 @@
 
 <p>  <img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
 
-          <h2 class="post_title">Posts Tagged &ldquo;animation&rdquo;</h2>
+          <div class="full">
+  <h1 class="entry-title">
+    <a href="/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/" title="wickhams-tidy-tools-only-get-you-90-pct-the-way" rel="bookmark">wickhams-tidy-tools-only-get-you-90-pct-the-way</a>
+  </h1>
+  <!-- AddThis Button BEGIN -->
+  <div class="addthis_toolbox addthis_default_style ">
+    <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <!-- AddThis Button END -->
+  <div class="entry-content full-content">
+    <h4>Hadley Wickham's tidy tools</h4>
+
+<p>In this video at 8 mins 50 seconds he says "these four tools do 90% of the job"</p>
+
 <ul>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <li class="archive_list">
-    <time style="color:#666;font-size:11px;" datetime='2013-07-30'>07/30/13</time> <a class="archive_list_article_link" href='/2013/07/animated-maps/'>animated-maps</a>
-    <!-- <p class="summary"> -->
-    <!-- <ul class="categories_list"> -->
-    <!--    -->
-    <!--   <li class="inline archive_list"><a class="categories_list_link" href="/categories/spatial">spatial</a></li> -->
-    <!--    -->
-    <!--   <li class="inline archive_list"><a class="categories_list_link" href="/categories/animation">animation</a></li> -->
-    <!--    -->
-    <!-- </ul> -->
-  </li>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+<li>subset,</li>
+<li>transform,</li>
+<li>summarise, and</li>
+<li>arrange</li>
+<li>TODO I noticed <a href="http://www.rstudio.com/training/curriculum/data-manipulation.html">at the website for an Rstudio  course</a> transform has been replaced by mutate as one of the "four basic verbs of data manipulation".</li>
 </ul>
+
+
+<iframe src="//player.vimeo.com/video/33727555" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+
+<p> <p><a href="http://vimeo.com/33727555">Tidy Data</a> from <a href="http://vimeo.com/user2150538">Drew Conway</a> on <a href="https://vimeo.com">Vimeo</a>.</p></p>
+
+<p>So I thought what's the other 10?  Here's a few contenders for my work:</p>
+
+<ul>
+<li>merge</li>
+<li>reshape::cast and reshape::melt</li>
+<li>unlist</li>
+<li>t() transpose</li>
+<li>sprintf or paste</li>
+</ul>
+
+
+<p></p>
+
+
+<h4>R-subset</h4>
+
+<pre><code># Filter rows by criteria
+subset(airquality, Temp &gt; 90, select = c(Ozone, Temp))
+
+## NB This is a convenience function intended for use interactively.  For
+## programming it is better to use the standard subsetting functions like
+## ‘[’, and in particular the non-standard evaluation of argument
+## ‘subset’ can have unanticipated consequences.
+
+with(airquality,
+     airquality[Temp &gt; 90, c("Ozone", "Temp")]
+     )
+
+# OR
+
+airquality[airquality$Temp &gt; 90,  c("Ozone", "Temp")]
+</code></pre>
+
+<h4>R-transform</h4>
+
+<pre><code># New columns that are functions of other columns       
+df &lt;- transform(airquality,
+                new = -Ozone,
+                Temp2 = (Temp-32)/1.8
+                )
+head(df)
+</code></pre>
+
+<h4>R-summarise</h4>
+
+<pre><code># New data.frame where columns are functions of existing columns
+require(plyr)    
+df &lt;- ddply(.data = airquality,
+            .variables = "Month",
+            .fun = summarise,
+            tmax = max(Temp),
+            tav = mean(Temp),
+            ndays = length(unique(Day))
+            )
+head(df)
+</code></pre>
+
+<h4>R-arrange</h4>
+
+<pre><code># Re-order the rows of a data.frame
+df &lt;- arrange(airquality, Temp, Ozone)
+head(df)
+</code></pre>
+
+    <div class="clear"></div>
+  </div>
+  <!-- AddThis Button BEGIN -->
+  <div class="addthis_toolbox addthis_default_style ">
+    <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <!-- AddThis Button END -->
+  <p class="alt-font tight">
+    Posted in&nbsp;
+    
+    <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+    
+  </p>
+  <p class="by-line">
+    <span class="date full-date">
+      <abbr class="published" title="Thu Oct 10 00:00:00 +1100 2013">10 Oct 2013</abbr>
+    </span>
+  </p>
+  <div class="clear"></div>
+</div>
+<div class="rule">
+  <hr/>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
+
+    var disqus_url = "http://ivanhanigan.github.com/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/";
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
 
         </div>
         <div id="sidebar">
