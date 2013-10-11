@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - Worflow flowcharts</title>
+    <title>Ivan Hanigan - two-main-types-of-data-documentation-workflow</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/07/worflow-flowcharts/" title="Worflow flowcharts" rel="bookmark">Worflow flowcharts</a>
+    <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,162 +55,156 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h2>What is the issue</h2>
+    <p>This post introduces a new series of blog posts in which I want to experiment with a few tools for data documentation, which I'll present as Case Studies.  This series of posts will be pitched to an audience mixture of data librarians and data analysts.</p>
 
-<p>Most people seem to collect multiple datasets together in a single spot that can be split into 2 or more separate data packages.  I think this is a natural set up from an analysts perspective, where the results of multiple steps accumulate as 'stepping stones' toward the file they end up analysing.</p>
+<p>Data documentation occurs in a spectrum from simple notes through to elaborate systems.<br/>
+A key aspect of current approaches is the existence of a centralised data management system.  All the examples I consider include at least a metadata catalogue and some also include a data repository.  An additional feature sometimes exists for managing users permissions.</p>
 
-<p>I was first taught GIS by Isabelle Balzer at Ecowise Environmental Services in Canberra.  She showed me the method of keeping a table (sticky-taped to the desk!) of all the files and transformations that were going on. This was a method that didn't allow any multitasking!  I call this the 'Balzerian Method' (I am sure others used it before Isabelle, but I think Balzerian is a great word).</p>
-
-<p>I think the data wharehouse at my work is an example, and probably we'll find the key challenge for big data will be for analysts to disentangle their own filing systems.</p>
-
-<p>In my experience the way people store research data is often one (or a couple, or all) of these three types:</p>
+<p>The relationship between users and centralised services is a really complicated space, but essentially consists of the ability for users to create the documentation and push it (perhaps along with the data) to the metadata catalogue  and/or repository.  So given these assumptions I propose the following types of arrangement:</p>
 
 <ul>
-<li>a database with heaps of tables and views</li>
-<li>a directory (and sub-directories) with heaps of files</li>
-<li>a spreadsheet workbook with heaps of sheets (and links to other workbooks)</li>
+<li>user sends metadata to metadata catalogue</li>
+<li>user sends metadata and data to metadata catalogue and data repository</li>
+<li>user sends metadata and data and permissions information to metadata catalogue and data repository and permissions system.</li>
 </ul>
 
 
-<p>I am developing a tool based on the open source graphviz softawre. The tool I am developing addresses the challenge of graphing the links between these sequential steps.</p>
+<p>I've been working on a conceptual framework about how the actual process can be done in two distinct ways:</p>
 
-<h4>Code:introducing newnode</h4>
+<ul>
+<li>Graphical User Interface solutions</li>
+<li>Programmatic solutions</li>
+</ul>
 
-<pre><code># NB this only works easily on linux
+
+<p>The Case Studies I've identified that I want to explore are listed below, names follow the format 'client tool'-and-'data repository or metadata catalogue'-and-optionally-'permissions system':</p>
+
+<h4>Programmatic solutions</h4>
+
+<ul>
+<li>reml-and-rfigshare</li>
+<li>reml-and-knb (when/if this becomes available)</li>
+<li>make_ddixml-and-ddiindex-and-orapus</li>
+<li>r2ddi-ddiindex</li>
+<li>dc-uploader-and-ANU-DataCommons</li>
+<li>dc-uploader-and-RDA</li>
+</ul>
+
+
+<h4>Graphical User Interface solutions</h4>
+
+<ul>
+<li>morpho-and-knb-metacat</li>
+<li>nesstar-publisher-and-nesstar-and-whatever-Steve-calls-the-ADA-permissions-system</li>
+<li>xmet-and-Australian-Spatial-Data-Directory</li>
+<li>sdmx-editor-and-sdmx-registry</li>
+</ul>
+
+
+<h4>A fictitious sample dataset</h4>
+
+<p>For our discussion, I'll use a fictional example dataset that I'm using to work through some statistical theory related to Classification and Regression Trees (CART).
+In the motivating example use case we are interested in predicting the civil status (married, single, divorced/widowed) of individuals from their sex (male, female) and sector of activity (primary, secondary, tertiary). The data set is composed of 273 cases.</p>
+
+<p>The data (and related statistical theory) come from:</p>
+
+<ul>
+<li><p>Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf">This Link</a></p></li>
+<li><p>Ritschard, G., Pisetta, V., &amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf">This Link</a></p></li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code># copy and paste the data from the PDF (Table 1 in both papers)
+civst_gend_sector  &lt;- read.csv(textConnection(
+    "civil_status gender activity_sector number_of_cases
+         married   male         primary              50
+         married   male       secondary              40
+         married   male        tertiary               6
+         married female         primary               0
+         married female       secondary              14
+         married female        tertiary              10
+          single   male         primary               5
+          single   male       secondary               5
+          single   male        tertiary              12
+          single female         primary              50
+          single female       secondary              30
+          single female        tertiary              18
+divorced/widowed   male         primary               5
+divorced/widowed   male       secondary               8
+divorced/widowed   male        tertiary              10
+divorced/widowed female         primary               6
+divorced/widowed female       secondary               2
+divorced/widowed female        tertiary               2
+"),sep = "")
+
+# save this to my personal R utilities package "disentangle" 
+# for use later when I am exploring functions
+dir.create("inst/extdata", recursive=T)
+write.csv(civst_gend_sector, "inst/extdata/civst_gend_sector.csv", row.names = F)
+</code></pre>
+
+<h4>Motivating reason for using these data</h4>
+
+<p>Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.</p>
+
+<p>I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.</p>
+
+<p>For example if we look at the reduction in deviance between the Null model and the fitted tree we can say that the tree explains about XYZ% of the variation. We can also test if this is a statistically significant reduction based on a chi-squared test.</p>
+
+<p>Consider this example from page 310 of Hastie, T., Tibshirani, R., &amp; Friedman, J. (2001). The elements of statistical learning. 2nd Edition:</p>
+
+<ul>
+<li>in a two-class problem with 400 observations in each class (denote this by (400, 400))</li>
+<li>suppose one split created nodes (300, 100) and (100, 300),</li>
+<li>the other created nodes (200, 400) and (200, 0).</li>
+<li>Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.</li>
+</ul>
+
+
+<p>During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write... I thought would publish it properly.  Hence I am using it for this series of posts.  Make sense now?</p>
+
+<h4>The Tree Model</h4>
+
+<p>So just before we leave Ritschard and the CART method, let's just fit the model.  Let's also install my R utilities package "disentangle", to test that we can access the data from it.</p>
+
+<p>In this analysis the civil status is the outcome (or response or decision or dependent) variable, while sex and activity sector are the predictors (or condition or independent variables).</p>
+
+<h4>Code:</h4>
+
+<pre><code># func
+require(rpart)
+require(partykit) 
 require(devtools)
 install_github("disentangle", "ivanhanigan")
-require(disentangle)
-# the core of the tool is Rgraphviz, I just built a wrapper function
-# to add newnodes to a graph of nodes
-# always start with (newgraph = T) because the newnode function ADDS
-# nodes to a graph, unless told otherwise, and fails if no 'nodes'
-# object exists
-nodes  &lt;- newnode(name="NAME",inputs="INPUT",outputs="OUTPUT", newgraph = T)
+
+# load
+fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"),
+                     package = "disentangle"
+                     )
+civst_gend_sector &lt;- read.csv(fpath)
+
+# clean
+str(civst_gend_sector)
+
+# do
+fit &lt;- rpart(civil_status ~ gender + activity_sector,
+             data = civst_gend_sector, weights = number_of_cases,
+             control=rpart.control(minsplit=1))
+# NB need minsplit to be adjusted for weights.
+summary(fit)
+
+# report
+dir.create("images")
+png("images/fit1.png", 1000, 480)
+plot(as.party(fit))
+dev.off()
 </code></pre>
 
-<p><img src="/images/newnode1.png" alt="images/newnode1.png" /></p>
+<h4>The Result</h4>
 
-<h4>Code:adding nodes</h4>
-
-<pre><code># now we can add nodes, and we can pass multiple inputs or outputs
-nodes  &lt;- newnode(name="OUTPUT",inputs=c("NAME","ANOTHER THING"))
-# outputs are optional
-</code></pre>
-
-<p><img src="/images/newnode2.png" alt="images/newnode2.png" /></p>
-
-<p>It can be used in two or three ways.</p>
-
-<h2>Example one, the composite view:</h2>
-
-<p>So if there is a Balzerian filelist table available, convert it to a spreadsheet.  This is als similar to a labbook from Chemistry but follows a very rigid structure: NAME,        INPUTS,           OUTPUTS,         DESCRIPTION.  The first method I'll show will take one of these tables and map out the steps in the workflow.</p>
-
-<h4>Code: Composite Worflow Files List</h4>
-
-<pre><code>#    so if there is a Balzerian filelist table available,
-# either make a spreadsheet with names, inputs and outputs 
-# fileslist &lt;- read.csv("exampleFilesList.csv", stringsAsFactors = F)
-# or 
-filesList &lt;- read.csv(textConnection(
-'NAME,        INPUTS,           OUTPUTS,         DESCRIPTION
-FileA,        TableXYZ,         Input1,          Transformed variable
-FileB,        TableABC,         Input2,          Collapsed dimensions
-analysisFile, "Input1,Input2",  analysisResults, Merged inputs and analysed
-'), stringsAsFactors = F, strip.white = T)
-filesList
-
-for(i in 1:nrow(filesList))
-{
-  nodes &lt;- newnode(name = filesList[i,"NAME"],
-                   inputs = strsplit(filesList$INPUTS, ",")[[i]],
-                   outputs = strsplit(filesList$OUTPUTS, ",")[[i]],
-                   newgraph = (i == 1)
-  )
-}
-</code></pre>
-
-<h2>shows this result</h2>
-
-<p><img src="/images/fileRelationships.png" alt="fileRelationships.png" /></p>
-
-<h2>Example two, tracking the steps while analysing data:</h2>
-
-<p>Structure a script into sections and document each section before evaluating the code to execute the step.  This works well with orgmode/ESS, Sweave or knitr style workflows.
-For example:</p>
-
-<h4>Code: Ad Hoc Files Lists Flowcharts</h4>
-
-<pre><code>#### step one ####
-nodes &lt;- newnode(name="FileA", inputs="TableXYZ", outputs="Input1",
-                 newgraph =T) # this is required to tell newnode to
-                              # start a new graph, rather than add to
-                              # the nodes
-FileA  &lt;- read.table("TableXYZ.txt")
-Input1 &lt;- log(FileA$columnZ)
-
-#### step two ####
-nodes &lt;- newnode(name="FileB", inputs="TableABC", outputs="Input2")
-FileB  &lt;- read.table("TableABC.txt")
-Input2 &lt;- ddply(FileB, "id", summarise,
-                duration = max(year) - min(year),
-                nteams = length(unique(team)))
-
-#### step three ####
-nodes &lt;- newnode(name="analysisFile", inputs=c("Input1","Input2"),
-                 outputs="analysisResults")
-analysisFile  &lt;- merge(Input1, Input2, by="id")
-analysisResults  &lt;- lm(y ~ duration + nteams, data = analysisFile)
-</code></pre>
-
-<h2>Example three: visualising relationships</h2>
-
-<p>It is not aimed at visualising the linked structure of a tree or semi-lattice but can be used in such a way but changing the nodename and inputs concept to parent/child relationships.</p>
-
-<p>As an example I'll describe how a list of database tables might be displayed as a tree. I am a great fan of Josh Reich due to his <a href="http://stackoverflow.com/a/1434424">LCFD workflow</a>, and I also like his work on the <a href="https://www.simple.com/">Simple Bank</a> so when I stumbled on this <a href="http://blog.i2pi.com/post/52812976752/joshs-postgresql-database-conventions">blog post</a> in which he says:</p>
-
-<p>"Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won’t usually need your flowchart; it’ll be obvious."</p>
-
-<p>I was switched on and I started thinking about how the graphVis tool could be used to describe a list of tables and views from a database.</p>
-
-<p>Say that two groups studied the same file TableXYZ with different inputs.  One of these groups wrote a seminal paper in the field, while their rivals wrote an inferior paper with a different result.  Imagine now a subsequent group who gathered the data from the previous work into the following database tables and conducted a replication study, with a new sensitivity analysis to explain why the original two papers produced different results.</p>
-
-<p>Let's assume this database has all the data from all the groups in it and we want to get a pictorial view so we can disentangle which files belong to which study.  First get the following list of tables as INPUTS, grouping them by 'NAME' will give the tree structure and showing their results as OUTPUTS allows the subsequent replication study to use them as inputs and assume the position at the bottom of the flowchart.</p>
-
-<h4>Code: database tables and different studies</h4>
-
-<pre><code>filesList &lt;- read.csv(textConnection(
-'NAME                 ,             INPUTS         , OUTPUTS
-The Seminal Study     ,              FileA         , 
-The Seminal Study     ,              FileB         , 
-The Seminal Study     ,       analysisFile         , 
-The Seminal Study     ,           TableXYZ         , 
-The Seminal Study     ,           TableABC         , 
-The Seminal Study     ,      Input1,Input2         ,
-The Seminal Study     ,             Input1         , 
-The Seminal Study     ,             Input2         , 
-The Seminal Study     ,      The Seminal Study     , analysisResults 
-The Inferior Rivals   ,                FileC       , 
-The Inferior Rivals   ,        analysisFileX       , 
-The Inferior Rivals   ,             TableXYZ       , 
-The Inferior Rivals   ,               InputX       , 
-The Inferior Rivals   ,    The Inferior Rivals     , analysisResultsX       
-The Replication Study ,    "Input1,Input2,TableXYZ",  analysisResultsR     
-The Replication Study ,    "Input1,InputX,TableXYZ",  sensitivityResult 
-'), stringsAsFactors = F, strip.white = T)
-
-for(i in 1:nrow(filesList))
-{
-  nodes &lt;- newnode(name = filesList[i,"NAME"],
-                   inputs = strsplit(filesList$INPUTS, ",")[[i]],
-                   outputs = strsplit(filesList$OUTPUTS, ",")[[i]],
-                   newgraph = (i == 1)
-  )
-}
-</code></pre>
-
-<h2>the result</h2>
-
-<p><img src="/images/filesRelationships2.png" alt="filesRelationships2.png" /></p>
+<p><img src="/images/fit1.png" alt="fit1.png" /></p>
 
     <div class="clear"></div>
   </div>
@@ -225,14 +219,12 @@ for(i in 1:nrow(filesList))
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/workflow" title="workflow" rel="category tag">workflow</a>
-    
-    <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+    <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Wed Jul 31 00:00:00 +1000 2013">31 Jul 2013</abbr>
+      <abbr class="published" title="Fri Oct 11 00:00:00 +1100 2013">11 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -246,7 +238,7 @@ for(i in 1:nrow(filesList))
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/07/worflow-flowcharts/";
+    var disqus_url = "http://ivanhanigan.github.com/2013/10/two-main-types-of-data-documentation-workflow/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

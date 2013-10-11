@@ -4,13 +4,171 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-10-10T16:04:55+11:00</updated>
+ <updated>2013-10-11T15:58:55+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>two-main-types-of-data-documentation-workflow</title>
+   <link href="http://ivanhanigan.github.com/2013/10/two-main-types-of-data-documentation-workflow/"/>
+   <updated>2013-10-11T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/10/two-main-types-of-data-documentation-workflow</id>
+   <content type="html">&lt;p&gt;This post introduces a new series of blog posts in which I want to experiment with a few tools for data documentation, which I'll present as Case Studies.  This series of posts will be pitched to an audience mixture of data librarians and data analysts.&lt;/p&gt;
+
+&lt;p&gt;Data documentation occurs in a spectrum from simple notes through to elaborate systems.&lt;br/&gt;
+A key aspect of current approaches is the existence of a centralised data management system.  All the examples I consider include at least a metadata catalogue and some also include a data repository.  An additional feature sometimes exists for managing users permissions.&lt;/p&gt;
+
+&lt;p&gt;The relationship between users and centralised services is a really complicated space, but essentially consists of the ability for users to create the documentation and push it (perhaps along with the data) to the metadata catalogue  and/or repository.  So given these assumptions I propose the following types of arrangement:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;user sends metadata to metadata catalogue&lt;/li&gt;
+&lt;li&gt;user sends metadata and data to metadata catalogue and data repository&lt;/li&gt;
+&lt;li&gt;user sends metadata and data and permissions information to metadata catalogue and data repository and permissions system.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;I've been working on a conceptual framework about how the actual process can be done in two distinct ways:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Graphical User Interface solutions&lt;/li&gt;
+&lt;li&gt;Programmatic solutions&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;The Case Studies I've identified that I want to explore are listed below, names follow the format 'client tool'-and-'data repository or metadata catalogue'-and-optionally-'permissions system':&lt;/p&gt;
+
+&lt;h4&gt;Programmatic solutions&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;reml-and-rfigshare&lt;/li&gt;
+&lt;li&gt;reml-and-knb (when/if this becomes available)&lt;/li&gt;
+&lt;li&gt;make_ddixml-and-ddiindex-and-orapus&lt;/li&gt;
+&lt;li&gt;r2ddi-ddiindex&lt;/li&gt;
+&lt;li&gt;dc-uploader-and-ANU-DataCommons&lt;/li&gt;
+&lt;li&gt;dc-uploader-and-RDA&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Graphical User Interface solutions&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;morpho-and-knb-metacat&lt;/li&gt;
+&lt;li&gt;nesstar-publisher-and-nesstar-and-whatever-Steve-calls-the-ADA-permissions-system&lt;/li&gt;
+&lt;li&gt;xmet-and-Australian-Spatial-Data-Directory&lt;/li&gt;
+&lt;li&gt;sdmx-editor-and-sdmx-registry&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;A fictitious sample dataset&lt;/h4&gt;
+
+&lt;p&gt;For our discussion, I'll use a fictional example dataset that I'm using to work through some statistical theory related to Classification and Regression Trees (CART).
+In the motivating example use case we are interested in predicting the civil status (married, single, divorced/widowed) of individuals from their sex (male, female) and sector of activity (primary, secondary, tertiary). The data set is composed of 273 cases.&lt;/p&gt;
+
+&lt;p&gt;The data (and related statistical theory) come from:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from &lt;a href=&quot;http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ritschard, G., Pisetta, V., &amp;amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from &lt;a href=&quot;http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# copy and paste the data from the PDF (Table 1 in both papers)
+civst_gend_sector  &amp;lt;- read.csv(textConnection(
+    &quot;civil_status gender activity_sector number_of_cases
+         married   male         primary              50
+         married   male       secondary              40
+         married   male        tertiary               6
+         married female         primary               0
+         married female       secondary              14
+         married female        tertiary              10
+          single   male         primary               5
+          single   male       secondary               5
+          single   male        tertiary              12
+          single female         primary              50
+          single female       secondary              30
+          single female        tertiary              18
+divorced/widowed   male         primary               5
+divorced/widowed   male       secondary               8
+divorced/widowed   male        tertiary              10
+divorced/widowed female         primary               6
+divorced/widowed female       secondary               2
+divorced/widowed female        tertiary               2
+&quot;),sep = &quot;&quot;)
+
+# save this to my personal R utilities package &quot;disentangle&quot; 
+# for use later when I am exploring functions
+dir.create(&quot;inst/extdata&quot;, recursive=T)
+write.csv(civst_gend_sector, &quot;inst/extdata/civst_gend_sector.csv&quot;, row.names = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Motivating reason for using these data&lt;/h4&gt;
+
+&lt;p&gt;Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.&lt;/p&gt;
+
+&lt;p&gt;I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.&lt;/p&gt;
+
+&lt;p&gt;For example if we look at the reduction in deviance between the Null model and the fitted tree we can say that the tree explains about XYZ% of the variation. We can also test if this is a statistically significant reduction based on a chi-squared test.&lt;/p&gt;
+
+&lt;p&gt;Consider this example from page 310 of Hastie, T., Tibshirani, R., &amp;amp; Friedman, J. (2001). The elements of statistical learning. 2nd Edition:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;in a two-class problem with 400 observations in each class (denote this by (400, 400))&lt;/li&gt;
+&lt;li&gt;suppose one split created nodes (300, 100) and (100, 300),&lt;/li&gt;
+&lt;li&gt;the other created nodes (200, 400) and (200, 0).&lt;/li&gt;
+&lt;li&gt;Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write... I thought would publish it properly.  Hence I am using it for this series of posts.  Make sense now?&lt;/p&gt;
+
+&lt;h4&gt;The Tree Model&lt;/h4&gt;
+
+&lt;p&gt;So just before we leave Ritschard and the CART method, let's just fit the model.  Let's also install my R utilities package &quot;disentangle&quot;, to test that we can access the data from it.&lt;/p&gt;
+
+&lt;p&gt;In this analysis the civil status is the outcome (or response or decision or dependent) variable, while sex and activity sector are the predictors (or condition or independent variables).&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# func
+require(rpart)
+require(partykit) 
+require(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+
+# load
+fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;, &quot;civst_gend_sector.csv&quot;),
+                     package = &quot;disentangle&quot;
+                     )
+civst_gend_sector &amp;lt;- read.csv(fpath)
+
+# clean
+str(civst_gend_sector)
+
+# do
+fit &amp;lt;- rpart(civil_status ~ gender + activity_sector,
+             data = civst_gend_sector, weights = number_of_cases,
+             control=rpart.control(minsplit=1))
+# NB need minsplit to be adjusted for weights.
+summary(fit)
+
+# report
+dir.create(&quot;images&quot;)
+png(&quot;images/fit1.png&quot;, 1000, 480)
+plot(as.party(fit))
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;The Result&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/fit1.png&quot; alt=&quot;fit1.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>wickhams-tidy-tools-only-get-you-90-pct-the-way</title>
@@ -76,6 +234,19 @@ df &amp;lt;- transform(airquality,
                 Temp2 = (Temp-32)/1.8
                 )
 head(df)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R-mutate&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(plyr)
+# same thing as transform
+df &amp;lt;- mutate(airquality, new = -Ozone, Temp = (Temp - 32) / 1.8)    
+# Things transform can't do
+df &amp;lt;- mutate(airquality, Temp = (Temp - 32) / 1.8, OzT = Ozone / Temp)
+
+# mutate is rather faster than transform
+system.time(transform(baseball, avg_ab = ab / g))
+system.time(mutate(baseball, avg_ab = ab / g))
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;R-summarise&lt;/h4&gt;
