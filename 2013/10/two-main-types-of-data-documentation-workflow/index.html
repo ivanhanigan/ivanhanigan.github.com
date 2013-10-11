@@ -57,6 +57,14 @@
   <div class="entry-content full-content">
     <p>This post introduces a new series of blog posts in which I want to experiment with a few tools for data documentation, which I'll present as Case Studies.  This series of posts will be pitched to an audience mixture of data librarians and data analysts.</p>
 
+<p>I've been working on a conceptual framework about how the actual process can be done in two distinct ways:</p>
+
+<ul>
+<li>Graphical User Interface solutions</li>
+<li>Programmatic solutions</li>
+</ul>
+
+
 <p>Data documentation occurs in a spectrum from simple notes through to elaborate systems.<br/>
 A key aspect of current approaches is the existence of a centralised data management system.  All the examples I consider include at least a metadata catalogue and some also include a data repository.  An additional feature sometimes exists for managing users permissions.</p>
 
@@ -66,14 +74,6 @@ A key aspect of current approaches is the existence of a centralised data manage
 <li>user sends metadata to metadata catalogue</li>
 <li>user sends metadata and data to metadata catalogue and data repository</li>
 <li>user sends metadata and data and permissions information to metadata catalogue and data repository and permissions system.</li>
-</ul>
-
-
-<p>I've been working on a conceptual framework about how the actual process can be done in two distinct ways:</p>
-
-<ul>
-<li>Graphical User Interface solutions</li>
-<li>Programmatic solutions</li>
 </ul>
 
 
@@ -100,111 +100,6 @@ A key aspect of current approaches is the existence of a centralised data manage
 <li>sdmx-editor-and-sdmx-registry</li>
 </ul>
 
-
-<h4>A fictitious sample dataset</h4>
-
-<p>For our discussion, I'll use a fictional example dataset that I'm using to work through some statistical theory related to Classification and Regression Trees (CART).
-In the motivating example use case we are interested in predicting the civil status (married, single, divorced/widowed) of individuals from their sex (male, female) and sector of activity (primary, secondary, tertiary). The data set is composed of 273 cases.</p>
-
-<p>The data (and related statistical theory) come from:</p>
-
-<ul>
-<li><p>Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf">This Link</a></p></li>
-<li><p>Ritschard, G., Pisetta, V., &amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf">This Link</a></p></li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code># copy and paste the data from the PDF (Table 1 in both papers)
-civst_gend_sector  &lt;- read.csv(textConnection(
-    "civil_status gender activity_sector number_of_cases
-         married   male         primary              50
-         married   male       secondary              40
-         married   male        tertiary               6
-         married female         primary               0
-         married female       secondary              14
-         married female        tertiary              10
-          single   male         primary               5
-          single   male       secondary               5
-          single   male        tertiary              12
-          single female         primary              50
-          single female       secondary              30
-          single female        tertiary              18
-divorced/widowed   male         primary               5
-divorced/widowed   male       secondary               8
-divorced/widowed   male        tertiary              10
-divorced/widowed female         primary               6
-divorced/widowed female       secondary               2
-divorced/widowed female        tertiary               2
-"),sep = "")
-
-# save this to my personal R utilities package "disentangle" 
-# for use later when I am exploring functions
-dir.create("inst/extdata", recursive=T)
-write.csv(civst_gend_sector, "inst/extdata/civst_gend_sector.csv", row.names = F)
-</code></pre>
-
-<h4>Motivating reason for using these data</h4>
-
-<p>Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.</p>
-
-<p>I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.</p>
-
-<p>For example if we look at the reduction in deviance between the Null model and the fitted tree we can say that the tree explains about XYZ% of the variation. We can also test if this is a statistically significant reduction based on a chi-squared test.</p>
-
-<p>Consider this example from page 310 of Hastie, T., Tibshirani, R., &amp; Friedman, J. (2001). The elements of statistical learning. 2nd Edition:</p>
-
-<ul>
-<li>in a two-class problem with 400 observations in each class (denote this by (400, 400))</li>
-<li>suppose one split created nodes (300, 100) and (100, 300),</li>
-<li>the other created nodes (200, 400) and (200, 0).</li>
-<li>Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.</li>
-</ul>
-
-
-<p>During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write... I thought would publish it properly.  Hence I am using it for this series of posts.  Make sense now?</p>
-
-<h4>The Tree Model</h4>
-
-<p>So just before we leave Ritschard and the CART method, let's just fit the model.  Let's also install my R utilities package "disentangle", to test that we can access the data from it.</p>
-
-<p>In this analysis the civil status is the outcome (or response or decision or dependent) variable, while sex and activity sector are the predictors (or condition or independent variables).</p>
-
-<h4>Code:</h4>
-
-<pre><code># func
-require(rpart)
-require(partykit) 
-require(devtools)
-install_github("disentangle", "ivanhanigan")
-
-# load
-fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"),
-                     package = "disentangle"
-                     )
-civst_gend_sector &lt;- read.csv(fpath)
-
-# clean
-str(civst_gend_sector)
-
-# do
-fit &lt;- rpart(civil_status ~ gender + activity_sector,
-             data = civst_gend_sector, weights = number_of_cases,
-             control=rpart.control(minsplit=1))
-# NB need minsplit to be adjusted for weights.
-summary(fit)
-
-# report
-dir.create("images")
-png("images/fit1.png", 1000, 480)
-plot(as.party(fit))
-dev.off()
-</code></pre>
-
-<h4>The Result</h4>
-
-<p><img src="/images/fit1.png" alt="fit1.png" /></p>
 
     <div class="clear"></div>
   </div>
@@ -287,101 +182,103 @@ dev.off()
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/data documentation">data documentation (3)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
                 <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (2)</a></li>
-                
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
-                
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
                 
                 <li><a href="/categories/animation">animation (1)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/python">python (1)</a></li>
-                
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
-                
-                <li><a href="/categories/ons">ons (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
                 <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (7)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (3)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
                 <li><a href="/categories/me">me (3)</a></li>
                 
                 <li><a href="/categories/blogger">blogger (1)</a></li>
                 
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
+                <li><a href="/categories/ons">ons (1)</a></li>
                 
                 <li><a href="/categories/energymark">energymark (1)</a></li>
                 
-                <li><a href="/categories/data science">data science (1)</a></li>
+                <li><a href="/categories/modelling">modelling (1)</a></li>
                 
-                <li><a href="/categories/gis">gis (1)</a></li>
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
                 
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/suicide">suicide (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (4)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
                 
                 <li><a href="/categories/versions">versions (1)</a></li>
                 
                 <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
                 
-                <li><a href="/categories/blogging">blogging (1)</a></li>
+                <li><a href="/categories/overview">overview (4)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (7)</a></li>
+                
+                <li><a href="/categories/gis">gis (1)</a></li>
+                
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/python">python (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (2)</a></li>
+                
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
               </ul>
             </div>
@@ -392,15 +289,19 @@ dev.off()
               <ul>
                 
                 <li>
-                  <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
-                </li>
-                
-                <li>
                   <a href="/2013/10/data-documentation-case-study-reml-and-rfigshare/" title="data-documentation-case-study-reml-and-rfigshare" rel="bookmark">data-documentation-case-study-reml-and-rfigshare</a>
                 </li>
                 
                 <li>
+                  <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
+                </li>
+                
+                <li>
                   <a href="/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/" title="wickhams-tidy-tools-only-get-you-90-pct-the-way" rel="bookmark">wickhams-tidy-tools-only-get-you-90-pct-the-way</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/test-data-for-classification-trees/" title="test-data-for-classification-trees" rel="bookmark">test-data-for-classification-trees</a>
                 </li>
                 
                 <li>
