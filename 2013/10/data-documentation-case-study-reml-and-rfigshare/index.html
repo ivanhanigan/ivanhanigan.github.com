@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - transformational-adaptation</title>
+    <title>Ivan Hanigan - data-documentation-case-study-reml-and-rfigshare</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/09/transformational-adaptation/" title="transformational-adaptation" rel="bookmark">transformational-adaptation</a>
+    <a href="/2013/10/data-documentation-case-study-reml-and-rfigshare/" title="data-documentation-case-study-reml-and-rfigshare" rel="bookmark">data-documentation-case-study-reml-and-rfigshare</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,7 +55,127 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>Energymark is about transformational adaptations as opposed to incremental adaptation..</p>
+    <h4>Case Study: reml-and-rfigshare</h4>
+
+<p>First we will look at the work of the ROpenSci team and the reml
+package.  In the vignette they show how to publish data to figshare
+using rfigshare package.  <a href="http://figshare.com/">figshare</a> is a site
+where scientists can share datasets/figures/code. The goals are to
+encourage researchers to share negative results and make reproducible
+research efforts user-friendly. It also uses a tagging system for
+scientific research discovery. They give you unlimited public space
+and 1GB of private space.</p>
+
+<p>Start by getting the reml package.</p>
+
+<h4>Code:</h4>
+
+<pre><code># func
+require(devtools)
+install_github("reml", "ropensci")
+require(reml)
+?eml_write
+</code></pre>
+
+<p></p>
+
+
+<p>This is the Top-level API function for writing eml.  Help page is a bit sparse.  See <a href="https://github.com/ropensci/reml">This Link</a> for more.  For eg "for convenience, dat could simply be a data.frame and reml will launch it's metadata wizard to assist in constructing the metadata based on the data.frame provided. While this may be helpful starting out, regular users will find it faster to define the columns and units directly in the format above."</p>
+
+<h4>Code:</h4>
+
+<pre><code>install_github("disentangle", "ivanhanigan") # for the data
+                                             # described in prev post
+
+# load
+fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"),
+                     package = "disentangle"
+                     )
+civst_gend_sector &lt;- read.csv(fpath)
+
+# clean
+str(civst_gend_sector)
+
+# do
+eml_write(civst_gend_sector,
+          creator = "Ivan Hanigan &lt;ivanhanigan@gmail.com&gt;")
+
+
+
+
+
+# Starts up the wizard, a section is shown below.  The wizard
+# prompts in the console and the user writes the answer.
+
+# Enter description for column 'civil_status':
+#  marriage status
+# column civil_status appears to contain categorical data.
+#  
+# Categories are divorced/widowed, married, single
+#  Please define each of the categories at the prompt
+# define 'divorced/widowed':
+# was once married
+# define 'married':
+# still married
+# define 'single':
+# never married
+
+# TODO I don't really know what activity_sector is.  I assumed
+# school because Categories are primary, secondary, tertiary.
+
+# this created "metadata.xml" and "metadata.csv"
+file.remove(c("metadata.xml","metadata.csv"))
+</code></pre>
+
+<p></p>
+
+
+<p>
+This was a very minimal data documentation effort.  A bit more detail would look like this.  Because I would now need to re-write all that in the wizard I will take the advice of the help file that "regular users will find it faster to define the columns and units directly in the format"</p>
+
+<h4>Code:</h4>
+
+<pre><code>ds &lt;- data.set(civst_gend_sector,
+               col.defs = c("Marriage status", "sex", "education", "counts"),
+               unit.defs = list(c("was once married","still married","never married"),
+                   c("women", "men"),
+                   c("primary school","secondary school","tertiary school"),
+                   c("persons"))
+               )
+ds
+# this prints the dataset and the metadata
+# now run the EML function
+eml_write(ds, 
+          title = "civst_gend_sector",  
+          description = "An example, fictional dataset for Decision Tree Models",
+          creator = "Ivan Hanigan &lt;ivanhanigan@gmail.com&gt;",
+          file = "civst_gend_sector.xml"
+          )
+# this created the xml and csv with out asking anything
+# but returned a
+## Warning message:
+## In `[&lt;-.data.frame`(`*tmp*`, , value = list(civil_status = c(2L,  :
+##   Setting class(x) to NULL;   result will no longer be an S4 object
+
+# TODO investigate this?
+
+# now we can access the local EML
+obj &lt;- eml_read("civst_gend_sector.xml")
+obj 
+str(dataTable(obj))
+# returns an error
+## Error in plyr::compact(lapply(slotNames(from), function(s) if (!isEmpty(slot(from,  (from attribute.R#300) : 
+##   subscript out of bounds
+</code></pre>
+
+<p></p>
+
+
+<h1>Conclusions</h1>
+
+<p>So this looks like a useful tool.  Next steps are to:
+- look at sending these data to figshare
+- describe a really really REALLY simple workflow (3 lines? create metadata, eml_write, push to figshare)</p>
 
     <div class="clear"></div>
   </div>
@@ -70,12 +190,12 @@
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/energymark" title="energymark" rel="category tag">energymark</a>
+    <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Sun Sep 22 00:00:00 +1000 2013">22 Sep 2013</abbr>
+      <abbr class="published" title="Fri Oct 11 00:00:00 +1100 2013">11 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -89,7 +209,7 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/09/transformational-adaptation/";
+    var disqus_url = "http://ivanhanigan.github.com/2013/10/data-documentation-case-study-reml-and-rfigshare/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
