@@ -4,13 +4,79 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-10-11T22:24:09+11:00</updated>
+ <updated>2013-10-12T11:15:39+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>reml-and-rfigshare-part-2</title>
+   <link href="http://schamberlain.github.com/2013/10/reml-and-rfigshare-part-2/"/>
+   <updated>2013-10-12T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/reml-and-rfigshare-part-2</id>
+   <content type="html">&lt;p&gt;In the last post I explored the functionality of reml.
+This time I will try to send data to figshare.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;First follow &lt;a href=&quot;https://github.com/ropensci/rfigshare&quot;&gt;These Instructions&lt;/a&gt; to get rfigshare set up.  In particular store your figshare credentials in ~/.Rprofile&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:reml-and-rfigshare-part-2&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# func
+require(devtools)
+install_github(&quot;reml&quot;, &quot;ropensci&quot;)
+require(reml)
+install_github(&quot;rfigshare&quot;, &quot;ropensci&quot;)
+require(rfigshare)
+# load
+#fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;,&quot;civst_gend_sector_eml.xml&quot;), package = &quot;disentangle&quot;)
+fpath &amp;lt;- &quot;inst/extdata&quot;
+fname &amp;lt;- &quot;civst_gend_sector_eml.xml&quot;
+setwd(fpath)
+obj &amp;lt;- eml_read(fname)
+# clean
+obj
+# do
+
+## STEP 1: find one of the preset categories
+# available. We can ask the API for
+# a list of all the categories:
+list &amp;lt;- fs_category_list()
+list[grep(&quot;Survey&quot;, list)]
+
+## STEP 2: PUBLISH TO FIGSHARE
+id &amp;lt;- eml_publish(fname,
+                  description=&quot;Example EML
+                    A fictional dataset&quot;,
+                  categories = &quot;Survey results&quot;,
+                  tags = &quot;EML&quot;,
+                  destination=&quot;figshare&quot;
+                  )
+# there are several warnings
+# but go to figshare and it has sent the metadata and data OK
+
+# make public using either the figshare web interface, the
+# rfigshare package (using fs_make_public(id)) or just by adding
+# the argument visibility = TRUE to the above eml_publish
+fs_make_public(id)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;Now these data are on figshare&lt;/h1&gt;
+
+&lt;p&gt;Now I have published the data they are visible and have a DOI&lt;/p&gt;
+
+&lt;iframe src=&quot;http://wl.figshare.com/articles/820158/embed?show_title=1&quot; width=&quot;568&quot; height=&quot;157&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>data-documentation-case-study-reml-and-rfigshare</title>
@@ -113,7 +179,7 @@ eml_write(ds,
           title = &quot;civst_gend_sector&quot;,  
           description = &quot;An example, fictional dataset for Decision Tree Models&quot;,
           creator = &quot;Ivan Hanigan &amp;lt;ivanhanigan@gmail.com&amp;gt;&quot;,
-          file = &quot;civst_gend_sector.xml&quot;
+          file = &quot;inst/extdata/civst_gend_sector_eml.xml&quot;
           )
 # this created the xml and csv with out asking anything
 # but returned a
@@ -124,7 +190,7 @@ eml_write(ds,
 # TODO investigate this?
 
 # now we can access the local EML
-obj &amp;lt;- eml_read(&quot;civst_gend_sector.xml&quot;)
+obj &amp;lt;- eml_read(&quot;inst/extdata/civst_gend_sector_eml.xml&quot;)
 obj 
 str(dataTable(obj))
 # returns an error
