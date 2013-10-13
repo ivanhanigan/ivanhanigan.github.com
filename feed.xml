@@ -6,6 +6,131 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>dc-uploader-and-ANU-DataCommons</title>
+				<description>&lt;p&gt;In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.&lt;/p&gt;
+
+&lt;h1&gt;Create the metadata.txt&lt;/h1&gt;
+
+&lt;p&gt;You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.&lt;/p&gt;
+
+&lt;p&gt;change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443  (NOTE THAT I COULDNT CREATE RECORDS IN THE DEV SERVER)&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;setwd(&quot;~/tools/dcupload&quot;)
+sink(&quot;metadata.txt&quot;)
+cat(&quot;
+# This file, referred to as a collection parameter file, consists of
+# data in key=value pairs. This data is sent to the ANU Data Commons
+# to create a collection, establish relations with other records,
+# and/or upload files to those collections.
+
+# The metadata section consists of metadata for use in creation (not
+# for modification) of record metadata in ANU Data Commons. The
+# following fields are required for the creation of a record. The file
+# Keys.txt contains the full list of values that can be specified in
+# this file. Based on this information below, a collection record of
+# type databaset with the title &quot;Test Collection 6/05/2013&quot; will be
+# created owned by Meteorology and Health group.
+[metadata]
+type = Collection
+subType = dataset
+ownerGroup = 6
+name = Test Dataset 12/10/2013
+email = ivan.hanigan@anu.edu.au
+anzforSubject = 1601
+
+# The relations section allows you to specify the relation this record
+# has with other records in the system.  Currently relations with NLA
+# identifiers is not supported.
+[relations]
+isOutputOf = anudc:123
+
+# This section contains a line of the form 'pid = anudc:123' once a
+# record has been created so executing the uploader script with the
+# same collection parameter file doesnt create a new record with the
+# same metadata.
+[pid]
+&quot;)
+sink()
+
+# run the dcload
+system(&quot;python3 dcuploader.py -c metadata.txt&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;go to the website&lt;/h1&gt;
+
+&lt;p&gt;Go to the production server at &lt;a href=&quot;https://datacommons.anu.edu.au:8443/DataCommons&quot;&gt;This Link&lt;/a&gt;
+This has created a new record in our account.&lt;/p&gt;
+
+&lt;p&gt;Looking at metadata.txt it has been modified with the new pid.&lt;/p&gt;
+
+&lt;h1&gt;Errors encountered on dev environment&lt;/h1&gt;
+
+&lt;p&gt;When I tried using &lt;a href=&quot;https://dc7-dev2.anu.edu.au:8443/DataCommons/&quot;&gt;the dev site&lt;/a&gt; I got the following errors:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;## Creating record at dc7-dev2.anu.edu.au:8443/DataCommons/rest/display/new?layout=def:display&amp;amp;tmplt=tmplt:1 ...
+## DEBUG:root:type: Collection
+## DEBUG:root:subType: dataset
+## DEBUG:root:ownerGroup: 6
+## DEBUG:root:name: Test Dataset 12/10/2013
+## DEBUG:root:email: ivan.hanigan@anu.edu.au
+## DEBUG:root:anzforSubject: 1601
+## Status: 302, (Found)
+## Body: 
+## Traceback (most recent call last):
+##   File &quot;dcuploader.py&quot;, line 103, in &amp;lt;module&amp;gt;
+##     main()
+##   File &quot;dcuploader.py&quot;, line 66, in main
+##     pid = anudc.create_record(metadatafile)
+##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 100, in create_record
+##     raise Exception(&quot;Unable to create record&quot;)
+## Exception: Unable to create record
+## &amp;gt;
+####################################################################
+# AND if I try comment out token and add u number and password (ps
+# I dont like hard coded passwords in scripts
+# tried u12344 and pwd, also [u12344] and &quot;u12344&quot; and 12344 etc etc
+
+##     Traceback (most recent call last):
+##   File &quot;dcuploader.py&quot;, line 103, in &amp;lt;module&amp;gt;
+##     main()
+##   File &quot;dcuploader.py&quot;, line 66, in main
+##     pid = anudc.create_record(metadatafile)
+##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 82, in create_record
+##     self.__add_auth_header(headers)
+##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 38, in __add_auth_header
+##     username_password = base64.encodestring(&quot;%s:%s&quot; % (username, password)).replace('\n', '')
+##   File &quot;/usr/lib/python3.2/base64.py&quot;, line 353, in encodestring
+##     return encodebytes(s)
+##   File &quot;/usr/lib/python3.2/base64.py&quot;, line 341, in encodebytes
+##     raise TypeError(&quot;expected bytes, not %s&quot; % s.__class__.__name__)
+## TypeError: expected bytes, not str
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h1&gt;Notes&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I need to get the Keys.txt file that contains the full list of values that can be specified in this metadata.txt file.&lt;/li&gt;
+&lt;li&gt;Dev server not working?  I tried from public, ncephgis VPN and nceph local IP addresses.&lt;/li&gt;
+&lt;li&gt;Hardcoded password is bad idea&lt;/li&gt;
+&lt;li&gt;how does dataset get sent?&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Sun Oct 13 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons/</link>
+			</item>
+		
+			<item>
 				<title>reml-and-rfigshare-part-2</title>
 				<description>&lt;p&gt;In the last post I explored the functionality of reml.
 This time I will try to send data to figshare.&lt;/p&gt;
@@ -23,12 +148,12 @@ install_github(&quot;reml&quot;, &quot;ropensci&quot;)
 require(reml)
 install_github(&quot;rfigshare&quot;, &quot;ropensci&quot;)
 require(rfigshare)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+require(disentangle)
 # load
-#fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;,&quot;civst_gend_sector_eml.xml&quot;), package = &quot;disentangle&quot;)
-fpath &amp;lt;- &quot;inst/extdata&quot;
-fname &amp;lt;- &quot;civst_gend_sector_eml.xml&quot;
-setwd(fpath)
-obj &amp;lt;- eml_read(fname)
+fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;,&quot;civst_gend_sector_eml.xml&quot;), package = &quot;disentangle&quot;)
+setwd(dirname(fpath))
+obj &amp;lt;- eml_read(fpath)
 # clean
 obj
 # do
@@ -1422,83 +1547,6 @@ Where:
 </description>
 				<published>Wed Sep 25 00:00:00 +1000 2013</published>
 				<link>http://schamberlain.github.com/2013/09/reflections-bob-haining-update/</link>
-			</item>
-		
-			<item>
-				<title>workflow-flowcharts-update</title>
-				<description>&lt;h1&gt;Workflow flowcharts - Update&lt;/h1&gt;
-
-&lt;p&gt;A while back I posted about &lt;a href=&quot;/2013/07/worflow-flowcharts/&quot;&gt;my work with the Rgraphviz toolbox&lt;/a&gt; toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
-This update includes notes from a discussion I had with Keith about this.&lt;/p&gt;
-
-&lt;h4&gt;The basic use case is described by this code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(disentangle)
-# Decide on the first step and create the starting node of the flowchart 
-nodes &amp;lt;- newnode(name=&quot;NAME&quot;, inputs=&quot;INPUT&quot;, newgraph=T)
-# FirstStep.
-# Comment: do a bit of work
-NAME &amp;lt;- myWorkFunction(INPUT)
-# Decide on next step
-nodes &amp;lt;- newnode(name=&quot;OUTPUT&quot;, inputs=c(&quot;NAME&quot;,&quot;ANOTHER THING&quot;))
-# Do the second step
-OUTPUT &amp;lt;- mySecondFunction(NAME, ANOTHER_THING)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/workflow-flowchart1.png&quot; alt=&quot;workflow-flowchart1.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So as the scripted workflow develops, so does the flow chart. The alternative I described previously is to make a list of all the steps in a Balzerian Filelist Table.&lt;/p&gt;
-
-&lt;h4&gt;Keith's comments:&lt;/h4&gt;
-
-&lt;p&gt;Keith gave me some great comments on that post.  I'll just jot them down here for now but will have to come back and re-write parts of my function and the descriptive blog post to address these at another time.&lt;/p&gt;
-
-&lt;p&gt;First section:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I said that multiple datasets used in an analysis could be broken down into discrete data packages.  Keith asked if I thought they &quot;should be&quot;.&lt;/li&gt;
-&lt;li&gt;questioned whether the data warehouse at my work really is &quot;Big Data&quot;&lt;/li&gt;
-&lt;li&gt;I need to cite the graphviz and Rgraphviz software better&lt;/li&gt;
-&lt;li&gt;the function currently requires users to speciify newgraph = T to start, and fails to do anything if &quot;nodes&quot; object doesn't exist.  This is uneccessary.  should make it create &quot;nodes&quot; if doesn't exist. Then the newgraph argument is only needed to delete an old graph and start again.&lt;/li&gt;
-&lt;li&gt;is it required that any of these actually be new?  if not then &quot;newnode&quot; seems a poor name for the function&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;From section &quot;Code:adding nodes&quot;:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the line where output is the name is confusing.  Keith felt that output was not the name of the newnode (but it really is).&lt;/li&gt;
-&lt;li&gt;the name of the nodes object is hardcoded to be &quot;nodes&quot;.  therefore don't need to give it as an argument&lt;/li&gt;
-&lt;li&gt;proposed better syntac: newnode(name= &quot;ANOTHER THING&quot;, output = &quot;OUTPUT&quot;) which I think will also work?&lt;/li&gt;
-&lt;li&gt;wouldn't it be great if links could be labelled? maybe better to focus on links rather than nodes? this seems more logical because links are transitions and where the action is, not at the nodes.&lt;/li&gt;
-&lt;li&gt;it might be helpful to review common actions to see what graph structures each implies.&lt;/li&gt;
-&lt;li&gt;RE lab-book from Chemistry: most people would not be familiar with how lab-books are written.&lt;/li&gt;
-&lt;li&gt;can newnode build circuits/cycles?  can it add links between existing nodes?&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Section after &quot;shows this result&quot;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;tablexyz -&gt; FileA -&gt; Input1 should be one step because fileA is not used again. ditto fileB.&lt;/li&gt;
-&lt;li&gt;analysisResults is a different kind of thing. this is confusing.&lt;/li&gt;
-&lt;li&gt;why do I have to type &quot;nodes &amp;lt;-&quot; every time?  if it has to have this name It could be hidden&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Under example two, &quot;Step three&quot;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;huh? does input1 have &quot;id&quot;?&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&quot;the result&quot; graph is  a bit dense and hard to follow.  Perhaps simpler labels?  ie instead of FileA just &quot;A&quot;?&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Mon Sep 23 00:00:00 +1000 2013</published>
-				<link>http://schamberlain.github.com/2013/09/workflow-flowcharts-update/</link>
 			</item>
 		
 	</channel>

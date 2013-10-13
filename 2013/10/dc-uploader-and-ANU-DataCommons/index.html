@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - Outlines. A way to organise, and to think</title>
+    <title>Ivan Hanigan - dc-uploader-and-ANU-DataCommons</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2012/03/outlines-way-to-organise-and-to-think/" title="Outlines. A way to organise, and to think" rel="bookmark">Outlines. A way to organise, and to think</a>
+    <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,47 +55,122 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h2>Introduction</h2>
+    <p>In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.</p>
 
-<p>In a <a href="http://ivanhanigan.github.com/2012/02/the-organisation-of-material/" title="The Organisation of Material">previous post</a> I talked about the conceptual framework I draw on for organising material about complex systems. I quoted a passage by Koestler 1967 that talks about the writing process describing the use of 'outlines', albeit without using that term.  I find this quote particularly inspires me to think about how to select the material for inclusion (and identify the material ruled out of scope - those times we decide to "chop off entire flowering branches from the tree and start growing them afresh").</p>
+<h1>Create the metadata.txt</h1>
 
-<h2>A way to organise</h2>
+<p>You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.</p>
 
-<p>Outlines are a method for writing, and also the basis of a toolbox called <a href="http://en.wikipedia.org/wiki/Outliner" title="Wikipedia Outliners">'outliners'</a>. I've been using the excellent free outliner <a href="http://code.google.com/p/keynote-nf/" title="Keynote-NF">Keynote-NF</a> for years and it has been great.  Recently I was inspired by this <a href="http://www.jstatsoft.org/v46/i03/" title="jstatsoft">paper by Schulte et al</a>, which very convincingly introduced me to Emacs Orgmode as a viable tool for someone without a computer science background (others had described Emacs as 'not an editor so much as a lifestyle choice' or 'a good operating system just lacking a decent editor').</p>
+<p>change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443  (NOTE THAT I COULDNT CREATE RECORDS IN THE DEV SERVER)</p>
 
-<h2>A way to think</h2>
+<h4>Code:</h4>
 
-<p>I recently had the privilege to attend a class with renowned epidemiologist Professor Nancy Krieger who gave us a valuable insight to her workflow.  She told us that for years she'd started every research project by writing out the outline and then filled out the branches much as Koestler's quote described.  Prof Krieger then said that she didn't explicitly write outlines anymore, she'd been doing it for so long it was deeply ingrained and natural part of her way of thinking.</p>
+<pre><code>setwd("~/tools/dcupload")
+sink("metadata.txt")
+cat("
+# This file, referred to as a collection parameter file, consists of
+# data in key=value pairs. This data is sent to the ANU Data Commons
+# to create a collection, establish relations with other records,
+# and/or upload files to those collections.
 
-<p>Prof Krieger went on to describe how she conducts her research workflow through the outline</p>
+# The metadata section consists of metadata for use in creation (not
+# for modification) of record metadata in ANU Data Commons. The
+# following fields are required for the creation of a record. The file
+# Keys.txt contains the full list of values that can be specified in
+# this file. Based on this information below, a collection record of
+# type databaset with the title "Test Collection 6/05/2013" will be
+# created owned by Meteorology and Health group.
+[metadata]
+type = Collection
+subType = dataset
+ownerGroup = 6
+name = Test Dataset 12/10/2013
+email = ivan.hanigan@anu.edu.au
+anzforSubject = 1601
+
+# The relations section allows you to specify the relation this record
+# has with other records in the system.  Currently relations with NLA
+# identifiers is not supported.
+[relations]
+isOutputOf = anudc:123
+
+# This section contains a line of the form 'pid = anudc:123' once a
+# record has been created so executing the uploader script with the
+# same collection parameter file doesnt create a new record with the
+# same metadata.
+[pid]
+")
+sink()
+
+# run the dcload
+system("python3 dcuploader.py -c metadata.txt")
+</code></pre>
+
+<p></p>
+
+
+<h1>go to the website</h1>
+
+<p>Go to the production server at <a href="https://datacommons.anu.edu.au:8443/DataCommons">This Link</a>
+This has created a new record in our account.</p>
+
+<p>Looking at metadata.txt it has been modified with the new pid.</p>
+
+<h1>Errors encountered on dev environment</h1>
+
+<p>When I tried using <a href="https://dc7-dev2.anu.edu.au:8443/DataCommons/">the dev site</a> I got the following errors:</p>
+
+<pre><code>## Creating record at dc7-dev2.anu.edu.au:8443/DataCommons/rest/display/new?layout=def:display&amp;tmplt=tmplt:1 ...
+## DEBUG:root:type: Collection
+## DEBUG:root:subType: dataset
+## DEBUG:root:ownerGroup: 6
+## DEBUG:root:name: Test Dataset 12/10/2013
+## DEBUG:root:email: ivan.hanigan@anu.edu.au
+## DEBUG:root:anzforSubject: 1601
+## Status: 302, (Found)
+## Body: 
+## Traceback (most recent call last):
+##   File "dcuploader.py", line 103, in &lt;module&gt;
+##     main()
+##   File "dcuploader.py", line 66, in main
+##     pid = anudc.create_record(metadatafile)
+##   File "/home/ivan_hanigan/tools/dcupload/anudclib.py", line 100, in create_record
+##     raise Exception("Unable to create record")
+## Exception: Unable to create record
+## &gt;
+####################################################################
+# AND if I try comment out token and add u number and password (ps
+# I dont like hard coded passwords in scripts
+# tried u12344 and pwd, also [u12344] and "u12344" and 12344 etc etc
+
+##     Traceback (most recent call last):
+##   File "dcuploader.py", line 103, in &lt;module&gt;
+##     main()
+##   File "dcuploader.py", line 66, in main
+##     pid = anudc.create_record(metadatafile)
+##   File "/home/ivan_hanigan/tools/dcupload/anudclib.py", line 82, in create_record
+##     self.__add_auth_header(headers)
+##   File "/home/ivan_hanigan/tools/dcupload/anudclib.py", line 38, in __add_auth_header
+##     username_password = base64.encodestring("%s:%s" % (username, password)).replace('\n', '')
+##   File "/usr/lib/python3.2/base64.py", line 353, in encodestring
+##     return encodebytes(s)
+##   File "/usr/lib/python3.2/base64.py", line 341, in encodebytes
+##     raise TypeError("expected bytes, not %s" % s.__class__.__name__)
+## TypeError: expected bytes, not str
+</code></pre>
+
+<p></p>
+
+
+<p></p>
+
+<h1>Notes</h1>
 
 <ul>
-<li>first sketch the outline suggested by the hypotheses to be tested (data sourced,  methods applied)</li>
-<li>review the literature, there are very few areas of study that haven't been looked at by someone else</li>
-<li>create empty 'table shells' showing the form that the information will be presented in the final paper</li>
-<li>exploratory data analysis and graphics</li>
-<li>primary data analysis and interpretation of the results</li>
-<li>another literature review - identify the dominant story people are telling about this question</li>
-<li>write the discussion. Deal with any caveats head-on, how the bias may inflate or deflate estimates</li>
-</ul>
-
-
-<h2>Writing workflow depends on forum</h2>
-
-<p>The flow of steps described above remind me <a href="http://andrewgelman.com/2011/05/my_new_writing/" title="Andrew Gelman's New Writing">Andrew Gelman's point</a> about how he writes science papers like this, but doesn't write blogs this way... he mentions thoughts on style, audience etc.  There may be a dichotomy worth exploring between clear structure vs evolving narrative.</p>
-
-<h2>Key features of outliner software</h2>
-
-<p>To conclude I'll just mention the most interesting features I've found in outliner software and will discuss these in a future post:</p>
-
-<ul>
-<li>Nodes: these are the building blocks</li>
-<li>Parents and children: there is a strict ordering of the nodes into a hierarchy</li>
-<li><a href="http://www.patternlanguage.com/archives/alexander1.htm" title="A City is not a Tree">Semilattice:</a> this allows connections to be made across branches, not just through the hierarchy</li>
-<li>Folding can be used to hide entire sections of the tree, unfolding to 'drill down' to deep levels</li>
-<li>Hoisting: to promote and demote branches, including all children branches</li>
-<li>Lifting and grafting: easy reshuffling of the order</li>
-<li>Checked nodes: chosen nodes can be exported while the rest remain invisible</li>
+<li>I need to get the Keys.txt file that contains the full list of values that can be specified in this metadata.txt file.</li>
+<li>Dev server not working?  I tried from public, ncephgis VPN and nceph local IP addresses.</li>
+<li>Hardcoded password is bad idea</li>
+<li>how does dataset get sent?</li>
 </ul>
 
 
@@ -112,14 +187,12 @@
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/outlines" title="outlines" rel="category tag">outlines</a>
-    
-    <a href="/categories/disentangle things" title="disentangle things" rel="category tag">disentangle things</a>
+    <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Sun Mar 11 00:00:00 +1100 2012">11 Mar 2012</abbr>
+      <abbr class="published" title="Sun Oct 13 00:00:00 +1100 2013">13 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -133,7 +206,7 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2012/03/outlines-way-to-organise-and-to-think/";
+    var disqus_url = "http://ivanhanigan.github.com/2013/10/dc-uploader-and-ANU-DataCommons/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

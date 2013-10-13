@@ -4,13 +4,139 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-10-12T11:15:39+11:00</updated>
+ <updated>2013-10-13T11:19:43+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>dc-uploader-and-ANU-DataCommons</title>
+   <link href="http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons/"/>
+   <updated>2013-10-13T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons</id>
+   <content type="html">&lt;p&gt;In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.&lt;/p&gt;
+
+&lt;h1&gt;Create the metadata.txt&lt;/h1&gt;
+
+&lt;p&gt;You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.&lt;/p&gt;
+
+&lt;p&gt;change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443  (NOTE THAT I COULDNT CREATE RECORDS IN THE DEV SERVER)&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;setwd(&quot;~/tools/dcupload&quot;)
+sink(&quot;metadata.txt&quot;)
+cat(&quot;
+# This file, referred to as a collection parameter file, consists of
+# data in key=value pairs. This data is sent to the ANU Data Commons
+# to create a collection, establish relations with other records,
+# and/or upload files to those collections.
+
+# The metadata section consists of metadata for use in creation (not
+# for modification) of record metadata in ANU Data Commons. The
+# following fields are required for the creation of a record. The file
+# Keys.txt contains the full list of values that can be specified in
+# this file. Based on this information below, a collection record of
+# type databaset with the title &quot;Test Collection 6/05/2013&quot; will be
+# created owned by Meteorology and Health group.
+[metadata]
+type = Collection
+subType = dataset
+ownerGroup = 6
+name = Test Dataset 12/10/2013
+email = ivan.hanigan@anu.edu.au
+anzforSubject = 1601
+
+# The relations section allows you to specify the relation this record
+# has with other records in the system.  Currently relations with NLA
+# identifiers is not supported.
+[relations]
+isOutputOf = anudc:123
+
+# This section contains a line of the form 'pid = anudc:123' once a
+# record has been created so executing the uploader script with the
+# same collection parameter file doesnt create a new record with the
+# same metadata.
+[pid]
+&quot;)
+sink()
+
+# run the dcload
+system(&quot;python3 dcuploader.py -c metadata.txt&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;go to the website&lt;/h1&gt;
+
+&lt;p&gt;Go to the production server at &lt;a href=&quot;https://datacommons.anu.edu.au:8443/DataCommons&quot;&gt;This Link&lt;/a&gt;
+This has created a new record in our account.&lt;/p&gt;
+
+&lt;p&gt;Looking at metadata.txt it has been modified with the new pid.&lt;/p&gt;
+
+&lt;h1&gt;Errors encountered on dev environment&lt;/h1&gt;
+
+&lt;p&gt;When I tried using &lt;a href=&quot;https://dc7-dev2.anu.edu.au:8443/DataCommons/&quot;&gt;the dev site&lt;/a&gt; I got the following errors:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;## Creating record at dc7-dev2.anu.edu.au:8443/DataCommons/rest/display/new?layout=def:display&amp;amp;tmplt=tmplt:1 ...
+## DEBUG:root:type: Collection
+## DEBUG:root:subType: dataset
+## DEBUG:root:ownerGroup: 6
+## DEBUG:root:name: Test Dataset 12/10/2013
+## DEBUG:root:email: ivan.hanigan@anu.edu.au
+## DEBUG:root:anzforSubject: 1601
+## Status: 302, (Found)
+## Body: 
+## Traceback (most recent call last):
+##   File &quot;dcuploader.py&quot;, line 103, in &amp;lt;module&amp;gt;
+##     main()
+##   File &quot;dcuploader.py&quot;, line 66, in main
+##     pid = anudc.create_record(metadatafile)
+##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 100, in create_record
+##     raise Exception(&quot;Unable to create record&quot;)
+## Exception: Unable to create record
+## &amp;gt;
+####################################################################
+# AND if I try comment out token and add u number and password (ps
+# I dont like hard coded passwords in scripts
+# tried u12344 and pwd, also [u12344] and &quot;u12344&quot; and 12344 etc etc
+
+##     Traceback (most recent call last):
+##   File &quot;dcuploader.py&quot;, line 103, in &amp;lt;module&amp;gt;
+##     main()
+##   File &quot;dcuploader.py&quot;, line 66, in main
+##     pid = anudc.create_record(metadatafile)
+##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 82, in create_record
+##     self.__add_auth_header(headers)
+##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 38, in __add_auth_header
+##     username_password = base64.encodestring(&quot;%s:%s&quot; % (username, password)).replace('\n', '')
+##   File &quot;/usr/lib/python3.2/base64.py&quot;, line 353, in encodestring
+##     return encodebytes(s)
+##   File &quot;/usr/lib/python3.2/base64.py&quot;, line 341, in encodebytes
+##     raise TypeError(&quot;expected bytes, not %s&quot; % s.__class__.__name__)
+## TypeError: expected bytes, not str
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h1&gt;Notes&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I need to get the Keys.txt file that contains the full list of values that can be specified in this metadata.txt file.&lt;/li&gt;
+&lt;li&gt;Dev server not working?  I tried from public, ncephgis VPN and nceph local IP addresses.&lt;/li&gt;
+&lt;li&gt;Hardcoded password is bad idea&lt;/li&gt;
+&lt;li&gt;how does dataset get sent?&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>reml-and-rfigshare-part-2</title>
@@ -33,12 +159,12 @@ install_github(&quot;reml&quot;, &quot;ropensci&quot;)
 require(reml)
 install_github(&quot;rfigshare&quot;, &quot;ropensci&quot;)
 require(rfigshare)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+require(disentangle)
 # load
-#fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;,&quot;civst_gend_sector_eml.xml&quot;), package = &quot;disentangle&quot;)
-fpath &amp;lt;- &quot;inst/extdata&quot;
-fname &amp;lt;- &quot;civst_gend_sector_eml.xml&quot;
-setwd(fpath)
-obj &amp;lt;- eml_read(fname)
+fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;,&quot;civst_gend_sector_eml.xml&quot;), package = &quot;disentangle&quot;)
+setwd(dirname(fpath))
+obj &amp;lt;- eml_read(fpath)
 # clean
 obj
 # do
