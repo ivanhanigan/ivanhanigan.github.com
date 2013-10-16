@@ -4,13 +4,185 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-10-13T12:27:09+11:00</updated>
+ <updated>2013-10-16T15:25:52+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>spatially-structured-time-series-with-nmmaps</title>
+   <link href="http://schamberlain.github.com/2013/10/spatially-structured-time-series-with-nmmaps/"/>
+   <updated>2013-10-16T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/spatially-structured-time-series-with-nmmaps</id>
+   <content type="html">&lt;p&gt;I will use the NMMAPSlite datasets for a simple example of what I
+describe as &quot;Spatially Structured Timeseries&quot; as opposed to
+&quot;Spatio-Temporal&quot; which I think more explicitly includes spatial
+structure in the model.  &lt;a href=&quot;http://ivanhanigan.github.io/spatiotemporal-regression-models/&quot;&gt;See This Report&lt;/a&gt; for all the gory details.&lt;/p&gt;
+
+&lt;h1&gt;R Codes&lt;/h1&gt;
+
+&lt;!-- &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; --&gt;
+
+
+&lt;!-- &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; --&gt;
+
+
+&lt;!--                &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt; --&gt;
+
+
+&lt;!-- &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot; xml:lang=&quot;en&quot;&gt; --&gt;
+
+
+&lt;p&gt;&lt;head&gt;
+&lt;title&gt;Spatiotemporal Regression Modelling&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;Spatiotemporal Regression Modelling&quot;/&gt;
+&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-10-16T15:17+1100&quot;/&gt;
+&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
+
+
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = &quot;code-highlighted&quot;;
+     elem.className   = &quot;code-highlighted&quot;;
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;p&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Spatiotemporal Regression Modelling&lt;/h1&gt;
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Core Model&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2 Core Model Plots&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1&lt;/span&gt; Core Model&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #5F7F5F;&quot;&gt;################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;name:core&lt;/span&gt;
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;func&lt;/span&gt;
+setwd(&lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;~/projects/spatiotemporal-regression-models/NMMAPS-example&quot;&lt;/span&gt;)
+&lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;require&lt;/span&gt;(mgcv)
+&lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;require&lt;/span&gt;(splines)
+
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;load&lt;/span&gt;
+analyte &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(&lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;analyte.csv&quot;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;clean&lt;/span&gt;
+analyte$yy &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; substr(analyte$date,1,4)
+numYears&lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt;length(names(table(analyte$yy)))
+analyte$date &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; as.Date(analyte$date)
+analyte$time &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; as.numeric(analyte$date)
+analyte$agecat &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; factor(analyte$agecat,
+                          levels = c(&lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;under65&quot;&lt;/span&gt;,
+                              &lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;65to74&quot;&lt;/span&gt;, &lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;75p&quot;&lt;/span&gt;),
+                          ordered = &lt;span style=&quot;color: #7CB8BB;&quot;&gt;TRUE&lt;/span&gt;
+                          )
+
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;do&lt;/span&gt;
+fit &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; gam(cvd ~ s(tmax) + s(dptp) +
+           city + agecat +
+           s(time, k= 7*numYears, fx=T) +
+           offset(log(pop)),
+           data = analyte, family = poisson
+           )
+
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;plot of response functions&lt;/span&gt;
+png(&lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;images/nmmaps-eg-core.png&quot;&lt;/span&gt;, width = 1000, height = 750, res = 150)
+par(mfrow=c(2,3))
+plot(fit, all.terms = &lt;span style=&quot;color: #7CB8BB;&quot;&gt;TRUE&lt;/span&gt;)
+dev.off()
+
+
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;2&lt;/span&gt; Core Model Plots&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-2&quot;&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/nmmaps-eg-core.png&quot;  alt=&quot;images/nmmaps-eg-core.png&quot; /&gt;
+&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;
+&lt;/html&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>dc-uploader-and-ANU-DataCommons</title>

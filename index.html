@@ -54,6 +54,198 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/spatially-structured-time-series-with-nmmaps/" title="spatially-structured-time-series-with-nmmaps" rel="bookmark">spatially-structured-time-series-with-nmmaps</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I will use the NMMAPSlite datasets for a simple example of what I
+describe as "Spatially Structured Timeseries" as opposed to
+"Spatio-Temporal" which I think more explicitly includes spatial
+structure in the model.  <a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/">See This Report</a> for all the gory details.</p>
+
+<h1>R Codes</h1>
+
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+
+
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" -->
+
+
+<!--                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> -->
+
+
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> -->
+
+
+<p><head>
+<title>Spatiotemporal Regression Modelling</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Spatiotemporal Regression Modelling"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-10-16T15:17+1100"/>
+<meta name="author" content="Ivan Hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
+
+
+
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+
+<p></head>
+<body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">Spatiotemporal Regression Modelling</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Core Model</a></li>
+<li><a href="#sec-2">2 Core Model Plots</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1"><span class="section-number-4">1</span> Core Model</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+<pre class="src src-R"><span style="color: #5F7F5F;">################################################################</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">name:core</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">func</span>
+setwd(<span style="color: #CC9393;">"~/projects/spatiotemporal-regression-models/NMMAPS-example"</span>)
+<span style="color: #BFEBBF; font-weight: bold;">require</span>(mgcv)
+<span style="color: #BFEBBF; font-weight: bold;">require</span>(splines)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">load</span>
+analyte <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #CC9393;">"analyte.csv"</span>)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">clean</span>
+analyte$yy <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> substr(analyte$date,1,4)
+numYears<span style="color: #BFEBBF; font-weight: bold;">&lt;-</span>length(names(table(analyte$yy)))
+analyte$date <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> as.Date(analyte$date)
+analyte$time <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> as.numeric(analyte$date)
+analyte$agecat <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> factor(analyte$agecat,
+                          levels = c(<span style="color: #CC9393;">"under65"</span>,
+                              <span style="color: #CC9393;">"65to74"</span>, <span style="color: #CC9393;">"75p"</span>),
+                          ordered = <span style="color: #7CB8BB;">TRUE</span>
+                          )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">do</span>
+fit <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> gam(cvd ~ s(tmax) + s(dptp) +
+           city + agecat +
+           s(time, k= 7*numYears, fx=T) +
+           offset(log(pop)),
+           data = analyte, family = poisson
+           )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">plot of response functions</span>
+png(<span style="color: #CC9393;">"images/nmmaps-eg-core.png"</span>, width = 1000, height = 750, res = 150)
+par(mfrow=c(2,3))
+plot(fit, all.terms = <span style="color: #7CB8BB;">TRUE</span>)
+dev.off()
+
+
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2"><span class="section-number-4">2</span> Core Model Plots</h4>
+<div class="outline-text-4" id="text-2">
+
+<p><img src="images/nmmaps-eg-core.png"  alt="images/nmmaps-eg-core.png" />
+</p></div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/spatially-structured-time-series-with-nmmaps/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Oct 16 00:00:00 +1100 2013">16 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
     </h1>
     <div class="entry-content full-content">
@@ -528,128 +720,6 @@ time...."</li>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/" title="wickhams-tidy-tools-only-get-you-90-pct-the-way" rel="bookmark">wickhams-tidy-tools-only-get-you-90-pct-the-way</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h4>Hadley Wickham's tidy tools</h4>
-
-<p>In this video at 8 mins 50 seconds he says "these four tools do 90% of the job"</p>
-
-<ul>
-<li>subset,</li>
-<li>transform,</li>
-<li>summarise, and</li>
-<li>arrange</li>
-<li>TODO I noticed <a href="http://www.rstudio.com/training/curriculum/data-manipulation.html">at the website for an Rstudio  course</a> transform has been replaced by mutate as one of the "four basic verbs of data manipulation".</li>
-</ul>
-
-
-<iframe src="//player.vimeo.com/video/33727555" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-
-<p> <p><a href="http://vimeo.com/33727555">Tidy Data</a> from <a href="http://vimeo.com/user2150538">Drew Conway</a> on <a href="https://vimeo.com">Vimeo</a>.</p></p>
-
-<p>So I thought what's the other 10?  Here's a few contenders for my work:</p>
-
-<ul>
-<li>merge</li>
-<li>reshape::cast and reshape::melt</li>
-<li>unlist</li>
-<li>t() transpose</li>
-<li>sprintf or paste</li>
-</ul>
-
-
-<p></p>
-
-
-<h4>R-subset</h4>
-
-<pre><code># Filter rows by criteria
-subset(airquality, Temp &gt; 90, select = c(Ozone, Temp))
-
-## NB This is a convenience function intended for use interactively.  For
-## programming it is better to use the standard subsetting functions like
-## ‘[’, and in particular the non-standard evaluation of argument
-## ‘subset’ can have unanticipated consequences.
-
-with(airquality,
-     airquality[Temp &gt; 90, c("Ozone", "Temp")]
-     )
-
-# OR
-
-airquality[airquality$Temp &gt; 90,  c("Ozone", "Temp")]
-</code></pre>
-
-<h4>R-transform</h4>
-
-<pre><code># New columns that are functions of other columns       
-df &lt;- transform(airquality,
-                new = -Ozone,
-                Temp2 = (Temp-32)/1.8
-                )
-head(df)
-</code></pre>
-
-<h4>R-mutate</h4>
-
-<pre><code>require(plyr)
-# same thing as transform
-df &lt;- mutate(airquality, new = -Ozone, Temp = (Temp - 32) / 1.8)    
-# Things transform can't do
-df &lt;- mutate(airquality, Temp = (Temp - 32) / 1.8, OzT = Ozone / Temp)
-
-# mutate is rather faster than transform
-system.time(transform(baseball, avg_ab = ab / g))
-system.time(mutate(baseball, avg_ab = ab / g))
-</code></pre>
-
-<h4>R-summarise</h4>
-
-<pre><code># New data.frame where columns are functions of existing columns
-require(plyr)    
-df &lt;- ddply(.data = airquality,
-            .variables = "Month",
-            .fun = summarise,
-            tmax = max(Temp),
-            tav = mean(Temp),
-            ndays = length(unique(Day))
-            )
-head(df)
-</code></pre>
-
-<h4>R-arrange</h4>
-
-<pre><code># Re-order the rows of a data.frame
-df &lt;- arrange(airquality, Temp, Ozone)
-head(df)
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Oct 10 00:00:00 +1100 2013">10 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -700,103 +770,103 @@ head(df)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (7)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (6)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (2)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (3)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/ons">ons (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
                 <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
                 
                 <li><a href="/categories/python">python (1)</a></li>
                 
-                <li><a href="/categories/blogger">blogger (1)</a></li>
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
                 
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/gis">gis (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                <li><a href="/categories/data science">data science (1)</a></li>
                 
                 <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
                 
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (8)</a></li>
                 
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                <li><a href="/categories/overview">overview (4)</a></li>
                 
-                <li><a href="/categories/animation">animation (1)</a></li>
+                <li><a href="/categories/research methods">research methods (2)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (6)</a></li>
+                
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
                 
                 <li><a href="/categories/modelling">modelling (1)</a></li>
                 
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
                 <li><a href="/categories/tools">tools (1)</a></li>
                 
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
                 <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/suicide">suicide (1)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/gis">gis (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
                 
               </ul>
             </div>
@@ -805,6 +875,10 @@ head(df)
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2013/10/spatially-structured-time-series-with-nmmaps/" title="spatially-structured-time-series-with-nmmaps" rel="bookmark">spatially-structured-time-series-with-nmmaps</a>
+                </li>
                 
                 <li>
                   <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
