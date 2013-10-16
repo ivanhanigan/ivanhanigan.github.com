@@ -177,6 +177,50 @@ dev.off()
 			</item>
 		
 			<item>
+				<title>morpho-and-rfigshare</title>
+				<description>&lt;p&gt;In this Case Study I will use Morpho to compare directly with reml.&lt;/p&gt;
+
+&lt;h1&gt;Step one: Set up morpho&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Follow the instructions at the ASN SuperSite website and install Morpho 1.8 rather than latest version because it has technical issues that stop it from setting permissions.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&quot;&gt;Configure morpho&lt;/a&gt;.  (I will follow the ASN SuperSite instructions as a future Case Study will be to use their KNB Metacat service).&lt;/li&gt;
+&lt;li&gt;Do not configure to connect to the Metacat repository, will need a password to be assigned by ASN data manager.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Step 2: Look at the REML created metadata using Morpho&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho offers to open existing sets for modification.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code: get location of my example dataset&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(disentangle)
+fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;, &quot;civst_gend_sector.csv&quot;), package=&quot;disentangle&quot;)
+fpath
+dirname(fpath)
+# [1] &quot;/home/ivan_hanigan/Rlibs/disentangle/extdata&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho &gt; File &gt; import = civst_gend_sector_eml.xml&lt;/li&gt;
+&lt;li&gt;(not the figshare_civst_gend_sector_eml.xml that was created when sending to figshare)&lt;/li&gt;
+&lt;li&gt;Error encountered.  could not open metadata, open empty data package.  Offered to upgrade (unable to edit &gt; accepted)&lt;/li&gt;
+&lt;li&gt;unable to display data, empty data package will be shown&lt;/li&gt;
+&lt;li&gt;top menu &gt; Documentation &gt; Add/Edit ion
+
+&lt;h1&gt;Step 3: Create new datasets with Morpho&lt;/h1&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Mon Oct 14 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/morpho-and-rfigshare/</link>
+			</item>
+		
+			<item>
 				<title>dc-uploader-and-ANU-DataCommons</title>
 				<description>&lt;p&gt;In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.&lt;/p&gt;
 
@@ -184,7 +228,11 @@ dev.off()
 
 &lt;p&gt;You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.&lt;/p&gt;
 
-&lt;p&gt;change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443  (NOTE THAT I COULDNT CREATE RECORDS IN THE DEV SERVER)&lt;/p&gt;
+&lt;p&gt;change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.&lt;/p&gt;
+
+&lt;p&gt;Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.&lt;/p&gt;
+
+&lt;p&gt;You can look int the &quot;Keys.txt&quot; file that contains the full list of values that can be specified in this metadata.txt file.&lt;/p&gt;
 
 &lt;h4&gt;Code:&lt;/h4&gt;
 
@@ -206,8 +254,11 @@ cat(&quot;
 [metadata]
 type = Collection
 subType = dataset
-ownerGroup = 6
-name = Test Dataset 12/10/2013
+ownerGroup = 5
+# 6 on production, 5 on dev
+name = Civil Status, Gender and Activity Sector
+briefDesc = An example, fictional dataset for Decision Tree Models
+citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
 email = ivan.hanigan@anu.edu.au
 anzforSubject = 1601
 
@@ -232,70 +283,23 @@ system(&quot;python3 dcuploader.py -c metadata.txt&quot;)
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;h1&gt;go to the website&lt;/h1&gt;
-
-&lt;p&gt;Go to the production server at &lt;a href=&quot;https://datacommons.anu.edu.au:8443/DataCommons&quot;&gt;This Link&lt;/a&gt;
-This has created a new record in our account.&lt;/p&gt;
-
-&lt;p&gt;Looking at metadata.txt it has been modified with the new pid.&lt;/p&gt;
-
-&lt;h1&gt;Errors encountered on dev environment&lt;/h1&gt;
-
-&lt;p&gt;When I tried using &lt;a href=&quot;https://dc7-dev2.anu.edu.au:8443/DataCommons/&quot;&gt;the dev site&lt;/a&gt; I got the following errors:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;## Creating record at dc7-dev2.anu.edu.au:8443/DataCommons/rest/display/new?layout=def:display&amp;amp;tmplt=tmplt:1 ...
-## DEBUG:root:type: Collection
-## DEBUG:root:subType: dataset
-## DEBUG:root:ownerGroup: 6
-## DEBUG:root:name: Test Dataset 12/10/2013
-## DEBUG:root:email: ivan.hanigan@anu.edu.au
-## DEBUG:root:anzforSubject: 1601
-## Status: 302, (Found)
-## Body: 
-## Traceback (most recent call last):
-##   File &quot;dcuploader.py&quot;, line 103, in &amp;lt;module&amp;gt;
-##     main()
-##   File &quot;dcuploader.py&quot;, line 66, in main
-##     pid = anudc.create_record(metadatafile)
-##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 100, in create_record
-##     raise Exception(&quot;Unable to create record&quot;)
-## Exception: Unable to create record
-## &amp;gt;
-####################################################################
-# AND if I try comment out token and add u number and password (ps
-# I dont like hard coded passwords in scripts
-# tried u12344 and pwd, also [u12344] and &quot;u12344&quot; and 12344 etc etc
-
-##     Traceback (most recent call last):
-##   File &quot;dcuploader.py&quot;, line 103, in &amp;lt;module&amp;gt;
-##     main()
-##   File &quot;dcuploader.py&quot;, line 66, in main
-##     pid = anudc.create_record(metadatafile)
-##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 82, in create_record
-##     self.__add_auth_header(headers)
-##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 38, in __add_auth_header
-##     username_password = base64.encodestring(&quot;%s:%s&quot; % (username, password)).replace('\n', '')
-##   File &quot;/usr/lib/python3.2/base64.py&quot;, line 353, in encodestring
-##     return encodebytes(s)
-##   File &quot;/usr/lib/python3.2/base64.py&quot;, line 341, in encodebytes
-##     raise TypeError(&quot;expected bytes, not %s&quot; % s.__class__.__name__)
-## TypeError: expected bytes, not str
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h1&gt;Notes&lt;/h1&gt;
+&lt;h1&gt;What happened?&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;I need to get the Keys.txt file that contains the full list of values that can be specified in this metadata.txt file.&lt;/li&gt;
-&lt;li&gt;Dev server not working?  I tried from public, ncephgis VPN and nceph local IP addresses.&lt;/li&gt;
-&lt;li&gt;Hardcoded password is bad idea&lt;/li&gt;
-&lt;li&gt;how does dataset get sent?&lt;/li&gt;
+&lt;li&gt;Looking in the metadata.txt file it now has a pid like &quot;pid = test:3527&quot;&lt;/li&gt;
+&lt;li&gt;And we have created a new record in our account on the DataCommons server.&lt;/li&gt;
 &lt;/ul&gt;
 
+
+&lt;h1&gt;go to the website&lt;/h1&gt;
+
+&lt;p&gt;Now go to &lt;a href=&quot;https://dc7-dev2.anu.edu.au:8443/DataCommons/&quot;&gt;the dev site&lt;/a&gt; and you can continue editing the record manually in the browser.&lt;/p&gt;
+
+&lt;p&gt;Or if we have ironed out the wrinkles you could go straight to the production server at &lt;a href=&quot;https://datacommons.anu.edu.au:8443/DataCommons&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;Uploading the data&lt;/h1&gt;
+
+&lt;p&gt;The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.&lt;/p&gt;
 </description>
 				<published>Sun Oct 13 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons/</link>
@@ -1114,267 +1118,6 @@ My new understanding of the topic.&lt;/p&gt;&lt;/li&gt;
 </description>
 				<published>Sat Oct 05 00:00:00 +1000 2013</published>
 				<link>http://schamberlain.github.com/2013/10/reviewing-lessons/</link>
-			</item>
-		
-			<item>
-				<title>spatially-structured-timeseries-vs-spatiotemporal-modelling</title>
-				<description>&lt;p&gt;&lt;head&gt;
-&lt;title&gt;Spatiotemporal Regression Modelling&lt;/title&gt;
-&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=iso-8859-1&quot;/&gt;
-&lt;meta name=&quot;title&quot; content=&quot;Spatiotemporal Regression Modelling&quot;/&gt;
-&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
-&lt;meta name=&quot;generated&quot; content=&quot;2013-09-26T10:18+1000&quot;/&gt;
-&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
-&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
-&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
-
-
-
-&lt;script type=&quot;text/javascript&quot;&gt;
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = &quot;code-highlighted&quot;;
-     elem.className   = &quot;code-highlighted&quot;;
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]&gt;*///--&gt;
-&lt;/script&gt;
-
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;http://orgmode.org/mathjax/MathJax.js&quot;&gt;
-/**
- *
- * @source: http://orgmode.org/mathjax/MathJax.js
- *
- * @licstart  The following is the entire license notice for the
- *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- * Copyright (C) 2012-2013  MathJax
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @licend  The above is the entire license notice
- * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- */
-
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code below.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code below is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code below.
-*/
-&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
-    MathJax.Hub.Config({
-        // Only one of the two following lines, depending on user settings
-        // First allows browser-native MathML display, second forces HTML/CSS
-        //  config: [&quot;MMLorHTML.js&quot;], jax: [&quot;input/TeX&quot;],
-            jax: [&quot;input/TeX&quot;, &quot;output/HTML-CSS&quot;],
-        extensions: [&quot;tex2jax.js&quot;,&quot;TeX/AMSmath.js&quot;,&quot;TeX/AMSsymbols.js&quot;,
-                     &quot;TeX/noUndefined.js&quot;],
-        tex2jax: {
-            inlineMath: [ [&quot;\\(&quot;,&quot;\\)&quot;] ],
-            displayMath: [ ['$$','$$'], [&quot;\\[&quot;,&quot;\\]&quot;], [&quot;\\begin{displaymath}&quot;,&quot;\\end{displaymath}&quot;] ],
-            skipTags: [&quot;script&quot;,&quot;noscript&quot;,&quot;style&quot;,&quot;textarea&quot;,&quot;pre&quot;,&quot;code&quot;],
-            ignoreClass: &quot;tex2jax_ignore&quot;,
-            processEscapes: false,
-            processEnvironments: true,
-            preview: &quot;TeX&quot;
-        },
-        showProcessingMessages: true,
-        displayAlign: &quot;center&quot;,
-        displayIndent: &quot;2em&quot;,
-
-        &quot;HTML-CSS&quot;: {
-             scale: 100,
-             availableFonts: [&quot;STIX&quot;,&quot;TeX&quot;],
-             preferredFont: &quot;TeX&quot;,
-             webFont: &quot;TeX&quot;,
-             imageFont: &quot;TeX&quot;,
-             showMathMenu: true,
-        },
-        MMLorHTML: {
-             prefer: {
-                 MSIE:    &quot;MML&quot;,
-                 Firefox: &quot;MML&quot;,
-                 Opera:   &quot;HTML&quot;,
-                 other:   &quot;HTML&quot;
-             }
-        }
-    });
-/*]]&gt;*///--&gt;
-&lt;/script&gt;
-
-
-&lt;p&gt;&lt;/head&gt;
-&lt;body&gt;&lt;/p&gt;
-
-&lt;div id=&quot;preamble&quot;&gt;
-
-&lt;/div&gt;
-
-
-
-
-&lt;div id=&quot;content&quot;&gt;
-&lt;h1 class=&quot;title&quot;&gt;Spatiotemporal Regression Modelling&lt;/h1&gt;
-
-
-&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Spatially Structured Timeseries Vs Spatiotemporal Modelling&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 Spatially Structured Time Series&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 Spatiotemporal modelling&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; Spatially Structured Timeseries Vs Spatiotemporal Modelling&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
-
-&lt;p&gt;In my last post about &lt;a href=&quot;http://ivanhanigan.github.io/2013/09/reflections-bob-haining-update&quot;&gt;spatiotemporal regression modelling&lt;/a&gt; I mentioned that I am mostly interested in &quot;spatially structured time-series models&quot; rather than spatial models at a single point in time. By this I mean that we have several neighbouring areal units observed over a period of time. In this framework the general methods of time series modelling are used to control for temporal autocorrelation. However this makes the methods of spatial error and spatial lag models tricky because the spatial autocorrelation needs to be assessed at many points in time.
-&lt;/p&gt;
-&lt;p&gt;
-I want to expand more on this topic because I want to be clear that the organisation of the material I am aiming to bring to this notebook topic is not aimed at purely spatial regression models &lt;a href=&quot;https://geodacenter.asu.edu/spatial-lag-and&quot;&gt;(there is a lot of material and tools out there already for that)&lt;/a&gt;.  I am trying with these notes to document my learning steps toward integrating spatial methods with time-series methods to allow me to practice (and understand) spatiotemporal regression modelling.
-&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1&lt;/span&gt; Spatially Structured Time Series&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1&quot;&gt;
-
-&lt;p&gt;In &lt;a href=&quot;http://www.pnas.org/content/early/2012/08/08/1112965109.full.pdf+html&quot;&gt;my most successful previous attempt to conduct a spatiotemporal analysis of Suicide and Droughts&lt;/a&gt; I built on my knowledge of time-series regression models from single-city air pollution studies where the whole city is the unit of analysis and the temporal variation is modelled with controlling techniques for temporal autocorrelation.  These techniques are also valid for multi-city studies because it is pretty safe to assume the cities are all independent at each time point.  I structured my study by Eleven large zones (Census Statistical Divisions) of NSW and assumed each of these would vary over time independent of each other, and I fitted a zone-specific time trend and cycle. This is what I call &quot;spatially structured time-series&quot; modelling.  
-&lt;/p&gt;
-&lt;p&gt;
-I justify using this model in this case because aggregating up to these very large regions will diminish the possibility of spatial autocorrelation and because Droughts vary over large spatial zones too, we will not suffer from exposure misclassificaiton bias.
-&lt;/p&gt;
-&lt;p&gt;
-So this model is a simple time-series regression (with trend and seasonality) and an additional term for spatial Zone.
-&lt;/p&gt;
-
-
-\begin{eqnarray*}
-        log({\color{red} O_{ijk}})  &amp; = &amp; s({\color{red}ExposureVariable})  + {\color{blue} OtherExplanators}  \\
-        &amp; &amp;   + AgeGroup_{i} + Sex_{j} \\
-        &amp; &amp;   + {\color{blue} SpatialZone_{k}}  \\
-        &amp; &amp;  + sin(Time \times 2 \times \pi) + cos(Time \times 2 \times \pi) \\
-        &amp; &amp;  + Trend \\
-        &amp; &amp;   + offset({\color{blue} log(Pop_{ijk})})\\
-\end{eqnarray*}
-
-&lt;p&gt;
-Where:&lt;br/&gt;
-&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;\({\color{red}O_{ijk}}\) = Outcome (counts) by Age\(_{i}\), Sex\(_{j}\) and SpatialZone\(_{k}\) &lt;br/&gt;
-&lt;/li&gt;
-&lt;li&gt;{\color{red}ExposureVariable} = Data with {\color{red}Restrictive Intellectual Property~(IP)} &lt;br/&gt;
-&lt;/li&gt;
-&lt;li&gt;{\color{blue}OtherExplanators} = Other {\color{blue}Less Restricted}  Explanatory variables &lt;br/&gt;
-&lt;/li&gt;
-&lt;li&gt;s( ) = penalized regression splines &lt;br/&gt;
-&lt;/li&gt;
-&lt;li&gt;\({\color{blue} SpatialZone_{k}}\)  = {\color{blue} Less Restricted} data representing the \(SpatialZone_{k}\)  &lt;br/&gt;
-&lt;/li&gt;
-&lt;li&gt;Trend = Longterm smooth trend(s) &lt;br/&gt;
-&lt;/li&gt;
-&lt;li&gt;\({\color{blue}Pop_{ijk}}\) = interpolated Census populations, by time in each group&lt;br/&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2&lt;/span&gt; &lt;span class=&quot;todo TODO&quot;&gt;TODO&lt;/span&gt; Spatiotemporal modelling&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2&quot;&gt;
-
-&lt;p&gt;In contrast to the above model for modelling exposures that have fine resolution spatial variation (such as air pollution) the exposure misclassification effect of aggregating up to very large spatial zones will conteract the benefits of avoiding spatially autocorrelated errors and this might be unacceptable for certain research questions.  Therefore it is important to move toward a spatiotemporal regression model that replaces the \(SpatialZone_{k}\) term with a more spatial error or spatial lag approach.
-&lt;/p&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;p&gt;&lt;/body&gt;
-&lt;/html&gt;&lt;/p&gt;
-</description>
-				<published>Thu Sep 26 00:00:00 +1000 2013</published>
-				<link>http://schamberlain.github.com/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/</link>
 			</item>
 		
 	</channel>

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - two-main-types-of-data-documentation-workflow</title>
+    <title>Ivan Hanigan - morpho-and-rfigshare</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
+    <a href="/2013/10/morpho-and-rfigshare/" title="morpho-and-rfigshare" rel="bookmark">morpho-and-rfigshare</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,65 +55,41 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>This post introduces a new series of blog posts in which I want to experiment with a few tools for data documentation, which I'll present as Case Studies.  This series of posts will be pitched to an audience mixture of data librarians and data analysts.</p>
+    <p>In this Case Study I will use Morpho to compare directly with reml.</p>
 
-<p>Data documentation occurs in a spectrum from simple notes through to elaborate systems.  I've been working on a conceptual framework about how the actual process can be done in two distinct ways:</p>
+<h1>Step one: Set up morpho</h1>
 
 <ul>
-<li>Graphical User Interface (GUI) solutions</li>
-<li>Programmatic (Scripted/Automagic) solutions</li>
+<li>Follow the instructions at the ASN SuperSite website and install Morpho 1.8 rather than latest version because it has technical issues that stop it from setting permissions.</li>
+<li><a href="http://www.tern-supersites.net.au/index.php/data/repository-tutorial">Configure morpho</a>.  (I will follow the ASN SuperSite instructions as a future Case Study will be to use their KNB Metacat service).</li>
+<li>Do not configure to connect to the Metacat repository, will need a password to be assigned by ASN data manager.</li>
 </ul>
 
 
-<p>I think the GUI tools are in general pretty user friendly and useful
-for simple projects with only a small number of datasets, but have a
-major drawback for the challenge of heterogeneous data integration.  I
-think the problem is expressed nicely <a href="http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html">In This Post By Carl Boettiger</a>  in reference to Morpho:</p>
+<h1>Step 2: Look at the REML created metadata using Morpho</h1>
 
 <ul>
-<li>"looks like a rather useful if tedious tool for generating EML
-files. Unfortunately, without the ability to script inputs or
-automatically detect existing data structures, we are forced through
-the rather arduous process of adding all metadata annotation each
-time...."</li>
-<li>"...A package could also provide utilities to generate EML from R objects, leveraging the metadata implicit in R objects that is not present in a CSV (in which there is no built-in notion of whether  a column is numeric or character string, what missing value characters it uses, or really if it is consistent at all. Avoiding manual specification of these things makes the metadata annotation less tedious as well."</li>
+<li>Morpho offers to open existing sets for modification.</li>
 </ul>
 
 
-<h1>Centralised Repository, Distributed Users</h1>
+<h4>Code: get location of my example dataset</h4>
 
-<p>A key aspect of current approaches is the existence of a centralised data management system.  All the examples I consider include at least a metadata catalogue and some also include a data repository.  An additional feature sometimes exists for managing users permissions.</p>
-
-<p>The relationship between users and centralised services is a really complicated space, but essentially consists of the ability for users to create the documentation and push it (perhaps along with the data) to the metadata catalogue  and/or repository.  So given these assumptions I propose the following types of arrangement:</p>
-
-<ul>
-<li>user sends metadata to metadata catalogue</li>
-<li>user sends metadata and data to metadata catalogue and data repository</li>
-<li>user sends metadata and data and permissions information to metadata catalogue and data repository and permissions system.</li>
-</ul>
-
-
-<p>The Case Studies I've identified that I want to explore are listed below, names follow the format 'client tool'-and-'data repository or metadata catalogue'-and-optionally-'permissions system':</p>
-
-<h4>Programmatic solutions</h4>
+<pre><code>require(disentangle)
+fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"), package="disentangle")
+fpath
+dirname(fpath)
+# [1] "/home/ivan_hanigan/Rlibs/disentangle/extdata"
+</code></pre>
 
 <ul>
-<li>reml-and-rfigshare</li>
-<li>reml-and-knb (when/if this becomes available)</li>
-<li>make_ddixml-and-ddiindex-and-orapus</li>
-<li>r2ddi-ddiindex</li>
-<li>dc-uploader-and-ANU-DataCommons</li>
-<li>dc-uploader-and-RDA</li>
-</ul>
+<li>Morpho > File > import = civst_gend_sector_eml.xml</li>
+<li>(not the figshare_civst_gend_sector_eml.xml that was created when sending to figshare)</li>
+<li>Error encountered.  could not open metadata, open empty data package.  Offered to upgrade (unable to edit > accepted)</li>
+<li>unable to display data, empty data package will be shown</li>
+<li>top menu > Documentation > Add/Edit ion
 
-
-<h4>Graphical User Interface solutions</h4>
-
-<ul>
-<li>morpho-and-knb-metacat</li>
-<li>nesstar-publisher-and-nesstar-and-whatever-Steve-calls-the-ADA-permissions-system</li>
-<li>xmet-and-Australian-Spatial-Data-Directory</li>
-<li>sdmx-editor-and-sdmx-registry</li>
+<h1>Step 3: Create new datasets with Morpho</h1></li>
 </ul>
 
 
@@ -135,7 +111,7 @@ time...."</li>
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Fri Oct 11 00:00:00 +1100 2013">11 Oct 2013</abbr>
+      <abbr class="published" title="Mon Oct 14 00:00:00 +1100 2013">14 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -149,7 +125,7 @@ time...."</li>
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/10/two-main-types-of-data-documentation-workflow/";
+    var disqus_url = "http://ivanhanigan.github.com/2013/10/morpho-and-rfigshare/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

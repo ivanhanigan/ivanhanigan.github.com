@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-10-16T16:01:56+11:00</updated>
+ <updated>2013-10-16T16:41:34+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -185,6 +185,51 @@ dev.off()
  </entry>
  
  <entry>
+   <title>morpho-and-rfigshare</title>
+   <link href="http://ivanhanigan.github.com/2013/10/morpho-and-rfigshare/"/>
+   <updated>2013-10-14T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/10/morpho-and-rfigshare</id>
+   <content type="html">&lt;p&gt;In this Case Study I will use Morpho to compare directly with reml.&lt;/p&gt;
+
+&lt;h1&gt;Step one: Set up morpho&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Follow the instructions at the ASN SuperSite website and install Morpho 1.8 rather than latest version because it has technical issues that stop it from setting permissions.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&quot;&gt;Configure morpho&lt;/a&gt;.  (I will follow the ASN SuperSite instructions as a future Case Study will be to use their KNB Metacat service).&lt;/li&gt;
+&lt;li&gt;Do not configure to connect to the Metacat repository, will need a password to be assigned by ASN data manager.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Step 2: Look at the REML created metadata using Morpho&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho offers to open existing sets for modification.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code: get location of my example dataset&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(disentangle)
+fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;, &quot;civst_gend_sector.csv&quot;), package=&quot;disentangle&quot;)
+fpath
+dirname(fpath)
+# [1] &quot;/home/ivan_hanigan/Rlibs/disentangle/extdata&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho &gt; File &gt; import = civst_gend_sector_eml.xml&lt;/li&gt;
+&lt;li&gt;(not the figshare_civst_gend_sector_eml.xml that was created when sending to figshare)&lt;/li&gt;
+&lt;li&gt;Error encountered.  could not open metadata, open empty data package.  Offered to upgrade (unable to edit &gt; accepted)&lt;/li&gt;
+&lt;li&gt;unable to display data, empty data package will be shown&lt;/li&gt;
+&lt;li&gt;top menu &gt; Documentation &gt; Add/Edit ion
+
+&lt;h1&gt;Step 3: Create new datasets with Morpho&lt;/h1&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
    <title>dc-uploader-and-ANU-DataCommons</title>
    <link href="http://ivanhanigan.github.com/2013/10/dc-uploader-and-ANU-DataCommons/"/>
    <updated>2013-10-13T00:00:00+11:00</updated>
@@ -195,7 +240,11 @@ dev.off()
 
 &lt;p&gt;You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.&lt;/p&gt;
 
-&lt;p&gt;change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443  (NOTE THAT I COULDNT CREATE RECORDS IN THE DEV SERVER)&lt;/p&gt;
+&lt;p&gt;change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.&lt;/p&gt;
+
+&lt;p&gt;Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.&lt;/p&gt;
+
+&lt;p&gt;You can look int the &quot;Keys.txt&quot; file that contains the full list of values that can be specified in this metadata.txt file.&lt;/p&gt;
 
 &lt;h4&gt;Code:&lt;/h4&gt;
 
@@ -217,8 +266,11 @@ cat(&quot;
 [metadata]
 type = Collection
 subType = dataset
-ownerGroup = 6
-name = Test Dataset 12/10/2013
+ownerGroup = 5
+# 6 on production, 5 on dev
+name = Civil Status, Gender and Activity Sector
+briefDesc = An example, fictional dataset for Decision Tree Models
+citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
 email = ivan.hanigan@anu.edu.au
 anzforSubject = 1601
 
@@ -243,70 +295,23 @@ system(&quot;python3 dcuploader.py -c metadata.txt&quot;)
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;h1&gt;go to the website&lt;/h1&gt;
-
-&lt;p&gt;Go to the production server at &lt;a href=&quot;https://datacommons.anu.edu.au:8443/DataCommons&quot;&gt;This Link&lt;/a&gt;
-This has created a new record in our account.&lt;/p&gt;
-
-&lt;p&gt;Looking at metadata.txt it has been modified with the new pid.&lt;/p&gt;
-
-&lt;h1&gt;Errors encountered on dev environment&lt;/h1&gt;
-
-&lt;p&gt;When I tried using &lt;a href=&quot;https://dc7-dev2.anu.edu.au:8443/DataCommons/&quot;&gt;the dev site&lt;/a&gt; I got the following errors:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;## Creating record at dc7-dev2.anu.edu.au:8443/DataCommons/rest/display/new?layout=def:display&amp;amp;tmplt=tmplt:1 ...
-## DEBUG:root:type: Collection
-## DEBUG:root:subType: dataset
-## DEBUG:root:ownerGroup: 6
-## DEBUG:root:name: Test Dataset 12/10/2013
-## DEBUG:root:email: ivan.hanigan@anu.edu.au
-## DEBUG:root:anzforSubject: 1601
-## Status: 302, (Found)
-## Body: 
-## Traceback (most recent call last):
-##   File &quot;dcuploader.py&quot;, line 103, in &amp;lt;module&amp;gt;
-##     main()
-##   File &quot;dcuploader.py&quot;, line 66, in main
-##     pid = anudc.create_record(metadatafile)
-##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 100, in create_record
-##     raise Exception(&quot;Unable to create record&quot;)
-## Exception: Unable to create record
-## &amp;gt;
-####################################################################
-# AND if I try comment out token and add u number and password (ps
-# I dont like hard coded passwords in scripts
-# tried u12344 and pwd, also [u12344] and &quot;u12344&quot; and 12344 etc etc
-
-##     Traceback (most recent call last):
-##   File &quot;dcuploader.py&quot;, line 103, in &amp;lt;module&amp;gt;
-##     main()
-##   File &quot;dcuploader.py&quot;, line 66, in main
-##     pid = anudc.create_record(metadatafile)
-##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 82, in create_record
-##     self.__add_auth_header(headers)
-##   File &quot;/home/ivan_hanigan/tools/dcupload/anudclib.py&quot;, line 38, in __add_auth_header
-##     username_password = base64.encodestring(&quot;%s:%s&quot; % (username, password)).replace('\n', '')
-##   File &quot;/usr/lib/python3.2/base64.py&quot;, line 353, in encodestring
-##     return encodebytes(s)
-##   File &quot;/usr/lib/python3.2/base64.py&quot;, line 341, in encodebytes
-##     raise TypeError(&quot;expected bytes, not %s&quot; % s.__class__.__name__)
-## TypeError: expected bytes, not str
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h1&gt;Notes&lt;/h1&gt;
+&lt;h1&gt;What happened?&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;I need to get the Keys.txt file that contains the full list of values that can be specified in this metadata.txt file.&lt;/li&gt;
-&lt;li&gt;Dev server not working?  I tried from public, ncephgis VPN and nceph local IP addresses.&lt;/li&gt;
-&lt;li&gt;Hardcoded password is bad idea&lt;/li&gt;
-&lt;li&gt;how does dataset get sent?&lt;/li&gt;
+&lt;li&gt;Looking in the metadata.txt file it now has a pid like &quot;pid = test:3527&quot;&lt;/li&gt;
+&lt;li&gt;And we have created a new record in our account on the DataCommons server.&lt;/li&gt;
 &lt;/ul&gt;
 
+
+&lt;h1&gt;go to the website&lt;/h1&gt;
+
+&lt;p&gt;Now go to &lt;a href=&quot;https://dc7-dev2.anu.edu.au:8443/DataCommons/&quot;&gt;the dev site&lt;/a&gt; and you can continue editing the record manually in the browser.&lt;/p&gt;
+
+&lt;p&gt;Or if we have ironed out the wrinkles you could go straight to the production server at &lt;a href=&quot;https://datacommons.anu.edu.au:8443/DataCommons&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;Uploading the data&lt;/h1&gt;
+
+&lt;p&gt;The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.&lt;/p&gt;
 </content>
  </entry>
  
