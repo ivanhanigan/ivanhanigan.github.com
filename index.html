@@ -316,6 +316,12 @@ dirname(fpath)
     <div class="entry-content full-content">
       <p>In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.</p>
 
+<h1>What does it do?</h1>
+
+<p>The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.</p>
+
+<p>Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.</p>
+
 <h1>Create the metadata.txt</h1>
 
 <p>You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.</p>
@@ -392,6 +398,14 @@ system("python3 dcuploader.py -c metadata.txt")
 <h1>Uploading the data</h1>
 
 <p>The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.</p>
+
+<h1>Notes</h1>
+
+<ul>
+<li><p>After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.</p></li>
+<li><p>Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.</p></li>
+</ul>
+
 
       <div class="clear"></div>
     </div>
@@ -706,103 +720,103 @@ str(dataTable(obj))
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
                 <li><a href="/categories/workflow">workflow (3)</a></li>
                 
                 <li><a href="/categories/outlines">outlines (1)</a></li>
                 
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (2)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (8)</a></li>
-                
-                <li><a href="/categories/gis">gis (1)</a></li>
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
                 
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
-                
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
                 
                 <li><a href="/categories/versions">versions (1)</a></li>
                 
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
                 
                 <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/replication">replication (1)</a></li>
                 
-                <li><a href="/categories/data documentation">data documentation (7)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (8)</a></li>
                 
-                <li><a href="/categories/links">links (1)</a></li>
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                <li><a href="/categories/climate change">climate change (1)</a></li>
                 
-                <li><a href="/categories/tools">tools (1)</a></li>
+                <li><a href="/categories/systems">systems (1)</a></li>
                 
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                <li><a href="/categories/blogger">blogger (1)</a></li>
                 
                 <li><a href="/categories/ons">ons (1)</a></li>
                 
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
                 <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (7)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/python">python (1)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (2)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
                 
                 <li><a href="/categories/suicide">suicide (1)</a></li>
                 
                 <li><a href="/categories/kepler">kepler (1)</a></li>
                 
-                <li><a href="/categories/python">python (1)</a></li>
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/modelling">modelling (1)</a></li>
+                
+                <li><a href="/categories/gis">gis (1)</a></li>
                 
                 <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
                 
-                <li><a href="/categories/organising">organising (2)</a></li>
+                <li><a href="/categories/make">make (1)</a></li>
                 
               </ul>
             </div>

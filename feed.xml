@@ -224,6 +224,12 @@ dirname(fpath)
 				<title>dc-uploader-and-ANU-DataCommons</title>
 				<description>&lt;p&gt;In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.&lt;/p&gt;
 
+&lt;h1&gt;What does it do?&lt;/h1&gt;
+
+&lt;p&gt;The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.&lt;/p&gt;
+
+&lt;p&gt;Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.&lt;/p&gt;
+
 &lt;h1&gt;Create the metadata.txt&lt;/h1&gt;
 
 &lt;p&gt;You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.&lt;/p&gt;
@@ -300,6 +306,14 @@ system(&quot;python3 dcuploader.py -c metadata.txt&quot;)
 &lt;h1&gt;Uploading the data&lt;/h1&gt;
 
 &lt;p&gt;The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.&lt;/p&gt;
+
+&lt;h1&gt;Notes&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
 </description>
 				<published>Sun Oct 13 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons/</link>
