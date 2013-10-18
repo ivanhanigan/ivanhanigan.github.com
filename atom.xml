@@ -4,13 +4,1394 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-09-30T08:19:07+10:00</updated>
+ <updated>2013-10-18T15:11:20+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>spatially-structured-time-series-with-nmmaps</title>
+   <link href="http://schamberlain.github.com/2013/10/spatially-structured-time-series-with-nmmaps/"/>
+   <updated>2013-10-16T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/spatially-structured-time-series-with-nmmaps</id>
+   <content type="html">&lt;p&gt;I will use the NMMAPSlite datasets for a simple example of what I
+describe as &quot;Spatially Structured Timeseries&quot; as opposed to
+&quot;Spatio-Temporal&quot; which I think more explicitly includes spatial
+structure in the model.  &lt;a href=&quot;http://ivanhanigan.github.io/spatiotemporal-regression-models/&quot;&gt;See This Report&lt;/a&gt; for all the gory details.&lt;/p&gt;
+
+&lt;h1&gt;R Codes&lt;/h1&gt;
+
+&lt;!-- &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; --&gt;
+
+
+&lt;!-- &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; --&gt;
+
+
+&lt;!--                &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt; --&gt;
+
+
+&lt;!-- &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot; xml:lang=&quot;en&quot;&gt; --&gt;
+
+
+&lt;p&gt;&lt;head&gt;
+&lt;title&gt;Spatiotemporal Regression Modelling&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;Spatiotemporal Regression Modelling&quot;/&gt;
+&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-10-16T15:17+1100&quot;/&gt;
+&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
+
+
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = &quot;code-highlighted&quot;;
+     elem.className   = &quot;code-highlighted&quot;;
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;p&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Spatiotemporal Regression Modelling&lt;/h1&gt;
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Core Model&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2 Core Model Plots&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1&lt;/span&gt; Core Model&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #5F7F5F;&quot;&gt;################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;name:core&lt;/span&gt;
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;func&lt;/span&gt;
+setwd(&lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;~/projects/spatiotemporal-regression-models/NMMAPS-example&quot;&lt;/span&gt;)
+&lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;require&lt;/span&gt;(mgcv)
+&lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;require&lt;/span&gt;(splines)
+
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;load&lt;/span&gt;
+analyte &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(&lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;analyte.csv&quot;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;clean&lt;/span&gt;
+analyte$yy &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; substr(analyte$date,1,4)
+numYears&lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt;length(names(table(analyte$yy)))
+analyte$date &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; as.Date(analyte$date)
+analyte$time &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; as.numeric(analyte$date)
+analyte$agecat &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; factor(analyte$agecat,
+                          levels = c(&lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;under65&quot;&lt;/span&gt;,
+                              &lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;65to74&quot;&lt;/span&gt;, &lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;75p&quot;&lt;/span&gt;),
+                          ordered = &lt;span style=&quot;color: #7CB8BB;&quot;&gt;TRUE&lt;/span&gt;
+                          )
+
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;do&lt;/span&gt;
+fit &lt;span style=&quot;color: #BFEBBF; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; gam(cvd ~ s(tmax) + s(dptp) +
+           city + agecat +
+           s(time, k= 7*numYears, fx=T) +
+           offset(log(pop)),
+           data = analyte, family = poisson
+           )
+
+&lt;span style=&quot;color: #5F7F5F;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #7F9F7F;&quot;&gt;plot of response functions&lt;/span&gt;
+png(&lt;span style=&quot;color: #CC9393;&quot;&gt;&quot;images/nmmaps-eg-core.png&quot;&lt;/span&gt;, width = 1000, height = 750, res = 150)
+par(mfrow=c(2,3))
+plot(fit, all.terms = &lt;span style=&quot;color: #7CB8BB;&quot;&gt;TRUE&lt;/span&gt;)
+dev.off()
+
+
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;2&lt;/span&gt; Core Model Plots&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-2&quot;&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/nmmaps-eg-core.png&quot;  alt=&quot;/images/nmmaps-eg-core.png&quot; /&gt;
+&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;
+&lt;/html&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>morpho-and-rfigshare</title>
+   <link href="http://schamberlain.github.com/2013/10/morpho-and-rfigshare/"/>
+   <updated>2013-10-14T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/morpho-and-rfigshare</id>
+   <content type="html">&lt;p&gt;In this Case Study I will use Morpho to compare directly with reml.&lt;/p&gt;
+
+&lt;h1&gt;Step one: Set up morpho&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Follow the instructions at the ASN SuperSite website and install Morpho 1.8 rather than latest version because it has technical issues that stop it from setting permissions.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&quot;&gt;Configure morpho&lt;/a&gt;.  (I will follow the ASN SuperSite instructions as a future Case Study will be to use their KNB Metacat service).&lt;/li&gt;
+&lt;li&gt;Do not configure to connect to the Metacat repository, will need a password to be assigned by ASN data manager.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Step 2: Look at the REML created metadata using Morpho&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho offers to open existing sets for modification.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code: get location of my example dataset&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(disentangle)
+fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;, &quot;civst_gend_sector.csv&quot;), package=&quot;disentangle&quot;)
+fpath
+dirname(fpath)
+# [1] &quot;/home/ivan_hanigan/Rlibs/disentangle/extdata&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho &gt; File &gt; import = civst_gend_sector_eml.xml&lt;/li&gt;
+&lt;li&gt;(not the figshare_civst_gend_sector_eml.xml that was created when sending to figshare)&lt;/li&gt;
+&lt;li&gt;Error encountered.  could not open metadata, open empty data package.  Offered to upgrade (unable to edit &gt; accepted)&lt;/li&gt;
+&lt;li&gt;unable to display data, empty data package will be shown&lt;/li&gt;
+&lt;li&gt;top menu &gt; Documentation &gt; Add/Edit ion
+
+&lt;h1&gt;Step 3: Create new datasets with Morpho&lt;/h1&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>dc-uploader-and-ANU-DataCommons</title>
+   <link href="http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons/"/>
+   <updated>2013-10-13T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons</id>
+   <content type="html">&lt;p&gt;In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.&lt;/p&gt;
+
+&lt;h1&gt;What does it do?&lt;/h1&gt;
+
+&lt;p&gt;The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.&lt;/p&gt;
+
+&lt;p&gt;Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.&lt;/p&gt;
+
+&lt;h1&gt;Create the metadata.txt&lt;/h1&gt;
+
+&lt;p&gt;You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.&lt;/p&gt;
+
+&lt;p&gt;change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.&lt;/p&gt;
+
+&lt;p&gt;Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.&lt;/p&gt;
+
+&lt;p&gt;You can look int the &quot;Keys.txt&quot; file that contains the full list of values that can be specified in this metadata.txt file.&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;setwd(&quot;~/tools/dcupload&quot;)
+sink(&quot;metadata.txt&quot;)
+cat(&quot;
+# This file, referred to as a collection parameter file, consists of
+# data in key=value pairs. This data is sent to the ANU Data Commons
+# to create a collection, establish relations with other records,
+# and/or upload files to those collections.
+
+# The metadata section consists of metadata for use in creation (not
+# for modification) of record metadata in ANU Data Commons. The
+# following fields are required for the creation of a record. The file
+# Keys.txt contains the full list of values that can be specified in
+# this file. Based on this information below, a collection record of
+# type databaset with the title &quot;Test Collection 6/05/2013&quot; will be
+# created owned by Meteorology and Health group.
+[metadata]
+type = Collection
+subType = dataset
+ownerGroup = 5
+# 6 on production, 5 on dev
+name = Civil Status, Gender and Activity Sector
+briefDesc = An example, fictional dataset for Decision Tree Models
+citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
+email = ivan.hanigan@anu.edu.au
+anzforSubject = 1601
+
+# The relations section allows you to specify the relation this record
+# has with other records in the system.  Currently relations with NLA
+# identifiers is not supported.
+[relations]
+isOutputOf = anudc:123
+
+# This section contains a line of the form 'pid = anudc:123' once a
+# record has been created so executing the uploader script with the
+# same collection parameter file doesnt create a new record with the
+# same metadata.
+[pid]
+&quot;)
+sink()
+
+# run the dcload
+system(&quot;python3 dcuploader.py -c metadata.txt&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;What happened?&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Looking in the metadata.txt file it now has a pid like &quot;pid = test:3527&quot;&lt;/li&gt;
+&lt;li&gt;And we have created a new record in our account on the DataCommons server.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;go to the website&lt;/h1&gt;
+
+&lt;p&gt;Now go to &lt;a href=&quot;https://dc7-dev2.anu.edu.au:8443/DataCommons/&quot;&gt;the dev site&lt;/a&gt; and you can continue editing the record manually in the browser.&lt;/p&gt;
+
+&lt;p&gt;Or if we have ironed out the wrinkles you could go straight to the production server at &lt;a href=&quot;https://datacommons.anu.edu.au:8443/DataCommons&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;Uploading the data&lt;/h1&gt;
+
+&lt;p&gt;The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.&lt;/p&gt;
+
+&lt;h1&gt;Notes&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>reml-and-rfigshare-part-2</title>
+   <link href="http://schamberlain.github.com/2013/10/reml-and-rfigshare-part-2/"/>
+   <updated>2013-10-12T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/reml-and-rfigshare-part-2</id>
+   <content type="html">&lt;p&gt;In the last post I explored the functionality of reml.
+This time I will try to send data to figshare.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;First follow &lt;a href=&quot;https://github.com/ropensci/rfigshare&quot;&gt;These Instructions&lt;/a&gt; to get rfigshare set up.  In particular store your figshare credentials in ~/.Rprofile&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:reml-and-rfigshare-part-2&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# func
+require(devtools)
+install_github(&quot;reml&quot;, &quot;ropensci&quot;)
+require(reml)
+install_github(&quot;rfigshare&quot;, &quot;ropensci&quot;)
+require(rfigshare)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+require(disentangle)
+# load
+fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;,&quot;civst_gend_sector_eml.xml&quot;), package = &quot;disentangle&quot;)
+setwd(dirname(fpath))
+obj &amp;lt;- eml_read(fpath)
+# clean
+obj
+# do
+
+## STEP 1: find one of the preset categories
+# available. We can ask the API for
+# a list of all the categories:
+list &amp;lt;- fs_category_list()
+list[grep(&quot;Survey&quot;, list)]
+
+## STEP 2: PUBLISH TO FIGSHARE
+id &amp;lt;- eml_publish(fname,
+                  description=&quot;Example EML
+                    A fictional dataset&quot;,
+                  categories = &quot;Survey results&quot;,
+                  tags = &quot;EML&quot;,
+                  destination=&quot;figshare&quot;
+                  )
+# there are several warnings
+# but go to figshare and it has sent the metadata and data OK
+
+# make public using either the figshare web interface, the
+# rfigshare package (using fs_make_public(id)) or just by adding
+# the argument visibility = TRUE to the above eml_publish
+fs_make_public(id)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;Now these data are on figshare&lt;/h1&gt;
+
+&lt;p&gt;Now I have published the data they are visible and have a DOI&lt;/p&gt;
+
+&lt;iframe src=&quot;http://wl.figshare.com/articles/820158/embed?show_title=1&quot; width=&quot;568&quot; height=&quot;157&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>data-documentation-case-study-reml-and-rfigshare</title>
+   <link href="http://schamberlain.github.com/2013/10/data-documentation-case-study-reml-and-rfigshare/"/>
+   <updated>2013-10-12T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/data-documentation-case-study-reml-and-rfigshare</id>
+   <content type="html">&lt;h4&gt;Case Study: reml-and-rfigshare&lt;/h4&gt;
+
+&lt;p&gt;First we will look at the work of the ROpenSci team and the reml
+package.  In the vignette they show how to publish data to figshare
+using rfigshare package.  &lt;a href=&quot;http://figshare.com/&quot;&gt;figshare&lt;/a&gt; is a site
+where scientists can share datasets/figures/code. The goals are to
+encourage researchers to share negative results and make reproducible
+research efforts user-friendly. It also uses a tagging system for
+scientific research discovery. They give you unlimited public space
+and 1GB of private space.&lt;/p&gt;
+
+&lt;p&gt;Start by getting the reml package.&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# func
+require(devtools)
+install_github(&quot;reml&quot;, &quot;ropensci&quot;)
+require(reml)
+?eml_write
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;This is the Top-level API function for writing eml.  Help page is a bit sparse.  See &lt;a href=&quot;https://github.com/ropensci/reml&quot;&gt;This Link&lt;/a&gt; for more.  For eg &quot;for convenience, dat could simply be a data.frame and reml will launch it's metadata wizard to assist in constructing the metadata based on the data.frame provided. While this may be helpful starting out, regular users will find it faster to define the columns and units directly in the format above.&quot;&lt;/p&gt;
+
+&lt;p&gt;Now load up the test data for classification trees I described in &lt;a href=&quot;/2013/10/test-data-for-classification-trees/&quot;&gt;This Post&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;) # for the data
+                                             # described in prev post
+
+# load
+fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;, &quot;civst_gend_sector.csv&quot;),
+                     package = &quot;disentangle&quot;
+                     )
+civst_gend_sector &amp;lt;- read.csv(fpath)
+
+# clean
+str(civst_gend_sector)
+
+# do
+eml_write(civst_gend_sector,
+          creator = &quot;Ivan Hanigan &amp;lt;ivanhanigan@gmail.com&amp;gt;&quot;)
+
+
+
+
+
+# Starts up the wizard, a section is shown below.  The wizard
+# prompts in the console and the user writes the answer.
+
+# Enter description for column 'civil_status':
+#  marriage status
+# column civil_status appears to contain categorical data.
+#  
+# Categories are divorced/widowed, married, single
+#  Please define each of the categories at the prompt
+# define 'divorced/widowed':
+# was once married
+# define 'married':
+# still married
+# define 'single':
+# never married
+
+# TODO I don't really know what activity_sector is.  I assumed
+# school because Categories are primary, secondary, tertiary.
+
+# this created &quot;metadata.xml&quot; and &quot;metadata.csv&quot;
+file.remove(c(&quot;metadata.xml&quot;,&quot;metadata.csv&quot;))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;
+This was a very minimal data documentation effort.  A bit more detail would be better.  Because I would now need to re-write all that in the wizard I will take the advice of the help file that &quot;regular users will find it faster to define the columns and units directly in the format&quot;&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;ds &amp;lt;- data.set(civst_gend_sector,
+               col.defs = c(&quot;Marriage status&quot;, &quot;sex&quot;, &quot;education&quot;, &quot;counts&quot;),
+               unit.defs = list(c(&quot;was once married&quot;,&quot;still married&quot;,&quot;never married&quot;),
+                   c(&quot;women&quot;, &quot;men&quot;),
+                   c(&quot;primary school&quot;,&quot;secondary school&quot;,&quot;tertiary school&quot;),
+                   c(&quot;persons&quot;))
+               )
+ds
+# this prints the dataset and the metadata
+# now run the EML function
+eml_write(ds, 
+          title = &quot;civst_gend_sector&quot;,  
+          description = &quot;An example, fictional dataset for Decision Tree Models&quot;,
+          creator = &quot;Ivan Hanigan &amp;lt;ivanhanigan@gmail.com&amp;gt;&quot;,
+          file = &quot;inst/extdata/civst_gend_sector_eml.xml&quot;
+          )
+# this created the xml and csv with out asking anything
+# but returned a
+## Warning message:
+## In `[&amp;lt;-.data.frame`(`*tmp*`, , value = list(civil_status = c(2L,  :
+##   Setting class(x) to NULL;   result will no longer be an S4 object
+
+# TODO investigate this?
+
+# now we can access the local EML
+obj &amp;lt;- eml_read(&quot;inst/extdata/civst_gend_sector_eml.xml&quot;)
+obj 
+str(dataTable(obj))
+# returns an error
+## Error in plyr::compact(lapply(slotNames(from), function(s) if (!isEmpty(slot(from,  (from attribute.R#300) : 
+##   subscript out of bounds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;Conclusions&lt;/h1&gt;
+
+&lt;p&gt;So this looks like a useful tool.  Next steps are to:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;look at sending these data to figshare&lt;/li&gt;
+&lt;li&gt;describe a really really REALLY simple workflow (3 lines? create metadata, eml_write, push to figshare)&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>two-main-types-of-data-documentation-workflow</title>
+   <link href="http://schamberlain.github.com/2013/10/two-main-types-of-data-documentation-workflow/"/>
+   <updated>2013-10-11T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/two-main-types-of-data-documentation-workflow</id>
+   <content type="html">&lt;p&gt;This post introduces a new series of blog posts in which I want to experiment with a few tools for data documentation, which I'll present as Case Studies.  This series of posts will be pitched to an audience mixture of data librarians and data analysts.&lt;/p&gt;
+
+&lt;p&gt;Data documentation occurs in a spectrum from simple notes through to elaborate systems.  I've been working on a conceptual framework about how the actual process can be done in two distinct ways:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Graphical User Interface (GUI) solutions&lt;/li&gt;
+&lt;li&gt;Programmatic (Scripted/Automagic) solutions&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;I think the GUI tools are in general pretty user friendly and useful
+for simple projects with only a small number of datasets, but have a
+major drawback for the challenge of heterogeneous data integration.  I
+think the problem is expressed nicely &lt;a href=&quot;http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html&quot;&gt;In This Post By Carl Boettiger&lt;/a&gt;  in reference to Morpho:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&quot;looks like a rather useful if tedious tool for generating EML
+files. Unfortunately, without the ability to script inputs or
+automatically detect existing data structures, we are forced through
+the rather arduous process of adding all metadata annotation each
+time....&quot;&lt;/li&gt;
+&lt;li&gt;&quot;...A package could also provide utilities to generate EML from R objects, leveraging the metadata implicit in R objects that is not present in a CSV (in which there is no built-in notion of whether  a column is numeric or character string, what missing value characters it uses, or really if it is consistent at all. Avoiding manual specification of these things makes the metadata annotation less tedious as well.&quot;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Centralised Repository, Distributed Users&lt;/h1&gt;
+
+&lt;p&gt;A key aspect of current approaches is the existence of a centralised data management system.  All the examples I consider include at least a metadata catalogue and some also include a data repository.  An additional feature sometimes exists for managing users permissions.&lt;/p&gt;
+
+&lt;p&gt;The relationship between users and centralised services is a really complicated space, but essentially consists of the ability for users to create the documentation and push it (perhaps along with the data) to the metadata catalogue  and/or repository.  So given these assumptions I propose the following types of arrangement:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;user sends metadata to metadata catalogue&lt;/li&gt;
+&lt;li&gt;user sends metadata and data to metadata catalogue and data repository&lt;/li&gt;
+&lt;li&gt;user sends metadata and data and permissions information to metadata catalogue and data repository and permissions system.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;The Case Studies I've identified that I want to explore are listed below, names follow the format 'client tool'-and-'data repository or metadata catalogue'-and-optionally-'permissions system':&lt;/p&gt;
+
+&lt;h4&gt;Programmatic solutions&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;reml-and-rfigshare&lt;/li&gt;
+&lt;li&gt;reml-and-knb (when/if this becomes available)&lt;/li&gt;
+&lt;li&gt;make_ddixml-and-ddiindex-and-orapus&lt;/li&gt;
+&lt;li&gt;r2ddi-ddiindex&lt;/li&gt;
+&lt;li&gt;dc-uploader-and-ANU-DataCommons&lt;/li&gt;
+&lt;li&gt;dc-uploader-and-RDA&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Graphical User Interface solutions&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;morpho-and-knb-metacat&lt;/li&gt;
+&lt;li&gt;nesstar-publisher-and-nesstar-and-whatever-Steve-calls-the-ADA-permissions-system&lt;/li&gt;
+&lt;li&gt;xmet-and-Australian-Spatial-Data-Directory&lt;/li&gt;
+&lt;li&gt;sdmx-editor-and-sdmx-registry&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>wickhams-tidy-tools-only-get-you-90-pct-the-way</title>
+   <link href="http://schamberlain.github.com/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/"/>
+   <updated>2013-10-10T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way</id>
+   <content type="html">&lt;h4&gt;Hadley Wickham's tidy tools&lt;/h4&gt;
+
+&lt;p&gt;In this video at 8 mins 50 seconds he says &quot;these four tools do 90% of the job&quot;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;subset,&lt;/li&gt;
+&lt;li&gt;transform,&lt;/li&gt;
+&lt;li&gt;summarise, and&lt;/li&gt;
+&lt;li&gt;arrange&lt;/li&gt;
+&lt;li&gt;TODO I noticed &lt;a href=&quot;http://www.rstudio.com/training/curriculum/data-manipulation.html&quot;&gt;at the website for an Rstudio  course&lt;/a&gt; transform has been replaced by mutate as one of the &quot;four basic verbs of data manipulation&quot;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;iframe src=&quot;//player.vimeo.com/video/33727555&quot; width=&quot;500&quot; height=&quot;281&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt; &lt;p&gt;&lt;a href=&quot;http://vimeo.com/33727555&quot;&gt;Tidy Data&lt;/a&gt; from &lt;a href=&quot;http://vimeo.com/user2150538&quot;&gt;Drew Conway&lt;/a&gt; on &lt;a href=&quot;https://vimeo.com&quot;&gt;Vimeo&lt;/a&gt;.&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;So I thought what's the other 10?  Here's a few contenders for my work:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;merge&lt;/li&gt;
+&lt;li&gt;reshape::cast and reshape::melt&lt;/li&gt;
+&lt;li&gt;unlist&lt;/li&gt;
+&lt;li&gt;t() transpose&lt;/li&gt;
+&lt;li&gt;sprintf or paste&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;R-subset&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# Filter rows by criteria
+subset(airquality, Temp &amp;gt; 90, select = c(Ozone, Temp))
+
+## NB This is a convenience function intended for use interactively.  For
+## programming it is better to use the standard subsetting functions like
+## ‘[’, and in particular the non-standard evaluation of argument
+## ‘subset’ can have unanticipated consequences.
+
+with(airquality,
+     airquality[Temp &amp;gt; 90, c(&quot;Ozone&quot;, &quot;Temp&quot;)]
+     )
+
+# OR
+
+airquality[airquality$Temp &amp;gt; 90,  c(&quot;Ozone&quot;, &quot;Temp&quot;)]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R-transform&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# New columns that are functions of other columns       
+df &amp;lt;- transform(airquality,
+                new = -Ozone,
+                Temp2 = (Temp-32)/1.8
+                )
+head(df)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R-mutate&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(plyr)
+# same thing as transform
+df &amp;lt;- mutate(airquality, new = -Ozone, Temp = (Temp - 32) / 1.8)    
+# Things transform can't do
+df &amp;lt;- mutate(airquality, Temp = (Temp - 32) / 1.8, OzT = Ozone / Temp)
+
+# mutate is rather faster than transform
+system.time(transform(baseball, avg_ab = ab / g))
+system.time(mutate(baseball, avg_ab = ab / g))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R-summarise&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# New data.frame where columns are functions of existing columns
+require(plyr)    
+df &amp;lt;- ddply(.data = airquality,
+            .variables = &quot;Month&quot;,
+            .fun = summarise,
+            tmax = max(Temp),
+            tav = mean(Temp),
+            ndays = length(unique(Day))
+            )
+head(df)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Passing variables to ddply for summary&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# Notice how the name of the variable Temp doesn't need quotes?
+# this means that you need to hard code the names
+# But if you want to pass variables to this inside a function we need a
+# different approach.
+
+summarise_df  &amp;lt;- function(x, by, var1, var2, var3)
+  {
+    data_out &amp;lt;- ddply(x,
+                      by,
+                      function(df) return(
+                        c(
+                          tmax = max(df[,var1]),
+                          tav = mean(df[,var2]),
+                          ndays = length(unique(df[,var3]))
+                          )
+                        )
+                      )
+    return(data_out)
+  }
+
+df2 &amp;lt;- summarise_df(airquality, &quot;Month&quot;,
+                   &quot;Temp&quot;, &quot;Temp&quot;, &quot;Day&quot;
+                   )
+
+head(df2)
+all.equal(df,df2)
+# TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R-arrange&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# Re-order the rows of a data.frame
+df &amp;lt;- arrange(airquality, Temp, Ozone)
+head(df)
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>test-data-for-classification-trees</title>
+   <link href="http://schamberlain.github.com/2013/10/test-data-for-classification-trees/"/>
+   <updated>2013-10-10T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/test-data-for-classification-trees</id>
+   <content type="html">&lt;h4&gt;A fictitious sample dataset&lt;/h4&gt;
+
+&lt;p&gt;For discussion, I'll use a fictional example dataset that I'm using to work through some statistical theory related to Classification and Regression Trees (CART).
+In the motivating example use case we are interested in predicting the civil status (married, single, divorced/widowed) of individuals from their sex (male, female) and sector of activity (primary, secondary, tertiary). The data set is composed of 273 cases.&lt;/p&gt;
+
+&lt;p&gt;The data (and related statistical theory) come from:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from &lt;a href=&quot;http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ritschard, G., Pisetta, V., &amp;amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from &lt;a href=&quot;http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# copy and paste the data from the PDF (Table 1 in both papers)
+civst_gend_sector  &amp;lt;- read.csv(textConnection(
+    &quot;civil_status gender activity_sector number_of_cases
+         married   male         primary              50
+         married   male       secondary              40
+         married   male        tertiary               6
+         married female         primary               0
+         married female       secondary              14
+         married female        tertiary              10
+          single   male         primary               5
+          single   male       secondary               5
+          single   male        tertiary              12
+          single female         primary              50
+          single female       secondary              30
+          single female        tertiary              18
+divorced/widowed   male         primary               5
+divorced/widowed   male       secondary               8
+divorced/widowed   male        tertiary              10
+divorced/widowed female         primary               6
+divorced/widowed female       secondary               2
+divorced/widowed female        tertiary               2
+&quot;),sep = &quot;&quot;)
+
+# save this to my personal R utilities package &quot;disentangle&quot; 
+# for use later when I am exploring functions
+dir.create(&quot;inst/extdata&quot;, recursive=T)
+write.csv(civst_gend_sector, &quot;inst/extdata/civst_gend_sector.csv&quot;, row.names = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Motivating reason for using these data&lt;/h4&gt;
+
+&lt;p&gt;Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.&lt;/p&gt;
+
+&lt;p&gt;I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.&lt;/p&gt;
+
+&lt;p&gt;For example if we look at the reduction in deviance between the Null model and the fitted tree we can say that the tree explains about XYZ% of the variation. We can also test if this is a statistically significant reduction based on a chi-squared test.&lt;/p&gt;
+
+&lt;p&gt;Consider this example from page 310 of Hastie, T., Tibshirani, R., &amp;amp; Friedman, J. (2001). The elements of statistical learning. 2nd Edition:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;in a two-class problem with 400 observations in each class (denote this by (400, 400))&lt;/li&gt;
+&lt;li&gt;suppose one split created nodes (300, 100) and (100, 300),&lt;/li&gt;
+&lt;li&gt;the other created nodes (200, 400) and (200, 0).&lt;/li&gt;
+&lt;li&gt;Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write... I thought would publish it properly.&lt;/p&gt;
+
+&lt;h4&gt;The Tree Model&lt;/h4&gt;
+
+&lt;p&gt;So just before we leave Ritschard and the CART method, let's just fit the model.  Let's also install my R utilities package &quot;disentangle&quot;, to test that we can access the data from it.&lt;/p&gt;
+
+&lt;p&gt;In this analysis the civil status is the outcome (or response or decision or dependent) variable, while sex and activity sector are the predictors (or condition or independent variables).&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# func
+require(rpart)
+require(partykit) 
+require(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+
+# load
+fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;, &quot;civst_gend_sector.csv&quot;),
+                     package = &quot;disentangle&quot;
+                     )
+civst_gend_sector &amp;lt;- read.csv(fpath)
+
+# clean
+str(civst_gend_sector)
+
+# do
+fit &amp;lt;- rpart(civil_status ~ gender + activity_sector,
+             data = civst_gend_sector, weights = number_of_cases,
+             control=rpart.control(minsplit=1))
+# NB need minsplit to be adjusted for weights.
+summary(fit)
+
+# report
+dir.create(&quot;images&quot;)
+png(&quot;images/fit1.png&quot;, 1000, 480)
+plot(as.party(fit))
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;The Result&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/fit1.png&quot; alt=&quot;fit1.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>simple-example-using-nmmaps</title>
+   <link href="http://schamberlain.github.com/2013/10/simple-example-using-nmmaps/"/>
+   <updated>2013-10-10T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/simple-example-using-nmmaps</id>
+   <content type="html">&lt;p&gt;I will use the NMMAPSlite datasets for a simple example of what I am trying to do.&lt;/p&gt;
+
+&lt;!-- begin_src R :session *R* :tangle NMMAPS-example/NMMAPS-example-code.r :exports none :eval no --&gt;
+
+
+&lt;h4&gt;Code: get nmmaps data&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# func
+if(!require(NMMAPSlite)) install.packages('NMMAPSlite');require(NMMAPSlite)
+require(mgcv)
+require(splines)
+
+######################################################
+# load  
+setwd('data')
+initDB('data/NMMAPS') # this requires that we connect to the web,
+                      # so lets get local copies
+setwd('..')
+cities &amp;lt;- getMetaData('cities')
+head(cities)
+citieslist &amp;lt;- cities$cityname
+# write out a few cities for access later
+for(city_i in citieslist[sample(1:nrow(cities), 9)])
+{
+ city &amp;lt;- subset(cities, cityname == city_i)$city
+ data &amp;lt;- readCity(city)
+ write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
+ row.names = F, sep = ',')
+}
+# these are all tiny, go some big ones
+for(city_i in c('New York', 'Los Angeles', 'Madison', 'Boston'))
+{
+ city &amp;lt;- subset(cities, cityname == city_i)$city
+ data &amp;lt;- readCity(city)
+ write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
+ row.names = F, sep = ',')
+}
+
+######################################################
+# now we can use these locally
+dir(&quot;data&quot;)
+city &amp;lt;- &quot;Chicago&quot;
+data &amp;lt;- read.csv(sprintf(&quot;data/%s.csv&quot;, city), header=T)
+str(data)
+data$yy &amp;lt;- substr(data$date,1,4)
+data$date &amp;lt;- as.Date(data$date)
+######################################################
+# check
+par(mfrow=c(2,1), mar=c(4,4,3,1))
+with(subset(data[,c(1,15:25)], agecat == '75p'),
+  plot(date, tmax)
+ )
+with(subset(data[,c(1,4,15:25)], agecat == '75p'),
+        plot(date, cvd, type ='l', col = 'grey')
+        )
+with(subset(data[,c(1,4,15:25)], agecat == '75p'),
+        lines(lowess(date, cvd, f = 0.015))
+        )
+# I am worried about that outlier
+data$date[which(data$cvd &amp;gt; 100)]
+# [1] &quot;1995-07-15&quot; &quot;1995-07-16&quot;
+
+######################################################
+# do standard NMMAPS timeseries poisson GAM model
+numYears&amp;lt;-length(names(table(data$yy)))
+df &amp;lt;- subset(data, agecat == '75p')
+df$time &amp;lt;- as.numeric(df$date)
+fit &amp;lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = poisson)
+# plot of response functions
+par(mfrow=c(2,2))
+plot(fit)
+dev.off()
+
+######################################################
+# some diagnostics
+summary(fit)
+# note the R-sq.(adj) =   0.21
+gam.check(fit)
+# note the lack of a leverage plot.  for that we need glm
+
+######################################################
+# do same model as glm
+fit2 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
+# plot responses
+par(mfrow=c(2,2))
+termplot(fit2, se =T)
+dev.off()
+
+# plot prediction
+df$predictedCvd &amp;lt;- predict(fit2, df, 'response')
+# baseline is given by the intercept
+fit3 &amp;lt;- glm(cvd ~ 1, data = df, family = poisson)
+df$baseline &amp;lt;-  predict(fit3, df, 'response')
+with(subset(df, date&amp;gt;=as.Date('1995-01-01') &amp;amp; date &amp;lt;= as.Date('1995-07-31')),
+ plot(date, cvd, type ='l', col = 'grey')
+        )
+with(subset(df, date&amp;gt;=as.Date('1995-01-01') &amp;amp; date &amp;lt;= as.Date('1995-07-31')),
+        lines(date,predictedCvd)
+        )
+with(subset(df, date&amp;gt;=as.Date('1995-01-01') &amp;amp; date &amp;lt;= as.Date('1995-07-31')),
+ lines(date,baseline)
+        )
+######################################################
+# some diagnostics
+# need to load a function to calculate poisson adjusted R squared
+# original S code from
+# The formula for pseudo-R^2 is taken from G. S. Maddalla,
+# Limited-dependent and Qualitative Variables in Econometrics, Cambridge:Cambridge Univ. Press, 1983. page 40, equation 2.50.
+RsquaredGlm &amp;lt;- function(o) {
+ n &amp;lt;- length(o$residuals)
+ ll &amp;lt;- logLik(o)[1]
+ ll_0 &amp;lt;- logLik(update(o,~1))[1]
+ R2 &amp;lt;- (1 - exp(((-2*ll) - (-2*ll_0))/n))/(1 - exp( - (-2*ll_0)/n))
+ names(R2) &amp;lt;- 'pseudo.Rsquared'
+ R2
+ }
+RsquaredGlm(fit2)
+# 0.51
+# the difference is presumably due to the arguments about how to account for unexplainable variance in the poisson distribution?
+
+# significance of spline terms
+drop1(fit2, test='Chisq')
+# also note AIC. best model includes all of these terms
+# BIC can be computed instead (but still labelled AIC) using
+drop1(fit2, test='Chisq', k = log(nrow(data)))
+
+# diagnostic plots
+par(mfrow=c(2,2))
+plot(fit2)
+dev.off()
+# note high leverage plus residuals points are labelled
+# leverage doesn't seem to be too high though which is good
+# NB the numbers refer to the row.names attribute which still refer to the original dataset, not this subset
+df[row.names(df) %in% c(9354,9356),]$date
+# as suspected [1] &quot;1995-07-15&quot; &quot;1995-07-16&quot;
+
+######################################################
+# so lets re run without these obs
+df2 &amp;lt;- df[!row.names(df) %in% c(9354,9356),]
+# to avoid duplicating code just re run fit2, replacing data=df with df2
+# tmax still significant but not so extreme
+# check diagnostic plots again
+par(mfrow=c(2,2))
+plot(fit2)
+dev.off()
+# looks like a well behaved model now.
+
+# if we were still worried about any high leverage values we could identify these with
+df3 &amp;lt;- na.omit(df2[,c('cvd','pm10tmean','tmax','dptp','time')])
+df3$hatvalue &amp;lt;- hatvalues(fit2)
+df3$res &amp;lt;- residuals(fit2, 'pearson')
+with(df3, plot(hatvalue, res))
+# this is the same as the fourth default glm diagnostic plot, which they label x-axis as leverage
+summary(df3$hatvalue)
+# gives us an idea of the distribution of hat values
+# decide on a threshold and look at it
+hatThreshold &amp;lt;- 0.1
+with(subset(df3, hatvalue &amp;gt; hatThreshold), points(hatvalue, res, col = 'red', pch = 16))
+abline(0,0)
+segments(hatThreshold,-2,hatThreshold,15)
+dev.off()
+
+fit3 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = subset(df3, hatvalue &amp;lt; hatThreshold), family = poisson)
+par(mfrow=c(2,2))
+termplot(fit3, se = T)
+# same same
+plot(fit3)
+# no better
+
+# or we could go nuts with a whole number of ways of estimating influence
+# check all influential observations
+infl &amp;lt;- influence.measures(fit2)
+# which observations 'are' influential
+inflk &amp;lt;- which(apply(infl$is.inf, 1, any))
+length(inflk)
+
+
+######################################################
+# now what about serial autocorrelation in the residuals?
+
+par(mfrow = c(2,1))
+with(df3, acf(res))
+with(df3, pacf(res))
+dev.off()
+
+
+
+######################################################
+# just check for overdispersion
+fit &amp;lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = quasipoisson)
+summary(fit)
+# note the Scale est. = 1.1627
+# alternatively check the glm
+fit2 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = quasipoisson)
+summary(fit2)
+# (Dispersion parameter for quasipoisson family taken to be 1.222640)
+# this is probably near enough to support a standard poisson model...
+
+# if we have overdispersion we can use QAIC (A quasi- mode does not have a likelihood and so does not have an AIC,  by definition)
+# we can use the poisson model and calculate the overdispersion
+fit2 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
+1- pchisq(deviance(fit2), df.residual(fit2))
+
+# QAIC, c is the variance inflation factor, the ratio of the residual deviance of the global (most complicated) model to the residual degrees of freedom
+c=deviance(fit2)/df.residual(fit2)
+QAIC.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1)
+QAIC.1
+
+# Actually lets use QAICc which is more conservative about parameters,
+QAICc.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1) + 2*(length(coef(fit2)) + 1)*(length(coef(fit2)) + 1 + 1)/(nrow(na.omit(df[,c('cvd','pm10tmean','tmax','dptp','time')]))- (length(coef(fit2))+1)-1)
+QAICc.1
+
+
+######################################################
+# the following is old work, some may be interesting
+# such as the use of sinusoidal wave instead of smooth function of time
+
+
+# # sine wave
+# timevar &amp;lt;- as.data.frame(names(table(df$date)))
+# index &amp;lt;- 1:length(names(table(df$date)))
+# timevar$time2 &amp;lt;- index / (length(index) / (length(index)/365.25))
+# names(timevar) &amp;lt;- c('date','timevar')
+# timevar$date &amp;lt;- as.Date(timevar$date)
+# df &amp;lt;- merge(df,timevar)
+
+# fit &amp;lt;- gam(cvd ~ s(tmax) + s(dptp) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
+# summary(fit)
+# par(mfrow=c(3,2))
+# plot(fit, all.terms = T)
+# dev.off()
+
+# # now just explore the season fit
+# fit &amp;lt;- gam(cvd ~ sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
+# yhat &amp;lt;- predict(fit)
+# head(yhat)
+
+# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(15,55)))
+# lines(df[,'date'],exp(yhat),col='red')
+
+
+# # drop1(fit, test= 'Chisq')
+
+# # drop1 only works in glm?
+# # fit with weather variables, use degrees of freedom estimated by gam
+# fit &amp;lt;- glm(cvd ~ ns(tmax,8) + ns(dptp,2) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
+# drop1(fit, test= 'Chisq')
+# # use plot.glm for diagnostics
+# par(mfrow=c(2,2))
+# plot(fit)
+# par(mfrow=c(3,2))
+# termplot(fit, se=T)
+# dev.off()
+
+# # cyclic spline, overlay on prior sinusoidal
+# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(0,55)))
+# lines(df[,'date'],exp(yhat),col='red')
+
+# df$daynum &amp;lt;- as.numeric(format(df$date, &quot;%j&quot;))
+# df[360:370,c('date','daynum')]
+# fit &amp;lt;- gam(cvd ~ s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
+# yhat2 &amp;lt;- predict(fit)
+# head(yhat2)
+
+# lines(df[,'date'],exp(yhat2),col='blue')
+
+
+# par(mfrow=c(1,2))
+# plot(fit)
+
+
+# # fit weather with season
+# fit &amp;lt;- gam(cvd ~ s(tmax) + s(dptp) +
+  # s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
+# par(mfrow=c(2,2))
+# plot(fit)
+
+# summary(fit)
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>spatially-structured-timeseries-vs-spatiotemporal-modelling</title>
+   <link href="http://schamberlain.github.com/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/"/>
+   <updated>2013-09-26T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling</id>
+   <content type="html">&lt;p&gt;&lt;head&gt;
+&lt;title&gt;Spatiotemporal Regression Modelling&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=iso-8859-1&quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;Spatiotemporal Regression Modelling&quot;/&gt;
+&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-09-26T10:18+1000&quot;/&gt;
+&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
+
+
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = &quot;code-highlighted&quot;;
+     elem.className   = &quot;code-highlighted&quot;;
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;http://orgmode.org/mathjax/MathJax.js&quot;&gt;
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: [&quot;MMLorHTML.js&quot;], jax: [&quot;input/TeX&quot;],
+            jax: [&quot;input/TeX&quot;, &quot;output/HTML-CSS&quot;],
+        extensions: [&quot;tex2jax.js&quot;,&quot;TeX/AMSmath.js&quot;,&quot;TeX/AMSsymbols.js&quot;,
+                     &quot;TeX/noUndefined.js&quot;],
+        tex2jax: {
+            inlineMath: [ [&quot;\\(&quot;,&quot;\\)&quot;] ],
+            displayMath: [ ['$$','$$'], [&quot;\\[&quot;,&quot;\\]&quot;], [&quot;\\begin{displaymath}&quot;,&quot;\\end{displaymath}&quot;] ],
+            skipTags: [&quot;script&quot;,&quot;noscript&quot;,&quot;style&quot;,&quot;textarea&quot;,&quot;pre&quot;,&quot;code&quot;],
+            ignoreClass: &quot;tex2jax_ignore&quot;,
+            processEscapes: false,
+            processEnvironments: true,
+            preview: &quot;TeX&quot;
+        },
+        showProcessingMessages: true,
+        displayAlign: &quot;center&quot;,
+        displayIndent: &quot;2em&quot;,
+
+        &quot;HTML-CSS&quot;: {
+             scale: 100,
+             availableFonts: [&quot;STIX&quot;,&quot;TeX&quot;],
+             preferredFont: &quot;TeX&quot;,
+             webFont: &quot;TeX&quot;,
+             imageFont: &quot;TeX&quot;,
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    &quot;MML&quot;,
+                 Firefox: &quot;MML&quot;,
+                 Opera:   &quot;HTML&quot;,
+                 other:   &quot;HTML&quot;
+             }
+        }
+    });
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;p&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Spatiotemporal Regression Modelling&lt;/h1&gt;
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Spatially Structured Timeseries Vs Spatiotemporal Modelling&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 Spatially Structured Time Series&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 Spatiotemporal modelling&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; Spatially Structured Timeseries Vs Spatiotemporal Modelling&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
+
+&lt;p&gt;In my last post about &lt;a href=&quot;http://ivanhanigan.github.io/2013/09/reflections-bob-haining-update&quot;&gt;spatiotemporal regression modelling&lt;/a&gt; I mentioned that I am mostly interested in &quot;spatially structured time-series models&quot; rather than spatial models at a single point in time. By this I mean that we have several neighbouring areal units observed over a period of time. In this framework the general methods of time series modelling are used to control for temporal autocorrelation. However this makes the methods of spatial error and spatial lag models tricky because the spatial autocorrelation needs to be assessed at many points in time.
+&lt;/p&gt;
+&lt;p&gt;
+I want to expand more on this topic because I want to be clear that the organisation of the material I am aiming to bring to this notebook topic is not aimed at purely spatial regression models &lt;a href=&quot;https://geodacenter.asu.edu/spatial-lag-and&quot;&gt;(there is a lot of material and tools out there already for that)&lt;/a&gt;.  I am trying with these notes to document my learning steps toward integrating spatial methods with time-series methods to allow me to practice (and understand) spatiotemporal regression modelling.
+&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1&lt;/span&gt; Spatially Structured Time Series&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1&quot;&gt;
+
+&lt;p&gt;In &lt;a href=&quot;http://www.pnas.org/content/early/2012/08/08/1112965109.full.pdf+html&quot;&gt;my most successful previous attempt to conduct a spatiotemporal analysis of Suicide and Droughts&lt;/a&gt; I built on my knowledge of time-series regression models from single-city air pollution studies where the whole city is the unit of analysis and the temporal variation is modelled with controlling techniques for temporal autocorrelation.  These techniques are also valid for multi-city studies because it is pretty safe to assume the cities are all independent at each time point.  I structured my study by Eleven large zones (Census Statistical Divisions) of NSW and assumed each of these would vary over time independent of each other, and I fitted a zone-specific time trend and cycle. This is what I call &quot;spatially structured time-series&quot; modelling.  
+&lt;/p&gt;
+&lt;p&gt;
+I justify using this model in this case because aggregating up to these very large regions will diminish the possibility of spatial autocorrelation and because Droughts vary over large spatial zones too, we will not suffer from exposure misclassificaiton bias.
+&lt;/p&gt;
+&lt;p&gt;
+So this model is a simple time-series regression (with trend and seasonality) and an additional term for spatial Zone.
+&lt;/p&gt;
+
+
+\begin{eqnarray*}
+        log({\color{red} O_{ijk}})  &amp; = &amp; s({\color{red}ExposureVariable})  + {\color{blue} OtherExplanators}  \\
+        &amp; &amp;   + AgeGroup_{i} + Sex_{j} \\
+        &amp; &amp;   + {\color{blue} SpatialZone_{k}}  \\
+        &amp; &amp;  + sin(Time \times 2 \times \pi) + cos(Time \times 2 \times \pi) \\
+        &amp; &amp;  + Trend \\
+        &amp; &amp;   + offset({\color{blue} log(Pop_{ijk})})\\
+\end{eqnarray*}
+
+&lt;p&gt;
+Where:&lt;br/&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;\({\color{red}O_{ijk}}\) = Outcome (counts) by Age\(_{i}\), Sex\(_{j}\) and SpatialZone\(_{k}\) &lt;br/&gt;
+&lt;/li&gt;
+&lt;li&gt;{\color{red}ExposureVariable} = Data with {\color{red}Restrictive Intellectual Property~(IP)} &lt;br/&gt;
+&lt;/li&gt;
+&lt;li&gt;{\color{blue}OtherExplanators} = Other {\color{blue}Less Restricted}  Explanatory variables &lt;br/&gt;
+&lt;/li&gt;
+&lt;li&gt;s( ) = penalized regression splines &lt;br/&gt;
+&lt;/li&gt;
+&lt;li&gt;\({\color{blue} SpatialZone_{k}}\)  = {\color{blue} Less Restricted} data representing the \(SpatialZone_{k}\)  &lt;br/&gt;
+&lt;/li&gt;
+&lt;li&gt;Trend = Longterm smooth trend(s) &lt;br/&gt;
+&lt;/li&gt;
+&lt;li&gt;\({\color{blue}Pop_{ijk}}\) = interpolated Census populations, by time in each group&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2&lt;/span&gt; &lt;span class=&quot;todo TODO&quot;&gt;TODO&lt;/span&gt; Spatiotemporal modelling&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2&quot;&gt;
+
+&lt;p&gt;In contrast to the above model for modelling exposures that have fine resolution spatial variation (such as air pollution) the exposure misclassification effect of aggregating up to very large spatial zones will conteract the benefits of avoiding spatially autocorrelated errors and this might be unacceptable for certain research questions.  Therefore it is important to move toward a spatiotemporal regression model that replaces the \(SpatialZone_{k}\) term with a more spatial error or spatial lag approach.
+&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;
+&lt;/html&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>reflections-bob-haining-update</title>
@@ -236,7 +1617,7 @@ This Tuesday at the &lt;a href=&quot;http://gis-forum.github.io&quot;&gt;GIS For
 &lt;p&gt;We started off the discussion with an assessment of the approach described in this post &lt;a href=&quot;http://thebiobucket.blogspot.com.au/2012/03/classification-trees-allowing-for.html&quot;&gt;Classification Trees and Spatial Autocorrelation&lt;/a&gt;.
 &lt;/p&gt;
 &lt;p&gt;
-I've been thinking more and more about decision trees/CART/random forest methods for selecting a subset of relevant variables (and interations) for use in GLM or GAM model construction.  In a perfect world I'd have data on the main predictor I wanted to model and enough data about all the relevant confounding or modifying variables as well to ensure I get a 'well behaved model'. But with all the data around and so many potentially plausible relationships one might choose to include we need a way to narrow down these to just include the most important confounders and interactions.  CART or some variation on it seems a good way to do this, but is prone to the potential problem of spatially correlated errors too.
+I've been thinking more and more about decision trees/CART/random forest methods for selecting a subset of relevant variables (and interations) for use in GLM or GAM model construction.  In a perfect world I'd have data on the main predictor I wanted to model and enough data about all the relevant other predictors (especially confounding or modifying variables) to ensure I get a 'well behaved model'. But with all the data around and so many potentially plausible relationships one might choose to include we need a way to narrow down these to just include the most important covariates, confounders and interactions.  CART or some variation on it seems a good way to do this, but is prone to the potential problem of spatially correlated errors too.
 &lt;/p&gt;
 &lt;p&gt;
 The idea from that blog post is:
@@ -346,9 +1727,11 @@ Where:
 &lt;ul&gt;
 &lt;li&gt;Phil agreed with Bob that the spatial error model is the best, spatial lag model is OK and spatially lagged covariates not so great.
 &lt;/li&gt;
-&lt;li&gt;For spatial error model fitting he suggested looking at R packages spBayes and spTimer
+&lt;li&gt;For spatial error model fitting Phil suggested looking at R packages spBayes and spTimer.
 &lt;/li&gt;
-&lt;li&gt;I asked that if spatial lag is OK and it seems easier to fit but how to know if it has done the trick?  if the SE on beta1 is bigger? or a significant p-value on the lagged Beta? 
+&lt;li&gt;I pointed out that I am mostly interested in &quot;spatially structured time-series models&quot; rather than spatial models at a single point in time.  By this I mean that we have several neighbouring areal units observed over a period of time.  In this framework the general methods of time series modelling are used to control for temporal autocorrelation.  However this makes the methods of spatial error and spatial lag models tricky because the spatial autocorrelation needs to be assessed at many points in time.
+&lt;/li&gt;
+&lt;li&gt;I asked that if spatial lag is OK (and it seems easier to fit into the time-series model framework) how can I check to know if it has done the trick?  If this were purely a spatial model we could check for spatial autocorrelation in the residuals just as they described in the CART blog above, but here we have many maps we could make (one every time point), and our spatial autocorrelation measure would surely vary a lot over time.  SO would a simple way just be to asses the effect on the Standard Error on beta1 (our primary interest) and if it is bigger but still significant we can be reassured that our result isn't affected? Or perhaps we should assess the beta on the lagged variable, for instance is a significant p-value on the lagged Beta an indication that it is capturing the unmeasured spatial associations represented by the neighbourhood variable?  
 &lt;/li&gt;
 &lt;li&gt;If it hadn't done the trick Nerida pointed out this might be because the Neighbourhoods are actually not appropriately represented by the first order neighbours and therefore more neighbours could be included, like moving out several concentric circles to wider and wider neighbourhoods
 &lt;/li&gt;
