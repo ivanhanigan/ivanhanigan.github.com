@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought</title>
+    <title>Ivan Hanigan - A Great Intro 2 Logistic Regression</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2012/04/Occams-Razor-Einsteins-Razor-Chamberlins-Complex-Thought/" title="Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought" rel="bookmark">Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought</a>
+    <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,28 +55,137 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h2>Introduction</h2>
+    <p>This is a great example of logistic regression,  because it is pretty simple but covers good ground.  I got it from Peter Caley;s R tutorial workbook from Charles Darwin School of Environmental Research.</p>
 
-<p>I just read TC Chamberlin's paper on <a href="http://www.ipicyt.edu.mx/storage-sipicyt/materialposgrado/Chamberlin_Science_1965_The_method_of_multiple_working_hypotheses1.pdf" title="TC Chamberlin 1890">the Method of Multiple Working Hypotheses</a> and was very taken by the concept of Complex Thought:</p>
+<p>It is also a tragic example of the impact weather can have on health.<br/>
+The colder it is the more likely the shuttle is to explode.</p>
 
-<p>"The use of the method leads to certain peculiar habits of mind which deserve passing notice, ... it develops a habit of thought analogous to the method itself, ... a habit of parallel or complex thought.
-Instead of a simple succession of thoughts in linear order, the procedure is complex, and the mind appears to become possessed of the power of simultaneous vision from different standpoints."</p>
+<p>The problem was with the failure rate (and number of) O-rings that failed (n.fail) related to the temperature (temp).</p>
 
-<p>I was struck by the difference in this method to the KISS or Keep It Sensibly Simple approach I've been taught (also sometimes misrepresented as Keep It Simple Stupid... that only applies to Stupid theories, in my view).</p>
+<h4>R Code:</h4>
 
-<p><a href="http://en.wikipedia.org/wiki/Occam%27s_razor" title="Occam's Razor">Occam's Razor</a> is a principle to Keep It Very Simple:</p>
+<pre><code>#Load the data
+#The following R code will construct the dataset
+n.fail &lt;- c(2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)
+temp &lt;- c(53, 66, 68, 70, 75, 78, 57, 67, 69, 70, 75, 79, 58, 67, 70, 72, 76, 81, 63, 67, 70, 73, 76)
+# there were 6 o rings for each of 23 attempts
+total &lt;- rep(6,23)
+# probability of fail
+p.fail &lt;- n.fail/total
+# Response = resp column bind them together  
+resp &lt;- cbind(n.fail, total-n.fail)
 
-<p>"to select among competing hypotheses that which makes the fewest assumptions and thereby offers the simplest explanation of the effect."</p>
+###########################################################################
+# we can write text files easily once the data frame or matrix is in shape
+data &lt;- as.data.frame(cbind(resp,temp))
+names(data) &lt;- c('nfail','totalMinusNfail', 'temp')
+# write.csv(data, 'learnR-logistic-data.csv', row.names=F)
 
-<p><a href="http://en.wikiquote.org/wiki/Albert_Einstein" title="Einstein's Razor">Einstein's Razor</a> is a  a warning against too much simplicity, with it's exhortation that we can make it as simple as possible:</p>
+###########################################################################
+# and read it in again 
+# data2 &lt;- read.csv('learnR-logistic-data.csv')
 
-<p>"without having to surrender the adequate representation of a single datum of experience".</p>
+################################################################
+# name:learnR-logistic
+png('images/pfail.png')
+plot(temp, p.fail, pch=16, xlim=c(40,100), ylim=c(0,0.4))
+title('A plot of the proportion failed by temperature')
+dev.off()
+</code></pre>
 
-<h2>Complex Thought</h2>
+<p></p>
 
-<p>I love the idea that I can train myself to acheive a kind of Science Zen that unveils all kinds of complex multifactorial causal mechanisms... but I fear the Danger of Vacillation Chamberlin speaks about:</p>
 
-<p>"Like a pair of delicately poised scales, every added particle on the one side or the other produces its effect in oscillation. But such a pair of scales may be altogether too sensitive to be of practical value in the rough affairs of life".</p>
+<p><img src="/images/pfail.png" alt="pfail.png" /></p>
+
+<h4>R Code:</h4>
+
+<pre><code>###########################################################################
+# newnode: linear
+linear &lt;- glm(resp ~ 1 + temp, family=binomial(link=logit))
+summary(linear)
+linearoutput &lt;- summary(linear)
+linearoutput$coeff
+
+###########################################################################
+# newnode: learnR-logistic
+cf &lt;- linearoutput$coeff
+signif(cf[which(row.names(cf) == 'temp'),'Estimate'],2)
+
+###########################################################################
+# newnode: learnR-logistic
+# write.csv(linearoutput$coeff,"challengerOfails.csv")
+
+###########################################################################
+# newnode: learnR-logistic
+ png('images/challengerLogistic.png')
+ par(mfrow=c(2,2))
+ plot(linear)
+ dev.off()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/challengerLogistic.png" alt="challengerLogistic.png" /></p>
+
+<h4>R Code:</h4>
+
+<pre><code>####################################################################
+# newnode: learnR-logistic
+dummy &lt;- data.frame(temp=seq(20,100,1))
+pred.prob &lt;- predict.glm(linear, newdata=dummy, type="resp")
+png('images/pfailfit.png')
+plot(temp, p.fail, xlab="Launch Temperature (F)",
+ ylab="Proportion Failing", pch=16, xlim=c(20,100), ylim=c(0,1.0))
+lines(dummy$temp, pred.prob)
+dev.off()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/pfailfit.png" alt="pfailfit.png" /></p>
+
+<h4>R Code:</h4>
+
+<pre><code>####################################################################
+resp &lt;- as.data.frame(resp)
+resp$fail &lt;- ifelse(resp$n.fail &gt; 0, 1, 0)
+resp$temp &lt;- temp
+
+png('images/fail.png')
+with(resp, plot(temp, fail, xlab="Launch Temperature (F)",ylab="Joint damage", pch=16, xlim=c(50,80), ylim=c(0,1.0))
+     )
+dev.off()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/fail.png" alt="fail.png" /></p>
+
+<h4>R Code:</h4>
+
+<pre><code>chal.logit &lt;- glm(fail~temp,family=binomial, data = resp)
+summary(chal.logit)$coeff
+
+png('images/pfailfit2.png')
+cx &lt;- c(50:80/1)
+cyhat &lt;- coefficients(chal.logit)[c(1)] +
+coefficients(chal.logit)[c(2)]*cx
+cpihat &lt;- exp(cyhat)/(1+exp(cyhat))
+with(resp,plot(temp,fail,xlab="Temperature",ylab="Damage",
+main="Incidence of Booster Field Joint Damage vs. Temperature", xlim = c(50,80))
+     )
+lines(cx,cpihat)
+dev.off()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/pfailfit2.png" alt="pfailfit2.png" /></p>
 
     <div class="clear"></div>
   </div>
@@ -91,12 +200,12 @@ Instead of a simple succession of thoughts in linear order, the procedure is com
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/disentangle causality" title="disentangle causality" rel="category tag">disentangle causality</a>
+    <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Tue Apr 03 00:00:00 +1000 2012">03 Apr 2012</abbr>
+      <abbr class="published" title="Fri Oct 18 00:00:00 +1100 2013">18 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -110,7 +219,7 @@ Instead of a simple succession of thoughts in linear order, the procedure is com
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2012/04/Occams-Razor-Einsteins-Razor-Chamberlins-Complex-Thought/";
+    var disqus_url = "http://ivanhanigan.github.com/2013/10/challenger-logistic/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

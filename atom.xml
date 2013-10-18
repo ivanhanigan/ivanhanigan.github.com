@@ -4,13 +4,152 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-10-18T15:16:52+11:00</updated>
+ <updated>2013-10-18T22:11:38+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>A Great Intro 2 Logistic Regression</title>
+   <link href="http://schamberlain.github.com/2013/10/challenger-logistic/"/>
+   <updated>2013-10-18T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/challenger-logistic</id>
+   <content type="html">&lt;p&gt;This is a great example of logistic regression,  because it is pretty simple but covers good ground.  I got it from Peter Caley;s R tutorial workbook from Charles Darwin School of Environmental Research.&lt;/p&gt;
+
+&lt;p&gt;It is also a tragic example of the impact weather can have on health.&lt;br/&gt;
+The colder it is the more likely the shuttle is to explode.&lt;/p&gt;
+
+&lt;p&gt;The problem was with the failure rate (and number of) O-rings that failed (n.fail) related to the temperature (temp).&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#Load the data
+#The following R code will construct the dataset
+n.fail &amp;lt;- c(2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)
+temp &amp;lt;- c(53, 66, 68, 70, 75, 78, 57, 67, 69, 70, 75, 79, 58, 67, 70, 72, 76, 81, 63, 67, 70, 73, 76)
+# there were 6 o rings for each of 23 attempts
+total &amp;lt;- rep(6,23)
+# probability of fail
+p.fail &amp;lt;- n.fail/total
+# Response = resp column bind them together  
+resp &amp;lt;- cbind(n.fail, total-n.fail)
+
+###########################################################################
+# we can write text files easily once the data frame or matrix is in shape
+data &amp;lt;- as.data.frame(cbind(resp,temp))
+names(data) &amp;lt;- c('nfail','totalMinusNfail', 'temp')
+# write.csv(data, 'learnR-logistic-data.csv', row.names=F)
+
+###########################################################################
+# and read it in again 
+# data2 &amp;lt;- read.csv('learnR-logistic-data.csv')
+
+################################################################
+# name:learnR-logistic
+png('images/pfail.png')
+plot(temp, p.fail, pch=16, xlim=c(40,100), ylim=c(0,0.4))
+title('A plot of the proportion failed by temperature')
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/pfail.png&quot; alt=&quot;pfail.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;###########################################################################
+# newnode: linear
+linear &amp;lt;- glm(resp ~ 1 + temp, family=binomial(link=logit))
+summary(linear)
+linearoutput &amp;lt;- summary(linear)
+linearoutput$coeff
+
+###########################################################################
+# newnode: learnR-logistic
+cf &amp;lt;- linearoutput$coeff
+signif(cf[which(row.names(cf) == 'temp'),'Estimate'],2)
+
+###########################################################################
+# newnode: learnR-logistic
+# write.csv(linearoutput$coeff,&quot;challengerOfails.csv&quot;)
+
+###########################################################################
+# newnode: learnR-logistic
+ png('images/challengerLogistic.png')
+ par(mfrow=c(2,2))
+ plot(linear)
+ dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/challengerLogistic.png&quot; alt=&quot;challengerLogistic.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;####################################################################
+# newnode: learnR-logistic
+dummy &amp;lt;- data.frame(temp=seq(20,100,1))
+pred.prob &amp;lt;- predict.glm(linear, newdata=dummy, type=&quot;resp&quot;)
+png('images/pfailfit.png')
+plot(temp, p.fail, xlab=&quot;Launch Temperature (F)&quot;,
+ ylab=&quot;Proportion Failing&quot;, pch=16, xlim=c(20,100), ylim=c(0,1.0))
+lines(dummy$temp, pred.prob)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/pfailfit.png&quot; alt=&quot;pfailfit.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;####################################################################
+resp &amp;lt;- as.data.frame(resp)
+resp$fail &amp;lt;- ifelse(resp$n.fail &amp;gt; 0, 1, 0)
+resp$temp &amp;lt;- temp
+
+png('images/fail.png')
+with(resp, plot(temp, fail, xlab=&quot;Launch Temperature (F)&quot;,ylab=&quot;Joint damage&quot;, pch=16, xlim=c(50,80), ylim=c(0,1.0))
+     )
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/fail.png&quot; alt=&quot;fail.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;chal.logit &amp;lt;- glm(fail~temp,family=binomial, data = resp)
+summary(chal.logit)$coeff
+
+png('images/pfailfit2.png')
+cx &amp;lt;- c(50:80/1)
+cyhat &amp;lt;- coefficients(chal.logit)[c(1)] +
+coefficients(chal.logit)[c(2)]*cx
+cpihat &amp;lt;- exp(cyhat)/(1+exp(cyhat))
+with(resp,plot(temp,fail,xlab=&quot;Temperature&quot;,ylab=&quot;Damage&quot;,
+main=&quot;Incidence of Booster Field Joint Damage vs. Temperature&quot;, xlim = c(50,80))
+     )
+lines(cx,cpihat)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/pfailfit2.png&quot; alt=&quot;pfailfit2.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>spatially-structured-time-series-with-nmmaps</title>
