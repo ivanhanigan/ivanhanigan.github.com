@@ -6,6 +6,602 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>extract-weather-data-from-awap-grids</title>
+				<description>&lt;h3&gt;extract mean annual temperatures at the BOM website&lt;/h3&gt;
+
+&lt;p&gt;I use BoM data a fair bit and work on a project that tried to streamline access to BoM data for extreme weather event analysis (which require long term average climatology to provide the baseline that extremes are measured against).&lt;/p&gt;
+
+&lt;p&gt;WRT to temperature most daily averages from BoM are calculated as average of maximum_temperature_in_24_hours_after_9am_local_time_in_degrees and minimum_temperature_in_24_hours_before_9am_local_time_in_degree (only couple of hundred AWS provide hourly data to get the proper mean of 24 obs).&lt;/p&gt;
+
+&lt;p&gt;The Bureau of Meteorology has generated a range of gridded meteorological datasets for Australia as a contribution to the Australian Water Availability Project (AWAP). These include daily max and min temperature which you could use to generate daily averages, then calculate your long term averages from those?&lt;/p&gt;
+
+&lt;p&gt;http://www.bom.gov.au/jsp/awap/&lt;/p&gt;
+
+&lt;p&gt;Documentation is at http://www.bom.gov.au/amm/docs/2009/jones.pdf&lt;/p&gt;
+
+&lt;p&gt;I’m working on a workflow to download and process the public BoM weather grids.
+It uses the open source R software with some of our custom written packages:&lt;/p&gt;
+
+&lt;!-- &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; --&gt;
+
+
+&lt;!-- &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; --&gt;
+
+
+&lt;!--                &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt; --&gt;
+
+
+&lt;!-- &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot; xml:lang=&quot;en&quot;&gt; --&gt;
+
+
+&lt;!-- &lt;head&gt; --&gt;
+
+
+&lt;!-- &lt;title&gt;AWAP GRIDS &lt;/title&gt; --&gt;
+
+
+&lt;!-- &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;title&quot; content=&quot;AWAP GRIDS &quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;generated&quot; content=&quot;2013-10-26T22:31+1100&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;style type=&quot;text/css&quot;&gt; --&gt;
+
+
+&lt;!--  &lt;\!--/*-\-&gt;&lt;![CDATA[/*&gt;&lt;\!--*/ --&gt;
+
+
+&lt;!--   html { font-family: Times, serif; font-size: 12pt; } --&gt;
+
+
+&lt;!--   .title  { text-align: center; } --&gt;
+
+
+&lt;!--   .todo   { color: red; } --&gt;
+
+
+&lt;!--   .done   { color: green; } --&gt;
+
+
+&lt;!--   .tag    { background-color: #add8e6; font-weight:normal } --&gt;
+
+
+&lt;!--   .target { } --&gt;
+
+
+&lt;!--   .timestamp { color: #bebebe; } --&gt;
+
+
+&lt;!--   .timestamp-kwd { color: #5f9ea0; } --&gt;
+
+
+&lt;!--   .right  {margin-left:auto; margin-right:0px;  text-align:right;} --&gt;
+
+
+&lt;!--   .left   {margin-left:0px;  margin-right:auto; text-align:left;} --&gt;
+
+
+&lt;!--   .center {margin-left:auto; margin-right:auto; text-align:center;} --&gt;
+
+
+&lt;!--   p.verse { margin-left: 3% } --&gt;
+
+
+&lt;!--   pre { --&gt;
+
+
+&lt;!--    border: 1pt solid #AEBDCC; --&gt;
+
+
+&lt;!--    background-color: #F3F5F7; --&gt;
+
+
+&lt;!--    padding: 5pt; --&gt;
+
+
+&lt;!--    font-family: courier, monospace; --&gt;
+
+
+&lt;!--         font-size: 90%; --&gt;
+
+
+&lt;!--         overflow:auto; --&gt;
+
+
+&lt;!--   } --&gt;
+
+
+&lt;!--   table { border-collapse: collapse; } --&gt;
+
+
+&lt;!--   td, th { vertical-align: top;  } --&gt;
+
+
+&lt;!--   th.right  { text-align:center;  } --&gt;
+
+
+&lt;!--   th.left   { text-align:center;   } --&gt;
+
+
+&lt;!--   th.center { text-align:center; } --&gt;
+
+
+&lt;!--   td.right  { text-align:right;  } --&gt;
+
+
+&lt;!--   td.left   { text-align:left;   } --&gt;
+
+
+&lt;!--   td.center { text-align:center; } --&gt;
+
+
+&lt;!--   dt { font-weight: bold; } --&gt;
+
+
+&lt;!--   div.figure { padding: 0.5em; } --&gt;
+
+
+&lt;!--   div.figure p { text-align: center; } --&gt;
+
+
+&lt;!--   div.inlinetask { --&gt;
+
+
+&lt;!--     padding:10px; --&gt;
+
+
+&lt;!--     border:2px solid gray; --&gt;
+
+
+&lt;!--     margin:10px; --&gt;
+
+
+&lt;!--     background: #ffffcc; --&gt;
+
+
+&lt;!--   } --&gt;
+
+
+&lt;!--   textarea { overflow-x: auto; } --&gt;
+
+
+&lt;!--   .linenr { font-size:smaller } --&gt;
+
+
+&lt;!--   .code-highlighted {background-color:#ffff00;} --&gt;
+
+
+&lt;!--   .org-info-js_info-navigation { border-style:none; } --&gt;
+
+
+&lt;!--   #org-info-js_console-label { font-size:10px; font-weight:bold; --&gt;
+
+
+&lt;!--                                white-space:nowrap; } --&gt;
+
+
+&lt;!--   .org-info-js_search-highlight {background-color:#ffff00; color:#000000; --&gt;
+
+
+&lt;!--                                  font-weight:bold; } --&gt;
+
+
+&lt;!--   /*]]&gt;*/-\-&gt; --&gt;
+
+
+&lt;!-- &lt;/style&gt; --&gt;
+
+
+&lt;!-- &lt;script type=&quot;text/javascript&quot;&gt; --&gt;
+
+
+&lt;!-- /* --&gt;
+
+
+&lt;!-- @licstart  The following is the entire license notice for the --&gt;
+
+
+&lt;!-- JavaScript code in this tag. --&gt;
+
+
+
+
+&lt;!-- Copyright (C) 2012-2013 Free Software Foundation, Inc. --&gt;
+
+
+
+
+&lt;!-- The JavaScript code in this tag is free software: you can --&gt;
+
+
+&lt;!-- redistribute it and/or modify it under the terms of the GNU --&gt;
+
+
+&lt;!-- General Public License (GNU GPL) as published by the Free Software --&gt;
+
+
+&lt;!-- Foundation, either version 3 of the License, or (at your option) --&gt;
+
+
+&lt;!-- any later version.  The code is distributed WITHOUT ANY WARRANTY; --&gt;
+
+
+&lt;!-- without even the implied warranty of MERCHANTABILITY or FITNESS --&gt;
+
+
+&lt;!-- FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details. --&gt;
+
+
+
+
+&lt;!-- As additional permission under GNU GPL version 3 section 7, you --&gt;
+
+
+&lt;!-- may distribute non-source (e.g., minimized or compacted) forms of --&gt;
+
+
+&lt;!-- that code without the copy of the GNU GPL normally required by --&gt;
+
+
+&lt;!-- section 4, provided you include this license notice and a URL --&gt;
+
+
+&lt;!-- through which recipients can access the Corresponding Source. --&gt;
+
+
+
+
+&lt;!-- @licend  The above is the entire license notice --&gt;
+
+
+&lt;!-- for the JavaScript code in this tag. --&gt;
+
+
+&lt;!-- */ --&gt;
+
+
+&lt;!-- &lt;\!--/*-\-&gt;&lt;![CDATA[/*&gt;&lt;\!--*/ --&gt;
+
+
+&lt;!--  function CodeHighlightOn(elem, id) --&gt;
+
+
+&lt;!--  { --&gt;
+
+
+&lt;!--    var target = document.getElementById(id); --&gt;
+
+
+&lt;!--    if(null != target) { --&gt;
+
+
+&lt;!--      elem.cacheClassElem = elem.className; --&gt;
+
+
+&lt;!--      elem.cacheClassTarget = target.className; --&gt;
+
+
+&lt;!--      target.className = &quot;code-highlighted&quot;; --&gt;
+
+
+&lt;!--      elem.className   = &quot;code-highlighted&quot;; --&gt;
+
+
+&lt;!--    } --&gt;
+
+
+&lt;!--  } --&gt;
+
+
+&lt;!--  function CodeHighlightOff(elem, id) --&gt;
+
+
+&lt;!--  { --&gt;
+
+
+&lt;!--    var target = document.getElementById(id); --&gt;
+
+
+&lt;!--    if(elem.cacheClassElem) --&gt;
+
+
+&lt;!--      elem.className = elem.cacheClassElem; --&gt;
+
+
+&lt;!--    if(elem.cacheClassTarget) --&gt;
+
+
+&lt;!--      target.className = elem.cacheClassTarget; --&gt;
+
+
+&lt;!--  } --&gt;
+
+
+&lt;!-- /*]]&gt;*///-\-&gt; --&gt;
+
+
+&lt;!-- &lt;/script&gt; --&gt;
+
+
+
+
+&lt;!-- &lt;/head&gt; --&gt;
+
+
+&lt;p&gt;&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;AWAP GRIDS &lt;/h1&gt;
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 r-code-code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; r-code-code&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;name:r-code&lt;/span&gt;
+
+
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;aim daily weather for any point location from online BoM weather grids&lt;/span&gt;
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;depends on some github packages&lt;/span&gt;
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(awaptools)
+&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;http://swish-climate-impact-assessment.github.io/tools/awaptools/awaptools-downloads.html&lt;/span&gt;
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(swishdbtools)
+&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;http://swish-climate-impact-assessment.github.io/tools/swishdbtools/swishdbtools-downloads.html&lt;/span&gt;
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(gisviz)
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;http://ivanhanigan.github.io/gisviz/&lt;/span&gt;
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;and this from CRAN&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(raster)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'raster'&lt;/span&gt;); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(raster)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;get weather data, beware that each grid is a couple of megabytes&lt;/span&gt;
+vars &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;maxave&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;minave&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;totals&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;vprph09&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;vprph15&quot;&lt;/span&gt;) &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;,&quot;solarave&quot;) &lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;solar only available after 1990&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(measure &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; vars)
+{
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;measure &amp;lt;- vars[1]&lt;/span&gt;
+  get_awap_data(start = &lt;span style=&quot;color: #2aa198;&quot;&gt;'1960-01-01'&lt;/span&gt;,end = &lt;span style=&quot;color: #2aa198;&quot;&gt;'1960-01-02'&lt;/span&gt;, measure)
+}
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;get location&lt;/span&gt;
+locn &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; geocode(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;daintree rainforest&quot;&lt;/span&gt;)
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;this uses google maps API, better check this&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;lon       lat&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;1 145.4185 -16.17003&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;Treat data frame as spatial points&lt;/span&gt;
+epsg &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; make_EPSG()
+shp &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; SpatialPointsDataFrame(cbind(locn$lon,locn$lat),locn,
+                              proj4string=CRS(epsg$prj4[epsg$code %&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt;% &lt;span style=&quot;color: #2aa198;&quot;&gt;'4283'&lt;/span&gt;]))
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;now loop over grids and extract met data&lt;/span&gt;
+cfiles &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt;  dir(pattern=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;grid$&quot;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt; (i &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; seq_len(length(cfiles))) {
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;i &amp;lt;- 1 ## for stepping thru&lt;/span&gt;
+  gridname &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; cfiles[[i]]
+  r &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; raster(gridname)
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;image(r) # plot to look at&lt;/span&gt;
+  e &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; extract(r, shp, df=T)
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;str(e) ## print for debugging&lt;/span&gt;
+  e1 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; shp
+  e1@data$values &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; e[,2]
+  e1@data$gridname &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; gridname
+  &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;write to to target file&lt;/span&gt;
+  write.table(e1@data,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;output.csv&quot;&lt;/span&gt;,
+    col.names = i == 1, append = i&amp;gt;1 , sep = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;,&quot;&lt;/span&gt;, row.names = &lt;span style=&quot;color: #b58900;&quot;&gt;FALSE&lt;/span&gt;)
+}
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;further work is required to format the column with the gridname to get out the date and weather paramaters.&lt;/span&gt;
+&lt;/pre&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+
+&lt;!-- &lt;/html&gt; --&gt;
+
+</description>
+				<published>Sat Oct 26 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/extract-weather-data-from-awap-grids/</link>
+			</item>
+		
+			<item>
+				<title>document-first-ask-questions-later</title>
+				<description>&lt;p&gt;This post is just a short note about something I'm thinking of calling &quot;documentation-driven development&quot;.
+It is based on the concept of &lt;a href=&quot;http://en.wikipedia.org/wiki/Test-driven_development&quot;&gt;&quot;test-driven development&quot;&lt;/a&gt;, and more recently:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://lamages.blogspot.in/2013/04/test-driven-analysis.html&quot;&gt;&quot;test-driven analysis&quot;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;or even &lt;a href=&quot;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&quot;&gt;&quot;Evidence-based Data Analysis&quot;&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;It is also a kind of a critique on the paradigm suggested by the BCCVL statement on &lt;a href=&quot;http://bccvl.org.au/blog/2013/08/20/just-in-time-metadata/&quot;&gt;&quot;Just-In-Time metadata&quot;&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Anyway, it is a small thing but hopefully big things will grow.&lt;/p&gt;
+</description>
+				<published>Fri Oct 25 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/document-first-ask-questions-later/</link>
+			</item>
+		
+			<item>
+				<title>A Great Intro 2 Logistic Regression</title>
+				<description>&lt;p&gt;This is a great example of logistic regression,  because it is pretty simple but covers good ground.  I got it from Peter Caley;s R tutorial workbook from Charles Darwin School of Environmental Research.&lt;/p&gt;
+
+&lt;p&gt;It is also a tragic example of the impact weather can have on health.&lt;br/&gt;
+The colder it is the more likely the shuttle is to explode.&lt;/p&gt;
+
+&lt;p&gt;The problem was with the failure rate (and number of) O-rings that failed (n.fail) related to the temperature (temp).&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#Load the data
+#The following R code will construct the dataset
+n.fail &amp;lt;- c(2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)
+temp &amp;lt;- c(53, 66, 68, 70, 75, 78, 57, 67, 69, 70, 75, 79, 58, 67, 70, 72, 76, 81, 63, 67, 70, 73, 76)
+# there were 6 o rings for each of 23 attempts
+total &amp;lt;- rep(6,23)
+# probability of fail
+p.fail &amp;lt;- n.fail/total
+# Response = resp column bind them together  
+resp &amp;lt;- cbind(n.fail, total-n.fail)
+
+###########################################################################
+# we can write text files easily once the data frame or matrix is in shape
+data &amp;lt;- as.data.frame(cbind(resp,temp))
+names(data) &amp;lt;- c('nfail','totalMinusNfail', 'temp')
+# write.csv(data, 'learnR-logistic-data.csv', row.names=F)
+
+###########################################################################
+# and read it in again 
+# data2 &amp;lt;- read.csv('learnR-logistic-data.csv')
+
+################################################################
+# name:learnR-logistic
+png('images/pfail.png')
+plot(temp, p.fail, pch=16, xlim=c(40,100), ylim=c(0,0.4))
+title('A plot of the proportion failed by temperature')
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/pfail.png&quot; alt=&quot;pfail.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;###########################################################################
+# newnode: linear
+linear &amp;lt;- glm(resp ~ 1 + temp, family=binomial(link=logit))
+summary(linear)
+linearoutput &amp;lt;- summary(linear)
+linearoutput$coeff
+
+###########################################################################
+# newnode: learnR-logistic
+cf &amp;lt;- linearoutput$coeff
+signif(cf[which(row.names(cf) == 'temp'),'Estimate'],2)
+
+###########################################################################
+# newnode: learnR-logistic
+# write.csv(linearoutput$coeff,&quot;challengerOfails.csv&quot;)
+
+###########################################################################
+# newnode: learnR-logistic
+ png('images/challengerLogistic.png')
+ par(mfrow=c(2,2))
+ plot(linear)
+ dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/challengerLogistic.png&quot; alt=&quot;challengerLogistic.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;####################################################################
+# newnode: learnR-logistic
+dummy &amp;lt;- data.frame(temp=seq(20,100,1))
+pred.prob &amp;lt;- predict.glm(linear, newdata=dummy, type=&quot;resp&quot;)
+png('images/pfailfit.png')
+plot(temp, p.fail, xlab=&quot;Launch Temperature (F)&quot;,
+ ylab=&quot;Proportion Failing&quot;, pch=16, xlim=c(20,100), ylim=c(0,1.0))
+lines(dummy$temp, pred.prob)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/pfailfit.png&quot; alt=&quot;pfailfit.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;####################################################################
+resp &amp;lt;- as.data.frame(resp)
+resp$fail &amp;lt;- ifelse(resp$n.fail &amp;gt; 0, 1, 0)
+resp$temp &amp;lt;- temp
+
+png('images/fail.png')
+with(resp, plot(temp, fail, xlab=&quot;Launch Temperature (F)&quot;,ylab=&quot;Joint damage&quot;, pch=16, xlim=c(50,80), ylim=c(0,1.0))
+     )
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/fail.png&quot; alt=&quot;fail.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;chal.logit &amp;lt;- glm(fail~temp,family=binomial, data = resp)
+summary(chal.logit)$coeff
+
+png('images/pfailfit2.png')
+cx &amp;lt;- c(50:80/1)
+cyhat &amp;lt;- coefficients(chal.logit)[c(1)] +
+coefficients(chal.logit)[c(2)]*cx
+cpihat &amp;lt;- exp(cyhat)/(1+exp(cyhat))
+with(resp,plot(temp,fail,xlab=&quot;Temperature&quot;,ylab=&quot;Damage&quot;,
+main=&quot;Incidence of Booster Field Joint Damage vs. Temperature&quot;, xlim = c(50,80))
+     )
+lines(cx,cpihat)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/pfailfit2.png&quot; alt=&quot;pfailfit2.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>Fri Oct 18 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/challenger-logistic/</link>
+			</item>
+		
+			<item>
 				<title>spatially-structured-time-series-with-nmmaps</title>
 				<description>&lt;p&gt;I will use the NMMAPSlite datasets for a simple example of what I
 describe as &quot;Spatially Structured Timeseries&quot; as opposed to
@@ -676,6 +1272,66 @@ df &amp;lt;- ddply(.data = airquality,
 head(df)
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h4&gt;Passing variables to ddply for summary&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# Notice how the name of the variable Temp doesn't need quotes?
+# this means that you need to hard code the names
+# But if you want to pass variables to this inside a function we need a
+# different approach.
+
+summarise_df  &amp;lt;- function(x, by, var1, var2, var3)
+  {
+    data_out &amp;lt;- ddply(x,
+                      by,
+                      function(df) return(
+                        c(
+                          tmax = max(df[,var1]),
+                          tav = mean(df[,var2]),
+                          ndays = length(unique(df[,var3]))
+                          )
+                        )
+                      )
+    return(data_out)
+  }
+
+df2 &amp;lt;- summarise_df(x = airquality, by = &quot;Month&quot;,
+                   var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
+                   )
+
+head(df2)
+all.equal(df,df2)
+# TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Another alternative, if we want to pass the dataset as string too&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;summarise_df2  &amp;lt;- function(x, by, var1, var2, var3)
+  {
+    data_out &amp;lt;- eval(
+      parse(
+        text =
+        sprintf(
+          &quot;ddply(.data = %s,
+            .variables = '%s',
+            .fun = summarise,
+            tmax = max(%s),
+            tav = mean(%s),
+            ndays = length(unique(%s))
+            )&quot;, x, by, var1, var2, var3
+          )
+        )
+      )
+    return(data_out)
+  }
+
+df3 &amp;lt;- summarise_df2(x = &quot;airquality&quot;, by = &quot;Month&quot;,
+                     var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
+                     )
+head(df3)
+all.equal(df, df3)
+# TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h4&gt;R-arrange&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code&gt;# Re-order the rows of a data.frame
@@ -685,453 +1341,6 @@ head(df)
 </description>
 				<published>Thu Oct 10 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/</link>
-			</item>
-		
-			<item>
-				<title>test-data-for-classification-trees</title>
-				<description>&lt;h4&gt;A fictitious sample dataset&lt;/h4&gt;
-
-&lt;p&gt;For discussion, I'll use a fictional example dataset that I'm using to work through some statistical theory related to Classification and Regression Trees (CART).
-In the motivating example use case we are interested in predicting the civil status (married, single, divorced/widowed) of individuals from their sex (male, female) and sector of activity (primary, secondary, tertiary). The data set is composed of 273 cases.&lt;/p&gt;
-
-&lt;p&gt;The data (and related statistical theory) come from:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from &lt;a href=&quot;http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Ritschard, G., Pisetta, V., &amp;amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from &lt;a href=&quot;http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# copy and paste the data from the PDF (Table 1 in both papers)
-civst_gend_sector  &amp;lt;- read.csv(textConnection(
-    &quot;civil_status gender activity_sector number_of_cases
-         married   male         primary              50
-         married   male       secondary              40
-         married   male        tertiary               6
-         married female         primary               0
-         married female       secondary              14
-         married female        tertiary              10
-          single   male         primary               5
-          single   male       secondary               5
-          single   male        tertiary              12
-          single female         primary              50
-          single female       secondary              30
-          single female        tertiary              18
-divorced/widowed   male         primary               5
-divorced/widowed   male       secondary               8
-divorced/widowed   male        tertiary              10
-divorced/widowed female         primary               6
-divorced/widowed female       secondary               2
-divorced/widowed female        tertiary               2
-&quot;),sep = &quot;&quot;)
-
-# save this to my personal R utilities package &quot;disentangle&quot; 
-# for use later when I am exploring functions
-dir.create(&quot;inst/extdata&quot;, recursive=T)
-write.csv(civst_gend_sector, &quot;inst/extdata/civst_gend_sector.csv&quot;, row.names = F)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Motivating reason for using these data&lt;/h4&gt;
-
-&lt;p&gt;Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.&lt;/p&gt;
-
-&lt;p&gt;I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.&lt;/p&gt;
-
-&lt;p&gt;For example if we look at the reduction in deviance between the Null model and the fitted tree we can say that the tree explains about XYZ% of the variation. We can also test if this is a statistically significant reduction based on a chi-squared test.&lt;/p&gt;
-
-&lt;p&gt;Consider this example from page 310 of Hastie, T., Tibshirani, R., &amp;amp; Friedman, J. (2001). The elements of statistical learning. 2nd Edition:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;in a two-class problem with 400 observations in each class (denote this by (400, 400))&lt;/li&gt;
-&lt;li&gt;suppose one split created nodes (300, 100) and (100, 300),&lt;/li&gt;
-&lt;li&gt;the other created nodes (200, 400) and (200, 0).&lt;/li&gt;
-&lt;li&gt;Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write... I thought would publish it properly.&lt;/p&gt;
-
-&lt;h4&gt;The Tree Model&lt;/h4&gt;
-
-&lt;p&gt;So just before we leave Ritschard and the CART method, let's just fit the model.  Let's also install my R utilities package &quot;disentangle&quot;, to test that we can access the data from it.&lt;/p&gt;
-
-&lt;p&gt;In this analysis the civil status is the outcome (or response or decision or dependent) variable, while sex and activity sector are the predictors (or condition or independent variables).&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# func
-require(rpart)
-require(partykit) 
-require(devtools)
-install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
-
-# load
-fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;, &quot;civst_gend_sector.csv&quot;),
-                     package = &quot;disentangle&quot;
-                     )
-civst_gend_sector &amp;lt;- read.csv(fpath)
-
-# clean
-str(civst_gend_sector)
-
-# do
-fit &amp;lt;- rpart(civil_status ~ gender + activity_sector,
-             data = civst_gend_sector, weights = number_of_cases,
-             control=rpart.control(minsplit=1))
-# NB need minsplit to be adjusted for weights.
-summary(fit)
-
-# report
-dir.create(&quot;images&quot;)
-png(&quot;images/fit1.png&quot;, 1000, 480)
-plot(as.party(fit))
-dev.off()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;The Result&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/fit1.png&quot; alt=&quot;fit1.png&quot; /&gt;&lt;/p&gt;
-</description>
-				<published>Thu Oct 10 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/10/test-data-for-classification-trees/</link>
-			</item>
-		
-			<item>
-				<title>simple-example-using-nmmaps</title>
-				<description>&lt;p&gt;I will use the NMMAPSlite datasets for a simple example of what I am trying to do.&lt;/p&gt;
-
-&lt;!-- begin_src R :session *R* :tangle NMMAPS-example/NMMAPS-example-code.r :exports none :eval no --&gt;
-
-
-&lt;h4&gt;Code: get nmmaps data&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# func
-if(!require(NMMAPSlite)) install.packages('NMMAPSlite');require(NMMAPSlite)
-require(mgcv)
-require(splines)
-
-######################################################
-# load  
-setwd('data')
-initDB('data/NMMAPS') # this requires that we connect to the web,
-                      # so lets get local copies
-setwd('..')
-cities &amp;lt;- getMetaData('cities')
-head(cities)
-citieslist &amp;lt;- cities$cityname
-# write out a few cities for access later
-for(city_i in citieslist[sample(1:nrow(cities), 9)])
-{
- city &amp;lt;- subset(cities, cityname == city_i)$city
- data &amp;lt;- readCity(city)
- write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
- row.names = F, sep = ',')
-}
-# these are all tiny, go some big ones
-for(city_i in c('New York', 'Los Angeles', 'Madison', 'Boston'))
-{
- city &amp;lt;- subset(cities, cityname == city_i)$city
- data &amp;lt;- readCity(city)
- write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
- row.names = F, sep = ',')
-}
-
-######################################################
-# now we can use these locally
-dir(&quot;data&quot;)
-city &amp;lt;- &quot;Chicago&quot;
-data &amp;lt;- read.csv(sprintf(&quot;data/%s.csv&quot;, city), header=T)
-str(data)
-data$yy &amp;lt;- substr(data$date,1,4)
-data$date &amp;lt;- as.Date(data$date)
-######################################################
-# check
-par(mfrow=c(2,1), mar=c(4,4,3,1))
-with(subset(data[,c(1,15:25)], agecat == '75p'),
-  plot(date, tmax)
- )
-with(subset(data[,c(1,4,15:25)], agecat == '75p'),
-        plot(date, cvd, type ='l', col = 'grey')
-        )
-with(subset(data[,c(1,4,15:25)], agecat == '75p'),
-        lines(lowess(date, cvd, f = 0.015))
-        )
-# I am worried about that outlier
-data$date[which(data$cvd &amp;gt; 100)]
-# [1] &quot;1995-07-15&quot; &quot;1995-07-16&quot;
-
-######################################################
-# do standard NMMAPS timeseries poisson GAM model
-numYears&amp;lt;-length(names(table(data$yy)))
-df &amp;lt;- subset(data, agecat == '75p')
-df$time &amp;lt;- as.numeric(df$date)
-fit &amp;lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = poisson)
-# plot of response functions
-par(mfrow=c(2,2))
-plot(fit)
-dev.off()
-
-######################################################
-# some diagnostics
-summary(fit)
-# note the R-sq.(adj) =   0.21
-gam.check(fit)
-# note the lack of a leverage plot.  for that we need glm
-
-######################################################
-# do same model as glm
-fit2 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
-# plot responses
-par(mfrow=c(2,2))
-termplot(fit2, se =T)
-dev.off()
-
-# plot prediction
-df$predictedCvd &amp;lt;- predict(fit2, df, 'response')
-# baseline is given by the intercept
-fit3 &amp;lt;- glm(cvd ~ 1, data = df, family = poisson)
-df$baseline &amp;lt;-  predict(fit3, df, 'response')
-with(subset(df, date&amp;gt;=as.Date('1995-01-01') &amp;amp; date &amp;lt;= as.Date('1995-07-31')),
- plot(date, cvd, type ='l', col = 'grey')
-        )
-with(subset(df, date&amp;gt;=as.Date('1995-01-01') &amp;amp; date &amp;lt;= as.Date('1995-07-31')),
-        lines(date,predictedCvd)
-        )
-with(subset(df, date&amp;gt;=as.Date('1995-01-01') &amp;amp; date &amp;lt;= as.Date('1995-07-31')),
- lines(date,baseline)
-        )
-######################################################
-# some diagnostics
-# need to load a function to calculate poisson adjusted R squared
-# original S code from
-# The formula for pseudo-R^2 is taken from G. S. Maddalla,
-# Limited-dependent and Qualitative Variables in Econometrics, Cambridge:Cambridge Univ. Press, 1983. page 40, equation 2.50.
-RsquaredGlm &amp;lt;- function(o) {
- n &amp;lt;- length(o$residuals)
- ll &amp;lt;- logLik(o)[1]
- ll_0 &amp;lt;- logLik(update(o,~1))[1]
- R2 &amp;lt;- (1 - exp(((-2*ll) - (-2*ll_0))/n))/(1 - exp( - (-2*ll_0)/n))
- names(R2) &amp;lt;- 'pseudo.Rsquared'
- R2
- }
-RsquaredGlm(fit2)
-# 0.51
-# the difference is presumably due to the arguments about how to account for unexplainable variance in the poisson distribution?
-
-# significance of spline terms
-drop1(fit2, test='Chisq')
-# also note AIC. best model includes all of these terms
-# BIC can be computed instead (but still labelled AIC) using
-drop1(fit2, test='Chisq', k = log(nrow(data)))
-
-# diagnostic plots
-par(mfrow=c(2,2))
-plot(fit2)
-dev.off()
-# note high leverage plus residuals points are labelled
-# leverage doesn't seem to be too high though which is good
-# NB the numbers refer to the row.names attribute which still refer to the original dataset, not this subset
-df[row.names(df) %in% c(9354,9356),]$date
-# as suspected [1] &quot;1995-07-15&quot; &quot;1995-07-16&quot;
-
-######################################################
-# so lets re run without these obs
-df2 &amp;lt;- df[!row.names(df) %in% c(9354,9356),]
-# to avoid duplicating code just re run fit2, replacing data=df with df2
-# tmax still significant but not so extreme
-# check diagnostic plots again
-par(mfrow=c(2,2))
-plot(fit2)
-dev.off()
-# looks like a well behaved model now.
-
-# if we were still worried about any high leverage values we could identify these with
-df3 &amp;lt;- na.omit(df2[,c('cvd','pm10tmean','tmax','dptp','time')])
-df3$hatvalue &amp;lt;- hatvalues(fit2)
-df3$res &amp;lt;- residuals(fit2, 'pearson')
-with(df3, plot(hatvalue, res))
-# this is the same as the fourth default glm diagnostic plot, which they label x-axis as leverage
-summary(df3$hatvalue)
-# gives us an idea of the distribution of hat values
-# decide on a threshold and look at it
-hatThreshold &amp;lt;- 0.1
-with(subset(df3, hatvalue &amp;gt; hatThreshold), points(hatvalue, res, col = 'red', pch = 16))
-abline(0,0)
-segments(hatThreshold,-2,hatThreshold,15)
-dev.off()
-
-fit3 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = subset(df3, hatvalue &amp;lt; hatThreshold), family = poisson)
-par(mfrow=c(2,2))
-termplot(fit3, se = T)
-# same same
-plot(fit3)
-# no better
-
-# or we could go nuts with a whole number of ways of estimating influence
-# check all influential observations
-infl &amp;lt;- influence.measures(fit2)
-# which observations 'are' influential
-inflk &amp;lt;- which(apply(infl$is.inf, 1, any))
-length(inflk)
-
-
-######################################################
-# now what about serial autocorrelation in the residuals?
-
-par(mfrow = c(2,1))
-with(df3, acf(res))
-with(df3, pacf(res))
-dev.off()
-
-
-
-######################################################
-# just check for overdispersion
-fit &amp;lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = quasipoisson)
-summary(fit)
-# note the Scale est. = 1.1627
-# alternatively check the glm
-fit2 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = quasipoisson)
-summary(fit2)
-# (Dispersion parameter for quasipoisson family taken to be 1.222640)
-# this is probably near enough to support a standard poisson model...
-
-# if we have overdispersion we can use QAIC (A quasi- mode does not have a likelihood and so does not have an AIC,  by definition)
-# we can use the poisson model and calculate the overdispersion
-fit2 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
-1- pchisq(deviance(fit2), df.residual(fit2))
-
-# QAIC, c is the variance inflation factor, the ratio of the residual deviance of the global (most complicated) model to the residual degrees of freedom
-c=deviance(fit2)/df.residual(fit2)
-QAIC.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1)
-QAIC.1
-
-# Actually lets use QAICc which is more conservative about parameters,
-QAICc.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1) + 2*(length(coef(fit2)) + 1)*(length(coef(fit2)) + 1 + 1)/(nrow(na.omit(df[,c('cvd','pm10tmean','tmax','dptp','time')]))- (length(coef(fit2))+1)-1)
-QAICc.1
-
-
-######################################################
-# the following is old work, some may be interesting
-# such as the use of sinusoidal wave instead of smooth function of time
-
-
-# # sine wave
-# timevar &amp;lt;- as.data.frame(names(table(df$date)))
-# index &amp;lt;- 1:length(names(table(df$date)))
-# timevar$time2 &amp;lt;- index / (length(index) / (length(index)/365.25))
-# names(timevar) &amp;lt;- c('date','timevar')
-# timevar$date &amp;lt;- as.Date(timevar$date)
-# df &amp;lt;- merge(df,timevar)
-
-# fit &amp;lt;- gam(cvd ~ s(tmax) + s(dptp) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
-# summary(fit)
-# par(mfrow=c(3,2))
-# plot(fit, all.terms = T)
-# dev.off()
-
-# # now just explore the season fit
-# fit &amp;lt;- gam(cvd ~ sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
-# yhat &amp;lt;- predict(fit)
-# head(yhat)
-
-# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(15,55)))
-# lines(df[,'date'],exp(yhat),col='red')
-
-
-# # drop1(fit, test= 'Chisq')
-
-# # drop1 only works in glm?
-# # fit with weather variables, use degrees of freedom estimated by gam
-# fit &amp;lt;- glm(cvd ~ ns(tmax,8) + ns(dptp,2) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
-# drop1(fit, test= 'Chisq')
-# # use plot.glm for diagnostics
-# par(mfrow=c(2,2))
-# plot(fit)
-# par(mfrow=c(3,2))
-# termplot(fit, se=T)
-# dev.off()
-
-# # cyclic spline, overlay on prior sinusoidal
-# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(0,55)))
-# lines(df[,'date'],exp(yhat),col='red')
-
-# df$daynum &amp;lt;- as.numeric(format(df$date, &quot;%j&quot;))
-# df[360:370,c('date','daynum')]
-# fit &amp;lt;- gam(cvd ~ s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
-# yhat2 &amp;lt;- predict(fit)
-# head(yhat2)
-
-# lines(df[,'date'],exp(yhat2),col='blue')
-
-
-# par(mfrow=c(1,2))
-# plot(fit)
-
-
-# # fit weather with season
-# fit &amp;lt;- gam(cvd ~ s(tmax) + s(dptp) +
-  # s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
-# par(mfrow=c(2,2))
-# plot(fit)
-
-# summary(fit)
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>Thu Oct 10 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/10/simple-example-using-nmmaps/</link>
-			</item>
-		
-			<item>
-				<title>reviewing-lessons</title>
-				<description>&lt;h4&gt;Introduction&lt;/h4&gt;
-
-&lt;p&gt;This post is an attempt to put together a standard framework for reviewing lessons.  I've been to numerous workshops, master classes, tutorials and lectures and always take ad hoc notes that I generally re-write and re-organise afterwards.  I hope to develop a clearer methodology for reviewing what I learnt in each lesson.&lt;/p&gt;
-
-&lt;h4&gt;Context&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;When:
-Either just the date and time or include more context like the broader event such as a conference, season, public holidays.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Who:
-The presenter will give a bio at the start so make notes, especially to identify what disciplinary perspective they come from.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Where:
-Includes the address, city, lecture theatre.  These are cues for memory.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Why:
-Both why is the presenter here talking and also why am I hear listening.  It is important to critically reflect on what I want to get out of this lesson.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;What:
-What is this lesson all about?  This might start with a synopsis overview and will probably move on to a sequence of notes as the presenter's narrative unfolds, and my thoughts on the topic evolve.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Three Stages: Thesis, Antithesis, Synthesis&lt;/h4&gt;
-
-&lt;p&gt;A guiding principle I use for writing the 'What' section is the three stages: thesis, antithesis, synthesis.  I am not a philosopher so I don't know the proper use of these concepts in that discipline, but for me they are useful to structure my notes as I go through the process of a lesson.  Here is how I think of these stages:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Thesis:
-This is where I might pick out the key topics that are being presented, and write down my prior knowledge and preconceptions about the topic.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Antithesis:
-What's the main message(s) of the presenter?  What are their priorities?  What secondary (surrogate) topics emerge around the main points?  If I bring questions to the lesson are they answered by the presenter?  If not why?&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Synthesis:
-My new understanding of the topic.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Other tools&lt;/h4&gt;
-
-&lt;p&gt;Other things I use are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Mind maps: a central topic with a spiderweb of links extending out in a circle.&lt;/li&gt;
-&lt;li&gt;TODO&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Sat Oct 05 00:00:00 +1000 2013</published>
-				<link>http://schamberlain.github.com/2013/10/reviewing-lessons/</link>
 			</item>
 		
 	</channel>

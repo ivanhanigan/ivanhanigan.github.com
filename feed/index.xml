@@ -4,13 +4,612 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-10-16T16:52:10+11:00</updated>
+ <updated>2013-10-26T22:55:39+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>extract-weather-data-from-awap-grids</title>
+   <link href="http://ivanhanigan.github.com/2013/10/extract-weather-data-from-awap-grids/"/>
+   <updated>2013-10-26T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/10/extract-weather-data-from-awap-grids</id>
+   <content type="html">&lt;h3&gt;extract mean annual temperatures at the BOM website&lt;/h3&gt;
+
+&lt;p&gt;I use BoM data a fair bit and work on a project that tried to streamline access to BoM data for extreme weather event analysis (which require long term average climatology to provide the baseline that extremes are measured against).&lt;/p&gt;
+
+&lt;p&gt;WRT to temperature most daily averages from BoM are calculated as average of maximum_temperature_in_24_hours_after_9am_local_time_in_degrees and minimum_temperature_in_24_hours_before_9am_local_time_in_degree (only couple of hundred AWS provide hourly data to get the proper mean of 24 obs).&lt;/p&gt;
+
+&lt;p&gt;The Bureau of Meteorology has generated a range of gridded meteorological datasets for Australia as a contribution to the Australian Water Availability Project (AWAP). These include daily max and min temperature which you could use to generate daily averages, then calculate your long term averages from those?&lt;/p&gt;
+
+&lt;p&gt;http://www.bom.gov.au/jsp/awap/&lt;/p&gt;
+
+&lt;p&gt;Documentation is at http://www.bom.gov.au/amm/docs/2009/jones.pdf&lt;/p&gt;
+
+&lt;p&gt;I’m working on a workflow to download and process the public BoM weather grids.
+It uses the open source R software with some of our custom written packages:&lt;/p&gt;
+
+&lt;!-- &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; --&gt;
+
+
+&lt;!-- &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; --&gt;
+
+
+&lt;!--                &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt; --&gt;
+
+
+&lt;!-- &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot; xml:lang=&quot;en&quot;&gt; --&gt;
+
+
+&lt;!-- &lt;head&gt; --&gt;
+
+
+&lt;!-- &lt;title&gt;AWAP GRIDS &lt;/title&gt; --&gt;
+
+
+&lt;!-- &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;title&quot; content=&quot;AWAP GRIDS &quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;generated&quot; content=&quot;2013-10-26T22:31+1100&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt; --&gt;
+
+
+&lt;!-- &lt;style type=&quot;text/css&quot;&gt; --&gt;
+
+
+&lt;!--  &lt;\!--/*-\-&gt;&lt;![CDATA[/*&gt;&lt;\!--*/ --&gt;
+
+
+&lt;!--   html { font-family: Times, serif; font-size: 12pt; } --&gt;
+
+
+&lt;!--   .title  { text-align: center; } --&gt;
+
+
+&lt;!--   .todo   { color: red; } --&gt;
+
+
+&lt;!--   .done   { color: green; } --&gt;
+
+
+&lt;!--   .tag    { background-color: #add8e6; font-weight:normal } --&gt;
+
+
+&lt;!--   .target { } --&gt;
+
+
+&lt;!--   .timestamp { color: #bebebe; } --&gt;
+
+
+&lt;!--   .timestamp-kwd { color: #5f9ea0; } --&gt;
+
+
+&lt;!--   .right  {margin-left:auto; margin-right:0px;  text-align:right;} --&gt;
+
+
+&lt;!--   .left   {margin-left:0px;  margin-right:auto; text-align:left;} --&gt;
+
+
+&lt;!--   .center {margin-left:auto; margin-right:auto; text-align:center;} --&gt;
+
+
+&lt;!--   p.verse { margin-left: 3% } --&gt;
+
+
+&lt;!--   pre { --&gt;
+
+
+&lt;!--    border: 1pt solid #AEBDCC; --&gt;
+
+
+&lt;!--    background-color: #F3F5F7; --&gt;
+
+
+&lt;!--    padding: 5pt; --&gt;
+
+
+&lt;!--    font-family: courier, monospace; --&gt;
+
+
+&lt;!--         font-size: 90%; --&gt;
+
+
+&lt;!--         overflow:auto; --&gt;
+
+
+&lt;!--   } --&gt;
+
+
+&lt;!--   table { border-collapse: collapse; } --&gt;
+
+
+&lt;!--   td, th { vertical-align: top;  } --&gt;
+
+
+&lt;!--   th.right  { text-align:center;  } --&gt;
+
+
+&lt;!--   th.left   { text-align:center;   } --&gt;
+
+
+&lt;!--   th.center { text-align:center; } --&gt;
+
+
+&lt;!--   td.right  { text-align:right;  } --&gt;
+
+
+&lt;!--   td.left   { text-align:left;   } --&gt;
+
+
+&lt;!--   td.center { text-align:center; } --&gt;
+
+
+&lt;!--   dt { font-weight: bold; } --&gt;
+
+
+&lt;!--   div.figure { padding: 0.5em; } --&gt;
+
+
+&lt;!--   div.figure p { text-align: center; } --&gt;
+
+
+&lt;!--   div.inlinetask { --&gt;
+
+
+&lt;!--     padding:10px; --&gt;
+
+
+&lt;!--     border:2px solid gray; --&gt;
+
+
+&lt;!--     margin:10px; --&gt;
+
+
+&lt;!--     background: #ffffcc; --&gt;
+
+
+&lt;!--   } --&gt;
+
+
+&lt;!--   textarea { overflow-x: auto; } --&gt;
+
+
+&lt;!--   .linenr { font-size:smaller } --&gt;
+
+
+&lt;!--   .code-highlighted {background-color:#ffff00;} --&gt;
+
+
+&lt;!--   .org-info-js_info-navigation { border-style:none; } --&gt;
+
+
+&lt;!--   #org-info-js_console-label { font-size:10px; font-weight:bold; --&gt;
+
+
+&lt;!--                                white-space:nowrap; } --&gt;
+
+
+&lt;!--   .org-info-js_search-highlight {background-color:#ffff00; color:#000000; --&gt;
+
+
+&lt;!--                                  font-weight:bold; } --&gt;
+
+
+&lt;!--   /*]]&gt;*/-\-&gt; --&gt;
+
+
+&lt;!-- &lt;/style&gt; --&gt;
+
+
+&lt;!-- &lt;script type=&quot;text/javascript&quot;&gt; --&gt;
+
+
+&lt;!-- /* --&gt;
+
+
+&lt;!-- @licstart  The following is the entire license notice for the --&gt;
+
+
+&lt;!-- JavaScript code in this tag. --&gt;
+
+
+
+
+&lt;!-- Copyright (C) 2012-2013 Free Software Foundation, Inc. --&gt;
+
+
+
+
+&lt;!-- The JavaScript code in this tag is free software: you can --&gt;
+
+
+&lt;!-- redistribute it and/or modify it under the terms of the GNU --&gt;
+
+
+&lt;!-- General Public License (GNU GPL) as published by the Free Software --&gt;
+
+
+&lt;!-- Foundation, either version 3 of the License, or (at your option) --&gt;
+
+
+&lt;!-- any later version.  The code is distributed WITHOUT ANY WARRANTY; --&gt;
+
+
+&lt;!-- without even the implied warranty of MERCHANTABILITY or FITNESS --&gt;
+
+
+&lt;!-- FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details. --&gt;
+
+
+
+
+&lt;!-- As additional permission under GNU GPL version 3 section 7, you --&gt;
+
+
+&lt;!-- may distribute non-source (e.g., minimized or compacted) forms of --&gt;
+
+
+&lt;!-- that code without the copy of the GNU GPL normally required by --&gt;
+
+
+&lt;!-- section 4, provided you include this license notice and a URL --&gt;
+
+
+&lt;!-- through which recipients can access the Corresponding Source. --&gt;
+
+
+
+
+&lt;!-- @licend  The above is the entire license notice --&gt;
+
+
+&lt;!-- for the JavaScript code in this tag. --&gt;
+
+
+&lt;!-- */ --&gt;
+
+
+&lt;!-- &lt;\!--/*-\-&gt;&lt;![CDATA[/*&gt;&lt;\!--*/ --&gt;
+
+
+&lt;!--  function CodeHighlightOn(elem, id) --&gt;
+
+
+&lt;!--  { --&gt;
+
+
+&lt;!--    var target = document.getElementById(id); --&gt;
+
+
+&lt;!--    if(null != target) { --&gt;
+
+
+&lt;!--      elem.cacheClassElem = elem.className; --&gt;
+
+
+&lt;!--      elem.cacheClassTarget = target.className; --&gt;
+
+
+&lt;!--      target.className = &quot;code-highlighted&quot;; --&gt;
+
+
+&lt;!--      elem.className   = &quot;code-highlighted&quot;; --&gt;
+
+
+&lt;!--    } --&gt;
+
+
+&lt;!--  } --&gt;
+
+
+&lt;!--  function CodeHighlightOff(elem, id) --&gt;
+
+
+&lt;!--  { --&gt;
+
+
+&lt;!--    var target = document.getElementById(id); --&gt;
+
+
+&lt;!--    if(elem.cacheClassElem) --&gt;
+
+
+&lt;!--      elem.className = elem.cacheClassElem; --&gt;
+
+
+&lt;!--    if(elem.cacheClassTarget) --&gt;
+
+
+&lt;!--      target.className = elem.cacheClassTarget; --&gt;
+
+
+&lt;!--  } --&gt;
+
+
+&lt;!-- /*]]&gt;*///-\-&gt; --&gt;
+
+
+&lt;!-- &lt;/script&gt; --&gt;
+
+
+
+
+&lt;!-- &lt;/head&gt; --&gt;
+
+
+&lt;p&gt;&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;AWAP GRIDS &lt;/h1&gt;
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 r-code-code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; r-code-code&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;name:r-code&lt;/span&gt;
+
+
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;aim daily weather for any point location from online BoM weather grids&lt;/span&gt;
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;depends on some github packages&lt;/span&gt;
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(awaptools)
+&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;http://swish-climate-impact-assessment.github.io/tools/awaptools/awaptools-downloads.html&lt;/span&gt;
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(swishdbtools)
+&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;http://swish-climate-impact-assessment.github.io/tools/swishdbtools/swishdbtools-downloads.html&lt;/span&gt;
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(gisviz)
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;http://ivanhanigan.github.io/gisviz/&lt;/span&gt;
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;and this from CRAN&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(raster)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'raster'&lt;/span&gt;); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(raster)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;get weather data, beware that each grid is a couple of megabytes&lt;/span&gt;
+vars &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;maxave&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;minave&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;totals&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;vprph09&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;vprph15&quot;&lt;/span&gt;) &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;,&quot;solarave&quot;) &lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;solar only available after 1990&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(measure &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; vars)
+{
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;measure &amp;lt;- vars[1]&lt;/span&gt;
+  get_awap_data(start = &lt;span style=&quot;color: #2aa198;&quot;&gt;'1960-01-01'&lt;/span&gt;,end = &lt;span style=&quot;color: #2aa198;&quot;&gt;'1960-01-02'&lt;/span&gt;, measure)
+}
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;get location&lt;/span&gt;
+locn &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; geocode(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;daintree rainforest&quot;&lt;/span&gt;)
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;this uses google maps API, better check this&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;lon       lat&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;1 145.4185 -16.17003&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;Treat data frame as spatial points&lt;/span&gt;
+epsg &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; make_EPSG()
+shp &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; SpatialPointsDataFrame(cbind(locn$lon,locn$lat),locn,
+                              proj4string=CRS(epsg$prj4[epsg$code %&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt;% &lt;span style=&quot;color: #2aa198;&quot;&gt;'4283'&lt;/span&gt;]))
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;now loop over grids and extract met data&lt;/span&gt;
+cfiles &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt;  dir(pattern=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;grid$&quot;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt; (i &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; seq_len(length(cfiles))) {
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;i &amp;lt;- 1 ## for stepping thru&lt;/span&gt;
+  gridname &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; cfiles[[i]]
+  r &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; raster(gridname)
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;image(r) # plot to look at&lt;/span&gt;
+  e &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; extract(r, shp, df=T)
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;str(e) ## print for debugging&lt;/span&gt;
+  e1 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; shp
+  e1@data$values &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; e[,2]
+  e1@data$gridname &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; gridname
+  &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;write to to target file&lt;/span&gt;
+  write.table(e1@data,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;output.csv&quot;&lt;/span&gt;,
+    col.names = i == 1, append = i&amp;gt;1 , sep = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;,&quot;&lt;/span&gt;, row.names = &lt;span style=&quot;color: #b58900;&quot;&gt;FALSE&lt;/span&gt;)
+}
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;further work is required to format the column with the gridname to get out the date and weather paramaters.&lt;/span&gt;
+&lt;/pre&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+
+&lt;!-- &lt;/html&gt; --&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>document-first-ask-questions-later</title>
+   <link href="http://ivanhanigan.github.com/2013/10/document-first-ask-questions-later/"/>
+   <updated>2013-10-25T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/10/document-first-ask-questions-later</id>
+   <content type="html">&lt;p&gt;This post is just a short note about something I'm thinking of calling &quot;documentation-driven development&quot;.
+It is based on the concept of &lt;a href=&quot;http://en.wikipedia.org/wiki/Test-driven_development&quot;&gt;&quot;test-driven development&quot;&lt;/a&gt;, and more recently:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://lamages.blogspot.in/2013/04/test-driven-analysis.html&quot;&gt;&quot;test-driven analysis&quot;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;or even &lt;a href=&quot;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&quot;&gt;&quot;Evidence-based Data Analysis&quot;&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;It is also a kind of a critique on the paradigm suggested by the BCCVL statement on &lt;a href=&quot;http://bccvl.org.au/blog/2013/08/20/just-in-time-metadata/&quot;&gt;&quot;Just-In-Time metadata&quot;&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Anyway, it is a small thing but hopefully big things will grow.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>A Great Intro 2 Logistic Regression</title>
+   <link href="http://ivanhanigan.github.com/2013/10/challenger-logistic/"/>
+   <updated>2013-10-18T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/10/challenger-logistic</id>
+   <content type="html">&lt;p&gt;This is a great example of logistic regression,  because it is pretty simple but covers good ground.  I got it from Peter Caley;s R tutorial workbook from Charles Darwin School of Environmental Research.&lt;/p&gt;
+
+&lt;p&gt;It is also a tragic example of the impact weather can have on health.&lt;br/&gt;
+The colder it is the more likely the shuttle is to explode.&lt;/p&gt;
+
+&lt;p&gt;The problem was with the failure rate (and number of) O-rings that failed (n.fail) related to the temperature (temp).&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#Load the data
+#The following R code will construct the dataset
+n.fail &amp;lt;- c(2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)
+temp &amp;lt;- c(53, 66, 68, 70, 75, 78, 57, 67, 69, 70, 75, 79, 58, 67, 70, 72, 76, 81, 63, 67, 70, 73, 76)
+# there were 6 o rings for each of 23 attempts
+total &amp;lt;- rep(6,23)
+# probability of fail
+p.fail &amp;lt;- n.fail/total
+# Response = resp column bind them together  
+resp &amp;lt;- cbind(n.fail, total-n.fail)
+
+###########################################################################
+# we can write text files easily once the data frame or matrix is in shape
+data &amp;lt;- as.data.frame(cbind(resp,temp))
+names(data) &amp;lt;- c('nfail','totalMinusNfail', 'temp')
+# write.csv(data, 'learnR-logistic-data.csv', row.names=F)
+
+###########################################################################
+# and read it in again 
+# data2 &amp;lt;- read.csv('learnR-logistic-data.csv')
+
+################################################################
+# name:learnR-logistic
+png('images/pfail.png')
+plot(temp, p.fail, pch=16, xlim=c(40,100), ylim=c(0,0.4))
+title('A plot of the proportion failed by temperature')
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/pfail.png&quot; alt=&quot;pfail.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;###########################################################################
+# newnode: linear
+linear &amp;lt;- glm(resp ~ 1 + temp, family=binomial(link=logit))
+summary(linear)
+linearoutput &amp;lt;- summary(linear)
+linearoutput$coeff
+
+###########################################################################
+# newnode: learnR-logistic
+cf &amp;lt;- linearoutput$coeff
+signif(cf[which(row.names(cf) == 'temp'),'Estimate'],2)
+
+###########################################################################
+# newnode: learnR-logistic
+# write.csv(linearoutput$coeff,&quot;challengerOfails.csv&quot;)
+
+###########################################################################
+# newnode: learnR-logistic
+ png('images/challengerLogistic.png')
+ par(mfrow=c(2,2))
+ plot(linear)
+ dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/challengerLogistic.png&quot; alt=&quot;challengerLogistic.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;####################################################################
+# newnode: learnR-logistic
+dummy &amp;lt;- data.frame(temp=seq(20,100,1))
+pred.prob &amp;lt;- predict.glm(linear, newdata=dummy, type=&quot;resp&quot;)
+png('images/pfailfit.png')
+plot(temp, p.fail, xlab=&quot;Launch Temperature (F)&quot;,
+ ylab=&quot;Proportion Failing&quot;, pch=16, xlim=c(20,100), ylim=c(0,1.0))
+lines(dummy$temp, pred.prob)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/pfailfit.png&quot; alt=&quot;pfailfit.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;####################################################################
+resp &amp;lt;- as.data.frame(resp)
+resp$fail &amp;lt;- ifelse(resp$n.fail &amp;gt; 0, 1, 0)
+resp$temp &amp;lt;- temp
+
+png('images/fail.png')
+with(resp, plot(temp, fail, xlab=&quot;Launch Temperature (F)&quot;,ylab=&quot;Joint damage&quot;, pch=16, xlim=c(50,80), ylim=c(0,1.0))
+     )
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/fail.png&quot; alt=&quot;fail.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;chal.logit &amp;lt;- glm(fail~temp,family=binomial, data = resp)
+summary(chal.logit)$coeff
+
+png('images/pfailfit2.png')
+cx &amp;lt;- c(50:80/1)
+cyhat &amp;lt;- coefficients(chal.logit)[c(1)] +
+coefficients(chal.logit)[c(2)]*cx
+cpihat &amp;lt;- exp(cyhat)/(1+exp(cyhat))
+with(resp,plot(temp,fail,xlab=&quot;Temperature&quot;,ylab=&quot;Damage&quot;,
+main=&quot;Incidence of Booster Field Joint Damage vs. Temperature&quot;, xlim = c(50,80))
+     )
+lines(cx,cpihat)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/pfailfit2.png&quot; alt=&quot;pfailfit2.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>spatially-structured-time-series-with-nmmaps</title>
@@ -690,6 +1289,66 @@ df &amp;lt;- ddply(.data = airquality,
             ndays = length(unique(Day))
             )
 head(df)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Passing variables to ddply for summary&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# Notice how the name of the variable Temp doesn't need quotes?
+# this means that you need to hard code the names
+# But if you want to pass variables to this inside a function we need a
+# different approach.
+
+summarise_df  &amp;lt;- function(x, by, var1, var2, var3)
+  {
+    data_out &amp;lt;- ddply(x,
+                      by,
+                      function(df) return(
+                        c(
+                          tmax = max(df[,var1]),
+                          tav = mean(df[,var2]),
+                          ndays = length(unique(df[,var3]))
+                          )
+                        )
+                      )
+    return(data_out)
+  }
+
+df2 &amp;lt;- summarise_df(x = airquality, by = &quot;Month&quot;,
+                   var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
+                   )
+
+head(df2)
+all.equal(df,df2)
+# TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Another alternative, if we want to pass the dataset as string too&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;summarise_df2  &amp;lt;- function(x, by, var1, var2, var3)
+  {
+    data_out &amp;lt;- eval(
+      parse(
+        text =
+        sprintf(
+          &quot;ddply(.data = %s,
+            .variables = '%s',
+            .fun = summarise,
+            tmax = max(%s),
+            tav = mean(%s),
+            ndays = length(unique(%s))
+            )&quot;, x, by, var1, var2, var3
+          )
+        )
+      )
+    return(data_out)
+  }
+
+df3 &amp;lt;- summarise_df2(x = &quot;airquality&quot;, by = &quot;Month&quot;,
+                     var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
+                     )
+head(df3)
+all.equal(df, df3)
+# TRUE
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;R-arrange&lt;/h4&gt;
