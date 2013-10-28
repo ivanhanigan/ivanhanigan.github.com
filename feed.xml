@@ -6,6 +6,21 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>spatial-lag-and-timeseries-model-with-nmmaps</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors&lt;/li&gt;
+&lt;li&gt;We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement&lt;/li&gt;
+&lt;li&gt;I've hacked together some very very ugly code to construct the lagged variable&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3&quot;&gt;http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;There may be errors, it's been a long day, but I won't have a chance to check back on this till next week so I thought I'd put it out there as is.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Mon Oct 28 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/</link>
+			</item>
+		
+			<item>
 				<title>Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</title>
 				<description>&lt;p&gt;&lt;body&gt;&lt;/p&gt;
 
@@ -1130,167 +1145,6 @@ time....&quot;&lt;/li&gt;
 </description>
 				<published>Fri Oct 11 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/10/two-main-types-of-data-documentation-workflow/</link>
-			</item>
-		
-			<item>
-				<title>wickhams-tidy-tools-only-get-you-90-pct-the-way</title>
-				<description>&lt;h4&gt;Hadley Wickham's tidy tools&lt;/h4&gt;
-
-&lt;p&gt;In this video at 8 mins 50 seconds he says &quot;these four tools do 90% of the job&quot;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;subset,&lt;/li&gt;
-&lt;li&gt;transform,&lt;/li&gt;
-&lt;li&gt;summarise, and&lt;/li&gt;
-&lt;li&gt;arrange&lt;/li&gt;
-&lt;li&gt;TODO I noticed &lt;a href=&quot;http://www.rstudio.com/training/curriculum/data-manipulation.html&quot;&gt;at the website for an Rstudio  course&lt;/a&gt; transform has been replaced by mutate as one of the &quot;four basic verbs of data manipulation&quot;.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;iframe src=&quot;//player.vimeo.com/video/33727555&quot; width=&quot;500&quot; height=&quot;281&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
-
-
-&lt;p&gt; &lt;p&gt;&lt;a href=&quot;http://vimeo.com/33727555&quot;&gt;Tidy Data&lt;/a&gt; from &lt;a href=&quot;http://vimeo.com/user2150538&quot;&gt;Drew Conway&lt;/a&gt; on &lt;a href=&quot;https://vimeo.com&quot;&gt;Vimeo&lt;/a&gt;.&lt;/p&gt;&lt;/p&gt;
-
-&lt;p&gt;So I thought what's the other 10?  Here's a few contenders for my work:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;merge&lt;/li&gt;
-&lt;li&gt;reshape::cast and reshape::melt&lt;/li&gt;
-&lt;li&gt;unlist&lt;/li&gt;
-&lt;li&gt;t() transpose&lt;/li&gt;
-&lt;li&gt;sprintf or paste&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;R-subset&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# Filter rows by criteria
-subset(airquality, Temp &amp;gt; 90, select = c(Ozone, Temp))
-
-## NB This is a convenience function intended for use interactively.  For
-## programming it is better to use the standard subsetting functions like
-## ‘[’, and in particular the non-standard evaluation of argument
-## ‘subset’ can have unanticipated consequences.
-
-with(airquality,
-     airquality[Temp &amp;gt; 90, c(&quot;Ozone&quot;, &quot;Temp&quot;)]
-     )
-
-# OR
-
-airquality[airquality$Temp &amp;gt; 90,  c(&quot;Ozone&quot;, &quot;Temp&quot;)]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R-transform&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# New columns that are functions of other columns       
-df &amp;lt;- transform(airquality,
-                new = -Ozone,
-                Temp2 = (Temp-32)/1.8
-                )
-head(df)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R-mutate&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(plyr)
-# same thing as transform
-df &amp;lt;- mutate(airquality, new = -Ozone, Temp = (Temp - 32) / 1.8)    
-# Things transform can't do
-df &amp;lt;- mutate(airquality, Temp = (Temp - 32) / 1.8, OzT = Ozone / Temp)
-
-# mutate is rather faster than transform
-system.time(transform(baseball, avg_ab = ab / g))
-system.time(mutate(baseball, avg_ab = ab / g))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R-summarise&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# New data.frame where columns are functions of existing columns
-require(plyr)    
-df &amp;lt;- ddply(.data = airquality,
-            .variables = &quot;Month&quot;,
-            .fun = summarise,
-            tmax = max(Temp),
-            tav = mean(Temp),
-            ndays = length(unique(Day))
-            )
-head(df)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Passing variables to ddply for summary&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# Notice how the name of the variable Temp doesn't need quotes?
-# this means that you need to hard code the names
-# But if you want to pass variables to this inside a function we need a
-# different approach.
-
-summarise_df  &amp;lt;- function(x, by, var1, var2, var3)
-  {
-    data_out &amp;lt;- ddply(x,
-                      by,
-                      function(df) return(
-                        c(
-                          tmax = max(df[,var1]),
-                          tav = mean(df[,var2]),
-                          ndays = length(unique(df[,var3]))
-                          )
-                        )
-                      )
-    return(data_out)
-  }
-
-df2 &amp;lt;- summarise_df(x = airquality, by = &quot;Month&quot;,
-                   var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
-                   )
-
-head(df2)
-all.equal(df,df2)
-# TRUE
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Another alternative, if we want to pass the dataset as string too&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;summarise_df2  &amp;lt;- function(x, by, var1, var2, var3)
-  {
-    data_out &amp;lt;- eval(
-      parse(
-        text =
-        sprintf(
-          &quot;ddply(.data = %s,
-            .variables = '%s',
-            .fun = summarise,
-            tmax = max(%s),
-            tav = mean(%s),
-            ndays = length(unique(%s))
-            )&quot;, x, by, var1, var2, var3
-          )
-        )
-      )
-    return(data_out)
-  }
-
-df3 &amp;lt;- summarise_df2(x = &quot;airquality&quot;, by = &quot;Month&quot;,
-                     var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
-                     )
-head(df3)
-all.equal(df, df3)
-# TRUE
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R-arrange&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# Re-order the rows of a data.frame
-df &amp;lt;- arrange(airquality, Temp, Ozone)
-head(df)
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>Thu Oct 10 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/</link>
 			</item>
 		
 	</channel>
