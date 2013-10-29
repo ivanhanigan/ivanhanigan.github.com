@@ -4,13 +4,95 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-10-28T21:00:40+11:00</updated>
+ <updated>2013-10-29T17:14:15+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>counting-number-of-consecutive-months-in-drought</title>
+   <link href="http://schamberlain.github.com/2013/10/counting-number-of-consecutive-months-in-drought/"/>
+   <updated>2013-10-29T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/counting-number-of-consecutive-months-in-drought</id>
+   <content type="html">&lt;p&gt;I got this question today from a Drought researcher:&lt;/p&gt;
+
+&lt;h4&gt;Question:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;There a table with 62 years * 12 months of rain data in mm. We
+calculated the cumulative distribution using ecdf: empirical
+cumulative distribution function. So the table looks like this:
+Year Jan Feb Mach (…) each cell contains the cum dist.
+
+We also got the number of months per year with less than X mm of
+rain. But he needs to know how many months are between the
+drought months, regardless the year. So, I thought that
+converting the data into a ts was going to facilitate the task,
+but it doesn’t, because now I don’t’ have columns and rows any
+longer.
+
+How do I handle a ts object to do for example an ifelse?
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;I answered:&lt;/p&gt;
+
+&lt;p&gt;This looks a lot like the Hutchinson Drought Index which I've coded up here&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/ivanhanigan/HutchinsonDroughtIndex&quot;&gt;https://github.com/ivanhanigan/HutchinsonDroughtIndex&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r&quot;&gt;https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Also there is a completely reproducible example with BoM rainfall data at &lt;a href=&quot;https://github.com/ivanhanigan/SuicideAndDroughtInNSW&quot;&gt;https://github.com/ivanhanigan/SuicideAndDroughtInNSW&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;This is the key bit for counting consecutive months below a threshold&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;x&amp;lt;-data$index&amp;lt;=-1
+xx &amp;lt;- (cumsum(!x) + 1) * x
+x2&amp;lt;-(seq_along(x) - match(xx, xx) + 1) * x
+data$count&amp;lt;-x2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;
+I got it from &lt;a href=&quot;https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html&quot;&gt;https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html&lt;/a&gt;
+and looked in wonder at the structure and am amazed it works.&lt;/p&gt;
+
+&lt;p&gt;I also really like the cumulative summing version a lot&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;data$sums&amp;lt;-as.numeric(0)
+y &amp;lt;- ifelse(data$index &amp;gt;= -1, 0, data$index)
+f &amp;lt;- data$index &amp;lt; -1
+f &amp;lt;- (cumsum(!f) + 1) * f
+z &amp;lt;- unsplit(lapply(split(y,f),cumsum),f)
+data$sums &amp;lt;- z
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;
+Several things I'd like to change.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I like the idea of using a wide dataset and ecdf rather than my loop thru months&lt;/li&gt;
+&lt;li&gt;I'd like to look into Joe Wheatley;s approach &lt;a href=&quot;]http://joewheatley.net/20th-century-droughts/&quot;&gt;http://joewheatley.net/20th-century-droughts/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>spatial-lag-and-timeseries-model-with-nmmaps</title>
@@ -1373,6 +1455,35 @@ divorced/widowed female        tertiary               2
 # for use later when I am exploring functions
 dir.create(&quot;inst/extdata&quot;, recursive=T)
 write.csv(civst_gend_sector, &quot;inst/extdata/civst_gend_sector.csv&quot;, row.names = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;That is fine and good, we can use the case weights option to include number of cases but sometimes we want to use one row per person.
+In the next chunk of code I;ll reformat the data, and also add another fictitious variable called income and contrive an example where a certain group earns less based on their activity sector.&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;df &amp;lt;- as.data.frame(matrix(NA, nrow = 0, ncol = 3))
+for(i in 1:nrow(civst_gend_sector))
+    {
+    #    i &amp;lt;- 1
+        n &amp;lt;- civst_gend_sector$number_of_cases[i]
+        if(n == 0) next
+        for(j in 1:n)
+            {
+              df &amp;lt;- rbind(df, civst_gend_sector[i,1:3])              
+            }
+
+    }
+
+df$income  &amp;lt;- rnorm(nrow(df), 1000,200)
+# Let us say secondary men earn less
+df$income[df$gender == &quot;male&quot; &amp;amp; df$activity == &quot;secondary&quot;]  &amp;lt;- df$income[df$gender == &quot;male&quot; &amp;amp; df$activity == &quot;secondary&quot;] - 500
+str(df)
+# save this for use later
+write.csv(df, &quot;inst/extdata/civst_gend_sector_full.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;Motivating reason for using these data&lt;/h4&gt;
