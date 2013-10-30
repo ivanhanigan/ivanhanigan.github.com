@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-10-31T10:01:45+11:00</updated>
+ <updated>2013-10-31T10:10:43+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -19,16 +19,17 @@
    <id>http://schamberlain.github.com/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</id>
    <content type="html">&lt;ul&gt;
 &lt;li&gt;Yesterday I met with Sarunya Sujaritpong a PhD student working with &lt;a href=&quot;http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/&quot;&gt;spatially structured time-series models as described previously&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concerns&lt;/li&gt;
-&lt;li&gt;The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the p-value.&lt;/li&gt;
+&lt;li&gt;Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern&lt;/li&gt;
+&lt;li&gt;The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk&lt;/li&gt;
 &lt;li&gt;The beta coefficient itself shouldn't be affected.&lt;/li&gt;
 &lt;li&gt;So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are &lt;a href=&quot;http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360&quot;&gt;starting to include this in their models&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I'm preparing for the day when I might need to justify this to a reviewer and would like to know what to do about it in case it is a problem&lt;/li&gt;
+&lt;li&gt;To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series&lt;/li&gt;
+&lt;li&gt;I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens&lt;/li&gt;
 &lt;li&gt;So I asked Sarunya for a discussion about her research&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h3&gt;Sarunya's model&lt;/h3&gt;
+&lt;h3&gt;Sarunya's model is essentially like this&lt;/h3&gt;
 
 &lt;h4&gt;R Code:&lt;/h4&gt;
 
@@ -40,9 +41,12 @@
        )
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;/p&gt;
+
+
 &lt;ul&gt;
 &lt;li&gt;SLA is Statistical Local Area (now called SA2, like a suburb)&lt;/li&gt;
-&lt;li&gt;Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day&lt;/li&gt;
+&lt;li&gt;Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city&lt;/li&gt;
 &lt;li&gt;turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION&lt;/li&gt;
 &lt;li&gt;therefore this study avoids the issue by it's intentional design to compare betas not se&lt;/li&gt;
 &lt;li&gt;Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.&lt;/li&gt;
