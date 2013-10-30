@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-10-31T10:10:43+11:00</updated>
+ <updated>2013-10-31T10:29:24+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -63,6 +63,411 @@
 
 
 &lt;p&gt;THANKS Sarunya!&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</title>
+   <link href="http://ivanhanigan.github.com/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/"/>
+   <updated>2013-10-29T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry</id>
+   <content type="html">&lt;p&gt;&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Disentangle Things&lt;/h1&gt;
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 Background&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 Speed and Rigour&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3 Analysts can often trade-off completeness of documentation for speed&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4 Librarians produce gold plated documentation and can take longer to produce this&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5 An example&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6 Embracing Inaccuracy and Incompleteness&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-7&quot;&gt;1.7 Aim&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8&quot;&gt;1.8 Step 1: load a simple example dataset&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-9&quot;&gt;1.9 Step 2 create a function to deliver the minimal metadata object&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-10&quot;&gt;1.10 reml&lt;sub&gt;boilerplate&lt;/sub&gt;-code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-11&quot;&gt;1.11 reml&lt;sub&gt;boilerplate&lt;/sub&gt;-test-code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-12&quot;&gt;1.12 Results: This loads into Morpho with some errors&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-13&quot;&gt;1.13 Conclusions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
+
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1&lt;/span&gt; Background&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;The Morpho/Metacat system is great for a data repository
+&lt;/li&gt;
+&lt;li&gt;Morpho also claims to be suitable for Ecologists to document their data
+&lt;/li&gt;
+&lt;li&gt;But in my experience it leaves a little to be desired in ease of use for both purposes
+&lt;/li&gt;
+&lt;li&gt;Specifically the speed that documentation can be entered into Morpho is slow
+&lt;/li&gt;
+&lt;li&gt;This post is a first attempt to create some boilerplate code to quickly generate EML metadata using REML.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2&lt;/span&gt; Speed and Rigour&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2&quot;&gt;
+
+&lt;p&gt;As I noted in a previous post, there are [two types of data documentation workflow](&lt;a href=&quot;http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/&quot;&gt;http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/&lt;/a&gt;).  
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GUI
+&lt;/li&gt;
+&lt;li&gt;Programatic
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;  
+I also think there are two types of users with different motivations and constraints:
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1) Data Analysts
+&lt;/li&gt;
+&lt;li&gt;2) Data Librarians
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3&lt;/span&gt; Analysts can often trade-off completeness of documentation for speed&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3&quot;&gt;
+
+&lt;p&gt;In my view the Analysts group of users need a tool that will very rapidly document their data and workflow steps and can live with a bit less rigour in the quality of documentation.  Obviously this is not ideal but seems an inevitable trade-off needed to enable analysts to keep up the momentum of the data processing and modelling without getting distracted by tedious (and potentially unnecessary) data documentation tasks.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4&lt;/span&gt; Librarians produce gold plated documentation and can take longer to produce this&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4&quot;&gt;
+
+&lt;p&gt;On the other hand the role of the Librarian group is to produce documentation to the best level possible (given time and resource constraints) the datasets and methodologies that lead to the creation of the datasets.  For that group Rigour will take precedence and there will be a trade-off in terms of the amount of time needed to produce the documentation.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-5&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5&lt;/span&gt; An example&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-5&quot;&gt;
+
+&lt;p&gt;As an example of the two different groups, an analyst working with weather data in Australia may want to specify that their variable &quot;temperature&quot; is the average of the daily maxima and minima, but might not need to specify that the observations were taken inside a Stevenson Screen, or even if they are in Celsius, Farenhiet or Kelvin.  They will be very keen to start the analysis to identify any associations between weather variables and the response variable they are investigating.   The data librarian on the other hand will be more likely to need to include this information so that the users of the temperature data do not mis-interpret it.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-6&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6&lt;/span&gt; Embracing Inaccuracy and Incompleteness&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;I've been talking about this for a while got referred to this document by Ben Davies at the ANUSF
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;[http://thedailywtf.com/Articles/Documentation-Done-Right.aspx](&lt;a href=&quot;http://thedailywtf.com/Articles/Documentation-Done-Right.aspx&quot;&gt;http://thedailywtf.com/Articles/Documentation-Done-Right.aspx&lt;/a&gt;)
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;It has this bit:
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;  
+   
+Embracing Inaccuracy and Incompleteness 
+    
+The immediate answer to what&amp;#8217;s the right way to do documentation is
+clear: produce the least amount of documentation needed to facilitate
+the most understanding, and be very explicit about which documentation
+is to be maintained and which is to be archived (i.e., read-only and
+left to rot).
+&lt;/pre&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Roughly speaking, a full EML document produced by Morpho is a bit like a whole bunch of cruft that isnt needed and gets in the way (and is more confusing)
+&lt;/li&gt;
+&lt;li&gt;Whereas a minimal version Im thinking of covers almost all the generic entries providing the &quot;minimum amount of stuff to make it work right&quot;.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-7&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-7&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.7&lt;/span&gt; Aim&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-7&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;This experiment aims to speed up the creation of a minimal &quot;skeleton&quot; of metadata to a level that both the groups above can be comfortable with AS A FIRST STEP.
+&lt;/li&gt;
+&lt;li&gt;It is assumed that additional steps will then need to be taken to complete the documentation, but the automation of the first part of the process should shave off enough time to suit the purposes of both groups
+&lt;/li&gt;
+&lt;li&gt;It is an imperative that the quick-start creation of the metadata does not end up costing the documentor more time later on down the track if they need to go back to many of the elements for additional editing.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-8&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-8&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8&lt;/span&gt; Step 1: load a simple example dataset&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8&quot;&gt;
+
+&lt;p&gt;I've been using a [fictitious dataset from a Statistics Methodology paper by Ritschard 2006](&lt;a href=&quot;http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/&quot;&gt;http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/&lt;/a&gt;).  It will do as a first cut but when it comes to actually test this out it would be good to have something that would take a bit longer (so that the frustrations of using Morpho become very apparent).
+&lt;/p&gt;
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;  &lt;span style=&quot;color: #586e75;&quot;&gt;#### &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;R Code:&lt;/span&gt;
+      &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;func&lt;/span&gt;
+      &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(devtools)
+      install_github(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;disentangle&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;ivanhanigan&quot;&lt;/span&gt;)
+      &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(disentangle)
+      &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;load&lt;/span&gt;
+      fpath &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; system.file(
+          file.path(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;extdata&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;civst_gend_sector_full.csv&quot;&lt;/span&gt;),
+          package = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;disentangle&quot;&lt;/span&gt;
+          )
+      data_set &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(fpath)
+      summary(data_set)
+      &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;store it in the current project workspace&lt;/span&gt;
+      write.csv(data_set, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;data/civst_gend_sector_full.csv&quot;&lt;/span&gt;, row.names = F)
+      
+
+
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;| divorced/widowed: 33 | female:132 | primary  :116 | Min.   : 128.9 |&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;| married         :120 | male  :141 | secondary: 99 | 1st Qu.: 768.3 |&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;| single          :120 | nil        | tertiary : 58 | Median : 922.8 |&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;| nil                  | nil        | nil           | Mean   : 908.4 |&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;| nil                  | nil        | nil           | 3rd Qu.:1079.1 |&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;| nil                  | nil        | nil           | Max.   :1479.4 |&lt;/span&gt;
+
+&lt;/pre&gt;
+
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-9&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-9&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.9&lt;/span&gt; Step 2 create a function to deliver the minimal metadata object&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-9&quot;&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the package REML will create a EML metadata document quite easily
+&lt;/li&gt;
+&lt;li&gt;I will assume that a lot of the data elements are self explanatory and take column names and factor levels as the descriptions
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-10&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-10&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.10&lt;/span&gt; reml&lt;sub&gt;boilerplate&lt;/sub&gt;-code&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-10&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;name:reml_boilerplate&lt;/span&gt;
+ 
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;func&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(reml)) {
+  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(devtools)
+  install_github(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;reml&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;ropensci&quot;&lt;/span&gt;)
+  } 
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(reml)
+
+&lt;span style=&quot;color: #268bd2;&quot;&gt;reml_boilerplate&lt;/span&gt; &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;function&lt;/span&gt;(data_set, created_by = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;Ivan Hanigan &amp;lt;&lt;a href=&quot;mailto:ivanhanigan&amp;#64;gmail.com&quot;&gt;ivanhanigan&amp;#64;gmail.com&lt;/a&gt;&amp;gt;&quot;&lt;/span&gt;, data_dir = getwd(), titl = &lt;span style=&quot;color: #b58900;&quot;&gt;NA&lt;/span&gt;, desc = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;&quot;&lt;/span&gt;)
+{
+
+  &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;essential&lt;/span&gt;
+  &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(is.na(titl)) &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;stop&lt;/span&gt;(print(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;must specify title&quot;&lt;/span&gt;))
+  &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;we can get the col names easily&lt;/span&gt;
+  col_defs &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; names(data_set)
+  &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;next create a list from the data&lt;/span&gt;
+  unit_defs &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; list()
+  &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(i &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; 1:ncol(data_set))
+    {
+      &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;i = 4&lt;/span&gt;
+      &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(is.numeric(data_set[,i])){
+        unit_defs[[i]] &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;numeric&quot;&lt;/span&gt;
+      } &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;else&lt;/span&gt; {
+        unit_defs[[i]] &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; names(table(data_set[,i]))          
+      }
+    }
+  &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;unit_defs&lt;/span&gt;
+  
+  ds &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; data.set(data_set,
+                 col.defs = col_defs,
+                 unit.defs = unit_defs
+                 )
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;str(ds)&lt;/span&gt;
+
+  metadata  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; metadata(ds)
+  &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;needs names&lt;/span&gt;
+  &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(i &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; 1:ncol(data_set))
+    {
+      &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;i = 4&lt;/span&gt;
+      &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(is.numeric(data_set[,i])){
+        names(metadata[[i]][[3]]) &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;number&quot;&lt;/span&gt;
+      } &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;else&lt;/span&gt; {
+        names(metadata[[i]][[3]]) &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; metadata[[i]][[3]]
+      }
+    }
+  &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;metadata&lt;/span&gt;
+  oldwd &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; getwd()
+  setwd(data_dir)
+  eml_write(data_set, metadata,
+            title = titl,  
+            description = desc,
+            creator = created_by
+            )
+  setwd(oldwd)
+  sprintf(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;your metadata has been created in the '%s' directory&quot;&lt;/span&gt;, data_dir)
+  }
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-11&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-11&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.11&lt;/span&gt; reml&lt;sub&gt;boilerplate&lt;/sub&gt;-test-code&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-11&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;name:reml_boilerplate-test&lt;/span&gt;
+
+analyte &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;data/civst_gend_sector_full.csv&quot;&lt;/span&gt;)
+reml_boilerplate(
+  data_set = analyte,
+  created_by = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;Ivan Hanigan &amp;lt;&lt;a href=&quot;mailto:ivanhanigan&amp;#64;gmail.com&quot;&gt;ivanhanigan&amp;#64;gmail.com&lt;/a&gt;&amp;gt;&quot;&lt;/span&gt;,
+  data_dir = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;data&quot;&lt;/span&gt;,
+  titl = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;civst_gend_sector_full&quot;&lt;/span&gt;,
+  desc = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;An example, fictional dataset&quot;&lt;/span&gt;
+  )
+
+dir(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;data&quot;&lt;/span&gt;)
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-12&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-12&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.12&lt;/span&gt; Results: This loads into Morpho with some errors&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-12&quot;&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Notably unable to import the data file
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;
+&lt;img src=&quot;/images/morpho-reml-boilerplate.png&quot; alt = &quot;morpho-reml-boilerplate.png&quot;&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Also &quot;the saved document is not valid for some reason&quot;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;
+&lt;img src=&quot;/images/morpho-reml-boilerplate2.png&quot; alt = &quot;morpho-reml-boilerplate2.png&quot;&gt;
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-13&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-13&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.13&lt;/span&gt; Conclusions&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-13&quot;&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This needs testing
+&lt;/li&gt;
+&lt;li&gt;A real deal breaker is if the EML is not valid 
+&lt;/li&gt;
+&lt;li&gt;In some cases not having the data table included will be a deal breaker (ie KNB repositories designed for downloading complete data packs
+&lt;/li&gt;
+&lt;li&gt;A definite failure would be that even if it is quicker to get started if it takes a long time and is difficult to fix up it might increase the risk of misunderstandings.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;
+&lt;/html&gt;&lt;/p&gt;
 </content>
  </entry>
  
@@ -1477,6 +1882,35 @@ divorced/widowed female        tertiary               2
 # for use later when I am exploring functions
 dir.create(&quot;inst/extdata&quot;, recursive=T)
 write.csv(civst_gend_sector, &quot;inst/extdata/civst_gend_sector.csv&quot;, row.names = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;That is fine and good, we can use the case weights option to include number of cases but sometimes we want to use one row per person.
+In the next chunk of code I;ll reformat the data, and also add another fictitious variable called income and contrive an example where a certain group earns less based on their activity sector.&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;df &amp;lt;- as.data.frame(matrix(NA, nrow = 0, ncol = 3))
+for(i in 1:nrow(civst_gend_sector))
+    {
+    #    i &amp;lt;- 1
+        n &amp;lt;- civst_gend_sector$number_of_cases[i]
+        if(n == 0) next
+        for(j in 1:n)
+            {
+              df &amp;lt;- rbind(df, civst_gend_sector[i,1:3])              
+            }
+
+    }
+
+df$income  &amp;lt;- rnorm(nrow(df), 1000,200)
+# Let us say secondary men earn less
+df$income[df$gender == &quot;male&quot; &amp;amp; df$activity == &quot;secondary&quot;]  &amp;lt;- df$income[df$gender == &quot;male&quot; &amp;amp; df$activity == &quot;secondary&quot;] - 500
+str(df)
+# save this for use later
+write.csv(df, &quot;inst/extdata/civst_gend_sector_full.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;Motivating reason for using these data&lt;/h4&gt;
