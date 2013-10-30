@@ -6,6 +6,70 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;Yesterday I met with Sarunya Sujaritpong a PhD student working with &lt;a href=&quot;http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/&quot;&gt;spatially structured time-series models as described previously&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concerns&lt;/li&gt;
+&lt;li&gt;The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the p-value.&lt;/li&gt;
+&lt;li&gt;The beta coefficient itself shouldn't be affected.&lt;/li&gt;
+&lt;li&gt;So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are &lt;a href=&quot;http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360&quot;&gt;starting to include this in their models&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I'm preparing for the day when I might need to justify this to a reviewer and would like to know what to do about it in case it is a problem&lt;/li&gt;
+&lt;li&gt;So I asked Sarunya for a discussion about her research&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Sarunya's model&lt;/h3&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;fit &amp;lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
+       ns(temp, df) + ns(humidity, df) +
+       ns(time, df = 7*numYears) +
+       SLA * ns(time, df = 2),
+       data = analyte, family = poisson
+       )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SLA is Statistical Local Area (now called SA2, like a suburb)&lt;/li&gt;
+&lt;li&gt;Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day&lt;/li&gt;
+&lt;li&gt;turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION&lt;/li&gt;
+&lt;li&gt;therefore this study avoids the issue by it's intentional design to compare betas not se&lt;/li&gt;
+&lt;li&gt;Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.&lt;/li&gt;
+&lt;li&gt;this is fascinating in itself, but a separate issue for another post&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Conclusions&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results&lt;/li&gt;
+&lt;li&gt;if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;THANKS Sarunya!&lt;/p&gt;
+</description>
+				<published>Thu Oct 31 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/</link>
+			</item>
+		
+			<item>
+				<title>spatial-lag-and-timeseries-model-with-nmmaps</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors&lt;/li&gt;
+&lt;li&gt;We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement&lt;/li&gt;
+&lt;li&gt;I've hacked together some very very ugly code to construct the lagged variable&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3&quot;&gt;http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;There may be errors, it's been a long day, but I won't have a chance to check back on this till next week so I thought I'd put it out there as is.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Mon Oct 28 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/</link>
+			</item>
+		
+			<item>
 				<title>extract-weather-data-from-awap-grids</title>
 				<description>&lt;h3&gt;extract mean annual temperatures at the BOM website&lt;/h3&gt;
 
@@ -1112,235 +1176,6 @@ str(dataTable(obj))
 </description>
 				<published>Sat Oct 12 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/10/data-documentation-case-study-reml-and-rfigshare/</link>
-			</item>
-		
-			<item>
-				<title>two-main-types-of-data-documentation-workflow</title>
-				<description>&lt;p&gt;This post introduces a new series of blog posts in which I want to experiment with a few tools for data documentation, which I'll present as Case Studies.  This series of posts will be pitched to an audience mixture of data librarians and data analysts.&lt;/p&gt;
-
-&lt;p&gt;Data documentation occurs in a spectrum from simple notes through to elaborate systems.  I've been working on a conceptual framework about how the actual process can be done in two distinct ways:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Graphical User Interface (GUI) solutions&lt;/li&gt;
-&lt;li&gt;Programmatic (Scripted/Automagic) solutions&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;I think the GUI tools are in general pretty user friendly and useful
-for simple projects with only a small number of datasets, but have a
-major drawback for the challenge of heterogeneous data integration.  I
-think the problem is expressed nicely &lt;a href=&quot;http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html&quot;&gt;In This Post By Carl Boettiger&lt;/a&gt;  in reference to Morpho:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&quot;looks like a rather useful if tedious tool for generating EML
-files. Unfortunately, without the ability to script inputs or
-automatically detect existing data structures, we are forced through
-the rather arduous process of adding all metadata annotation each
-time....&quot;&lt;/li&gt;
-&lt;li&gt;&quot;...A package could also provide utilities to generate EML from R objects, leveraging the metadata implicit in R objects that is not present in a CSV (in which there is no built-in notion of whether  a column is numeric or character string, what missing value characters it uses, or really if it is consistent at all. Avoiding manual specification of these things makes the metadata annotation less tedious as well.&quot;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h1&gt;Centralised Repository, Distributed Users&lt;/h1&gt;
-
-&lt;p&gt;A key aspect of current approaches is the existence of a centralised data management system.  All the examples I consider include at least a metadata catalogue and some also include a data repository.  An additional feature sometimes exists for managing users permissions.&lt;/p&gt;
-
-&lt;p&gt;The relationship between users and centralised services is a really complicated space, but essentially consists of the ability for users to create the documentation and push it (perhaps along with the data) to the metadata catalogue  and/or repository.  So given these assumptions I propose the following types of arrangement:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;user sends metadata to metadata catalogue&lt;/li&gt;
-&lt;li&gt;user sends metadata and data to metadata catalogue and data repository&lt;/li&gt;
-&lt;li&gt;user sends metadata and data and permissions information to metadata catalogue and data repository and permissions system.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;The Case Studies I've identified that I want to explore are listed below, names follow the format 'client tool'-and-'data repository or metadata catalogue'-and-optionally-'permissions system':&lt;/p&gt;
-
-&lt;h4&gt;Programmatic solutions&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;reml-and-rfigshare&lt;/li&gt;
-&lt;li&gt;reml-and-knb (when/if this becomes available)&lt;/li&gt;
-&lt;li&gt;make_ddixml-and-ddiindex-and-orapus&lt;/li&gt;
-&lt;li&gt;r2ddi-ddiindex&lt;/li&gt;
-&lt;li&gt;dc-uploader-and-ANU-DataCommons&lt;/li&gt;
-&lt;li&gt;dc-uploader-and-RDA&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Graphical User Interface solutions&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;morpho-and-knb-metacat&lt;/li&gt;
-&lt;li&gt;nesstar-publisher-and-nesstar-and-whatever-Steve-calls-the-ADA-permissions-system&lt;/li&gt;
-&lt;li&gt;xmet-and-Australian-Spatial-Data-Directory&lt;/li&gt;
-&lt;li&gt;sdmx-editor-and-sdmx-registry&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Fri Oct 11 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/10/two-main-types-of-data-documentation-workflow/</link>
-			</item>
-		
-			<item>
-				<title>wickhams-tidy-tools-only-get-you-90-pct-the-way</title>
-				<description>&lt;h4&gt;Hadley Wickham's tidy tools&lt;/h4&gt;
-
-&lt;p&gt;In this video at 8 mins 50 seconds he says &quot;these four tools do 90% of the job&quot;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;subset,&lt;/li&gt;
-&lt;li&gt;transform,&lt;/li&gt;
-&lt;li&gt;summarise, and&lt;/li&gt;
-&lt;li&gt;arrange&lt;/li&gt;
-&lt;li&gt;TODO I noticed &lt;a href=&quot;http://www.rstudio.com/training/curriculum/data-manipulation.html&quot;&gt;at the website for an Rstudio  course&lt;/a&gt; transform has been replaced by mutate as one of the &quot;four basic verbs of data manipulation&quot;.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;iframe src=&quot;//player.vimeo.com/video/33727555&quot; width=&quot;500&quot; height=&quot;281&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
-
-
-&lt;p&gt; &lt;p&gt;&lt;a href=&quot;http://vimeo.com/33727555&quot;&gt;Tidy Data&lt;/a&gt; from &lt;a href=&quot;http://vimeo.com/user2150538&quot;&gt;Drew Conway&lt;/a&gt; on &lt;a href=&quot;https://vimeo.com&quot;&gt;Vimeo&lt;/a&gt;.&lt;/p&gt;&lt;/p&gt;
-
-&lt;p&gt;So I thought what's the other 10?  Here's a few contenders for my work:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;merge&lt;/li&gt;
-&lt;li&gt;reshape::cast and reshape::melt&lt;/li&gt;
-&lt;li&gt;unlist&lt;/li&gt;
-&lt;li&gt;t() transpose&lt;/li&gt;
-&lt;li&gt;sprintf or paste&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;R-subset&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# Filter rows by criteria
-subset(airquality, Temp &amp;gt; 90, select = c(Ozone, Temp))
-
-## NB This is a convenience function intended for use interactively.  For
-## programming it is better to use the standard subsetting functions like
-## ‘[’, and in particular the non-standard evaluation of argument
-## ‘subset’ can have unanticipated consequences.
-
-with(airquality,
-     airquality[Temp &amp;gt; 90, c(&quot;Ozone&quot;, &quot;Temp&quot;)]
-     )
-
-# OR
-
-airquality[airquality$Temp &amp;gt; 90,  c(&quot;Ozone&quot;, &quot;Temp&quot;)]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R-transform&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# New columns that are functions of other columns       
-df &amp;lt;- transform(airquality,
-                new = -Ozone,
-                Temp2 = (Temp-32)/1.8
-                )
-head(df)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R-mutate&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(plyr)
-# same thing as transform
-df &amp;lt;- mutate(airquality, new = -Ozone, Temp = (Temp - 32) / 1.8)    
-# Things transform can't do
-df &amp;lt;- mutate(airquality, Temp = (Temp - 32) / 1.8, OzT = Ozone / Temp)
-
-# mutate is rather faster than transform
-system.time(transform(baseball, avg_ab = ab / g))
-system.time(mutate(baseball, avg_ab = ab / g))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R-summarise&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# New data.frame where columns are functions of existing columns
-require(plyr)    
-df &amp;lt;- ddply(.data = airquality,
-            .variables = &quot;Month&quot;,
-            .fun = summarise,
-            tmax = max(Temp),
-            tav = mean(Temp),
-            ndays = length(unique(Day))
-            )
-head(df)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Passing variables to ddply for summary&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# Notice how the name of the variable Temp doesn't need quotes?
-# this means that you need to hard code the names
-# But if you want to pass variables to this inside a function we need a
-# different approach.
-
-summarise_df  &amp;lt;- function(x, by, var1, var2, var3)
-  {
-    data_out &amp;lt;- ddply(x,
-                      by,
-                      function(df) return(
-                        c(
-                          tmax = max(df[,var1]),
-                          tav = mean(df[,var2]),
-                          ndays = length(unique(df[,var3]))
-                          )
-                        )
-                      )
-    return(data_out)
-  }
-
-df2 &amp;lt;- summarise_df(x = airquality, by = &quot;Month&quot;,
-                   var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
-                   )
-
-head(df2)
-all.equal(df,df2)
-# TRUE
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Another alternative, if we want to pass the dataset as string too&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;summarise_df2  &amp;lt;- function(x, by, var1, var2, var3)
-  {
-    data_out &amp;lt;- eval(
-      parse(
-        text =
-        sprintf(
-          &quot;ddply(.data = %s,
-            .variables = '%s',
-            .fun = summarise,
-            tmax = max(%s),
-            tav = mean(%s),
-            ndays = length(unique(%s))
-            )&quot;, x, by, var1, var2, var3
-          )
-        )
-      )
-    return(data_out)
-  }
-
-df3 &amp;lt;- summarise_df2(x = &quot;airquality&quot;, by = &quot;Month&quot;,
-                     var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
-                     )
-head(df3)
-all.equal(df, df3)
-# TRUE
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R-arrange&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# Re-order the rows of a data.frame
-df &amp;lt;- arrange(airquality, Temp, Ozone)
-head(df)
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>Thu Oct 10 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/</link>
 			</item>
 		
 	</channel>
