@@ -6,6 +6,127 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>quantum-gis-visualisations</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;This is a quick post on Quantum GIS for spatial data visualisation&lt;/li&gt;
+&lt;li&gt;it is also a follow up on &lt;a href=&quot;http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/&quot;&gt;this post about area concordance&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps&lt;/li&gt;
+&lt;li&gt;QGIS can use &lt;a href=&quot;http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/&quot;&gt;remote PostGIS geodatabases on the Cloud as the backend&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code: use postgis to create area-concordance&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&quot;gisviz&quot;, &quot;ivanhanigan&quot;)
+require(gisviz)
+require(swishdbtools)
+ch &amp;lt;- connect2postgres2(&quot;gislibrary&quot;)
+# make a temporary tablename, to avoid clobbering
+temp_table &amp;lt;- swish_temptable(&quot;gislibrary&quot;)
+temp_table &amp;lt;- paste(&quot;public&quot;, temp_table$table, sep = &quot;.&quot;)
+temp_table
+# this is going to be public.foo11c7673416ea
+
+sql &amp;lt;- postgis_concordance(conn = ch, source_table = &quot;abs_sla.nswsla91&quot;,
+   source_zones_code = 'sla_id', target_table = &quot;abs_sla.nswsla01&quot;,
+   target_zones_code = &quot;sla_code&quot;,
+   into = temp_table, tolerance = 0.01,
+   subset_target_table = &quot;cast(sla_code as text) like '105%'&quot;, 
+   eval = F) 
+cat(sql)
+dbSendQuery(ch, sql)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;now connect to PostGIS using QGIS &lt;a href=&quot;http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/&quot;&gt;as described in this tute&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;and add the layer to the map&lt;/li&gt;
+&lt;li&gt;Style it how you like, I also added NSWSLA1991 over the top&lt;/li&gt;
+&lt;li&gt;go into the &quot;new print composer&quot;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/qgis-new-print-composer.png&quot; alt=&quot;qgis-new-print-composer.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qgis-add-new-map.png&quot; alt=&quot;qgis-add-new-map.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Results&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;hit the export to image and viola&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/qgis-export-image.png&quot; alt=&quot;qgis-export-image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Don't forget to clean up the database!&lt;/h3&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;dbSendQuery(ch, sprintf(&quot;drop table %s&quot;, temp_table))
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+				<published>Thu Oct 31 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/quantum-gis-visualisations/</link>
+			</item>
+		
+			<item>
+				<title>notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;Yesterday I met with Sarunya Sujaritpong a PhD student working with &lt;a href=&quot;http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/&quot;&gt;spatially structured time-series models as described previously&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern&lt;/li&gt;
+&lt;li&gt;The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk&lt;/li&gt;
+&lt;li&gt;The beta coefficient itself shouldn't be affected.&lt;/li&gt;
+&lt;li&gt;So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are &lt;a href=&quot;http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360&quot;&gt;starting to include this in their models&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series&lt;/li&gt;
+&lt;li&gt;I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens&lt;/li&gt;
+&lt;li&gt;So I asked Sarunya for a discussion about her research&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Sarunya's model is essentially like this&lt;/h3&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;fit &amp;lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
+       ns(temp, df) + ns(humidity, df) +
+       ns(time, df = 7*numYears) +
+       SLA * ns(time, df = 2),
+       data = analyte, family = poisson
+       )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;SLA is Statistical Local Area (now called SA2, like a suburb)&lt;/li&gt;
+&lt;li&gt;Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city&lt;/li&gt;
+&lt;li&gt;turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION&lt;/li&gt;
+&lt;li&gt;therefore this study avoids the issue by it's intentional design to compare betas not se&lt;/li&gt;
+&lt;li&gt;Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.&lt;/li&gt;
+&lt;li&gt;this is fascinating in itself, but a separate issue for another post&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Conclusions&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results&lt;/li&gt;
+&lt;li&gt;if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;THANKS Sarunya!&lt;/p&gt;
+</description>
+				<published>Thu Oct 31 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/</link>
+			</item>
+		
+			<item>
 				<title>morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</title>
 				<description>&lt;p&gt;&lt;body&gt;&lt;/p&gt;
 
@@ -1264,170 +1385,6 @@ dirname(fpath)
 </description>
 				<published>Mon Oct 14 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/10/morpho-and-rfigshare/</link>
-			</item>
-		
-			<item>
-				<title>dc-uploader-and-ANU-DataCommons</title>
-				<description>&lt;p&gt;In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.&lt;/p&gt;
-
-&lt;h1&gt;What does it do?&lt;/h1&gt;
-
-&lt;p&gt;The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.&lt;/p&gt;
-
-&lt;p&gt;Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.&lt;/p&gt;
-
-&lt;h1&gt;Create the metadata.txt&lt;/h1&gt;
-
-&lt;p&gt;You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.&lt;/p&gt;
-
-&lt;p&gt;change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.&lt;/p&gt;
-
-&lt;p&gt;Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.&lt;/p&gt;
-
-&lt;p&gt;You can look int the &quot;Keys.txt&quot; file that contains the full list of values that can be specified in this metadata.txt file.&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;setwd(&quot;~/tools/dcupload&quot;)
-sink(&quot;metadata.txt&quot;)
-cat(&quot;
-# This file, referred to as a collection parameter file, consists of
-# data in key=value pairs. This data is sent to the ANU Data Commons
-# to create a collection, establish relations with other records,
-# and/or upload files to those collections.
-
-# The metadata section consists of metadata for use in creation (not
-# for modification) of record metadata in ANU Data Commons. The
-# following fields are required for the creation of a record. The file
-# Keys.txt contains the full list of values that can be specified in
-# this file. Based on this information below, a collection record of
-# type databaset with the title &quot;Test Collection 6/05/2013&quot; will be
-# created owned by Meteorology and Health group.
-[metadata]
-type = Collection
-subType = dataset
-ownerGroup = 5
-# 6 on production, 5 on dev
-name = Civil Status, Gender and Activity Sector
-briefDesc = An example, fictional dataset for Decision Tree Models
-citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
-email = ivan.hanigan@anu.edu.au
-anzforSubject = 1601
-
-# The relations section allows you to specify the relation this record
-# has with other records in the system.  Currently relations with NLA
-# identifiers is not supported.
-[relations]
-isOutputOf = anudc:123
-
-# This section contains a line of the form 'pid = anudc:123' once a
-# record has been created so executing the uploader script with the
-# same collection parameter file doesnt create a new record with the
-# same metadata.
-[pid]
-&quot;)
-sink()
-
-# run the dcload
-system(&quot;python3 dcuploader.py -c metadata.txt&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;What happened?&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Looking in the metadata.txt file it now has a pid like &quot;pid = test:3527&quot;&lt;/li&gt;
-&lt;li&gt;And we have created a new record in our account on the DataCommons server.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h1&gt;go to the website&lt;/h1&gt;
-
-&lt;p&gt;Now go to &lt;a href=&quot;https://dc7-dev2.anu.edu.au:8443/DataCommons/&quot;&gt;the dev site&lt;/a&gt; and you can continue editing the record manually in the browser.&lt;/p&gt;
-
-&lt;p&gt;Or if we have ironed out the wrinkles you could go straight to the production server at &lt;a href=&quot;https://datacommons.anu.edu.au:8443/DataCommons&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1&gt;Uploading the data&lt;/h1&gt;
-
-&lt;p&gt;The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.&lt;/p&gt;
-
-&lt;h1&gt;Notes&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Sun Oct 13 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons/</link>
-			</item>
-		
-			<item>
-				<title>reml-and-rfigshare-part-2</title>
-				<description>&lt;p&gt;In the last post I explored the functionality of reml.
-This time I will try to send data to figshare.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;First follow &lt;a href=&quot;https://github.com/ropensci/rfigshare&quot;&gt;These Instructions&lt;/a&gt; to get rfigshare set up.  In particular store your figshare credentials in ~/.Rprofile&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:reml-and-rfigshare-part-2&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# func
-require(devtools)
-install_github(&quot;reml&quot;, &quot;ropensci&quot;)
-require(reml)
-install_github(&quot;rfigshare&quot;, &quot;ropensci&quot;)
-require(rfigshare)
-install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
-require(disentangle)
-# load
-fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;,&quot;civst_gend_sector_eml.xml&quot;), package = &quot;disentangle&quot;)
-setwd(dirname(fpath))
-obj &amp;lt;- eml_read(fpath)
-# clean
-obj
-# do
-
-## STEP 1: find one of the preset categories
-# available. We can ask the API for
-# a list of all the categories:
-list &amp;lt;- fs_category_list()
-list[grep(&quot;Survey&quot;, list)]
-
-## STEP 2: PUBLISH TO FIGSHARE
-id &amp;lt;- eml_publish(fname,
-                  description=&quot;Example EML
-                    A fictional dataset&quot;,
-                  categories = &quot;Survey results&quot;,
-                  tags = &quot;EML&quot;,
-                  destination=&quot;figshare&quot;
-                  )
-# there are several warnings
-# but go to figshare and it has sent the metadata and data OK
-
-# make public using either the figshare web interface, the
-# rfigshare package (using fs_make_public(id)) or just by adding
-# the argument visibility = TRUE to the above eml_publish
-fs_make_public(id)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;Now these data are on figshare&lt;/h1&gt;
-
-&lt;p&gt;Now I have published the data they are visible and have a DOI&lt;/p&gt;
-
-&lt;iframe src=&quot;http://wl.figshare.com/articles/820158/embed?show_title=1&quot; width=&quot;568&quot; height=&quot;157&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
-
-</description>
-				<published>Sat Oct 12 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/10/reml-and-rfigshare-part-2/</link>
 			</item>
 		
 	</channel>
