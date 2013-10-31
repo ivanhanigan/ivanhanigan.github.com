@@ -4,11 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
-<<<<<<< HEAD
- <updated>2013-10-31T12:17:15+11:00</updated>
-=======
- <updated>2013-10-31T10:29:24+11:00</updated>
->>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
+ <updated>2013-10-31T12:20:07+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -17,7 +13,6 @@
 
  
  <entry>
-<<<<<<< HEAD
    <title>quantum-gis-visualisations</title>
    <link href="http://schamberlain.github.com/2013/10/quantum-gis-visualisations/"/>
    <updated>2013-10-31T00:00:00+11:00</updated>
@@ -87,8 +82,6 @@ dbSendQuery(ch, sql)
  </entry>
  
  <entry>
-=======
->>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
    <title>notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</title>
    <link href="http://schamberlain.github.com/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/"/>
    <updated>2013-10-31T00:00:00+11:00</updated>
@@ -548,6 +541,88 @@ dir(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;data&quot;&lt;/span&gt;)
  </entry>
  
  <entry>
+   <title>counting-number-of-consecutive-months-in-drought</title>
+   <link href="http://schamberlain.github.com/2013/10/counting-number-of-consecutive-months-in-drought/"/>
+   <updated>2013-10-29T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/10/counting-number-of-consecutive-months-in-drought</id>
+   <content type="html">&lt;p&gt;I got this question today from a Drought researcher:&lt;/p&gt;
+
+&lt;h4&gt;Question:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;There a table with 62 years * 12 months of rain data in mm. We
+calculated the cumulative distribution using ecdf: empirical
+cumulative distribution function. So the table looks like this:
+Year Jan Feb Mach (…) each cell contains the cum dist.
+
+We also got the number of months per year with less than X mm of
+rain. But he needs to know how many months are between the
+drought months, regardless the year. So, I thought that
+converting the data into a ts was going to facilitate the task,
+but it doesn’t, because now I don’t’ have columns and rows any
+longer.
+
+How do I handle a ts object to do for example an ifelse?
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;I answered:&lt;/p&gt;
+
+&lt;p&gt;This looks a lot like the Hutchinson Drought Index which I've coded up here&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/ivanhanigan/HutchinsonDroughtIndex&quot;&gt;https://github.com/ivanhanigan/HutchinsonDroughtIndex&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r&quot;&gt;https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Also there is a completely reproducible example with BoM rainfall data at &lt;a href=&quot;https://github.com/ivanhanigan/SuicideAndDroughtInNSW&quot;&gt;https://github.com/ivanhanigan/SuicideAndDroughtInNSW&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;This is the key bit for counting consecutive months below a threshold&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;x&amp;lt;-data$index&amp;lt;=-1
+xx &amp;lt;- (cumsum(!x) + 1) * x
+x2&amp;lt;-(seq_along(x) - match(xx, xx) + 1) * x
+data$count&amp;lt;-x2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;
+I got it from &lt;a href=&quot;https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html&quot;&gt;https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html&lt;/a&gt;
+and looked in wonder at the structure and am amazed it works.&lt;/p&gt;
+
+&lt;p&gt;I also really like the cumulative summing version a lot&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;data$sums&amp;lt;-as.numeric(0)
+y &amp;lt;- ifelse(data$index &amp;gt;= -1, 0, data$index)
+f &amp;lt;- data$index &amp;lt; -1
+f &amp;lt;- (cumsum(!f) + 1) * f
+z &amp;lt;- unsplit(lapply(split(y,f),cumsum),f)
+data$sums &amp;lt;- z
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;
+Several things I'd like to change.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I like the idea of using a wide dataset and ecdf rather than my loop thru months&lt;/li&gt;
+&lt;li&gt;I'd like to look into Joe Wheatley;s approach &lt;a href=&quot;]http://joewheatley.net/20th-century-droughts/&quot;&gt;http://joewheatley.net/20th-century-droughts/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
    <title>spatial-lag-and-timeseries-model-with-nmmaps</title>
    <link href="http://schamberlain.github.com/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/"/>
    <updated>2013-10-28T00:00:00+11:00</updated>
@@ -564,348 +639,11 @@ dir(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;data&quot;&lt;/span&gt;)
  </entry>
  
  <entry>
-   <title>extract-weather-data-from-awap-grids</title>
+   <title>Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</title>
    <link href="http://schamberlain.github.com/2013/10/extract-weather-data-from-awap-grids/"/>
    <updated>2013-10-26T00:00:00+11:00</updated>
    <id>http://schamberlain.github.com/2013/10/extract-weather-data-from-awap-grids</id>
-   <content type="html">&lt;h3&gt;extract mean annual temperatures at the BOM website&lt;/h3&gt;
-
-&lt;p&gt;I use BoM data a fair bit and work on a project that tried to streamline access to BoM data for extreme weather event analysis (which require long term average climatology to provide the baseline that extremes are measured against).&lt;/p&gt;
-
-&lt;p&gt;WRT to temperature most daily averages from BoM are calculated as average of maximum_temperature_in_24_hours_after_9am_local_time_in_degrees and minimum_temperature_in_24_hours_before_9am_local_time_in_degree (only couple of hundred AWS provide hourly data to get the proper mean of 24 obs).&lt;/p&gt;
-
-&lt;p&gt;The Bureau of Meteorology has generated a range of gridded meteorological datasets for Australia as a contribution to the Australian Water Availability Project (AWAP). These include daily max and min temperature which you could use to generate daily averages, then calculate your long term averages from those?&lt;/p&gt;
-
-&lt;p&gt;http://www.bom.gov.au/jsp/awap/&lt;/p&gt;
-
-&lt;p&gt;Documentation is at http://www.bom.gov.au/amm/docs/2009/jones.pdf&lt;/p&gt;
-
-&lt;p&gt;I’m working on a workflow to download and process the public BoM weather grids.
-It uses the open source R software with some of our custom written packages:&lt;/p&gt;
-
-&lt;!-- &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; --&gt;
-
-
-&lt;!-- &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; --&gt;
-
-
-&lt;!--                &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt; --&gt;
-
-
-&lt;!-- &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot; xml:lang=&quot;en&quot;&gt; --&gt;
-
-
-&lt;!-- &lt;head&gt; --&gt;
-
-
-&lt;!-- &lt;title&gt;AWAP GRIDS &lt;/title&gt; --&gt;
-
-
-&lt;!-- &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt; --&gt;
-
-
-&lt;!-- &lt;meta name=&quot;title&quot; content=&quot;AWAP GRIDS &quot;/&gt; --&gt;
-
-
-&lt;!-- &lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt; --&gt;
-
-
-&lt;!-- &lt;meta name=&quot;generated&quot; content=&quot;2013-10-26T22:31+1100&quot;/&gt; --&gt;
-
-
-&lt;!-- &lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt; --&gt;
-
-
-&lt;!-- &lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt; --&gt;
-
-
-&lt;!-- &lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt; --&gt;
-
-
-&lt;!-- &lt;style type=&quot;text/css&quot;&gt; --&gt;
-
-
-&lt;!--  &lt;\!--/*-\-&gt;&lt;![CDATA[/*&gt;&lt;\!--*/ --&gt;
-
-
-&lt;!--   html { font-family: Times, serif; font-size: 12pt; } --&gt;
-
-
-&lt;!--   .title  { text-align: center; } --&gt;
-
-
-&lt;!--   .todo   { color: red; } --&gt;
-
-
-&lt;!--   .done   { color: green; } --&gt;
-
-
-&lt;!--   .tag    { background-color: #add8e6; font-weight:normal } --&gt;
-
-
-&lt;!--   .target { } --&gt;
-
-
-&lt;!--   .timestamp { color: #bebebe; } --&gt;
-
-
-&lt;!--   .timestamp-kwd { color: #5f9ea0; } --&gt;
-
-
-&lt;!--   .right  {margin-left:auto; margin-right:0px;  text-align:right;} --&gt;
-
-
-&lt;!--   .left   {margin-left:0px;  margin-right:auto; text-align:left;} --&gt;
-
-
-&lt;!--   .center {margin-left:auto; margin-right:auto; text-align:center;} --&gt;
-
-
-&lt;!--   p.verse { margin-left: 3% } --&gt;
-
-
-&lt;!--   pre { --&gt;
-
-
-&lt;!--    border: 1pt solid #AEBDCC; --&gt;
-
-
-&lt;!--    background-color: #F3F5F7; --&gt;
-
-
-&lt;!--    padding: 5pt; --&gt;
-
-
-&lt;!--    font-family: courier, monospace; --&gt;
-
-
-&lt;!--         font-size: 90%; --&gt;
-
-
-&lt;!--         overflow:auto; --&gt;
-
-
-&lt;!--   } --&gt;
-
-
-&lt;!--   table { border-collapse: collapse; } --&gt;
-
-
-&lt;!--   td, th { vertical-align: top;  } --&gt;
-
-
-&lt;!--   th.right  { text-align:center;  } --&gt;
-
-
-&lt;!--   th.left   { text-align:center;   } --&gt;
-
-
-&lt;!--   th.center { text-align:center; } --&gt;
-
-
-&lt;!--   td.right  { text-align:right;  } --&gt;
-
-
-&lt;!--   td.left   { text-align:left;   } --&gt;
-
-
-&lt;!--   td.center { text-align:center; } --&gt;
-
-
-&lt;!--   dt { font-weight: bold; } --&gt;
-
-
-&lt;!--   div.figure { padding: 0.5em; } --&gt;
-
-
-&lt;!--   div.figure p { text-align: center; } --&gt;
-
-
-&lt;!--   div.inlinetask { --&gt;
-
-
-&lt;!--     padding:10px; --&gt;
-
-
-&lt;!--     border:2px solid gray; --&gt;
-
-
-&lt;!--     margin:10px; --&gt;
-
-
-&lt;!--     background: #ffffcc; --&gt;
-
-
-&lt;!--   } --&gt;
-
-
-&lt;!--   textarea { overflow-x: auto; } --&gt;
-
-
-&lt;!--   .linenr { font-size:smaller } --&gt;
-
-
-&lt;!--   .code-highlighted {background-color:#ffff00;} --&gt;
-
-
-&lt;!--   .org-info-js_info-navigation { border-style:none; } --&gt;
-
-
-&lt;!--   #org-info-js_console-label { font-size:10px; font-weight:bold; --&gt;
-
-
-&lt;!--                                white-space:nowrap; } --&gt;
-
-
-&lt;!--   .org-info-js_search-highlight {background-color:#ffff00; color:#000000; --&gt;
-
-
-&lt;!--                                  font-weight:bold; } --&gt;
-
-
-&lt;!--   /*]]&gt;*/-\-&gt; --&gt;
-
-
-&lt;!-- &lt;/style&gt; --&gt;
-
-
-&lt;!-- &lt;script type=&quot;text/javascript&quot;&gt; --&gt;
-
-
-&lt;!-- /* --&gt;
-
-
-&lt;!-- @licstart  The following is the entire license notice for the --&gt;
-
-
-&lt;!-- JavaScript code in this tag. --&gt;
-
-
-
-
-&lt;!-- Copyright (C) 2012-2013 Free Software Foundation, Inc. --&gt;
-
-
-
-
-&lt;!-- The JavaScript code in this tag is free software: you can --&gt;
-
-
-&lt;!-- redistribute it and/or modify it under the terms of the GNU --&gt;
-
-
-&lt;!-- General Public License (GNU GPL) as published by the Free Software --&gt;
-
-
-&lt;!-- Foundation, either version 3 of the License, or (at your option) --&gt;
-
-
-&lt;!-- any later version.  The code is distributed WITHOUT ANY WARRANTY; --&gt;
-
-
-&lt;!-- without even the implied warranty of MERCHANTABILITY or FITNESS --&gt;
-
-
-&lt;!-- FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details. --&gt;
-
-
-
-
-&lt;!-- As additional permission under GNU GPL version 3 section 7, you --&gt;
-
-
-&lt;!-- may distribute non-source (e.g., minimized or compacted) forms of --&gt;
-
-
-&lt;!-- that code without the copy of the GNU GPL normally required by --&gt;
-
-
-&lt;!-- section 4, provided you include this license notice and a URL --&gt;
-
-
-&lt;!-- through which recipients can access the Corresponding Source. --&gt;
-
-
-
-
-&lt;!-- @licend  The above is the entire license notice --&gt;
-
-
-&lt;!-- for the JavaScript code in this tag. --&gt;
-
-
-&lt;!-- */ --&gt;
-
-
-&lt;!-- &lt;\!--/*-\-&gt;&lt;![CDATA[/*&gt;&lt;\!--*/ --&gt;
-
-
-&lt;!--  function CodeHighlightOn(elem, id) --&gt;
-
-
-&lt;!--  { --&gt;
-
-
-&lt;!--    var target = document.getElementById(id); --&gt;
-
-
-&lt;!--    if(null != target) { --&gt;
-
-
-&lt;!--      elem.cacheClassElem = elem.className; --&gt;
-
-
-&lt;!--      elem.cacheClassTarget = target.className; --&gt;
-
-
-&lt;!--      target.className = &quot;code-highlighted&quot;; --&gt;
-
-
-&lt;!--      elem.className   = &quot;code-highlighted&quot;; --&gt;
-
-
-&lt;!--    } --&gt;
-
-
-&lt;!--  } --&gt;
-
-
-&lt;!--  function CodeHighlightOff(elem, id) --&gt;
-
-
-&lt;!--  { --&gt;
-
-
-&lt;!--    var target = document.getElementById(id); --&gt;
-
-
-&lt;!--    if(elem.cacheClassElem) --&gt;
-
-
-&lt;!--      elem.className = elem.cacheClassElem; --&gt;
-
-
-&lt;!--    if(elem.cacheClassTarget) --&gt;
-
-
-&lt;!--      target.className = elem.cacheClassTarget; --&gt;
-
-
-&lt;!--  } --&gt;
-
-
-&lt;!-- /*]]&gt;*///-\-&gt; --&gt;
-
-
-&lt;!-- &lt;/script&gt; --&gt;
-
-
-
-
-&lt;!-- &lt;/head&gt; --&gt;
-
-
-&lt;p&gt;&lt;body&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;&lt;body&gt;&lt;/p&gt;
 
 &lt;div id=&quot;preamble&quot;&gt;
 
@@ -922,85 +660,372 @@ It uses the open source R software with some of our custom written packages:&lt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id=&quot;text-table-of-contents&quot;&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 r-code-code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Introduction and Methods&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 Authors&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 Background&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3 Material and Methods&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2 R-code-for-extraction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3 Results&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4 R-code-for-comparison&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5 Discussion&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; r-code-code&lt;/h3&gt;
+&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; Introduction and Methods&lt;/h3&gt;
 &lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
 
 
+&lt;p&gt;
+This is a work in progress.  It is a stub of an article I want to put together which shows how to use several online data repositories together as a showcase of the [Scientific Workflow and Integration Software for Health (SWISH) Climate Impact Assessments](&lt;a href=&quot;https://github.com/swish-climate-impact-assessment&quot;&gt;https://github.com/swish-climate-impact-assessment&lt;/a&gt;) project.
+&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1&lt;/span&gt; Authors&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1&quot;&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ivan Hanigan and [Markus Nolf](&lt;a href=&quot;http://www.thinkoholic.com&quot;&gt;http://www.thinkoholic.com&lt;/a&gt;)
+&lt;/li&gt;
+&lt;/ul&gt;
 
 
-&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;################################################################&lt;/span&gt;
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;name:r-code&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2&lt;/span&gt; Background&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Markus Nolf offers this use case of the [SWISH EWEDB](&lt;a href=&quot;http://swish-climate-impact-assessment.github.io/&quot;&gt;http://swish-climate-impact-assessment.github.io/&lt;/a&gt;)
+&lt;/li&gt;
+&lt;li&gt;Markus is pulling together his  Daintree Rainforest Observatory (DRO) data into a manuscript for publication, and was looking for climate data from 2012 as well as long-term. 
+&lt;/li&gt;
+&lt;li&gt;More specifically, the annual precipitation and mean annual temperature for both 2012 and the 30-year mean.
+&lt;/li&gt;
+&lt;li&gt;The Australian Bureau of Meteorology has a nice rainfall dataset available at &lt;a href=&quot;http://www.bom.gov.au/climate/data/&quot;&gt;http://www.bom.gov.au/climate/data/&lt;/a&gt; (&quot;Cape Trib Store&quot; weather station), but it seems like the temperature records are patchy.
+&lt;/li&gt;
+&lt;li&gt;So it is advised to use the data the DRO collects its self
+&lt;/li&gt;
+&lt;li&gt;You need to apply through the [ASN SuperSite data portal](&lt;a href=&quot;http://www.tern-supersites.net.au/knb/&quot;&gt;http://www.tern-supersites.net.au/knb/&lt;/a&gt;) for access to the daily data for the DRO.
+&lt;/li&gt;
+&lt;li&gt;Note the use of the DRO met data will need to be properly cited as it is harder to keep
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;an AWS station running in the tropics for years than it is to collect most other data. 
+The citation information is provided when you make a request to access the data.
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;The long term mean used by most DRO researchers is from the BOM station as we only have a short record from the station itself.  The offset is around 1000mm.
+&lt;/li&gt;
+&lt;li&gt;However what we want is mean annual temperatures but the BOM website seems to focus more on mean minimum and maximum temperatures.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3&lt;/span&gt; Material and Methods&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-3-1&quot;&gt;Baseline Climate Data 2012, Far North Queensland Rainforest Supersite, Cape Tribulation Node&lt;br/&gt;
+
+&lt;ul&gt;
+&lt;li&gt;We can use the data portal too see [the data file in question](&lt;a href=&quot;http://www.tern-supersites.net.au/knb/metacat/lloyd.238.13/html&quot;&gt;http://www.tern-supersites.net.au/knb/metacat/lloyd.238.13/html&lt;/a&gt;)
+&lt;/li&gt;
+&lt;li&gt;Application for access is via email
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-3-2&quot;&gt;Extract mean annual temperatures at the BOM website&lt;br/&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SWISH uses BoM data a fair bit and aims to streamline access to BoM data for extreme weather event analysis (which require long term average climatology to provide the baseline that extremes are measured against).
+&lt;/li&gt;
+&lt;li&gt;WRT to temperature most daily averages from BoM are calculated as average of maximum&lt;sub&gt;temperature&lt;/sub&gt;&lt;sub&gt;in&lt;/sub&gt;&lt;sub&gt;24&lt;/sub&gt;&lt;sub&gt;hours&lt;/sub&gt;&lt;sub&gt;after&lt;/sub&gt;&lt;sub&gt;9am&lt;/sub&gt;&lt;sub&gt;local&lt;/sub&gt;&lt;sub&gt;time&lt;/sub&gt;&lt;sub&gt;in&lt;/sub&gt;&lt;sub&gt;degrees&lt;/sub&gt; and minimum&lt;sub&gt;temperature&lt;/sub&gt;&lt;sub&gt;in&lt;/sub&gt;&lt;sub&gt;24&lt;/sub&gt;&lt;sub&gt;hours&lt;/sub&gt;&lt;sub&gt;before&lt;/sub&gt;&lt;sub&gt;9am&lt;/sub&gt;&lt;sub&gt;local&lt;/sub&gt;&lt;sub&gt;time&lt;/sub&gt;&lt;sub&gt;in&lt;/sub&gt;&lt;sub&gt;degree&lt;/sub&gt; (only couple of hundred AWS provide hourly data to get the proper mean of 24 obs).
+&lt;/li&gt;
+&lt;li&gt;The Bureau of Meteorology has generated a range of gridded meteorological datasets for Australia as a contribution to the Australian Water Availability Project (AWAP). These include daily max and min temperature which you could use to generate daily averages, then calculate your long term averages from those?  
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.bom.gov.au/jsp/awap/&quot;&gt;http://www.bom.gov.au/jsp/awap/&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;Documentation is at &lt;a href=&quot;http://www.bom.gov.au/amm/docs/2009/jones.pdf&quot;&gt;http://www.bom.gov.au/amm/docs/2009/jones.pdf&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-3-3&quot;&gt;A workflow to download and process the public BoM weather grids.&lt;br/&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This workflow uses the open source R software with some of our custom written packages:
+&lt;/li&gt;
+&lt;/ul&gt;
 
 
 
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;aim daily weather for any point location from online BoM weather grids&lt;/span&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;depends on some github packages&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2&lt;/span&gt; R-code-for-extraction&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-2&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;name:r-code&lt;/span&gt;
+
+
+
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;aim daily weather for any point location from online BoM weather grids&lt;/span&gt;
+
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;depends on some github packages&lt;/span&gt;
 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(awaptools)
-&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;http://swish-climate-impact-assessment.github.io/tools/awaptools/awaptools-downloads.html&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;http://swish-climate-impact-assessment.github.io/tools/awaptools/awaptools-downloads.html&lt;/span&gt;
 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(swishdbtools)
-&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;http://swish-climate-impact-assessment.github.io/tools/swishdbtools/swishdbtools-downloads.html&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;http://swish-climate-impact-assessment.github.io/tools/swishdbtools/swishdbtools-downloads.html&lt;/span&gt;
 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(gisviz)
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;http://ivanhanigan.github.io/gisviz/&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;http://ivanhanigan.github.io/gisviz/&lt;/span&gt;
 
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;and this from CRAN&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;and this from CRAN&lt;/span&gt;
 &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(raster)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'raster'&lt;/span&gt;); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(raster)
 
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;get weather data, beware that each grid is a couple of megabytes&lt;/span&gt;
-vars &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;maxave&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;minave&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;totals&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;vprph09&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;vprph15&quot;&lt;/span&gt;) &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;,&quot;solarave&quot;) &lt;/span&gt;
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;solar only available after 1990&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;get weather data, beware that each grid is a couple of megabytes&lt;/span&gt;
+vars &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;maxave&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;minave&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;totals&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;vprph09&quot;&lt;/span&gt;,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;vprph15&quot;&lt;/span&gt;) &lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;,&quot;solarave&quot;) &lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;solar only available after 1990&lt;/span&gt;
 &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(measure &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; vars)
 {
-  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;measure &amp;lt;- vars[1]&lt;/span&gt;
+  &lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;measure &amp;lt;- vars[1]&lt;/span&gt;
   get_awap_data(start = &lt;span style=&quot;color: #2aa198;&quot;&gt;'1960-01-01'&lt;/span&gt;,end = &lt;span style=&quot;color: #2aa198;&quot;&gt;'1960-01-02'&lt;/span&gt;, measure)
 }
 
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;get location&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;get location&lt;/span&gt;
 locn &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; geocode(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;daintree rainforest&quot;&lt;/span&gt;)
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;this uses google maps API, better check this&lt;/span&gt;
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;lon       lat&lt;/span&gt;
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;1 145.4185 -16.17003&lt;/span&gt;
-&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;Treat data frame as spatial points&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;this uses google maps API, better check this&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;lon       lat&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;1 145.4185 -16.17003&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;Treat data frame as spatial points&lt;/span&gt;
 epsg &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; make_EPSG()
 shp &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; SpatialPointsDataFrame(cbind(locn$lon,locn$lat),locn,
                               proj4string=CRS(epsg$prj4[epsg$code %&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt;% &lt;span style=&quot;color: #2aa198;&quot;&gt;'4283'&lt;/span&gt;]))
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;now loop over grids and extract met data&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;now loop over grids and extract met data&lt;/span&gt;
 cfiles &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt;  dir(pattern=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;grid$&quot;&lt;/span&gt;)
 
 &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt; (i &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; seq_len(length(cfiles))) {
-  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;i &amp;lt;- 1 ## for stepping thru&lt;/span&gt;
+  &lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;i &amp;lt;- 1 ## for stepping thru&lt;/span&gt;
   gridname &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; cfiles[[i]]
   r &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; raster(gridname)
-  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;image(r) # plot to look at&lt;/span&gt;
+  &lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;image(r) # plot to look at&lt;/span&gt;
   e &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; extract(r, shp, df=T)
-  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;str(e) ## print for debugging&lt;/span&gt;
+  &lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;str(e) ## print for debugging&lt;/span&gt;
   e1 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; shp
   e1@data$values &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; e[,2]
   e1@data$gridname &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; gridname
-  &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;write to to target file&lt;/span&gt;
+  &lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;write to to target file&lt;/span&gt;
   write.table(e1@data,&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;output.csv&quot;&lt;/span&gt;,
     col.names = i == 1, append = i&amp;gt;1 , sep = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;,&quot;&lt;/span&gt;, row.names = &lt;span style=&quot;color: #b58900;&quot;&gt;FALSE&lt;/span&gt;)
 }
 
-&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;further work is required to format the column with the gridname to get out the date and weather paramaters.&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;further work is required to format the column with the gridname to get out the date and weather paramaters.&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3&lt;/span&gt; Results&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3&quot;&gt;
+
+&lt;ul&gt;
+&lt;li id=&quot;sec-3-1&quot;&gt;Results&lt;br/&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Markus reports:
+&lt;/li&gt;
+&lt;li&gt;&quot;The R-script worked great once i had set a working directory that did not include spaces. (It may have been a different problem that got solved by changing the wd, but the important thing is it's running now.)&quot;
+&lt;/li&gt;
+&lt;li&gt;Markus downloaded 70+ GB of gridded weather data from the BoM website to his local computer
+&lt;/li&gt;
+&lt;li&gt;Also note there is another set of gridded data available from the BOM, which contains pre-computed longterm mean temps, [ready to be extracted with the script](&lt;a href=&quot;http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;amp;period=#maps&quot;&gt;http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;amp;period=#maps&lt;/a&gt;)
+&lt;/li&gt;
+&lt;li&gt;&quot;Using this file, I only needed to get the 2012 temp grids for a comparison of 2012 vs. 30-year data. I'm going to run the extraction of 1961-1990 data, just to be sure.&quot;
+&lt;/li&gt;
+&lt;li&gt;&quot;When we finished analysis of the long-term temperature from daily means found:
+&lt;/li&gt;
+&lt;li&gt;While the official, pre-computed long-term mean (i.e. 30-year grid file, analysed with your script) was 22.29 °C for the DRO coordinates (145.4494, -16.1041), the new value from daily means (i.e. daily minave and maxave averaged) is 24.91 °C.
+&lt;/li&gt;
+&lt;li&gt;We're not sure what causes this discrepancy, but thought we'd note that there is one.
+&lt;/li&gt;
+&lt;li&gt;For Markus' manuscript, the fact that means from daily min/max were practially identical in 1961-1990 and 2012 is enough.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-3-2&quot;&gt;Dataset discrepancy&lt;br/&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Following up on the interesting a difference between the two BoM datasets. 
+&lt;/li&gt;
+&lt;li&gt;One thing that might cause this might be if you are calculating the average of the annual averages ie sum(annavs)/30 or the average of all the daily averages as sum(dailyavs)/(30 * 365 or 366)?  the variance will differ by these methods.
+&lt;/li&gt;
+&lt;li&gt;looks like the 30 year dataset is the former:
+&lt;/li&gt;
+&lt;li&gt;&quot;Average annual temperatures (maximum, minimum or mean) are calculated by adding daily temperature values each year, dividing by the number of days in that year to get an average for that particular year. The average values for each year in a specified period (1961 to 1990) are added together and the final value is calculated by dividing by the number of years in the period (30 years in this case).&quot;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;[metadata](&lt;a href=&quot;http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;amp;period=#maps&quot;&gt;http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;amp;period=#maps&lt;/a&gt;)
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;Markus followed the BOM calculation method, and just compared it with two other approaches.
+&lt;/li&gt;
+&lt;li&gt;average of all 21914 values
+&lt;/li&gt;
+&lt;li&gt;average of yearly sum(min and max values per year)/(ndays*2)
+&lt;/li&gt;
+&lt;li&gt;average of yearly sum(daily average)/ndays)
+&lt;/li&gt;
+&lt;li&gt;where ndays = number of days per year.
+&lt;/li&gt;
+&lt;li&gt;Differences between these methods show only in the 6th decimal place, far from 2.62 degrees.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4&lt;/span&gt; R-code-for-comparison&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;This is Markus' comparison script &lt;/span&gt;
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;also see the formatted table csv, as well as the SWISH script's raw output csv&lt;/span&gt;
+
+setwd(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;E:\\markus\\ph.d\\aus-daintree\\data-analysis\\climate&quot;&lt;/span&gt;)
+climate &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;minmaxave-30year-daily.csv&quot;&lt;/span&gt;, sep=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;,&quot;&lt;/span&gt;, dec=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;.&quot;&lt;/span&gt;)
+
+climate$year &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; substr(climate$file,1,4)
+climate$dailymean &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; (climate$maxave+climate$minave)/2
+head(climate)
+
+
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;total average across all days and values&lt;/span&gt;
+annmean &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; mean(c(climate$maxave,climate$minave))
+annmean
+
+
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;daily means averaged by year, then total average&lt;/span&gt;
+annmean1 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(1,2)
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(i &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; 1:30) {
+        annmean1[i] &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; mean(climate[climate$year==(i+1960),]$dailymean)
+        &lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;print(annmean1[i])&lt;/span&gt;
+}
+annmean1
+mean(annmean1)
+
+
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;mean of all values per year, then total average&lt;/span&gt;
+annmean2 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(1,2)
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(i &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; 1:30) {
+        tmpdata &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; climate[climate$year==(i+1960),]
+        annmean2[i] &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; (sum(tmpdata$maxave) + sum(tmpdata$minave))/(length(tmpdata$maxave)+length(tmpdata$minave))
+        &lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;print(annmean2[i])&lt;/span&gt;
+}
+annmean2; mean(annmean2)
+
+
+&lt;span style=&quot;color: #93a1a1;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #93a1a1;&quot;&gt;differences&lt;/span&gt;
+annmean - mean(annmean1)
+annmean - mean(annmean2)
+mean(annmean1) - mean(annmean2)
+
+
 &lt;/pre&gt;
 
 
 &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-5&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;5&lt;/span&gt; Discussion&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-5&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Principal findings 
+&lt;/li&gt;
+&lt;li&gt;Strengths 
+&lt;/li&gt;
+&lt;li&gt;Weaknesses 
+&lt;/li&gt;
+&lt;li&gt;Comparison with other studies 
+&lt;/li&gt;
+&lt;li&gt;What do the results mean? 
+&lt;/li&gt;
+&lt;li&gt;What are the policy implications?
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;ul&gt;
+&lt;li id=&quot;sec-5-1&quot;&gt;Conclusion&lt;br/&gt;
+
+&lt;ul&gt;
+&lt;li&gt;So what is the main 'take-home' message?
+&lt;/li&gt;
+&lt;li&gt;How do you rate the approach overall?
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 
-&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
-
-&lt;!-- &lt;/html&gt; --&gt;
-
+&lt;p&gt;&lt;/body&gt;
+&lt;/html&gt;&lt;/p&gt;
 </content>
  </entry>
  
@@ -4713,36 +4738,47 @@ fitting the spatial lag model as it seems easier.
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
 &lt;th&gt; speed &lt;/th&gt;
 &lt;th&gt; dist &lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; Min.   : 4.0 &lt;/td&gt;
-&lt;td&gt; Min.   :  2.00&lt;/td&gt;
+&lt;td&gt; Min.   :  2.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; 1st Qu.:12.0 &lt;/td&gt;
-&lt;td&gt; 1st Qu.: 26.00&lt;/td&gt;
+&lt;td&gt; 1st Qu.: 26.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; Median :15.0 &lt;/td&gt;
-&lt;td&gt; Median : 36.00&lt;/td&gt;
+&lt;td&gt; Median : 36.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; Mean   :15.4 &lt;/td&gt;
-&lt;td&gt; Mean   : 42.98&lt;/td&gt;
+&lt;td&gt; Mean   : 42.98  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; 3rd Qu.:19.0 &lt;/td&gt;
-&lt;td&gt; 3rd Qu.: 56.00&lt;/td&gt;
+&lt;td&gt; 3rd Qu.: 56.00  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt; Max.   :25.0 &lt;/td&gt;
+&lt;td&gt; Max.   :120.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
 
-&lt;h2&gt;| Max.   :25.0 | Max.   :120.00  &lt;/h2&gt;
+&lt;hr /&gt;
 
 &lt;p&gt;You can also embed plots, for example:&lt;/p&gt;
 
