@@ -905,7 +905,7 @@ dirname(fpath)
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
       
     </p>
     <!--
@@ -922,6 +922,215 @@ dirname(fpath)
   </div>
   <div class="rule"><hr/></div>
 
+<<<<<<< HEAD
+=======
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.</p>
+
+<h1>What does it do?</h1>
+
+<p>The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.</p>
+
+<p>Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.</p>
+
+<h1>Create the metadata.txt</h1>
+
+<p>You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.</p>
+
+<p>change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.</p>
+
+<p>Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.</p>
+
+<p>You can look int the "Keys.txt" file that contains the full list of values that can be specified in this metadata.txt file.</p>
+
+<h4>Code:</h4>
+
+<pre><code>setwd("~/tools/dcupload")
+sink("metadata.txt")
+cat("
+# This file, referred to as a collection parameter file, consists of
+# data in key=value pairs. This data is sent to the ANU Data Commons
+# to create a collection, establish relations with other records,
+# and/or upload files to those collections.
+
+# The metadata section consists of metadata for use in creation (not
+# for modification) of record metadata in ANU Data Commons. The
+# following fields are required for the creation of a record. The file
+# Keys.txt contains the full list of values that can be specified in
+# this file. Based on this information below, a collection record of
+# type databaset with the title "Test Collection 6/05/2013" will be
+# created owned by Meteorology and Health group.
+[metadata]
+type = Collection
+subType = dataset
+ownerGroup = 5
+# 6 on production, 5 on dev
+name = Civil Status, Gender and Activity Sector
+briefDesc = An example, fictional dataset for Decision Tree Models
+citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
+email = ivan.hanigan@anu.edu.au
+anzforSubject = 1601
+
+# The relations section allows you to specify the relation this record
+# has with other records in the system.  Currently relations with NLA
+# identifiers is not supported.
+[relations]
+isOutputOf = anudc:123
+
+# This section contains a line of the form 'pid = anudc:123' once a
+# record has been created so executing the uploader script with the
+# same collection parameter file doesnt create a new record with the
+# same metadata.
+[pid]
+")
+sink()
+
+# run the dcload
+system("python3 dcuploader.py -c metadata.txt")
+</code></pre>
+
+<p></p>
+
+
+<h1>What happened?</h1>
+
+<ul>
+<li>Looking in the metadata.txt file it now has a pid like "pid = test:3527"</li>
+<li>And we have created a new record in our account on the DataCommons server.</li>
+</ul>
+
+
+<h1>go to the website</h1>
+
+<p>Now go to <a href="https://dc7-dev2.anu.edu.au:8443/DataCommons/">the dev site</a> and you can continue editing the record manually in the browser.</p>
+
+<p>Or if we have ironed out the wrinkles you could go straight to the production server at <a href="https://datacommons.anu.edu.au:8443/DataCommons">This Link</a></p>
+
+<h1>Uploading the data</h1>
+
+<p>The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.</p>
+
+<h1>Notes</h1>
+
+<ul>
+<li><p>After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.</p></li>
+<li><p>Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.</p></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/dc-uploader-and-ANU-DataCommons/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Oct 13 00:00:00 +1100 2013">13 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/reml-and-rfigshare-part-2/" title="reml-and-rfigshare-part-2" rel="bookmark">reml-and-rfigshare-part-2</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In the last post I explored the functionality of reml.
+This time I will try to send data to figshare.</p>
+
+<ul>
+<li>First follow <a href="https://github.com/ropensci/rfigshare">These Instructions</a> to get rfigshare set up.  In particular store your figshare credentials in ~/.Rprofile</li>
+</ul>
+
+
+<h4>Code:reml-and-rfigshare-part-2</h4>
+
+<pre><code># func
+require(devtools)
+install_github("reml", "ropensci")
+require(reml)
+install_github("rfigshare", "ropensci")
+require(rfigshare)
+install_github("disentangle", "ivanhanigan")
+require(disentangle)
+# load
+fpath &lt;- system.file(file.path("extdata","civst_gend_sector_eml.xml"), package = "disentangle")
+setwd(dirname(fpath))
+obj &lt;- eml_read(fpath)
+# clean
+obj
+# do
+
+## STEP 1: find one of the preset categories
+# available. We can ask the API for
+# a list of all the categories:
+list &lt;- fs_category_list()
+list[grep("Survey", list)]
+
+## STEP 2: PUBLISH TO FIGSHARE
+id &lt;- eml_publish(fname,
+                  description="Example EML
+                    A fictional dataset",
+                  categories = "Survey results",
+                  tags = "EML",
+                  destination="figshare"
+                  )
+# there are several warnings
+# but go to figshare and it has sent the metadata and data OK
+
+# make public using either the figshare web interface, the
+# rfigshare package (using fs_make_public(id)) or just by adding
+# the argument visibility = TRUE to the above eml_publish
+fs_make_public(id)
+</code></pre>
+
+<p></p>
+
+
+<h1>Now these data are on figshare</h1>
+
+<p>Now I have published the data they are visible and have a DOI</p>
+
+<iframe src="http://wl.figshare.com/articles/820158/embed?show_title=1" width="568" height="157" frameborder="0"></iframe>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/reml-and-rfigshare-part-2/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sat Oct 12 00:00:00 +1100 2013">12 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
 
 <div class="pagination">
   <span class="previous">
@@ -976,6 +1185,7 @@ dirname(fpath)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
+<<<<<<< HEAD
                 <li><a href="/categories/orgmode">orgmode (1)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (2)</a></li>
@@ -983,25 +1193,51 @@ dirname(fpath)
                 <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
                 <li><a href="/categories/kepler">kepler (1)</a></li>
+=======
+                <li><a href="/categories/spatial">spatial (2)</a></li>
                 
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                <li><a href="/categories/modelling">modelling (1)</a></li>
                 
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (1)</a></li>
                 
                 <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
                 
                 <li><a href="/categories/research methods">research methods (4)</a></li>
+=======
+                <li><a href="/categories/opinion">opinion (1)</a></li>
                 
                 <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
                 
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
                 
                 <li><a href="/categories/overview">overview (4)</a></li>
                 
                 <li><a href="/categories/wordpress">wordpress (1)</a></li>
+=======
+                <li><a href="/categories/data documentation">data documentation (9)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
                 
                 <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
                 
                 <li><a href="/categories/packages">packages (1)</a></li>
@@ -1011,15 +1247,35 @@ dirname(fpath)
                 <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
                 
                 <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+=======
+                <li><a href="/categories/animation">animation (1)</a></li>
                 
-                <li><a href="/categories/GIS">GIS (1)</a></li>
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
                 
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/outlines">outlines (1)</a></li>
                 
                 <li><a href="/categories/blogging">blogging (1)</a></li>
+=======
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
                 
                 <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/open notebook">open notebook (1)</a></li>
                 
                 <li><a href="/categories/Modelling">Modelling (1)</a></li>
@@ -1031,9 +1287,17 @@ dirname(fpath)
                 <li><a href="/categories/ecology">ecology (1)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+=======
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
                 
                 <li><a href="/categories/links">links (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
                 <li><a href="/categories/awap grids">awap grids (1)</a></li>
@@ -1043,9 +1307,21 @@ dirname(fpath)
                 <li><a href="/categories/opinion">opinion (1)</a></li>
                 
                 <li><a href="/categories/systems">systems (1)</a></li>
+=======
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
                 
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                <li><a href="/categories/energymark">energymark (1)</a></li>
                 
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/ons">ons (1)</a></li>
                 
                 <li><a href="/categories/disentangle">disentangle (1)</a></li>
@@ -1077,9 +1353,39 @@ dirname(fpath)
                 <li><a href="/categories/climate change">climate change (1)</a></li>
                 
                 <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+=======
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
                 
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
                 
+                <li><a href="/categories/suicide">suicide (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/gis">gis (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/python">python (1)</a></li>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/Drought">Drought (1)</a></li>
                 
                 <li><a href="/categories/drought">drought (1)</a></li>
@@ -1091,6 +1397,11 @@ dirname(fpath)
                 <li><a href="/categories/tools">tools (1)</a></li>
                 
                 <li><a href="/categories/blogger">blogger (1)</a></li>
+=======
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
                 
               </ul>
             </div>
@@ -1101,6 +1412,7 @@ dirname(fpath)
               <ul>
                 
                 <li>
+<<<<<<< HEAD
                   <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
                 </li>
                 
@@ -1110,10 +1422,13 @@ dirname(fpath)
                 
                 <li>
                   <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
+=======
+                  <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
+>>>>>>> 42248eb710a7398bde17a9dae07b8c1f683ec188
                 </li>
                 
                 <li>
-                  <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
+                  <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
                 </li>
                 
                 <li>
@@ -1121,7 +1436,7 @@ dirname(fpath)
                 </li>
                 
                 <li>
-                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
+                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="extract-weather-data-from-awap-grids" rel="bookmark">extract-weather-data-from-awap-grids</a>
                 </li>
                 
                 <li>
