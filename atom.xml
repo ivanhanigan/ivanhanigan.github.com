@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-11-01T11:29:41+11:00</updated>
+ <updated>2013-11-01T11:47:14+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -33,6 +33,8 @@
 &lt;h4&gt;R Code:&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code&gt;###############################################
+require(reshape)
+
 ###############################################
 #read csv file with rain BoM data
 dat = read.csv('raj_rain_data.csv')
@@ -44,20 +46,27 @@ fn2 = data.frame(t(do.call(&quot;rbind&quot;, sapply(1:12, FUN = function(i) fn[
 colnames(fn2) = colnames(dat[,2:13])
 fn2$year = dat$Year
 
-#if the value is lower than 0.4, retrieves a 1, otherwise 0 fn2$drought = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.4)==TRUE, 1,0))
+#if the value is lower than 0.4, retrieves a 1, otherwise 0
+fn2$drought = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.4)==TRUE, 1,0))
 
-#if the value is lower than 0.1, retrieves a 1, otherwise 0 fn2$extreme = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.1)==TRUE, 1,0))
+#if the value is lower than 0.1, retrieves a 1, otherwise 0
+fn2$extreme = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.1)==TRUE, 1,0))
 
 str(fn2)
 names(fn2)
 
-#ts didn't work - Francis suggested to melt the data.frame # Melt fn2 to tall data set fn2.tall &amp;lt;- melt(fn2, id.vars=&quot;year&quot;)
+#ts didn't work - Francis suggested to melt the data.frame # Melt
+#fn2 to tall data set
+fn2.tall &amp;lt;- melt(fn2, id.vars=&quot;year&quot;)
 
 # Get the year-month into date format
 fn2.tall$date &amp;lt;- with(fn2.tall,
                              as.Date(paste(&quot;1&quot;, variable, year), &quot;%d %b %Y&quot;))
 
-# Convert dates into months since 0 BC/AD (arbitrary, but doesn't matter) #I'm not using the month.idx with Ivan's solution (remove) fn2.tall$mnth.idx &amp;lt;- sapply(fn2.tall$date, function(x){
+# Convert dates into months since 0 BC/AD (arbitrary, but doesn't
+# matter)
+#I'm not using the month.idx with Ivan's solution (remove)
+fn2.tall$mnth.idx &amp;lt;- sapply(fn2.tall$date, function(x){
   12*as.integer(format(x, &quot;%Y&quot;)) + (as.integer(format(x, &quot;%m&quot;)) - 1)
 })
 
