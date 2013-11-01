@@ -4,13 +4,81 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-10-31T23:46:11+11:00</updated>
+ <updated>2013-11-01T11:29:41+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>climatic-drought-guestpost-by-luciana-porfirio</title>
+   <link href="http://schamberlain.github.com/2013/11/climatic-drought-guestpost-by-luciana-porfirio/"/>
+   <updated>2013-11-01T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/11/climatic-drought-guestpost-by-luciana-porfirio</id>
+   <content type="html">&lt;h3&gt;Guest post by Luciana Porfirio with code contributions by Francis Markham&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Recently I encountered a student doing an analysis who was doing everything in excel, and I couldn't contain my mouth and say R would be better... but it isn't a simple task. So any here are some tips.&lt;/li&gt;
+&lt;li&gt;There is a table with 62 years * 12 months of rain data in mm. We calculated the cumulative distribution using ecdf: empirical cumulative distribution function. So the table looks like this: Year Jan Feb Mach (...) each cell contains the cum dist.&lt;/li&gt;
+&lt;li&gt;We also got the number of months per year with less than X mm of rain. But he needs to know how many months  are between the drought months, regardless the year. So, I thought that converting the data into a ts was going to facilitate the task, but it doesn't, because now I don't' have columns and rows any longer.&lt;/li&gt;
+&lt;li&gt;But I struggled to handle a ts object to do for example an ifelse.&lt;/li&gt;
+&lt;li&gt;Luckily there are many many tricks about R, and with the code below we solved all his problems (and many months of work in excel).&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/data/raj_rain_data.csv&quot;&gt;Get the example data here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;This is how it looks like:&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;###############################################
+###############################################
+#read csv file with rain BoM data
+dat = read.csv('raj_rain_data.csv')
+
+fn &amp;lt;- apply(dat[,2:13], 2, ecdf) # equivalent to Excel's percentrank function, only for cols 2 to 13 but you need to apply the function to each month
+
+#this fun does all the months at once
+fn2 = data.frame(t(do.call(&quot;rbind&quot;, sapply(1:12, FUN = function(i) fn[[i]](dat[,i+1]), simplify = FALSE))))
+colnames(fn2) = colnames(dat[,2:13])
+fn2$year = dat$Year
+
+#if the value is lower than 0.4, retrieves a 1, otherwise 0 fn2$drought = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.4)==TRUE, 1,0))
+
+#if the value is lower than 0.1, retrieves a 1, otherwise 0 fn2$extreme = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.1)==TRUE, 1,0))
+
+str(fn2)
+names(fn2)
+
+#ts didn't work - Francis suggested to melt the data.frame # Melt fn2 to tall data set fn2.tall &amp;lt;- melt(fn2, id.vars=&quot;year&quot;)
+
+# Get the year-month into date format
+fn2.tall$date &amp;lt;- with(fn2.tall,
+                             as.Date(paste(&quot;1&quot;, variable, year), &quot;%d %b %Y&quot;))
+
+# Convert dates into months since 0 BC/AD (arbitrary, but doesn't matter) #I'm not using the month.idx with Ivan's solution (remove) fn2.tall$mnth.idx &amp;lt;- sapply(fn2.tall$date, function(x){
+  12*as.integer(format(x, &quot;%Y&quot;)) + (as.integer(format(x, &quot;%m&quot;)) - 1)
+})
+
+# Sort by date
+fn2.tall &amp;lt;- fn2.tall[order(fn2.tall$date),]
+
+
+#Ivan's solution
+
+x&amp;lt;-fn2.tall$value&amp;lt;0.4
+xx &amp;lt;- (cumsum(!x) + 1) * x
+x2&amp;lt;-(seq_along(x) - match(xx, xx) + 1) * x
+fn2.tall$count&amp;lt;-x2
+
+#counts the number of cases of drought
+as.data.frame(table(fn2.tall$count))
+###############################################
+###############################################
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>quantum-gis-visualisations</title>
@@ -166,23 +234,23 @@ Tab1 &amp;lt;- read.csv(&quot;data/dataset.csv&quot;, sep= &quot;,&quot;, header
 Tab1 &amp;lt;- as.data.frame(table(Tab1$SLA))
 nrow(Tab1)
 write.csv(Tab1, &quot;data/SLA.csv&quot;, row.names = F)
-load2postgres(&quot;data/SLA.csv&quot;, schema=&quot;public&quot;, tablename=&quot;sla&quot;, ip = &quot;brawn.anu.edu.au&quot;,
-              db = &quot;gislibrary&quot;, pguser = &quot;gislibrary&quot;, printcopy = F)
+load2postgres(&quot;data/SLA.csv&quot;, schema=&quot;ivan_hanigan&quot;, tablename=&quot;sla&quot;, ip = &quot;brawn.anu.edu.au&quot;,
+              db = &quot;gislibrary&quot;, pguser = &quot;ivan_hanigan&quot;, printcopy = F)
 
 
 ch  &amp;lt;- connect2postgres2(&quot;gislibrary&quot;)
-sql_subset(ch, &quot;public.sla&quot;, eval = T, limit = 10)
+sql_subset(ch, &quot;ivan_hanigan.sla&quot;, eval = T, limit = 10)
 
 
-sql_subset(ch, &quot;abs_sla.qldsla01&quot;, eval = T, limit = 1)
+sql_subset(ch, &quot;abs_sla.qldsla01&quot;, select =  &quot;sla_name, st_y(st_centroid(geom))&quot;, eval = T, limit = 10)
 dbSendQuery(ch,
   &quot;select sla_name, geom
-  into public.southkingsland
+  into southkingsland
   from abs_sla.qldsla01 t1
   join
-  public.sla t2
+  sla t2
   on t1.sla_name = t2.var1;
-  alter table public.southkingsland add column gid serial primary key;
+  alter table southkingsland add column gid serial primary key;
   &quot;)
 # these are missing from spatial data
 ## 42                      West End                          &amp;lt;NA&amp;gt;
@@ -278,13 +346,17 @@ dev.off()
 
 &lt;ul&gt;
 &lt;li&gt;It looks like the incidence does vary with age&lt;/li&gt;
+&lt;li&gt;TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)&lt;/li&gt;
+&lt;li&gt;TODO make graphs by city, by sex&lt;/li&gt;
+&lt;li&gt;age-standardised rates probably need different age categories, only 4 or 5?&lt;/li&gt;
+&lt;li&gt;worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)&lt;/li&gt;
 &lt;/ul&gt;
 
 
 &lt;h4&gt;Clean up database!&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;dbSendQuery(ch, &quot;drop table public.sla&quot;)
-dbSendQuery(ch, &quot;drop table public.southkingsland&quot;)
+&lt;pre&gt;&lt;code&gt;dbSendQuery(ch, &quot;drop table sla&quot;)
+dbSendQuery(ch, &quot;drop table southkingsland&quot;)
 &lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
@@ -5332,30 +5404,6 @@ limitations in our ability to evaluate published findings. Reproducibility has t
 &lt;p&gt;I try do all my weather/air pollution/health/demography data integrations and analysis using the Reproducible Research Reporting paradigm implemented in R/Sweave.  I do this so I can maintain tight control over modelling assumptions or data decisions at any point in the workflow, including multiple versions over the course of an evolving analysis plan.  This allows me to 'drill down' into parts of the data preparation and analysis many months after the bulk of the work has been done, change key portions that respond to the changed requirements of the project, and document the reason for the changes (in case of the inevitable change in requirements, see this xkcd comic strip &lt;a href=&quot;http://xkcd.com/844/&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;So in summary, I am interested in tools that enable analysts to deal with the issues of intergrated analysis networks, and tracking the many choices an analyst makes through a complex web of the analysis workflow between data, analysis, reporting and archiving activities.&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>About Me</title>
-   <link href="http://schamberlain.github.com/2012/01/about-me/"/>
-   <updated>2012-01-17T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2012/01/about-me</id>
-   <content type="html">&lt;p&gt;About Me&lt;/p&gt;
-
-&lt;p&gt;I am a data manager and analyst at NCEPH &lt;a href=&quot;http://nceph.anu.edu.au/&quot;&gt;http://nceph.anu.edu.au/&lt;/a&gt; at the Australian National University. I am also undertaking a multi-disciplinary PhD, on a part time basis.&lt;/p&gt;
-
-&lt;p&gt;My research focus is on linking population, health and environmental data for epidemiological analysis.&lt;/p&gt;
-
-&lt;p&gt;I apply integrative techniques to analysis of environmental health issues such as:
-1 Suicide and Drought
-2 Air pollution, weather and mortality or morbidity
-3 Aeroallergens
-4 and more.&lt;/p&gt;
-
-&lt;p&gt;This blog reflects my work on these various analyses, and the tools and techniques I apply there.&lt;br/&gt;
-It is called Disentangle Things as both a description of what I try to do (disentangle is subtly different from untangle - more on this later) and also an exhortation.&lt;/p&gt;
-
-&lt;p&gt;So let's Disentangle Things!&lt;/p&gt;
 </content>
  </entry>
  
