@@ -54,6 +54,431 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p><body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">Disentangle Things</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Background</a></li>
+<li><a href="#sec-1-2">1.2 Speed and Rigour</a></li>
+<li><a href="#sec-1-3">1.3 Analysts can often trade-off completeness of documentation for speed</a></li>
+<li><a href="#sec-1-4">1.4 Librarians produce gold plated documentation and can take longer to produce this</a></li>
+<li><a href="#sec-1-5">1.5 An example</a></li>
+<li><a href="#sec-1-6">1.6 Embracing Inaccuracy and Incompleteness</a></li>
+<li><a href="#sec-1-7">1.7 Aim</a></li>
+<li><a href="#sec-1-8">1.8 Step 1: load a simple example dataset</a></li>
+<li><a href="#sec-1-9">1.9 Step 2 create a function to deliver the minimal metadata object</a></li>
+<li><a href="#sec-1-10">1.10 reml<sub>boilerplate</sub>-code</a></li>
+<li><a href="#sec-1-11">1.11 reml<sub>boilerplate</sub>-test-code</a></li>
+<li><a href="#sec-1-12">1.12 Results: This loads into Morpho with some errors</a></li>
+<li><a href="#sec-1-13">1.13 Conclusions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</h3>
+<div class="outline-text-3" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Background</h4>
+<div class="outline-text-4" id="text-1-1">
+
+
+<ul>
+<li>The Morpho/Metacat system is great for a data repository
+</li>
+<li>Morpho also claims to be suitable for Ecologists to document their data
+</li>
+<li>But in my experience it leaves a little to be desired in ease of use for both purposes
+</li>
+<li>Specifically the speed that documentation can be entered into Morpho is slow
+</li>
+<li>This post is a first attempt to create some boilerplate code to quickly generate EML metadata using REML.
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Speed and Rigour</h4>
+<div class="outline-text-4" id="text-1-2">
+
+<p>As I noted in a previous post, there are [two types of data documentation workflow](<a href="http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/">http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/</a>).  
+</p>
+<ul>
+<li>GUI
+</li>
+<li>Programatic
+</li>
+</ul>
+
+
+<p>  
+I also think there are two types of users with different motivations and constraints:
+</p>
+<ul>
+<li>1) Data Analysts
+</li>
+<li>2) Data Librarians
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-4">
+<h4 id="sec-1-3"><span class="section-number-4">1.3</span> Analysts can often trade-off completeness of documentation for speed</h4>
+<div class="outline-text-4" id="text-1-3">
+
+<p>In my view the Analysts group of users need a tool that will very rapidly document their data and workflow steps and can live with a bit less rigour in the quality of documentation.  Obviously this is not ideal but seems an inevitable trade-off needed to enable analysts to keep up the momentum of the data processing and modelling without getting distracted by tedious (and potentially unnecessary) data documentation tasks.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-4">
+<h4 id="sec-1-4"><span class="section-number-4">1.4</span> Librarians produce gold plated documentation and can take longer to produce this</h4>
+<div class="outline-text-4" id="text-1-4">
+
+<p>On the other hand the role of the Librarian group is to produce documentation to the best level possible (given time and resource constraints) the datasets and methodologies that lead to the creation of the datasets.  For that group Rigour will take precedence and there will be a trade-off in terms of the amount of time needed to produce the documentation.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-4">
+<h4 id="sec-1-5"><span class="section-number-4">1.5</span> An example</h4>
+<div class="outline-text-4" id="text-1-5">
+
+<p>As an example of the two different groups, an analyst working with weather data in Australia may want to specify that their variable "temperature" is the average of the daily maxima and minima, but might not need to specify that the observations were taken inside a Stevenson Screen, or even if they are in Celsius, Farenhiet or Kelvin.  They will be very keen to start the analysis to identify any associations between weather variables and the response variable they are investigating.   The data librarian on the other hand will be more likely to need to include this information so that the users of the temperature data do not mis-interpret it.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-6" class="outline-4">
+<h4 id="sec-1-6"><span class="section-number-4">1.6</span> Embracing Inaccuracy and Incompleteness</h4>
+<div class="outline-text-4" id="text-1-6">
+
+
+<ul>
+<li>I've been talking about this for a while got referred to this document by Ben Davies at the ANUSF
+</li>
+</ul>
+
+<p>[http://thedailywtf.com/Articles/Documentation-Done-Right.aspx](<a href="http://thedailywtf.com/Articles/Documentation-Done-Right.aspx">http://thedailywtf.com/Articles/Documentation-Done-Right.aspx</a>)
+</p><ul>
+<li>It has this bit:
+</li>
+</ul>
+
+
+
+
+<pre class="src src-R">  
+   
+Embracing Inaccuracy and Incompleteness 
+    
+The immediate answer to what&#8217;s the right way to do documentation is
+clear: produce the least amount of documentation needed to facilitate
+the most understanding, and be very explicit about which documentation
+is to be maintained and which is to be archived (i.e., read-only and
+left to rot).
+</pre>
+
+
+<ul>
+<li>Roughly speaking, a full EML document produced by Morpho is a bit like a whole bunch of cruft that isnt needed and gets in the way (and is more confusing)
+</li>
+<li>Whereas a minimal version Im thinking of covers almost all the generic entries providing the "minimum amount of stuff to make it work right".
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-7" class="outline-4">
+<h4 id="sec-1-7"><span class="section-number-4">1.7</span> Aim</h4>
+<div class="outline-text-4" id="text-1-7">
+
+
+<ul>
+<li>This experiment aims to speed up the creation of a minimal "skeleton" of metadata to a level that both the groups above can be comfortable with AS A FIRST STEP.
+</li>
+<li>It is assumed that additional steps will then need to be taken to complete the documentation, but the automation of the first part of the process should shave off enough time to suit the purposes of both groups
+</li>
+<li>It is an imperative that the quick-start creation of the metadata does not end up costing the documentor more time later on down the track if they need to go back to many of the elements for additional editing.
+</li>
+</ul>
+
+
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-8" class="outline-4">
+<h4 id="sec-1-8"><span class="section-number-4">1.8</span> Step 1: load a simple example dataset</h4>
+<div class="outline-text-4" id="text-1-8">
+
+<p>I've been using a [fictitious dataset from a Statistics Methodology paper by Ritschard 2006](<a href="http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/">http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/</a>).  It will do as a first cut but when it comes to actually test this out it would be good to have something that would take a bit longer (so that the frustrations of using Morpho become very apparent).
+</p>
+
+
+
+<pre class="src src-R">  <span style="color: #586e75;">#### </span><span style="color: #586e75;">R Code:</span>
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">func</span>
+      <span style="color: #268bd2; font-weight: bold;">require</span>(devtools)
+      install_github(<span style="color: #2aa198;">"disentangle"</span>, <span style="color: #2aa198;">"ivanhanigan"</span>)
+      <span style="color: #268bd2; font-weight: bold;">require</span>(disentangle)
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">load</span>
+      fpath <span style="color: #268bd2; font-weight: bold;">&lt;-</span> system.file(
+          file.path(<span style="color: #2aa198;">"extdata"</span>, <span style="color: #2aa198;">"civst_gend_sector_full.csv"</span>),
+          package = <span style="color: #2aa198;">"disentangle"</span>
+          )
+      data_set <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(fpath)
+      summary(data_set)
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">store it in the current project workspace</span>
+      write.csv(data_set, <span style="color: #2aa198;">"data/civst_gend_sector_full.csv"</span>, row.names = F)
+      
+
+
+
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| divorced/widowed: 33 | female:132 | primary  :116 | Min.   : 128.9 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| married         :120 | male  :141 | secondary: 99 | 1st Qu.: 768.3 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| single          :120 | nil        | tertiary : 58 | Median : 922.8 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | Mean   : 908.4 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | 3rd Qu.:1079.1 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | Max.   :1479.4 |</span>
+
+</pre>
+
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-9" class="outline-4">
+<h4 id="sec-1-9"><span class="section-number-4">1.9</span> Step 2 create a function to deliver the minimal metadata object</h4>
+<div class="outline-text-4" id="text-1-9">
+
+<ul>
+<li>the package REML will create a EML metadata document quite easily
+</li>
+<li>I will assume that a lot of the data elements are self explanatory and take column names and factor levels as the descriptions
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-10" class="outline-4">
+<h4 id="sec-1-10"><span class="section-number-4">1.10</span> reml<sub>boilerplate</sub>-code</h4>
+<div class="outline-text-4" id="text-1-10">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">################################################################</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">name:reml_boilerplate</span>
+ 
+<span style="color: #586e75;"># </span><span style="color: #586e75;">func</span>
+<span style="color: #859900; font-weight: bold;">if</span>(!<span style="color: #268bd2; font-weight: bold;">require</span>(reml)) {
+  <span style="color: #268bd2; font-weight: bold;">require</span>(devtools)
+  install_github(<span style="color: #2aa198;">"reml"</span>, <span style="color: #2aa198;">"ropensci"</span>)
+  } 
+<span style="color: #268bd2; font-weight: bold;">require</span>(reml)
+
+<span style="color: #268bd2;">reml_boilerplate</span> <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #859900; font-weight: bold;">function</span>(data_set, created_by = <span style="color: #2aa198;">"Ivan Hanigan &lt;<a href="mailto:ivanhanigan&#64;gmail.com">ivanhanigan&#64;gmail.com</a>&gt;"</span>, data_dir = getwd(), titl = <span style="color: #b58900;">NA</span>, desc = <span style="color: #2aa198;">""</span>)
+{
+
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">essential</span>
+  <span style="color: #859900; font-weight: bold;">if</span>(is.na(titl)) <span style="color: #859900; font-weight: bold;">stop</span>(print(<span style="color: #2aa198;">"must specify title"</span>))
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">we can get the col names easily</span>
+  col_defs <span style="color: #268bd2; font-weight: bold;">&lt;-</span> names(data_set)
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">next create a list from the data</span>
+  unit_defs <span style="color: #268bd2; font-weight: bold;">&lt;-</span> list()
+  <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(data_set))
+    {
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">i = 4</span>
+      <span style="color: #859900; font-weight: bold;">if</span>(is.numeric(data_set[,i])){
+        unit_defs[[i]] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #2aa198;">"numeric"</span>
+      } <span style="color: #859900; font-weight: bold;">else</span> {
+        unit_defs[[i]] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> names(table(data_set[,i]))          
+      }
+    }
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">unit_defs</span>
+  
+  ds <span style="color: #268bd2; font-weight: bold;">&lt;-</span> data.set(data_set,
+                 col.defs = col_defs,
+                 unit.defs = unit_defs
+                 )
+  <span style="color: #586e75;">#</span><span style="color: #586e75;">str(ds)</span>
+
+  metadata  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> metadata(ds)
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">needs names</span>
+  <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(data_set))
+    {
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">i = 4</span>
+      <span style="color: #859900; font-weight: bold;">if</span>(is.numeric(data_set[,i])){
+        names(metadata[[i]][[3]]) <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #2aa198;">"number"</span>
+      } <span style="color: #859900; font-weight: bold;">else</span> {
+        names(metadata[[i]][[3]]) <span style="color: #268bd2; font-weight: bold;">&lt;-</span> metadata[[i]][[3]]
+      }
+    }
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">metadata</span>
+  oldwd <span style="color: #268bd2; font-weight: bold;">&lt;-</span> getwd()
+  setwd(data_dir)
+  eml_write(data_set, metadata,
+            title = titl,  
+            description = desc,
+            creator = created_by
+            )
+  setwd(oldwd)
+  sprintf(<span style="color: #2aa198;">"your metadata has been created in the '%s' directory"</span>, data_dir)
+  }
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-11" class="outline-4">
+<h4 id="sec-1-11"><span class="section-number-4">1.11</span> reml<sub>boilerplate</sub>-test-code</h4>
+<div class="outline-text-4" id="text-1-11">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">################################################################</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">name:reml_boilerplate-test</span>
+
+analyte <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #2aa198;">"data/civst_gend_sector_full.csv"</span>)
+reml_boilerplate(
+  data_set = analyte,
+  created_by = <span style="color: #2aa198;">"Ivan Hanigan &lt;<a href="mailto:ivanhanigan&#64;gmail.com">ivanhanigan&#64;gmail.com</a>&gt;"</span>,
+  data_dir = <span style="color: #2aa198;">"data"</span>,
+  titl = <span style="color: #2aa198;">"civst_gend_sector_full"</span>,
+  desc = <span style="color: #2aa198;">"An example, fictional dataset"</span>
+  )
+
+dir(<span style="color: #2aa198;">"data"</span>)
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-12" class="outline-4">
+<h4 id="sec-1-12"><span class="section-number-4">1.12</span> Results: This loads into Morpho with some errors</h4>
+<div class="outline-text-4" id="text-1-12">
+
+<ul>
+<li>Notably unable to import the data file
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morpho-reml-boilerplate.png" alt = "morpho-reml-boilerplate.png">
+</p>
+<ul>
+<li>Also "the saved document is not valid for some reason"
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morpho-reml-boilerplate2.png" alt = "morpho-reml-boilerplate2.png">
+</p></div>
+
+</div>
+
+<div id="outline-container-1-13" class="outline-4">
+<h4 id="sec-1-13"><span class="section-number-4">1.13</span> Conclusions</h4>
+<div class="outline-text-4" id="text-1-13">
+
+<ul>
+<li>This needs testing
+</li>
+<li>A real deal breaker is if the EML is not valid 
+</li>
+<li>In some cases not having the data table included will be a deal breaker (ie KNB repositories designed for downloading complete data packs
+</li>
+<li>A definite failure would be that even if it is quicker to get started if it takes a long time and is difficult to fix up it might increase the risk of misunderstandings.
+</li>
+</ul>
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Tue Oct 29 00:00:00 +1100 2013">29 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
     </h1>
     <div class="entry-content full-content">
@@ -649,165 +1074,6 @@ It is based on the concept of <a href="http://en.wikipedia.org/wiki/Test-driven_
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>This is a great example of logistic regression,  because it is pretty simple but covers good ground.  I got it from Peter Caley;s R tutorial workbook from Charles Darwin School of Environmental Research.</p>
-
-<p>It is also a tragic example of the impact weather can have on health.<br/>
-The colder it is the more likely the shuttle is to explode.</p>
-
-<p>The problem was with the failure rate (and number of) O-rings that failed (n.fail) related to the temperature (temp).</p>
-
-<h4>R Code:</h4>
-
-<pre><code>#Load the data
-#The following R code will construct the dataset
-n.fail &lt;- c(2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)
-temp &lt;- c(53, 66, 68, 70, 75, 78, 57, 67, 69, 70, 75, 79, 58, 67, 70, 72, 76, 81, 63, 67, 70, 73, 76)
-# there were 6 o rings for each of 23 attempts
-total &lt;- rep(6,23)
-# probability of fail
-p.fail &lt;- n.fail/total
-# Response = resp column bind them together  
-resp &lt;- cbind(n.fail, total-n.fail)
-
-###########################################################################
-# we can write text files easily once the data frame or matrix is in shape
-data &lt;- as.data.frame(cbind(resp,temp))
-names(data) &lt;- c('nfail','totalMinusNfail', 'temp')
-# write.csv(data, 'learnR-logistic-data.csv', row.names=F)
-
-###########################################################################
-# and read it in again 
-# data2 &lt;- read.csv('learnR-logistic-data.csv')
-
-################################################################
-# name:learnR-logistic
-png('images/pfail.png')
-plot(temp, p.fail, pch=16, xlim=c(40,100), ylim=c(0,0.4))
-title('A plot of the proportion failed by temperature')
-dev.off()
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/pfail.png" alt="pfail.png" /></p>
-
-<h4>R Code:</h4>
-
-<pre><code>###########################################################################
-# newnode: linear
-linear &lt;- glm(resp ~ 1 + temp, family=binomial(link=logit))
-summary(linear)
-linearoutput &lt;- summary(linear)
-linearoutput$coeff
-
-###########################################################################
-# newnode: learnR-logistic
-cf &lt;- linearoutput$coeff
-signif(cf[which(row.names(cf) == 'temp'),'Estimate'],2)
-
-###########################################################################
-# newnode: learnR-logistic
-# write.csv(linearoutput$coeff,"challengerOfails.csv")
-
-###########################################################################
-# newnode: learnR-logistic
- png('images/challengerLogistic.png')
- par(mfrow=c(2,2))
- plot(linear)
- dev.off()
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/challengerLogistic.png" alt="challengerLogistic.png" /></p>
-
-<h4>R Code:</h4>
-
-<pre><code>####################################################################
-# newnode: learnR-logistic
-dummy &lt;- data.frame(temp=seq(20,100,1))
-pred.prob &lt;- predict.glm(linear, newdata=dummy, type="resp")
-png('images/pfailfit.png')
-plot(temp, p.fail, xlab="Launch Temperature (F)",
- ylab="Proportion Failing", pch=16, xlim=c(20,100), ylim=c(0,1.0))
-lines(dummy$temp, pred.prob)
-dev.off()
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/pfailfit.png" alt="pfailfit.png" /></p>
-
-<h4>R Code:</h4>
-
-<pre><code>####################################################################
-resp &lt;- as.data.frame(resp)
-resp$fail &lt;- ifelse(resp$n.fail &gt; 0, 1, 0)
-resp$temp &lt;- temp
-
-png('images/fail.png')
-with(resp, plot(temp, fail, xlab="Launch Temperature (F)",ylab="Joint damage", pch=16, xlim=c(50,80), ylim=c(0,1.0))
-     )
-dev.off()
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/fail.png" alt="fail.png" /></p>
-
-<h4>R Code:</h4>
-
-<pre><code>chal.logit &lt;- glm(fail~temp,family=binomial, data = resp)
-summary(chal.logit)$coeff
-
-png('images/pfailfit2.png')
-cx &lt;- c(50:80/1)
-cyhat &lt;- coefficients(chal.logit)[c(1)] +
-coefficients(chal.logit)[c(2)]*cx
-cpihat &lt;- exp(cyhat)/(1+exp(cyhat))
-with(resp,plot(temp,fail,xlab="Temperature",ylab="Damage",
-main="Incidence of Booster Field Joint Damage vs. Temperature", xlim = c(50,80))
-     )
-lines(cx,cpihat)
-dev.off()
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/pfailfit2.png" alt="pfailfit2.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/challenger-logistic/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Oct 18 00:00:00 +1100 2013">18 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -862,121 +1128,119 @@ dev.off()
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/research methods">research methods (4)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
-                
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
                 <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (8)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (2)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/GIS">GIS (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
                 
                 <li><a href="/categories/Energymark">Energymark (1)</a></li>
                 
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/ons">ons (1)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (10)</a></li>
                 
                 <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                <li><a href="/categories/ecology">ecology (1)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                <li><a href="/categories/me">me (3)</a></li>
                 
-                <li><a href="/categories/python">python (1)</a></li>
+                <li><a href="/categories/research methods">research methods (4)</a></li>
                 
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
-                
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
+                <li><a href="/categories/ons">ons (1)</a></li>
                 
                 <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
-                <li><a href="/categories/outlines">outlines (1)</a></li>
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
                 
                 <li><a href="/categories/climate change">climate change (1)</a></li>
                 
                 <li><a href="/categories/kepler">kepler (1)</a></li>
                 
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (2)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/drought">drought (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/python">python (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
                 <li><a href="/categories/Modelling">Modelling (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
                 
                 <li><a href="/categories/Drought">Drought (1)</a></li>
                 
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
                 <li><a href="/categories/workflow">workflow (3)</a></li>
                 
-                <li><a href="/categories/drought">drought (1)</a></li>
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/GIS">GIS (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
                 
                 <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
                 
@@ -987,6 +1251,10 @@ dev.off()
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
+                </li>
                 
                 <li>
                   <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
@@ -1182,10 +1450,6 @@ dev.off()
                 
                 <li>
                   <a href="/2012/01/my-interests-2/" title="My Interests" rel="bookmark">My Interests</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/about-my-research/" title="About My Research" rel="bookmark">About My Research</a>
                 </li>
                 
               </ul>
