@@ -178,6 +178,119 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf</li>
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I stumbled on these posts by "Data Scientist Training for Librarians":</p>
+
+<ul>
+<li><a href="http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/">http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/</a></li>
+<li><a href="http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/">http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/</a></li>
+</ul>
+
+
+<p>I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.</p>
+
+<h4>R Code: get the olive oil dataset</h4>
+
+<pre><code>install.packages("pgmm")
+require(pgmm)
+data(olive)
+write.csv(olive, "~/olive.csv", row.names = F)
+olive &lt;- read.csv("~/olive.csv")
+names(olive) &lt;- tolower(names(olive))
+str(olive)
+write.csv(olive, "~/olive.csv", row.names = F)
+</code></pre>
+
+<p></p>
+
+
+<h3>OK now reproduce the example</h3>
+
+<p>I quite like the histograms from the second example.</p>
+
+<h4>Code:</h4>
+
+<pre><code>%pylab inline
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import matplotlib.colors as colors
+
+acidlist=['palmitic', 'palmitoleic', 'stearic', 'oleic', 'linoleic', 'linolenic', 'arachidic', 'eicosenoic']
+dfsub=df[acidlist].apply(lambda x: x/100.0)
+dfsub.head()
+
+rkeys=[1,2,3]
+rvals=['South','Sardinia','North']
+rmap={e[0]:e[1] for e in zip(rkeys,rvals)}
+rmap
+
+fig, axes=plt.subplots(figsize=(10,20), nrows=len(acidlist), ncols=1) # sets up the framework for the graphs. Acidlist is defined elsewhere, and is a list of the acids we’re interested in.
+i=0 # Sets a counter to 0
+
+for ax in axes.flatten(): # Starts a loop to go through our plot and render each row
+
+    acid=acidlist[i]
+    seriesacid=df[acid] # creates seriesacid and sets it to df[acid], a list of the percent composition of the acid in the current iteration that’s in each olive oil.
+
+    minmax=[seriesacid.min(), seriesacid.max()] # the minimum and maximum values plotted will be the minimum and maximum percentages that we find in the data
+
+    for k,g in df.groupby('region'):  # starts a loop in the loop to plot the values by region
+        style = {'histtype':'stepfilled', 'alpha':0.5, 'label':rmap[k], 'ax':ax}
+        g[acid].hist(**style)
+
+        ax.set_xlim(minmax)
+
+        ax.set_title(acid)
+
+        ax.grid(False)
+
+        #construct legend
+        ax.legend()
+    i=i+1 # increments the counter, to move the loop on to the next acid.
+
+    fig.tight_layout()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/acid.png" alt="acid.png" /></p>
+
+<h3>Conclusions</h3>
+
+<p>I am not sure how to do the transparency but the rest of it would make more sense to me with R</p>
+
+<p>Will try to reproduce in R for head-to-head shoot out.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+      <a href="/categories/python" title="python" rel="category tag">python</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/librarians-and-python/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
     </h1>
     <div class="entry-content full-content">
@@ -515,97 +628,6 @@ as.data.frame(table(fn2.tall$count))
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>This is a quick post on Quantum GIS for spatial data visualisation</li>
-<li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
-<li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
-<li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
-</ul>
-
-
-<h4>R Code: use postgis to create area-concordance</h4>
-
-<pre><code>require(devtools)
-install_github("gisviz", "ivanhanigan")
-require(gisviz)
-require(swishdbtools)
-ch &lt;- connect2postgres2("gislibrary")
-# make a temporary tablename, to avoid clobbering
-temp_table &lt;- swish_temptable("gislibrary")
-temp_table &lt;- paste("public", temp_table$table, sep = ".")
-temp_table
-# this is going to be public.foo11c7673416ea
-
-sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
-   source_zones_code = 'sla_id', target_table = "abs_sla.nswsla01",
-   target_zones_code = "sla_code",
-   into = temp_table, tolerance = 0.01,
-   subset_target_table = "cast(sla_code as text) like '105%'", 
-   eval = F) 
-cat(sql)
-dbSendQuery(ch, sql)
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
-<li>and add the layer to the map</li>
-<li>Style it how you like, I also added NSWSLA1991 over the top</li>
-<li>go into the "new print composer"</li>
-</ul>
-
-
-<p><img src="/images/qgis-new-print-composer.png" alt="qgis-new-print-composer.png" /></p>
-
-<p><img src="/images/qgis-add-new-map.png" alt="qgis-add-new-map.png" /></p>
-
-<h3>Results</h3>
-
-<ul>
-<li>hit the export to image and viola</li>
-</ul>
-
-
-<p><img src="/images/qgis-export-image.png" alt="qgis-export-image.png" /></p>
-
-<h3>Don't forget to clean up the database!</h3>
-
-<h4>R Code:</h4>
-
-<pre><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/gisviz" title="gisviz" rel="category tag">gisviz</a>
-      
-      <a href="/categories/concordance" title="concordance" rel="category tag">concordance</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/quantum-gis-visualisations/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -656,117 +678,117 @@ dbSendQuery(ch, sql)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (11)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (3)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (4)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
                 
                 <li><a href="/categories/ons">ons (1)</a></li>
                 
-                <li><a href="/categories/drought">drought (2)</a></li>
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
                 
-                <li><a href="/categories/links">links (1)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/suicide">suicide (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
                 
                 <li><a href="/categories/concordance">concordance (1)</a></li>
                 
                 <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
-                <li><a href="/categories/notebook">notebook (1)</a></li>
+                <li><a href="/categories/research methods">research methods (4)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/python">python (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
-                
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
+                <li><a href="/categories/drought">drought (2)</a></li>
                 
                 <li><a href="/categories/opinion">opinion (1)</a></li>
                 
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (12)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
                 <li><a href="/categories/gis">gis (1)</a></li>
                 
-                <li><a href="/categories/versions">versions (1)</a></li>
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
+                <li><a href="/categories/modelling">modelling (1)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
                 
                 <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
                 
-                <li><a href="/categories/organising">organising (2)</a></li>
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
                 
               </ul>
             </div>
@@ -778,6 +800,10 @@ dbSendQuery(ch, sql)
                 
                 <li>
                   <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
                 </li>
                 
                 <li>
@@ -970,10 +996,6 @@ dbSendQuery(ch, sql)
                 
                 <li>
                   <a href="/2012/03/outlines-way-to-organise-and-to-think/" title="Outlines. A way to organise, and to think" rel="bookmark">Outlines. A way to organise, and to think</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/02/dr-tom-ford-disentangles-climate-change-writing/" title="Dr Tom Ford disentangles climate change writing" rel="bookmark">Dr Tom Ford disentangles climate change writing</a>
                 </li>
                 
               </ul>

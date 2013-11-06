@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-11-06T21:38:04+11:00</updated>
+ <updated>2013-11-06T23:51:00+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -113,6 +113,97 @@ VUMC Dept. of Biostatistics to assess:&lt;/li&gt;
 http://biostatmatt.com/uploads/shotwell-interface-2011.pdf&lt;/li&gt;
 &lt;/ul&gt;
 
+</content>
+ </entry>
+ 
+ <entry>
+   <title>librarians-and-python</title>
+   <link href="http://ivanhanigan.github.com/2013/11/librarians-and-python/"/>
+   <updated>2013-11-06T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/11/librarians-and-python</id>
+   <content type="html">&lt;p&gt;I stumbled on these posts by &quot;Data Scientist Training for Librarians&quot;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&quot;&gt;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/&quot;&gt;http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.&lt;/p&gt;
+
+&lt;h4&gt;R Code: get the olive oil dataset&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;install.packages(&quot;pgmm&quot;)
+require(pgmm)
+data(olive)
+write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
+olive &amp;lt;- read.csv(&quot;~/olive.csv&quot;)
+names(olive) &amp;lt;- tolower(names(olive))
+str(olive)
+write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h3&gt;OK now reproduce the example&lt;/h3&gt;
+
+&lt;p&gt;I quite like the histograms from the second example.&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;%pylab inline
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import matplotlib.colors as colors
+
+acidlist=['palmitic', 'palmitoleic', 'stearic', 'oleic', 'linoleic', 'linolenic', 'arachidic', 'eicosenoic']
+dfsub=df[acidlist].apply(lambda x: x/100.0)
+dfsub.head()
+
+rkeys=[1,2,3]
+rvals=['South','Sardinia','North']
+rmap={e[0]:e[1] for e in zip(rkeys,rvals)}
+rmap
+
+fig, axes=plt.subplots(figsize=(10,20), nrows=len(acidlist), ncols=1) # sets up the framework for the graphs. Acidlist is defined elsewhere, and is a list of the acids we’re interested in.
+i=0 # Sets a counter to 0
+
+for ax in axes.flatten(): # Starts a loop to go through our plot and render each row
+
+    acid=acidlist[i]
+    seriesacid=df[acid] # creates seriesacid and sets it to df[acid], a list of the percent composition of the acid in the current iteration that’s in each olive oil.
+
+    minmax=[seriesacid.min(), seriesacid.max()] # the minimum and maximum values plotted will be the minimum and maximum percentages that we find in the data
+
+    for k,g in df.groupby('region'):  # starts a loop in the loop to plot the values by region
+        style = {'histtype':'stepfilled', 'alpha':0.5, 'label':rmap[k], 'ax':ax}
+        g[acid].hist(**style)
+
+        ax.set_xlim(minmax)
+
+        ax.set_title(acid)
+
+        ax.grid(False)
+
+        #construct legend
+        ax.legend()
+    i=i+1 # increments the counter, to move the loop on to the next acid.
+
+    fig.tight_layout()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/acid.png&quot; alt=&quot;acid.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Conclusions&lt;/h3&gt;
+
+&lt;p&gt;I am not sure how to do the transparency but the rest of it would make more sense to me with R&lt;/p&gt;
+
+&lt;p&gt;Will try to reproduce in R for head-to-head shoot out.&lt;/p&gt;
 </content>
  </entry>
  
