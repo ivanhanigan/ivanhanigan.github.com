@@ -54,80 +54,301 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2012/03/shane-weiss-reich-white-worg-approach-to-code-management/" title="The Shane-Weiss-Reich-White.worg approach to Code Management" rel="bookmark">The Shane-Weiss-Reich-White.worg approach to Code Management</a>
+      <a href="/2013/04/reflections-bob-haining/" title="Reflections on Spatial Regression Class with Prof Bob Haining" rel="bookmark">Reflections on Spatial Regression Class with Prof Bob Haining</a>
     </h1>
     <div class="entry-content full-content">
-      <h2>Introduction</h2>
-
-<p>I've been thinking alot about workflows recently.  I'm talking about the data, code, decisions etc bound up in the flow of material going through any project in the collective program of work we have going on at the Centre I work at.
-The group are facing tough questions about how we do things; and why.  So in my reflections I've reviewed some links I'd saved and present below a unified summary version called the...</p>
-
-<h2>Shane-Weiss-Reich-White.worg approach </h2>
-
-<p>This a synthesis I've put together of approaches to managing code in complex data analysis projects. It's named after key exponents on various blogs, wikis and web Q-and-A sites.</p>
-
-<p>Stackoverflow user <a href="http://stackoverflow.com/users/163053/shane" title="Shane">Shane</a> posted <a href="http://stackoverflow.com/a/2292913" title="Shane's Post">this excellent comment to stackoverflow</a> to:</p>
-
-<p>"start off with one R file as you start a project (or a set of files like in the <a href="https://github.com/berndweiss" title="Bernd Weiss">Bernd Weiss</a> and <a href="http://stackoverflow.com/users/136862/josh-reich" title="Josh Reich">Josh Reich</a> examples), and progressively add to it (so that it grows in size) as you make discoveries."</p>
-
-<p><a href="https://github.com/berndweiss" title="Bernd Weiss">Bernd Weiss'</a> projects have:</p>
-
-<ul>
-<li>analysis,</li>
-<li>data and</li>
-<li>document directories and</li>
-<li>README.org (an Emacs org-mode file).</li>
-</ul>
+      <p><head>
+<title>Reflections on a class with Prof Bob Haining</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="Reflections on a class with Prof Bob Haining"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-04-05"/>
+<meta name="author" content="ivan hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
 
 
-<p>Bernd and Jeromy Anglim had an interesting discussion about this workflow in <a href="http://stats.stackexchange.com/a/4506" title="Bernd and Jeromy discuss the Weiss approach on stackexchange">this post at stackexchange</a>.  Especially note that Bernd recommends that every publication, presentation or semester/class etc. has its own git repository.  BUT that "there is one real downside: using the same dataset in different publications means to maintain different versions of 'initialization code' (define missing values, generate new variables etc.). To overcome this problem, Bernd decided to maintain ONE study/dataset-related repository which contains the original init-file. For each publication, presentation etc. use a copy of the original data-file as well as of the init-file (in R via file.copy()). Of course, whenever you create a new variable you'll need to modify the original init-file and do a file.copy() (which is the most annoying part of the approach)."</p>
 
-<p><a href="http://stackoverflow.com/users/136862/josh-reich" title="Josh Reich">Josh Reich</a> breaks projects into 4 pieces:</p>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
 
-<ul>
-<li>load.R,</li>
-<li>clean.R,</li>
-<li>func.R and</li>
-<li>do.R</li>
-</ul>
+
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
 
 
-<p><a href="http://www.johnmyleswhite.com/about/" title="John Myles White">John Myles White's</a> leads the <a href="http://projecttemplate.net/architecture.html" title="ProjectTemplate">ProjectTemplate</a> package that has 'create.project(minimal = TRUE)' which creates the layout:</p>
+<p></head>
+<body></p>
 
-<ul>
-<li>cache,</li>
-<li>config,</li>
-<li>data,</li>
-<li>munge,</li>
-<li>src, and</li>
-<li>README</li>
-</ul>
+<div id="preamble">
+
+</div>
 
 
-<p>I've just added reports.  If a project is a little bit bigger than minimal I'll add admin, metadata, versions etc etc. I contributed that idea to the ProjectTemplate discussion list... but those guys seem to mostly use the default minimal = FALSE which creates all the possible directories including reports.  I'll try to keep it simple and just bolt on whatever bits suit my needs as I go.</p>
 
-<h2>Which Code Editor is the Best?</h2>
 
-<p>And finally the meta work holding the project together is the code editor.  Despite the old joke which describes Emacs as <a href="http://upsilon.cc/~zack/blog/posts/2008/10/from_Vim_to_Emacs_-_part_1/" title="Why Emacs">"a great operating system, lacking only a decent editor"</a>, this editor has killer functions for managing code.  Check out <a href="http://orgmode.org/worg/" title="worg">worg the Emacs Org-Mode Community</a>. Recently proponents of worg wrote <a href="http://www.jstatsoft.org/v46/i03/paper" title="Orgmode takes over the data analysis world">this article</a>.  Previously I've REALLY enjoyed <a href="http://sourceforge.net/projects/npptor/" title="NPPtoR">NPPtoR</a> (only available under windoof).</p>
+<div id="content">
+<!-- <h1 class="title">Reflections on a class with Prof Bob Haining</h1> -->
 
-<p>In the words of <a href="http://stackoverflow.com/users/37751/jd-long" title="JD Long">JD Long</a> in response to <a href="http://stackoverflow.com/a/2292913" title="Shane's Post">Shane</a> "The choice of the specific tool is more idiosyncratic and not near as important as using SOMETHING."</p>
+
+<!-- <div id="table-of-contents"> -->
+<!-- <h2>Table of Contents</h2> -->
+<!-- <div id="text-table-of-contents"> -->
+<!-- <ul> -->
+<!-- <li><a href="#sec-1">1 Introduction</a></li> -->
+<!-- <li><a href="#sec-2">2 The Spatial Error Model</a></li> -->
+<!-- <li><a href="#sec-3">3 The Spatial Lag Model</a></li> -->
+<!-- <li><a href="#sec-4">4 Spatially Lagged Independent Variable(s)</a></li> -->
+<!-- <li><a href="#sec-5">5 Discussion</a> -->
+<!-- <ul> -->
+<!-- <li><a href="#sec-5-1">5.1 How to decide which model to fit?</a></li> -->
+<!-- </ul> -->
+<!-- </li> -->
+<!-- <li><a href="#sec-6">6 Conclusion</a></li> -->
+<!-- </ul> -->
+<!-- </div> -->
+<!-- </div> -->
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>I recently attended a class on spatial regression with Prof Bob
+Haining.  He described the issue of spatially correlated errors and
+the problems this poses in spatial regression.
+</p>
+<p>
+The key issue is that spatial data often violates the assumption in
+regression models that the errors are independent. 
+</p>
+<p>
+A simple regression model applied to spatial data based on ZONES:
+</p>
+
+
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + e_{i}\)
+
+<p>
+But with spatial data it is likely that the errors are spatially
+correlated.  This is likely to mean the point estimate of beta 1 is OK
+but the Standard Error is wrong.
+</p>
+<p>
+This might be due to the scale of the study units, which may not
+capture the variation of exposure and outcome adequately. Or there
+might be unmeasured explanatory variables that have not been accounted
+for.
+</p>
+<p>
+I am mostly concerned with EXPLANATORY modelling in which a particular
+exposure of interest is to be assessed.  Examples include a weather
+variable (temperature), an air pollutant (PM10) or some measure of
+socio-economic deprivation in an area (SEIFA scores in Australian
+census data).  In these models I tend to include a number of
+'nuisance' parameters to control for confounding; or interaction terms
+to account for effect modification.  In this type of model the
+performance of the model over-all is not that important, I just want
+to control for the most important confounders so that my estimate of
+the exposure of interest is as rigorous as possible.
+</p>
+<p>
+Therefore the problem that spatially correlated errors pose for these models is
+slightly different to that which affects models aimed at PREDICTION: I
+am not concerned so much with the model's fit to the data, rather the
+confidence around the point-estimate of the parameter for the exposure
+of interest.
+</p>
+<p>
+Simplistically I took away the following messages:
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> The Spatial Error Model</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>So we could model allowing for correlated errors:
+</p>
+
+
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \eta_{i}\)
+
+<p>
+Where:
+</p>
+<p>
+\(\eta_{i}\) = Spatially autocorrelated errors.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> The Spatial Lag Model</h2>
+<div class="outline-text-2" id="text-3">
+
+<p>Or we could include a term for the neighbours, thus absorbing the correlated errors:
+</p>
+
+
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \rho(Neighbours Y_{ij}) + e_{i}\)
+
+<p>
+Where:
+</p>
+<p>
+\(\rho_(Neighbours Y_{ij})\) = is an additional explanatory variable which is the value of the dependent variable in neighbouring areas. 
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Spatially Lagged Independent Variable(s)</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>This is almost a variation of the spatial lag model, except that we
+include a term for the exposure variable in the neighbours, and
+therefore 'smooth' the effect of the exposure from what was observed
+in any area to make it relevant to it's neighbours as well:
+</p>
+
+
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \beta_{2L} X_{2ij} + e_{i}\)
+
+<p>
+Where:
+</p>
+<p>
+\(\beta_{2L} X_{2ij}\) = is the independent variable X2 that is spatially lagged.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Discussion</h2>
+<div class="outline-text-2" id="text-5">
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> How to decide which model to fit?</h3>
+<div class="outline-text-3" id="text-5-1">
+
+<p>So the burning question is how to choose between the various spatial
+models? Prof Haining had some suggestions, but he noted that sometimes
+two could be equally appropriate.  He suggested that the spatial lag
+model makes the strong assumption that there is a relationship between
+the outcome in a neighbouring area with the index zone.  This suggests
+some kind of contagion or dispersion effect.  He was not keen to fit
+this model in circumstances where the causal mechanism did not support
+such a relationship, suggesting the spatially weighted error model was
+more suited, but that "in practice they often give the same result".
+</p>
+<p>
+In my situation where I am not concerned with the actual
+autocorrelation but with tightening up the standard error on my
+exposure of interest, I think I might plead forgiveness and try
+fitting the spatial lag model as it seems easier.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Conclusion</h2>
+<div class="outline-text-2" id="text-6">
+
+<p>Stay tuned.
+</p>
+</div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/disentangle things" title="disentangle things" rel="category tag">disentangle things</a>
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2012/03/shane-weiss-reich-white-worg-approach-to-code-management/#disqus_thread'>Comments</a>
+      <a href='/2013/04/reflections-bob-haining/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Tue Mar 20 00:00:00 +1100 2012">20 Mar 2012</abbr>
+        <abbr class="published" title="Fri Apr 05 00:00:00 +1100 2013">05 Apr 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -136,71 +357,91 @@ The group are facing tough questions about how we do things; and why.  So in my 
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2012/03/outlines-way-to-organise-and-to-think/" title="Outlines. A way to organise, and to think" rel="bookmark">Outlines. A way to organise, and to think</a>
+      <a href="/2012/09/software-ism/" title="software-ism" rel="bookmark">software-ism</a>
     </h1>
     <div class="entry-content full-content">
-      <h2>Introduction</h2>
+      <p>I am a huge fan of the R language for statistics and graphics.</p>
 
-<p>In a <a href="http://ivanhanigan.github.com/2012/02/the-organisation-of-material/" title="The Organisation of Material">previous post</a> I talked about the conceptual framework I draw on for organising material about complex systems. I quoted a passage by Koestler 1967 that talks about the writing process describing the use of 'outlines', albeit without using that term.  I find this quote particularly inspires me to think about how to select the material for inclusion (and identify the material ruled out of scope - those times we decide to "chop off entire flowering branches from the tree and start growing them afresh").</p>
+<p>I sometimes hear people say they don't like R but then admit that they have never tried to use it, or if they have it was close to ten years ago (and a lot has changed).</p>
 
-<h2>A way to organise</h2>
+<p>In recent discussions at work I got the impression some people have got a bit predjudiced against R and other software that they don't actually use, primarily because of the added difficulty of software that requires a bit of programming.</p>
 
-<p>Outlines are a method for writing, and also the basis of a toolbox called <a href="http://en.wikipedia.org/wiki/Outliner" title="Wikipedia Outliners">'outliners'</a>. I've been using the excellent free outliner <a href="http://code.google.com/p/keynote-nf/" title="Keynote-NF">Keynote-NF</a> for years and it has been great.  Recently I was inspired by this <a href="http://www.jstatsoft.org/v46/i03/" title="jstatsoft">paper by Schulte et al</a>, which very convincingly introduced me to Emacs Orgmode as a viable tool for someone without a computer science background (others had described Emacs as 'not an editor so much as a lifestyle choice' or 'a good operating system just lacking a decent editor').</p>
+<p>I think that multi-disciplinary work will inevitably mean we find a mix of software in use, and they'll all have strengths and weaknesses.  A major strength of R is that one can weave together a report that includes the data, code, graphs and interpretations for an analysis, rather than copy-and-pasting these elements together as is required with other software toolboxes.</p>
 
-<h2>A way to think</h2>
+<p>For example a simple analysis in Rstudio using the 'R Markdown document' is below.</p>
 
-<p>I recently had the privilege to attend a class with renowned epidemiologist Professor Nancy Krieger who gave us a valuable insight to her workflow.  She told us that for years she'd started every research project by writing out the outline and then filled out the branches much as Koestler's quote described.  Prof Krieger then said that she didn't explicitly write outlines anymore, she'd been doing it for so long it was deeply ingrained and natural part of her way of thinking.</p>
+<p>You can load and explore data in the document by placing 'Code Chunks' in the document, then when you click the <strong>Knit HTML</strong> button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
 
-<p>Prof Krieger went on to describe how she conducts her research workflow through the outline</p>
+<hr />
 
-<ul>
-<li>first sketch the outline suggested by the hypotheses to be tested (data sourced,  methods applied)</li>
-<li>review the literature, there are very few areas of study that haven't been looked at by someone else</li>
-<li>create empty 'table shells' showing the form that the information will be presented in the final paper</li>
-<li>exploratory data analysis and graphics</li>
-<li>primary data analysis and interpretation of the results</li>
-<li>another literature review - identify the dominant story people are telling about this question</li>
-<li>write the discussion. Deal with any caveats head-on, how the bias may inflate or deflate estimates</li>
-</ul>
+<pre><code>summary(cars)
+</code></pre>
+
+<hr />
+
+<table>
+<thead>
+<tr>
+<th> speed </th>
+<th> dist </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Min.   : 4.0 </td>
+<td> Min.   :  2.00</td>
+</tr>
+<tr>
+<td> 1st Qu.:12.0 </td>
+<td> 1st Qu.: 26.00</td>
+</tr>
+<tr>
+<td> Median :15.0 </td>
+<td> Median : 36.00</td>
+</tr>
+<tr>
+<td> Mean   :15.4 </td>
+<td> Mean   : 42.98</td>
+</tr>
+<tr>
+<td> 3rd Qu.:19.0 </td>
+<td> 3rd Qu.: 56.00</td>
+</tr>
+</tbody>
+</table>
 
 
-<h2>Writing workflow depends on forum</h2>
+<h2>| Max.   :25.0 | Max.   :120.00  </h2>
 
-<p>The flow of steps described above remind me <a href="http://andrewgelman.com/2011/05/my_new_writing/" title="Andrew Gelman's New Writing">Andrew Gelman's point</a> about how he writes science papers like this, but doesn't write blogs this way... he mentions thoughts on style, audience etc.  There may be a dichotomy worth exploring between clear structure vs evolving narrative.</p>
+<p>You can also embed plots, for example:</p>
 
-<h2>Key features of outliner software</h2>
+<hr />
 
-<p>To conclude I'll just mention the most interesting features I've found in outliner software and will discuss these in a future post:</p>
+<pre><code>plot(cars)
+</code></pre>
 
-<ul>
-<li>Nodes: these are the building blocks</li>
-<li>Parents and children: there is a strict ordering of the nodes into a hierarchy</li>
-<li><a href="http://www.patternlanguage.com/archives/alexander1.htm" title="A City is not a Tree">Semilattice:</a> this allows connections to be made across branches, not just through the hierarchy</li>
-<li>Folding can be used to hide entire sections of the tree, unfolding to 'drill down' to deep levels</li>
-<li>Hoisting: to promote and demote branches, including all children branches</li>
-<li>Lifting and grafting: easy reshuffling of the order</li>
-<li>Checked nodes: chosen nodes can be exported while the rest remain invisible</li>
-</ul>
+<hr />
 
+<p><img src="/images/unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2" /></p>
+
+<p>I hope we can work toward a kind of 'tower of babel'.</p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/outlines" title="outlines" rel="category tag">outlines</a>
-      
-      <a href="/categories/disentangle things" title="disentangle things" rel="category tag">disentangle things</a>
+      <a href="/categories/workflow" title="workflow" rel="category tag">workflow</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2012/03/outlines-way-to-organise-and-to-think/#disqus_thread'>Comments</a>
+      <a href='/2012/09/software-ism/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Sun Mar 11 00:00:00 +1100 2012">11 Mar 2012</abbr>
+        <abbr class="published" title="Sat Sep 15 00:00:00 +1000 2012">15 Sep 2012</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -209,35 +450,62 @@ The group are facing tough questions about how we do things; and why.  So in my 
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2012/02/dr-tom-ford-disentangles-climate-change-writing/" title="Dr Tom Ford disentangles climate change writing" rel="bookmark">Dr Tom Ford disentangles climate change writing</a>
+      <a href="/2012/07/the-ecological-fallacy-is-itself-a-fallacy/" title="The Ecological Fallacy is Itself a Fallacy" rel="bookmark">The Ecological Fallacy is Itself a Fallacy</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Climate change and contemporary fiction</h1>
+      <h2>The Ecological Fallacy</h2>
 
-<p>My friend Dr Tom Ford <a href="http://climatechangefiction.blogspot.com.au" title="Climate Change and Contemporary Fiction">blogs</a> about how climate and climate change are entangled in contemporary fiction. For a social scientist he does a really good job of disentangling esoteric and specialist environmental science knowledge with literary waffle and voodoo (sorry, that's an in-joke... I consider my self a waffly exponent of enviro voodoo too - but more than happy to cast aspersions and sling defamatory insults around).</p>
+<p>The term 'Ecological fallacy' is used in Epidemiology and some other disciplines (such as Sociology) to refer to <a href="http://www.springer.com/medicine/book/978-1-4419-1004-2" title="Marc Gellman, J. Rick Turner. Encyclopedia of Behavioral Medicine Springer, 2012.">improperly inferring a causal association (or lack of association) at an individual-level based on a group-level relationship</a>. This use of the word ecological is at odds with the alternative use of the word in the discipline of Ecology.  <a href="http://cup.columbia.edu/book/978-0-231-06919-9/toward-a-unified-ecology" title="Timothy F. H. Allen, Thomas W. Hoekstra. Toward a unified ecology. Columbia University Press, 1993.">Ecological methods from Ecology are inherently multi-scaled</a> and address precisely the issue of this cross-scale inferential fallacy.</p>
 
-<p>Tom's bag as far as I can tell is to reflect on the creation and development of literary constructs used by writers to talk about climate, and climate change. Is this a whole new category of post modern and existentialist literature?</p>
+<p>I argue that a broader understanding of ecological methods by non-Ecologists would be a start towards better understanding between the disciplines.  The inclusion of real ecological methods in the other disciplines will also assist research to better understand the causes and effects of climate and climate change which are important gaps in knowledge needed to enable mitigation and adaptation of our society to future climate change.</p>
+
+<h2>Sociology</h2>
+
+<p>To clear up this confusion it is necessary to go back to the source of the use of the term 'ecological' by the urban sociologist Amos Hawley who used the term 'human ecology' in the 1950s to build on the theoretical traditions of <a href="http://books.google.com.au/books?id=PCBWr5UySs8C&amp;dq=Meade%20and%20Earickson%202000%20medical%20geography&amp;source=gbs_book_other_versions" title="Melinda S. Meade, Robert J. Earickson Medical Geography. Guilford Press 2005.">Robert Parke and E. W. Burgess at the University of Chicago in the 1920s on the structure and development of cities</a>. His influence in the Social Sciences led directly to the development a tradition of social human ecology, one largely without a bio-physical environment.  The usage of 'ecological' to mean multivariate studies of complex systems stems from the sociological tradition.</p>
+
+<h2>Ecology</h2>
+
+<p>The term 'ecology' used in the Ecology discipline <a href="http://en.wikipedia.org/wiki/Ecology" title="Wikipedia">dates back to the 1870s</a>, coined by German zoologist Ernst Haeckel (1834-1919) as Oekologie from Greek 'oikos' for house, dwelling place, habitation and 'logia' study of, then at the turn of the century the term became spelt 'oecology', which grew into 'ecology' in the early part of the 1900s.</p>
+
+<h2>Epidemiology</h2>
+
+<p>In epidemiology the term 'ecological study' is used to refer to studies where observations are taken at the level of a group (such as a country, school, or hospital) rather than at the individual <a href="http://www.springer.com/medicine/book/978-1-4419-1004-2" title="Marc Gellman, J. Rick Turner. Encyclopedia of Behavioral Medicine Springer, 2012.">(such as patient) level</a>.  It is well known though that when risk factors and outcomes are measured at an aggregate level, the relationship between the group-level variables may be different than the relationship between variables <a href="http://en.wikipedia.org/wiki/Modifiable_areal_unit_problem" title="Openshaw, S. (1984). The Modifiable Areal Unit Problem. Norwich: Geo Books. ISBN 0-86094-134-5.">measured at the individual level</a>. An often cited example used to illustrate the issue involved a 19th century study which found higher suicide rates within Prussian provinces that had <a href="http://books.google.com.au/books?hl=en&amp;lr=&amp;id=v23YleX1UskC&amp;oi=fnd&amp;pg=PA9&amp;dq=durkheim&amp;ots=sXTEH3naVk&amp;sig=ycS5kkxwSUA_gA84ts3iXrYNStI#v=onepage&amp;q&amp;f=false" title="Durkheim, E. (1951). Suicide: A study in sociology (Spaulding &amp; Simpson, trans.). Glencoe, IL: Free Press.(Original Work Published 1897).">higher proportions of Protestant residents</a>. The conclusion that Protestant individuals (rather than Catholic individuals) were more likely to commit suicide <a href="http://www.ncbi.nlm.nih.gov/pubmed/7137430" title="Morgenstern, H. (1982). Uses of ecologic analysis in epidemiologic research. American Journal of Public Health, 72(12)">cannot be inferred based on the observed association among the provinces</a>. One possible scenario is that Catholic residents within the largely Protestant provinces had the high suicide rates, resulting in a positive association between percent Protestant and suicide rate <a href="http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full" title="Robinson, W.S. (1950). Ecological Correlations and the Behavior of Individuals. American Sociological Review (American Sociological Review, Vol. 15, No. 3) 15 (3): 351???357.">8</a>. Extrapolation of aggregate results to individuals is a mistake in logic <a href="http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full" title="Robinson, W. S. (2009). Ecological correlations and the behavior of individuals. International Journal of Epidemiology, 38(2)">9</a> which can lead to a potentially misleading conclusion <a href="http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full" title="Grotenhuis, Manfred, Rob Eisinga, and SV Subramanian. Robinson's Ecological Correlations and the Behavior of Individuals: methodological corrections. International journal of epidemiology 40, no. 4 2011: 1123-5.">10</a>.</p>
+
+<p>Because of this limitation 'ecologic studies' are often scorned in epidemiology as inferior and only useful for exploratory or hypothesis-generating studies rather than as confirmatory.  I argue to the contrary that there is the potential for a revolution in our ability to understand causal influences operating at multiple scales of space and time if we were to conduct truly 'ecological studies'.</p>
+
+<h2>Quantitative Geography</h2>
+
+<p>There is also a closely related concept that should be noted.  That of the Modifiable Areal Unit Problem <a href="http://en.wikipedia.org/wiki/Modifiable_areal_unit_problem" title="Openshaw, S. (1984). The Modifiable Areal Unit Problem. Norwich: Geo Books. ISBN 0-86094-134-5.">(MAUP)</a> as discussed in quantitative geography.  There is a large amount of geographical literature on the MAUP.  In this problem domain areal units (also called zones, regions, areas or polygons) inherently pose three problems to a researcher attempting to infer causal associations: scale, zonal and temporal:</p>
+
+<ul>
+<li>Scale; this issues is evident in the example above where phenomena investigated using data viewed at one scale may appear quite different (even opposite) using data aggregated at a different scale.</li>
+<li>Zonal; the zonal problem appears where phenomena investigated using data viewed using two sets of differing areas at a single scale can differ.</li>
+<li>Temporal; a third problem arises when analyzing data on modifiable areas when people keep modifying them by redrawing the boundaries over time.</li>
+</ul>
+
+
+<h2>In Conclusion</h2>
+
+<p>The term 'Ecological Fallacy' is itself a fallacy and non-Ecologists should be made aware of the existence of alternative ecologic methods from Ecology.  This would be a start towards better understanding between the disciplines and enhance our abilities to mitigate and adapt to climate change.</p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/links" title="links" rel="category tag">links</a>
+      <a href="/categories/ecology" title="ecology" rel="category tag">ecology</a>
       
-      <a href="/categories/climate change" title="climate change" rel="category tag">climate change</a>
-      
-      <a href="/categories/disentangle things" title="disentangle things" rel="category tag">disentangle things</a>
+      <a href="/categories/epidemiology" title="epidemiology" rel="category tag">epidemiology</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2012/02/dr-tom-ford-disentangles-climate-change-writing/#disqus_thread'>Comments</a>
+      <a href='/2012/07/the-ecological-fallacy-is-itself-a-fallacy/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Sat Feb 18 00:00:00 +1100 2012">18 Feb 2012</abbr>
+        <abbr class="published" title="Mon Jul 09 00:00:00 +1000 2012">09 Jul 2012</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -246,43 +514,35 @@ The group are facing tough questions about how we do things; and why.  So in my 
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2012/02/the-organisation-of-material/" title="The Organisation of Material" rel="bookmark">The Organisation of Material</a>
+      <a href="/2012/06/centenial-scale-rainfall-in-southeastern-australia/" title="Centennial Scale Rainfall in Southeastern Australia" rel="bookmark">Centennial Scale Rainfall in Southeastern Australia</a>
     </h1>
     <div class="entry-content full-content">
-      <p>During the course of my research I have repeatedly found the organisation of material to be a challenge (I'm talking about the code, data, text and everything else related to analyses).  One of the things I often struggle with is just keeping my thoughts clear and consistent between projects, through weeks and across years.  I'll try to blog about how I have decided to manage my work, and the tools I have tried and end up using.</p>
+      <h2>Droughts are extreme rainfall events on centennial scale</h2>
 
-<p>To start with, I'd like to share a passage taken from pages 55-57 of Arthur Koestler's "The Ghost in the Machine", 1967, London, Pan Books, with some rephrasing of my own.</p>
+<p>In the <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex" title="Hutchinson Drought Index project">Hutchinson Drought Index project</a> we used the longest period of rainfall data available because the drought index is based on the ranking of each six-month average of the distribution in the entire record of observations. A period as long as this is required to calculate extreme rainfall deficits.  The original Hutchinson paper used a period 1920-1988 due to availability.  Another consideration is the longer term characteristics of the rainfall epoch you are considering.</p>
 
-<p>"The vexed problem of the 'organisation of material'; vexed because the different aspects of the problem, the welter of evidence and the welter of interpretations, are all interconnected like threads in a Persian carpet. The author is keenly aware of the pattern they form; but how can he convey that pattern if he has to unpick the threads in order to explain them one at a time? Here the problem of temporal order begins to intrude, although his mind may still be functioning in the partly or wholly non-verbal regions of images and intimations.</p>
+<p>For example, in recent decades in Southeastern Australia annual total rainfal does not represent the longer term context very well.  Shown in the image below is the result of an exploratory data analysis using rainfall data from the Murray Darling Basin (the 'bread basket' of Australian agriculture).  I use the Classification And Regression Tree tool in the 'rpart' package to determine the optimal groupings.  I've dropped the last two years of the sequence because when I first ran this analysis two years ago I got the result shown, but thankfully the last two years have given us very good rainfalls.  This shows the difference between short-term and long-term rainfall patterns.</p>
 
-<p>At last he arrives at a tentative arrangement of his material, under a series of headings and sub-headings, which he shuffles about as if they were compact building blocks. They are probably each represented by a mere jotted key-word....</p>
+<p>Regardless of this data 'massaging', in the analysis presented the annual trend over the first half of the twentieth century was lower than the recent fifty years, by about 60 millimeters on average. The 1930-1946 period was particularly dry, as has been the 1998-2008 period.</p>
 
-<p>...now the time has come for these intentional seeds to start growing into saplings which will branch out into sections, sub-sections, and so on: the selection of evidence to be quoted, of illustrations, comment and anecdotes, each of them necessitating further strategic choices. At each node - branching point - of the growing tree, more details are filled in, until at last the syntactic level is reached, the phrase generating machine takes over, the individual words are lined up - some effortlessly, some after a painful search, and are finally transformed into patterns of contractions of finger muscles guiding a pen: the logos has become incarnate.</p>
-
-<p>But of course the process is never quite as neat and orderly as that; trees do not grow in this rigidly symmetrical way. In our schematised account, the selection of the actual words occurs only at an advanced stage of the process, after the general plan and the ordering of the material have been decided on, and the buds of the tree are ready to burst open in their proper left-to-right order. In reality, however, one branch somewhere in the middle might blossom into words, while others have as yet hardly started to grow. And while it is true that the idea precedes the actual process of verbalisation, it is also true that ideas are often airy nothings until they crystallise into verbal concepts and acquire tangible shape....</p>
-
-<p>Thus our tree progresses with irregular growth and constant oscillations between levels. Transforming thought into language is not a one-way process; the sap flows in both directions, up and down the branches of the tree. The operation is further complicated and sometimes brought to the verge of a breakdown by the author's deplorable tendency to correct, erase, chop off entire flowering branches from the tree and start growing them afresh".</p>
+<p><img src="/images/mdb_rain19002009.jpg" alt="plot of seaust rainfall" /></p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/thoughts" title="thoughts" rel="category tag">thoughts</a>
-      
-      <a href="/categories/organising" title="organising" rel="category tag">organising</a>
-      
-      <a href="/categories/overview" title="overview" rel="category tag">overview</a>
+      <a href="/categories/drought" title="drought" rel="category tag">drought</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2012/02/the-organisation-of-material/#disqus_thread'>Comments</a>
+      <a href='/2012/06/centenial-scale-rainfall-in-southeastern-australia/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Mon Feb 06 00:00:00 +1100 2012">06 Feb 2012</abbr>
+        <abbr class="published" title="Tue Jun 05 00:00:00 +1000 2012">05 Jun 2012</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -291,104 +551,54 @@ The group are facing tough questions about how we do things; and why.  So in my 
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2012/01/my-interests-2/" title="My Interests" rel="bookmark">My Interests</a>
+      <a href="/2012/05/how-to-explain-my-current-research/" title="How to explain my current research interests?" rel="bookmark">How to explain my current research interests?</a>
     </h1>
     <div class="entry-content full-content">
-      <p>My research interests revolve around making my data analyses easier and more reproducible. I'd like it if every step in the methodical exploration of (or prediction from) data is easily documented, reproduced, transformed, integrated and fun ... (if such a thing is possible).</p>
+      <h2>I'm having trouble explaining my current research interests.</h2>
 
-<p>I conceptualise data analyses as grouped networks of the many choices and revisions an analyst makes through a complex workflow in a project, clusters of which make up the many projects, databases and codebases analysts use everyday.</p>
+<p>I'm currently working on suicide and drought, heart disease and woodsmoke, violent deaths and heatwaves and a theoretical text on methods for rates, standardisation or adjustment in regression models.</p>
 
-<p>In my work as a data manager at a research school, I spend a lot of time linking together datasets to analyse population, health and environmental dimensions.  There are complex relationships to be found but because there are so many steps required for such an analysis workflow, and there are strong barriers to reproducibility.  A key barrier is due to the difficulties of tracking and documenting the numerous generations of derivative datasets and analyses.  I have developed an interest in software applications used during workflow actions and decision making to document a reproducible module of work; in desperately entwined and heroically integrated analyses.</p>
+<p>Why? It's complicated, but...</p>
 
-<h2>My Topics</h2>
+<p>I have been working on a range of interrelated projects for the last few years that have revolved around the influence of climate on human health and wellbeing.<br/>
+That might sound clear enough on first glance, but when we got stuck in to it we found we struggled to find very many health outcomes with really potent causal influences of climatic variables from the literature.</p>
 
-<p>I am interested in systems analysis, especially of environmental health systems and</p>
+<h2>HUMAN HEALTH AND CLIMATE CHANGE IN OCEANIA: A RISK ASSESSMENT 2002 </h2>
+
+<p>This all started with my involvement with the report <a href="http://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;ved=0CCYQFjAA&amp;url=http%3A%2F%2Fwww.health.gov.au%2Finternet%2Fmain%2Fpublishing.nsf%2Fcontent%2F2D4037B384BC05F6CA256F1900042840%2F%24File%2Fenv_climate.pdf&amp;ei=OhOhT8jeIuiviQfy6fHgBA&amp;usg=AFQjCNH123UycdMu__7_cnN3BcqBu7_YYg&amp;sig2=PUesyxJP74acSneaziy5PA" title="DHA CC HIA 2002">1</a> by Tony McMichael and Rosalie Woodruff.  I was a research assistant and got my first taste of integrating data across population, health and environmental domains.</p>
+
+<p>We did a great job, but after we'd completed that work, Colin and I reflected on how difficult it was to find those 'low haning fruit' that might be most easily analysted in this new direction of environmental epidemioligy.  We then met Neville Nicholls from the BoM and found out that there was a strong suspicion of the increased risk of suicide during droughts amongst the meteorologists (to the point they were anxious about reporting unfavourable forecasting seasonal rainfall estimates based on the SOI and El Nino weather patterns).  We ended up publishing a simple paper about that topic <a href="http://www.mendeley.com/research/interannual-rainfall-variations-suicide-new-south-wales-australia-1964/" title="Nicholls et al 2005">2</a></p>
+
+<p>Other health outcomes suggested themselves over the course of the following few years:</p>
 
 <ul>
-<li>interventions</li>
-<li>catastrophes</li>
-<li>explanations</li>
-<li>predictions</li>
+<li>will be bullet points</li>
+<li>includes Ross River Virus in WA</li>
+<li>heart disease and woodsmoke</li>
+<li>violent deaths and heatwaves</li>
+<li>a theoretical text on methods for rates, standardisation or adjustment in regression models</li>
 </ul>
 
 
-<p>I also focus on</p>
-
-<ul>
-<li>Sucide and Drought in Southern Australia</li>
-</ul>
-
-
-<p>and Atmospherics, including:</p>
-
-<ul>
-<li>pollution events from Bushfires, dust storms, aeroallergen peaks</li>
-<li>average exposures and extremes to temperature, humidity, rainfall... combinations of these</li>
-</ul>
-
-
-<p>I also dabble in other environmental health issues such as mosquito diseases and drinking water pathogens.</p>
-
-<h2>My Tools</h2>
-
-<p>I try do all my data integrations and analysis in R/Sweave.  I am currently planning to investigate the following tools</p>
-
-<ul>
-<li>R/Sweave/make</li>
-<li>packages</li>
-<li>python</li>
-<li>version control (git)</li>
-<li>graphviz</li>
-<li>projectTemplate</li>
-<li>workflow apps: kepler\taverna\RanalyticFlow\Rgraphviz</li>
-<li>disentangleThings</li>
-</ul>
-
-
-<h2>My Intentions</h2>
-
-<p>In this blog I will write about my experiences as I dealve into these new areas and write a PhD about them (and my research topics, knotted problems to be disentangled as we go). I am not a very adept programmer, but hopefully these tools will help enable me to deal with the intergrated analyses I hope to do.</p>
+<p>So I am struggling to get a succint statement that reflects the current focus of my research interests.
+Luckily my core reasearch interest is simpler: better understanding the dynamics of the many systems involved in human ecology.</p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/overview" title="overview" rel="category tag">overview</a>
-      
-      <a href="/categories/reproducibility" title="reproducibility" rel="category tag">reproducibility</a>
-      
-      <a href="/categories/tools" title="tools" rel="category tag">tools</a>
-      
-      <a href="/categories/r/sweave" title="r/sweave" rel="category tag">r/sweave</a>
-      
-      <a href="/categories/make" title="make" rel="category tag">make</a>
-      
-      <a href="/categories/packages" title="packages" rel="category tag">packages</a>
-      
-      <a href="/categories/projecttemplate" title="projecttemplate" rel="category tag">projecttemplate</a>
-      
-      <a href="/categories/versions" title="versions" rel="category tag">versions</a>
-      
-      <a href="/categories/python" title="python" rel="category tag">python</a>
-      
-      <a href="/categories/graphviz" title="graphviz" rel="category tag">graphviz</a>
-      
-      <a href="/categories/kepler" title="kepler" rel="category tag">kepler</a>
-      
-      <a href="/categories/ranalyticflow" title="ranalyticflow" rel="category tag">ranalyticflow</a>
-      
-      <a href="/categories/systems" title="systems" rel="category tag">systems</a>
+      <a href="/categories/me" title="me" rel="category tag">me</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2012/01/my-interests-2/#disqus_thread'>Comments</a>
+      <a href='/2012/05/how-to-explain-my-current-research/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Tue Jan 24 00:00:00 +1100 2012">24 Jan 2012</abbr>
+        <abbr class="published" title="Wed May 02 00:00:00 +1000 2012">02 May 2012</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -449,105 +659,117 @@ The group are facing tough questions about how we do things; and why.  So in my 
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (9)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
-                
-                <li><a href="/categories/ons">ons (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
                 <li><a href="/categories/research methods">research methods (4)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
                 
                 <li><a href="/categories/surveytools">surveytools (1)</a></li>
                 
-                <li><a href="/categories/replication">replication (1)</a></li>
+                <li><a href="/categories/notebook">notebook (1)</a></li>
                 
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
+                <li><a href="/categories/gis">gis (1)</a></li>
                 
                 <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
                 <li><a href="/categories/blogging">blogging (1)</a></li>
                 
-                <li><a href="/categories/notebook">notebook (1)</a></li>
+                <li><a href="/categories/animation">animation (1)</a></li>
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
+                <li><a href="/categories/opinion">opinion (1)</a></li>
                 
-                <li><a href="/categories/workflow">workflow (3)</a></li>
+                <li><a href="/categories/climate change">climate change (1)</a></li>
                 
-                <li><a href="/categories/ecology">ecology (1)</a></li>
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
                 
-                <li><a href="/categories/gis">gis (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
                 
                 <li><a href="/categories/links">links (1)</a></li>
                 
-                <li><a href="/categories/python">python (1)</a></li>
+                <li><a href="/categories/packages">packages (1)</a></li>
                 
                 <li><a href="/categories/make">make (1)</a></li>
                 
-                <li><a href="/categories/me">me (3)</a></li>
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
+                
+                <li><a href="/categories/suicide">suicide (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (11)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/modelling">modelling (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
                 
                 <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/python">python (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
                 
               </ul>
             </div>
@@ -558,7 +780,31 @@ The group are facing tough questions about how we do things; and why.  So in my 
               <ul>
                 
                 <li>
+                  <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
+                </li>
+                
+                <li>
                   <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
                 </li>
                 
                 <li>
@@ -566,11 +812,15 @@ The group are facing tough questions about how we do things; and why.  So in my 
                 </li>
                 
                 <li>
+                  <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
+                </li>
+                
+                <li>
                   <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
                 </li>
                 
                 <li>
-                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="extract-weather-data-from-awap-grids" rel="bookmark">extract-weather-data-from-awap-grids</a>
+                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
                 </li>
                 
                 <li>
@@ -727,30 +977,6 @@ The group are facing tough questions about how we do things; and why.  So in my 
                 
                 <li>
                   <a href="/2012/02/dr-tom-ford-disentangles-climate-change-writing/" title="Dr Tom Ford disentangles climate change writing" rel="bookmark">Dr Tom Ford disentangles climate change writing</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/02/the-organisation-of-material/" title="The Organisation of Material" rel="bookmark">The Organisation of Material</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/my-interests-2/" title="My Interests" rel="bookmark">My Interests</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/about-my-research/" title="About My Research" rel="bookmark">About My Research</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/about-me/" title="About Me" rel="bookmark">About Me</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/progress-report/" title="Progress Report" rel="bookmark">Progress Report</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/started-a-blog-with-jeckyll/" title="Started a blog with Jekyll" rel="bookmark">Started a blog with Jekyll</a>
                 </li>
                 
               </ul>

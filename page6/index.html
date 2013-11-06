@@ -54,215 +54,79 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/09/ons/" title="Starting my Open Notebook Science Blog" rel="bookmark">Starting my Open Notebook Science Blog</a>
+      <a href="/2013/09/workflow-flowcharts-update/" title="workflow-flowcharts-update" rel="bookmark">workflow-flowcharts-update</a>
     </h1>
     <div class="entry-content full-content">
-      <p>Many examples are emerging of scientists who are transitioning to a
-much more open model of research.  This is in part externally driven
-by funding bodies (such as the Aussie Research Council asking for deposit of funded data and papers) and journals
-(<a href="http://www.nature.com/ng/journal/v45/n5/full/ng.2621.html">ie. Nature journals removing length restrictions on Methods sections.</a>). Also the increased value being placed on transparency of reproducible analysis to safeguard against error and fraud is becoming an internal driver within science communities.</p>
+      <h1>Workflow flowcharts - Update</h1>
 
-<p><a href="http://en.wikipedia.org/wiki/Open_Notebook_Science">Open Notebook Science</a>
-(ONS) style is an extreme of transparent approaches to research.
-According to the wikipedia page it is the "practice of making the
-entire primary record of a research project publicly available online
-as it is recorded".</p>
+<p>A while back I posted about <a href="/2013/07/worflow-flowcharts/">my work with the Rgraphviz toolbox</a> toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
+This update includes notes from a discussion I had with Keith about this.</p>
 
-<p>That's pretty extreme!  In my view a lot of stuff in the research project should probably be archived quickly and left to rot.</p>
+<h4>The basic use case is described by this code:</h4>
 
-<p>I like the range of options available.  I think I'll go for <a href="http://onsclaims.wikispaces.com/">SCD or "Seclected Content / Delayed"</a> and show their image below.  In this model a portion of the open notebook and associated supporting raw data are available after some delay. I'll try to use this blog for weekly updates on progress for each project, and provide links off my 'Open Notebook' and 'Software' Tabs.</p>
+<pre><code>require(disentangle)
+# Decide on the first step and create the starting node of the flowchart 
+nodes &lt;- newnode(name="NAME", inputs="INPUT", newgraph=T)
+# FirstStep.
+# Comment: do a bit of work
+NAME &lt;- myWorkFunction(INPUT)
+# Decide on next step
+nodes &lt;- newnode(name="OUTPUT", inputs=c("NAME","ANOTHER THING"))
+# Do the second step
+OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
+</code></pre>
 
-<p><img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
+<p></p>
 
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/notebook" title="notebook" rel="category tag">notebook</a>
-      
-      <a href="/categories/data science" title="data science" rel="category tag">data science</a>
-      
-      <a href="/categories/reproducibility" title="reproducibility" rel="category tag">reproducibility</a>
-      
-      <a href="/categories/replication" title="replication" rel="category tag">replication</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/ons/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Sep 13 00:00:00 +1000 2013">13 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/07/worflow-flowcharts/" title="Worflow flowcharts" rel="bookmark">Worflow flowcharts</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>What is the issue</h2>
+<p><img src="/images/workflow-flowchart1.png" alt="workflow-flowchart1.png" /></p>
 
-<p>Most people seem to collect multiple datasets together in a single spot that can be split into 2 or more separate data packages.  I think this is a natural set up from an analysts perspective, where the results of multiple steps accumulate as 'stepping stones' toward the file they end up analysing.</p>
+<p>So as the scripted workflow develops, so does the flow chart. The alternative I described previously is to make a list of all the steps in a Balzerian Filelist Table.</p>
 
-<p>I was first taught GIS by Isabelle Balzer at Ecowise Environmental Services in Canberra.  She showed me the method of keeping a table (sticky-taped to the desk!) of all the files and transformations that were going on. This was a method that didn't allow any multitasking!  I call this the 'Balzerian Method' (I am sure others used it before Isabelle, but I think Balzerian is a great word).</p>
+<h4>Keith's comments:</h4>
 
-<p>I think the data wharehouse at my work is an example, and probably we'll find the key challenge for big data will be for analysts to disentangle their own filing systems.</p>
+<p>Keith gave me some great comments on that post.  I'll just jot them down here for now but will have to come back and re-write parts of my function and the descriptive blog post to address these at another time.</p>
 
-<p>In my experience the way people store research data is often one (or a couple, or all) of these three types:</p>
+<p>First section:</p>
 
 <ul>
-<li>a database with heaps of tables and views</li>
-<li>a directory (and sub-directories) with heaps of files</li>
-<li>a spreadsheet workbook with heaps of sheets (and links to other workbooks)</li>
+<li>I said that multiple datasets used in an analysis could be broken down into discrete data packages.  Keith asked if I thought they "should be".</li>
+<li>questioned whether the data warehouse at my work really is "Big Data"</li>
+<li>I need to cite the graphviz and Rgraphviz software better</li>
+<li>the function currently requires users to speciify newgraph = T to start, and fails to do anything if "nodes" object doesn't exist.  This is uneccessary.  should make it create "nodes" if doesn't exist. Then the newgraph argument is only needed to delete an old graph and start again.</li>
+<li>is it required that any of these actually be new?  if not then "newnode" seems a poor name for the function</li>
 </ul>
 
 
-<p>I am developing a tool based on the open source graphviz softawre. The tool I am developing addresses the challenge of graphing the links between these sequential steps.</p>
+<p>From section "Code:adding nodes":</p>
 
-<h4>Code:introducing newnode</h4>
+<ul>
+<li>the line where output is the name is confusing.  Keith felt that output was not the name of the newnode (but it really is).</li>
+<li>the name of the nodes object is hardcoded to be "nodes".  therefore don't need to give it as an argument</li>
+<li>proposed better syntac: newnode(name= "ANOTHER THING", output = "OUTPUT") which I think will also work?</li>
+<li>wouldn't it be great if links could be labelled? maybe better to focus on links rather than nodes? this seems more logical because links are transitions and where the action is, not at the nodes.</li>
+<li>it might be helpful to review common actions to see what graph structures each implies.</li>
+<li>RE lab-book from Chemistry: most people would not be familiar with how lab-books are written.</li>
+<li>can newnode build circuits/cycles?  can it add links between existing nodes?</li>
+</ul>
 
-<pre><code># NB this only works easily on linux
-require(devtools)
-install_github("disentangle", "ivanhanigan")
-require(disentangle)
-# the core of the tool is Rgraphviz, I just built a wrapper function
-# to add newnodes to a graph of nodes
-# always start with (newgraph = T) because the newnode function ADDS
-# nodes to a graph, unless told otherwise, and fails if no 'nodes'
-# object exists
-nodes  &lt;- newnode(name="NAME",inputs="INPUT",outputs="OUTPUT", newgraph = T)
-</code></pre>
 
-<p><img src="/images/newnode1.png" alt="images/newnode1.png" /></p>
+<p>Section after "shows this result"</p>
 
-<h4>Code:adding nodes</h4>
+<ul>
+<li>tablexyz -> FileA -> Input1 should be one step because fileA is not used again. ditto fileB.</li>
+<li>analysisResults is a different kind of thing. this is confusing.</li>
+<li>why do I have to type "nodes &lt;-" every time?  if it has to have this name It could be hidden</li>
+</ul>
 
-<pre><code># now we can add nodes, and we can pass multiple inputs or outputs
-nodes  &lt;- newnode(name="OUTPUT",inputs=c("NAME","ANOTHER THING"))
-# outputs are optional
-</code></pre>
 
-<p><img src="/images/newnode2.png" alt="images/newnode2.png" /></p>
+<p>Under example two, "Step three"</p>
 
-<p>It can be used in two or three ways.</p>
+<ul>
+<li><p>huh? does input1 have "id"?</p></li>
+<li><p>"the result" graph is  a bit dense and hard to follow.  Perhaps simpler labels?  ie instead of FileA just "A"?</p></li>
+</ul>
 
-<h2>Example one, the composite view:</h2>
-
-<p>So if there is a Balzerian filelist table available, convert it to a spreadsheet.  This is als similar to a labbook from Chemistry but follows a very rigid structure: NAME,        INPUTS,           OUTPUTS,         DESCRIPTION.  The first method I'll show will take one of these tables and map out the steps in the workflow.</p>
-
-<h4>Code: Composite Worflow Files List</h4>
-
-<pre><code>#    so if there is a Balzerian filelist table available,
-# either make a spreadsheet with names, inputs and outputs 
-# fileslist &lt;- read.csv("exampleFilesList.csv", stringsAsFactors = F)
-# or 
-filesList &lt;- read.csv(textConnection(
-'NAME,        INPUTS,           OUTPUTS,         DESCRIPTION
-FileA,        TableXYZ,         Input1,          Transformed variable
-FileB,        TableABC,         Input2,          Collapsed dimensions
-analysisFile, "Input1,Input2",  analysisResults, Merged inputs and analysed
-'), stringsAsFactors = F, strip.white = T)
-filesList
-
-for(i in 1:nrow(filesList))
-{
-  nodes &lt;- newnode(name = filesList[i,"NAME"],
-                   inputs = strsplit(filesList$INPUTS, ",")[[i]],
-                   outputs = strsplit(filesList$OUTPUTS, ",")[[i]],
-                   newgraph = (i == 1)
-  )
-}
-</code></pre>
-
-<h2>shows this result</h2>
-
-<p><img src="/images/fileRelationships.png" alt="fileRelationships.png" /></p>
-
-<h2>Example two, tracking the steps while analysing data:</h2>
-
-<p>Structure a script into sections and document each section before evaluating the code to execute the step.  This works well with orgmode/ESS, Sweave or knitr style workflows.
-For example:</p>
-
-<h4>Code: Ad Hoc Files Lists Flowcharts</h4>
-
-<pre><code>#### step one ####
-nodes &lt;- newnode(name="FileA", inputs="TableXYZ", outputs="Input1",
-                 newgraph =T) # this is required to tell newnode to
-                              # start a new graph, rather than add to
-                              # the nodes
-FileA  &lt;- read.table("TableXYZ.txt")
-Input1 &lt;- log(FileA$columnZ)
-
-#### step two ####
-nodes &lt;- newnode(name="FileB", inputs="TableABC", outputs="Input2")
-FileB  &lt;- read.table("TableABC.txt")
-Input2 &lt;- ddply(FileB, "id", summarise,
-                duration = max(year) - min(year),
-                nteams = length(unique(team)))
-
-#### step three ####
-nodes &lt;- newnode(name="analysisFile", inputs=c("Input1","Input2"),
-                 outputs="analysisResults")
-analysisFile  &lt;- merge(Input1, Input2, by="id")
-analysisResults  &lt;- lm(y ~ duration + nteams, data = analysisFile)
-</code></pre>
-
-<h2>Example three: visualising relationships</h2>
-
-<p>It is not aimed at visualising the linked structure of a tree or semi-lattice but can be used in such a way but changing the nodename and inputs concept to parent/child relationships.</p>
-
-<p>As an example I'll describe how a list of database tables might be displayed as a tree. I am a great fan of Josh Reich due to his <a href="http://stackoverflow.com/a/1434424">LCFD workflow</a>, and I also like his work on the <a href="https://www.simple.com/">Simple Bank</a> so when I stumbled on this <a href="http://blog.i2pi.com/post/52812976752/joshs-postgresql-database-conventions">blog post</a> in which he says:</p>
-
-<p>"Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won’t usually need your flowchart; it’ll be obvious."</p>
-
-<p>I was switched on and I started thinking about how the graphVis tool could be used to describe a list of tables and views from a database.</p>
-
-<p>Say that two groups studied the same file TableXYZ with different inputs.  One of these groups wrote a seminal paper in the field, while their rivals wrote an inferior paper with a different result.  Imagine now a subsequent group who gathered the data from the previous work into the following database tables and conducted a replication study, with a new sensitivity analysis to explain why the original two papers produced different results.</p>
-
-<p>Let's assume this database has all the data from all the groups in it and we want to get a pictorial view so we can disentangle which files belong to which study.  First get the following list of tables as INPUTS, grouping them by 'NAME' will give the tree structure and showing their results as OUTPUTS allows the subsequent replication study to use them as inputs and assume the position at the bottom of the flowchart.</p>
-
-<h4>Code: database tables and different studies</h4>
-
-<pre><code>filesList &lt;- read.csv(textConnection(
-'NAME                 ,             INPUTS         , OUTPUTS
-The Seminal Study     ,              FileA         , 
-The Seminal Study     ,              FileB         , 
-The Seminal Study     ,       analysisFile         , 
-The Seminal Study     ,           TableXYZ         , 
-The Seminal Study     ,           TableABC         , 
-The Seminal Study     ,      Input1,Input2         ,
-The Seminal Study     ,             Input1         , 
-The Seminal Study     ,             Input2         , 
-The Seminal Study     ,      The Seminal Study     , analysisResults 
-The Inferior Rivals   ,                FileC       , 
-The Inferior Rivals   ,        analysisFileX       , 
-The Inferior Rivals   ,             TableXYZ       , 
-The Inferior Rivals   ,               InputX       , 
-The Inferior Rivals   ,    The Inferior Rivals     , analysisResultsX       
-The Replication Study ,    "Input1,Input2,TableXYZ",  analysisResultsR     
-The Replication Study ,    "Input1,InputX,TableXYZ",  sensitivityResult 
-'), stringsAsFactors = F, strip.white = T)
-
-for(i in 1:nrow(filesList))
-{
-  nodes &lt;- newnode(name = filesList[i,"NAME"],
-                   inputs = strsplit(filesList$INPUTS, ",")[[i]],
-                   outputs = strsplit(filesList$OUTPUTS, ",")[[i]],
-                   newgraph = (i == 1)
-  )
-}
-</code></pre>
-
-<h2>the result</h2>
-
-<p><img src="/images/filesRelationships2.png" alt="filesRelationships2.png" /></p>
 
       <div class="clear"></div>
     </div>
@@ -271,17 +135,15 @@ for(i in 1:nrow(filesList))
       
       <a href="/categories/workflow" title="workflow" rel="category tag">workflow</a>
       
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/07/worflow-flowcharts/#disqus_thread'>Comments</a>
+      <a href='/2013/09/workflow-flowcharts-update/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Wed Jul 31 00:00:00 +1000 2013">31 Jul 2013</abbr>
+        <abbr class="published" title="Mon Sep 23 00:00:00 +1000 2013">23 Sep 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -290,453 +152,194 @@ for(i in 1:nrow(filesList))
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/07/animated-maps/" title="animated-maps" rel="bookmark">animated-maps</a>
+      <a href="/2013/09/introduction-to-ons-theory-and-practice/" title="introduction-to-ons-theory-and-practice" rel="bookmark">introduction-to-ons-theory-and-practice</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Animated maps to allow exploration of alternate levels of 'jitter'</h1>
+      <p>The reasons why ONS is so appealing to me can be broken into two parts.  The first is about the problems which it solves, the second is about the benefits it might bring.</p>
 
-<p>In a <a href="http://www.ncbi.nlm.nih.gov/pubmed/22672028">previous project</a> we published a map of point locations that had been 'jittered', ie adding random noise to the latitude and longitude.  We did this by testing out a few maps and deciding on one that we thought protected privacy adequately whilst not destroying the spatial pattern we wished to display (evocatively).</p>
+<h4>The Problems</h4>
 
-<p>I always wondered about a way to interactively do this and I think the animation package might do the trick, with the ability to step thru levels of jittering with the pause, fwd and back buttons.</p>
-
-<p><a href="/jitter/index.html">Clink here for the same data shown in a new animation</a>.</p>
-
-<h1>Reference</h1>
-
-<p>Vally, H., Peel, M., Dowse, G. K., Cameron, S., Codde, J. P., Hanigan, I., &amp; Lindsay, M. D. a. (2012). Geographic Information Systems used to describe the link between the risk of Ross River virus infection and proximity to the Leschenault estuary, WA. Australian and New Zealand Journal of Public Health, 36(3), 229–235. doi:10.1111/j.1753-6405.2012.00869.x</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
-      
-      <a href="/categories/animation" title="animation" rel="category tag">animation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/07/animated-maps/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Jul 30 00:00:00 +1000 2013">30 Jul 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/06/spatio-temporal-animations/" title="spatio-temporal-animations" rel="bookmark">spatio-temporal-animations</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>Space time animations are cool</h2>
-
-<p>This is a graphic I made a few years ago of temperature in Sydney.  It is a GAM with smoothing splines on longitude, latitude and time (t):</p>
-
-<pre><code>require(mgcv)
-fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)  
-</code></pre>
-
-<p><img src="/button/spacetimegamSydney3hrTemp.gif" alt="spacetimegamSydney3hrTemp.gif" /></p>
-
-<p><a href="/button/index.html">Clink here for an example of where I think this kind of animation should go now</a>.</p>
-
-<p>The addition of stop/play/fwd/reverse buttons adds potential for exploratory insights.</p>
-
-<p>The secret to getting the play/pause/next buttons is to insert graphing code between:</p>
-
-<pre><code>saveHTML(..., outdir = getwd())
-</code></pre>
-
-<p>Unfortunately the rest of the code that accompanies the graphic above is too specific to my workflow that it is not reproducible.  That was back before (during the time that) I became obsessed with the prospect of <a href="http://swish-climate-impact-assessment.github.io/">creating reproducible data analysis workflows</a>.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/06/spatio-temporal-animations/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Jun 06 00:00:00 +1000 2013">06 Jun 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/05/data-dredging/" title="Complex Model Selection (or Data Dredging)" rel="bookmark">Complex Model Selection (or Data Dredging)</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head></p>
-
-<!--<title>data dredging</title>-->
-
-
-<p><meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="data dredging"/>
-<meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-05-09 "/>
-<meta name="author" content="ivan hanigan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/></p>
-
-
-
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-
-
-<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
-/**
- *
- * @source: http://orgmode.org/mathjax/MathJax.js
- *
- * @licstart  The following is the entire license notice for the
- *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- * Copyright (C) 2012-2013  MathJax
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @licend  The above is the entire license notice
- * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- */
-
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code below.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code below is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code below.
-*/
-<!--/*--><![CDATA[/*><!--*/
-    MathJax.Hub.Config({
-        // Only one of the two following lines, depending on user settings
-        // First allows browser-native MathML display, second forces HTML/CSS
-        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
-            jax: ["input/TeX", "output/HTML-CSS"],
-        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
-                     "TeX/noUndefined.js"],
-        tex2jax: {
-            inlineMath: [ ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
-            skipTags: ["script","noscript","style","textarea","pre","code"],
-            ignoreClass: "tex2jax_ignore",
-            processEscapes: false,
-            processEnvironments: true,
-            preview: "TeX"
-        },
-        showProcessingMessages: true,
-        displayAlign: "center",
-        displayIndent: "2em",
-
-        "HTML-CSS": {
-             scale: 100,
-             availableFonts: ["STIX","TeX"],
-             preferredFont: "TeX",
-             webFont: "TeX",
-             imageFont: "TeX",
-             showMathMenu: true,
-        },
-        MMLorHTML: {
-             prefer: {
-                 MSIE:    "MML",
-                 Firefox: "MML",
-                 Opera:   "HTML",
-                 other:   "HTML"
-             }
-        }
-    });
-/*]]>*///-->
-</script>
-
-
-<p></head>
-<body></p>
-
-<div id="preamble">
-
-</div>
-
-
-
-
-<div id="content">
-<h1 class="title">Toward Automated Model Selection</h1>
-
-<!--
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1 Data Dredging</a></li>
-<li><a href="#sec-2">2 Compulsory inclusions</a></li>
-<li><a href="#sec-3">3 AIC vs BIC vs LRTests</a></li>
+<li>Identifying errors (either from miscalculations or from methodological mistakes)</li>
+<li>Uncovering fraud</li>
 </ul>
-</div>
-</div>
--->
-<div id="outline-container-1" class="outline-2">
-<!--<h2 id="sec-1"><span class="section-number-2">1</span> Data Dredging</h2>-->
-<div class="outline-text-2" id="text-1">
-
-<p><a href="http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did-environmental-factors-influencing-the-velocity-of-blueton">The Bluetongue paper</a> we've been discussing at the <a href="http://gis-forum.github.io/study.html">ANU GIS forum</a>  correctly points out that with the "the large number of candidate variables &hellip; a huge number of models could be considered."
-</p>
-<p>
-They go on to say that:
-</p>
-<p>
-"Thus, for practical reasons, we &hellip; isolate independently for each of  three thematic sets of variables (host-, meteorological- and landscape-related covariates) a combination of variables best fitting the data."
-</p>
-<p>
-I don't really get this.  Why not fit the huge number of models (RAM and disk speed permitting) and let AIC or BIC  sift out any combinations that perform well?  For example in a simple instance with four explanatory variables and no interactions the rich model would be:
-</p>
 
 
-\(Y_{i} = \beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + \beta_{3} X_{3} + \beta_{4} X_{4}\)
+<h4>The Benefits</h4>
 
-<p>
-Lu, Sonya and I are working on a function to do all the possible combos (interaction terms are possible to include too).  So far we have this code and a link to an old <a href="https://stat.ethz.ch/pipermail/r-help/2007-January/124023.html">Hadley Wickham quote</a>.
-That's from 2007, and still haven't herd about any tool developed that really does this. 
-</p>
-<p>
-So far we have this code:
-</p>
+<ul>
+<li>Sharing interests and skills</li>
+<li>Quickly finding out about new discoveries and failures</li>
+</ul>
 
 
-
-<pre class="src src-R"><span style="color: #268bd2;">combos</span>  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #859900; font-weight: bold;">function</span>(yvar, xvars, compulsory = <span style="color: #b58900;">NA</span>)
-  {
-    formlas <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #b58900;">NULL</span>
-    <span style="color: #859900; font-weight: bold;">for</span>(j <span style="color: #859900; font-weight: bold;">in</span> length(xvars):1)
-      {
-        combns <span style="color: #268bd2; font-weight: bold;">&lt;-</span> combn(xvars, j)
-        <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(combns))
-          {
-            terms2include <span style="color: #268bd2; font-weight: bold;">&lt;-</span> combns[,i]
-            <span style="color: #859900; font-weight: bold;">if</span>(!is.na(compulsory[1]))
-              {
-                terms2include  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(terms2include, compulsory)
-              }
-            formla <span style="color: #268bd2; font-weight: bold;">&lt;-</span> reformulate(terms2include,                                  
-                                  response = yvar
-                                  )
-            formlas <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(formlas,formla)     
-          }
-      }
-    <span style="color: #859900; font-weight: bold;">return</span>(formlas)
-  }
-</pre>
-
-
-<p>
-The resulting list of candidate models are:
-</p>
-
-
-
-<pre class="src src-R">formlas <span style="color: #268bd2; font-weight: bold;">&lt;-</span> combos(yvar = <span style="color: #2aa198;">"deaths"</span>,
-                  xvars = c(<span style="color: #2aa198;">"x1"</span>, <span style="color: #2aa198;">"x2"</span>, <span style="color: #2aa198;">"x3"</span>, <span style="color: #2aa198;">"x4"</span>)
-                  )
-paste(formlas)
-
-</pre>
-
-
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup><col class="left" />
-</colgroup>
-<tbody>
-<tr><td class="left">deaths ~ x1 + x2 + x3 + x4</td></tr>
-<tr><td class="left">deaths ~ x1 + x2 + x3</td></tr>
-<tr><td class="left">deaths ~ x1 + x2 + x4</td></tr>
-<tr><td class="left">deaths ~ x1 + x3 + x4</td></tr>
-<tr><td class="left">deaths ~ x2 + x3 + x4</td></tr>
-<tr><td class="left">deaths ~ x1 + x2</td></tr>
-<tr><td class="left">deaths ~ x1 + x3</td></tr>
-<tr><td class="left">deaths ~ x1 + x4</td></tr>
-<tr><td class="left">deaths ~ x2 + x3</td></tr>
-<tr><td class="left">deaths ~ x2 + x4</td></tr>
-<tr><td class="left">deaths ~ x3 + x4</td></tr>
-<tr><td class="left">deaths ~ x1</td></tr>
-<tr><td class="left">deaths ~ x2</td></tr>
-<tr><td class="left">deaths ~ x3</td></tr>
-<tr><td class="left">deaths ~ x4</td></tr>
-</tbody>
-</table>
-
-
-
-</div>
-
-</div>
-
-<div id="outline-container-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> Compulsory inclusions</h2>
-<div class="outline-text-2" id="text-2">
-
-<p>In some instances you may want to include a variable in all models so the compulsory option can be used.  For example in spatio-temporal models we could include a term for zone and time while assessing the mix of explanatory variables:
-</p>
-
-
-
-<pre class="src src-R">formlas <span style="color: #268bd2; font-weight: bold;">&lt;-</span> combos(yvar = <span style="color: #2aa198;">"deaths"</span>,
-                  xvars = c(<span style="color: #2aa198;">"x1"</span>, <span style="color: #2aa198;">"x2"</span>, <span style="color: #2aa198;">"x3"</span>, <span style="color: #2aa198;">"x4"</span>),
-                  compulsory = c(<span style="color: #2aa198;">"zone"</span>, <span style="color: #2aa198;">"ns(time, df = 3)"</span>)
-                  )
-paste(formlas)
-
-</pre>
-
-
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup><col class="left" />
-</colgroup>
-<tbody>
-<tr><td class="left">deaths ~ x1 + x2 + x3 + x4 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x1 + x2 + x3 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x1 + x2 + x4 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x1 + x3 + x4 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x2 + x3 + x4 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x1 + x2 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x1 + x3 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x1 + x4 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x2 + x3 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x2 + x4 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x3 + x4 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x1 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x2 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x3 + zone + ns(time, df = 3)</td></tr>
-<tr><td class="left">deaths ~ x4 + zone + ns(time, df = 3)</td></tr>
-</tbody>
-</table>
-
-
-
-
-</div>
-
-</div>
-
-<div id="outline-container-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> AIC vs BIC vs LRTests</h2>
-<div class="outline-text-2" id="text-3">
-
-<p>Well now we get into a sort of philosophical debate on how to rank all these models.  That'll have to wait for another day.
-</p></div>
-</div>
-</div>
-
-
-<p></body>
-</html></p>
+<p>These benefits come from the enhanced potential for theoretical discussions and sharing ideas.  This is especially valuable around difficult theories, unknown issues or esoteric theories that are known only to a specialist in a field.</p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      <a href="/categories/ons" title="ons" rel="category tag">ons</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/05/data-dredging/#disqus_thread'>Comments</a>
+      <a href='/2013/09/introduction-to-ons-theory-and-practice/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Thu May 09 00:00:00 +1000 2013">09 May 2013</abbr>
+        <abbr class="published" title="Mon Sep 23 00:00:00 +1000 2013">23 Sep 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Using Orgmode and Jekyll for Open Notebook</h1>
+
+<p>Orgmode is a great notebook tool because it allows the coding, evaluation and documentation all in one.  I also want to use it to send the documentation to my blog as an Open Notebook.</p>
+
+<p>If starting again I'd look into this:</p>
+
+<ul>
+<li><a href="http://orgmode.org/worg/org-tutorials/org-jekyll.html">http://orgmode.org/worg/org-tutorials/org-jekyll.html</a></li>
+</ul>
+
+
+<p>But as it is I already put a lot of work into configuring a jekyll blog I cloned from Scott Chamberlain over at ROpenSci and I will just use orgmode to publish the posts related to each project, tagged as 'categories'.</p>
+
+<p>But here is a problem I just found out how to solve.  For a long time I thought that because github disabled ruby plugins that the automatic generate categories index pages was broken.  Luckily Charlie Park has written up the following solution and this seems to have worked for me today:</p>
+
+<ul>
+<li><a href="http://charliepark.org/tags-in-jekyll/">http://charliepark.org/tags-in-jekyll/</a></li>
+<li><a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a></li>
+</ul>
+
+
+<p>Cheers!</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/orgmode" title="orgmode" rel="category tag">orgmode</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/09/using-orgmode-and-jekyll-for-open-notebook/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Sep 22 00:00:00 +1000 2013">22 Sep 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/09/transformational-adaptation/" title="transformational-adaptation" rel="bookmark">transformational-adaptation</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Energymark is about transformational adaptations as opposed to incremental adaptation..</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/energymark" title="energymark" rel="category tag">energymark</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/09/transformational-adaptation/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Sep 22 00:00:00 +1000 2013">22 Sep 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Ecology datasets</h1>
+
+<p>These are my notes from a meeting that Kathryn and I had with a group of Ecologists at the ANU (primarily Luciana Porforio and Nasreen Khan).  We asked them to discuss how they search for and use Ecology datasets, especially how to best package up the parts of an ecological field data collection (ie weather, vegetation, biodiversity, soils, topography etc).</p>
+
+<p>Lu started off the discussion by stating that the most important thing to acknowledge is that every ecologist will start off with a main research question and then search for data that will address their specific research question.  It is difficult to work from a 'top-down' perspective that hopes to pre-empt the range of possible questions.  Lu felt that it may therefore be best to just keep all the data together in the biggest bundle that is possible and the end user can pick it apart once downloaded.</p>
+
+<p>We explained that LTERN datasets can be quite expansive with many dimensions and it seemed preferable to at least untangle the main 'themes' for packaging up.</p>
+
+<p>Nasreen pointed out that there is always a protocol for how data are collected and this should give the data collection it's structure.  However I felt that ecology collections are so diverse they have been made (by necessity) very flexible and specific to the needs of the individual plot network.  Therefore generalisations across data collections are very hard to make (apart from easy things like "weather" or "aboveground dead biomass").</p>
+
+<h1>Toward a Unified Ecology</h1>
+
+<p>I always fall back on the text book "Toward a Unified Ecology: Timothy F. H. Allen, Thomas W. Hoekstra 1992".  I wondered if it can guide us?  On pages 42-53 they describe the following framework and use the image below (the letters in the middle disc correspond to the criteria ie O = Organism).  In this framework it is possible to summarise ANY ecological study as they ALWAYS incorporate these scale-independent criteria:</p>
+
+<ul>
+<li>Organism: genetic integrity, discrete body, autonomy from other organisms</li>
+<li>Population: relative similarity within the group</li>
+<li>Community: inter-species competition, interference, mutualism</li>
+<li>Ecosystem: biotic and abiotic interactions</li>
+<li>Landscape: spatial structure/contiguity</li>
+<li>Biome: characteristic physiognomy, disturbance and climate</li>
+</ul>
+
+
+<p>I thought that if these dimensions were identified in a data collection first then they might become the discrete packages by which each plot network publishes their collection?</p>
+
+<p><img src="/images/datadoco-layercake.png" alt="datadoco-layercake.png" /></p>
+
+<h1>Aekos</h1>
+
+<p>Over at <a href="http://www.aekos.org.au/why_aekos#diversity">AEKOS</a> they have a similar conceptual framework</p>
+
+<pre><code>Observations can range from that of individual organisms and
+interactions, through to populations, communities, ecosystems and
+across broad global landscapes.
+</code></pre>
+
+<h1>Conclusions</h1>
+
+<p>This is an open issue.  More discussions are needed internally for the Data Custodians.</p>
+
+<p>Lu also pointed out that the end users are the key stakeholders and perhaps more input from them (via surveys and workshops?) is needed?</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/09/toward-a-unified-ecology-dataset/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Fri Sep 20 00:00:00 +1000 2013">20 Sep 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -797,105 +400,117 @@ paste(formlas)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (9)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
-                
-                <li><a href="/categories/ons">ons (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
                 <li><a href="/categories/research methods">research methods (4)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
                 
                 <li><a href="/categories/surveytools">surveytools (1)</a></li>
                 
-                <li><a href="/categories/replication">replication (1)</a></li>
+                <li><a href="/categories/notebook">notebook (1)</a></li>
                 
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
+                <li><a href="/categories/gis">gis (1)</a></li>
                 
                 <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
                 <li><a href="/categories/blogging">blogging (1)</a></li>
                 
-                <li><a href="/categories/notebook">notebook (1)</a></li>
+                <li><a href="/categories/animation">animation (1)</a></li>
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
+                <li><a href="/categories/opinion">opinion (1)</a></li>
                 
-                <li><a href="/categories/workflow">workflow (3)</a></li>
+                <li><a href="/categories/climate change">climate change (1)</a></li>
                 
-                <li><a href="/categories/ecology">ecology (1)</a></li>
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
                 
-                <li><a href="/categories/gis">gis (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
                 
                 <li><a href="/categories/links">links (1)</a></li>
                 
-                <li><a href="/categories/python">python (1)</a></li>
+                <li><a href="/categories/packages">packages (1)</a></li>
                 
                 <li><a href="/categories/make">make (1)</a></li>
                 
-                <li><a href="/categories/me">me (3)</a></li>
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (1)</a></li>
+                
+                <li><a href="/categories/suicide">suicide (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (11)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/modelling">modelling (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
                 
                 <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/python">python (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
                 
               </ul>
             </div>
@@ -906,7 +521,31 @@ paste(formlas)
               <ul>
                 
                 <li>
+                  <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
+                </li>
+                
+                <li>
                   <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
                 </li>
                 
                 <li>
@@ -914,11 +553,15 @@ paste(formlas)
                 </li>
                 
                 <li>
+                  <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
+                </li>
+                
+                <li>
                   <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
                 </li>
                 
                 <li>
-                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="extract-weather-data-from-awap-grids" rel="bookmark">extract-weather-data-from-awap-grids</a>
+                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
                 </li>
                 
                 <li>
@@ -1075,30 +718,6 @@ paste(formlas)
                 
                 <li>
                   <a href="/2012/02/dr-tom-ford-disentangles-climate-change-writing/" title="Dr Tom Ford disentangles climate change writing" rel="bookmark">Dr Tom Ford disentangles climate change writing</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/02/the-organisation-of-material/" title="The Organisation of Material" rel="bookmark">The Organisation of Material</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/my-interests-2/" title="My Interests" rel="bookmark">My Interests</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/about-my-research/" title="About My Research" rel="bookmark">About My Research</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/about-me/" title="About Me" rel="bookmark">About Me</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/progress-report/" title="Progress Report" rel="bookmark">Progress Report</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/started-a-blog-with-jeckyll/" title="Started a blog with Jekyll" rel="bookmark">Started a blog with Jekyll</a>
                 </li>
                 
               </ul>
