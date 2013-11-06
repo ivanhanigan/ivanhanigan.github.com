@@ -110,7 +110,7 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf&lt;/li&gt;
 		
 			<item>
 				<title>librarians-and-python</title>
-				<description>&lt;p&gt;I stumbled on these posts by &quot;Data Scientist Training for Librarians&quot;:&lt;/p&gt;
+				<description>&lt;p&gt;I stumbled on these posts about python and IPython Notebook by &quot;Data Scientist Training for Librarians&quot;:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&quot;&gt;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&lt;/a&gt;&lt;/li&gt;
@@ -118,17 +118,17 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.&lt;/p&gt;
+&lt;p&gt;I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.  You can get my ipython notebook file for this here: &lt;a href=&quot;/data/olive.ipynb&quot;&gt;olive.ipynb&lt;/a&gt;, but first run the following R code snippet to get the replication dataset 'olive.csv' into your home directory.&lt;/p&gt;
 
 &lt;h4&gt;R Code: get the olive oil dataset&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code&gt;install.packages(&quot;pgmm&quot;)
 require(pgmm)
 data(olive)
-write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
-olive &amp;lt;- read.csv(&quot;~/olive.csv&quot;)
 names(olive) &amp;lt;- tolower(names(olive))
 str(olive)
+write.csv(olive, &quot;olive.csv&quot;, row.names = F)
+# actualy home might be easier for ipython to access
 write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -137,7 +137,7 @@ write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
 
 &lt;h3&gt;OK now reproduce the example&lt;/h3&gt;
 
-&lt;p&gt;I quite like the histograms from the second example.&lt;/p&gt;
+&lt;p&gt;I quite like the histograms from the second example.  Here is the raw code extracted from the ipynb&lt;/p&gt;
 
 &lt;h4&gt;Code:&lt;/h4&gt;
 
@@ -190,9 +190,14 @@ for ax in axes.flatten(): # Starts a loop to go through our plot and render each
 
 &lt;h3&gt;Conclusions&lt;/h3&gt;
 
-&lt;p&gt;I am not sure how to do the transparency but the rest of it would make more sense to me with R&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I am not sure how to do the transparency but the rest of it would make more sense to me with R&lt;/li&gt;
+&lt;li&gt;Will try to reproduce in R for head-to-head shoot out.&lt;/li&gt;
+&lt;li&gt;I also plan to look into the new &lt;a href=&quot;http://trestletechnology.net/2013/11/ace-code-editor-in-shiny-shinyace/&quot;&gt;shinyAce browser based R editor&lt;/a&gt; for similar work&lt;/li&gt;
+&lt;li&gt;I'm still really enjoying Emacs Orgmode for this kind of functionality though and thoroughly recommend &lt;a href=&quot;http://kieranhealy.org/resources/emacs-starter-kit.html&quot;&gt;KJ Healy's starter kit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;(I've installed and config thison Ubuntu, Windoze and Mac, but LaTeX and exporting R code can be tricky)&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Will try to reproduce in R for head-to-head shoot out.&lt;/p&gt;
 </description>
 				<published>Wed Nov 06 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/11/librarians-and-python/</link>
