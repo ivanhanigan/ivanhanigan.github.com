@@ -4,13 +4,62 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-10-18T22:11:38+11:00</updated>
+ <updated>2013-11-15T23:44:29+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>pumilio-bushfm-test-dev-prod</title>
+   <link href="http://ivanhanigan.github.com/2013/11/pumilio-bushfm-test-dev-prod/"/>
+   <updated>2013-11-15T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/11/pumilio-bushfm-test-dev-prod</id>
+   <content type="html">&lt;h1&gt;Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook&lt;/h1&gt;
+
+&lt;h4&gt;Aims:&lt;/h4&gt;
+
+&lt;p&gt;It was suggested I could document the pumilio test build as an OpenNotebook.
+I imagined that I could link this blog to github repo and doco hosted on gh-pages.&lt;/p&gt;
+
+&lt;h4&gt;Methods:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;For ie the emacs html output now goes to &lt;a href=&quot;http://ivanhanigan.github.io/pumilio-bushfm/&quot;&gt;http://ivanhanigan.github.io/pumilio-bushfm/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;then collaborators can clone/fork &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;and comment/complain at &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm/wiki&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm/wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Results:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud&lt;/li&gt;
+&lt;li&gt;Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).&lt;/li&gt;
+&lt;li&gt;then when I tried to upload a big sound file it broke :-(&lt;/li&gt;
+&lt;li&gt;I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo nano /etc/mysql/my.cnf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;BUT&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...&lt;/li&gt;
+&lt;li&gt;so I think I can &lt;a href=&quot;http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition&quot;&gt;just remount /var&lt;/a&gt; onto the larger /mnt secondary disk.&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>A Great Intro 2 Logistic Regression</title>
@@ -853,12 +902,41 @@ summarise_df  &amp;lt;- function(x, by, var1, var2, var3)
     return(data_out)
   }
 
-df2 &amp;lt;- summarise_df(airquality, &quot;Month&quot;,
-                   &quot;Temp&quot;, &quot;Temp&quot;, &quot;Day&quot;
+df2 &amp;lt;- summarise_df(x = airquality, by = &quot;Month&quot;,
+                   var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
                    )
 
 head(df2)
 all.equal(df,df2)
+# TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Another alternative, if we want to pass the dataset as string too&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;summarise_df2  &amp;lt;- function(x, by, var1, var2, var3)
+  {
+    data_out &amp;lt;- eval(
+      parse(
+        text =
+        sprintf(
+          &quot;ddply(.data = %s,
+            .variables = '%s',
+            .fun = summarise,
+            tmax = max(%s),
+            tav = mean(%s),
+            ndays = length(unique(%s))
+            )&quot;, x, by, var1, var2, var3
+          )
+        )
+      )
+    return(data_out)
+  }
+
+df3 &amp;lt;- summarise_df2(x = &quot;airquality&quot;, by = &quot;Month&quot;,
+                     var1 = &quot;Temp&quot;, var2 = &quot;Temp&quot;, var3 = &quot;Day&quot;
+                     )
+head(df3)
+all.equal(df, df3)
 # TRUE
 &lt;/code&gt;&lt;/pre&gt;
 
