@@ -4,13 +4,84 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-11-15T22:59:58+11:00</updated>
+ <updated>2013-11-17T09:13:31+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>really-useful-r-upcase-string</title>
+   <link href="http://schamberlain.github.com/2013/11/really-useful-r-upcase-string/"/>
+   <updated>2013-11-17T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/11/really-useful-r-upcase-string</id>
+   <content type="html">&lt;p&gt;Here is a really useful R snippet from  &lt;a href=&quot;http://stackoverflow.com/a/6364905&quot;&gt;http://stackoverflow.com/a/6364905&lt;/a&gt; with a minor modification to allow differnt splits&lt;/p&gt;
+
+&lt;h4&gt;Code:r-upcase-string&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;x &amp;lt;- c(&quot;The&quot;, &quot;quick&quot;, &quot;Brown&quot;, &quot;fox/lazy dog&quot;)
+
+simpleCap &amp;lt;- function(x, tosplit = &quot; &quot;) {
+  s &amp;lt;- strsplit(x, tosplit)[[1]]
+  paste(toupper(substring(s, 1,1)), substring(s, 2),
+      sep=&quot;&quot;, collapse=tosplit)
+}
+sapply(x, simpleCap)
+sapply(x, simpleCap, tosplit = &quot;/&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>pumilio-bushfm-test-dev-prod</title>
+   <link href="http://schamberlain.github.com/2013/11/pumilio-bushfm-test-dev-prod/"/>
+   <updated>2013-11-15T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/11/pumilio-bushfm-test-dev-prod</id>
+   <content type="html">&lt;h1&gt;Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook&lt;/h1&gt;
+
+&lt;h4&gt;Aims:&lt;/h4&gt;
+
+&lt;p&gt;It was suggested I could document the pumilio test build as an OpenNotebook.
+I imagined that I could link this blog to github repo and doco hosted on gh-pages.&lt;/p&gt;
+
+&lt;h4&gt;Methods:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;For ie the emacs html output now goes to &lt;a href=&quot;http://ivanhanigan.github.io/pumilio-bushfm/&quot;&gt;http://ivanhanigan.github.io/pumilio-bushfm/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;then collaborators can clone/fork &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;and comment/complain at &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm/wiki&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm/wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Results:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud&lt;/li&gt;
+&lt;li&gt;Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).&lt;/li&gt;
+&lt;li&gt;then when I tried to upload a big sound file it broke :-(&lt;/li&gt;
+&lt;li&gt;I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo nano /etc/mysql/my.cnf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;BUT&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...&lt;/li&gt;
+&lt;li&gt;so I think I can &lt;a href=&quot;http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition&quot;&gt;just remount /var&lt;/a&gt; onto the larger /mnt secondary disk.&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</title>
@@ -5693,98 +5764,6 @@ Luckily my core reasearch interest is simpler: better understanding the dynamics
 &lt;p&gt;What Russell may be doing is just connecting the two points - Brooklyn and Bourke (who knows if there is a single data point in between) and asserting that that line of southernmost AE proof is the southerly boundary of DF transmission.  Perhaps if AE got to Brooklyn it might also have got to Bourke .. and Bourke being hotter than Brooklyn, DF transmission may have occurred there .. but we need more evidence than Russell et al provide.&lt;/p&gt;
 
 &lt;p&gt;(Thanks to my epidemiological friends for scouring the historical references with a thoroughly incredulous eye).&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought</title>
-   <link href="http://schamberlain.github.com/2012/04/Occams-Razor-Einsteins-Razor-Chamberlins-Complex-Thought/"/>
-   <updated>2012-04-03T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2012/04/Occams-Razor-Einsteins-Razor-Chamberlins-Complex-Thought</id>
-   <content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;I just read TC Chamberlin's paper on &lt;a href=&quot;http://www.ipicyt.edu.mx/storage-sipicyt/materialposgrado/Chamberlin_Science_1965_The_method_of_multiple_working_hypotheses1.pdf&quot; title=&quot;TC Chamberlin 1890&quot;&gt;the Method of Multiple Working Hypotheses&lt;/a&gt; and was very taken by the concept of Complex Thought:&lt;/p&gt;
-
-&lt;p&gt;&quot;The use of the method leads to certain peculiar habits of mind which deserve passing notice, ... it develops a habit of thought analogous to the method itself, ... a habit of parallel or complex thought.
-Instead of a simple succession of thoughts in linear order, the procedure is complex, and the mind appears to become possessed of the power of simultaneous vision from different standpoints.&quot;&lt;/p&gt;
-
-&lt;p&gt;I was struck by the difference in this method to the KISS or Keep It Sensibly Simple approach I've been taught (also sometimes misrepresented as Keep It Simple Stupid... that only applies to Stupid theories, in my view).&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Occam%27s_razor&quot; title=&quot;Occam's Razor&quot;&gt;Occam's Razor&lt;/a&gt; is a principle to Keep It Very Simple:&lt;/p&gt;
-
-&lt;p&gt;&quot;to select among competing hypotheses that which makes the fewest assumptions and thereby offers the simplest explanation of the effect.&quot;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://en.wikiquote.org/wiki/Albert_Einstein&quot; title=&quot;Einstein's Razor&quot;&gt;Einstein's Razor&lt;/a&gt; is a  a warning against too much simplicity, with it's exhortation that we can make it as simple as possible:&lt;/p&gt;
-
-&lt;p&gt;&quot;without having to surrender the adequate representation of a single datum of experience&quot;.&lt;/p&gt;
-
-&lt;h2&gt;Complex Thought&lt;/h2&gt;
-
-&lt;p&gt;I love the idea that I can train myself to acheive a kind of Science Zen that unveils all kinds of complex multifactorial causal mechanisms... but I fear the Danger of Vacillation Chamberlin speaks about:&lt;/p&gt;
-
-&lt;p&gt;&quot;Like a pair of delicately poised scales, every added particle on the one side or the other produces its effect in oscillation. But such a pair of scales may be altogether too sensitive to be of practical value in the rough affairs of life&quot;.&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>The Shane-Weiss-Reich-White.worg approach to Code Management</title>
-   <link href="http://schamberlain.github.com/2012/03/shane-weiss-reich-white-worg-approach-to-code-management/"/>
-   <updated>2012-03-20T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2012/03/shane-weiss-reich-white-worg-approach-to-code-management</id>
-   <content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;I've been thinking alot about workflows recently.  I'm talking about the data, code, decisions etc bound up in the flow of material going through any project in the collective program of work we have going on at the Centre I work at.
-The group are facing tough questions about how we do things; and why.  So in my reflections I've reviewed some links I'd saved and present below a unified summary version called the...&lt;/p&gt;
-
-&lt;h2&gt;Shane-Weiss-Reich-White.worg approach &lt;/h2&gt;
-
-&lt;p&gt;This a synthesis I've put together of approaches to managing code in complex data analysis projects. It's named after key exponents on various blogs, wikis and web Q-and-A sites.&lt;/p&gt;
-
-&lt;p&gt;Stackoverflow user &lt;a href=&quot;http://stackoverflow.com/users/163053/shane&quot; title=&quot;Shane&quot;&gt;Shane&lt;/a&gt; posted &lt;a href=&quot;http://stackoverflow.com/a/2292913&quot; title=&quot;Shane's Post&quot;&gt;this excellent comment to stackoverflow&lt;/a&gt; to:&lt;/p&gt;
-
-&lt;p&gt;&quot;start off with one R file as you start a project (or a set of files like in the &lt;a href=&quot;https://github.com/berndweiss&quot; title=&quot;Bernd Weiss&quot;&gt;Bernd Weiss&lt;/a&gt; and &lt;a href=&quot;http://stackoverflow.com/users/136862/josh-reich&quot; title=&quot;Josh Reich&quot;&gt;Josh Reich&lt;/a&gt; examples), and progressively add to it (so that it grows in size) as you make discoveries.&quot;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/berndweiss&quot; title=&quot;Bernd Weiss&quot;&gt;Bernd Weiss'&lt;/a&gt; projects have:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;analysis,&lt;/li&gt;
-&lt;li&gt;data and&lt;/li&gt;
-&lt;li&gt;document directories and&lt;/li&gt;
-&lt;li&gt;README.org (an Emacs org-mode file).&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Bernd and Jeromy Anglim had an interesting discussion about this workflow in &lt;a href=&quot;http://stats.stackexchange.com/a/4506&quot; title=&quot;Bernd and Jeromy discuss the Weiss approach on stackexchange&quot;&gt;this post at stackexchange&lt;/a&gt;.  Especially note that Bernd recommends that every publication, presentation or semester/class etc. has its own git repository.  BUT that &quot;there is one real downside: using the same dataset in different publications means to maintain different versions of 'initialization code' (define missing values, generate new variables etc.). To overcome this problem, Bernd decided to maintain ONE study/dataset-related repository which contains the original init-file. For each publication, presentation etc. use a copy of the original data-file as well as of the init-file (in R via file.copy()). Of course, whenever you create a new variable you'll need to modify the original init-file and do a file.copy() (which is the most annoying part of the approach).&quot;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/users/136862/josh-reich&quot; title=&quot;Josh Reich&quot;&gt;Josh Reich&lt;/a&gt; breaks projects into 4 pieces:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;load.R,&lt;/li&gt;
-&lt;li&gt;clean.R,&lt;/li&gt;
-&lt;li&gt;func.R and&lt;/li&gt;
-&lt;li&gt;do.R&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;a href=&quot;http://www.johnmyleswhite.com/about/&quot; title=&quot;John Myles White&quot;&gt;John Myles White's&lt;/a&gt; leads the &lt;a href=&quot;http://projecttemplate.net/architecture.html&quot; title=&quot;ProjectTemplate&quot;&gt;ProjectTemplate&lt;/a&gt; package that has 'create.project(minimal = TRUE)' which creates the layout:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;cache,&lt;/li&gt;
-&lt;li&gt;config,&lt;/li&gt;
-&lt;li&gt;data,&lt;/li&gt;
-&lt;li&gt;munge,&lt;/li&gt;
-&lt;li&gt;src, and&lt;/li&gt;
-&lt;li&gt;README&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;I've just added reports.  If a project is a little bit bigger than minimal I'll add admin, metadata, versions etc etc. I contributed that idea to the ProjectTemplate discussion list... but those guys seem to mostly use the default minimal = FALSE which creates all the possible directories including reports.  I'll try to keep it simple and just bolt on whatever bits suit my needs as I go.&lt;/p&gt;
-
-&lt;h2&gt;Which Code Editor is the Best?&lt;/h2&gt;
-
-&lt;p&gt;And finally the meta work holding the project together is the code editor.  Despite the old joke which describes Emacs as &lt;a href=&quot;http://upsilon.cc/~zack/blog/posts/2008/10/from_Vim_to_Emacs_-_part_1/&quot; title=&quot;Why Emacs&quot;&gt;&quot;a great operating system, lacking only a decent editor&quot;&lt;/a&gt;, this editor has killer functions for managing code.  Check out &lt;a href=&quot;http://orgmode.org/worg/&quot; title=&quot;worg&quot;&gt;worg the Emacs Org-Mode Community&lt;/a&gt;. Recently proponents of worg wrote &lt;a href=&quot;http://www.jstatsoft.org/v46/i03/paper&quot; title=&quot;Orgmode takes over the data analysis world&quot;&gt;this article&lt;/a&gt;.  Previously I've REALLY enjoyed &lt;a href=&quot;http://sourceforge.net/projects/npptor/&quot; title=&quot;NPPtoR&quot;&gt;NPPtoR&lt;/a&gt; (only available under windoof).&lt;/p&gt;
-
-&lt;p&gt;In the words of &lt;a href=&quot;http://stackoverflow.com/users/37751/jd-long&quot; title=&quot;JD Long&quot;&gt;JD Long&lt;/a&gt; in response to &lt;a href=&quot;http://stackoverflow.com/a/2292913&quot; title=&quot;Shane's Post&quot;&gt;Shane&lt;/a&gt; &quot;The choice of the specific tool is more idiosyncratic and not near as important as using SOMETHING.&quot;&lt;/p&gt;
 </content>
  </entry>
  
