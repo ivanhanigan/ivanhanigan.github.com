@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - Progress Report</title>
+    <title>Ivan Hanigan - pumilio-bushfm-test-dev-prod</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2012/01/progress-report/" title="Progress Report" rel="bookmark">Progress Report</a>
+    <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,9 +55,47 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>I have had another crack at this conversion. No chance yet to tweak the colour scheme (I want green [EDIT this was a change to stylesheets/screen.css at #header and #footer background-color: #238B45;]).</p>
+    <h1>Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook</h1>
 
-<p>Most of the obvious traces of Scott have gone, but it still looks like a rip-off.  Hoping to get a distinct look soon.</p>
+<h4>Aims:</h4>
+
+<p>It was suggested I could document the pumilio test build as an OpenNotebook.
+I imagined that I could link this blog to github repo and doco hosted on gh-pages.</p>
+
+<h4>Methods:</h4>
+
+<ul>
+<li>For ie the emacs html output now goes to <a href="http://ivanhanigan.github.io/pumilio-bushfm/">http://ivanhanigan.github.io/pumilio-bushfm/</a></li>
+<li>then collaborators can clone/fork <a href="https://github.com/ivanhanigan/pumilio-bushfm">https://github.com/ivanhanigan/pumilio-bushfm</a></li>
+<li>and comment/complain at <a href="https://github.com/ivanhanigan/pumilio-bushfm/wiki">https://github.com/ivanhanigan/pumilio-bushfm/wiki</a></li>
+</ul>
+
+
+<h4>Results:</h4>
+
+<ul>
+<li>I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud</li>
+<li>Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).</li>
+<li>then when I tried to upload a big sound file it broke :-(</li>
+<li>I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code>sudo nano /etc/mysql/my.cnf
+</code></pre>
+
+<p></p>
+
+
+<h4>BUT</h4>
+
+<ul>
+<li>it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...</li>
+<li>so I think I can <a href="http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition">just remount /var</a> onto the larger /mnt secondary disk.</li>
+</ul>
+
 
     <div class="clear"></div>
   </div>
@@ -72,14 +110,12 @@
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/blogging" title="blogging" rel="category tag">blogging</a>
-    
-    <a href="/categories/jekyll" title="jekyll" rel="category tag">jekyll</a>
+    <a href="/categories/pumilio-bushfm" title="pumilio-bushfm" rel="category tag">pumilio-bushfm</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Sun Jan 15 00:00:00 +1100 2012">15 Jan 2012</abbr>
+      <abbr class="published" title="Fri Nov 15 00:00:00 +1100 2013">15 Nov 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -93,7 +129,7 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2012/01/progress-report/";
+    var disqus_url = "http://ivanhanigan.github.com/2013/11/pumilio-bushfm-test-dev-prod/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
