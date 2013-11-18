@@ -54,19 +54,67 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Git is a Distributed Version Control System.</li>
+<li>The <a href="centerforopenscience.org">centerforopenscience.org</a> has developed the Open Science Framework  which is they say "a simplified front end to the powerful and popular version control system Git".</li>
+<li>I use Github a lot for extending the local features into an online space</li>
+<li>So I finally got around to poking the open science framework with the <a href="https://openscienceframework.org/project/pyts3/">Hutchinson Drought Index project</a></li>
+<li>It turns out to be too simplified, and not have very many of the feature I love about Git and GitHub :-(</li>
+<li>For eg it is not really distributed in that you don't get to sync your local repo with the onlin version</li>
+<li>you upload a script or dataset, then you continue editing locally until you want to commit and then you have to upload again, one file at a time with the GUI rather than "git add ." and "git push".</li>
+<li>I recommend having a look, it might work for you, but if you want more power checkout Yihui's suggestions for using github <a href="http://yihui.name/en/2011/12/how-to-become-an-efficient-and-collaborative-r-programmer/">http://yihui.name/en/2011/12/how-to-become-an-efficient-and-collaborative-r-programmer/</a></li>
+<li>and <a href="http://yihui.name/en/2013/06/fix-typo-in-documentation/">http://yihui.name/en/2013/06/fix-typo-in-documentation/</a></li>
+</ul>
+
+
+<h4>In general I don't think simple front-end's should be a barrier to accessing a sophisticated back-end!</h4>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/git-can-be-simple-or-very-complicated/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Tue Nov 19 00:00:00 +1100 2013">19 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
     </h1>
     <div class="entry-content full-content">
       <p>I've been trying to build pumilio bioacoustics server on a Aust Nectar Research Cloud VM, but hit various roadblocks.</p>
 
 <ul>
-<li>issues with python audio lab</li>
-<li>issues with R packages install (and linux depends)</li>
-<li>configure pumilio to use the larger mounted storages</li>
+<li>built with NeCTAR Ubuntu 12.04.2 (Precise)</li>
+<li>these issues (especially the apt-get install r-cran-mysql etc ) might not occure with later Ubuntu?</li>
+<li>test NeCTAR Ubuntu 12.10 (Quantal) or</li>
+<li>NeCTAR Ubuntu 13.04 (Raring) ??</li>
+<li>TODO FIX issues with python audio lab</li>
+<li>TODO swapfile</li>
+<li>TODO Mount the larger storage</li>
+<li>TODO add swapfile</li>
+<li>TODO fix R install etc</li>
 </ul>
 
 
-<p>The Github code (in the gh-pages branch) and published as <a href="https://github.com/ivanhanigan/pumilio-bushfm">a report at this link</a> is at a stage that most of the installation and configuration is documented to a point where a test sound file has successfully been uploaded.</p>
+<p>The Github code (in the gh-pages branch) and published as <a href="http://ivanhanigan.github.io/pumilio-bushfm/">a report at this link</a>.  The Source Code is available to Clone or Fork at <a href="https://github.com/ivanhanigan/pumilio-bushfm">This Github Repo</a> and is at a stage that most of the installation and configuration is documented to a point where a test sound file has successfully been uploaded.</p>
 
 <h4>HELP WANTED</h4>
 
@@ -104,6 +152,48 @@
     <p class="by-line">
       <span class="date full-date">
         <abbr class="published" title="Mon Nov 18 00:00:00 +1100 2013">18 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Here is a really useful R snippet from  <a href="http://stackoverflow.com/a/6364905">http://stackoverflow.com/a/6364905</a> with a minor modification to allow differnt splits</p>
+
+<h4>Code:r-upcase-string</h4>
+
+<pre><code>x &lt;- c("The", "quick", "Brown", "fox/lazy dog")
+
+simpleCap &lt;- function(x, tosplit = " ") {
+  s &lt;- strsplit(x, tosplit)[[1]]
+  paste(toupper(substring(s, 1,1)), substring(s, 2),
+      sep="", collapse=tosplit)
+}
+sapply(x, simpleCap)
+sapply(x, simpleCap, tosplit = "/")
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/really-useful-r-upcase-string/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Nov 17 00:00:00 +1100 2013">17 Nov 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -303,186 +393,6 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf</li>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I stumbled on these posts by "Data Scientist Training for Librarians":</p>
-
-<ul>
-<li><a href="http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/">http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/</a></li>
-<li><a href="http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/">http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/</a></li>
-</ul>
-
-
-<p>I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.</p>
-
-<h4>R Code: get the olive oil dataset</h4>
-
-<pre><code>install.packages("pgmm")
-require(pgmm)
-data(olive)
-write.csv(olive, "~/olive.csv", row.names = F)
-olive &lt;- read.csv("~/olive.csv")
-names(olive) &lt;- tolower(names(olive))
-str(olive)
-write.csv(olive, "~/olive.csv", row.names = F)
-</code></pre>
-
-<p></p>
-
-
-<h3>OK now reproduce the example</h3>
-
-<p>I quite like the histograms from the second example.</p>
-
-<h4>Code:</h4>
-
-<pre><code>%pylab inline
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-import matplotlib.colors as colors
-
-acidlist=['palmitic', 'palmitoleic', 'stearic', 'oleic', 'linoleic', 'linolenic', 'arachidic', 'eicosenoic']
-dfsub=df[acidlist].apply(lambda x: x/100.0)
-dfsub.head()
-
-rkeys=[1,2,3]
-rvals=['South','Sardinia','North']
-rmap={e[0]:e[1] for e in zip(rkeys,rvals)}
-rmap
-
-fig, axes=plt.subplots(figsize=(10,20), nrows=len(acidlist), ncols=1) # sets up the framework for the graphs. Acidlist is defined elsewhere, and is a list of the acids we’re interested in.
-i=0 # Sets a counter to 0
-
-for ax in axes.flatten(): # Starts a loop to go through our plot and render each row
-
-    acid=acidlist[i]
-    seriesacid=df[acid] # creates seriesacid and sets it to df[acid], a list of the percent composition of the acid in the current iteration that’s in each olive oil.
-
-    minmax=[seriesacid.min(), seriesacid.max()] # the minimum and maximum values plotted will be the minimum and maximum percentages that we find in the data
-
-    for k,g in df.groupby('region'):  # starts a loop in the loop to plot the values by region
-        style = {'histtype':'stepfilled', 'alpha':0.5, 'label':rmap[k], 'ax':ax}
-        g[acid].hist(**style)
-
-        ax.set_xlim(minmax)
-
-        ax.set_title(acid)
-
-        ax.grid(False)
-
-        #construct legend
-        ax.legend()
-    i=i+1 # increments the counter, to move the loop on to the next acid.
-
-    fig.tight_layout()
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/acid.png" alt="acid.png" /></p>
-
-<h3>Conclusions</h3>
-
-<p>I am not sure how to do the transparency but the rest of it would make more sense to me with R</p>
-
-<p>Will try to reproduce in R for head-to-head shoot out.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-      <a href="/categories/python" title="python" rel="category tag">python</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/librarians-and-python/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>R is generally very good for handling many different data types but</p>
-
-<h3>R has problems with survey data</h3>
-
-<p>This post is a stub about what packages Ive found with methods allowing to handle efficiently survey data: handle variable labels, values labels, and retrieve information about missing values</p>
-
-<h4>Base R:</h4>
-
-<pre><code>## Not run:
-require(foreign)
-analyte  &lt;- read.spss(filename, to.data.frame=T) 
-varslist &lt;- as.data.frame(attributes(analyte)$variable.labels)
-# this gives a pretty useful thing to use
-</code></pre>
-
-<p></p>
-
-
-<p>While I was digging around in <a href="http://mephisto.unige.ch/traminer">TraMineR</a> I found this link to Dataset, Emmanuel Rousseaux's package for handling, documenting and describing data sets of survey data.</p>
-
-<h4>Code:Dataset, a package for handling-survey-data-with-r</h4>
-
-<pre><code>if(!require(Dataset)) install.packages("Dataset", repos="http://R-Forge.R-project.org");
-require(Dataset)
-data(dds)
-str(dds)
-# cool
-description(dds$sexe)
-# excellent!
-</code></pre>
-
-<p></p>
-
-
-<h3>Conclusions</h3>
-
-<p>I'm sure there are plenty of other approaches.  I'll add them as I find them'</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-      <a href="/categories/surveys" title="surveys" rel="category tag">surveys</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/handling-survey-data-with-r/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -533,117 +443,117 @@ description(dds$sexe)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/concordance">concordance (1)</a></li>
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
                 
-                <li><a href="/categories/ons">ons (1)</a></li>
+                <li><a href="/categories/suicide">suicide (1)</a></li>
                 
-                <li><a href="/categories/drought">drought (2)</a></li>
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
-                <li><a href="/categories/systems">systems (1)</a></li>
+                <li><a href="/categories/outlines">outlines (1)</a></li>
                 
-                <li><a href="/categories/versions">versions (1)</a></li>
+                <li><a href="/categories/kepler">kepler (1)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/me">me (3)</a></li>
                 
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
                 
                 <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
                 
                 <li><a href="/categories/ecology">ecology (1)</a></li>
                 
-                <li><a href="/categories/opinion">opinion (1)</a></li>
+                <li><a href="/categories/gis">gis (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/modelling">modelling (1)</a></li>
                 
                 <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (6)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
                 <li><a href="/categories/climate change">climate change (1)</a></li>
                 
                 <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
                 
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/gis">gis (1)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (4)</a></li>
-                
                 <li><a href="/categories/data documentation">data documentation (12)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (3)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
                 
                 <li><a href="/categories/notebook">notebook (1)</a></li>
                 
-                <li><a href="/categories/modelling">modelling (1)</a></li>
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                <li><a href="/categories/organising">organising (2)</a></li>
                 
-                <li><a href="/categories/blogger">blogger (1)</a></li>
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
                 
                 <li><a href="/categories/awap grids">awap grids (1)</a></li>
                 
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                <li><a href="/categories/spatial">spatial (2)</a></li>
                 
-                <li><a href="/categories/energymark">energymark (1)</a></li>
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
                 
                 <li><a href="/categories/links">links (1)</a></li>
                 
-                <li><a href="/categories/overview">overview (4)</a></li>
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
               </ul>
             </div>
@@ -654,7 +564,15 @@ description(dds$sexe)
               <ul>
                 
                 <li>
+                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
+                </li>
+                
+                <li>
                   <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
                 </li>
                 
                 <li>
@@ -843,14 +761,6 @@ description(dds$sexe)
                 
                 <li>
                   <a href="/2012/05/how-to-explain-my-current-research/" title="How to explain my current research interests?" rel="bookmark">How to explain my current research interests?</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/05/historical-evidence-of-dengue-in-southeastern-australia/" title="Historical GIS evidence of Dengue in the far southeast of Australia?" rel="bookmark">Historical GIS evidence of Dengue in the far southeast of Australia?</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/04/Occams-Razor-Einsteins-Razor-Chamberlins-Complex-Thought/" title="Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought" rel="bookmark">Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought</a>
                 </li>
                 
               </ul>

@@ -54,6 +54,476 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/test-data-for-classification-trees/" title="test-data-for-classification-trees" rel="bookmark">test-data-for-classification-trees</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h4>A fictitious sample dataset</h4>
+
+<p>For discussion, I'll use a fictional example dataset that I'm using to work through some statistical theory related to Classification and Regression Trees (CART).
+In the motivating example use case we are interested in predicting the civil status (married, single, divorced/widowed) of individuals from their sex (male, female) and sector of activity (primary, secondary, tertiary). The data set is composed of 273 cases.</p>
+
+<p>The data (and related statistical theory) come from:</p>
+
+<ul>
+<li><p>Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf">This Link</a></p></li>
+<li><p>Ritschard, G., Pisetta, V., &amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf">This Link</a></p></li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code># copy and paste the data from the PDF (Table 1 in both papers)
+civst_gend_sector  &lt;- read.csv(textConnection(
+    "civil_status gender activity_sector number_of_cases
+         married   male         primary              50
+         married   male       secondary              40
+         married   male        tertiary               6
+         married female         primary               0
+         married female       secondary              14
+         married female        tertiary              10
+          single   male         primary               5
+          single   male       secondary               5
+          single   male        tertiary              12
+          single female         primary              50
+          single female       secondary              30
+          single female        tertiary              18
+divorced/widowed   male         primary               5
+divorced/widowed   male       secondary               8
+divorced/widowed   male        tertiary              10
+divorced/widowed female         primary               6
+divorced/widowed female       secondary               2
+divorced/widowed female        tertiary               2
+"),sep = "")
+
+# save this to my personal R utilities package "disentangle" 
+# for use later when I am exploring functions
+dir.create("inst/extdata", recursive=T)
+write.csv(civst_gend_sector, "inst/extdata/civst_gend_sector.csv", row.names = F)
+</code></pre>
+
+<p></p>
+
+
+<p>That is fine and good, we can use the case weights option to include number of cases but sometimes we want to use one row per person.
+In the next chunk of code I;ll reformat the data, and also add another fictitious variable called income and contrive an example where a certain group earns less based on their activity sector.</p>
+
+<h4>Code:</h4>
+
+<pre><code>df &lt;- as.data.frame(matrix(NA, nrow = 0, ncol = 3))
+for(i in 1:nrow(civst_gend_sector))
+    {
+    #    i &lt;- 1
+        n &lt;- civst_gend_sector$number_of_cases[i]
+        if(n == 0) next
+        for(j in 1:n)
+            {
+              df &lt;- rbind(df, civst_gend_sector[i,1:3])              
+            }
+
+    }
+
+df$income  &lt;- rnorm(nrow(df), 1000,200)
+# Let us say secondary men earn less
+df$income[df$gender == "male" &amp; df$activity == "secondary"]  &lt;- df$income[df$gender == "male" &amp; df$activity == "secondary"] - 500
+str(df)
+# save this for use later
+write.csv(df, "inst/extdata/civst_gend_sector_full.csv", row.names = F)
+</code></pre>
+
+<h4>Motivating reason for using these data</h4>
+
+<p>Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.</p>
+
+<p>I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.</p>
+
+<p>For example if we look at the reduction in deviance between the Null model and the fitted tree we can say that the tree explains about XYZ% of the variation. We can also test if this is a statistically significant reduction based on a chi-squared test.</p>
+
+<p>Consider this example from page 310 of Hastie, T., Tibshirani, R., &amp; Friedman, J. (2001). The elements of statistical learning. 2nd Edition:</p>
+
+<ul>
+<li>in a two-class problem with 400 observations in each class (denote this by (400, 400))</li>
+<li>suppose one split created nodes (300, 100) and (100, 300),</li>
+<li>the other created nodes (200, 400) and (200, 0).</li>
+<li>Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.</li>
+</ul>
+
+
+<p>During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write... I thought would publish it properly.</p>
+
+<h4>The Tree Model</h4>
+
+<p>So just before we leave Ritschard and the CART method, let's just fit the model.  Let's also install my R utilities package "disentangle", to test that we can access the data from it.</p>
+
+<p>In this analysis the civil status is the outcome (or response or decision or dependent) variable, while sex and activity sector are the predictors (or condition or independent variables).</p>
+
+<h4>Code:</h4>
+
+<pre><code># func
+require(rpart)
+require(partykit) 
+require(devtools)
+install_github("disentangle", "ivanhanigan")
+
+# load
+fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"),
+                     package = "disentangle"
+                     )
+civst_gend_sector &lt;- read.csv(fpath)
+
+# clean
+str(civst_gend_sector)
+
+# do
+fit &lt;- rpart(civil_status ~ gender + activity_sector,
+             data = civst_gend_sector, weights = number_of_cases,
+             control=rpart.control(minsplit=1))
+# NB need minsplit to be adjusted for weights.
+summary(fit)
+
+# report
+dir.create("images")
+png("images/fit1.png", 1000, 480)
+plot(as.party(fit))
+dev.off()
+</code></pre>
+
+<h4>The Result</h4>
+
+<p><img src="/images/fit1.png" alt="fit1.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+      <a href="/categories/tree-based methods" title="tree-based methods" rel="category tag">tree-based methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/test-data-for-classification-trees/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Oct 10 00:00:00 +1100 2013">10 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/simple-example-using-nmmaps/" title="simple-example-using-nmmaps" rel="bookmark">simple-example-using-nmmaps</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I will use the NMMAPSlite datasets for a simple example of what I am trying to do.</p>
+
+<!-- begin_src R :session *R* :tangle NMMAPS-example/NMMAPS-example-code.r :exports none :eval no -->
+
+
+<h4>Code: get nmmaps data</h4>
+
+<pre><code># func
+if(!require(NMMAPSlite)) install.packages('NMMAPSlite');require(NMMAPSlite)
+require(mgcv)
+require(splines)
+
+######################################################
+# load  
+setwd('data')
+initDB('data/NMMAPS') # this requires that we connect to the web,
+                      # so lets get local copies
+setwd('..')
+cities &lt;- getMetaData('cities')
+head(cities)
+citieslist &lt;- cities$cityname
+# write out a few cities for access later
+for(city_i in citieslist[sample(1:nrow(cities), 9)])
+{
+ city &lt;- subset(cities, cityname == city_i)$city
+ data &lt;- readCity(city)
+ write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
+ row.names = F, sep = ',')
+}
+# these are all tiny, go some big ones
+for(city_i in c('New York', 'Los Angeles', 'Madison', 'Boston'))
+{
+ city &lt;- subset(cities, cityname == city_i)$city
+ data &lt;- readCity(city)
+ write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
+ row.names = F, sep = ',')
+}
+
+######################################################
+# now we can use these locally
+dir("data")
+city &lt;- "Chicago"
+data &lt;- read.csv(sprintf("data/%s.csv", city), header=T)
+str(data)
+data$yy &lt;- substr(data$date,1,4)
+data$date &lt;- as.Date(data$date)
+######################################################
+# check
+par(mfrow=c(2,1), mar=c(4,4,3,1))
+with(subset(data[,c(1,15:25)], agecat == '75p'),
+  plot(date, tmax)
+ )
+with(subset(data[,c(1,4,15:25)], agecat == '75p'),
+        plot(date, cvd, type ='l', col = 'grey')
+        )
+with(subset(data[,c(1,4,15:25)], agecat == '75p'),
+        lines(lowess(date, cvd, f = 0.015))
+        )
+# I am worried about that outlier
+data$date[which(data$cvd &gt; 100)]
+# [1] "1995-07-15" "1995-07-16"
+
+######################################################
+# do standard NMMAPS timeseries poisson GAM model
+numYears&lt;-length(names(table(data$yy)))
+df &lt;- subset(data, agecat == '75p')
+df$time &lt;- as.numeric(df$date)
+fit &lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = poisson)
+# plot of response functions
+par(mfrow=c(2,2))
+plot(fit)
+dev.off()
+
+######################################################
+# some diagnostics
+summary(fit)
+# note the R-sq.(adj) =   0.21
+gam.check(fit)
+# note the lack of a leverage plot.  for that we need glm
+
+######################################################
+# do same model as glm
+fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
+# plot responses
+par(mfrow=c(2,2))
+termplot(fit2, se =T)
+dev.off()
+
+# plot prediction
+df$predictedCvd &lt;- predict(fit2, df, 'response')
+# baseline is given by the intercept
+fit3 &lt;- glm(cvd ~ 1, data = df, family = poisson)
+df$baseline &lt;-  predict(fit3, df, 'response')
+with(subset(df, date&gt;=as.Date('1995-01-01') &amp; date &lt;= as.Date('1995-07-31')),
+ plot(date, cvd, type ='l', col = 'grey')
+        )
+with(subset(df, date&gt;=as.Date('1995-01-01') &amp; date &lt;= as.Date('1995-07-31')),
+        lines(date,predictedCvd)
+        )
+with(subset(df, date&gt;=as.Date('1995-01-01') &amp; date &lt;= as.Date('1995-07-31')),
+ lines(date,baseline)
+        )
+######################################################
+# some diagnostics
+# need to load a function to calculate poisson adjusted R squared
+# original S code from
+# The formula for pseudo-R^2 is taken from G. S. Maddalla,
+# Limited-dependent and Qualitative Variables in Econometrics, Cambridge:Cambridge Univ. Press, 1983. page 40, equation 2.50.
+RsquaredGlm &lt;- function(o) {
+ n &lt;- length(o$residuals)
+ ll &lt;- logLik(o)[1]
+ ll_0 &lt;- logLik(update(o,~1))[1]
+ R2 &lt;- (1 - exp(((-2*ll) - (-2*ll_0))/n))/(1 - exp( - (-2*ll_0)/n))
+ names(R2) &lt;- 'pseudo.Rsquared'
+ R2
+ }
+RsquaredGlm(fit2)
+# 0.51
+# the difference is presumably due to the arguments about how to account for unexplainable variance in the poisson distribution?
+
+# significance of spline terms
+drop1(fit2, test='Chisq')
+# also note AIC. best model includes all of these terms
+# BIC can be computed instead (but still labelled AIC) using
+drop1(fit2, test='Chisq', k = log(nrow(data)))
+
+# diagnostic plots
+par(mfrow=c(2,2))
+plot(fit2)
+dev.off()
+# note high leverage plus residuals points are labelled
+# leverage doesn't seem to be too high though which is good
+# NB the numbers refer to the row.names attribute which still refer to the original dataset, not this subset
+df[row.names(df) %in% c(9354,9356),]$date
+# as suspected [1] "1995-07-15" "1995-07-16"
+
+######################################################
+# so lets re run without these obs
+df2 &lt;- df[!row.names(df) %in% c(9354,9356),]
+# to avoid duplicating code just re run fit2, replacing data=df with df2
+# tmax still significant but not so extreme
+# check diagnostic plots again
+par(mfrow=c(2,2))
+plot(fit2)
+dev.off()
+# looks like a well behaved model now.
+
+# if we were still worried about any high leverage values we could identify these with
+df3 &lt;- na.omit(df2[,c('cvd','pm10tmean','tmax','dptp','time')])
+df3$hatvalue &lt;- hatvalues(fit2)
+df3$res &lt;- residuals(fit2, 'pearson')
+with(df3, plot(hatvalue, res))
+# this is the same as the fourth default glm diagnostic plot, which they label x-axis as leverage
+summary(df3$hatvalue)
+# gives us an idea of the distribution of hat values
+# decide on a threshold and look at it
+hatThreshold &lt;- 0.1
+with(subset(df3, hatvalue &gt; hatThreshold), points(hatvalue, res, col = 'red', pch = 16))
+abline(0,0)
+segments(hatThreshold,-2,hatThreshold,15)
+dev.off()
+
+fit3 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = subset(df3, hatvalue &lt; hatThreshold), family = poisson)
+par(mfrow=c(2,2))
+termplot(fit3, se = T)
+# same same
+plot(fit3)
+# no better
+
+# or we could go nuts with a whole number of ways of estimating influence
+# check all influential observations
+infl &lt;- influence.measures(fit2)
+# which observations 'are' influential
+inflk &lt;- which(apply(infl$is.inf, 1, any))
+length(inflk)
+
+
+######################################################
+# now what about serial autocorrelation in the residuals?
+
+par(mfrow = c(2,1))
+with(df3, acf(res))
+with(df3, pacf(res))
+dev.off()
+
+
+
+######################################################
+# just check for overdispersion
+fit &lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = quasipoisson)
+summary(fit)
+# note the Scale est. = 1.1627
+# alternatively check the glm
+fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = quasipoisson)
+summary(fit2)
+# (Dispersion parameter for quasipoisson family taken to be 1.222640)
+# this is probably near enough to support a standard poisson model...
+
+# if we have overdispersion we can use QAIC (A quasi- mode does not have a likelihood and so does not have an AIC,  by definition)
+# we can use the poisson model and calculate the overdispersion
+fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
+1- pchisq(deviance(fit2), df.residual(fit2))
+
+# QAIC, c is the variance inflation factor, the ratio of the residual deviance of the global (most complicated) model to the residual degrees of freedom
+c=deviance(fit2)/df.residual(fit2)
+QAIC.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1)
+QAIC.1
+
+# Actually lets use QAICc which is more conservative about parameters,
+QAICc.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1) + 2*(length(coef(fit2)) + 1)*(length(coef(fit2)) + 1 + 1)/(nrow(na.omit(df[,c('cvd','pm10tmean','tmax','dptp','time')]))- (length(coef(fit2))+1)-1)
+QAICc.1
+
+
+######################################################
+# the following is old work, some may be interesting
+# such as the use of sinusoidal wave instead of smooth function of time
+
+
+# # sine wave
+# timevar &lt;- as.data.frame(names(table(df$date)))
+# index &lt;- 1:length(names(table(df$date)))
+# timevar$time2 &lt;- index / (length(index) / (length(index)/365.25))
+# names(timevar) &lt;- c('date','timevar')
+# timevar$date &lt;- as.Date(timevar$date)
+# df &lt;- merge(df,timevar)
+
+# fit &lt;- gam(cvd ~ s(tmax) + s(dptp) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
+# summary(fit)
+# par(mfrow=c(3,2))
+# plot(fit, all.terms = T)
+# dev.off()
+
+# # now just explore the season fit
+# fit &lt;- gam(cvd ~ sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
+# yhat &lt;- predict(fit)
+# head(yhat)
+
+# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(15,55)))
+# lines(df[,'date'],exp(yhat),col='red')
+
+
+# # drop1(fit, test= 'Chisq')
+
+# # drop1 only works in glm?
+# # fit with weather variables, use degrees of freedom estimated by gam
+# fit &lt;- glm(cvd ~ ns(tmax,8) + ns(dptp,2) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
+# drop1(fit, test= 'Chisq')
+# # use plot.glm for diagnostics
+# par(mfrow=c(2,2))
+# plot(fit)
+# par(mfrow=c(3,2))
+# termplot(fit, se=T)
+# dev.off()
+
+# # cyclic spline, overlay on prior sinusoidal
+# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(0,55)))
+# lines(df[,'date'],exp(yhat),col='red')
+
+# df$daynum &lt;- as.numeric(format(df$date, "%j"))
+# df[360:370,c('date','daynum')]
+# fit &lt;- gam(cvd ~ s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
+# yhat2 &lt;- predict(fit)
+# head(yhat2)
+
+# lines(df[,'date'],exp(yhat2),col='blue')
+
+
+# par(mfrow=c(1,2))
+# plot(fit)
+
+
+# # fit weather with season
+# fit &lt;- gam(cvd ~ s(tmax) + s(dptp) +
+  # s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
+# par(mfrow=c(2,2))
+# plot(fit)
+
+# summary(fit)
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/simple-example-using-nmmaps/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Oct 10 00:00:00 +1100 2013">10 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/reviewing-lessons/" title="reviewing-lessons" rel="bookmark">reviewing-lessons</a>
     </h1>
     <div class="entry-content full-content">
@@ -785,151 +1255,6 @@ Where:
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/workflow-flowcharts-update/" title="workflow-flowcharts-update" rel="bookmark">workflow-flowcharts-update</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Workflow flowcharts - Update</h1>
-
-<p>A while back I posted about <a href="/2013/07/worflow-flowcharts/">my work with the Rgraphviz toolbox</a> toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
-This update includes notes from a discussion I had with Keith about this.</p>
-
-<h4>The basic use case is described by this code:</h4>
-
-<pre><code>require(disentangle)
-# Decide on the first step and create the starting node of the flowchart 
-nodes &lt;- newnode(name="NAME", inputs="INPUT", newgraph=T)
-# FirstStep.
-# Comment: do a bit of work
-NAME &lt;- myWorkFunction(INPUT)
-# Decide on next step
-nodes &lt;- newnode(name="OUTPUT", inputs=c("NAME","ANOTHER THING"))
-# Do the second step
-OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/workflow-flowchart1.png" alt="workflow-flowchart1.png" /></p>
-
-<p>So as the scripted workflow develops, so does the flow chart. The alternative I described previously is to make a list of all the steps in a Balzerian Filelist Table.</p>
-
-<h4>Keith's comments:</h4>
-
-<p>Keith gave me some great comments on that post.  I'll just jot them down here for now but will have to come back and re-write parts of my function and the descriptive blog post to address these at another time.</p>
-
-<p>First section:</p>
-
-<ul>
-<li>I said that multiple datasets used in an analysis could be broken down into discrete data packages.  Keith asked if I thought they "should be".</li>
-<li>questioned whether the data warehouse at my work really is "Big Data"</li>
-<li>I need to cite the graphviz and Rgraphviz software better</li>
-<li>the function currently requires users to speciify newgraph = T to start, and fails to do anything if "nodes" object doesn't exist.  This is uneccessary.  should make it create "nodes" if doesn't exist. Then the newgraph argument is only needed to delete an old graph and start again.</li>
-<li>is it required that any of these actually be new?  if not then "newnode" seems a poor name for the function</li>
-</ul>
-
-
-<p>From section "Code:adding nodes":</p>
-
-<ul>
-<li>the line where output is the name is confusing.  Keith felt that output was not the name of the newnode (but it really is).</li>
-<li>the name of the nodes object is hardcoded to be "nodes".  therefore don't need to give it as an argument</li>
-<li>proposed better syntac: newnode(name= "ANOTHER THING", output = "OUTPUT") which I think will also work?</li>
-<li>wouldn't it be great if links could be labelled? maybe better to focus on links rather than nodes? this seems more logical because links are transitions and where the action is, not at the nodes.</li>
-<li>it might be helpful to review common actions to see what graph structures each implies.</li>
-<li>RE lab-book from Chemistry: most people would not be familiar with how lab-books are written.</li>
-<li>can newnode build circuits/cycles?  can it add links between existing nodes?</li>
-</ul>
-
-
-<p>Section after "shows this result"</p>
-
-<ul>
-<li>tablexyz -> FileA -> Input1 should be one step because fileA is not used again. ditto fileB.</li>
-<li>analysisResults is a different kind of thing. this is confusing.</li>
-<li>why do I have to type "nodes &lt;-" every time?  if it has to have this name It could be hidden</li>
-</ul>
-
-
-<p>Under example two, "Step three"</p>
-
-<ul>
-<li><p>huh? does input1 have "id"?</p></li>
-<li><p>"the result" graph is  a bit dense and hard to follow.  Perhaps simpler labels?  ie instead of FileA just "A"?</p></li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/workflow" title="workflow" rel="category tag">workflow</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/workflow-flowcharts-update/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Mon Sep 23 00:00:00 +1000 2013">23 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/introduction-to-ons-theory-and-practice/" title="introduction-to-ons-theory-and-practice" rel="bookmark">introduction-to-ons-theory-and-practice</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>The reasons why ONS is so appealing to me can be broken into two parts.  The first is about the problems which it solves, the second is about the benefits it might bring.</p>
-
-<h4>The Problems</h4>
-
-<ul>
-<li>Identifying errors (either from miscalculations or from methodological mistakes)</li>
-<li>Uncovering fraud</li>
-</ul>
-
-
-<h4>The Benefits</h4>
-
-<ul>
-<li>Sharing interests and skills</li>
-<li>Quickly finding out about new discoveries and failures</li>
-</ul>
-
-
-<p>These benefits come from the enhanced potential for theoretical discussions and sharing ideas.  This is especially valuable around difficult theories, unknown issues or esoteric theories that are known only to a specialist in a field.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/ons" title="ons" rel="category tag">ons</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/introduction-to-ons-theory-and-practice/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Mon Sep 23 00:00:00 +1000 2013">23 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -984,117 +1309,117 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/concordance">concordance (1)</a></li>
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
                 
-                <li><a href="/categories/ons">ons (1)</a></li>
+                <li><a href="/categories/suicide">suicide (1)</a></li>
                 
-                <li><a href="/categories/drought">drought (2)</a></li>
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
-                <li><a href="/categories/systems">systems (1)</a></li>
+                <li><a href="/categories/outlines">outlines (1)</a></li>
                 
-                <li><a href="/categories/versions">versions (1)</a></li>
+                <li><a href="/categories/kepler">kepler (1)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/me">me (3)</a></li>
                 
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
                 
                 <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
                 
                 <li><a href="/categories/ecology">ecology (1)</a></li>
                 
-                <li><a href="/categories/opinion">opinion (1)</a></li>
+                <li><a href="/categories/gis">gis (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/modelling">modelling (1)</a></li>
                 
                 <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (6)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
                 <li><a href="/categories/climate change">climate change (1)</a></li>
                 
                 <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
                 
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/gis">gis (1)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (4)</a></li>
-                
                 <li><a href="/categories/data documentation">data documentation (12)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (3)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
                 
                 <li><a href="/categories/notebook">notebook (1)</a></li>
                 
-                <li><a href="/categories/modelling">modelling (1)</a></li>
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                <li><a href="/categories/organising">organising (2)</a></li>
                 
-                <li><a href="/categories/blogger">blogger (1)</a></li>
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
                 
                 <li><a href="/categories/awap grids">awap grids (1)</a></li>
                 
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                <li><a href="/categories/spatial">spatial (2)</a></li>
                 
-                <li><a href="/categories/energymark">energymark (1)</a></li>
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
                 
                 <li><a href="/categories/links">links (1)</a></li>
                 
-                <li><a href="/categories/overview">overview (4)</a></li>
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
               </ul>
             </div>
@@ -1105,7 +1430,15 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
               <ul>
                 
                 <li>
+                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
+                </li>
+                
+                <li>
                   <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
                 </li>
                 
                 <li>
@@ -1294,14 +1627,6 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                 
                 <li>
                   <a href="/2012/05/how-to-explain-my-current-research/" title="How to explain my current research interests?" rel="bookmark">How to explain my current research interests?</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/05/historical-evidence-of-dengue-in-southeastern-australia/" title="Historical GIS evidence of Dengue in the far southeast of Australia?" rel="bookmark">Historical GIS evidence of Dengue in the far southeast of Australia?</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/04/Occams-Razor-Einsteins-Razor-Chamberlins-Complex-Thought/" title="Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought" rel="bookmark">Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought</a>
                 </li>
                 
               </ul>
