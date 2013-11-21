@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-11-21T22:06:11+11:00</updated>
+ <updated>2013-11-21T22:48:36+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -251,38 +251,41 @@ levenshtein(
   nrow(mendeley)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;  #### R Do-concatenate and lowercase
-      require(stringr)
-      mendeley2 &amp;lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
-      mendeley2 &amp;lt;- gsub(&quot; &quot;, &quot;&quot;, mendeley2)
-      mendeley2 &amp;lt;- gsub(&quot;,&quot;, &quot;&quot;, mendeley2)
-      mendeley2 &amp;lt;- tolower(mendeley2)
-      mendeley2[1:5]
-      mendeley$mendeley2 &amp;lt;- mendeley2&lt;/p&gt;
+&lt;h4&gt;R Code: Do-concatenate and lowercase&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;  # now do this again from endnote
-  endnote2 &amp;lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
-  endnote2 &amp;lt;- gsub(&quot; &quot;, &quot;&quot;, endnote2)
-  endnote2 &amp;lt;- gsub(&quot;,&quot;, &quot;&quot;, endnote2)
-  endnote2 &amp;lt;- tolower(endnote2)
-  endnote2[1:5]
-  endnote$endnote2 &amp;lt;- endnote2
+&lt;pre&gt;&lt;code&gt;require(stringr)
+mendeley2 &amp;lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
+mendeley2 &amp;lt;- gsub(&quot; &quot;, &quot;&quot;, mendeley2)
+mendeley2 &amp;lt;- gsub(&quot;,&quot;, &quot;&quot;, mendeley2)
+mendeley2 &amp;lt;- tolower(mendeley2)
+mendeley2[1:5]
+mendeley$mendeley2 &amp;lt;- mendeley2
+
+# now do this again from endnote
+endnote2 &amp;lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
+endnote2 &amp;lt;- gsub(&quot; &quot;, &quot;&quot;, endnote2)
+endnote2 &amp;lt;- gsub(&quot;,&quot;, &quot;&quot;, endnote2)
+endnote2 &amp;lt;- tolower(endnote2)
+endnote2[1:5]
+endnote$endnote2 &amp;lt;- endnote2
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;  #### R Do-merge:
-      mendeley_not_in_endnote &amp;lt;- merge(mendeley,
-                                       endnote,
-                                       by.y = &quot;endnote2&quot;,
-                                       by.x = &quot;mendeley2&quot;,
-                                       all.x = T)
-      str(mendeley_not_in_endnote)
-      nrow(mendeley_not_in_endnote)
-      head(mendeley_not_in_endnote)
-      mendeley_not_in_endnote &amp;lt;- mendeley_not_in_endnote[
-                                                         is.na(mendeley_not_in_endnote$V1.y),
-                                                         ]
-      nrow(mendeley_not_in_endnote)
-      # 92 refs in endnote are not in mendeley&lt;/p&gt;
+&lt;h4&gt;R Do-merge:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;mendeley_not_in_endnote &amp;lt;- merge(mendeley,
+                                 endnote,
+                                 by.y = &quot;endnote2&quot;,
+                                 by.x = &quot;mendeley2&quot;,
+                                 all.x = T)
+str(mendeley_not_in_endnote)
+nrow(mendeley_not_in_endnote)
+head(mendeley_not_in_endnote)
+mendeley_not_in_endnote &amp;lt;- mendeley_not_in_endnote[
+                                                      is.na(mendeley_not_in_endnote$V1.y),
+                                                      ]
+nrow(mendeley_not_in_endnote)
+# 92 refs in endnote are not in mendeley
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;Not all these 92 will be true&lt;/h4&gt;
 
