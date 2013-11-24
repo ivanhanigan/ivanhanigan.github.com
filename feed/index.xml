@@ -4,13 +4,143 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-11-21T22:51:55+11:00</updated>
+ <updated>2013-11-25T00:47:26+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Setting Up A Workflow Script With Code Chunks</title>
+   <link href="http://ivanhanigan.github.com/2013/11/setting-up-a-workflow-with-code-chunks/"/>
+   <updated>2013-11-25T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/11/setting-up-a-workflow-with-code-chunks</id>
+   <content type="html">&lt;p&gt;This post describes some ideas and techniques I use to set up a &quot;workflow script&quot;.  I use this term to refer to the structured combination of code, data and narrative that make an executable Reproducible Research Report (RRR).&lt;/p&gt;
+
+&lt;p&gt;A lot of these ideas are inpsired by  a great paper by Kieran Healy called  &quot;Choosing Your Workflow Applications&quot; available at &lt;a href=&quot;https://github.com/kjhealy/workflow-paper&quot;&gt;https://github.com/kjhealy/workflow-paper&lt;/a&gt; to accompany &lt;a href=&quot;http://kieranhealyo.org/resources/emacs-starter-kit.html&quot;&gt;his Emacs Starter Kit&lt;/a&gt;. My shortened version of his main points are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1 use a good code editor&lt;/li&gt;
+&lt;li&gt;2 analyse data with scripts&lt;/li&gt;
+&lt;li&gt;3 store your work simply and document it properly&lt;/li&gt;
+&lt;li&gt;4 use a version control system&lt;/li&gt;
+&lt;li&gt;5 Automate back ups&lt;/li&gt;
+&lt;li&gt;6 Avoid distracting gadgets&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Here's my current approach in each of these categories&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1 use Emacs with Orgmode (and kjhealy's drop-in set of useful defaults)&lt;/li&gt;
+&lt;li&gt;2 Scripts that utilise the literate programming technique of mixing Code Chunks in with descriptive prose&lt;/li&gt;
+&lt;li&gt;3 John Myles White's ProjectTemplate R Package and Josh Riech's LCFD paradigm&lt;/li&gt;
+&lt;li&gt;4 git and GitHub for version control&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;5 Automated Backups and 6 Avoiding Gadgets are still somethings I find challenging&lt;/p&gt;
+
+&lt;h4&gt;1 Use a good code editor&lt;/h4&gt;
+
+&lt;p&gt;I like ysing Emacs with Orgmode.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I have previously tried a variety of code editors from Tinn-r, NppToR, Rstudio and Eclipse.&lt;/li&gt;
+&lt;li&gt;Emacs with Orgmode suits me the most because it has a great number of features especially the linkage with LaTeX or HTML export&lt;/li&gt;
+&lt;li&gt;link to the great orgmode post&lt;/li&gt;
+&lt;li&gt;this guy spends a lot of time on tweaking his set up&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;2 Analyse data with Scripts&lt;/h4&gt;
+
+&lt;p&gt;I use Scripts but prefer to think of them as stiched together Code Chunks with prose into Compendia.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Compendia are documents that weave together Code and Prose into an executable report&lt;/li&gt;
+&lt;li&gt;The underlying philosophy is called Reproducible Research Reports&lt;/li&gt;
+&lt;li&gt;A very useful tool is a keyboard shortcut to quickly create a chunk for code&lt;/li&gt;
+&lt;li&gt;so you can be writing parts of the report like this: &quot;Blah Blah Blah as shown in Figure X and Table Y&quot;&lt;/li&gt;
+&lt;li&gt;then just hit the correct keys and WHAMM-O there is a new chunk ready for the code that creates Figure X and Table Y to be written.&lt;/li&gt;
+&lt;li&gt;Here is how I use Emacs to achieve this (the other editors I mentioned above also have the abiltiy to do this too)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Emacs Code: Put this into the ~/.emacs.d/init.el file&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-skeleton chunk-skeleton
+  &quot;Info for a code chunk.&quot;
+  &quot;Title: &quot;
+  &quot;*** &quot; str &quot;-code\n&quot;
+  &quot;#+name:&quot; str &quot;\n&quot;
+  &quot;#+begin_src R :session *R* :tangle src/&quot; str &quot;.r :exports reports :eval no\n&quot;
+  &quot;#### name:&quot; str &quot; ####\n&quot;
+  &quot;\n&quot;
+  &quot;#+end_src\n&quot;
+)
+(global-set-key [?\C-x ?\C-\\] 'chunk-skeleton)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Using the Emacs Shortcut&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;now whenever you type Control-x control-\ a new code chunk will appear&lt;/li&gt;
+&lt;li&gt;you'll be typing &quot;blah blah blah&quot; and think I need a figure or table, just hit it.&lt;/li&gt;
+&lt;li&gt;move into the empty section and add some code&lt;/li&gt;
+&lt;li&gt;To create modular code scripts from these chunks use C-c C-v t&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Compiling the resulting Compendium&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Emacs uses LaTeX or HTML to produce the Report&lt;/li&gt;
+&lt;li&gt;I find both of these outputs very pleasing&lt;/li&gt;
+&lt;li&gt;to compile to TEX use C-c C-e d&lt;/li&gt;
+&lt;li&gt;for HTML use C-c C-e h (FOR CODE HIGHLIGHTING INSTALL htmlize.el)&lt;/li&gt;
+&lt;li&gt;AWESOME!&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;3 Store your work simply and document it properly&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;this organises code sections into modules, documentation is within the main script&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;4 use a version control system&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;git and github&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;5 Automate back ups AND 6 Avoid distracting gadgets&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OMG backups stress me out&lt;/li&gt;
+&lt;li&gt;I generally use Dropbox for  basic project management admin stuff&lt;/li&gt;
+&lt;li&gt;I use github for code projects I am happy to share, I also pay for 10 private repos&lt;/li&gt;
+&lt;li&gt;I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this&lt;/li&gt;
+&lt;li&gt;In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Conclusions&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This is how I've worked for a couple of years&lt;/li&gt;
+&lt;li&gt;I find it very enjoyable, mostly productive but prone to the distractions of &quot;distractions by gadgets&quot;&lt;/li&gt;
+&lt;li&gt;The main thing I want to point out is the usage of Code Chunks in RRR scripts.&lt;/li&gt;
+&lt;li&gt;These things are awesome.&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>sync-endnote-and-mendeley-references-using-r-xml</title>
@@ -285,6 +415,8 @@ mendeley_not_in_endnote &amp;lt;- mendeley_not_in_endnote[
                                                       ]
 nrow(mendeley_not_in_endnote)
 # 92 refs in endnote are not in mendeley
+write.csv(mendeley_not_in_endnote,
+      &quot;mendeley_not_in_endnote.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;Not all these 92 will be true&lt;/h4&gt;
@@ -299,7 +431,7 @@ nrow(mendeley_not_in_endnote)
 &lt;pre&gt;&lt;code&gt;source(&quot;~/Dropbox/tools/levenshtein.r&quot;)
 pcnt_threshold &amp;lt;- 0.6
 out_list &amp;lt;- matrix(ncol = 3, nrow = 0)
-out_list &amp;lt;- read.csv(&quot;mendeley_not_in_endnote_fz_match.csv&quot;)
+#out_list &amp;lt;- read.csv(&quot;mendeley_not_in_endnote_fz_match.csv&quot;, stringsAsFactors = F)
 for(i in 36:nrow(mendeley_not_in_endnote))
     {
         print(i)
@@ -325,6 +457,23 @@ tmp1 &amp;lt;- mendeley_not_in_endnote[i,1]
     }
 out_list
 write.csv(out_list, &quot;mendeley_not_in_endnote_fz_match.csv&quot;, row.names = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R Code: Do-concatenate and lowercase&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(stringr)
+out_list &amp;lt;- read.csv(&quot;mendeley_not_in_endnote_fz_match.csv&quot;, stringsAsFactors = F)
+mendeley2 &amp;lt;- read.csv(&quot;mendeley_not_in_endnote.csv&quot;, stringsAsFactors=F)
+mendeley2[1,]
+out_list[1,]
+mendeley2 &amp;lt;- merge(mendeley_not_in_endnote, out_list,
+                   by.x = &quot;mendeley2&quot;,
+                   by.y = &quot;V1&quot;, all.x = T)
+mendeley2[2,]
+mendeley2 &amp;lt;- mendeley2[is.na(mendeley2$V3),]
+nrow(mendeley2)
+# 48 records
+write.csv(mendeley2, &quot;mendeley_not_in_endnote_best_estimate.csv&quot;, row.names=F)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;Results&lt;/h4&gt;

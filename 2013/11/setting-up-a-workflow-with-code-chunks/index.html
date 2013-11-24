@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - spatial-lag-and-timeseries-model-with-nmmaps</title>
+    <title>Ivan Hanigan - Setting Up A Workflow Script With Code Chunks</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
+    <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,12 +55,126 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <ul>
-<li>Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors</li>
-<li>We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement</li>
-<li>I've hacked together some very very ugly code to construct the lagged variable</li>
-<li><a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3">http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3</a></li>
-<li>There may be errors, it's been a long day, but I won't have a chance to check back on this till next week so I thought I'd put it out there as is.</li>
+    <p>This post describes some ideas and techniques I use to set up a "workflow script".  I use this term to refer to the structured combination of code, data and narrative that make an executable Reproducible Research Report (RRR).</p>
+
+<p>A lot of these ideas are inpsired by  a great paper by Kieran Healy called  "Choosing Your Workflow Applications" available at <a href="https://github.com/kjhealy/workflow-paper">https://github.com/kjhealy/workflow-paper</a> to accompany <a href="http://kieranhealyo.org/resources/emacs-starter-kit.html">his Emacs Starter Kit</a>. My shortened version of his main points are:</p>
+
+<ul>
+<li>1 use a good code editor</li>
+<li>2 analyse data with scripts</li>
+<li>3 store your work simply and document it properly</li>
+<li>4 use a version control system</li>
+<li>5 Automate back ups</li>
+<li>6 Avoid distracting gadgets</li>
+</ul>
+
+
+<h4>Here's my current approach in each of these categories</h4>
+
+<ul>
+<li>1 use Emacs with Orgmode (and kjhealy's drop-in set of useful defaults)</li>
+<li>2 Scripts that utilise the literate programming technique of mixing Code Chunks in with descriptive prose</li>
+<li>3 John Myles White's ProjectTemplate R Package and Josh Riech's LCFD paradigm</li>
+<li>4 git and GitHub for version control</li>
+</ul>
+
+
+<p>5 Automated Backups and 6 Avoiding Gadgets are still somethings I find challenging</p>
+
+<h4>1 Use a good code editor</h4>
+
+<p>I like ysing Emacs with Orgmode.</p>
+
+<ul>
+<li>I have previously tried a variety of code editors from Tinn-r, NppToR, Rstudio and Eclipse.</li>
+<li>Emacs with Orgmode suits me the most because it has a great number of features especially the linkage with LaTeX or HTML export</li>
+<li>link to the great orgmode post</li>
+<li>this guy spends a lot of time on tweaking his set up</li>
+</ul>
+
+
+<h4>2 Analyse data with Scripts</h4>
+
+<p>I use Scripts but prefer to think of them as stiched together Code Chunks with prose into Compendia.</p>
+
+<ul>
+<li>Compendia are documents that weave together Code and Prose into an executable report</li>
+<li>The underlying philosophy is called Reproducible Research Reports</li>
+<li>A very useful tool is a keyboard shortcut to quickly create a chunk for code</li>
+<li>so you can be writing parts of the report like this: "Blah Blah Blah as shown in Figure X and Table Y"</li>
+<li>then just hit the correct keys and WHAMM-O there is a new chunk ready for the code that creates Figure X and Table Y to be written.</li>
+<li>Here is how I use Emacs to achieve this (the other editors I mentioned above also have the abiltiy to do this too)</li>
+</ul>
+
+
+<h4>Emacs Code: Put this into the ~/.emacs.d/init.el file</h4>
+
+<pre><code>(define-skeleton chunk-skeleton
+  "Info for a code chunk."
+  "Title: "
+  "*** " str "-code\n"
+  "#+name:" str "\n"
+  "#+begin_src R :session *R* :tangle src/" str ".r :exports reports :eval no\n"
+  "#### name:" str " ####\n"
+  "\n"
+  "#+end_src\n"
+)
+(global-set-key [?\C-x ?\C-\\] 'chunk-skeleton)
+</code></pre>
+
+<h4>Using the Emacs Shortcut</h4>
+
+<ul>
+<li>now whenever you type Control-x control-\ a new code chunk will appear</li>
+<li>you'll be typing "blah blah blah" and think I need a figure or table, just hit it.</li>
+<li>move into the empty section and add some code</li>
+<li>To create modular code scripts from these chunks use C-c C-v t</li>
+</ul>
+
+
+<h4>Compiling the resulting Compendium</h4>
+
+<ul>
+<li>Emacs uses LaTeX or HTML to produce the Report</li>
+<li>I find both of these outputs very pleasing</li>
+<li>to compile to TEX use C-c C-e d</li>
+<li>for HTML use C-c C-e h (FOR CODE HIGHLIGHTING INSTALL htmlize.el)</li>
+<li>AWESOME!</li>
+</ul>
+
+
+<h4>3 Store your work simply and document it properly</h4>
+
+<ul>
+<li>this organises code sections into modules, documentation is within the main script</li>
+</ul>
+
+
+<h4>4 use a version control system</h4>
+
+<ul>
+<li>git and github</li>
+</ul>
+
+
+<h4>5 Automate back ups AND 6 Avoid distracting gadgets</h4>
+
+<ul>
+<li>OMG backups stress me out</li>
+<li>I generally use Dropbox for  basic project management admin stuff</li>
+<li>I use github for code projects I am happy to share, I also pay for 10 private repos</li>
+<li>I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this</li>
+<li>In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.</li>
+</ul>
+
+
+<h4>Conclusions</h4>
+
+<ul>
+<li>This is how I've worked for a couple of years</li>
+<li>I find it very enjoyable, mostly productive but prone to the distractions of "distractions by gadgets"</li>
+<li>The main thing I want to point out is the usage of Code Chunks in RRR scripts.</li>
+<li>These things are awesome.</li>
 </ul>
 
 
@@ -77,12 +191,12 @@
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+    <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Mon Oct 28 00:00:00 +1100 2013">28 Oct 2013</abbr>
+      <abbr class="published" title="Mon Nov 25 00:00:00 +1100 2013">25 Nov 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -96,7 +210,7 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/";
+    var disqus_url = "http://ivanhanigan.github.com/2013/11/setting-up-a-workflow-with-code-chunks/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

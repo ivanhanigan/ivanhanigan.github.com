@@ -6,6 +6,135 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>Setting Up A Workflow Script With Code Chunks</title>
+				<description>&lt;p&gt;This post describes some ideas and techniques I use to set up a &quot;workflow script&quot;.  I use this term to refer to the structured combination of code, data and narrative that make an executable Reproducible Research Report (RRR).&lt;/p&gt;
+
+&lt;p&gt;A lot of these ideas are inpsired by  a great paper by Kieran Healy called  &quot;Choosing Your Workflow Applications&quot; available at &lt;a href=&quot;https://github.com/kjhealy/workflow-paper&quot;&gt;https://github.com/kjhealy/workflow-paper&lt;/a&gt; to accompany &lt;a href=&quot;http://kieranhealyo.org/resources/emacs-starter-kit.html&quot;&gt;his Emacs Starter Kit&lt;/a&gt;. My shortened version of his main points are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1 use a good code editor&lt;/li&gt;
+&lt;li&gt;2 analyse data with scripts&lt;/li&gt;
+&lt;li&gt;3 store your work simply and document it properly&lt;/li&gt;
+&lt;li&gt;4 use a version control system&lt;/li&gt;
+&lt;li&gt;5 Automate back ups&lt;/li&gt;
+&lt;li&gt;6 Avoid distracting gadgets&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Here's my current approach in each of these categories&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1 use Emacs with Orgmode (and kjhealy's drop-in set of useful defaults)&lt;/li&gt;
+&lt;li&gt;2 Scripts that utilise the literate programming technique of mixing Code Chunks in with descriptive prose&lt;/li&gt;
+&lt;li&gt;3 John Myles White's ProjectTemplate R Package and Josh Riech's LCFD paradigm&lt;/li&gt;
+&lt;li&gt;4 git and GitHub for version control&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;5 Automated Backups and 6 Avoiding Gadgets are still somethings I find challenging&lt;/p&gt;
+
+&lt;h4&gt;1 Use a good code editor&lt;/h4&gt;
+
+&lt;p&gt;I like ysing Emacs with Orgmode.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I have previously tried a variety of code editors from Tinn-r, NppToR, Rstudio and Eclipse.&lt;/li&gt;
+&lt;li&gt;Emacs with Orgmode suits me the most because it has a great number of features especially the linkage with LaTeX or HTML export&lt;/li&gt;
+&lt;li&gt;link to the great orgmode post&lt;/li&gt;
+&lt;li&gt;this guy spends a lot of time on tweaking his set up&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;2 Analyse data with Scripts&lt;/h4&gt;
+
+&lt;p&gt;I use Scripts but prefer to think of them as stiched together Code Chunks with prose into Compendia.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Compendia are documents that weave together Code and Prose into an executable report&lt;/li&gt;
+&lt;li&gt;The underlying philosophy is called Reproducible Research Reports&lt;/li&gt;
+&lt;li&gt;A very useful tool is a keyboard shortcut to quickly create a chunk for code&lt;/li&gt;
+&lt;li&gt;so you can be writing parts of the report like this: &quot;Blah Blah Blah as shown in Figure X and Table Y&quot;&lt;/li&gt;
+&lt;li&gt;then just hit the correct keys and WHAMM-O there is a new chunk ready for the code that creates Figure X and Table Y to be written.&lt;/li&gt;
+&lt;li&gt;Here is how I use Emacs to achieve this (the other editors I mentioned above also have the abiltiy to do this too)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Emacs Code: Put this into the ~/.emacs.d/init.el file&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-skeleton chunk-skeleton
+  &quot;Info for a code chunk.&quot;
+  &quot;Title: &quot;
+  &quot;*** &quot; str &quot;-code\n&quot;
+  &quot;#+name:&quot; str &quot;\n&quot;
+  &quot;#+begin_src R :session *R* :tangle src/&quot; str &quot;.r :exports reports :eval no\n&quot;
+  &quot;#### name:&quot; str &quot; ####\n&quot;
+  &quot;\n&quot;
+  &quot;#+end_src\n&quot;
+)
+(global-set-key [?\C-x ?\C-\\] 'chunk-skeleton)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Using the Emacs Shortcut&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;now whenever you type Control-x control-\ a new code chunk will appear&lt;/li&gt;
+&lt;li&gt;you'll be typing &quot;blah blah blah&quot; and think I need a figure or table, just hit it.&lt;/li&gt;
+&lt;li&gt;move into the empty section and add some code&lt;/li&gt;
+&lt;li&gt;To create modular code scripts from these chunks use C-c C-v t&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Compiling the resulting Compendium&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Emacs uses LaTeX or HTML to produce the Report&lt;/li&gt;
+&lt;li&gt;I find both of these outputs very pleasing&lt;/li&gt;
+&lt;li&gt;to compile to TEX use C-c C-e d&lt;/li&gt;
+&lt;li&gt;for HTML use C-c C-e h (FOR CODE HIGHLIGHTING INSTALL htmlize.el)&lt;/li&gt;
+&lt;li&gt;AWESOME!&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;3 Store your work simply and document it properly&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;this organises code sections into modules, documentation is within the main script&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;4 use a version control system&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;git and github&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;5 Automate back ups AND 6 Avoid distracting gadgets&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OMG backups stress me out&lt;/li&gt;
+&lt;li&gt;I generally use Dropbox for  basic project management admin stuff&lt;/li&gt;
+&lt;li&gt;I use github for code projects I am happy to share, I also pay for 10 private repos&lt;/li&gt;
+&lt;li&gt;I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this&lt;/li&gt;
+&lt;li&gt;In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Conclusions&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This is how I've worked for a couple of years&lt;/li&gt;
+&lt;li&gt;I find it very enjoyable, mostly productive but prone to the distractions of &quot;distractions by gadgets&quot;&lt;/li&gt;
+&lt;li&gt;The main thing I want to point out is the usage of Code Chunks in RRR scripts.&lt;/li&gt;
+&lt;li&gt;These things are awesome.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Mon Nov 25 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/11/setting-up-a-workflow-with-code-chunks/</link>
+			</item>
+		
+			<item>
 				<title>sync-endnote-and-mendeley-references-using-r-xml</title>
 				<description>&lt;h4&gt;Background&lt;/h4&gt;
 
@@ -275,6 +404,8 @@ mendeley_not_in_endnote &amp;lt;- mendeley_not_in_endnote[
                                                       ]
 nrow(mendeley_not_in_endnote)
 # 92 refs in endnote are not in mendeley
+write.csv(mendeley_not_in_endnote,
+      &quot;mendeley_not_in_endnote.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;Not all these 92 will be true&lt;/h4&gt;
@@ -289,7 +420,7 @@ nrow(mendeley_not_in_endnote)
 &lt;pre&gt;&lt;code&gt;source(&quot;~/Dropbox/tools/levenshtein.r&quot;)
 pcnt_threshold &amp;lt;- 0.6
 out_list &amp;lt;- matrix(ncol = 3, nrow = 0)
-out_list &amp;lt;- read.csv(&quot;mendeley_not_in_endnote_fz_match.csv&quot;)
+#out_list &amp;lt;- read.csv(&quot;mendeley_not_in_endnote_fz_match.csv&quot;, stringsAsFactors = F)
 for(i in 36:nrow(mendeley_not_in_endnote))
     {
         print(i)
@@ -315,6 +446,23 @@ tmp1 &amp;lt;- mendeley_not_in_endnote[i,1]
     }
 out_list
 write.csv(out_list, &quot;mendeley_not_in_endnote_fz_match.csv&quot;, row.names = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;R Code: Do-concatenate and lowercase&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(stringr)
+out_list &amp;lt;- read.csv(&quot;mendeley_not_in_endnote_fz_match.csv&quot;, stringsAsFactors = F)
+mendeley2 &amp;lt;- read.csv(&quot;mendeley_not_in_endnote.csv&quot;, stringsAsFactors=F)
+mendeley2[1,]
+out_list[1,]
+mendeley2 &amp;lt;- merge(mendeley_not_in_endnote, out_list,
+                   by.x = &quot;mendeley2&quot;,
+                   by.y = &quot;V1&quot;, all.x = T)
+mendeley2[2,]
+mendeley2 &amp;lt;- mendeley2[is.na(mendeley2$V3),]
+nrow(mendeley2)
+# 48 records
+write.csv(mendeley2, &quot;mendeley_not_in_endnote_best_estimate.csv&quot;, row.names=F)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;Results&lt;/h4&gt;
@@ -863,82 +1011,6 @@ National Centre for Epidemiology and Population Health, Australian National Univ
 </description>
 				<published>Wed Nov 06 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/</link>
-			</item>
-		
-			<item>
-				<title>climatic-drought-guestpost-by-luciana-porfirio</title>
-				<description>&lt;h3&gt;Guest post by Luciana Porfirio with code contributions by Francis Markham&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Recently I encountered a student doing an analysis who was doing everything in excel, and I couldn't contain my mouth and say R would be better... but it isn't a simple task. So any here are some tips.&lt;/li&gt;
-&lt;li&gt;There is a table with 62 years * 12 months of rain data in mm. We calculated the cumulative distribution using ecdf: empirical cumulative distribution function. So the table looks like this: Year Jan Feb Mach (...) each cell contains the cum dist.&lt;/li&gt;
-&lt;li&gt;We also got the number of months per year with less than X mm of rain. But he needs to know how many months  are between the drought months, regardless the year. So, I thought that converting the data into a ts was going to facilitate the task, but it doesn't, because now I don't' have columns and rows any longer.&lt;/li&gt;
-&lt;li&gt;But I struggled to handle a ts object to do for example an ifelse.&lt;/li&gt;
-&lt;li&gt;Luckily there are many many tricks about R, and with the code below we solved all his problems (and many months of work in excel).&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;/data/raj_rain_data.csv&quot;&gt;Get the example data here&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;This is how it looks like:&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;###############################################
-require(reshape2)
-
-###############################################
-#read csv file with rain BoM data
-dat = read.csv('raj_rain_data.csv')
-
-fn &amp;lt;- apply(dat[,2:13], 2, ecdf) # equivalent to Excel's percentrank function, only for cols 2 to 13 but you need to apply the function to each month
-
-#this fun does all the months at once
-fn2 = data.frame(t(do.call(&quot;rbind&quot;, sapply(1:12, FUN = function(i) fn[[i]](dat[,i+1]), simplify = FALSE))))
-colnames(fn2) = colnames(dat[,2:13])
-fn2$year = dat$Year
-
-#if the value is lower than 0.4, retrieves a 1, otherwise 0
-fn2$drought = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.4)==TRUE, 1,0))
-
-#if the value is lower than 0.1, retrieves a 1, otherwise 0
-fn2$extreme = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.1)==TRUE, 1,0))
-
-str(fn2)
-names(fn2)
-
-#ts didn't work - Francis suggested to melt the data.frame # Melt
-#fn2 to tall data set
-fn2.tall &amp;lt;- melt(fn2, id.vars=&quot;year&quot;)
-
-# Get the year-month into date format
-fn2.tall$date &amp;lt;- with(fn2.tall,
-                             as.Date(paste(&quot;1&quot;, variable, year), &quot;%d %b %Y&quot;))
-
-# Convert dates into months since 0 BC/AD (arbitrary, but doesn't
-# matter)
-#I'm not using the month.idx with Ivan's solution (remove)
-fn2.tall$mnth.idx &amp;lt;- sapply(fn2.tall$date, function(x){
-  12*as.integer(format(x, &quot;%Y&quot;)) + (as.integer(format(x, &quot;%m&quot;)) - 1)
-})
-
-# Sort by date
-fn2.tall &amp;lt;- fn2.tall[order(fn2.tall$date),]
-
-
-#Ivan's solution
-
-x&amp;lt;-fn2.tall$value&amp;lt;0.4
-xx &amp;lt;- (cumsum(!x) + 1) * x
-x2&amp;lt;-(seq_along(x) - match(xx, xx) + 1) * x
-fn2.tall$count&amp;lt;-x2
-
-#counts the number of cases of drought
-as.data.frame(table(fn2.tall$count))
-###############################################
-###############################################
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>Fri Nov 01 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/climatic-drought-guestpost-by-luciana-porfirio/</link>
 			</item>
 		
 	</channel>
