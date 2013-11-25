@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-11-25T00:47:26+11:00</updated>
+ <updated>2013-11-25T13:29:10+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -45,19 +45,20 @@
 
 &lt;h4&gt;1 Use a good code editor&lt;/h4&gt;
 
-&lt;p&gt;I like ysing Emacs with Orgmode.&lt;/p&gt;
+&lt;p&gt;I like using Emacs with Orgmode.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;I have previously tried a variety of code editors from Tinn-r, NppToR, Rstudio and Eclipse.&lt;/li&gt;
 &lt;li&gt;Emacs with Orgmode suits me the most because it has a great number of features especially the linkage with LaTeX or HTML export&lt;/li&gt;
-&lt;li&gt;link to the great orgmode post&lt;/li&gt;
-&lt;li&gt;this guy spends a lot of time on tweaking his set up&lt;/li&gt;
+&lt;li&gt;A key reference to look at for reasons why Emacs is so good for scientific work is Eric Schulte et al &lt;a href=&quot;www.jstatsoft.org/v46/i03%E2%80%8E&quot;&gt;&quot;A Multi-Language Computing Environment for Literate Programming&quot;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Here is a &lt;a href=&quot;http://doc.norang.ca/org-mode.html&quot;&gt;link to a great orgmode description&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;(this guy spends a lot of time on tweaking his set up)&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;2 Analyse data with Scripts&lt;/h4&gt;
+&lt;h4&gt;2 Analyse data with Scripts (stitch together code chunks)&lt;/h4&gt;
 
-&lt;p&gt;I use Scripts but prefer to think of them as stiched together Code Chunks with prose into Compendia.&lt;/p&gt;
+&lt;p&gt;I use Scripts but prefer to think of them as stitched together Code Chunks with prose into Compendia.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Compendia are documents that weave together Code and Prose into an executable report&lt;/li&gt;
@@ -65,7 +66,7 @@
 &lt;li&gt;A very useful tool is a keyboard shortcut to quickly create a chunk for code&lt;/li&gt;
 &lt;li&gt;so you can be writing parts of the report like this: &quot;Blah Blah Blah as shown in Figure X and Table Y&quot;&lt;/li&gt;
 &lt;li&gt;then just hit the correct keys and WHAMM-O there is a new chunk ready for the code that creates Figure X and Table Y to be written.&lt;/li&gt;
-&lt;li&gt;Here is how I use Emacs to achieve this (the other editors I mentioned above also have the abiltiy to do this too)&lt;/li&gt;
+&lt;li&gt;Here is how I use Emacs to achieve this (the other editors I mentioned above also have the abiltiy to do this too).  The IPython Notebook does this stuff too but calls chunks &quot;cells&quot; for some reason.&lt;/li&gt;
 &lt;/ul&gt;
 
 
@@ -90,7 +91,10 @@
 &lt;li&gt;now whenever you type Control-x control-\ a new code chunk will appear&lt;/li&gt;
 &lt;li&gt;you'll be typing &quot;blah blah blah&quot; and think I need a figure or table, just hit it.&lt;/li&gt;
 &lt;li&gt;move into the empty section and add some code&lt;/li&gt;
-&lt;li&gt;To create modular code scripts from these chunks use C-c C-v t&lt;/li&gt;
+&lt;li&gt;you can hit C-c ' to enter a org-babel code execution session that will be able to send these line by line to an R session&lt;/li&gt;
+&lt;li&gt;or within the main org buffer if your eval flag is set to yes then you can run the entire chunk (and return tabular output to the doc) using C-c C-c&lt;/li&gt;
+&lt;li&gt;To export the code chunks and create the modular code scripts without the narrative prose use C-c C-v t&lt;/li&gt;
+&lt;li&gt;this is called &quot;tangling&quot; and the chunks will be written out to the file specified in the chunk header &quot;:tangle&quot; flag&lt;/li&gt;
 &lt;/ul&gt;
 
 
@@ -101,6 +105,7 @@
 &lt;li&gt;I find both of these outputs very pleasing&lt;/li&gt;
 &lt;li&gt;to compile to TEX use C-c C-e d&lt;/li&gt;
 &lt;li&gt;for HTML use C-c C-e h (FOR CODE HIGHLIGHTING INSTALL htmlize.el)&lt;/li&gt;
+&lt;li&gt;these commands will also evaluate all the chunks where &quot;:eval&quot; = yes to load the data and calculate the results fresh.&lt;/li&gt;
 &lt;li&gt;AWESOME!&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -108,14 +113,31 @@
 &lt;h4&gt;3 Store your work simply and document it properly&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;this organises code sections into modules, documentation is within the main script&lt;/li&gt;
+&lt;li&gt;I use the &lt;a href=&quot;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&quot;&gt;ProjectTemplate R package&lt;/a&gt; to organise my code sections into modules&lt;/li&gt;
+&lt;li&gt;These modules are organised into the Reichian LCFD paradigm described first &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;on StackOverflow here&lt;/a&gt;, and encoded into &lt;a href=&quot;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&quot;&gt;the makeProject R package&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;documentation is within the main orgmode script&lt;/li&gt;
+&lt;li&gt;data documentation is a whole other universe that I will deal with in a separate post&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;4 use a version control system&lt;/h4&gt;
+&lt;h4&gt;4 use a version control system using git and github&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# once you have the project via R
+R
+require(ProjectTemplate)
+create.project(&quot;AwesomeProject&quot;, minimal = T)
+q()
+# use the shell to start a git repo
+cd AwesomeProject
+git init
+# and commit the TODO
+git add TODO
+git commit -m &quot;first commit&quot;
+# tada!
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
-&lt;li&gt;git and github&lt;/li&gt;
+&lt;li&gt;Rstudio has a really nice GUI for doing this inside it;s Project management interface too.&lt;/li&gt;
 &lt;/ul&gt;
 
 
