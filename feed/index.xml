@@ -4,13 +4,72 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-11-25T13:35:22+11:00</updated>
+ <updated>2013-11-27T02:10:39+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>a-sharp-looking-orgmode-latex-export-header</title>
+   <link href="http://ivanhanigan.github.com/2013/11/a-sharp-looking-orgmode-latex-export-header/"/>
+   <updated>2013-11-26T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/11/a-sharp-looking-orgmode-latex-export-header</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;I got this header for a nice looking report from Bull, G. (2011). Example Sweave Document. SharpStatistics.co.uk.&lt;/li&gt;
+&lt;li&gt;This has a bunch of useful parameters, but I just really like the header and footer on pages 2 onward&lt;/li&gt;
+&lt;li&gt;The original was a Sweave file.  I really like Sweave but orgmode allows other languages as well as R to be inter-woven into the script&lt;/li&gt;
+&lt;li&gt;An alternative to Sweave is knitr and is still on my todo list, but this works well at the moment&lt;/li&gt;
+&lt;li&gt;I also like how you can quickly change this to a Beamer presentation style.&lt;/li&gt;
+&lt;li&gt;Once this is in your file use C-c C-e d to export and compile the PDF&lt;/li&gt;
+&lt;li&gt;This example is available at &lt;a href=&quot;/pdfs/SharpReportTemplate.pdf&quot;&gt;this link&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Emacs orgmode Code: Put this into your .org file&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#+TITLE: Sharp Report Template
+#+AUTHOR: Ivan Hanigan
+#+email: ivan.hanigan@anu.edu.au
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LaTeX_HEADER: \usepackage{tabulary}
+#+LaTeX_HEADER: \usepackage{longtable}
+#+latex_header: \usepackage{rotating}
+#+LaTeX_HEADER: \usepackage{graphicx} 
+#+LaTeX_HEADER: \usepackage{amssymb,amsmath}
+#+LaTeX_HEADER: \usepackage{fancyhdr} %For headers and footers
+#+LaTeX_HEADER: \pagestyle{fancy} %For headers and footers
+#+LaTeX_HEADER: \usepackage{lastpage} %For getting page x of y
+#+LaTeX_HEADER: \usepackage{float} %Allows the figures to be positioned and formatted nicely
+#+LaTeX_HEADER: \floatstyle{boxed} %using this
+#+LaTeX_HEADER: \restylefloat{figure} %and this command
+#+LaTeX_HEADER: \usepackage{url} %Formatting of yrls
+#+LaTeX_HEADER: \usepackage{verbatim} 
+#+LaTeX_HEADER: \lhead{ivanhanigan.github.com}
+#+LaTeX_HEADER: \chead{}
+#+LaTeX_HEADER: \rhead{\today}
+#+LaTeX_HEADER: \lfoot{Draft}
+#+LaTeX_HEADER: \cfoot{}
+#+LaTeX_HEADER: \rfoot{\thepage\ of \pageref{LastPage}}
+#+LATEX: \tableofcontents
+
+* Introduction
+This is a sharp looking report template I got from \cite{Bull2011}.
+\clearpage
+
+* Section 1
+The pages after the first page have a nice looking header, footer and page number.
+\clearpage
+
+* References
+\bibliographystyle{apalike}
+\bibliography{/home/ivan_hanigan/references/library}
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Setting Up A Workflow Script With Code Chunks</title>
@@ -137,15 +196,34 @@ git commit -m &quot;first commit&quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
+&lt;li&gt;Emacs can now be used to manage the git repo using the C-x g command&lt;/li&gt;
 &lt;li&gt;Rstudio has a really nice GUI for doing this inside it;s Project management interface too.&lt;/li&gt;
 &lt;/ul&gt;
 
+
+&lt;h4&gt;Using Github or another Git Server&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You can easily set up a Github repo for this now but it will be public&lt;/li&gt;
+&lt;li&gt;Alternatative is to set up your own private Git server.  I followed &lt;a href=&quot;http://blog.goosoftware.co.uk/2012/02/07/quick-git-server/&quot;&gt;these instructions to Running a Simple Git Server Using SSH&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Either way once you have set up your remote git repo you need to set the remote tracking&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Git Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /path/to/local/git/repo
+git remote add origin git@github-or-other-server:myname/myproject.git
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;5 Automate back ups AND 6 Avoid distracting gadgets&lt;/h4&gt;
 
 &lt;ul&gt;
 &lt;li&gt;OMG backups stress me out&lt;/li&gt;
-&lt;li&gt;I generally use Dropbox for  basic project management admin stuff&lt;/li&gt;
+&lt;li&gt;ideally I would follow &lt;a href=&quot;http://www.jwz.org/blog/2007/09/psa-backups/&quot;&gt;this advice because &quot;when it comes to losing your data the universe tends toward maximum irony. Don't push it.&quot;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;But I don;t fully comply&lt;/li&gt;
+&lt;li&gt;Instead I generally use Dropbox for  basic project management admin stuff&lt;/li&gt;
 &lt;li&gt;I use github for code projects I am happy to share, I also pay for 10 private repos&lt;/li&gt;
 &lt;li&gt;I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this&lt;/li&gt;
 &lt;li&gt;In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.&lt;/li&gt;

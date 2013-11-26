@@ -6,6 +6,64 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>a-sharp-looking-orgmode-latex-export-header</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;I got this header for a nice looking report from Bull, G. (2011). Example Sweave Document. SharpStatistics.co.uk.&lt;/li&gt;
+&lt;li&gt;This has a bunch of useful parameters, but I just really like the header and footer on pages 2 onward&lt;/li&gt;
+&lt;li&gt;The original was a Sweave file.  I really like Sweave but orgmode allows other languages as well as R to be inter-woven into the script&lt;/li&gt;
+&lt;li&gt;An alternative to Sweave is knitr and is still on my todo list, but this works well at the moment&lt;/li&gt;
+&lt;li&gt;I also like how you can quickly change this to a Beamer presentation style.&lt;/li&gt;
+&lt;li&gt;Once this is in your file use C-c C-e d to export and compile the PDF&lt;/li&gt;
+&lt;li&gt;This example is available at &lt;a href=&quot;/pdfs/SharpReportTemplate.pdf&quot;&gt;this link&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Emacs orgmode Code: Put this into your .org file&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#+TITLE: Sharp Report Template
+#+AUTHOR: Ivan Hanigan
+#+email: ivan.hanigan@anu.edu.au
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LaTeX_HEADER: \usepackage{tabulary}
+#+LaTeX_HEADER: \usepackage{longtable}
+#+latex_header: \usepackage{rotating}
+#+LaTeX_HEADER: \usepackage{graphicx} 
+#+LaTeX_HEADER: \usepackage{amssymb,amsmath}
+#+LaTeX_HEADER: \usepackage{fancyhdr} %For headers and footers
+#+LaTeX_HEADER: \pagestyle{fancy} %For headers and footers
+#+LaTeX_HEADER: \usepackage{lastpage} %For getting page x of y
+#+LaTeX_HEADER: \usepackage{float} %Allows the figures to be positioned and formatted nicely
+#+LaTeX_HEADER: \floatstyle{boxed} %using this
+#+LaTeX_HEADER: \restylefloat{figure} %and this command
+#+LaTeX_HEADER: \usepackage{url} %Formatting of yrls
+#+LaTeX_HEADER: \usepackage{verbatim} 
+#+LaTeX_HEADER: \lhead{ivanhanigan.github.com}
+#+LaTeX_HEADER: \chead{}
+#+LaTeX_HEADER: \rhead{\today}
+#+LaTeX_HEADER: \lfoot{Draft}
+#+LaTeX_HEADER: \cfoot{}
+#+LaTeX_HEADER: \rfoot{\thepage\ of \pageref{LastPage}}
+#+LATEX: \tableofcontents
+
+* Introduction
+This is a sharp looking report template I got from \cite{Bull2011}.
+\clearpage
+
+* Section 1
+The pages after the first page have a nice looking header, footer and page number.
+\clearpage
+
+* References
+\bibliographystyle{apalike}
+\bibliography{/home/ivan_hanigan/references/library}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+				<published>Tue Nov 26 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/11/a-sharp-looking-orgmode-latex-export-header/</link>
+			</item>
+		
+			<item>
 				<title>Setting Up A Workflow Script With Code Chunks</title>
 				<description>&lt;p&gt;This post describes some ideas and techniques I use to set up a &quot;workflow script&quot;.  I use this term to refer to the structured combination of code, data and narrative that make an executable Reproducible Research Report (RRR).&lt;/p&gt;
 
@@ -127,15 +185,34 @@ git commit -m &quot;first commit&quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
+&lt;li&gt;Emacs can now be used to manage the git repo using the C-x g command&lt;/li&gt;
 &lt;li&gt;Rstudio has a really nice GUI for doing this inside it;s Project management interface too.&lt;/li&gt;
 &lt;/ul&gt;
 
+
+&lt;h4&gt;Using Github or another Git Server&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You can easily set up a Github repo for this now but it will be public&lt;/li&gt;
+&lt;li&gt;Alternatative is to set up your own private Git server.  I followed &lt;a href=&quot;http://blog.goosoftware.co.uk/2012/02/07/quick-git-server/&quot;&gt;these instructions to Running a Simple Git Server Using SSH&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Either way once you have set up your remote git repo you need to set the remote tracking&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Git Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /path/to/local/git/repo
+git remote add origin git@github-or-other-server:myname/myproject.git
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;5 Automate back ups AND 6 Avoid distracting gadgets&lt;/h4&gt;
 
 &lt;ul&gt;
 &lt;li&gt;OMG backups stress me out&lt;/li&gt;
-&lt;li&gt;I generally use Dropbox for  basic project management admin stuff&lt;/li&gt;
+&lt;li&gt;ideally I would follow &lt;a href=&quot;http://www.jwz.org/blog/2007/09/psa-backups/&quot;&gt;this advice because &quot;when it comes to losing your data the universe tends toward maximum irony. Don't push it.&quot;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;But I don;t fully comply&lt;/li&gt;
+&lt;li&gt;Instead I generally use Dropbox for  basic project management admin stuff&lt;/li&gt;
 &lt;li&gt;I use github for code projects I am happy to share, I also pay for 10 private repos&lt;/li&gt;
 &lt;li&gt;I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this&lt;/li&gt;
 &lt;li&gt;In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.&lt;/li&gt;
@@ -879,160 +956,6 @@ description(dds$sexe)
 </description>
 				<published>Wed Nov 06 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/11/handling-survey-data-with-r/</link>
-			</item>
-		
-			<item>
-				<title>Github And Reproducible Research Report Casestudy Hutchinson Drought Index</title>
-				<description>&lt;h3&gt;Background&lt;/h3&gt;
-
-&lt;p&gt;This is an example of using github for a Reproducible Research Report (RRR) using a casestudy of the  Hutchinson Drought Index.  The project is available under GNU licence at &lt;a href=&quot;https://github.com/ivanhanigan/HutchinsonDroughtIndex&quot;&gt;https://github.com/ivanhanigan/HutchinsonDroughtIndex&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3&gt;Aims&lt;/h3&gt;
-
-&lt;p&gt;This example will clone the repository from github and run the replication codes using the replication datasets.&lt;/p&gt;
-
-&lt;h3&gt;Materials and Methods&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;assumes you are connected to the internet&lt;/li&gt;
-&lt;li&gt;assumes you have git, a github account and ssh key set up&lt;/li&gt;
-&lt;li&gt;assumes you have R and GDAL configured&lt;/li&gt;
-&lt;li&gt;assumes BoM and ABS have kept their data in the locations I specified to download from&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Hutchinsons Drought Index&lt;/h3&gt;
-
-&lt;p&gt;The Hutchinson Drought Index (or Drought Severity Index) is a climatic drought index
-that was designed to reflect agricultural droughts using only rainfall data.&lt;/p&gt;
-
-&lt;p&gt;The index was invented by Professor Mike Hutchinson at the ANU in 1992 (1) and
-this project includes R codes written to describe the calculations
-and also to download data (2,3) to play with.&lt;/p&gt;
-
-&lt;h3&gt;Results&lt;/h3&gt;
-
-&lt;h4&gt;Replication Codes to run in the terminal&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;git clone git@github.com:ivanhanigan/HutchinsonDroughtIndex.git ~/data/HutchinsonDroughtIndex
-R
-setwd(&quot;~/data/HutchinsonDroughtIndex&quot;)
-source(&quot;HutchinsonDroughtIndex_go.r&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;WARNING this downloads 5.4MB from BoM and 19.9MB from ABS&lt;/li&gt;
-&lt;li&gt;This runs the codes and produces graphs&lt;/li&gt;
-&lt;li&gt;an alternative workflow would be to run the sweave file in the reports directory but I dont like that method as much and have set all the evaluation commands to false.&lt;/li&gt;
-&lt;li&gt;it will run now that we have the graphs though, to create a report:&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;setwd(&quot;reports&quot;)
-Sweave(&quot;HutchinsonDroughtIndex_transformations_doc.Rnw&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;which creates a tex file that can create &lt;a href=&quot;/pdfs/HutchinsonDroughtIndex_transformations_doc.pdf&quot;&gt;this pdf&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;but the simplest example I gave above will compute the index and create the graphs (one is shown below)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/CentralWestDrought8283.png&quot; alt=&quot;CentralWestDrought8283.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;So what actually happened?&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This project adheres to the &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;Reichian LCFD model of writing R code&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;In this the code is bundled into modules Func (tools), Load, Do, Clean (check).  These live in the src directory (following teh White ProjectTemplate model - well almost, He would put tools/func into lib)&lt;/li&gt;
-&lt;li&gt;then a main.r (or go.r) script calls these modules&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;go.r&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt; source('src/HutchinsonDroughtIndex_tools.r')
- source('src/HutchinsonDroughtIndex_load.r')
- source('src/HutchinsonDroughtIndex_do.r')
- source('src/HutchinsonDroughtIndex_check.r')
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;The really interesting bit is &lt;a href=&quot;https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r&quot;&gt;a tool written for this project&lt;/a&gt; that is called from within tools.r&lt;/p&gt;
-
-&lt;p&gt;   source('src/HutchinsonDroughtIndex_tools_droughtIndex.r')&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;A keen reader would look in that script to find out exactly what the function does&lt;/li&gt;
-&lt;li&gt;A keen author would push that function to an R package (a super keen bean would publish this on CRAN)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Discussion&lt;/h3&gt;
-
-&lt;h4&gt;Strengths:&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;full codes are provided to reproduce the data access, manipulation and analysis&lt;/li&gt;
-&lt;li&gt;the gory details are hidden from the casual user&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Weaknesses:&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the important details are hidden from the technical user&lt;/li&gt;
-&lt;li&gt;the script depends on a bunch of things that might not be true&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Conclusions&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This is an example of a self-contained RRR&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;References&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Smith, D. I, Hutchinson, M. F, &amp;amp; McArthur, R. J. (1992) Climatic and
-Agricultural Drought: Payments and Policy. (Centre for Resource and Environmental
-Studies, Australian National University, Canberra, Australia).&lt;br/&gt;
-http://fennerschool-research.anu.edu.au/spatio-temporal/publications/cres_paper1992.pdf&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Bureau of Meteorology High Quality Monthly precipitation data
-downloaded on 2012-01-09
-from ftp://ftp.bom.gov.au/anon/home/ncc/www/change/HQmonthlyR/HQ_monthly_prcp_txt.tar&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Australian Bureau of Statistics Statistical Divisions 2006
-downloaded on 2012-01-09
-from http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.0022006?OpenDocument&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h3&gt;Acknowledgements&lt;/h3&gt;
-
-&lt;p&gt;Financial support was provided by Professor Tony McMichael's
-&quot;Australia Fellowship&quot; from the the National Health and Medical Research Council, via the
-National Centre for Epidemiology and Population Health, Australian National University.&lt;/p&gt;
-</description>
-				<published>Wed Nov 06 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/</link>
 			</item>
 		
 	</channel>

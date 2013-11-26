@@ -4,13 +4,72 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-11-25T13:35:22+11:00</updated>
+ <updated>2013-11-27T02:10:39+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>a-sharp-looking-orgmode-latex-export-header</title>
+   <link href="http://schamberlain.github.com/2013/11/a-sharp-looking-orgmode-latex-export-header/"/>
+   <updated>2013-11-26T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/11/a-sharp-looking-orgmode-latex-export-header</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;I got this header for a nice looking report from Bull, G. (2011). Example Sweave Document. SharpStatistics.co.uk.&lt;/li&gt;
+&lt;li&gt;This has a bunch of useful parameters, but I just really like the header and footer on pages 2 onward&lt;/li&gt;
+&lt;li&gt;The original was a Sweave file.  I really like Sweave but orgmode allows other languages as well as R to be inter-woven into the script&lt;/li&gt;
+&lt;li&gt;An alternative to Sweave is knitr and is still on my todo list, but this works well at the moment&lt;/li&gt;
+&lt;li&gt;I also like how you can quickly change this to a Beamer presentation style.&lt;/li&gt;
+&lt;li&gt;Once this is in your file use C-c C-e d to export and compile the PDF&lt;/li&gt;
+&lt;li&gt;This example is available at &lt;a href=&quot;/pdfs/SharpReportTemplate.pdf&quot;&gt;this link&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Emacs orgmode Code: Put this into your .org file&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#+TITLE: Sharp Report Template
+#+AUTHOR: Ivan Hanigan
+#+email: ivan.hanigan@anu.edu.au
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LaTeX_HEADER: \usepackage{tabulary}
+#+LaTeX_HEADER: \usepackage{longtable}
+#+latex_header: \usepackage{rotating}
+#+LaTeX_HEADER: \usepackage{graphicx} 
+#+LaTeX_HEADER: \usepackage{amssymb,amsmath}
+#+LaTeX_HEADER: \usepackage{fancyhdr} %For headers and footers
+#+LaTeX_HEADER: \pagestyle{fancy} %For headers and footers
+#+LaTeX_HEADER: \usepackage{lastpage} %For getting page x of y
+#+LaTeX_HEADER: \usepackage{float} %Allows the figures to be positioned and formatted nicely
+#+LaTeX_HEADER: \floatstyle{boxed} %using this
+#+LaTeX_HEADER: \restylefloat{figure} %and this command
+#+LaTeX_HEADER: \usepackage{url} %Formatting of yrls
+#+LaTeX_HEADER: \usepackage{verbatim} 
+#+LaTeX_HEADER: \lhead{ivanhanigan.github.com}
+#+LaTeX_HEADER: \chead{}
+#+LaTeX_HEADER: \rhead{\today}
+#+LaTeX_HEADER: \lfoot{Draft}
+#+LaTeX_HEADER: \cfoot{}
+#+LaTeX_HEADER: \rfoot{\thepage\ of \pageref{LastPage}}
+#+LATEX: \tableofcontents
+
+* Introduction
+This is a sharp looking report template I got from \cite{Bull2011}.
+\clearpage
+
+* Section 1
+The pages after the first page have a nice looking header, footer and page number.
+\clearpage
+
+* References
+\bibliographystyle{apalike}
+\bibliography{/home/ivan_hanigan/references/library}
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Setting Up A Workflow Script With Code Chunks</title>
@@ -137,15 +196,34 @@ git commit -m &quot;first commit&quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
+&lt;li&gt;Emacs can now be used to manage the git repo using the C-x g command&lt;/li&gt;
 &lt;li&gt;Rstudio has a really nice GUI for doing this inside it;s Project management interface too.&lt;/li&gt;
 &lt;/ul&gt;
 
+
+&lt;h4&gt;Using Github or another Git Server&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You can easily set up a Github repo for this now but it will be public&lt;/li&gt;
+&lt;li&gt;Alternatative is to set up your own private Git server.  I followed &lt;a href=&quot;http://blog.goosoftware.co.uk/2012/02/07/quick-git-server/&quot;&gt;these instructions to Running a Simple Git Server Using SSH&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Either way once you have set up your remote git repo you need to set the remote tracking&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Git Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /path/to/local/git/repo
+git remote add origin git@github-or-other-server:myname/myproject.git
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4&gt;5 Automate back ups AND 6 Avoid distracting gadgets&lt;/h4&gt;
 
 &lt;ul&gt;
 &lt;li&gt;OMG backups stress me out&lt;/li&gt;
-&lt;li&gt;I generally use Dropbox for  basic project management admin stuff&lt;/li&gt;
+&lt;li&gt;ideally I would follow &lt;a href=&quot;http://www.jwz.org/blog/2007/09/psa-backups/&quot;&gt;this advice because &quot;when it comes to losing your data the universe tends toward maximum irony. Don't push it.&quot;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;But I don;t fully comply&lt;/li&gt;
+&lt;li&gt;Instead I generally use Dropbox for  basic project management admin stuff&lt;/li&gt;
 &lt;li&gt;I use github for code projects I am happy to share, I also pay for 10 private repos&lt;/li&gt;
 &lt;li&gt;I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this&lt;/li&gt;
 &lt;li&gt;In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.&lt;/li&gt;
@@ -6061,48 +6139,6 @@ fitting the spatial lag model as it seems easier.
 &lt;p&gt;&lt;img src=&quot;/images/unnamed-chunk-2.png&quot; alt=&quot;plot of chunk unnamed-chunk-2&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I hope we can work toward a kind of 'tower of babel'.&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>The Ecological Fallacy is Itself a Fallacy</title>
-   <link href="http://schamberlain.github.com/2012/07/the-ecological-fallacy-is-itself-a-fallacy/"/>
-   <updated>2012-07-09T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2012/07/the-ecological-fallacy-is-itself-a-fallacy</id>
-   <content type="html">&lt;h2&gt;The Ecological Fallacy&lt;/h2&gt;
-
-&lt;p&gt;The term 'Ecological fallacy' is used in Epidemiology and some other disciplines (such as Sociology) to refer to &lt;a href=&quot;http://www.springer.com/medicine/book/978-1-4419-1004-2&quot; title=&quot;Marc Gellman, J. Rick Turner. Encyclopedia of Behavioral Medicine Springer, 2012.&quot;&gt;improperly inferring a causal association (or lack of association) at an individual-level based on a group-level relationship&lt;/a&gt;. This use of the word ecological is at odds with the alternative use of the word in the discipline of Ecology.  &lt;a href=&quot;http://cup.columbia.edu/book/978-0-231-06919-9/toward-a-unified-ecology&quot; title=&quot;Timothy F. H. Allen, Thomas W. Hoekstra. Toward a unified ecology. Columbia University Press, 1993.&quot;&gt;Ecological methods from Ecology are inherently multi-scaled&lt;/a&gt; and address precisely the issue of this cross-scale inferential fallacy.&lt;/p&gt;
-
-&lt;p&gt;I argue that a broader understanding of ecological methods by non-Ecologists would be a start towards better understanding between the disciplines.  The inclusion of real ecological methods in the other disciplines will also assist research to better understand the causes and effects of climate and climate change which are important gaps in knowledge needed to enable mitigation and adaptation of our society to future climate change.&lt;/p&gt;
-
-&lt;h2&gt;Sociology&lt;/h2&gt;
-
-&lt;p&gt;To clear up this confusion it is necessary to go back to the source of the use of the term 'ecological' by the urban sociologist Amos Hawley who used the term 'human ecology' in the 1950s to build on the theoretical traditions of &lt;a href=&quot;http://books.google.com.au/books?id=PCBWr5UySs8C&amp;amp;dq=Meade%20and%20Earickson%202000%20medical%20geography&amp;amp;source=gbs_book_other_versions&quot; title=&quot;Melinda S. Meade, Robert J. Earickson Medical Geography. Guilford Press 2005.&quot;&gt;Robert Parke and E. W. Burgess at the University of Chicago in the 1920s on the structure and development of cities&lt;/a&gt;. His influence in the Social Sciences led directly to the development a tradition of social human ecology, one largely without a bio-physical environment.  The usage of 'ecological' to mean multivariate studies of complex systems stems from the sociological tradition.&lt;/p&gt;
-
-&lt;h2&gt;Ecology&lt;/h2&gt;
-
-&lt;p&gt;The term 'ecology' used in the Ecology discipline &lt;a href=&quot;http://en.wikipedia.org/wiki/Ecology&quot; title=&quot;Wikipedia&quot;&gt;dates back to the 1870s&lt;/a&gt;, coined by German zoologist Ernst Haeckel (1834-1919) as Oekologie from Greek 'oikos' for house, dwelling place, habitation and 'logia' study of, then at the turn of the century the term became spelt 'oecology', which grew into 'ecology' in the early part of the 1900s.&lt;/p&gt;
-
-&lt;h2&gt;Epidemiology&lt;/h2&gt;
-
-&lt;p&gt;In epidemiology the term 'ecological study' is used to refer to studies where observations are taken at the level of a group (such as a country, school, or hospital) rather than at the individual &lt;a href=&quot;http://www.springer.com/medicine/book/978-1-4419-1004-2&quot; title=&quot;Marc Gellman, J. Rick Turner. Encyclopedia of Behavioral Medicine Springer, 2012.&quot;&gt;(such as patient) level&lt;/a&gt;.  It is well known though that when risk factors and outcomes are measured at an aggregate level, the relationship between the group-level variables may be different than the relationship between variables &lt;a href=&quot;http://en.wikipedia.org/wiki/Modifiable_areal_unit_problem&quot; title=&quot;Openshaw, S. (1984). The Modifiable Areal Unit Problem. Norwich: Geo Books. ISBN 0-86094-134-5.&quot;&gt;measured at the individual level&lt;/a&gt;. An often cited example used to illustrate the issue involved a 19th century study which found higher suicide rates within Prussian provinces that had &lt;a href=&quot;http://books.google.com.au/books?hl=en&amp;amp;lr=&amp;amp;id=v23YleX1UskC&amp;amp;oi=fnd&amp;amp;pg=PA9&amp;amp;dq=durkheim&amp;amp;ots=sXTEH3naVk&amp;amp;sig=ycS5kkxwSUA_gA84ts3iXrYNStI#v=onepage&amp;amp;q&amp;amp;f=false&quot; title=&quot;Durkheim, E. (1951). Suicide: A study in sociology (Spaulding &amp;amp; Simpson, trans.). Glencoe, IL: Free Press.(Original Work Published 1897).&quot;&gt;higher proportions of Protestant residents&lt;/a&gt;. The conclusion that Protestant individuals (rather than Catholic individuals) were more likely to commit suicide &lt;a href=&quot;http://www.ncbi.nlm.nih.gov/pubmed/7137430&quot; title=&quot;Morgenstern, H. (1982). Uses of ecologic analysis in epidemiologic research. American Journal of Public Health, 72(12)&quot;&gt;cannot be inferred based on the observed association among the provinces&lt;/a&gt;. One possible scenario is that Catholic residents within the largely Protestant provinces had the high suicide rates, resulting in a positive association between percent Protestant and suicide rate &lt;a href=&quot;http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full&quot; title=&quot;Robinson, W.S. (1950). Ecological Correlations and the Behavior of Individuals. American Sociological Review (American Sociological Review, Vol. 15, No. 3) 15 (3): 351???357.&quot;&gt;8&lt;/a&gt;. Extrapolation of aggregate results to individuals is a mistake in logic &lt;a href=&quot;http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full&quot; title=&quot;Robinson, W. S. (2009). Ecological correlations and the behavior of individuals. International Journal of Epidemiology, 38(2)&quot;&gt;9&lt;/a&gt; which can lead to a potentially misleading conclusion &lt;a href=&quot;http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full&quot; title=&quot;Grotenhuis, Manfred, Rob Eisinga, and SV Subramanian. Robinson's Ecological Correlations and the Behavior of Individuals: methodological corrections. International journal of epidemiology 40, no. 4 2011: 1123-5.&quot;&gt;10&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Because of this limitation 'ecologic studies' are often scorned in epidemiology as inferior and only useful for exploratory or hypothesis-generating studies rather than as confirmatory.  I argue to the contrary that there is the potential for a revolution in our ability to understand causal influences operating at multiple scales of space and time if we were to conduct truly 'ecological studies'.&lt;/p&gt;
-
-&lt;h2&gt;Quantitative Geography&lt;/h2&gt;
-
-&lt;p&gt;There is also a closely related concept that should be noted.  That of the Modifiable Areal Unit Problem &lt;a href=&quot;http://en.wikipedia.org/wiki/Modifiable_areal_unit_problem&quot; title=&quot;Openshaw, S. (1984). The Modifiable Areal Unit Problem. Norwich: Geo Books. ISBN 0-86094-134-5.&quot;&gt;(MAUP)&lt;/a&gt; as discussed in quantitative geography.  There is a large amount of geographical literature on the MAUP.  In this problem domain areal units (also called zones, regions, areas or polygons) inherently pose three problems to a researcher attempting to infer causal associations: scale, zonal and temporal:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Scale; this issues is evident in the example above where phenomena investigated using data viewed at one scale may appear quite different (even opposite) using data aggregated at a different scale.&lt;/li&gt;
-&lt;li&gt;Zonal; the zonal problem appears where phenomena investigated using data viewed using two sets of differing areas at a single scale can differ.&lt;/li&gt;
-&lt;li&gt;Temporal; a third problem arises when analyzing data on modifiable areas when people keep modifying them by redrawing the boundaries over time.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;In Conclusion&lt;/h2&gt;
-
-&lt;p&gt;The term 'Ecological Fallacy' is itself a fallacy and non-Ecologists should be made aware of the existence of alternative ecologic methods from Ecology.  This would be a start towards better understanding between the disciplines and enhance our abilities to mitigate and adapt to climate change.&lt;/p&gt;
 </content>
  </entry>
  

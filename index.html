@@ -54,6 +54,85 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I got this header for a nice looking report from Bull, G. (2011). Example Sweave Document. SharpStatistics.co.uk.</li>
+<li>This has a bunch of useful parameters, but I just really like the header and footer on pages 2 onward</li>
+<li>The original was a Sweave file.  I really like Sweave but orgmode allows other languages as well as R to be inter-woven into the script</li>
+<li>An alternative to Sweave is knitr and is still on my todo list, but this works well at the moment</li>
+<li>I also like how you can quickly change this to a Beamer presentation style.</li>
+<li>Once this is in your file use C-c C-e d to export and compile the PDF</li>
+<li>This example is available at <a href="/pdfs/SharpReportTemplate.pdf">this link</a></li>
+</ul>
+
+
+<h4>Emacs orgmode Code: Put this into your .org file</h4>
+
+<pre><code>#+TITLE: Sharp Report Template
+#+AUTHOR: Ivan Hanigan
+#+email: ivan.hanigan@anu.edu.au
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LaTeX_HEADER: \usepackage{tabulary}
+#+LaTeX_HEADER: \usepackage{longtable}
+#+latex_header: \usepackage{rotating}
+#+LaTeX_HEADER: \usepackage{graphicx} 
+#+LaTeX_HEADER: \usepackage{amssymb,amsmath}
+#+LaTeX_HEADER: \usepackage{fancyhdr} %For headers and footers
+#+LaTeX_HEADER: \pagestyle{fancy} %For headers and footers
+#+LaTeX_HEADER: \usepackage{lastpage} %For getting page x of y
+#+LaTeX_HEADER: \usepackage{float} %Allows the figures to be positioned and formatted nicely
+#+LaTeX_HEADER: \floatstyle{boxed} %using this
+#+LaTeX_HEADER: \restylefloat{figure} %and this command
+#+LaTeX_HEADER: \usepackage{url} %Formatting of yrls
+#+LaTeX_HEADER: \usepackage{verbatim} 
+#+LaTeX_HEADER: \lhead{ivanhanigan.github.com}
+#+LaTeX_HEADER: \chead{}
+#+LaTeX_HEADER: \rhead{\today}
+#+LaTeX_HEADER: \lfoot{Draft}
+#+LaTeX_HEADER: \cfoot{}
+#+LaTeX_HEADER: \rfoot{\thepage\ of \pageref{LastPage}}
+#+LATEX: \tableofcontents
+
+* Introduction
+This is a sharp looking report template I got from \cite{Bull2011}.
+\clearpage
+
+* Section 1
+The pages after the first page have a nice looking header, footer and page number.
+\clearpage
+
+* References
+\bibliographystyle{apalike}
+\bibliography{/home/ivan_hanigan/references/library}
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/a-sharp-looking-orgmode-latex-export-header/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Tue Nov 26 00:00:00 +1100 2013">26 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
     </h1>
     <div class="entry-content full-content">
@@ -177,15 +256,34 @@ git commit -m "first commit"
 </code></pre>
 
 <ul>
+<li>Emacs can now be used to manage the git repo using the C-x g command</li>
 <li>Rstudio has a really nice GUI for doing this inside it;s Project management interface too.</li>
 </ul>
 
+
+<h4>Using Github or another Git Server</h4>
+
+<ul>
+<li>You can easily set up a Github repo for this now but it will be public</li>
+<li>Alternatative is to set up your own private Git server.  I followed <a href="http://blog.goosoftware.co.uk/2012/02/07/quick-git-server/">these instructions to Running a Simple Git Server Using SSH</a></li>
+<li>Either way once you have set up your remote git repo you need to set the remote tracking</li>
+</ul>
+
+
+<h4>Git Code:</h4>
+
+<pre><code>cd /path/to/local/git/repo
+git remote add origin git@github-or-other-server:myname/myproject.git
+git push origin master
+</code></pre>
 
 <h4>5 Automate back ups AND 6 Avoid distracting gadgets</h4>
 
 <ul>
 <li>OMG backups stress me out</li>
-<li>I generally use Dropbox for  basic project management admin stuff</li>
+<li>ideally I would follow <a href="http://www.jwz.org/blog/2007/09/psa-backups/">this advice because "when it comes to losing your data the universe tends toward maximum irony. Don't push it."</a></li>
+<li>But I don;t fully comply</li>
+<li>Instead I generally use Dropbox for  basic project management admin stuff</li>
 <li>I use github for code projects I am happy to share, I also pay for 10 private repos</li>
 <li>I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this</li>
 <li>In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.</li>
@@ -706,48 +804,6 @@ write.csv(mendeley2, "mendeley_not_in_endnote_best_estimate.csv", row.names=F)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>Here is a really useful R snippet from  <a href="http://stackoverflow.com/a/6364905">http://stackoverflow.com/a/6364905</a> with a minor modification to allow differnt splits</p>
-
-<h4>Code:r-upcase-string</h4>
-
-<pre><code>x &lt;- c("The", "quick", "Brown", "fox/lazy dog")
-
-simpleCap &lt;- function(x, tosplit = " ") {
-  s &lt;- strsplit(x, tosplit)[[1]]
-  paste(toupper(substring(s, 1,1)), substring(s, 2),
-      sep="", collapse=tosplit)
-}
-sapply(x, simpleCap)
-sapply(x, simpleCap, tosplit = "/")
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/really-useful-r-upcase-string/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Sun Nov 17 00:00:00 +1100 2013">17 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -798,117 +854,117 @@ sapply(x, simpleCap, tosplit = "/")
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                <li><a href="/categories/data documentation">data documentation (12)</a></li>
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
+                <li><a href="/categories/replication">replication (1)</a></li>
                 
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                <li><a href="/categories/data science">data science (1)</a></li>
                 
                 <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/modelling">modelling (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
                 
                 <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
                 
                 <li><a href="/categories/opinion">opinion (1)</a></li>
                 
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
+                <li><a href="/categories/organising">organising (2)</a></li>
                 
                 <li><a href="/categories/wordpress">wordpress (1)</a></li>
                 
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
                 <li><a href="/categories/orgmode">orgmode (1)</a></li>
                 
-                <li><a href="/categories/gis">gis (1)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (8)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
+                <li><a href="/categories/research methods">research methods (9)</a></li>
                 
                 <li><a href="/categories/workflow">workflow (3)</a></li>
                 
                 <li><a href="/categories/ecology">ecology (1)</a></li>
                 
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                
                 <li><a href="/categories/drought">drought (2)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/ons">ons (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (12)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
                 
                 <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
                 
                 <li><a href="/categories/packages">packages (1)</a></li>
                 
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/gis">gis (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
                 
                 <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
                 
                 <li><a href="/categories/suicide">suicide (1)</a></li>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
                 <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
                 
               </ul>
             </div>
@@ -917,6 +973,10 @@ sapply(x, simpleCap, tosplit = "/")
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
+                </li>
                 
                 <li>
                   <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
@@ -1112,10 +1172,6 @@ sapply(x, simpleCap, tosplit = "/")
                 
                 <li>
                   <a href="/2012/09/software-ism/" title="software-ism" rel="bookmark">software-ism</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/07/the-ecological-fallacy-is-itself-a-fallacy/" title="The Ecological Fallacy is Itself a Fallacy" rel="bookmark">The Ecological Fallacy is Itself a Fallacy</a>
                 </li>
                 
               </ul>
