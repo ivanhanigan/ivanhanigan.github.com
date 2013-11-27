@@ -54,6 +54,186 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I stumbled on these posts by "Data Scientist Training for Librarians":</p>
+
+<ul>
+<li><a href="http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/">http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/</a></li>
+<li><a href="http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/">http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/</a></li>
+</ul>
+
+
+<p>I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.</p>
+
+<h4>R Code: get the olive oil dataset</h4>
+
+<pre><code>install.packages("pgmm")
+require(pgmm)
+data(olive)
+write.csv(olive, "~/olive.csv", row.names = F)
+olive &lt;- read.csv("~/olive.csv")
+names(olive) &lt;- tolower(names(olive))
+str(olive)
+write.csv(olive, "~/olive.csv", row.names = F)
+</code></pre>
+
+<p></p>
+
+
+<h3>OK now reproduce the example</h3>
+
+<p>I quite like the histograms from the second example.</p>
+
+<h4>Code:</h4>
+
+<pre><code>%pylab inline
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import matplotlib.colors as colors
+
+acidlist=['palmitic', 'palmitoleic', 'stearic', 'oleic', 'linoleic', 'linolenic', 'arachidic', 'eicosenoic']
+dfsub=df[acidlist].apply(lambda x: x/100.0)
+dfsub.head()
+
+rkeys=[1,2,3]
+rvals=['South','Sardinia','North']
+rmap={e[0]:e[1] for e in zip(rkeys,rvals)}
+rmap
+
+fig, axes=plt.subplots(figsize=(10,20), nrows=len(acidlist), ncols=1) # sets up the framework for the graphs. Acidlist is defined elsewhere, and is a list of the acids we’re interested in.
+i=0 # Sets a counter to 0
+
+for ax in axes.flatten(): # Starts a loop to go through our plot and render each row
+
+    acid=acidlist[i]
+    seriesacid=df[acid] # creates seriesacid and sets it to df[acid], a list of the percent composition of the acid in the current iteration that’s in each olive oil.
+
+    minmax=[seriesacid.min(), seriesacid.max()] # the minimum and maximum values plotted will be the minimum and maximum percentages that we find in the data
+
+    for k,g in df.groupby('region'):  # starts a loop in the loop to plot the values by region
+        style = {'histtype':'stepfilled', 'alpha':0.5, 'label':rmap[k], 'ax':ax}
+        g[acid].hist(**style)
+
+        ax.set_xlim(minmax)
+
+        ax.set_title(acid)
+
+        ax.grid(False)
+
+        #construct legend
+        ax.legend()
+    i=i+1 # increments the counter, to move the loop on to the next acid.
+
+    fig.tight_layout()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/acid.png" alt="acid.png" /></p>
+
+<h3>Conclusions</h3>
+
+<p>I am not sure how to do the transparency but the rest of it would make more sense to me with R</p>
+
+<p>Will try to reproduce in R for head-to-head shoot out.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+      <a href="/categories/python" title="python" rel="category tag">python</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/librarians-and-python/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>R is generally very good for handling many different data types but</p>
+
+<h3>R has problems with survey data</h3>
+
+<p>This post is a stub about what packages Ive found with methods allowing to handle efficiently survey data: handle variable labels, values labels, and retrieve information about missing values</p>
+
+<h4>Base R:</h4>
+
+<pre><code>## Not run:
+require(foreign)
+analyte  &lt;- read.spss(filename, to.data.frame=T) 
+varslist &lt;- as.data.frame(attributes(analyte)$variable.labels)
+# this gives a pretty useful thing to use
+</code></pre>
+
+<p></p>
+
+
+<p>While I was digging around in <a href="http://mephisto.unige.ch/traminer">TraMineR</a> I found this link to Dataset, Emmanuel Rousseaux's package for handling, documenting and describing data sets of survey data.</p>
+
+<h4>Code:Dataset, a package for handling-survey-data-with-r</h4>
+
+<pre><code>if(!require(Dataset)) install.packages("Dataset", repos="http://R-Forge.R-project.org");
+require(Dataset)
+data(dds)
+str(dds)
+# cool
+description(dds$sexe)
+# excellent!
+</code></pre>
+
+<p></p>
+
+
+<h3>Conclusions</h3>
+
+<p>I'm sure there are plenty of other approaches.  I'll add them as I find them'</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+      <a href="/categories/surveys" title="surveys" rel="category tag">surveys</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/handling-survey-data-with-r/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
     </h1>
     <div class="entry-content full-content">
@@ -415,258 +595,6 @@ dbSendQuery(ch, sql)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
-<li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
-<li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
-<li>The beta coefficient itself shouldn't be affected.</li>
-<li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
-<li>To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
-<li>I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
-<li>So I asked Sarunya for a discussion about her research</li>
-</ul>
-
-
-<h3>Sarunya's model is essentially like this</h3>
-
-<h4>R Code:</h4>
-
-<pre><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
-       ns(temp, df) + ns(humidity, df) +
-       ns(time, df = 7*numYears) +
-       SLA * ns(time, df = 2),
-       data = analyte, family = poisson
-       )
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
-<li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
-<li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
-<li>therefore this study avoids the issue by it's intentional design to compare betas not se</li>
-<li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
-<li>this is fascinating in itself, but a separate issue for another post</li>
-</ul>
-
-
-<h3>Conclusions</h3>
-
-<ul>
-<li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
-<li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
-</ul>
-
-
-<p>THANKS Sarunya!</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>today I was in a meeting where the discussion turned to maps of crude incidence rates, age-standardised rates and regression models controlling for age</li>
-<li>If disease incidence does not vary with age then there is not much point in controlling for this,</li>
-<li>apart from the work done in exploratory data analysis to ascertain whether or not this is the case</li>
-<li>I proposed that if you've done all the work on age-specific rates needed to test if incidence varies with age, then you might as well present age adjusted rates seeing as you've already done the work anyway</li>
-</ul>
-
-
-<h3>An example</h3>
-
-<ul>
-<li>The project is highly confidential due to the nature of the data</li>
-<li>We;ll call the study location South Kingsland to protect the identity</li>
-</ul>
-
-
-<h4>R Code:</h4>
-
-<pre><code># get spatial data
-require(swishdbtools) # github package, under
-                      # swish-climate-impact-assessment
-
-Tab1 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
-Tab1 &lt;- as.data.frame(table(Tab1$SLA))
-nrow(Tab1)
-write.csv(Tab1, "data/SLA.csv", row.names = F)
-load2postgres("data/SLA.csv", schema="ivan_hanigan", tablename="sla", ip = "brawn.anu.edu.au",
-              db = "gislibrary", pguser = "ivan_hanigan", printcopy = F)
-
-
-ch  &lt;- connect2postgres2("gislibrary")
-sql_subset(ch, "ivan_hanigan.sla", eval = T, limit = 10)
-
-
-sql_subset(ch, "abs_sla.qldsla01", select =  "sla_name, st_y(st_centroid(geom))", eval = T, limit = 10)
-dbSendQuery(ch,
-  "select sla_name, geom
-  into southkingsland
-  from abs_sla.qldsla01 t1
-  join
-  sla t2
-  on t1.sla_name = t2.var1;
-  alter table southkingsland add column gid serial primary key;
-  ")
-# these are missing from spatial data
-## 42                      West End                          &lt;NA&gt;
-## 43                OVERSEAS-OTHER                          &lt;NA&gt;
-## 44                  Yarrabah (S)                          &lt;NA&gt;
-## 45     Rowes Bay-Belgian gardens                          &lt;NA&gt;
-</code></pre>
-
-<p></p>
-
-
-<h3>visualise with QGIS</h3>
-
-<p><img src="/images/southkingsland.png" alt="southkingsland.png" /></p>
-
-<h4>R Code:</h4>
-
-<pre><code># func
-require(plyr)
-
-# load
-Tab2 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
-names(Tab2)
-# [1] "SLA"       "agegrp"    "Sex"       "district"  "dm"        "ninf"     
-# [7] "popSLA"    "Month"     "Year"      "groupyear"
-test_sla  &lt;- names(table(Tab2$SLA)[1])
-subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "MALE")
-subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "FEMALE")
-
-# clean
-summary(Tab2)
-## remove any SLA with NA populations
-Tab2 &lt;- Tab2[which(!is.na(Tab2$popSLA)),]     
-
-# do
-## first total cases by annualised pop
-analyte  &lt;- ddply(Tab2, c("SLA", "Year", "agegrp", "Sex"), summarise,
-                  ninf=sum(ninf),
-                  popSLA=mean(popSLA)
-                  )
-#str(analyte)
-
-#subset(analyte, SLA == test_sla)
-subset(analyte, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1)
-
-## now annual totals for study region
-analyte2  &lt;- ddply(analyte, c("Year", "agegrp"), summarise,
-                  ninf=sum(ninf),
-                  popSLA=sum(popSLA)
-                  )
-str(analyte2)
-
-qc &lt;- subset(analyte2,  Year == 2001)
-qc
-sum(qc$popSLA)
-
-## now totals
-qc  &lt;- ddply(analyte2, c("Year"), summarise,
-             ninf=sum(ninf),
-             popSLA=sum(popSLA)
-             )
-qc
-sum(qc$ninf)
-mean(qc$popSLA)
-
-## totals by age
-subset(analyte2,  agegrp == 1)
-analyte3  &lt;- ddply(analyte2, c("agegrp"), summarise,
-                  ninf=sum(ninf),
-                  popSLA=mean(popSLA)
-                  )
-analyte3
-sum(analyte3$popSLA)
-analyte3$asr  &lt;- (analyte3$ninf / analyte3$popSLA) * 1000
-analyte3
-
-png("graphs/south-kingsland-age-specific-rates.png") 
-mp &lt;- barplot(analyte3$asr, names.arg = analyte3$agegrp)
-box()
-dev.off()
-</code></pre>
-
-<p></p>
-
-
-<h3>Plot Age Specific Rates</h3>
-
-<p>Great so with that bit of work we should have an idea of the variation of incidence by age</p>
-
-<p><img src="/images/south-kingsland-age-specific-rates.png" alt="south-kingsland-age-specific-rates.png" /></p>
-
-<h1>Results and Discussion</h1>
-
-<ul>
-<li>It looks like the incidence does vary with age</li>
-<li>TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)</li>
-<li>TODO make graphs by city, by sex</li>
-<li>age-standardised rates probably need different age categories, only 4 or 5?</li>
-<li>worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)</li>
-</ul>
-
-
-<h4>Clean up database!</h4>
-
-<pre><code>dbSendQuery(ch, "drop table sla")
-dbSendQuery(ch, "drop table southkingsland")
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/rates theory" title="rates theory" rel="category tag">rates theory</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/if-disease-incidence-varies-with-age-control-for-it/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -721,117 +649,117 @@ dbSendQuery(ch, "drop table southkingsland")
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/gis">gis (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
                 
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
                 <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
                 <li><a href="/categories/animation">animation (1)</a></li>
                 
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
+                <li><a href="/categories/modelling">modelling (1)</a></li>
                 
-                <li><a href="/categories/workflow">workflow (3)</a></li>
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
                 
-                <li><a href="/categories/versions">versions (1)</a></li>
+                <li><a href="/categories/opinion">opinion (1)</a></li>
                 
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                <li><a href="/categories/climate change">climate change (1)</a></li>
                 
-                <li><a href="/categories/organising">organising (2)</a></li>
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
                 
                 <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
                 <li><a href="/categories/ecology">ecology (1)</a></li>
                 
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/gis">gis (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (2)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/suicide">suicide (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
+                
                 <li><a href="/categories/me">me (3)</a></li>
                 
                 <li><a href="/categories/blogger">blogger (1)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/research methods">research methods (10)</a></li>
                 
-                <li><a href="/categories/surveys">surveys (1)</a></li>
+                <li><a href="/categories/data documentation">data documentation (12)</a></li>
                 
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
                 
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
+                <li><a href="/categories/notebook">notebook (1)</a></li>
                 
                 <li><a href="/categories/tools">tools (1)</a></li>
                 
                 <li><a href="/categories/overview">overview (4)</a></li>
                 
-                <li><a href="/categories/blogging">blogging (1)</a></li>
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
-                
-                <li><a href="/categories/ons">ons (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                <li><a href="/categories/concordance">concordance (1)</a></li>
                 
                 <li><a href="/categories/replication">replication (1)</a></li>
                 
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (9)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (12)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
                 
               </ul>
             </div>
@@ -840,6 +768,14 @@ dbSendQuery(ch, "drop table southkingsland")
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
+                </li>
                 
                 <li>
                   <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
@@ -1031,14 +967,6 @@ dbSendQuery(ch, "drop table southkingsland")
                 
                 <li>
                   <a href="/2013/04/timeseries-with-spatial-lag/" title="Timeseries with Spatial Lag" rel="bookmark">Timeseries with Spatial Lag</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/reflections-bob-haining/" title="Reflections on Spatial Regression Class with Prof Bob Haining" rel="bookmark">Reflections on Spatial Regression Class with Prof Bob Haining</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/09/software-ism/" title="software-ism" rel="bookmark">software-ism</a>
                 </li>
                 
               </ul>
