@@ -54,6 +54,382 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h4>Background</h4>
+
+<ul>
+<li>I use Mendeley (despite them being bought out by Elsevier, who used to sell guns)</li>
+<li>My Colleagues use EndNote</li>
+<li>Need to sync, they find Endnote better for their workflow</li>
+<li>I tried to export my Mendeley as XML and import to Endnote, but found many duplicates that took time to rectify</li>
+<li>(and the risk is there that the RefNo they used in the Doc will be the duplicate that I removed)</li>
+</ul>
+
+
+<h4>Aims</h4>
+
+<ul>
+<li>test if R and the XML package can help find refs in Endnote that aren't in Mendeley</li>
+<li>If so can I write those into an Mendeley import for seamless integrations</li>
+<li>and what about going from Mendeley to Endnote?</li>
+</ul>
+
+
+<h4>Methods</h4>
+
+<ul>
+<li>The R XML package seems an obvious place to start</li>
+<li>before writing a function, just step thru the process</li>
+</ul>
+
+
+<h4>Step 1: export XML from Mendeley and Endnote</h4>
+
+<ul>
+<li>In Mendeley Just select the refs in the list and then from the file menu</li>
+<li>In Endnote it is also under File menu</li>
+</ul>
+
+
+<h4>Step 2: R Code:</h4>
+
+<pre><code># func
+# might need sudo apt-get install r-cran-xml?
+require(XML)
+
+# load
+dir()
+[1] "EndnoteCollection.xml"
+    "MendeleyCollection.Data"
+[3] "MendeleyCollection.xml" 
+
+d1 &lt;- xmlTreeParse("EndnoteCollection.xml", useInternal=T)
+
+# clean
+str(d1)
+# ooooh xml schmexemhel voodoo?
+
+# do
+top &lt;- xmlRoot(d1)
+str(top)
+names(top)
+# top [[1]] # prints the whole thing
+top [[1]][[1]]
+top [[1]][[2]]
+# prints a record (1 or 2)
+
+# just messing around
+length(top[[1]])
+top [[1]][[120]]
+names(top [[1]][[120]])
+names(top [[1]][[120]][["contributors"]])
+names(top [[1]][[120]][["contributors"]][["authors"]])
+top [[1]][[120]][["contributors"]][["authors"]][[2]]
+
+i &lt;- 110
+top [[1]][[i]]
+as.matrix(names(top [[1]][[i]]))
+</code></pre>
+
+<h4>OK so XML as a list.</h4>
+
+<ul>
+<li>I think if I do a merge of two author-date-title dataframes I can easily find the diffs</li>
+</ul>
+
+
+<h4>TRY a square wheel</h4>
+
+<h4>R Code:</h4>
+
+<pre><code>endnote_mendeley_df &lt;- function(input_xml,
+                                nrow_to_try = 1000){
+  d1 &lt;- xmlTreeParse(input_xml, useInternal=T)
+  top &lt;- xmlRoot(d1)
+
+  output &lt;- matrix(ncol = 4, nrow = 0)
+  for(i in 1:nrow_to_try)
+  {
+  # i = 1000
+    if(is.na(xmlValue(top [[1]][[i]]))) break
+    if(
+      !is.na(xmlValue(top [[1]][[i]][["contributors"]][["authors"]][[2]]))
+      )
+    {
+      author &lt;- paste(xmlValue(top [[1]][[i]][["contributors"]][["authors"]][[1]]), "et al", " ")
+    } else {
+      author &lt;- xmlValue(top [[1]][[i]][["contributors"]][["authors"]][[1]])
+    }
+    year &lt;- xmlValue(top [[1]][[i]][["dates"]][["year"]])
+    title &lt;- xmlValue(top [[1]][[i]][["titles"]][[1]])
+    endnoteref &lt;- xmlValue(top [[1]][[i]][["rec-number"]])
+    output &lt;- rbind(output, c(author, year, title, endnoteref))
+
+  }
+  output &lt;- as.data.frame(output)
+  return(output)
+}
+</code></pre>
+
+<h4>R Test:</h4>
+
+<pre><code>output &lt;- endnote_mendeley_df(
+  input_xml = "EndnoteCollection.xml"
+  ,
+  nrow_to_try = 10
+  )
+
+nrow(output)
+write.csv(output, "EndnoteCollection.csv", row.names = F)
+output  &lt;- read.csv("EndnoteCollection.csv", stringsAsFactors = F)
+str(output)
+output[,1:2]
+</code></pre>
+
+<h4>R Do-read:</h4>
+
+<pre><code>endnote &lt;- endnote_mendeley_df(
+  input_xml = "EndnoteCollection.xml"
+  )
+nrow(endnote)
+mendeley &lt;- endnote_mendeley_df(
+  input_xml = "MendeleyCollection.xml"
+  )
+nrow(mendeley)
+</code></pre>
+
+<h4>R Do-concatenate and lowercase</h4>
+
+<pre><code># TODO this is a really terrible way to do this.
+# FIXME find out how to compare the two better
+require(stringr)
+mendeley2 &lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
+mendeley2 &lt;- gsub(" ", "", mendeley2)
+mendeley2 &lt;- gsub(",", "", mendeley2)
+mendeley2 &lt;- tolower(mendeley2)
+mendeley2[1:5]
+mendeley$mendeley2 &lt;- mendeley2
+
+# now do this again from endnote
+endnote2 &lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
+endnote2 &lt;- gsub(" ", "", endnote2)
+endnote2 &lt;- gsub(",", "", endnote2)
+endnote2 &lt;- tolower(endnote2)
+endnote2[1:5]
+endnote$endnote2 &lt;- endnote2
+</code></pre>
+
+<h4>R Do-merge:</h4>
+
+<pre><code>endnote_not_in_mendeley &lt;- merge(endnote,
+                                 mendeley,
+                                 by.x = "endnote2",
+                                 by.y = "mendeley2",
+                                 all.x = T)
+str(endnote_not_in_mendeley)
+nrow(endnote_not_in_mendeley)
+head(endnote_not_in_mendeley)
+endnote_not_in_mendeley &lt;- endnote_not_in_mendeley[
+                                                   is.na(endnote_not_in_mendeley$V1.y),
+                                                   ]
+nrow(endnote_not_in_mendeley)
+# 66 refs in endnote are not in mendeley
+write.csv(endnote_not_in_mendeley,
+      "endnote_not_in_mendeley.csv", row.names = F)
+</code></pre>
+
+<h4>Open this as spreadsheet and cross check</h4>
+
+<ul>
+<li>make a new column for comments</li>
+<li>check off which ones were in AllDocuments and not in the Mendeley group</li>
+<li>this diff was because of when I imported the Endnote XML but had not assigned these to the mendeley group</li>
+<li>once have cleaned up the mendeley group export again and then check which are in mendeley but not in endnote</li>
+</ul>
+
+
+<h4>First here is a note</h4>
+
+<ul>
+<li>about a way to speed up the checks, excluding false positives using fuzzy matching</li>
+<li>my method relies on the author, date and title to be written the same in both ie initials then surname or visa verca</li>
+<li>But this is not always true</li>
+<li>I previously used levenshtein string matching to identify strings that are close but not identical</li>
+<li><a href="http://wiki.r-project.org/rwiki/doku.php?id=tips:data-strings:levenshtein">Try this link</a></li>
+<li><a href="http://rwiki.sciviews.org/doku.php?id=tips:data-strings:levenshtein">OR this link</a></li>
+<li>TODO I will share this code as a GitHub Gist later!</li>
+</ul>
+
+
+<h4>R Code: possibility to speed up Checks</h4>
+
+<pre><code>tmp1 &lt;- mendeley[grep("Walker", mendeley$V1),"mendeley2"]
+tmp2 &lt;- endnote[grep("Walker", endnote$V1),"endnote2"]
+
+# these differ slightly
+# B. Walker et al vs Walker, Brian et al
+source("~/Dropbox/tools/levenshtein.r")
+levenshtein(
+    tmp1
+    ,
+    tmp2
+    )
+# gives 92percent match
+</code></pre>
+
+<h4>R Code: Find mendeley refs without endnote</h4>
+
+<pre><code>  endnote &lt;- endnote_mendeley_df(
+    input_xml = "EndnoteCollection.xml"
+    )
+  nrow(endnote)
+  mendeley &lt;- endnote_mendeley_df(
+    input_xml = "MendeleyCollection2.xml"
+    )
+  nrow(mendeley)
+</code></pre>
+
+<h4>R Code: Do-concatenate and lowercase</h4>
+
+<pre><code>require(stringr)
+mendeley2 &lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
+mendeley2 &lt;- gsub(" ", "", mendeley2)
+mendeley2 &lt;- gsub(",", "", mendeley2)
+mendeley2 &lt;- tolower(mendeley2)
+mendeley2[1:5]
+mendeley$mendeley2 &lt;- mendeley2
+
+# now do this again from endnote
+endnote2 &lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
+endnote2 &lt;- gsub(" ", "", endnote2)
+endnote2 &lt;- gsub(",", "", endnote2)
+endnote2 &lt;- tolower(endnote2)
+endnote2[1:5]
+endnote$endnote2 &lt;- endnote2
+</code></pre>
+
+<h4>R Do-merge:</h4>
+
+<pre><code>mendeley_not_in_endnote &lt;- merge(mendeley,
+                                 endnote,
+                                 by.y = "endnote2",
+                                 by.x = "mendeley2",
+                                 all.x = T)
+str(mendeley_not_in_endnote)
+nrow(mendeley_not_in_endnote)
+head(mendeley_not_in_endnote)
+mendeley_not_in_endnote &lt;- mendeley_not_in_endnote[
+                                                      is.na(mendeley_not_in_endnote$V1.y),
+                                                      ]
+nrow(mendeley_not_in_endnote)
+# 92 refs in endnote are not in mendeley
+write.csv(mendeley_not_in_endnote,
+      "mendeley_not_in_endnote.csv", row.names = F)
+</code></pre>
+
+<h4>Not all these 92 will be true</h4>
+
+<ul>
+<li>so let;s try the string matching</li>
+</ul>
+
+
+<h4>R Code:</h4>
+
+<pre><code>source("~/Dropbox/tools/levenshtein.r")
+pcnt_threshold &lt;- 0.6
+out_list &lt;- matrix(ncol = 3, nrow = 0)
+#out_list &lt;- read.csv("mendeley_not_in_endnote_fz_match.csv", stringsAsFactors = F)
+for(i in 36:nrow(mendeley_not_in_endnote))
+    {
+        print(i)
+#        i = 2
+tmp1 &lt;- mendeley_not_in_endnote[i,1]
+    for(j in 1:nrow(endnote))
+        {
+    #        j = 2
+    if(exists("out")) rm(out)
+    tmp2 &lt;- endnote$endnote2[j]
+    pcnt &lt;- levenshtein(
+            tmp1
+            ,
+            tmp2
+            )
+    #pcnt
+    if(pcnt &gt;= pcnt_threshold) out &lt;- tmp2
+    if(exists("out"))
+        out_list &lt;- rbind(out_list, c(tmp1, tmp2, pcnt))
+    if(exists("out")) break
+        }
+
+    }
+out_list
+write.csv(out_list, "mendeley_not_in_endnote_fz_match.csv", row.names = F)
+</code></pre>
+
+<h4>R Code: Do-concatenate and lowercase</h4>
+
+<pre><code>require(stringr)
+out_list &lt;- read.csv("mendeley_not_in_endnote_fz_match.csv", stringsAsFactors = F)
+mendeley2 &lt;- read.csv("mendeley_not_in_endnote.csv", stringsAsFactors=F)
+mendeley2[1,]
+out_list[1,]
+mendeley2 &lt;- merge(mendeley_not_in_endnote, out_list,
+                   by.x = "mendeley2",
+                   by.y = "V1", all.x = T)
+mendeley2[2,]
+mendeley2 &lt;- mendeley2[is.na(mendeley2$V3),]
+nrow(mendeley2)
+# 48 records
+write.csv(mendeley2, "mendeley_not_in_endnote_best_estimate.csv", row.names=F)
+</code></pre>
+
+<h4>Results</h4>
+
+<ul>
+<li>I found that XML package in R can work with the Endnote and Mendeley export Files</li>
+<li>I think I made a lot of bad decisions about the way I went about  doing this!</li>
+<li>It seemed quite difficult to get the XML stuff to make sense to me</li>
+<li>I;ve heard that python has better libraries for working with XML</li>
+<li>the levenshtein string matching code proved useful again.  I should get out of the habit of looping and start using lapply etc to speed this up.</li>
+</ul>
+
+
+<h4>Conclusions</h4>
+
+<ul>
+<li>This was an interesting if frustrating experiment</li>
+<li>The minor issues with importing from mendeley/endnote and deduplicating using their own tools was probably not worth writing all this half-baked R code.</li>
+<li>But I did learn more about working with XML in R (and realised this is probably not one of R's Strengths -- or mine for that matter!)</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/sync-endnote-and-mendeley-using-r-xml/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 20 00:00:00 +1100 2013">20 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
     </h1>
     <div class="entry-content full-content">
@@ -269,130 +645,6 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>The extent to which scientists write metadata is probably lower than it ought to be</li>
-<li>The level of metadata written during science projects is probably described generally as 'bare-minimum' and "the minimum needed for one-self to come back to and understand what one did"</li>
-<li>It sometimes seems that even the bare minimum for one-self is not being kept very often</li>
-<li>I argue that the reasons for less-than-adequate metadata can be understood by looking at</li>
-<li>1) the culture of the scienctists displinary background via training</li>
-<li>2) the tools available and</li>
-<li>3) institutional  requirements to produce metadata (both about data or access to data)</li>
-<li>In my ongoing <a href="http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/">series of blog posts I am exploring the tools available</a>.</li>
-<li>In this post I just wanted to start the discussion about discipline culture and institutional requirements.</li>
-</ul>
-
-
-<h3>Discipline Culture</h3>
-
-<ul>
-<li>I trained in Geography in the age of GIS and this community uses metadata a lot</li>
-<li>Due to the prevalance of the digital map (collection of layers) which is a derivative data output</li>
-<li>Need to know the source of all the layers</li>
-<li>first law of GIS is "garbage in, garbage out"</li>
-<li>I was trained in the ANSLIC standard from the start</li>
-<li>ArcGIS has a tool called ArcCatalog which makes metadata easy to create and view</li>
-</ul>
-
-
-<h3>Institutional Requirements</h3>
-
-<ul>
-<li>The ARC and NHMRC say they are going to require more metadata (and even data deposit)</li>
-<li>Restrictions on data access make it necessary to describe at least the metadata around provision agreements, licence, allowable access</li>
-<li>A supporting management level who value the metadata as research output (alongside a peer reviewed paper metadata pales in comparison)</li>
-<li>My old boss used to say "Work Not Published Is Work Not Done".</li>
-</ul>
-
-
-<h3>This reminds me of Approaches and Barriers to Reproducible Research</h3>
-
-<ul>
-<li>In 2011 BiostatMatt (Matt Shotwell) published <a href="http://biostatmatt.com/uploads/shotwell-interface-2011.pdf">a survey of biostatisticians</a>
-VUMC Dept. of Biostatistics to assess:</li>
-<li>the prevalence of fully scripted data analyses</li>
-<li>the prevalence of literate programming practices</li>
-</ul>
-
-
-<p>To assess the perceived barriers to reproducible research the also asked:</p>
-
-<pre><code>What The biggest obstacle to always reproducibly scripting your work?
-</code></pre>
-
-<p></p>
-
-
-<pre><code>| Barrier                                                  | Staff | Faculty |
-|----------------------------------------------------------+-------+---------|
-| No signifcant obstacles.                                 |     8 |      10 |
-| I havent learned how.                                    |     0 |       0 |
-| It takes more time.                                      |     7 |       7 |
-| It makes collaboration difficult (eg. file compatibility)|     4 |       2 |
-| The software I use doesnt facilitate reproducibility.    |     0 |       0 |
-| Its not always necessary for my work to be reproducible. |     2 |       0 |
-| Other                                                    |     2 |       1 |
-|----------------------------------------------------------+-------+---------|
-</code></pre>
-
-<h3>So what about the Approaches and Barriers to Me Writing Metadata?</h3>
-
-<p>With a sample size of one I asked myself these questions:</p>
-
-<pre><code>| Q                                                  | A                                                                    |
-|----------------------------------------------------+----------------------------------------------------------------------|
-| Do I fully document data (to a metadata standard?) | Occasionally, using DDI for high value raw inputs and final products |
-| Do I employ data documentation practices           | I use a tool I created to write minimal metadata occasionally        |
-| What are the main barriers?                        | takes more time, The software doesnt facilitate, not always necessary|
-</code></pre>
-
-<h3>Conclusions</h3>
-
-<ul>
-<li>The tools need to help write metadata
-
-<ul>
-<li>the Institution needs to require metadata</li>
-</ul>
-</li>
-<li></li>
-</ul>
-
-
-<h3>References</h3>
-
-<ul>
-<li>Shotwell, M.S. and Alvarez, J.M. 2011. Approaches and Barriers to Reproducible Practices in Biostatistics.
-http://biostatmatt.com/uploads/shotwell-interface-2011.pdf</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -447,117 +699,117 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf</li>
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
                 
                 <li><a href="/categories/animation">animation (1)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
                 <li><a href="/categories/modelling">modelling (1)</a></li>
                 
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                <li><a href="/categories/workflow">workflow (3)</a></li>
                 
-                <li><a href="/categories/opinion">opinion (1)</a></li>
+                <li><a href="/categories/systems">systems (1)</a></li>
                 
-                <li><a href="/categories/climate change">climate change (1)</a></li>
+                <li><a href="/categories/versions">versions (1)</a></li>
                 
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                <li><a href="/categories/surveys">surveys (1)</a></li>
                 
                 <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
                 
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                <li><a href="/categories/suicide">suicide (1)</a></li>
                 
-                <li><a href="/categories/ecology">ecology (1)</a></li>
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (12)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (2)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (11)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
                 
                 <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
                 
                 <li><a href="/categories/make">make (1)</a></li>
                 
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
-                
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
-                <li><a href="/categories/gis">gis (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (3)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (2)</a></li>
+                <li><a href="/categories/blogger">blogger (1)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (2)</a></li>
                 
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                <li><a href="/categories/outlines">outlines (1)</a></li>
                 
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
                 
                 <li><a href="/categories/organising">organising (2)</a></li>
                 
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
                 
-                <li><a href="/categories/ons">ons (1)</a></li>
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
                 
-                <li><a href="/categories/data science">data science (1)</a></li>
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
-                <li><a href="/categories/suicide">suicide (1)</a></li>
+                <li><a href="/categories/ecology">ecology (1)</a></li>
                 
-                <li><a href="/categories/systems">systems (1)</a></li>
+                <li><a href="/categories/gis">gis (1)</a></li>
                 
-                <li><a href="/categories/python">python (2)</a></li>
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
                 
-                <li><a href="/categories/me">me (3)</a></li>
+                <li><a href="/categories/links">links (1)</a></li>
                 
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (10)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (12)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
                 
                 <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
-                <li><a href="/categories/concordance">concordance (1)</a></li>
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
                 
                 <li><a href="/categories/replication">replication (1)</a></li>
                 
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
                 
               </ul>
             </div>
@@ -566,6 +818,10 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf</li>
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
+                </li>
                 
                 <li>
                   <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
@@ -761,10 +1017,6 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf</li>
                 
                 <li>
                   <a href="/2013/04/suicide-and-drought-evidence-from-literature/" title="Suicide And Drought Evidence From Literature" rel="bookmark">Suicide And Drought Evidence From Literature</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/timeseries-with-spatial-lag/" title="Timeseries with Spatial Lag" rel="bookmark">Timeseries with Spatial Lag</a>
                 </li>
                 
               </ul>
