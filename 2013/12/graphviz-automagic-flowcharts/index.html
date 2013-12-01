@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - The Organisation of Material</title>
+    <title>Ivan Hanigan - graphviz-automagic-flowcharts</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2012/02/the-organisation-of-material/" title="The Organisation of Material" rel="bookmark">The Organisation of Material</a>
+    <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,19 +55,70 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>During the course of my research I have repeatedly found the organisation of material to be a challenge (I'm talking about the code, data, text and everything else related to analyses).  One of the things I often struggle with is just keeping my thoughts clear and consistent between projects, through weeks and across years.  I'll try to blog about how I have decided to manage my work, and the tools I have tried and end up using.</p>
+    <ul>
+<li>Back in 2009 Joseph Guillaume worked with me on a complicated workflow</li>
+<li>He came up with this python script to help keep track of the steps</li>
+<li>The simple text file is a list of transformations, inputs and output</li>
+<li>It is converted to the right format and graphviz creates a html page with pop-outs</li>
+</ul>
 
-<p>To start with, I'd like to share a passage taken from pages 55-57 of Arthur Koestler's "The Ghost in the Machine", 1967, London, Pan Books, with some rephrasing of my own.</p>
 
-<p>"The vexed problem of the 'organisation of material'; vexed because the different aspects of the problem, the welter of evidence and the welter of interpretations, are all interconnected like threads in a Persian carpet. The author is keenly aware of the pattern they form; but how can he convey that pattern if he has to unpick the threads in order to explain them one at a time? Here the problem of temporal order begins to intrude, although his mind may still be functioning in the partly or wholly non-verbal regions of images and intimations.</p>
+<h4>Simple text list</h4>
 
-<p>At last he arrives at a tentative arrangement of his material, under a series of headings and sub-headings, which he shuffles about as if they were compact building blocks. They are probably each represented by a mere jotted key-word....</p>
+<pre><code>Transformation
+        description
+                the thing 
+        inputs
+                the thing before
+                another thing
+        output
+                the next thing
+        notes
+                the thing is this other thing   this is a really long description 
+                blah blah asdfasdfasdfasdfasdfa 
 
-<p>...now the time has come for these intentional seeds to start growing into saplings which will branch out into sections, sub-sections, and so on: the selection of evidence to be quoted, of illustrations, comment and anecdotes, each of them necessitating further strategic choices. At each node - branching point - of the growing tree, more details are filled in, until at last the syntactic level is reached, the phrase generating machine takes over, the individual words are lined up - some effortlessly, some after a painful search, and are finally transformed into patterns of contractions of finger muscles guiding a pen: the logos has become incarnate.</p>
+Transformation
+        description
+                yet another thing
+        inputs
+                the next thing
+        output
+                a final thing
+        notes
+                this is a note
+</code></pre>
 
-<p>But of course the process is never quite as neat and orderly as that; trees do not grow in this rigidly symmetrical way. In our schematised account, the selection of the actual words occurs only at an advanced stage of the process, after the general plan and the ordering of the material have been decided on, and the buds of the tree are ready to burst open in their proper left-to-right order. In reality, however, one branch somewhere in the middle might blossom into words, while others have as yet hardly started to grow. And while it is true that the idea precedes the actual process of verbalisation, it is also true that ideas are often airy nothings until they crystallise into verbal concepts and acquire tangible shape....</p>
+<p></p>
 
-<p>Thus our tree progresses with irregular growth and constant oscillations between levels. Transforming thought into language is not a one-way process; the sap flows in both directions, up and down the branches of the tree. The operation is further complicated and sometimes brought to the verge of a breakdown by the author's deplorable tendency to correct, erase, chop off entire flowering branches from the tree and start growing them afresh".</p>
+
+<ul>
+<li>keep this in your work directory and update it whenever you add a step to the workflow</li>
+<li>the list can be as big as you like (hundreds of steps), and entered in any order, the inputs/output relationships determine how the graph looks at the end</li>
+<li>to run the script just do the one line</li>
+</ul>
+
+
+<h4>Python code: run</h4>
+
+<pre><code>python transformations.py workflow_steps.txt index
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>open the html page and click on a square box to bring up the pop-out</li>
+<li>short text is shown, long text is replaced by an ellipse and only shown in pop-out</li>
+</ul>
+
+
+<h4>Conclusions</h4>
+
+<ul>
+<li>I've popped the script up as a <a href="https://github.com/ivanhanigan/transformations">Github repo</a></li>
+<li>The example is in the <a href="http://ivanhanigan.github.io/transformations/">gh-pages branch</a></li>
+</ul>
+
 
     <div class="clear"></div>
   </div>
@@ -82,16 +133,14 @@
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/thoughts" title="thoughts" rel="category tag">thoughts</a>
+    <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
     
-    <a href="/categories/organising" title="organising" rel="category tag">organising</a>
-    
-    <a href="/categories/overview" title="overview" rel="category tag">overview</a>
+    <a href="/categories/workflow" title="workflow" rel="category tag">workflow</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Mon Feb 06 00:00:00 +1100 2012">06 Feb 2012</abbr>
+      <abbr class="published" title="Sun Dec 01 00:00:00 +1100 2013">01 Dec 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -105,7 +154,7 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2012/02/the-organisation-of-material/";
+    var disqus_url = "http://ivanhanigan.github.com/2013/12/graphviz-automagic-flowcharts/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
