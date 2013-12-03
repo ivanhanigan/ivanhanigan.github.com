@@ -6,6 +6,171 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>Non Linear Relationships Vs Non Linear Models Vis A Vis Curvi Linear Terms</title>
+				<description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 non-linear-relationships-vs-non-linear-models&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 Nonlinear Regression vs. Linear Regression&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1 Model 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2 Model 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 Conclusions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; non-linear-relationships-vs-non-linear-models&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;I value precise language very highly
+&lt;/li&gt;
+&lt;li&gt;this is because in multi-disciplinary teams it is easy to talk using the same words and mean different things
+&lt;/li&gt;
+&lt;li&gt;in recent discussion about &lt;a href=&quot;http://cran.r-project.org/web/packages/dlnm/index.html&quot;&gt;Distributed Lag Non-linear Models&lt;/a&gt; I started to reflect on something that has bothered me for a While
+&lt;/li&gt;
+&lt;li&gt;back in 2005 my old mate Prof Keith Dear picked me up on using the term &quot;non-linear model&quot; incorrectly and explained the maths&amp;hellip;
+&lt;/li&gt;
+&lt;li&gt;I kind of understood but promptly forgot and found a lot of people use the term non-linear model a bit carelessly
+&lt;/li&gt;
+&lt;li&gt;Yesterday I was in a discussion about comparing non-linear relationships between different studies in a meta-analysis
+&lt;/li&gt;
+&lt;li&gt;I immediatly felt uncomfortable when we started to discuss these as &quot;non-linear models&quot;
+&lt;/li&gt;
+&lt;li&gt;so here is a quick bit of google fu (with a session at the coffee shop with Steve and Mishka) to remind me about the difference between 
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; Nonlinear Regression vs. Linear Regression&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;the following comes from
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.ats.ucla.edu/stat/sas/library/SASNLin_os.htm&quot;&gt;http://www.ats.ucla.edu/stat/sas/library/SASNLin_os.htm&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;verbatim except for my attempt at mathjax notation in latex
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;
+A regression model is called nonlinear, if the derivatives
+of the model with respect to the model parameters depends on one or
+more parameters. This definition is essential to distinguish nonlinear
+from curvilinear regression. A regression model is not necessarily
+nonlinear if the graphed regression trend is curved. A polynomial
+model such as this:
+&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; Model 1&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+
+
+
+
+\(Y_{i} = \beta_{0} + \beta_{1} X_{i} + \beta_{2} X_{i}^2 + \epsilon_{i}\)
+
+&lt;ul&gt;
+&lt;li&gt;appears curved when y is plotted against x. It is, however, not a nonlinear model. To see this, take derivatives of y with respect to the parameters b0, b1
+&lt;/li&gt;
+&lt;li&gt;dy/db0 = 1 
+&lt;/li&gt;
+&lt;li&gt;dy/db1 = x 
+&lt;/li&gt;
+&lt;li&gt;dy/db2 = x&lt;sup&gt;2&lt;/sup&gt; 
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;ul&gt;
+&lt;li&gt;None of these derivatives depends on a model parameter, the model is linear. In contrast, consider the log-logistic model 
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; Model 2&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+
+
+
+
+\(Y_{i} = d + (a - d)/(1 + e^{b \times log(x/g)}) + \epsilon\)
+
+&lt;ul&gt;
+&lt;li&gt;Take derivatives with respect to d, for example: 
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+\(dy/dd = 1 - 1/(1 + e^{b \times log(x/g)})\)
+
+&lt;ul&gt;
+&lt;li&gt;The derivative involves other parameters, hence the model is nonlinear.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; Conclusions&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;It is probably best to refer to the polynomial as a &quot;non-linear relationship&quot; in a linear model
+&lt;/li&gt;
+&lt;li&gt;reserving &quot;non-linear model&quot; for things like Model 2
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+				<published>Tue Dec 03 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/</link>
+			</item>
+		
+			<item>
 				<title>research-protocol-we-used-for-our-bushfire-project</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;For a three year project on Bushfire smoke and Health we used the following structure in a wiki&lt;/li&gt;
@@ -1154,361 +1319,6 @@ git push origin master
 </description>
 				<published>Mon Nov 25 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/11/setting-up-a-workflow-with-code-chunks/</link>
-			</item>
-		
-			<item>
-				<title>sync-endnote-and-mendeley-references-using-r-xml</title>
-				<description>&lt;h4&gt;Background&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I use Mendeley (despite them being bought out by Elsevier, who used to sell guns)&lt;/li&gt;
-&lt;li&gt;My Colleagues use EndNote&lt;/li&gt;
-&lt;li&gt;Need to sync, they find Endnote better for their workflow&lt;/li&gt;
-&lt;li&gt;I tried to export my Mendeley as XML and import to Endnote, but found many duplicates that took time to rectify&lt;/li&gt;
-&lt;li&gt;(and the risk is there that the RefNo they used in the Doc will be the duplicate that I removed)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Aims&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;test if R and the XML package can help find refs in Endnote that aren't in Mendeley&lt;/li&gt;
-&lt;li&gt;If so can I write those into an Mendeley import for seamless integrations&lt;/li&gt;
-&lt;li&gt;and what about going from Mendeley to Endnote?&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Methods&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The R XML package seems an obvious place to start&lt;/li&gt;
-&lt;li&gt;before writing a function, just step thru the process&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Step 1: export XML from Mendeley and Endnote&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;In Mendeley Just select the refs in the list and then from the file menu&lt;/li&gt;
-&lt;li&gt;In Endnote it is also under File menu&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Step 2: R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# func
-# might need sudo apt-get install r-cran-xml?
-require(XML)
-
-# load
-dir()
-[1] &quot;EndnoteCollection.xml&quot;
-    &quot;MendeleyCollection.Data&quot;
-[3] &quot;MendeleyCollection.xml&quot; 
-
-d1 &amp;lt;- xmlTreeParse(&quot;EndnoteCollection.xml&quot;, useInternal=T)
-
-# clean
-str(d1)
-# ooooh xml schmexemhel voodoo?
-
-# do
-top &amp;lt;- xmlRoot(d1)
-str(top)
-names(top)
-# top [[1]] # prints the whole thing
-top [[1]][[1]]
-top [[1]][[2]]
-# prints a record (1 or 2)
-
-# just messing around
-length(top[[1]])
-top [[1]][[120]]
-names(top [[1]][[120]])
-names(top [[1]][[120]][[&quot;contributors&quot;]])
-names(top [[1]][[120]][[&quot;contributors&quot;]][[&quot;authors&quot;]])
-top [[1]][[120]][[&quot;contributors&quot;]][[&quot;authors&quot;]][[2]]
-
-i &amp;lt;- 110
-top [[1]][[i]]
-as.matrix(names(top [[1]][[i]]))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;OK so XML as a list.&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I think if I do a merge of two author-date-title dataframes I can easily find the diffs&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;TRY a square wheel&lt;/h4&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;endnote_mendeley_df &amp;lt;- function(input_xml,
-                                nrow_to_try = 1000){
-  d1 &amp;lt;- xmlTreeParse(input_xml, useInternal=T)
-  top &amp;lt;- xmlRoot(d1)
-
-  output &amp;lt;- matrix(ncol = 4, nrow = 0)
-  for(i in 1:nrow_to_try)
-  {
-  # i = 1000
-    if(is.na(xmlValue(top [[1]][[i]]))) break
-    if(
-      !is.na(xmlValue(top [[1]][[i]][[&quot;contributors&quot;]][[&quot;authors&quot;]][[2]]))
-      )
-    {
-      author &amp;lt;- paste(xmlValue(top [[1]][[i]][[&quot;contributors&quot;]][[&quot;authors&quot;]][[1]]), &quot;et al&quot;, &quot; &quot;)
-    } else {
-      author &amp;lt;- xmlValue(top [[1]][[i]][[&quot;contributors&quot;]][[&quot;authors&quot;]][[1]])
-    }
-    year &amp;lt;- xmlValue(top [[1]][[i]][[&quot;dates&quot;]][[&quot;year&quot;]])
-    title &amp;lt;- xmlValue(top [[1]][[i]][[&quot;titles&quot;]][[1]])
-    endnoteref &amp;lt;- xmlValue(top [[1]][[i]][[&quot;rec-number&quot;]])
-    output &amp;lt;- rbind(output, c(author, year, title, endnoteref))
-
-  }
-  output &amp;lt;- as.data.frame(output)
-  return(output)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R Test:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;output &amp;lt;- endnote_mendeley_df(
-  input_xml = &quot;EndnoteCollection.xml&quot;
-  ,
-  nrow_to_try = 10
-  )
-
-nrow(output)
-write.csv(output, &quot;EndnoteCollection.csv&quot;, row.names = F)
-output  &amp;lt;- read.csv(&quot;EndnoteCollection.csv&quot;, stringsAsFactors = F)
-str(output)
-output[,1:2]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R Do-read:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;endnote &amp;lt;- endnote_mendeley_df(
-  input_xml = &quot;EndnoteCollection.xml&quot;
-  )
-nrow(endnote)
-mendeley &amp;lt;- endnote_mendeley_df(
-  input_xml = &quot;MendeleyCollection.xml&quot;
-  )
-nrow(mendeley)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R Do-concatenate and lowercase&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# TODO this is a really terrible way to do this.
-# FIXME find out how to compare the two better
-require(stringr)
-mendeley2 &amp;lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
-mendeley2 &amp;lt;- gsub(&quot; &quot;, &quot;&quot;, mendeley2)
-mendeley2 &amp;lt;- gsub(&quot;,&quot;, &quot;&quot;, mendeley2)
-mendeley2 &amp;lt;- tolower(mendeley2)
-mendeley2[1:5]
-mendeley$mendeley2 &amp;lt;- mendeley2
-
-# now do this again from endnote
-endnote2 &amp;lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
-endnote2 &amp;lt;- gsub(&quot; &quot;, &quot;&quot;, endnote2)
-endnote2 &amp;lt;- gsub(&quot;,&quot;, &quot;&quot;, endnote2)
-endnote2 &amp;lt;- tolower(endnote2)
-endnote2[1:5]
-endnote$endnote2 &amp;lt;- endnote2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R Do-merge:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;endnote_not_in_mendeley &amp;lt;- merge(endnote,
-                                 mendeley,
-                                 by.x = &quot;endnote2&quot;,
-                                 by.y = &quot;mendeley2&quot;,
-                                 all.x = T)
-str(endnote_not_in_mendeley)
-nrow(endnote_not_in_mendeley)
-head(endnote_not_in_mendeley)
-endnote_not_in_mendeley &amp;lt;- endnote_not_in_mendeley[
-                                                   is.na(endnote_not_in_mendeley$V1.y),
-                                                   ]
-nrow(endnote_not_in_mendeley)
-# 66 refs in endnote are not in mendeley
-write.csv(endnote_not_in_mendeley,
-      &quot;endnote_not_in_mendeley.csv&quot;, row.names = F)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Open this as spreadsheet and cross check&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;make a new column for comments&lt;/li&gt;
-&lt;li&gt;check off which ones were in AllDocuments and not in the Mendeley group&lt;/li&gt;
-&lt;li&gt;this diff was because of when I imported the Endnote XML but had not assigned these to the mendeley group&lt;/li&gt;
-&lt;li&gt;once have cleaned up the mendeley group export again and then check which are in mendeley but not in endnote&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;First here is a note&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;about a way to speed up the checks, excluding false positives using fuzzy matching&lt;/li&gt;
-&lt;li&gt;my method relies on the author, date and title to be written the same in both ie initials then surname or visa verca&lt;/li&gt;
-&lt;li&gt;But this is not always true&lt;/li&gt;
-&lt;li&gt;I previously used levenshtein string matching to identify strings that are close but not identical&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://wiki.r-project.org/rwiki/doku.php?id=tips:data-strings:levenshtein&quot;&gt;Try this link&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://rwiki.sciviews.org/doku.php?id=tips:data-strings:levenshtein&quot;&gt;OR this link&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;TODO I will share this code as a GitHub Gist later!&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code: possibility to speed up Checks&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;tmp1 &amp;lt;- mendeley[grep(&quot;Walker&quot;, mendeley$V1),&quot;mendeley2&quot;]
-tmp2 &amp;lt;- endnote[grep(&quot;Walker&quot;, endnote$V1),&quot;endnote2&quot;]
-
-# these differ slightly
-# B. Walker et al vs Walker, Brian et al
-source(&quot;~/Dropbox/tools/levenshtein.r&quot;)
-levenshtein(
-    tmp1
-    ,
-    tmp2
-    )
-# gives 92percent match
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R Code: Find mendeley refs without endnote&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;  endnote &amp;lt;- endnote_mendeley_df(
-    input_xml = &quot;EndnoteCollection.xml&quot;
-    )
-  nrow(endnote)
-  mendeley &amp;lt;- endnote_mendeley_df(
-    input_xml = &quot;MendeleyCollection2.xml&quot;
-    )
-  nrow(mendeley)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R Code: Do-concatenate and lowercase&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(stringr)
-mendeley2 &amp;lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
-mendeley2 &amp;lt;- gsub(&quot; &quot;, &quot;&quot;, mendeley2)
-mendeley2 &amp;lt;- gsub(&quot;,&quot;, &quot;&quot;, mendeley2)
-mendeley2 &amp;lt;- tolower(mendeley2)
-mendeley2[1:5]
-mendeley$mendeley2 &amp;lt;- mendeley2
-
-# now do this again from endnote
-endnote2 &amp;lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
-endnote2 &amp;lt;- gsub(&quot; &quot;, &quot;&quot;, endnote2)
-endnote2 &amp;lt;- gsub(&quot;,&quot;, &quot;&quot;, endnote2)
-endnote2 &amp;lt;- tolower(endnote2)
-endnote2[1:5]
-endnote$endnote2 &amp;lt;- endnote2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R Do-merge:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;mendeley_not_in_endnote &amp;lt;- merge(mendeley,
-                                 endnote,
-                                 by.y = &quot;endnote2&quot;,
-                                 by.x = &quot;mendeley2&quot;,
-                                 all.x = T)
-str(mendeley_not_in_endnote)
-nrow(mendeley_not_in_endnote)
-head(mendeley_not_in_endnote)
-mendeley_not_in_endnote &amp;lt;- mendeley_not_in_endnote[
-                                                      is.na(mendeley_not_in_endnote$V1.y),
-                                                      ]
-nrow(mendeley_not_in_endnote)
-# 92 refs in endnote are not in mendeley
-write.csv(mendeley_not_in_endnote,
-      &quot;mendeley_not_in_endnote.csv&quot;, row.names = F)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Not all these 92 will be true&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;so let;s try the string matching&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;source(&quot;~/Dropbox/tools/levenshtein.r&quot;)
-pcnt_threshold &amp;lt;- 0.6
-out_list &amp;lt;- matrix(ncol = 3, nrow = 0)
-#out_list &amp;lt;- read.csv(&quot;mendeley_not_in_endnote_fz_match.csv&quot;, stringsAsFactors = F)
-for(i in 36:nrow(mendeley_not_in_endnote))
-    {
-        print(i)
-#        i = 2
-tmp1 &amp;lt;- mendeley_not_in_endnote[i,1]
-    for(j in 1:nrow(endnote))
-        {
-    #        j = 2
-    if(exists(&quot;out&quot;)) rm(out)
-    tmp2 &amp;lt;- endnote$endnote2[j]
-    pcnt &amp;lt;- levenshtein(
-            tmp1
-            ,
-            tmp2
-            )
-    #pcnt
-    if(pcnt &amp;gt;= pcnt_threshold) out &amp;lt;- tmp2
-    if(exists(&quot;out&quot;))
-        out_list &amp;lt;- rbind(out_list, c(tmp1, tmp2, pcnt))
-    if(exists(&quot;out&quot;)) break
-        }
-
-    }
-out_list
-write.csv(out_list, &quot;mendeley_not_in_endnote_fz_match.csv&quot;, row.names = F)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;R Code: Do-concatenate and lowercase&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(stringr)
-out_list &amp;lt;- read.csv(&quot;mendeley_not_in_endnote_fz_match.csv&quot;, stringsAsFactors = F)
-mendeley2 &amp;lt;- read.csv(&quot;mendeley_not_in_endnote.csv&quot;, stringsAsFactors=F)
-mendeley2[1,]
-out_list[1,]
-mendeley2 &amp;lt;- merge(mendeley_not_in_endnote, out_list,
-                   by.x = &quot;mendeley2&quot;,
-                   by.y = &quot;V1&quot;, all.x = T)
-mendeley2[2,]
-mendeley2 &amp;lt;- mendeley2[is.na(mendeley2$V3),]
-nrow(mendeley2)
-# 48 records
-write.csv(mendeley2, &quot;mendeley_not_in_endnote_best_estimate.csv&quot;, row.names=F)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Results&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I found that XML package in R can work with the Endnote and Mendeley export Files&lt;/li&gt;
-&lt;li&gt;I think I made a lot of bad decisions about the way I went about  doing this!&lt;/li&gt;
-&lt;li&gt;It seemed quite difficult to get the XML stuff to make sense to me&lt;/li&gt;
-&lt;li&gt;I;ve heard that python has better libraries for working with XML&lt;/li&gt;
-&lt;li&gt;the levenshtein string matching code proved useful again.  I should get out of the habit of looping and start using lapply etc to speed this up.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Conclusions&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This was an interesting if frustrating experiment&lt;/li&gt;
-&lt;li&gt;The minor issues with importing from mendeley/endnote and deduplicating using their own tools was probably not worth writing all this half-baked R code.&lt;/li&gt;
-&lt;li&gt;But I did learn more about working with XML in R (and realised this is probably not one of R's Strengths -- or mine for that matter!)&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Wed Nov 20 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/sync-endnote-and-mendeley-using-r-xml/</link>
 			</item>
 		
 	</channel>
