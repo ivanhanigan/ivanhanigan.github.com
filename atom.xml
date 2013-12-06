@@ -4,13 +4,186 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-12-04T14:00:43+11:00</updated>
+ <updated>2013-12-06T23:16:51+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>auto-download-bureau-meteorology-intra-day-data</title>
+   <link href="http://schamberlain.github.com/2013/12/auto-download-bureau-meteorology-intra-day-data/"/>
+   <updated>2013-12-06T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/12/auto-download-bureau-meteorology-intra-day-data</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;We;re looking at health impacts of high temperatures at work&lt;/li&gt;
+&lt;li&gt;need to see the highest temperatures during the working hours&lt;/li&gt;
+&lt;li&gt;bom provides hourly data for download, but only 3 days at a time&lt;/li&gt;
+&lt;li&gt;we build a script and set it on a schedule to run every day, download the data and collate the results&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;First the FTP server URL structure&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The URLS are predictable, just need the station id, state and a code if metro or rural&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;table&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;| Station_ID | State | City_9_or_regional_8_ |
+|      94774 | N     |                     9 |
+|      95719 | N     |                     8 |
+|      94768 | N     |                     9 |
+|      94763 | N     |                     9 |
+|      94767 | N     |                     9 |
+|      94910 | N     |                     8 |
+|      94929 | N     |                     8 |
+|      95896 | N     |                     8 |
+|      94693 | N     |                     8 |
+|      94691 | N     |                     8 |
+|      95677 | S     |                     9 |
+|      94675 | S     |                     9 |
+|      94672 | S     |                     9 |
+|      94866 | V     |                     9 |
+|      95867 | V     |                     9 |
+|      94868 | V     |                     9 |
+|      94875 | V     |                     8 |
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;now create a script called &quot;bom_download.r&quot;&lt;/li&gt;
+&lt;li&gt;it takes the station details and paste into the URLs&lt;/li&gt;
+&lt;li&gt;downloads the files&lt;/li&gt;
+&lt;li&gt;stores in a directory for each days downloads&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;filename = &quot;~/data/ExcessHeatIndices/inst/doc/weather_stations.csv&quot;
+output_directory = &quot;~/bom-downloads&quot;
+setwd(output_directory)
+
+urls &amp;lt;- read.csv(filename)
+urls_list &amp;lt;- paste(sep = &quot;&quot;, &quot;http://www.bom.gov.au/fwo/ID&quot;,
+                  urls$State,
+                  &quot;60&quot;, 
+                  urls$City_9_or_regional_8_,
+                  &quot;01/ID&quot;,
+                  urls$State,
+                  &quot;60&quot;,
+                  urls$City_9_or_regional_8_,
+                  &quot;01.&quot;,
+                  urls$Station_ID,
+                  &quot;.axf&quot;)
+
+output_directory &amp;lt;- file.path(output_directory,Sys.Date())
+dir.create(output_directory)
+
+for(url in urls_list)
+{
+  output_file &amp;lt;- file.path(output_directory,basename(url))
+  download.file(url, output_file, mode = &quot;wb&quot;)
+
+}
+print(&quot;SUCCESS&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Now the data can be combined&lt;/li&gt;
+&lt;li&gt;clean up the header and extraneous extra line at the bottom&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# this takes data in directories from bom_download.r
+
+# first get list of directories
+filelist &amp;lt;- dir(pattern = &quot;axf&quot;, recursive = T)
+filelist
+
+# next get directories for days we haven't done yet
+if(file.exists(&quot;complete_dataset.csv&quot;))
+{
+complete_data &amp;lt;- read.csv(&quot;complete_dataset.csv&quot;, stringsAsFactors = F)
+#str(complete_data)
+last_collated &amp;lt;- max(as.Date(complete_data$date_downloaded))
+#max(complete_data$local_hrmin)
+
+days_downloaded &amp;lt;- dirname(filelist)
+filelist &amp;lt;- filelist[which(as.Date(days_downloaded) &amp;gt; as.Date(last_collated))]
+}
+
+# for these collate them into the complete file
+for(f in filelist)
+{
+  f &amp;lt;- filelist[2]
+  print(f)
+  fin &amp;lt;- read.csv(f, colClasses = c(&quot;local_date_time_full.80.&quot; = &quot;character&quot;), stringsAsFactors = F, skip = 19)
+  fin &amp;lt;- fin[1:(nrow(fin) - 1),]
+  fin$date_downloaded &amp;lt;- dirname(f)
+  fin$local_year &amp;lt;- substr(fin$local_date_time_full.80., 1, 4)
+  fin$local_month &amp;lt;- substr(fin$local_date_time_full.80., 5, 6)
+  fin$local_day &amp;lt;- substr(fin$local_date_time_full.80., 7, 8)
+  fin$local_hrmin &amp;lt;- substr(fin$local_date_time_full.80., 9, 12)
+  fin$local_date &amp;lt;- paste(fin$local_year, fin$local_month, fin$local_day, sep = &quot;-&quot;)
+  if(file.exists(&quot;complete_dataset.csv&quot;))
+  {
+  write.table(fin, &quot;complete_dataset.csv&quot;, row.names = F, sep = &quot;,&quot;, append = T, col.names = F)
+  } else {
+  write.table(fin, &quot;complete_dataset.csv&quot;, row.names = F, sep = &quot;,&quot;)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;so now let;s automate the process&lt;/li&gt;
+&lt;li&gt;make a BAT file&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;BAT file (windoze)&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&quot;C:\Program Files\R\R-2.15.2\bin\Rscript.exe&quot; &quot;~\bom-downloads\bom_download.r&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;add this  bat file to the scheduled tasks in your control panel&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Conclusions&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;watch the data roll on in&lt;/li&gt;
+&lt;li&gt;each day there are about 3 days downloaded&lt;/li&gt;
+&lt;li&gt;meaning duplicates will be frequent, need to write a script to de-duplicate&lt;/li&gt;
+&lt;li&gt;cheers!&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>the-history-of-ons</title>
@@ -4643,6 +4816,8 @@ dir.create(&quot;inst/extdata&quot;, recursive=T)
 write.csv(civst_gend_sector, &quot;inst/extdata/civst_gend_sector.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h1&gt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD&lt;/h1&gt;
+
 &lt;p&gt;&lt;/p&gt;
 
 
@@ -4672,9 +4847,11 @@ str(df)
 write.csv(df, &quot;inst/extdata/civst_gend_sector_full.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;p&gt;f97143b6e161104491d27acd190f3196991efee5&lt;/p&gt;
+
 &lt;h4&gt;Motivating reason for using these data&lt;/h4&gt;
 
-&lt;p&gt;Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.&lt;/p&gt;
+&lt;p&gt;Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.&lt;/p&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;
 
 &lt;p&gt;I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.&lt;/p&gt;
 
@@ -5944,30 +6121,6 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
 &lt;li&gt;so I think I can &lt;a href=&quot;http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition&quot;&gt;just remount /var&lt;/a&gt; onto the larger /mnt secondary disk.&lt;/li&gt;
 &lt;/ul&gt;
 
-</content>
- </entry>
- 
- <entry>
-   <title>Starting my Open Notebook Science Blog</title>
-   <link href="http://schamberlain.github.com/2013/09/ons/"/>
-   <updated>2013-09-13T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2013/09/ons</id>
-   <content type="html">&lt;p&gt;Many examples are emerging of scientists who are transitioning to a
-much more open model of research.  This is in part externally driven
-by funding bodies (such as the Aussie Research Council asking for deposit of funded data and papers) and journals
-(&lt;a href=&quot;http://www.nature.com/ng/journal/v45/n5/full/ng.2621.html&quot;&gt;ie. Nature journals removing length restrictions on Methods sections.&lt;/a&gt;). Also the increased value being placed on transparency of reproducible analysis to safeguard against error and fraud is becoming an internal driver within science communities.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Open_Notebook_Science&quot;&gt;Open Notebook Science&lt;/a&gt;
-(ONS) style is an extreme of transparent approaches to research.
-According to the wikipedia page it is the &quot;practice of making the
-entire primary record of a research project publicly available online
-as it is recorded&quot;.&lt;/p&gt;
-
-&lt;p&gt;That's pretty extreme!  In my view a lot of stuff in the research project should probably be archived quickly and left to rot.&lt;/p&gt;
-
-&lt;p&gt;I like the range of options available.  I think I'll go for &lt;a href=&quot;http://onsclaims.wikispaces.com/&quot;&gt;SCD or &quot;Seclected Content / Delayed&quot;&lt;/a&gt; and show their image below.  In this model a portion of the open notebook and associated supporting raw data are available after some delay. I'll try to use this blog for weekly updates on progress for each project, and provide links off my 'Open Notebook' and 'Software' Tabs.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/ONS-SCD.png&quot; alt=&quot;ONS-SCD.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  
