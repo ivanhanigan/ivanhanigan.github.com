@@ -54,48 +54,39 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
+      <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Using Orgmode and Jekyll for Open Notebook</h1>
-
-<p>Orgmode is a great notebook tool because it allows the coding, evaluation and documentation all in one.  I also want to use it to send the documentation to my blog as an Open Notebook.</p>
-
-<p>If starting again I'd look into this:</p>
+      <p>This post is just a short note about something I'm thinking of calling "documentation-driven development".
+It is based on the concept of <a href="http://en.wikipedia.org/wiki/Test-driven_development">"test-driven development"</a>, and more recently:</p>
 
 <ul>
-<li><a href="http://orgmode.org/worg/org-tutorials/org-jekyll.html">http://orgmode.org/worg/org-tutorials/org-jekyll.html</a></li>
+<li><a href="http://lamages.blogspot.in/2013/04/test-driven-analysis.html">"test-driven analysis"</a></li>
+<li>or even <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">"Evidence-based Data Analysis"</a>).</li>
+<li>It is also a kind of a critique on the paradigm suggested by the BCCVL statement on <a href="http://bccvl.org.au/blog/2013/08/20/just-in-time-metadata/">"Just-In-Time metadata"</a>.</li>
 </ul>
 
 
-<p>But as it is I already put a lot of work into configuring a jekyll blog I cloned from Scott Chamberlain over at ROpenSci and I will just use orgmode to publish the posts related to each project, tagged as 'categories'.</p>
-
-<p>But here is a problem I just found out how to solve.  For a long time I thought that because github disabled ruby plugins that the automatic generate categories index pages was broken.  Luckily Charlie Park has written up the following solution and this seems to have worked for me today:</p>
-
-<ul>
-<li><a href="http://charliepark.org/tags-in-jekyll/">http://charliepark.org/tags-in-jekyll/</a></li>
-<li><a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a></li>
-</ul>
-
-
-<p>Cheers!</p>
+<p>Anyway, it is a small thing but hopefully big things will grow.</p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/orgmode" title="orgmode" rel="category tag">orgmode</a>
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/09/using-orgmode-and-jekyll-for-open-notebook/#disqus_thread'>Comments</a>
+      <a href='/2013/10/document-first-ask-questions-later/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Sun Sep 22 00:00:00 +1000 2013">22 Sep 2013</abbr>
+        <abbr class="published" title="Fri Oct 25 00:00:00 +1100 2013">25 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -104,176 +95,395 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/09/transformational-adaptation/" title="transformational-adaptation" rel="bookmark">transformational-adaptation</a>
+      <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
     </h1>
     <div class="entry-content full-content">
-      <p>Energymark is about transformational adaptations as opposed to incremental adaptation..</p>
+      <p>This is a great example of logistic regression,  because it is pretty simple but covers good ground.  I got it from Peter Caley;s R tutorial workbook from Charles Darwin School of Environmental Research.</p>
 
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/Energymark" title="Energymark" rel="category tag">Energymark</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/transformational-adaptation/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Sun Sep 22 00:00:00 +1000 2013">22 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
+<p>It is also a tragic example of the impact weather can have on health.<br/>
+The colder it is the more likely the shuttle is to explode.</p>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Ecology datasets</h1>
+<p>The problem was with the failure rate (and number of) O-rings that failed (n.fail) related to the temperature (temp).</p>
 
-<p>These are my notes from a meeting that Kathryn and I had with a group of Ecologists at the ANU (primarily Luciana Porforio and Nasreen Khan).  We asked them to discuss how they search for and use Ecology datasets, especially how to best package up the parts of an ecological field data collection (ie weather, vegetation, biodiversity, soils, topography etc).</p>
+<h4>R Code:</h4>
 
-<p>Lu started off the discussion by stating that the most important thing to acknowledge is that every ecologist will start off with a main research question and then search for data that will address their specific research question.  It is difficult to work from a 'top-down' perspective that hopes to pre-empt the range of possible questions.  Lu felt that it may therefore be best to just keep all the data together in the biggest bundle that is possible and the end user can pick it apart once downloaded.</p>
+<pre><code>#Load the data
+#The following R code will construct the dataset
+n.fail &lt;- c(2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)
+temp &lt;- c(53, 66, 68, 70, 75, 78, 57, 67, 69, 70, 75, 79, 58, 67, 70, 72, 76, 81, 63, 67, 70, 73, 76)
+# there were 6 o rings for each of 23 attempts
+total &lt;- rep(6,23)
+# probability of fail
+p.fail &lt;- n.fail/total
+# Response = resp column bind them together  
+resp &lt;- cbind(n.fail, total-n.fail)
 
-<p>We explained that LTERN datasets can be quite expansive with many dimensions and it seemed preferable to at least untangle the main 'themes' for packaging up.</p>
+###########################################################################
+# we can write text files easily once the data frame or matrix is in shape
+data &lt;- as.data.frame(cbind(resp,temp))
+names(data) &lt;- c('nfail','totalMinusNfail', 'temp')
+# write.csv(data, 'learnR-logistic-data.csv', row.names=F)
 
-<p>Nasreen pointed out that there is always a protocol for how data are collected and this should give the data collection it's structure.  However I felt that ecology collections are so diverse they have been made (by necessity) very flexible and specific to the needs of the individual plot network.  Therefore generalisations across data collections are very hard to make (apart from easy things like "weather" or "aboveground dead biomass").</p>
+###########################################################################
+# and read it in again 
+# data2 &lt;- read.csv('learnR-logistic-data.csv')
 
-<h1>Toward a Unified Ecology</h1>
-
-<p>I always fall back on the text book "Toward a Unified Ecology: Timothy F. H. Allen, Thomas W. Hoekstra 1992".  I wondered if it can guide us?  On pages 42-53 they describe the following framework and use the image below (the letters in the middle disc correspond to the criteria ie O = Organism).  In this framework it is possible to summarise ANY ecological study as they ALWAYS incorporate these scale-independent criteria:</p>
-
-<ul>
-<li>Organism: genetic integrity, discrete body, autonomy from other organisms</li>
-<li>Population: relative similarity within the group</li>
-<li>Community: inter-species competition, interference, mutualism</li>
-<li>Ecosystem: biotic and abiotic interactions</li>
-<li>Landscape: spatial structure/contiguity</li>
-<li>Biome: characteristic physiognomy, disturbance and climate</li>
-</ul>
-
-
-<p>I thought that if these dimensions were identified in a data collection first then they might become the discrete packages by which each plot network publishes their collection?</p>
-
-<p><img src="/images/datadoco-layercake.png" alt="datadoco-layercake.png" /></p>
-
-<h1>Aekos</h1>
-
-<p>Over at <a href="http://www.aekos.org.au/why_aekos#diversity">AEKOS</a> they have a similar conceptual framework</p>
-
-<pre><code>Observations can range from that of individual organisms and
-interactions, through to populations, communities, ecosystems and
-across broad global landscapes.
-</code></pre>
-
-<h1>Conclusions</h1>
-
-<p>This is an open issue.  More discussions are needed internally for the Data Custodians.</p>
-
-<p>Lu also pointed out that the end users are the key stakeholders and perhaps more input from them (via surveys and workshops?) is needed?</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/DataDocumentation" title="DataDocumentation" rel="category tag">DataDocumentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/toward-a-unified-ecology-dataset/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Sep 20 00:00:00 +1000 2013">20 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/energymark/" title="energymark" rel="bookmark">energymark</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Energymark</h1>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/SurveyTools" title="SurveyTools" rel="category tag">SurveyTools</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/energymark/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Sep 19 00:00:00 +1000 2013">19 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook</h1>
-
-<h4>Aims:</h4>
-
-<p>It was suggested I could document the pumilio test build as an OpenNotebook.
-I imagined that I could link this blog to github repo and doco hosted on gh-pages.</p>
-
-<h4>Methods:</h4>
-
-<ul>
-<li>For ie the emacs html output now goes to <a href="http://ivanhanigan.github.io/pumilio-bushfm/">http://ivanhanigan.github.io/pumilio-bushfm/</a></li>
-<li>then collaborators can clone/fork <a href="https://github.com/ivanhanigan/pumilio-bushfm">https://github.com/ivanhanigan/pumilio-bushfm</a></li>
-<li>and comment/complain at <a href="https://github.com/ivanhanigan/pumilio-bushfm/wiki">https://github.com/ivanhanigan/pumilio-bushfm/wiki</a></li>
-</ul>
-
-
-<h4>Results:</h4>
-
-<ul>
-<li>I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud</li>
-<li>Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).</li>
-<li>then when I tried to upload a big sound file it broke :-(</li>
-<li>I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via</li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code>sudo nano /etc/mysql/my.cnf
+################################################################
+# name:learnR-logistic
+png('images/pfail.png')
+plot(temp, p.fail, pch=16, xlim=c(40,100), ylim=c(0,0.4))
+title('A plot of the proportion failed by temperature')
+dev.off()
 </code></pre>
 
 <p></p>
 
 
-<h4>BUT</h4>
+<p><img src="/images/pfail.png" alt="pfail.png" /></p>
+
+<h4>R Code:</h4>
+
+<pre><code>###########################################################################
+# newnode: linear
+linear &lt;- glm(resp ~ 1 + temp, family=binomial(link=logit))
+summary(linear)
+linearoutput &lt;- summary(linear)
+linearoutput$coeff
+
+###########################################################################
+# newnode: learnR-logistic
+cf &lt;- linearoutput$coeff
+signif(cf[which(row.names(cf) == 'temp'),'Estimate'],2)
+
+###########################################################################
+# newnode: learnR-logistic
+# write.csv(linearoutput$coeff,"challengerOfails.csv")
+
+###########################################################################
+# newnode: learnR-logistic
+ png('images/challengerLogistic.png')
+ par(mfrow=c(2,2))
+ plot(linear)
+ dev.off()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/challengerLogistic.png" alt="challengerLogistic.png" /></p>
+
+<h4>R Code:</h4>
+
+<pre><code>####################################################################
+# newnode: learnR-logistic
+dummy &lt;- data.frame(temp=seq(20,100,1))
+pred.prob &lt;- predict.glm(linear, newdata=dummy, type="resp")
+png('images/pfailfit.png')
+plot(temp, p.fail, xlab="Launch Temperature (F)",
+ ylab="Proportion Failing", pch=16, xlim=c(20,100), ylim=c(0,1.0))
+lines(dummy$temp, pred.prob)
+dev.off()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/pfailfit.png" alt="pfailfit.png" /></p>
+
+<h4>R Code:</h4>
+
+<pre><code>####################################################################
+resp &lt;- as.data.frame(resp)
+resp$fail &lt;- ifelse(resp$n.fail &gt; 0, 1, 0)
+resp$temp &lt;- temp
+
+png('images/fail.png')
+with(resp, plot(temp, fail, xlab="Launch Temperature (F)",ylab="Joint damage", pch=16, xlim=c(50,80), ylim=c(0,1.0))
+     )
+dev.off()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/fail.png" alt="fail.png" /></p>
+
+<h4>R Code:</h4>
+
+<pre><code>chal.logit &lt;- glm(fail~temp,family=binomial, data = resp)
+summary(chal.logit)$coeff
+
+png('images/pfailfit2.png')
+cx &lt;- c(50:80/1)
+cyhat &lt;- coefficients(chal.logit)[c(1)] +
+coefficients(chal.logit)[c(2)]*cx
+cpihat &lt;- exp(cyhat)/(1+exp(cyhat))
+with(resp,plot(temp,fail,xlab="Temperature",ylab="Damage",
+main="Incidence of Booster Field Joint Damage vs. Temperature", xlim = c(50,80))
+     )
+lines(cx,cpihat)
+dev.off()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/pfailfit2.png" alt="pfailfit2.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/challenger-logistic/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Fri Oct 18 00:00:00 +1100 2013">18 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/spatially-structured-time-series-with-nmmaps/" title="spatially-structured-time-series-with-nmmaps" rel="bookmark">spatially-structured-time-series-with-nmmaps</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I will use the NMMAPSlite datasets for a simple example of what I
+describe as "Spatially Structured Timeseries" as opposed to
+"Spatio-Temporal" which I think more explicitly includes spatial
+structure in the model.  <a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/">See This Report</a> for all the gory details.</p>
+
+<h1>R Codes</h1>
+
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+
+
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" -->
+
+
+<!--                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> -->
+
+
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> -->
+
+
+<p><head>
+<title>Spatiotemporal Regression Modelling</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Spatiotemporal Regression Modelling"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-10-16T15:17+1100"/>
+<meta name="author" content="Ivan Hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
+
+
+
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+
+<p></head>
+<body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">Spatiotemporal Regression Modelling</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Core Model</a></li>
+<li><a href="#sec-2">2 Core Model Plots</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1"><span class="section-number-4">1</span> Core Model</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+<pre class="src src-R"><span style="color: #5F7F5F;">################################################################</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">name:core</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">func</span>
+setwd(<span style="color: #CC9393;">"~/projects/spatiotemporal-regression-models/NMMAPS-example"</span>)
+<span style="color: #BFEBBF; font-weight: bold;">require</span>(mgcv)
+<span style="color: #BFEBBF; font-weight: bold;">require</span>(splines)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">load</span>
+analyte <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #CC9393;">"analyte.csv"</span>)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">clean</span>
+analyte$yy <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> substr(analyte$date,1,4)
+numYears<span style="color: #BFEBBF; font-weight: bold;">&lt;-</span>length(names(table(analyte$yy)))
+analyte$date <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> as.Date(analyte$date)
+analyte$time <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> as.numeric(analyte$date)
+analyte$agecat <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> factor(analyte$agecat,
+                          levels = c(<span style="color: #CC9393;">"under65"</span>,
+                              <span style="color: #CC9393;">"65to74"</span>, <span style="color: #CC9393;">"75p"</span>),
+                          ordered = <span style="color: #7CB8BB;">TRUE</span>
+                          )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">do</span>
+fit <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> gam(cvd ~ s(tmax) + s(dptp) +
+           city + agecat +
+           s(time, k= 7*numYears, fx=T) +
+           offset(log(pop)),
+           data = analyte, family = poisson
+           )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">plot of response functions</span>
+png(<span style="color: #CC9393;">"images/nmmaps-eg-core.png"</span>, width = 1000, height = 750, res = 150)
+par(mfrow=c(2,3))
+plot(fit, all.terms = <span style="color: #7CB8BB;">TRUE</span>)
+dev.off()
+
+
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2"><span class="section-number-4">2</span> Core Model Plots</h4>
+<div class="outline-text-4" id="text-2">
+
+<p><img src="/images/nmmaps-eg-core.png"  alt="/images/nmmaps-eg-core.png" />
+</p></div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/spatially-structured-time-series-with-nmmaps/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Oct 16 00:00:00 +1100 2013">16 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/morpho-and-rfigshare/" title="morpho-and-rfigshare" rel="bookmark">morpho-and-rfigshare</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In this Case Study I will use Morpho to compare directly with reml.</p>
+
+<h1>Step one: Set up morpho</h1>
 
 <ul>
-<li>it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...</li>
-<li>so I think I can <a href="http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition">just remount /var</a> onto the larger /mnt secondary disk.</li>
+<li>Follow the instructions at the ASN SuperSite website and install Morpho 1.8 rather than latest version because it has technical issues that stop it from setting permissions.</li>
+<li><a href="http://www.tern-supersites.net.au/index.php/data/repository-tutorial">Configure morpho</a>.  (I will follow the ASN SuperSite instructions as a future Case Study will be to use their KNB Metacat service).</li>
+<li>Do not configure to connect to the Metacat repository, will need a password to be assigned by ASN data manager.</li>
+</ul>
+
+
+<h1>Step 2: Look at the REML created metadata using Morpho</h1>
+
+<ul>
+<li>Morpho offers to open existing sets for modification.</li>
+</ul>
+
+
+<h4>Code: get location of my example dataset</h4>
+
+<pre><code>require(disentangle)
+fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"), package="disentangle")
+fpath
+dirname(fpath)
+# [1] "/home/ivan_hanigan/Rlibs/disentangle/extdata"
+</code></pre>
+
+<ul>
+<li>Morpho > File > import = civst_gend_sector_eml.xml</li>
+<li>(not the figshare_civst_gend_sector_eml.xml that was created when sending to figshare)</li>
+<li>Error encountered.  could not open metadata, open empty data package.  Offered to upgrade (unable to edit > accepted)</li>
+<li>unable to display data, empty data package will be shown</li>
+<li>top menu > Documentation > Add/Edit ion
+
+<h1>Step 3: Create new datasets with Morpho</h1></li>
 </ul>
 
 
@@ -282,19 +492,137 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/pumilio-bushfm" title="pumilio-bushfm" rel="category tag">pumilio-bushfm</a>
-      
-      <a href="/categories/open notebook" title="open notebook" rel="category tag">open notebook</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/09/pumilio-bushfm-test-dev-prod/#disqus_thread'>Comments</a>
+      <a href='/2013/10/morpho-and-rfigshare/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Wed Sep 18 00:00:00 +1000 2013">18 Sep 2013</abbr>
+        <abbr class="published" title="Mon Oct 14 00:00:00 +1100 2013">14 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.</p>
+
+<h1>What does it do?</h1>
+
+<p>The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.</p>
+
+<p>Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.</p>
+
+<h1>Create the metadata.txt</h1>
+
+<p>You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.</p>
+
+<p>change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.</p>
+
+<p>Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.</p>
+
+<p>You can look int the "Keys.txt" file that contains the full list of values that can be specified in this metadata.txt file.</p>
+
+<h4>Code:</h4>
+
+<pre><code>setwd("~/tools/dcupload")
+sink("metadata.txt")
+cat("
+# This file, referred to as a collection parameter file, consists of
+# data in key=value pairs. This data is sent to the ANU Data Commons
+# to create a collection, establish relations with other records,
+# and/or upload files to those collections.
+
+# The metadata section consists of metadata for use in creation (not
+# for modification) of record metadata in ANU Data Commons. The
+# following fields are required for the creation of a record. The file
+# Keys.txt contains the full list of values that can be specified in
+# this file. Based on this information below, a collection record of
+# type databaset with the title "Test Collection 6/05/2013" will be
+# created owned by Meteorology and Health group.
+[metadata]
+type = Collection
+subType = dataset
+ownerGroup = 5
+# 6 on production, 5 on dev
+name = Civil Status, Gender and Activity Sector
+briefDesc = An example, fictional dataset for Decision Tree Models
+citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
+email = ivan.hanigan@anu.edu.au
+anzforSubject = 1601
+
+# The relations section allows you to specify the relation this record
+# has with other records in the system.  Currently relations with NLA
+# identifiers is not supported.
+[relations]
+isOutputOf = anudc:123
+
+# This section contains a line of the form 'pid = anudc:123' once a
+# record has been created so executing the uploader script with the
+# same collection parameter file doesnt create a new record with the
+# same metadata.
+[pid]
+")
+sink()
+
+# run the dcload
+system("python3 dcuploader.py -c metadata.txt")
+</code></pre>
+
+<p></p>
+
+
+<h1>What happened?</h1>
+
+<ul>
+<li>Looking in the metadata.txt file it now has a pid like "pid = test:3527"</li>
+<li>And we have created a new record in our account on the DataCommons server.</li>
+</ul>
+
+
+<h1>go to the website</h1>
+
+<p>Now go to <a href="https://dc7-dev2.anu.edu.au:8443/DataCommons/">the dev site</a> and you can continue editing the record manually in the browser.</p>
+
+<p>Or if we have ironed out the wrinkles you could go straight to the production server at <a href="https://datacommons.anu.edu.au:8443/DataCommons">This Link</a></p>
+
+<h1>Uploading the data</h1>
+
+<p>The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.</p>
+
+<h1>Notes</h1>
+
+<ul>
+<li><p>After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.</p></li>
+<li><p>Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.</p></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/dc-uploader-and-ANU-DataCommons/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Oct 13 00:00:00 +1100 2013">13 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -355,111 +683,127 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
                 <li><a href="/categories/data science">data science (1)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                <li><a href="/categories/links">links (1)</a></li>
                 
-                <li><a href="/categories/animation">animation (1)</a></li>
+                <li><a href="/categories/python">python (2)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (2)</a></li>
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (12)</a></li>
+                
+                <li><a href="/categories/Modelling">Modelling (1)</a></li>
+                
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                
+                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
+                
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                
+                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
                 <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
-                <li><a href="/categories/drought">drought (1)</a></li>
+                <li><a href="/categories/ecology">ecology (1)</a></li>
                 
-                <li><a href="/categories/kepler">kepler (1)</a></li>
+                <li><a href="/categories/versions">versions (1)</a></li>
                 
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                <li><a href="/categories/blogger">blogger (1)</a></li>
                 
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
-                <li><a href="/categories/ons">ons (1)</a></li>
+                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
                 
-                <li><a href="/categories/notebook">notebook (1)</a></li>
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
                 <li><a href="/categories/opinion">opinion (1)</a></li>
                 
                 <li><a href="/categories/climate change">climate change (1)</a></li>
                 
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
-                
-                <li><a href="/categories/GIS">GIS (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/python">python (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (2)</a></li>
-                
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (3)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
                 <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
                 <li><a href="/categories/replication">replication (1)</a></li>
                 
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                <li><a href="/categories/GIS">GIS (1)</a></li>
                 
-                <li><a href="/categories/Drought">Drought (1)</a></li>
+                <li><a href="/categories/research methods">research methods (4)</a></li>
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (7)</a></li>
+                <li><a href="/categories/notebook">notebook (1)</a></li>
                 
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (2)</a></li>
-                
-                <li><a href="/categories/DataDocumentation">DataDocumentation (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
+                <li><a href="/categories/drought">drought (1)</a></li>
                 
                 <li><a href="/categories/packages">packages (1)</a></li>
                 
-                <li><a href="/categories/Data Documentation">Data Documentation (6)</a></li>
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
                 
               </ul>
             </div>
@@ -470,7 +814,67 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
               <ul>
                 
                 <li>
+                  <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
+                </li>
+                
+                <li>
                   <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
                 </li>
                 
                 <li>
@@ -511,6 +915,10 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
                 
                 <li>
                   <a href="/2013/10/simple-example-using-nmmaps/" title="simple-example-using-nmmaps" rel="bookmark">simple-example-using-nmmaps</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/reviewing-lessons/" title="reviewing-lessons" rel="bookmark">reviewing-lessons</a>
                 </li>
                 
                 <li>
@@ -603,46 +1011,6 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
                 
                 <li>
                   <a href="/2012/05/historical-evidence-of-dengue-in-southeastern-australia/" title="Historical GIS evidence of Dengue in the far southeast of Australia?" rel="bookmark">Historical GIS evidence of Dengue in the far southeast of Australia?</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/04/Occams-Razor-Einsteins-Razor-Chamberlins-Complex-Thought/" title="Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought" rel="bookmark">Occam's Razor, Einstein's Razor and Chamberlin's Complex Thought</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/03/shane-weiss-reich-white-worg-approach-to-code-management/" title="The Shane-Weiss-Reich-White.worg approach to Code Management" rel="bookmark">The Shane-Weiss-Reich-White.worg approach to Code Management</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/03/outlines-way-to-organise-and-to-think/" title="Outlines. A way to organise, and to think" rel="bookmark">Outlines. A way to organise, and to think</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/02/dr-tom-ford-disentangles-climate-change-writing/" title="Dr Tom Ford disentangles climate change writing" rel="bookmark">Dr Tom Ford disentangles climate change writing</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/02/the-organisation-of-material/" title="The Organisation of Material" rel="bookmark">The Organisation of Material</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/my-interests-2/" title="My Interests" rel="bookmark">My Interests</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/about-my-research/" title="About My Research" rel="bookmark">About My Research</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/about-me/" title="About Me" rel="bookmark">About Me</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/progress-report/" title="Progress Report" rel="bookmark">Progress Report</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/01/started-a-blog-with-jeckyll/" title="Started a blog with Jekyll" rel="bookmark">Started a blog with Jekyll</a>
                 </li>
                 
               </ul>
