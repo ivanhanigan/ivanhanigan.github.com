@@ -6,6 +6,82 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>dual-code-repository-and-project-website</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;I really like the idea of using github or bitbucket for a dual code repository and project website&lt;/li&gt;
+&lt;li&gt;in Github I set up the master branch with the R package code&lt;/li&gt;
+&lt;li&gt;and set up the website using the gh-pages branch&lt;/li&gt;
+&lt;li&gt;it has to be called gh-pages, and add an index.html, it will appear at your-username.github.com/repo-name&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Github&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The best bit about doing this on github is that the R package &quot;devtools&quot; can be used to install the package (so long as you can compile the package)&lt;/li&gt;
+&lt;li&gt;on windows you may need to install Rtools and configure the path&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code: install_github&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&quot;repo-name&quot;, &quot;github-account-name&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Bitbucket&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I recently took these notes about setting up a website on Bitbucket&lt;/li&gt;
+&lt;li&gt;I am not sure about how this would work for R packages (the devtools installer mentioned above is a great tool for developing)&lt;/li&gt;
+&lt;li&gt;but with unlimited private repositories this seems like a good platform for my &quot;open notebook - selected content&quot; (I need to be selective about what I share and what I keep restricted access only)&lt;/li&gt;
+&lt;li&gt;the page is available for &quot;your-account&quot;.bitbucket.org&lt;/li&gt;
+&lt;li&gt;create a new repo on the web UI&lt;/li&gt;
+&lt;li&gt;I kept the repo private, but the pages will be public,&lt;/li&gt;
+&lt;li&gt;added issue tracking and Wiki&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;using git shell&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir ~/projects/your-account.bitbucket.org
+cd ~/projects/your-account.bitbucket.org
+git init
+git remote add origin ssh://git@bitbucket.org/your-account/your-account.bitbucket.org.git
+touch index.org
+# use emacs to make changes and publish the html (C-c C-e h)
+
+git commit -m &quot;First commit&quot;
+git push -u origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;now it is online at http://your-account.bitbucket.org/&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;More info at:
+&lt;a href=&quot;https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket&quot;&gt;https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Mon Dec 09 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/dual-code-repository-and-project-website/</link>
+			</item>
+		
+			<item>
+				<title>bitbucket-has-unlimited-private-git-repositories-for-universities</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;I just got introduced to bitbucket, an alternative to Github&lt;/li&gt;
+&lt;li&gt;I've used Github for a couple of years and have been paying for extra private repositories&lt;/li&gt;
+&lt;li&gt;I did not realise that bitbucket worked with git too (I thought it was just for Mercurial)&lt;/li&gt;
+&lt;li&gt;it offers unlimited public and private repository and unlimited users (to collaborate) if you have the Academic plan.&lt;/li&gt;
+&lt;li&gt;when you sign up with your academic email address, &lt;a href=&quot;http://blog.bitbucket.org/2011/04/01/free-unlimited-user-source-code-hosting-for-university-students/&quot;&gt;you automatically get an unlimited academic plan&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Mon Dec 09 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/</link>
+			</item>
+		
+			<item>
 				<title>auto-download-bureau-meteorology-diurnal-data</title>
 				<description>&lt;p&gt;&lt;head&gt;
 &lt;title&gt;Excess Heat Indices &lt;/title&gt;
@@ -1600,74 +1676,6 @@ I put it on Github for two reasons:
 </description>
 				<published>Wed Nov 27 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/11/sharing-and-extending-research-protocols/</link>
-			</item>
-		
-			<item>
-				<title>our-paper-is-out-heat-health-warning-systems</title>
-				<description>&lt;p&gt;Finally our article has been published in final version in Environmental Health.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Title: The impact of heat on mortality and morbidity in the Greater Metropolitan Sydney Region: a case crossover analysis&lt;/li&gt;
-&lt;li&gt;Authors: Wilson Ann Leigh, Gerard Morgan  Geoffrey, Hanigan Charles Ivan, Johnston H Fay, Abu-Rayya  Hisham, Broome  Richard, Gaskin  Clive, Jalaludin  Bin,&lt;/li&gt;
-&lt;li&gt;Environmental Health.2013, 12:98.&lt;/li&gt;
-&lt;li&gt;DOI: 10.1186/10.1186/1476-069X-12-98&lt;/li&gt;
-&lt;li&gt;URL: &lt;a href=&quot;http://www.ehjournal.net/content/12/1/98&quot;&gt;http://www.ehjournal.net/content/12/1/98&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Finally.......
-thanks to everyone,  especially Geoff Morgan, Richard Broome, Fay Johnston; Bin Jalaludin&lt;/p&gt;
-
-&lt;p&gt;And especially Leigh Wilson.&lt;/p&gt;
-</description>
-				<published>Wed Nov 27 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/our-paper-is-out-heat-health-warning-systems/</link>
-			</item>
-		
-			<item>
-				<title>guest-post-by-marco-fahmi-why-morpho</title>
-				<description>&lt;p&gt;I asked my colleague &lt;a href=&quot;https://twitter.com/fahmiger&quot;&gt;Marco Fahmi&lt;/a&gt; to
-post this as a guest post.  It came my way as a part of an email
-exchange in which another colleague had a question regarding their task
-of recording previous work in an ecological field study:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ideally in such a way that we would end up with a complete metadata
-profile of previous work carried out. I would also like to see the
-establishment of a system that could also be used by the group going
-forward to keep track of information and data produced at the
-site. I hear you have been involved with establishing the
-a metadata reporting system. How does this effort currently stand,
-is it online? I was also wondering if you would be amenable to sharing
-what you have with us with the hope that i could use this as a model
-for our own system.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;Our colleague Sheila responded first that:&lt;/h4&gt;
-
-&lt;p&gt;All metadata are created using a standard template document and then transfered into a software package called &lt;a href=&quot;http://knb.ecoinformatics.org/morphoportal.jsp&quot;&gt;Morpho&lt;/a&gt;.  Metadata are then uploaded with the data to the Australian Supersite Network (ASN) Portal &lt;a href=&quot;http://www.tern-supersites.net.au/knb/&quot;&gt;http://www.tern-supersites.net.au/knb/&lt;/a&gt;.   Any other useful documents are uploaded to the website &lt;a href=&quot;http://www.tern-supersites.net.au&quot;&gt;http://www.tern-supersites.net.au&lt;/a&gt; either under the specific supersite tab on the left hand menu or under the Publications - Resources for SuperSite Users tab.&lt;/p&gt;
-
-&lt;h4&gt;Marco says:&lt;/h4&gt;
-
-&lt;p&gt;Morpho is an open source piece of software designed to host all kinds of ecological data. More information about how we use it at ASN can be found here: &lt;a href=&quot;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&quot;&gt;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Morpho should be enough for an individual researcher to organise and describe their personal data collection. If you want to share the data with colleagues or publish them online, then you will also need Metacat. There is a worldwide Metacat server available from the link account. All you need to do is request an account and connect to it via Morpho. Alternatively you can set up your own; but then you will need your own server and tech knowhow to configure it (and maintain it).&lt;/p&gt;
-
-&lt;p&gt;For technical reasons, we have our own server running an older version of the Metacat software. You are welcome to use it if you wish (Shiela can issue you an account to log in and upload). We are also happy to provide assistance if you want to set something a standalone server for DRO. (Like any other piece of infrastructure, someone will need to look after the server after it is set up, so that's probably a decision that will need to be considered carefully).&lt;/p&gt;
-
-&lt;h4&gt;My comment:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&quot;Morpho should be enough for an individual researcher to organise
-and describe their personal data collection&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;I agree, but would emphasise the &lt;em&gt;should&lt;/em&gt; and then say &lt;em&gt;but&lt;/em&gt; ...
-Ultimately I'd like to see something as easy and intuitive as iTunes for music or Endnote and Mendeley for bibliographies, but...&lt;/p&gt;
-</description>
-				<published>Wed Nov 27 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/guest-post-by-marco-fahmi-why-morpho/</link>
 			</item>
 		
 	</channel>

@@ -4,13 +4,91 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-12-07T23:32:42+11:00</updated>
+ <updated>2013-12-09T20:53:24+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>dual-code-repository-and-project-website</title>
+   <link href="http://schamberlain.github.com/2013/12/dual-code-repository-and-project-website/"/>
+   <updated>2013-12-09T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/12/dual-code-repository-and-project-website</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;I really like the idea of using github or bitbucket for a dual code repository and project website&lt;/li&gt;
+&lt;li&gt;in Github I set up the master branch with the R package code&lt;/li&gt;
+&lt;li&gt;and set up the website using the gh-pages branch&lt;/li&gt;
+&lt;li&gt;it has to be called gh-pages, and add an index.html, it will appear at your-username.github.com/repo-name&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Github&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The best bit about doing this on github is that the R package &quot;devtools&quot; can be used to install the package (so long as you can compile the package)&lt;/li&gt;
+&lt;li&gt;on windows you may need to install Rtools and configure the path&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code: install_github&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&quot;repo-name&quot;, &quot;github-account-name&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Bitbucket&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I recently took these notes about setting up a website on Bitbucket&lt;/li&gt;
+&lt;li&gt;I am not sure about how this would work for R packages (the devtools installer mentioned above is a great tool for developing)&lt;/li&gt;
+&lt;li&gt;but with unlimited private repositories this seems like a good platform for my &quot;open notebook - selected content&quot; (I need to be selective about what I share and what I keep restricted access only)&lt;/li&gt;
+&lt;li&gt;the page is available for &quot;your-account&quot;.bitbucket.org&lt;/li&gt;
+&lt;li&gt;create a new repo on the web UI&lt;/li&gt;
+&lt;li&gt;I kept the repo private, but the pages will be public,&lt;/li&gt;
+&lt;li&gt;added issue tracking and Wiki&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;using git shell&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir ~/projects/your-account.bitbucket.org
+cd ~/projects/your-account.bitbucket.org
+git init
+git remote add origin ssh://git@bitbucket.org/your-account/your-account.bitbucket.org.git
+touch index.org
+# use emacs to make changes and publish the html (C-c C-e h)
+
+git commit -m &quot;First commit&quot;
+git push -u origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;now it is online at http://your-account.bitbucket.org/&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;More info at:
+&lt;a href=&quot;https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket&quot;&gt;https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>bitbucket-has-unlimited-private-git-repositories-for-universities</title>
+   <link href="http://schamberlain.github.com/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/"/>
+   <updated>2013-12-09T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;I just got introduced to bitbucket, an alternative to Github&lt;/li&gt;
+&lt;li&gt;I've used Github for a couple of years and have been paying for extra private repositories&lt;/li&gt;
+&lt;li&gt;I did not realise that bitbucket worked with git too (I thought it was just for Mercurial)&lt;/li&gt;
+&lt;li&gt;it offers unlimited public and private repository and unlimited users (to collaborate) if you have the Academic plan.&lt;/li&gt;
+&lt;li&gt;when you sign up with your academic email address, &lt;a href=&quot;http://blog.bitbucket.org/2011/04/01/free-unlimited-user-source-code-hosting-for-university-students/&quot;&gt;you automatically get an unlimited academic plan&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>auto-download-bureau-meteorology-diurnal-data</title>
@@ -5032,8 +5110,6 @@ dir.create(&quot;inst/extdata&quot;, recursive=T)
 write.csv(civst_gend_sector, &quot;inst/extdata/civst_gend_sector.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h1&gt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD&lt;/h1&gt;
-
 &lt;p&gt;&lt;/p&gt;
 
 
@@ -5063,11 +5139,9 @@ str(df)
 write.csv(df, &quot;inst/extdata/civst_gend_sector_full.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;p&gt;f97143b6e161104491d27acd190f3196991efee5&lt;/p&gt;
-
 &lt;h4&gt;Motivating reason for using these data&lt;/h4&gt;
 
-&lt;p&gt;Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.&lt;/p&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;
+&lt;p&gt;Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.&lt;/p&gt;
 
 &lt;p&gt;I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.&lt;/p&gt;
 
@@ -6279,64 +6353,6 @@ across broad global landscapes.
 &lt;p&gt;This is an open issue.  More discussions are needed internally for the Data Custodians.&lt;/p&gt;
 
 &lt;p&gt;Lu also pointed out that the end users are the key stakeholders and perhaps more input from them (via surveys and workshops?) is needed?&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>energymark</title>
-   <link href="http://schamberlain.github.com/2013/09/energymark/"/>
-   <updated>2013-09-19T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2013/09/energymark</id>
-   <content type="html">&lt;h1&gt;Energymark&lt;/h1&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>pumilio-bushfm-test-dev-prod</title>
-   <link href="http://schamberlain.github.com/2013/09/pumilio-bushfm-test-dev-prod/"/>
-   <updated>2013-09-18T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2013/09/pumilio-bushfm-test-dev-prod</id>
-   <content type="html">&lt;h1&gt;Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook&lt;/h1&gt;
-
-&lt;h4&gt;Aims:&lt;/h4&gt;
-
-&lt;p&gt;It was suggested I could document the pumilio test build as an OpenNotebook.
-I imagined that I could link this blog to github repo and doco hosted on gh-pages.&lt;/p&gt;
-
-&lt;h4&gt;Methods:&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;For ie the emacs html output now goes to &lt;a href=&quot;http://ivanhanigan.github.io/pumilio-bushfm/&quot;&gt;http://ivanhanigan.github.io/pumilio-bushfm/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;then collaborators can clone/fork &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;and comment/complain at &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm/wiki&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm/wiki&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Results:&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud&lt;/li&gt;
-&lt;li&gt;Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).&lt;/li&gt;
-&lt;li&gt;then when I tried to upload a big sound file it broke :-(&lt;/li&gt;
-&lt;li&gt;I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo nano /etc/mysql/my.cnf
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;BUT&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...&lt;/li&gt;
-&lt;li&gt;so I think I can &lt;a href=&quot;http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition&quot;&gt;just remount /var&lt;/a&gt; onto the larger /mnt secondary disk.&lt;/li&gt;
-&lt;/ul&gt;
-
 </content>
  </entry>
  
