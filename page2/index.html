@@ -54,7 +54,6 @@
 
   <div class="full">
     <h1 class="entry-title">
-<<<<<<< HEAD
       <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
     </h1>
     <div class="entry-content full-content">
@@ -298,59 +297,94 @@ National Centre for Epidemiology and Population Health, Australian National Univ
   <div class="full">
     <h1 class="entry-title">
       <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
-=======
-      <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
     </h1>
     <div class="entry-content full-content">
-      <ul>
-<li>For a three year project on Bushfire smoke and Health we used the following structure in a wiki</li>
-</ul>
-
-
-<h4>Sections:</h4>
-
-<pre><code>A.Background        
-B.Proposals         
-C.Approvals         
-D.Budget    
-E.Datasets  
-F.Analysis  
-G.Literature        
-H.Communication     
-I.Correspondance    
-J.Meetings  
-K.Completion        
-ContactDetails      
-README
-TODO        
-</code></pre>
-
-<h4>Conclusion</h4>
+      <h3>Guest post by Luciana Porfirio with code contributions by Francis Markham</h3>
 
 <ul>
-<li>it worked quite well in the first year.</li>
-<li>we didn't use it much after that.</li>
-<li>it is still on the ANU webserver.  I sometimes refer back to it now, a couple of years later.</li>
+<li>Recently I encountered a student doing an analysis who was doing everything in excel, and I couldn't contain my mouth and say R would be better... but it isn't a simple task. So any here are some tips.</li>
+<li>There is a table with 62 years * 12 months of rain data in mm. We calculated the cumulative distribution using ecdf: empirical cumulative distribution function. So the table looks like this: Year Jan Feb Mach (...) each cell contains the cum dist.</li>
+<li>We also got the number of months per year with less than X mm of rain. But he needs to know how many months  are between the drought months, regardless the year. So, I thought that converting the data into a ts was going to facilitate the task, but it doesn't, because now I don't' have columns and rows any longer.</li>
+<li>But I struggled to handle a ts object to do for example an ifelse.</li>
+<li>Luckily there are many many tricks about R, and with the code below we solved all his problems (and many months of work in excel).</li>
+<li><a href="/data/raj_rain_data.csv">Get the example data here</a></li>
+<li>This is how it looks like:</li>
 </ul>
 
+
+<h4>R Code:</h4>
+
+<pre><code>###############################################
+require(reshape2)
+
+###############################################
+#read csv file with rain BoM data
+dat = read.csv('raj_rain_data.csv')
+
+fn &lt;- apply(dat[,2:13], 2, ecdf) # equivalent to Excel's percentrank function, only for cols 2 to 13 but you need to apply the function to each month
+
+#this fun does all the months at once
+fn2 = data.frame(t(do.call("rbind", sapply(1:12, FUN = function(i) fn[[i]](dat[,i+1]), simplify = FALSE))))
+colnames(fn2) = colnames(dat[,2:13])
+fn2$year = dat$Year
+
+#if the value is lower than 0.4, retrieves a 1, otherwise 0
+fn2$drought = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &lt; 0.4)==TRUE, 1,0))
+
+#if the value is lower than 0.1, retrieves a 1, otherwise 0
+fn2$extreme = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &lt; 0.1)==TRUE, 1,0))
+
+str(fn2)
+names(fn2)
+
+#ts didn't work - Francis suggested to melt the data.frame # Melt
+#fn2 to tall data set
+fn2.tall &lt;- melt(fn2, id.vars="year")
+
+# Get the year-month into date format
+fn2.tall$date &lt;- with(fn2.tall,
+                             as.Date(paste("1", variable, year), "%d %b %Y"))
+
+# Convert dates into months since 0 BC/AD (arbitrary, but doesn't
+# matter)
+#I'm not using the month.idx with Ivan's solution (remove)
+fn2.tall$mnth.idx &lt;- sapply(fn2.tall$date, function(x){
+  12*as.integer(format(x, "%Y")) + (as.integer(format(x, "%m")) - 1)
+})
+
+# Sort by date
+fn2.tall &lt;- fn2.tall[order(fn2.tall$date),]
+
+
+#Ivan's solution
+
+x&lt;-fn2.tall$value&lt;0.4
+xx &lt;- (cumsum(!x) + 1) * x
+x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
+fn2.tall$count&lt;-x2
+
+#counts the number of cases of drought
+as.data.frame(table(fn2.tall$count))
+###############################################
+###############################################
+</code></pre>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      <a href="/categories/climatic and agricultural drought" title="climatic and agricultural drought" rel="category tag">climatic and agricultural drought</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/12/research-protocol-we-used-for-our-bushfire-project/#disqus_thread'>Comments</a>
+      <a href='/2013/11/climatic-drought-guestpost-by-luciana-porfirio/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Mon Dec 02 00:00:00 +1100 2013">02 Dec 2013</abbr>
+        <abbr class="published" title="Fri Nov 01 00:00:00 +1100 2013">01 Nov 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -359,592 +393,89 @@ TODO
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/12/research-protocol-for-manitoba-centre-for-health-policy/" title="research-protocol-for-manitoba-centre-for-health-policy" rel="bookmark">research-protocol-for-manitoba-centre-for-health-policy</a>
+      <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>When we started planning for a three year project on bushfire smoke we did some planning</li>
-<li>We had a deep discussion about this research management protocol from <a href="http://umanitoba.ca/faculties/medicine/units/community_health_sciences/departmental_units/mchp/protocol/media/manage_guidelines.pdf">University Manitoba Centre for Health Policy</a></li>
+<li>This is a quick post on Quantum GIS for spatial data visualisation</li>
+<li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
+<li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
+<li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
 </ul>
 
 
-<div id="content">
-<h1 class="title">Data Management Plan Checklist</h1>
+<h4>R Code: use postgis to create area-concordance</h4>
+
+<pre><code>require(devtools)
+install_github("gisviz", "ivanhanigan")
+require(gisviz)
+require(swishdbtools)
+ch &lt;- connect2postgres2("gislibrary")
+# make a temporary tablename, to avoid clobbering
+temp_table &lt;- swish_temptable("gislibrary")
+temp_table &lt;- paste("public", temp_table$table, sep = ".")
+temp_table
+# this is going to be public.foo11c7673416ea
+
+sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
+   source_zones_code = 'sla_id', target_table = "abs_sla.nswsla01",
+   target_zones_code = "sla_code",
+   into = temp_table, tolerance = 0.01,
+   subset_target_table = "cast(sla_code as text) like '105%'", 
+   eval = F) 
+cat(sql)
+dbSendQuery(ch, sql)
+</code></pre>
+
+<p></p>
 
 
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1 U-Manitoba Centre for Health Policy Guidelines</a>
+<li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
+<li>and add the layer to the map</li>
+<li>Style it how you like, I also added NSWSLA1991 over the top</li>
+<li>go into the "new print composer"</li>
+</ul>
+
+
+<p><img src="/images/qgis-new-print-composer.png" alt="qgis-new-print-composer.png" /></p>
+
+<p><img src="/images/qgis-add-new-map.png" alt="qgis-add-new-map.png" /></p>
+
+<h3>Results</h3>
+
 <ul>
-<li><a href="#sec-1-1">1.1 Confidentiality</a></li>
-<li><a href="#sec-1-2">1.2 Project Team Makeup</a>
-<ul>
-<li><a href="#sec-1-2-1">1.2.1 Principal Investigator</a></li>
-<li><a href="#sec-1-2-2">1.2.2 Research Coordinator</a></li>
-<li><a href="#sec-1-2-3">1.2.3 The Programmer Coordinator</a></li>
-<li><a href="#sec-1-2-4">1.2.4 Programmer Analyst</a></li>
-<li><a href="#sec-1-2-5">1.2.5 Research Support</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-3">1.3 Project Team considerations</a>
-<ul>
-<li><a href="#sec-1-3-1">1.3.1 Roles</a></li>
-<li><a href="#sec-1-3-2">1.3.2 Continuity</a></li>
-<li><a href="#sec-1-3-3">1.3.3 Access levels</a></li>
-<li><a href="#sec-1-3-4">1.3.4 Working group</a></li>
-<li><a href="#sec-1-3-5">1.3.5 Atmospherics</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-4">1.4 File organization and Documentation Development.</a>
-<ul>
-<li><a href="#sec-1-4-1">1.4.1 Managing MCHP resources</a></li>
-<li><a href="#sec-1-4-2">1.4.2 MCHP directory structure</a></li>
-<li><a href="#sec-1-4-3">1.4.3 Managing project files</a></li>
-<li><a href="#sec-1-4-4">1.4.4 Recommended Directories</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-5">1.5 Communication</a>
-<ul>
-<li><a href="#sec-1-5-1">1.5.1 E-mail</a></li>
-<li><a href="#sec-1-5-2">1.5.2 Meetings</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-6">1.6 Administrative</a>
-<ul>
-<li><a href="#sec-1-6-1">1.6.1 Time entry</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-7">1.7 Report preparation</a>
-<ul>
-<li><a href="#sec-1-7-1">1.7.1 Reliability and Validity Checks</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-8">1.8 Project Completion</a>
-<ul>
-<li><a href="#sec-1-8-1">1.8.1 Final Project Meeting.</a></li>
-<li><a href="#sec-1-8-2">1.8.2 Final Documentation Review.</a></li>
-<li><a href="#sec-1-8-3">1.8.3 System Cleanup.</a></li>
-<li><a href="#sec-1-8-4">1.8.4 Integration of new material to institution repository</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> U-Manitoba Centre for Health Policy Guidelines</h2>
-<div class="outline-text-2" id="text-1">
-
-<p>These guidelines come from:
-</p>
-<p>
-\noindent <a href="http://umanitoba.ca/faculties/medicine/units/mchp/protocol/media/manage_guidelines.pdf">http://umanitoba.ca/faculties/medicine/units/mchp/protocol/media/manage_guidelines.pdf</a><br/>
-</p>
-<p>
-Most of the material below is taken verbatim from the original. Unfortunately many of the items described below have links to internal MCHP documents that we cannot access.  Nonetheless the structure of the guidelines provides a useful skeleton to frame our thinking. 
-</p>
-<p>
-The following areas should be reviewed with project team members near the beginning of the study and throughout the
-project as needed:
-</p><ul>
-<li>Confidentiality
-</li>
-<li>Project team
-</li>
-<li>File organization and documentation development
-</li>
-<li>Communication
-</li>
-<li>Administrative
-</li>
-<li>Report Preparation
-</li>
-<li>Project Completion
-</li>
+<li>hit the export to image and viola</li>
 </ul>
 
 
-</div>
+<p><img src="/images/qgis-export-image.png" alt="qgis-export-image.png" /></p>
 
-<div id="outline-container-1-1" class="outline-3">
-<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Confidentiality</h3>
-<div class="outline-text-3" id="text-1-1">
+<h3>Don't forget to clean up the database!</h3>
 
-<p>Maintaining data access
-</p></div>
+<h4>R Code:</h4>
 
-</div>
-
-<div id="outline-container-1-2" class="outline-3">
-<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Project Team Makeup</h3>
-<div class="outline-text-3" id="text-1-2">
-
-<p>Roles and contact information should be documented on the project website for the following, where applicable (information may also be included on level of access approved for each team member).
-</p>
-
-</div>
-
-<div id="outline-container-1-2-1" class="outline-4">
-<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> Principal Investigator</h4>
-<div class="outline-text-4" id="text-1-2-1">
-
-<p>This is the lead person on the project, who assumes responsibility for delivering the project. The PI makes decisions on project direction and analysis requirements, with input from programmers and the research coordinator (an iterative process). If there is more than one PI (e.g., multi-site studies), overall responsibility for the study needs to be determined, and how the required work will be allocated and coordinated among the co-investigators. Researcher Workgroup website (internal link) 
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-2-2" class="outline-4">
-<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> Research Coordinator</h4>
-<div class="outline-text-4" id="text-1-2-2">
-
-<p>Th RC is always assigned to deliverables and is usually brought in on other types of projects involving multiple sites, investigators and/or programmers. Responsibilities include project documentation, project management (e.g., ensuring that timelines are met, ensuring that project specifications are being followed), and working with both investigator(s) and the Programmer Coordinator throughout the project to coordinate project requirements. 
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-2-3" class="outline-4">
-<h4 id="sec-1-2-3"><span class="section-number-4">1.2.3</span> The Programmer Coordinator</h4>
-<div class="outline-text-4" id="text-1-2-3">
-
-<p>The PC is a central management role who facilitates assignment of programming resources to projects, ensuring the best possible match among programmers and investigators.
-Research Coordinator Workgroup website(internal link) 
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-2-4" class="outline-4">
-<h4 id="sec-1-2-4"><span class="section-number-4">1.2.4</span> Programmer Analyst</h4>
-<div class="outline-text-4" id="text-1-2-4">
-
-<p>This is primarily responsible for programming and related programming documentation (such that the purpose of the program and how results were derived can be understood by others). However, a major role may be taken in the analyses of the project as well, and this will characteristically vary with the project.
-Programmer Analyst Workgroup website(internal link) 
-</p>
-</div>
-
-</div>
-
-<<<<<<< HEAD
-=======
-<div id="outline-container-1-2-5" class="outline-4">
-<h4 id="sec-1-2-5"><span class="section-number-4">1.2.5</span> Research Support</h4>
-<div class="outline-text-4" id="text-1-2-5">
-
-<p>This is primarily responsible for preparing the final product (i.e., the report), including editing and formatting of final graphs and manuscript and using Reference Manager to set up the references. Research support also normally sets up and attends working group meetings. All requests for research support go through the Office Manager.
-</p>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-1-3" class="outline-3">
-<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Project Team considerations</h3>
-<div class="outline-text-3" id="text-1-3">
-
-
-</div>
-
-<div id="outline-container-1-3-1" class="outline-4">
-<h4 id="sec-1-3-1"><span class="section-number-4">1.3.1</span> Roles</h4>
-<div class="outline-text-4" id="text-1-3-1">
-
-<p>It is important to clarify everyone's roles at the beginning of the project; for example, whether the investigator routinely expects basic graphs and/or programming logs from the programmer.
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-3-2" class="outline-4">
-<h4 id="sec-1-3-2"><span class="section-number-4">1.3.2</span> Continuity</h4>
-<div class="outline-text-4" id="text-1-3-2">
-
-<p>It is highly desirable to keep the same personnel, from the start of the project, where possible. It can take some time to develop a cohesive working relationship, particularly if work styles are not initially compatible. Furthermore, requesting others to temporarily fill in for team absences is generally best avoided, particularly for programming tasks (unless there is an extended period of absence). The original programmer will know best the potential impact of any changes that may need to be made to programming code.
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-3-3" class="outline-4">
-<h4 id="sec-1-3-3"><span class="section-number-4">1.3.3</span> Access levels</h4>
-<div class="outline-text-4" id="text-1-3-3">
-
-<p>Access to MCHP internal resources (e.g., Windows, Unix) need to be assessed for all team members and set up as appropriate to their roles on the project.
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-3-4" class="outline-4">
-<h4 id="sec-1-3-4"><span class="section-number-4">1.3.4</span> Working group</h4>
-<div class="outline-text-4" id="text-1-3-4">
-
-<p>A WG is always set up for deliverables (and frequently for other projects):
-Terms of Reference for working group (internal)
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-3-5" class="outline-4">
-<h4 id="sec-1-3-5"><span class="section-number-4">1.3.5</span> Atmospherics</h4>
-<div class="outline-text-4" id="text-1-3-5">
-
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-1-4" class="outline-3">
-<h3 id="sec-1-4"><span class="section-number-3">1.4</span> File organization and Documentation Development.</h3>
-<div class="outline-text-3" id="text-1-4">
-
-<p>All project-related documentation, including key e-mails used to update project methodology, should be saved within the project directory. Resources for directory setup and file development include:
-</p>
-</div>
-
-<div id="outline-container-1-4-1" class="outline-4">
-<h4 id="sec-1-4-1"><span class="section-number-4">1.4.1</span> Managing MCHP resources</h4>
-<div class="outline-text-4" id="text-1-4-1">
-
-<p>This includes various process documents as well as an overview of the documentation process for incorporating research carried out by MCHP into online resources: Documentation Management Guide (internal)
-</p></div>
-
-</div>
-
-<div id="outline-container-1-4-2" class="outline-4">
-<h4 id="sec-1-4-2"><span class="section-number-4">1.4.2</span> MCHP directory structure</h4>
-<div class="outline-text-4" id="text-1-4-2">
-
-<p>A detailed outline of how the Windows environment is structured at MCHP
-</p></div>
-
-</div>
-
-<div id="outline-container-1-4-3" class="outline-4">
-<h4 id="sec-1-4-3"><span class="section-number-4">1.4.3</span> Managing project files</h4>
-<div class="outline-text-4" id="text-1-4-3">
-
-<p>How files and sub-directories should be organized and named as per the MCHP Guide to Managing Project Files (internal pdf). Information that may be suitable for incorporating into MCHP online resources should be identified; for example, a Concept Development section for subsequent integration of a new concept(s) into the MCHP
-Concept Dictionary. The deliverable glossary is another resource typically integrated into the MCHP Glossary.
-</p></div>
-
-</div>
-
-<div id="outline-container-1-4-4" class="outline-4">
-<h4 id="sec-1-4-4"><span class="section-number-4">1.4.4</span> Recommended Directories</h4>
-<div class="outline-text-4" id="text-1-4-4">
-
-<p>NOTE this is a diversion from the MCHP guidelines.  These recommended directories are from a combination of sources that we have synthesised.
-</p><ul>
-<li id="sec-1-4-4-1">Background: concise summaries: possibly many documents for main project and any main analyses based on the 1:3:25 paradigm: one page of main messages; a three-page executive summary; 25 pages of detailed findings.<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-2">Proposals: for documents related to grant applications.<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-3">Approvals: for ethics applications.<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-4">Budget: spreadsheets and so-forth.<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-5">Data<br/>
-<ul>
-<li id="sec-1-4-4-5-1">dataset1<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-5-2">dataset2<br/>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6">Paper1<br/>
-<ul>
-<li id="sec-1-4-4-6-1">Data<br/>
-<ul>
-<li id="sec-1-4-4-6-1-1">merged dataset1 and 2<br/>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2">Analysis (also see <a href="http://projecttemplate.net">http://projecttemplate.net</a> for a programmer oriented template)<br/>
-<ul>
-<li id="sec-1-4-4-6-2-1">exploratory analyses<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-2">data cleaning<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-3">main analysis<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-4">sensitivity analysis<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-5">data checking<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-6">model checking<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-7">internal review<br/>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-3">Document<br/>
-<ul>
-<li id="sec-1-4-4-6-3-1">Draft<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-3-2">Journal1<br/>
-<ul>
-<li id="sec-1-4-4-6-3-2-1">rejected? :-(<br/>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-3-3">Journal2<br/>
-<ul>
-<li id="sec-1-4-4-6-3-3-1">Response to reviews<br/>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-4">Versions: folders named by date - dump entire copies of the project at certain milestones/change points<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-5">Archiving final data with final published paper<br/>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-7">Papers 2, 3, etc: same structure as paper 1 hopefully the project spawns several papers<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-8">Communication: details of communication with stakeholders and decision makers<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-9">Meetings: for organisation and records of meetings<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-10">Contact details. table contacts lists<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-11">Completion: checklists to make sure project completion is systematic.  Factor in a critical reflection of lessons learnt.<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-12">References<br/>
-</li>
-</ul>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-1-5" class="outline-3">
-<h3 id="sec-1-5"><span class="section-number-3">1.5</span> Communication</h3>
-<div class="outline-text-3" id="text-1-5">
-
-<p>Project communication should be in written form, wherever possible, to serve as reference for project documentation. Access and confidentiality clearance levels for all involved in the project will determine whether separate communication plans need to be considered for confidential information.
-</p>
-</div>
-
-<div id="outline-container-1-5-1" class="outline-4">
-<h4 id="sec-1-5-1"><span class="section-number-4">1.5.1</span> E-mail</h4>
-<div class="outline-text-4" id="text-1-5-1">
-
-<p>provides opportunities for feedback/ discussion from everyone and for documenting key project decisions. Responses on any given issue would normally be copied to every project member, with the expectation of receiving feedback within a reasonable period of time - e.g.,a few days). The Research Coordinator should be copied on ALL project correspondence in order to keep the information up to date on the project website.
-</p><ul>
-<li id="sec-1-5-1-1">E-mail etiquette (internal)<br/>
-</li>
-</ul>
-</div>
-
-</div>
-
-<div id="outline-container-1-5-2" class="outline-4">
-<h4 id="sec-1-5-2"><span class="section-number-4">1.5.2</span> Meetings</h4>
-<div class="outline-text-4" id="text-1-5-2">
-
-<p>Regularly-scheduled meetings or conference calls should include all project members where possible. Research Coordinators typically arrange project team meetings and take meeting minutes, while Research Support typically arranges the Working Group meetings.
-</p><ul>
-<li id="sec-1-5-2-1">Tips for taking notes (internal)<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-5-2-2">Outlook calendar<br/>
-Used for booking rooms, it displays information on room availability and may include schedules of team members.
-</li>
-</ul>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-1-6" class="outline-3">
-<h3 id="sec-1-6"><span class="section-number-3">1.6</span> Administrative</h3>
-<div class="outline-text-3" id="text-1-6">
-
-
-</div>
-
-<div id="outline-container-1-6-1" class="outline-4">
-<h4 id="sec-1-6-1"><span class="section-number-4">1.6.1</span> Time entry</h4>
-<div class="outline-text-4" id="text-1-6-1">
-
-<p>Time spent on projects should be entered by all MCHP employees who are members of the project team.
-</p><ul>
-<li id="sec-1-6-1-1">website for time entry (internal)<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-6-1-2">procedures for time entry (internal)<br/>
-
-</li>
-</ul>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-1-7" class="outline-3">
-<h3 id="sec-1-7"><span class="section-number-3">1.7</span> Report preparation</h3>
-<div class="outline-text-3" id="text-1-7">
-
-<p>This includes:
-</p><ul>
-<li>Policies - e.g., Dissemination of Research Findings
-</li>
-<li>Standards - e.g., deliverable production, use of logos, web publishing
-</li>
-<li>Guidelines - e.g., producing PDFs, powerpoint, and Reference Manager files
-</li>
-<li>Other resources - e.g., e-mail etiquette, technical resources, photos.
-</li>
-</ul>
-
-
-
-</div>
-
-<div id="outline-container-1-7-1" class="outline-4">
-<h4 id="sec-1-7-1"><span class="section-number-4">1.7.1</span> Reliability and Validity Checks</h4>
-<div class="outline-text-4" id="text-1-7-1">
-
-<p>Making sure the numbers "make sense". Carrying out these checks requires spelling out who will do which checks.
-</p><ul>
-<li id="sec-1-7-1-1">Data Validity Checks<br/>
-A variety of things to check for at various stages of the study. Programming can be reviewed, for example, by checking to ensure all programs have used the right exclusions, the correct definitions, etc. , and output has been accurately transferred to graphs, tables, and maps for the report.
-</li>
-</ul>
-<ul>
-<li id="sec-1-7-1-2">Discrepancies between data sources<br/>
-In this case it is MCHP and Manitoba Health Reports - an example of cross-checking against another source of data.
-</li>
-</ul>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-1-8" class="outline-3">
-<h3 id="sec-1-8"><span class="section-number-3">1.8</span> Project Completion</h3>
-<div class="outline-text-3" id="text-1-8">
-
-<p>Several steps need to take place to "finish" the project:
-</p>
-</div>
-
-<div id="outline-container-1-8-1" class="outline-4">
-<h4 id="sec-1-8-1"><span class="section-number-4">1.8.1</span> Final Project Meeting.</h4>
-<div class="outline-text-4" id="text-1-8-1">
-
-<p>Wind-up or debriefing meetings are held shortly after public release of a deliverable. Such meetings provide all team members with an opportunity to communicate what worked/did not work in bringing the project to completion, providing lessons learned for future deliverables.
-</p></div>
-
-</div>
-
-<div id="outline-container-1-8-2" class="outline-4">
-<h4 id="sec-1-8-2"><span class="section-number-4">1.8.2</span> Final Documentation Review.</h4>
-<div class="outline-text-4" id="text-1-8-2">
-
-<p>Findings from the wind-up meeting should be used to update and finalize the project website (including entering the date of release of report/paper). Both Windows and Unix project directories should be reviewed to ensure that only those SAS programs relevant to project analyses are kept (and well-documented) for future reference. Any related files which may be stored in a user directory should be moved to the project directory.
-</p></div>
-
-</div>
-
-<div id="outline-container-1-8-3" class="outline-4">
-<h4 id="sec-1-8-3"><span class="section-number-4">1.8.3</span> System Cleanup.</h4>
-<div class="outline-text-4" id="text-1-8-3">
-
-<p>When the project is complete, the Systems Administrator should be informed. Project directories, including program files and output data sets, will be archived to tape or CD. Tape backups are retained for a 5-year period before being destroyed so any project may be restored up to five years after completion.
-</p></div>
-
-</div>
-
-<div id="outline-container-1-8-4" class="outline-4">
-<h4 id="sec-1-8-4"><span class="section-number-4">1.8.4</span> Integration of new material to institution repository</h4>
-<div class="outline-text-4" id="text-1-8-4">
-
-<p>This is with MCHP resource repository - a general overview of this process is described in General Documentation Process {internal}.
-</p></div>
-</div>
-</div>
-</div>
-</div>
-
-
-<p></body></p>
+<pre><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
+</code></pre>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      <a href="/categories/gisviz" title="gisviz" rel="category tag">gisviz</a>
+      
+      <a href="/categories/concordance" title="concordance" rel="category tag">concordance</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/12/research-protocol-for-manitoba-centre-for-health-policy/#disqus_thread'>Comments</a>
+      <a href='/2013/10/quantum-gis-visualisations/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Mon Dec 02 00:00:00 +1100 2013">02 Dec 2013</abbr>
+        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -953,302 +484,78 @@ In this case it is MCHP and Manitoba Health Reports - an example of cross-checki
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
+      <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>Back in 2009 Joseph Guillaume worked with me on a complicated workflow</li>
-<li>He came up with this python script to help keep track of the steps</li>
-<li>The simple text file is a list of transformations, inputs and output</li>
-<li>It is converted to the right format and graphviz creates a html page with pop-outs</li>
+<li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
+<li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
+<li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
+<li>The beta coefficient itself shouldn't be affected.</li>
+<li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
+<li>To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
+<li>I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
+<li>So I asked Sarunya for a discussion about her research</li>
 </ul>
 
 
-<h4>Simple text list</h4>
+<h3>Sarunya's model is essentially like this</h3>
 
-<pre><code>Transformation
-        description
-                the thing 
-        inputs
-                the thing before
-                another thing
-        output
-                the next thing
-        notes
-                the thing is this other thing   this is a really long description 
-                blah blah asdfasdfasdfasdfasdfa 
+<h4>R Code:</h4>
 
-Transformation
-        description
-                yet another thing
-        inputs
-                the next thing
-        output
-                a final thing
-        notes
-                this is a note
+<pre><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
+       ns(temp, df) + ns(humidity, df) +
+       ns(time, df = 7*numYears) +
+       SLA * ns(time, df = 2),
+       data = analyte, family = poisson
+       )
 </code></pre>
 
 <p></p>
 
 
 <ul>
-<li>keep this in your work directory and update it whenever you add a step to the workflow</li>
-<li>the list can be as big as you like (hundreds of steps), and entered in any order, the inputs/output relationships determine how the graph looks at the end</li>
-<li>to run the script just do the one line</li>
+<li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
+<li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
+<li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
+<li>therefore this study avoids the issue by it's intentional design to compare betas not se</li>
+<li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
+<li>this is fascinating in itself, but a separate issue for another post</li>
 </ul>
 
 
-<h4>Python code: run</h4>
-
-<pre><code>python transformations.py workflow_steps.txt index
-</code></pre>
-
-<p></p>
-
+<h3>Conclusions</h3>
 
 <ul>
-<li>open the html page and click on a square box to bring up the pop-out</li>
-<li>short text is shown, long text is replaced by an ellipse and only shown in pop-out</li>
+<li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
+<li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
 </ul>
 
 
-<h4>Conclusions</h4>
-
-<ul>
-<li>I've popped the script up as a <a href="https://github.com/ivanhanigan/transformations">Github repo</a></li>
-<li>The example is in the <a href="http://ivanhanigan.github.io/transformations/">gh-pages branch</a></li>
-</ul>
-
+<p>THANKS Sarunya!</p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-      <a href="/categories/workflow" title="workflow" rel="category tag">workflow</a>
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/12/graphviz-automagic-flowcharts/#disqus_thread'>Comments</a>
+      <a href='/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Sun Dec 01 00:00:00 +1100 2013">01 Dec 2013</abbr>
+        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Gantt Charts are a method used in Project Management to visualise the task list and progress with a calendar.</li>
-<li>The title of this post comes from <a href="http://berkeley.academia.edu/TomasAragon/Teaching/31679/Project_Management_for_Health_Professionals">Dr Tomas Aragon's paper 'Project Management for Health Professionals'</a></li>
-<li>There is also an accompanying <a href="http://medepi.com/2012/02/05/project-mgmt/">Tutorial</a></li>
-<li>Dr Aragon also has a couple of suggestions for software to use for creating Gantt Charts <a href="http://medepi.com/2011/11/29/software-recs/">on this page</a></li>
-<li>I haven't used those but here are some I have used</li>
-</ul>
-
-
-<h4>Gantter</h4>
-
-<ul>
-<li>This is an online tool, that can integrate with Google Drive <a href="http://www.gantter.com/">http://www.gantter.com/</a></li>
-<li>It also imports MS Project files</li>
-</ul>
-
-
-<h4>Taskjuggler</h4>
-
-<ul>
-<li>Emacs orgmode can be used with a Ruby package called Taskjuggler (tj3)</li>
-<li>The command C-c C-e j will export a file such as this description ready for conversion <a href="http://orgmode.org/worg/org-tutorials/org-taskjuggler.html">http://orgmode.org/worg/org-tutorials/org-taskjuggler.html</a></li>
-<li>I also needed to include this suggested by d.tchin 29 Feb 2012,  <a href="http://permalink.gmane.org/gmane.emacs.orgmode/52844">http://permalink.gmane.org/gmane.emacs.orgmode/52844</a></li>
-<li>an example I use for a template is in my <a href="https://raw.github.com/ivanhanigan/disentangle/gh-pages/gantt-tj3/gantt-tj3.org">disentangle Github repo</a></li>
-<li>which produces <a href="http://ivanhanigan.github.io/disentangle/gantt-tj3/Gantt%20Chart.html">this output</a></li>
-</ul>
-
-
-<p><img src="/images/gantt-tj3.png" alt="gantt-tj3.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/12/gantt-charts-for-health-professionals/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Sun Dec 01 00:00:00 +1100 2013">01 Dec 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Last week I started a new discussion about sharing and extending research protocols.</li>
-</ul>
-
-
-<h4>My Colleague sent me a link to the <a href="http://prometheuswiki.publish.csiro.au/tiki-custom_home.php">Prometheus Wiki</a>​</h4>
-
-<pre><code>a site for sharing research protocols. The idea is to give people
-a place to post research protocols since everyone develops them
-and then mentions them in papers but they rarely make it online in
-a usable format. We see this as a big bottleneck in the rate of
-knowledge discovery. Since users will always want to change and
-adapt a given protocol for changing applications or new technology
-or just to improve it. This sort of thing is done with open source
-all the time (i.e. git) but how you'd do it with an online
-protocol based out of a wiki is unknown. The current version of
-the website is not very flexible and doesn't really enable the
-sort of dynamic collaboration that I envision would make this a
-really useful tool. Git seems like an obvious conceptual starting
-point but there'd need to be a front end markup system in place
-that was integrated with that git-type backend. Since you've
-mentioned git a few times and the open science project, I thought
-you might find this interesting to think about. any suggestions or
-inspirations would be welcomed
-</code></pre>
-
-<p></p>
-
-
-<h4>My past experience</h4>
-
-<ul>
-<li>I have previously tried to use a wiki for the development of new sections in an existing study protocol on estimating the effects of bushfire smoke air pollution and human health.</li>
-<li>We combined elements of two major air pollution/health study protocols (one from Europe, one from America) with local considerations and decisions made within our team.</li>
-<li>On reflection all this was mostly useful for me, to a lesser extent the other programmer and I don't think the project manager or statistician ever even looked at any of this.</li>
-</ul>
-
-
-<h4>Jeff Leek's current approach using GitHub</h4>
-
-<p>I have been keeping an eye on the work by Jeff Leek on putting protocols onto Github and inviting collaboration to edit and extend them <a href="http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/">as he says</a>:</p>
-
-<pre><code>I put it on Github because I'm still not 100% sure I got it
-right... I would welcome feedback/pull requests on how we can
-improve the policy to make it better
-</code></pre>
-
-<p></p>
-
-
-<h4>Leek Group policies and protocols on github so far</h4>
-
-<ul>
-<li><a href="https://github.com/jtleek/rpackages">https://github.com/jtleek/rpackages</a> accompanied by <a href="http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/">this post</a></li>
-<li><a href="https://github.com/jtleek/reviews">https://github.com/jtleek/reviews</a> accompanied by <a href="http://simplystatistics.org/2013/10/23/the-leek-group-guide-to-reviewing-scientific-papers/">this post</a></li>
-<li><a href="https://github.com/jtleek/datasharing">https://github.com/jtleek/datasharing</a> accompanied by <a href="http://simplystatistics.org/2013/11/14/the-leek-group-guide-to-sharing-data-with-a-statistician-to-speed-collaboration/">this post</a></li>
-</ul>
-
-
-<h4>I forked "datasharing" for my own. Renamed: "How to share data to avoid misunderstanding"</h4>
-
-<ul>
-<li>I liked the datasharing policy so much <a href="http://ivanhanigan.github.io/datasharing/">I forked it for my own collaborations</a>.</li>
-<li>I initially just made a minor recommendation to one of the lines in the original using the great Github feature that if you edit a repo you don't have access to, it forks the repo and creates a feature branch behind the scenes. After you submit the changes (which is a commit) it puts you right into the pull request form.</li>
-<li>Therefore it can all be done on the GitHub site. I submitted <a href="https://github.com/jtleek/datasharing/pull/11">the pull request without leaving my web browser</a>.</li>
-<li>But then I thought I would have done things a bit differently.  In particular I'd like a webpage with a table of contents, and a nicer looking landing page.</li>
-<li>so I cloned my fork of the repo, then created a new branch called gh-pages, then copied the original to a new file called index.org, added some Emacs Orgmode HTML export magic and then "C-c C-e h" and WHAMM-O I've got my own version for extending with at <a href="http://ivanhanigan.github.io/datasharing/">http://ivanhanigan.github.io/datasharing/</a>.</li>
-</ul>
-
-
-<h4>The code version:</h4>
-
-<pre><code>git clone git@github.com:ivanhanigan/datasharing.git ~/tools/datasharing
-cd ~/tools/datasharing
-git checkout -b gh-pages
-mv README.md index.org
-touch README.md
-# edits to index.org, "C-c C-e h" and WHAMM-O
-git add index.org index.html README.md
-git push origin gh-pages
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>In this way I think people can share and collaborate easily <a href="http://yihui.name/en/2013/06/fix-typo-in-documentation/">(if they know git)</a></li>
-<li>as well as easily take work started by someone else and extend it for their own work.</li>
-<li>I wonder a little bit about how much of my extensions I should offer back to Jeff Leek as the original author.</li>
-<li>I guess he can always track what I do to it via the link back to his original shown in <a href="https://github.com/jtleek/datasharing/network">https://github.com/jtleek/datasharing/network</a></li>
-</ul>
-
-
-<h4>PS Jeff Leek uses github a lot!</h4>
-
-<p>As he says in <a href="http://simplystatistics.org/2013/11/21/future-of-statistics-take-home-messages-futureofstats/">this post from the future-of-statistics unconference</a>:</p>
-
-<pre><code>You can read it on Github here (https://github.com/jtleek/futureofstats).
-I put it on Github for two reasons:
-
-- I agree with Hadley's statement that the future of statistics is on Github.
-- I summarized them based on my interpretation and would love
-  collaboration on the document. If you want to add your new
-  thoughts/summaries, add a new section with your bullet pointed
-  ideas and send me a pull request!
-</code></pre>
-
-<p></p>
-
-
-<h4>Conclusions</h4>
-
-<ul>
-<li>Jeff Leek is on to something really interesting with these github policies and protocols</li>
-<li>I find the look of his plain markdown README.md pages a bit un-inspiring</li>
-<li>but then I spend too much of my time tweaking my html by far (while Jeff is getting on with the real work of publishing papers)</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/sharing-and-extending-research-protocols/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Wed Nov 27 00:00:00 +1100 2013">27 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
 
 <div class="pagination">
   <span class="previous">
@@ -1303,237 +610,127 @@ I put it on Github for two reasons:
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-<<<<<<< HEAD
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                <li><a href="/categories/replication">replication (1)</a></li>
                 
-                <li><a href="/categories/notebook">notebook (1)</a></li>
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
                 
                 <li><a href="/categories/make">make (1)</a></li>
                 
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-=======
-                <li><a href="/categories/surveys">surveys (1)</a></li>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (12)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-<<<<<<< HEAD
-                <li><a href="/categories/GIS">GIS (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
                 <li><a href="/categories/jekyll">jekyll (2)</a></li>
                 
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
-=======
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (18)</a></li>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-<<<<<<< HEAD
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
-=======
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
-                
-                <li><a href="/categories/drought">drought (1)</a></li>
-                
-<<<<<<< HEAD
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-=======
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-<<<<<<< HEAD
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (4)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                <li><a href="/categories/surveys">surveys (1)</a></li>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-=======
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
                 <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-<<<<<<< HEAD
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                <li><a href="/categories/systems">systems (1)</a></li>
                 
                 <li><a href="/categories/python">python (2)</a></li>
                 
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
                 
                 <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
                 
-                <li><a href="/categories/ons">ons (1)</a></li>
-=======
-                <li><a href="/categories/systems">systems (1)</a></li>
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
+                <li><a href="/categories/Modelling">Modelling (1)</a></li>
                 
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                <li><a href="/categories/versions">versions (1)</a></li>
                 
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                <li><a href="/categories/packages">packages (1)</a></li>
                 
                 <li><a href="/categories/wordpress">wordpress (1)</a></li>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
-<<<<<<< HEAD
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
                 
-                <li><a href="/categories/tools">tools (1)</a></li>
+                <li><a href="/categories/concordance">concordance (1)</a></li>
                 
-                <li><a href="/categories/me">me (3)</a></li>
+                <li><a href="/categories/data science">data science (1)</a></li>
                 
-                <li><a href="/categories/outlines">outlines (1)</a></li>
+                <li><a href="/categories/Drought">Drought (1)</a></li>
                 
-                <li><a href="/categories/overview">overview (4)</a></li>
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
                 
                 <li><a href="/categories/Data Documentation">Data Documentation (12)</a></li>
                 
                 <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
                 
-                <li><a href="/categories/replication">replication (1)</a></li>
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
                 
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                <li><a href="/categories/animation">animation (1)</a></li>
                 
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-=======
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (4)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
-                
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
-<<<<<<< HEAD
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-=======
-                <li><a href="/categories/gis">gis (1)</a></li>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-<<<<<<< HEAD
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
-=======
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
                 
                 <li><a href="/categories/workflow">workflow (3)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/drought">drought (1)</a></li>
+                
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/GIS">GIS (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (1)</a></li>
+                
+                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (4)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
                 
               </ul>
             </div>
@@ -1544,7 +741,6 @@ I put it on Github for two reasons:
               <ul>
                 
                 <li>
-<<<<<<< HEAD
                   <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
                 </li>
                 
@@ -1554,81 +750,6 @@ I put it on Github for two reasons:
                 
                 <li>
                   <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
-=======
-                  <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
-                </li>
-                
-                <li>
-                  <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/auto-download-bureau-meteorology-diurnal-data/" title="auto-download-bureau-meteorology-diurnal-data" rel="bookmark">auto-download-bureau-meteorology-diurnal-data</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/the-history-of-ons/" title="the-history-of-ons" rel="bookmark">the-history-of-ons</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/" title="non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms" rel="bookmark">non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-for-manitoba-centre-for-health-policy/" title="research-protocol-for-manitoba-centre-for-health-policy" rel="bookmark">research-protocol-for-manitoba-centre-for-health-policy</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
                 </li>
                 
                 <li>
@@ -1747,8 +868,6 @@ I put it on Github for two reasons:
                   <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
                 </li>
                 
-<<<<<<< HEAD
-=======
                 <li>
                   <a href="/2013/09/transformational-adaptation/" title="transformational-adaptation" rel="bookmark">transformational-adaptation</a>
                 </li>
@@ -1757,7 +876,70 @@ I put it on Github for two reasons:
                   <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
                 </li>
                 
->>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
+                <li>
+                  <a href="/2013/09/energymark/" title="energymark" rel="bookmark">energymark</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/09/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/09/ons/" title="Starting my Open Notebook Science Blog" rel="bookmark">Starting my Open Notebook Science Blog</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/07/worflow-flowcharts/" title="Worflow flowcharts" rel="bookmark">Worflow flowcharts</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/07/animated-maps/" title="animated-maps" rel="bookmark">animated-maps</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/06/spatio-temporal-animations/" title="spatio-temporal-animations" rel="bookmark">spatio-temporal-animations</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/05/data-dredging/" title="Complex Model Selection (or Data Dredging)" rel="bookmark">Complex Model Selection (or Data Dredging)</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/04/pioz-et-al-2012-model-selection/" title="Pioz et al 2012 model selection" rel="bookmark">Pioz et al 2012 model selection</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/04/suicide-and-drought-evidence-from-literature/" title="Suicide And Drought Evidence From Literature" rel="bookmark">Suicide And Drought Evidence From Literature</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/04/timeseries-with-spatial-lag/" title="Timeseries with Spatial Lag" rel="bookmark">Timeseries with Spatial Lag</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/04/reflections-bob-haining/" title="Reflections on Spatial Regression Class with Prof Bob Haining" rel="bookmark">Reflections on Spatial Regression Class with Prof Bob Haining</a>
+                </li>
+                
+                <li>
+                  <a href="/2012/09/software-ism/" title="software-ism" rel="bookmark">software-ism</a>
+                </li>
+                
+                <li>
+                  <a href="/2012/07/the-ecological-fallacy-is-itself-a-fallacy/" title="The Ecological Fallacy is Itself a Fallacy" rel="bookmark">The Ecological Fallacy is Itself a Fallacy</a>
+                </li>
+                
+                <li>
+                  <a href="/2012/06/centenial-scale-rainfall-in-southeastern-australia/" title="Centennial Scale Rainfall in Southeastern Australia" rel="bookmark">Centennial Scale Rainfall in Southeastern Australia</a>
+                </li>
+                
+                <li>
+                  <a href="/2012/05/how-to-explain-my-current-research/" title="How to explain my current research interests?" rel="bookmark">How to explain my current research interests?</a>
+                </li>
+                
+                <li>
+                  <a href="/2012/05/historical-evidence-of-dengue-in-southeastern-australia/" title="Historical GIS evidence of Dengue in the far southeast of Australia?" rel="bookmark">Historical GIS evidence of Dengue in the far southeast of Australia?</a>
+                </li>
+                
               </ul>
               <div class="clear"></div>
             </div>
