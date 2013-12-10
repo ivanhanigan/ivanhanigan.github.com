@@ -6,818 +6,1676 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
-				<title>nectar cloud pumilio build got bogged down</title>
-				<description>&lt;p&gt;I've been trying to build pumilio bioacoustics server on a Aust Nectar Research Cloud VM, but hit various roadblocks.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;built with NeCTAR Ubuntu 12.04.2 (Precise)&lt;/li&gt;
-&lt;li&gt;these issues (especially the apt-get install r-cran-mysql etc ) might not occure with later Ubuntu?&lt;/li&gt;
-&lt;li&gt;test NeCTAR Ubuntu 12.10 (Quantal) or&lt;/li&gt;
-&lt;li&gt;NeCTAR Ubuntu 13.04 (Raring) ??&lt;/li&gt;
-&lt;li&gt;TODO FIX issues with python audio lab&lt;/li&gt;
-&lt;li&gt;TODO swapfile&lt;/li&gt;
-&lt;li&gt;TODO Mount the larger storage&lt;/li&gt;
-&lt;li&gt;TODO add swapfile&lt;/li&gt;
-&lt;li&gt;TODO fix R install etc&lt;/li&gt;
+				<title>dual-code-repository-and-project-website</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;I really like the idea of using github or bitbucket for a dual code repository and project website&lt;/li&gt;
+&lt;li&gt;in Github I set up the master branch with the R package code&lt;/li&gt;
+&lt;li&gt;and set up the website using the gh-pages branch&lt;/li&gt;
+&lt;li&gt;it has to be called gh-pages, and add an index.html, it will appear at your-username.github.com/repo-name&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;The Github code (in the gh-pages branch) and published as &lt;a href=&quot;http://ivanhanigan.github.io/pumilio-bushfm/&quot;&gt;a report at this link&lt;/a&gt;.  The Source Code is available to Clone or Fork at &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm&quot;&gt;This Github Repo&lt;/a&gt; and is at a stage that most of the installation and configuration is documented to a point where a test sound file has successfully been uploaded.&lt;/p&gt;
-
-&lt;h4&gt;HELP WANTED&lt;/h4&gt;
+&lt;h4&gt;Github&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Any researcher at an Australia university could follow the instructions on their own Nectar Cloud VM.&lt;/li&gt;
-&lt;li&gt;If anybody out there is interested in bioacoustics, R, Linux or web data archives please help&lt;/li&gt;
+&lt;li&gt;The best bit about doing this on github is that the R package &quot;devtools&quot; can be used to install the package (so long as you can compile the package)&lt;/li&gt;
+&lt;li&gt;on windows you may need to install Rtools and configure the path&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;Background to pumilio, bushfm and this project&lt;/h4&gt;
+&lt;h4&gt;R Code: install_github&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/birdcombined.png&quot; alt=&quot;birdcombined.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The &lt;a href=&quot;pumilio%20project&quot;&gt;http://pumilio.sourceforge.net/&lt;/a&gt; is by Luis J. Villanueva-Rivera and Bryan C. Pijanowski. (2012. Pumilio: A Web-Based Management System for Ecological Recordings. Bulletin of the Ecological Society of America 93: 71-81. doi: 10.1890/0012-9623-93.1.71)&lt;/li&gt;
-&lt;li&gt;The &lt;a href=&quot;Bush-fm%20project&quot;&gt;http://www.bush.fm/&lt;/a&gt; aims to provide the research community with a portal to national scale acoustic sensor data repositories, and a suite of tools to perform analysis and reporting on these data.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;(Images from http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000M4)&lt;/p&gt;
-</description>
-				<published>Mon Nov 18 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/nectar-cloud-pumilio-build-got-bogged-down/</link>
-			</item>
-		
-			<item>
-				<title>pumilio-bushfm-test-dev-prod</title>
-				<description>&lt;h1&gt;Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook&lt;/h1&gt;
-
-&lt;h4&gt;Aims:&lt;/h4&gt;
-
-&lt;p&gt;It was suggested I could document the pumilio test build as an OpenNotebook.
-I imagined that I could link this blog to github repo and doco hosted on gh-pages.&lt;/p&gt;
-
-&lt;h4&gt;Methods:&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;For ie the emacs html output now goes to &lt;a href=&quot;http://ivanhanigan.github.io/pumilio-bushfm/&quot;&gt;http://ivanhanigan.github.io/pumilio-bushfm/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;then collaborators can clone/fork &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;and comment/complain at &lt;a href=&quot;https://github.com/ivanhanigan/pumilio-bushfm/wiki&quot;&gt;https://github.com/ivanhanigan/pumilio-bushfm/wiki&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Results:&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud&lt;/li&gt;
-&lt;li&gt;Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).&lt;/li&gt;
-&lt;li&gt;then when I tried to upload a big sound file it broke :-(&lt;/li&gt;
-&lt;li&gt;I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo nano /etc/mysql/my.cnf
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&quot;repo-name&quot;, &quot;github-account-name&quot;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;BUT&lt;/h4&gt;
+&lt;h4&gt;Bitbucket&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...&lt;/li&gt;
-&lt;li&gt;so I think I can &lt;a href=&quot;http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition&quot;&gt;just remount /var&lt;/a&gt; onto the larger /mnt secondary disk.&lt;/li&gt;
+&lt;li&gt;I recently took these notes about setting up a website on Bitbucket&lt;/li&gt;
+&lt;li&gt;I am not sure about how this would work for R packages (the devtools installer mentioned above is a great tool for developing)&lt;/li&gt;
+&lt;li&gt;but with unlimited private repositories this seems like a good platform for my &quot;open notebook - selected content&quot; (I need to be selective about what I share and what I keep restricted access only)&lt;/li&gt;
+&lt;li&gt;the page is available for &quot;your-account&quot;.bitbucket.org&lt;/li&gt;
+&lt;li&gt;create a new repo on the web UI&lt;/li&gt;
+&lt;li&gt;I kept the repo private, but the pages will be public,&lt;/li&gt;
+&lt;li&gt;added issue tracking and Wiki&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;using git shell&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir ~/projects/your-account.bitbucket.org
+cd ~/projects/your-account.bitbucket.org
+git init
+git remote add origin ssh://git@bitbucket.org/your-account/your-account.bitbucket.org.git
+touch index.org
+# use emacs to make changes and publish the html (C-c C-e h)
+
+git commit -m &quot;First commit&quot;
+git push -u origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;now it is online at http://your-account.bitbucket.org/&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;More info at:
+&lt;a href=&quot;https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket&quot;&gt;https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 </description>
-				<published>Fri Nov 15 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/pumilio-bushfm-test-dev-prod/</link>
+				<published>Mon Dec 09 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/dual-code-repository-and-project-website/</link>
 			</item>
 		
 			<item>
-				<title>India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</title>
-				<description>&lt;h4&gt;Introduction&lt;/h4&gt;
+				<title>bitbucket-has-unlimited-private-git-repositories-for-universities</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;I just got introduced to bitbucket, an alternative to Github&lt;/li&gt;
+&lt;li&gt;I've used Github for a couple of years and have been paying for extra private repositories&lt;/li&gt;
+&lt;li&gt;I did not realise that bitbucket worked with git too (I thought it was just for Mercurial)&lt;/li&gt;
+&lt;li&gt;it offers unlimited public and private repository and unlimited users (to collaborate) if you have the Academic plan.&lt;/li&gt;
+&lt;li&gt;when you sign up with your academic email address, &lt;a href=&quot;http://blog.bitbucket.org/2011/04/01/free-unlimited-user-source-code-hosting-for-university-students/&quot;&gt;you automatically get an unlimited academic plan&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;I was grateful to recieve the &lt;a href=&quot;http://students.anu.edu.au/scholarships/gc/cur/dom/bhati.php&quot;&gt;Bhati Family Travel Grant&lt;/a&gt; which allowed me to travel to Chennai, India in October to meet with experts on Drought and Suicide there.  I wanted to go to India to help me with my work on &lt;a href=&quot;http://www.pnas.org/content/109/35/13950&quot;&gt;Farmer Suicide in Australia&lt;/a&gt; primarily because I'd read about the excellent researchers there and also the large magnitude of the problem with farmer suicide and drought (it is in the news media quite regularly).&lt;/p&gt;
+</description>
+				<published>Mon Dec 09 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/</link>
+			</item>
+		
+			<item>
+				<title>auto-download-bureau-meteorology-diurnal-data</title>
+				<description>&lt;p&gt;&lt;head&gt;
+&lt;title&gt;Excess Heat Indices &lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=iso-8859-1&quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;Excess Heat Indices &quot;/&gt;
+&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-12-07T23:25+1100&quot;/&gt;
+&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
 
-&lt;!-- Secondarily, I wanted to come back because I'd visited in 2005 for 3 weeks and was overwhelmed by the experience, possibly we tried to do to much and also we were mostly on the busy tourist track.  I wanted to see if a more local approach might give me a better experience of India.
---&gt;
 
 
-&lt;p&gt;I arrived on 2nd October and the airport and streets were pretty quiet.  I think because this is a public holiday in honour of Gandhi.&lt;/p&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
 
-&lt;p&gt;I had previously arranged to meet&lt;/p&gt;
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = &quot;code-highlighted&quot;;
+     elem.className   = &quot;code-highlighted&quot;;
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;p&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Excess Heat Indices &lt;/h1&gt;
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 auto-download-bureau-meteorology-diurnal-data&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 First the FTP server URL structure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 table&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3 R Code: bom&lt;sub&gt;download&lt;/sub&gt;.r&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4 R Code: bom&lt;sub&gt;collation&lt;/sub&gt;.r&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5 BAT file (windoze)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6 check the data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-7&quot;&gt;1.7 Conclusions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; auto-download-bureau-meteorology-diurnal-data&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
+
 
 &lt;ul&gt;
-&lt;li&gt;Dr L Vijayakumar founder of &lt;a href=&quot;http://snehaindia.org/&quot;&gt;Society for Natal Effects on Health - SNEHA&lt;/a&gt; and&lt;/li&gt;
-&lt;li&gt;Dr A Nambi+, Director of the Climate Change Program and Dr R Rukmani, Director of the Food Security Program at &lt;a href=&quot;http://www.mssrf.org/&quot;&gt;M S Swaminathan Research Foundation - MSSRF&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;We;re looking at health impacts of high temperatures at work 
+&lt;/li&gt;
+&lt;li&gt;need to see the highest temperatures during the working hours
+&lt;/li&gt;
+&lt;li&gt;bom provides hourly data for download, but only 3 days at a time
+&lt;/li&gt;
+&lt;li&gt;we build a script and set it on a schedule to run every day, download the data and collate the results
+&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;This is my re-written notes of both meetings.&lt;/p&gt;
 
-&lt;h4&gt;First Meeting: 3rd October, Dr Lakshmi Vijayakumar&lt;/h4&gt;
+&lt;/div&gt;
 
-&lt;p&gt;Dr Lakshmi Vijayakumar is a WHO expert, a practicing psychiatrist and founder of the SNEHA suicide prevention organisation.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/sneha-ad.jpg&quot; alt=&quot;sneha-ad.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;When I contacted her to ask for a meeting she invited me to come to the headquarters of SNEHA in R A Puram, south central Chennai. The Autorickshaw driver took a couple of wrong turns but we got there OK after asking directions.  I also met Jyothi the SNEHA Director and several volunteers who work at the centre and befriend people who visit or phone with suicidal problems.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/sneha-cropped.jpg&quot; alt=&quot;sneha-cropped.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;!-- We met at 12 noon and we also had Dosai for lunch. --&gt;
+&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1&lt;/span&gt; First the FTP server URL structure&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1&quot;&gt;
 
 
-&lt;!-- With us were Jyothi, Sumitra and a volunteer whose name I did not write down --&gt;
+&lt;ul&gt;
+&lt;li&gt;The URLS are predictable, just need the station id, state and a code if metro or rural
+&lt;/li&gt;
+&lt;/ul&gt;
 
 
-&lt;p&gt;I had asked to visit because I've been following her research on farmer suicide prevention measures.  I suggested that my research on Drought-specific causality might benefit from insights that Dr Vijayakumar could give me, and thankfully she agreed to give me her time. I was very pleased she mentioned that she found my research &quot;interesting and important&quot; which is great because that is just the way I feel about HER research.&lt;/p&gt;
+&lt;/div&gt;
 
-&lt;p&gt;I reflected on my way to the meeting what I want to get out of this lesson and I felt that it was really important to get feedback on some of the directions I want to pursue in terms of a unified theoretical framework across environmental and social causes of suicide (generalised across diverse social situations like the differences between Australian and Indian Farmers).&lt;/p&gt;
+&lt;/div&gt;
 
-&lt;p&gt;I also felt it was important that I might just sit and listen to any advice Dr Vijayakumar felt like giving me, so I asked what she thought were the most important priorities for farmer suicide research in India.
-I have been reflecting on the influence of Dr Vijayakumar's words had on me when I heard them on a Radio report by Australian Journalist Michael Condon &lt;a href=&quot;www.google.com&quot;&gt;Ref&lt;/a&gt; when he came to India in 2009.&lt;/p&gt;
-
-&lt;!-- TODO expand this. --&gt;
-
-
-&lt;h4&gt;My Secret Agenda&lt;/h4&gt;
-
-&lt;p&gt;I brought along a secret agenda which was to get an opinion of my preconceived thoughts about the topic.  Particularly the approach to a generalised framework of the work of my PhD supervisors Colin, Phil and Rohan for disentangling environmental from social impacts on health.  Especially this framework is for understanding tipping points in the farmer suicide system.  My second secret agenda was that if the framework I presented was thought OK, then what were the best next steps (plan for the future), in terms of communication in suicide prevention fields, actions in policy arenas and etc.&lt;/p&gt;
-
-&lt;p&gt;First: I presented the general framework.  The essence of this is the &quot;Five Capitals&quot;:
-- Financial
-- Social
-- Physical
-- Natural
-- Human&lt;/p&gt;
-
-&lt;p&gt;Phil and Rohan have developed approaches aimed at Rural Livelihoods and Adaptive Capacity of Farmers.  Colin had extended this even to the concept of Human Carrying Capacity.  I think this framework especially useful for tipping points because the causes of such catastrophes are undoubtedly numerous, interacting and dynamic.&lt;/p&gt;
-
-&lt;p&gt;So what did Lakshmi think?  She started by saying that it made good sense, that the main focus of suicide prevention work was focused on the biological, psychological and social domains.  But there are so many other factors.  Drought was clearly one.&lt;/p&gt;
-
-&lt;p&gt;She got out a map of the recent suicide rates and showed me a region of elevated risk north-west of Tamil Nadu, south of Chatinargarth, and north of Kerala.  60 percent of India's farmer suicides are in these states.  Why are these 3 states high but TN is not?  All are semi-arid.&lt;/p&gt;
-
-&lt;!-- TODO check this --&gt;
-
-
-&lt;p&gt;All have similar societies, cultures, climates, agriculture, etc.  We tried fitting these to the five capitals framework.&lt;/p&gt;
-
-&lt;!--
-#### What do you think?
-Dr Lakshmi said that this kind of thing did help to develop policy &quot;definitely&quot;.
-I asked how much extra help this gave if we knew that pesticides, alcohol and gun control were so important.  She replied that those were medium term policy solutions but long-term policies needed to look at social dynamics, farming and a whole lot of things like status change (owning land used to be a status symbol but now is a burden).
-
-#### What are the priorities?
-What secondary (surrogate) priorities emerge around the main points?  If I bring questions to the lesson are they answered by the presenter?  If not why?
-
-- Synthesis:
-My new understanding of the topic.
-
-- TODO Mind map of the pathway to completed suicide.
---&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;!-- &lt;ul&gt; --&gt;
-
-
-&lt;!-- &lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 dev-table&lt;/a&gt;&lt;/li&gt; --&gt;
-
-
-&lt;!-- &lt;/ul&gt; --&gt;
-
-
-&lt;!-- &lt;/div&gt; --&gt;
-
-
-&lt;!-- &lt;/div&gt; --&gt;
-
-
-
-
-&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; dev-table&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
+&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2&lt;/span&gt; table&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2&quot;&gt;
 
 &lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;
+&lt;colgroup&gt;&lt;col class=&quot;right&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;right&quot; /&gt;
 &lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;Capital&lt;/th&gt;&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;Semi-arid suicide hotspot&lt;/th&gt;&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;Tamil Nadu&lt;/th&gt;&lt;/tr&gt;
-&lt;/thead&gt;
 &lt;tbody&gt;
-&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;Financial&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;move from rice/millet/polyculture&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;remained polyculture&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;into cashcrops, cotton, chilli&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;with more pesticide, decreased access&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;to local money lender and more reliance&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;on international corporations&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;retained local lending,&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;more responsive to seasonal&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;conditions&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;Station&lt;sub&gt;ID&lt;/sub&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;State&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;City&lt;sub&gt;9&lt;/sub&gt;&lt;sub&gt;or&lt;/sub&gt;&lt;sub&gt;regional&lt;/sub&gt;&lt;sub&gt;8&lt;/sub&gt;_&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94774&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;95719&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94768&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94763&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94767&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94910&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94929&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;95896&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94693&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94691&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;N&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;8&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;95677&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;S&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94675&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;S&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94672&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;S&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94866&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;V&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;95867&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;V&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94868&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;V&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;right&quot;&gt;94875&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;V&lt;/td&gt;&lt;td class=&quot;right&quot;&gt;8&lt;/td&gt;&lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;/div&gt;
-&lt;!-- &lt;/div&gt; --&gt;
-&lt;!-- &lt;/div&gt; --&gt;
-&lt;!-- + Unfortunately Dr Nambi was out of action with a back injury but I was very lucky to have made an alternative contact in Dr R Rukmani, Director of the Food Security Program at MSSRF who had also researched Farmer Suicides.
---&gt;
 
+
+
+&lt;ul&gt;
+&lt;li&gt;now create a script called &quot;bom&lt;sub&gt;download&lt;/sub&gt;.r&quot;
+&lt;/li&gt;
+&lt;li&gt;it takes the station details and paste into the URLs
+&lt;/li&gt;
+&lt;li&gt;downloads the files
+&lt;/li&gt;
+&lt;li&gt;stores in a directory for each days downloads
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3&lt;/span&gt; R Code: bom&lt;sub&gt;download&lt;/sub&gt;.r&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;filename = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;~/data/ExcessHeatIndices/inst/doc/weather_stations.csv&quot;&lt;/span&gt;
+output_directory = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;~/bom-downloads&quot;&lt;/span&gt;
+setwd(output_directory)
+
+urls &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(filename)
+urls_list &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; paste(sep = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;&quot;&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;http://www.bom.gov.au/fwo/ID&quot;&lt;/span&gt;,
+                  urls$State,
+                  &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;60&quot;&lt;/span&gt;, 
+                  urls$City_9_or_regional_8_,
+                  &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;01/ID&quot;&lt;/span&gt;,
+                  urls$State,
+                  &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;60&quot;&lt;/span&gt;,
+                  urls$City_9_or_regional_8_,
+                  &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;01.&quot;&lt;/span&gt;,
+                  urls$Station_ID,
+                  &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;.axf&quot;&lt;/span&gt;)
+
+output_directory &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; file.path(output_directory,Sys.Date())
+dir.create(output_directory)
+
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(url &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; urls_list)
+{
+  output_file &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; file.path(output_directory,basename(url))
+  download.file(url, output_file, mode = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;wb&quot;&lt;/span&gt;)
+
+}
+print(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;SUCCESS&quot;&lt;/span&gt;)
+
+&lt;/pre&gt;
+
+
+
+
+&lt;ul&gt;
+&lt;li&gt;Now the data can be combined
+&lt;/li&gt;
+&lt;li&gt;clean up the header and extraneous extra line at the bottom
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4&lt;/span&gt; R Code: bom&lt;sub&gt;collation&lt;/sub&gt;.r&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4&quot;&gt;
+
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;this takes data in directories from bom_download.r&lt;/span&gt;
+ 
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;first get list of directories&lt;/span&gt;
+filelist &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; dir(pattern = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;axf&quot;&lt;/span&gt;, recursive = T)
+filelist
+ 
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;next get directories for days we haven't done yet&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(file.exists(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;complete_dataset.csv&quot;&lt;/span&gt;))
+{
+complete_data &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;complete_dataset.csv&quot;&lt;/span&gt;, stringsAsFactors = F)
+&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;str(complete_data)&lt;/span&gt;
+last_collated &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; max(as.Date(complete_data$date_downloaded))
+&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;max(complete_data$local_hrmin)&lt;/span&gt;
+ 
+days_downloaded &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; dirname(filelist)
+filelist &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; filelist[which(as.Date(days_downloaded) &amp;gt; as.Date(last_collated))]
+}
+ 
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;for these collate them into the complete file&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(f &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; filelist)
+{
+  &lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;f &amp;lt;- filelist[2]&lt;/span&gt;
+  print(f)
+  fin &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(f, colClasses = c(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;local_date_time_full.80.&quot;&lt;/span&gt; = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;character&quot;&lt;/span&gt;), 
+    stringsAsFactors = F, skip = 19)
+  fin &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; fin[1:(nrow(fin) - 1),]
+  fin$date_downloaded &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; dirname(f)
+  fin$local_year &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; substr(fin$local_date_time_full.80., 1, 4)
+  fin$local_month &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; substr(fin$local_date_time_full.80., 5, 6)
+  fin$local_day &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; substr(fin$local_date_time_full.80., 7, 8)
+  fin$local_hrmin &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; substr(fin$local_date_time_full.80., 9, 12)
+  fin$local_date &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; paste(fin$local_year, fin$local_month, fin$local_day, sep = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;-&quot;&lt;/span&gt;)
+  &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(file.exists(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;complete_dataset.csv&quot;&lt;/span&gt;))
+  {
+  write.table(fin, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;complete_dataset.csv&quot;&lt;/span&gt;, row.names = F, sep = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;,&quot;&lt;/span&gt;, append = T, col.names = F)
+  } &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;else&lt;/span&gt; {
+  write.table(fin, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;complete_dataset.csv&quot;&lt;/span&gt;, row.names = F, sep = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;,&quot;&lt;/span&gt;)
+  }
+}
+&lt;/pre&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;so now let;s automate the process
+&lt;/li&gt;
+&lt;li&gt;make a BAT file
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-5&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5&lt;/span&gt; BAT file (windoze)&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-5&quot;&gt;
+
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;C:\Program Files\R\R-2.15.2\bin\Rscript.exe&quot;&lt;/span&gt; &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;~\bom-downloads\bom_download.r&quot;&lt;/span&gt;
+&lt;/pre&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;add this  bat file to the scheduled tasks in your control panel
+&lt;/li&gt;
+&lt;li&gt;use chron for a linux version
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-6&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6&lt;/span&gt; check the data&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;#### &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;name:check the data ####&lt;/span&gt;
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(plyr)
+
+setwd(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;~/bom-downloads&quot;&lt;/span&gt;)
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;source&lt;/span&gt;(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;bom_download.r&quot;&lt;/span&gt;)
+dir()
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;source&lt;/span&gt;(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;bom_collation.r&quot;&lt;/span&gt;)
+
+complete_data &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;complete_dataset.csv&quot;&lt;/span&gt;, stringsAsFactors = F)
+str(complete_data)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;Quick and dirty de-duplication&lt;/span&gt;
+table(complete_data$name.80.)
+qc &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; subset(complete_data, name.80. == &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;Broken Hill Airport&quot;&lt;/span&gt;)
+qc &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; ddply(qc, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;local_date_time_full.80.&quot;&lt;/span&gt;,
+  summarise, apparent_temp = mean(apparent_t))
+
+names(qc)
+png(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;qc-diurnal-plot.png&quot;&lt;/span&gt;)
+with(qc,
+     plot(apparent_temp, type= &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;)
+     )
+dev.off()
+&lt;/pre&gt;
+
+
+&lt;p&gt;
+&lt;img src=&quot;/images/qc-diurnal-plot.png&quot;  alt=&quot;qc-diurnal-plot.png&quot; /&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-7&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-7&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.7&lt;/span&gt; Conclusions&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-7&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;watch the data roll on in
+&lt;/li&gt;
+&lt;li&gt;each day there are about 3 days downloaded
+&lt;/li&gt;
+&lt;li&gt;meaning duplicates will be frequent, need to write a script to de-duplicate
+&lt;/li&gt;
+&lt;li&gt;cheers!
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;
+&lt;/html&gt;&lt;/p&gt;
 </description>
-				<published>Fri Nov 15 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/india-p1-sneha-suicide-prevention-chennai-india/</link>
+				<published>Fri Dec 06 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/auto-download-bureau-meteorology-diurnal-data/</link>
 			</item>
 		
 			<item>
-				<title>What Do Scientists Who Write Metadata Use To Do It? And Why?</title>
+				<title>the-history-of-ons</title>
 				<description>&lt;ul&gt;
-&lt;li&gt;The extent to which scientists write metadata is probably lower than it ought to be&lt;/li&gt;
-&lt;li&gt;The level of metadata written during science projects is probably described generally as 'bare-minimum' and &quot;the minimum needed for one-self to come back to and understand what one did&quot;&lt;/li&gt;
-&lt;li&gt;It sometimes seems that even the bare minimum for one-self is not being kept very often&lt;/li&gt;
-&lt;li&gt;I argue that the reasons for less-than-adequate metadata can be understood by looking at&lt;/li&gt;
-&lt;li&gt;1) the culture of the scienctists displinary background via training&lt;/li&gt;
-&lt;li&gt;2) the tools available and&lt;/li&gt;
-&lt;li&gt;3) institutional  requirements to produce metadata (both about data or access to data)&lt;/li&gt;
-&lt;li&gt;In my ongoing &lt;a href=&quot;http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/&quot;&gt;series of blog posts I am exploring the tools available&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;In this post I just wanted to start the discussion about discipline culture and institutional requirements.&lt;/li&gt;
+&lt;li&gt;according to &lt;a href=&quot;http://en.wikipedia.org/wiki/Open_notebook_science&quot;&gt;http://en.wikipedia.org/wiki/Open_notebook_science&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The term Open Notebook Science[7] was first used in a blog post by Jean-Claude Bradley,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;This article &lt;a href=&quot;http://www.infotoday.com/it/sep10/Poynder.shtml&quot;&gt;http://www.infotoday.com/it/sep10/Poynder.shtml&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;  says Jean-Claude Bradley an organic chemist at Drexel University in
+  Philadelphia. As with most scientists, Bradley used to be very
+  secretive. He kept his research under wraps until publication and
+  frequently applied for patents on his work in nanotechnology and gene
+  therapy.&lt;/p&gt;
+
+&lt;p&gt;  However, he asked himself a difficult question 5 years ago: Was his
+  research having the kind of impact he would like? He had to conclude
+  that the answer was “no,” and this was partly a consequence of the
+  culture of secrecy that permeates research today. So Bradley was
+  determined to be more open. Since his collaborators were not of the
+  same mind, he severed his ties with them and, in 2005, he launched a
+  web-based initiative called UsefulChem. As the name implies, the aim
+  of the initiative was also to work in the world of useful science and,
+  today, Bradley makes new anti-malarial compounds.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Other links&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://opensourcemalaria.org/&quot;&gt;http://opensourcemalaria.org/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;http://malaria.ourexperiment.org/&quot;&gt;http://malaria.ourexperiment.org/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Mat Todd's group is at the School of Chemistry at The University of Sydney is practicing this with a (Schistosomiasis notebook and Malaria notebook)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://openwetware.org/wiki/Todd&quot;&gt;http://openwetware.org/wiki/Todd&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
+</description>
+				<published>Wed Dec 04 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/the-history-of-ons/</link>
+			</item>
+		
+			<item>
+				<title>non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</title>
+				<description>&lt;p&gt;&lt;head&gt;
+&lt;title&gt;non-linear-model-vs-non-linear-relationship &lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=iso-8859-1&quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;non-linear-model-vs-non-linear-relationship &quot;/&gt;
+&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-12-03T17:29+1100&quot;/&gt;
+&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
 
-&lt;h3&gt;Discipline Culture&lt;/h3&gt;
 
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = &quot;code-highlighted&quot;;
+     elem.className   = &quot;code-highlighted&quot;;
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;http://orgmode.org/mathjax/MathJax.js&quot;&gt;
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: [&quot;MMLorHTML.js&quot;], jax: [&quot;input/TeX&quot;],
+            jax: [&quot;input/TeX&quot;, &quot;output/HTML-CSS&quot;],
+        extensions: [&quot;tex2jax.js&quot;,&quot;TeX/AMSmath.js&quot;,&quot;TeX/AMSsymbols.js&quot;,
+                     &quot;TeX/noUndefined.js&quot;],
+        tex2jax: {
+            inlineMath: [ [&quot;\\(&quot;,&quot;\\)&quot;] ],
+            displayMath: [ ['$$','$$'], [&quot;\\[&quot;,&quot;\\]&quot;], [&quot;\\begin{displaymath}&quot;,&quot;\\end{displaymath}&quot;] ],
+            skipTags: [&quot;script&quot;,&quot;noscript&quot;,&quot;style&quot;,&quot;textarea&quot;,&quot;pre&quot;,&quot;code&quot;],
+            ignoreClass: &quot;tex2jax_ignore&quot;,
+            processEscapes: false,
+            processEnvironments: true,
+            preview: &quot;TeX&quot;
+        },
+        showProcessingMessages: true,
+        displayAlign: &quot;center&quot;,
+        displayIndent: &quot;2em&quot;,
+
+        &quot;HTML-CSS&quot;: {
+             scale: 100,
+             availableFonts: [&quot;STIX&quot;,&quot;TeX&quot;],
+             preferredFont: &quot;TeX&quot;,
+             webFont: &quot;TeX&quot;,
+             imageFont: &quot;TeX&quot;,
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    &quot;MML&quot;,
+                 Firefox: &quot;MML&quot;,
+                 Opera:   &quot;HTML&quot;,
+                 other:   &quot;HTML&quot;
+             }
+        }
+    });
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;p&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;non-linear-model-vs-non-linear-relationship &lt;/h1&gt;
+
+
+&lt;hr/&gt;
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
 &lt;ul&gt;
-&lt;li&gt;I trained in Geography in the age of GIS and this community uses metadata a lot&lt;/li&gt;
-&lt;li&gt;Due to the prevalance of the digital map (collection of layers) which is a derivative data output&lt;/li&gt;
-&lt;li&gt;Need to know the source of all the layers&lt;/li&gt;
-&lt;li&gt;first law of GIS is &quot;garbage in, garbage out&quot;&lt;/li&gt;
-&lt;li&gt;I was trained in the ANSLIC standard from the start&lt;/li&gt;
-&lt;li&gt;ArcGIS has a tool called ArcCatalog which makes metadata easy to create and view&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Institutional Requirements&lt;/h3&gt;
-
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 non-linear-relationships-vs-non-linear-models&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;The ARC and NHMRC say they are going to require more metadata (and even data deposit)&lt;/li&gt;
-&lt;li&gt;Restrictions on data access make it necessary to describe at least the metadata around provision agreements, licence, allowable access&lt;/li&gt;
-&lt;li&gt;A supporting management level who value the metadata as research output (alongside a peer reviewed paper metadata pales in comparison)&lt;/li&gt;
-&lt;li&gt;My old boss used to say &quot;Work Not Published Is Work Not Done&quot;.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;This reminds me of Approaches and Barriers to Reproducible Research&lt;/h3&gt;
-
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 Nonlinear Regression vs. Linear Regression&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;In 2011 BiostatMatt (Matt Shotwell) published &lt;a href=&quot;http://biostatmatt.com/uploads/shotwell-interface-2011.pdf&quot;&gt;a survey of biostatisticians&lt;/a&gt;
-VUMC Dept. of Biostatistics to assess:&lt;/li&gt;
-&lt;li&gt;the prevalence of fully scripted data analyses&lt;/li&gt;
-&lt;li&gt;the prevalence of literate programming practices&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;To assess the perceived barriers to reproducible research the also asked:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;What The biggest obstacle to always reproducibly scripting your work?
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;pre&gt;&lt;code&gt;| Barrier                                                  | Staff | Faculty |
-|----------------------------------------------------------+-------+---------|
-| No signifcant obstacles.                                 |     8 |      10 |
-| I havent learned how.                                    |     0 |       0 |
-| It takes more time.                                      |     7 |       7 |
-| It makes collaboration difficult (eg. file compatibility)|     4 |       2 |
-| The software I use doesnt facilitate reproducibility.    |     0 |       0 |
-| Its not always necessary for my work to be reproducible. |     2 |       0 |
-| Other                                                    |     2 |       1 |
-|----------------------------------------------------------+-------+---------|
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;So what about the Approaches and Barriers to Me Writing Metadata?&lt;/h3&gt;
-
-&lt;p&gt;With a sample size of one I asked myself these questions:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;| Q                                                  | A                                                                    |
-|----------------------------------------------------+----------------------------------------------------------------------|
-| Do I fully document data (to a metadata standard?) | Occasionally, using DDI for high value raw inputs and final products |
-| Do I employ data documentation practices           | I use a tool I created to write minimal metadata occasionally        |
-| What are the main barriers?                        | takes more time, The software doesnt facilitate, not always necessary|
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The tools need to help write metadata
-
-&lt;ul&gt;
-&lt;li&gt;the Institution needs to require metadata&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1 Model 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2 Model 2&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 Conclusions&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; non-linear-relationships-vs-non-linear-models&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
 
-&lt;h3&gt;References&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Shotwell, M.S. and Alvarez, J.M. 2011. Approaches and Barriers to Reproducible Practices in Biostatistics.
-http://biostatmatt.com/uploads/shotwell-interface-2011.pdf&lt;/li&gt;
+&lt;li&gt;I value precise language very highly
+&lt;/li&gt;
+&lt;li&gt;this is because in multi-disciplinary teams it is easy to talk using the same words and mean different things
+&lt;/li&gt;
+&lt;li&gt;in recent discussion about &lt;a href=&quot;http://cran.r-project.org/web/packages/dlnm/index.html&quot;&gt;Distributed Lag Non-linear Models&lt;/a&gt; I started to reflect on something that has bothered me for a While
+&lt;/li&gt;
+&lt;li&gt;back in 2005 my old mate Prof Keith Dear picked me up on using the term &quot;non-linear model&quot; incorrectly and explained the maths&amp;hellip;
+&lt;/li&gt;
+&lt;li&gt;I kind of understood but promptly forgot and found a lot of people use the term non-linear model a bit carelessly
+&lt;/li&gt;
+&lt;li&gt;Yesterday I was in a discussion about comparing non-linear relationships between different studies in a meta-analysis
+&lt;/li&gt;
+&lt;li&gt;I immediatly felt uncomfortable when we started to discuss these as &quot;non-linear models&quot;
+&lt;/li&gt;
+&lt;li&gt;so here is a quick bit of google fu (with a session at the coffee shop with Steve and Mishka) to remind me about the difference between 
+&lt;/li&gt;
 &lt;/ul&gt;
 
+
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; Nonlinear Regression vs. Linear Regression&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;the following comes from
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.ats.ucla.edu/stat/sas/library/SASNLin_os.htm&quot;&gt;http://www.ats.ucla.edu/stat/sas/library/SASNLin_os.htm&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;verbatim except for my attempt at mathjax notation in latex
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;
+A regression model is called nonlinear, if the derivatives
+of the model with respect to the model parameters depends on one or
+more parameters. This definition is essential to distinguish nonlinear
+from curvilinear regression. A regression model is not necessarily
+nonlinear if the graphed regression trend is curved. A polynomial
+model such as this:
+&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; Model 1&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+
+
+
+
+\(Y_{i} = \beta_{0} + \beta_{1} X_{i} + \beta_{2} X_{i}^2 + \epsilon_{i}\)
+
+&lt;ul&gt;
+&lt;li&gt;appears curved when y is plotted against x. It is, however, not a nonlinear model. To see this, take derivatives of y with respect to the parameters b0, b1
+&lt;/li&gt;
+&lt;li&gt;dy/db0 = 1 
+&lt;/li&gt;
+&lt;li&gt;dy/db1 = x 
+&lt;/li&gt;
+&lt;li&gt;dy/db2 = x&lt;sup&gt;2&lt;/sup&gt; 
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;ul&gt;
+&lt;li&gt;None of these derivatives depends on a model parameter, the model is linear. In contrast, consider the log-logistic model 
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; Model 2&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+
+
+
+
+\(Y_{i} = d + (a - d)/(1 + e^{b \times log(x/g)}) + \epsilon\)
+
+&lt;ul&gt;
+&lt;li&gt;Take derivatives with respect to d, for example: 
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+\(dy/dd = 1 - 1/(1 + e^{b \times log(x/g)})\)
+
+&lt;ul&gt;
+&lt;li&gt;The derivative involves other parameters, hence the model is nonlinear.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; Conclusions&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;It is probably best to refer to the polynomial as a &quot;non-linear relationship&quot; in a linear model
+&lt;/li&gt;
+&lt;li&gt;reserving &quot;non-linear model&quot; for things like Model 2
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;
+&lt;/html&gt;&lt;/p&gt;
 </description>
-				<published>Wed Nov 06 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/</link>
+				<published>Tue Dec 03 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/</link>
 			</item>
 		
 			<item>
-				<title>librarians-and-python</title>
-				<description>&lt;p&gt;I stumbled on these posts by &quot;Data Scientist Training for Librarians&quot;:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&quot;&gt;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/&quot;&gt;http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/&lt;/a&gt;&lt;/li&gt;
+				<title>research-protocol-we-used-for-our-bushfire-project</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;For a three year project on Bushfire smoke and Health we used the following structure in a wiki&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.&lt;/p&gt;
+&lt;h4&gt;Sections:&lt;/h4&gt;
 
-&lt;h4&gt;R Code: get the olive oil dataset&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;install.packages(&quot;pgmm&quot;)
-require(pgmm)
-data(olive)
-write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
-olive &amp;lt;- read.csv(&quot;~/olive.csv&quot;)
-names(olive) &amp;lt;- tolower(names(olive))
-str(olive)
-write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
+&lt;pre&gt;&lt;code&gt;A.Background        
+B.Proposals         
+C.Approvals         
+D.Budget    
+E.Datasets  
+F.Analysis  
+G.Literature        
+H.Communication     
+I.Correspondance    
+J.Meetings  
+K.Completion        
+ContactDetails      
+README
+TODO        
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;/p&gt;
+&lt;h4&gt;Conclusion&lt;/h4&gt;
 
+&lt;ul&gt;
+&lt;li&gt;it worked quite well in the first year.&lt;/li&gt;
+&lt;li&gt;we didn't use it much after that.&lt;/li&gt;
+&lt;li&gt;it is still on the ANU webserver.  I sometimes refer back to it now, a couple of years later.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;h3&gt;OK now reproduce the example&lt;/h3&gt;
-
-&lt;p&gt;I quite like the histograms from the second example.&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;%pylab inline
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-import matplotlib.colors as colors
-
-acidlist=['palmitic', 'palmitoleic', 'stearic', 'oleic', 'linoleic', 'linolenic', 'arachidic', 'eicosenoic']
-dfsub=df[acidlist].apply(lambda x: x/100.0)
-dfsub.head()
-
-rkeys=[1,2,3]
-rvals=['South','Sardinia','North']
-rmap={e[0]:e[1] for e in zip(rkeys,rvals)}
-rmap
-
-fig, axes=plt.subplots(figsize=(10,20), nrows=len(acidlist), ncols=1) # sets up the framework for the graphs. Acidlist is defined elsewhere, and is a list of the acids we’re interested in.
-i=0 # Sets a counter to 0
-
-for ax in axes.flatten(): # Starts a loop to go through our plot and render each row
-
-    acid=acidlist[i]
-    seriesacid=df[acid] # creates seriesacid and sets it to df[acid], a list of the percent composition of the acid in the current iteration that’s in each olive oil.
-
-    minmax=[seriesacid.min(), seriesacid.max()] # the minimum and maximum values plotted will be the minimum and maximum percentages that we find in the data
-
-    for k,g in df.groupby('region'):  # starts a loop in the loop to plot the values by region
-        style = {'histtype':'stepfilled', 'alpha':0.5, 'label':rmap[k], 'ax':ax}
-        g[acid].hist(**style)
-
-        ax.set_xlim(minmax)
-
-        ax.set_title(acid)
-
-        ax.grid(False)
-
-        #construct legend
-        ax.legend()
-    i=i+1 # increments the counter, to move the loop on to the next acid.
-
-    fig.tight_layout()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/acid.png&quot; alt=&quot;acid.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
-
-&lt;p&gt;I am not sure how to do the transparency but the rest of it would make more sense to me with R&lt;/p&gt;
-
-&lt;p&gt;Will try to reproduce in R for head-to-head shoot out.&lt;/p&gt;
 </description>
-				<published>Wed Nov 06 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/librarians-and-python/</link>
+				<published>Mon Dec 02 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/research-protocol-we-used-for-our-bushfire-project/</link>
 			</item>
 		
 			<item>
-				<title>handling-survey-data-with-r</title>
-				<description>&lt;p&gt;R is generally very good for handling many different data types but&lt;/p&gt;
-
-&lt;h3&gt;R has problems with survey data&lt;/h3&gt;
-
-&lt;p&gt;This post is a stub about what packages Ive found with methods allowing to handle efficiently survey data: handle variable labels, values labels, and retrieve information about missing values&lt;/p&gt;
-
-&lt;h4&gt;Base R:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;## Not run:
-require(foreign)
-analyte  &amp;lt;- read.spss(filename, to.data.frame=T) 
-varslist &amp;lt;- as.data.frame(attributes(analyte)$variable.labels)
-# this gives a pretty useful thing to use
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
+				<title>research-protocol-for-manitoba-centre-for-health-policy</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;When we started planning for a three year project on bushfire smoke we did some planning&lt;/li&gt;
+&lt;li&gt;We had a deep discussion about this research management protocol from &lt;a href=&quot;http://umanitoba.ca/faculties/medicine/units/community_health_sciences/departmental_units/mchp/protocol/media/manage_guidelines.pdf&quot;&gt;University Manitoba Centre for Health Policy&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 
-&lt;p&gt;While I was digging around in &lt;a href=&quot;http://mephisto.unige.ch/traminer&quot;&gt;TraMineR&lt;/a&gt; I found this link to Dataset, Emmanuel Rousseaux's package for handling, documenting and describing data sets of survey data.&lt;/p&gt;
-
-&lt;h4&gt;Code:Dataset, a package for handling-survey-data-with-r&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;if(!require(Dataset)) install.packages(&quot;Dataset&quot;, repos=&quot;http://R-Forge.R-project.org&quot;);
-require(Dataset)
-data(dds)
-str(dds)
-# cool
-description(dds$sexe)
-# excellent!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Data Management Plan Checklist&lt;/h1&gt;
 
 
-&lt;h3&gt;Conclusions&lt;/h3&gt;
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 U-Manitoba Centre for Health Policy Guidelines&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 Confidentiality&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 Project Team Makeup&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-1&quot;&gt;1.2.1 Principal Investigator&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-2&quot;&gt;1.2.2 Research Coordinator&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-3&quot;&gt;1.2.3 The Programmer Coordinator&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-4&quot;&gt;1.2.4 Programmer Analyst&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-5&quot;&gt;1.2.5 Research Support&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3 Project Team considerations&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3-1&quot;&gt;1.3.1 Roles&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3-2&quot;&gt;1.3.2 Continuity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3-3&quot;&gt;1.3.3 Access levels&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3-4&quot;&gt;1.3.4 Working group&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3-5&quot;&gt;1.3.5 Atmospherics&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4 File organization and Documentation Development.&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4-1&quot;&gt;1.4.1 Managing MCHP resources&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4-2&quot;&gt;1.4.2 MCHP directory structure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4-3&quot;&gt;1.4.3 Managing project files&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4-4&quot;&gt;1.4.4 Recommended Directories&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5 Communication&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5-1&quot;&gt;1.5.1 E-mail&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5-2&quot;&gt;1.5.2 Meetings&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6 Administrative&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6-1&quot;&gt;1.6.1 Time entry&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-7&quot;&gt;1.7 Report preparation&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-7-1&quot;&gt;1.7.1 Reliability and Validity Checks&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8&quot;&gt;1.8 Project Completion&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8-1&quot;&gt;1.8.1 Final Project Meeting.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8-2&quot;&gt;1.8.2 Final Documentation Review.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8-3&quot;&gt;1.8.3 System Cleanup.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8-4&quot;&gt;1.8.4 Integration of new material to institution repository&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;p&gt;I'm sure there are plenty of other approaches.  I'll add them as I find them'&lt;/p&gt;
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; U-Manitoba Centre for Health Policy Guidelines&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+
+&lt;p&gt;These guidelines come from:
+&lt;/p&gt;
+&lt;p&gt;
+\noindent &lt;a href=&quot;http://umanitoba.ca/faculties/medicine/units/mchp/protocol/media/manage_guidelines.pdf&quot;&gt;http://umanitoba.ca/faculties/medicine/units/mchp/protocol/media/manage_guidelines.pdf&lt;/a&gt;&lt;br/&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Most of the material below is taken verbatim from the original. Unfortunately many of the items described below have links to internal MCHP documents that we cannot access.  Nonetheless the structure of the guidelines provides a useful skeleton to frame our thinking. 
+&lt;/p&gt;
+&lt;p&gt;
+The following areas should be reviewed with project team members near the beginning of the study and throughout the
+project as needed:
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;Confidentiality
+&lt;/li&gt;
+&lt;li&gt;Project team
+&lt;/li&gt;
+&lt;li&gt;File organization and documentation development
+&lt;/li&gt;
+&lt;li&gt;Communication
+&lt;/li&gt;
+&lt;li&gt;Administrative
+&lt;/li&gt;
+&lt;li&gt;Report Preparation
+&lt;/li&gt;
+&lt;li&gt;Project Completion
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; Confidentiality&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+
+&lt;p&gt;Maintaining data access
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; Project Team Makeup&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+
+&lt;p&gt;Roles and contact information should be documented on the project website for the following, where applicable (information may also be included on level of access approved for each team member).
+&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.1&lt;/span&gt; Principal Investigator&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-1&quot;&gt;
+
+&lt;p&gt;This is the lead person on the project, who assumes responsibility for delivering the project. The PI makes decisions on project direction and analysis requirements, with input from programmers and the research coordinator (an iterative process). If there is more than one PI (e.g., multi-site studies), overall responsibility for the study needs to be determined, and how the required work will be allocated and coordinated among the co-investigators. Researcher Workgroup website (internal link) 
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.2&lt;/span&gt; Research Coordinator&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-2&quot;&gt;
+
+&lt;p&gt;Th RC is always assigned to deliverables and is usually brought in on other types of projects involving multiple sites, investigators and/or programmers. Responsibilities include project documentation, project management (e.g., ensuring that timelines are met, ensuring that project specifications are being followed), and working with both investigator(s) and the Programmer Coordinator throughout the project to coordinate project requirements. 
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.3&lt;/span&gt; The Programmer Coordinator&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-3&quot;&gt;
+
+&lt;p&gt;The PC is a central management role who facilitates assignment of programming resources to projects, ensuring the best possible match among programmers and investigators.
+Research Coordinator Workgroup website(internal link) 
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.4&lt;/span&gt; Programmer Analyst&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-4&quot;&gt;
+
+&lt;p&gt;This is primarily responsible for programming and related programming documentation (such that the purpose of the program and how results were derived can be understood by others). However, a major role may be taken in the analyses of the project as well, and this will characteristically vary with the project.
+Programmer Analyst Workgroup website(internal link) 
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2-5&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.5&lt;/span&gt; Research Support&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-5&quot;&gt;
+
+&lt;p&gt;This is primarily responsible for preparing the final product (i.e., the report), including editing and formatting of final graphs and manuscript and using Reference Manager to set up the references. Research support also normally sets up and attends working group meetings. All requests for research support go through the Office Manager.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; Project Team considerations&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
+
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-3-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3.1&lt;/span&gt; Roles&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3-1&quot;&gt;
+
+&lt;p&gt;It is important to clarify everyone's roles at the beginning of the project; for example, whether the investigator routinely expects basic graphs and/or programming logs from the programmer.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-3-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3.2&lt;/span&gt; Continuity&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3-2&quot;&gt;
+
+&lt;p&gt;It is highly desirable to keep the same personnel, from the start of the project, where possible. It can take some time to develop a cohesive working relationship, particularly if work styles are not initially compatible. Furthermore, requesting others to temporarily fill in for team absences is generally best avoided, particularly for programming tasks (unless there is an extended period of absence). The original programmer will know best the potential impact of any changes that may need to be made to programming code.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-3-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3.3&lt;/span&gt; Access levels&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3-3&quot;&gt;
+
+&lt;p&gt;Access to MCHP internal resources (e.g., Windows, Unix) need to be assessed for all team members and set up as appropriate to their roles on the project.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-3-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3.4&lt;/span&gt; Working group&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3-4&quot;&gt;
+
+&lt;p&gt;A WG is always set up for deliverables (and frequently for other projects):
+Terms of Reference for working group (internal)
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-3-5&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3.5&lt;/span&gt; Atmospherics&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3-5&quot;&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; File organization and Documentation Development.&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
+
+&lt;p&gt;All project-related documentation, including key e-mails used to update project methodology, should be saved within the project directory. Resources for directory setup and file development include:
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-4-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-4-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.1&lt;/span&gt; Managing MCHP resources&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-1&quot;&gt;
+
+&lt;p&gt;This includes various process documents as well as an overview of the documentation process for incorporating research carried out by MCHP into online resources: Documentation Management Guide (internal)
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-4-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-4-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.2&lt;/span&gt; MCHP directory structure&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-2&quot;&gt;
+
+&lt;p&gt;A detailed outline of how the Windows environment is structured at MCHP
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-4-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-4-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.3&lt;/span&gt; Managing project files&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-3&quot;&gt;
+
+&lt;p&gt;How files and sub-directories should be organized and named as per the MCHP Guide to Managing Project Files (internal pdf). Information that may be suitable for incorporating into MCHP online resources should be identified; for example, a Concept Development section for subsequent integration of a new concept(s) into the MCHP
+Concept Dictionary. The deliverable glossary is another resource typically integrated into the MCHP Glossary.
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-4-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-4-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.4&lt;/span&gt; Recommended Directories&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-4&quot;&gt;
+
+&lt;p&gt;NOTE this is a diversion from the MCHP guidelines.  These recommended directories are from a combination of sources that we have synthesised.
+&lt;/p&gt;&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-1&quot;&gt;Background: concise summaries: possibly many documents for main project and any main analyses based on the 1:3:25 paradigm: one page of main messages; a three-page executive summary; 25 pages of detailed findings.&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-2&quot;&gt;Proposals: for documents related to grant applications.&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-3&quot;&gt;Approvals: for ethics applications.&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-4&quot;&gt;Budget: spreadsheets and so-forth.&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-5&quot;&gt;Data&lt;br/&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-5-1&quot;&gt;dataset1&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-5-2&quot;&gt;dataset2&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6&quot;&gt;Paper1&lt;br/&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-1&quot;&gt;Data&lt;br/&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-1-1&quot;&gt;merged dataset1 and 2&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-2&quot;&gt;Analysis (also see &lt;a href=&quot;http://projecttemplate.net&quot;&gt;http://projecttemplate.net&lt;/a&gt; for a programmer oriented template)&lt;br/&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-2-1&quot;&gt;exploratory analyses&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-2-2&quot;&gt;data cleaning&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-2-3&quot;&gt;main analysis&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-2-4&quot;&gt;sensitivity analysis&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-2-5&quot;&gt;data checking&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-2-6&quot;&gt;model checking&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-2-7&quot;&gt;internal review&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-3&quot;&gt;Document&lt;br/&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-3-1&quot;&gt;Draft&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-3-2&quot;&gt;Journal1&lt;br/&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-3-2-1&quot;&gt;rejected? :-(&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-3-3&quot;&gt;Journal2&lt;br/&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-3-3-1&quot;&gt;Response to reviews&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-4&quot;&gt;Versions: folders named by date - dump entire copies of the project at certain milestones/change points&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-6-5&quot;&gt;Archiving final data with final published paper&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-7&quot;&gt;Papers 2, 3, etc: same structure as paper 1 hopefully the project spawns several papers&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-8&quot;&gt;Communication: details of communication with stakeholders and decision makers&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-9&quot;&gt;Meetings: for organisation and records of meetings&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-10&quot;&gt;Contact details. table contacts lists&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-11&quot;&gt;Completion: checklists to make sure project completion is systematic.  Factor in a critical reflection of lessons learnt.&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-4-4-12&quot;&gt;References&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-5&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; Communication&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
+
+&lt;p&gt;Project communication should be in written form, wherever possible, to serve as reference for project documentation. Access and confidentiality clearance levels for all involved in the project will determine whether separate communication plans need to be considered for confidential information.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-5-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5.1&lt;/span&gt; E-mail&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-5-1&quot;&gt;
+
+&lt;p&gt;provides opportunities for feedback/ discussion from everyone and for documenting key project decisions. Responses on any given issue would normally be copied to every project member, with the expectation of receiving feedback within a reasonable period of time - e.g.,a few days). The Research Coordinator should be copied on ALL project correspondence in order to keep the information up to date on the project website.
+&lt;/p&gt;&lt;ul&gt;
+&lt;li id=&quot;sec-1-5-1-1&quot;&gt;E-mail etiquette (internal)&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-5-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5.2&lt;/span&gt; Meetings&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-5-2&quot;&gt;
+
+&lt;p&gt;Regularly-scheduled meetings or conference calls should include all project members where possible. Research Coordinators typically arrange project team meetings and take meeting minutes, while Research Support typically arranges the Working Group meetings.
+&lt;/p&gt;&lt;ul&gt;
+&lt;li id=&quot;sec-1-5-2-1&quot;&gt;Tips for taking notes (internal)&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-5-2-2&quot;&gt;Outlook calendar&lt;br/&gt;
+Used for booking rooms, it displays information on room availability and may include schedules of team members.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-6&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.6&lt;/span&gt; Administrative&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-6&quot;&gt;
+
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-6-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.1&lt;/span&gt; Time entry&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6-1&quot;&gt;
+
+&lt;p&gt;Time spent on projects should be entered by all MCHP employees who are members of the project team.
+&lt;/p&gt;&lt;ul&gt;
+&lt;li id=&quot;sec-1-6-1-1&quot;&gt;website for time entry (internal)&lt;br/&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-6-1-2&quot;&gt;procedures for time entry (internal)&lt;br/&gt;
+
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-7&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-7&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.7&lt;/span&gt; Report preparation&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-7&quot;&gt;
+
+&lt;p&gt;This includes:
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;Policies - e.g., Dissemination of Research Findings
+&lt;/li&gt;
+&lt;li&gt;Standards - e.g., deliverable production, use of logos, web publishing
+&lt;/li&gt;
+&lt;li&gt;Guidelines - e.g., producing PDFs, powerpoint, and Reference Manager files
+&lt;/li&gt;
+&lt;li&gt;Other resources - e.g., e-mail etiquette, technical resources, photos.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-7-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-7-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.7.1&lt;/span&gt; Reliability and Validity Checks&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-7-1&quot;&gt;
+
+&lt;p&gt;Making sure the numbers &quot;make sense&quot;. Carrying out these checks requires spelling out who will do which checks.
+&lt;/p&gt;&lt;ul&gt;
+&lt;li id=&quot;sec-1-7-1-1&quot;&gt;Data Validity Checks&lt;br/&gt;
+A variety of things to check for at various stages of the study. Programming can be reviewed, for example, by checking to ensure all programs have used the right exclusions, the correct definitions, etc. , and output has been accurately transferred to graphs, tables, and maps for the report.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li id=&quot;sec-1-7-1-2&quot;&gt;Discrepancies between data sources&lt;br/&gt;
+In this case it is MCHP and Manitoba Health Reports - an example of cross-checking against another source of data.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-8&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-8&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.8&lt;/span&gt; Project Completion&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-8&quot;&gt;
+
+&lt;p&gt;Several steps need to take place to &quot;finish&quot; the project:
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-8-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-8-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.1&lt;/span&gt; Final Project Meeting.&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-1&quot;&gt;
+
+&lt;p&gt;Wind-up or debriefing meetings are held shortly after public release of a deliverable. Such meetings provide all team members with an opportunity to communicate what worked/did not work in bringing the project to completion, providing lessons learned for future deliverables.
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-8-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-8-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.2&lt;/span&gt; Final Documentation Review.&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-2&quot;&gt;
+
+&lt;p&gt;Findings from the wind-up meeting should be used to update and finalize the project website (including entering the date of release of report/paper). Both Windows and Unix project directories should be reviewed to ensure that only those SAS programs relevant to project analyses are kept (and well-documented) for future reference. Any related files which may be stored in a user directory should be moved to the project directory.
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-8-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-8-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.3&lt;/span&gt; System Cleanup.&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-3&quot;&gt;
+
+&lt;p&gt;When the project is complete, the Systems Administrator should be informed. Project directories, including program files and output data sets, will be archived to tape or CD. Tape backups are retained for a 5-year period before being destroyed so any project may be restored up to five years after completion.
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-8-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-8-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.4&lt;/span&gt; Integration of new material to institution repository&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-4&quot;&gt;
+
+&lt;p&gt;This is with MCHP resource repository - a general overview of this process is described in General Documentation Process {internal}.
+&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
 </description>
-				<published>Wed Nov 06 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/handling-survey-data-with-r/</link>
+				<published>Mon Dec 02 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/research-protocol-for-manitoba-centre-for-health-policy/</link>
 			</item>
 		
 			<item>
-				<title>Github And Reproducible Research Report Casestudy Hutchinson Drought Index</title>
-				<description>&lt;h3&gt;Background&lt;/h3&gt;
-
-&lt;p&gt;This is an example of using github for a Reproducible Research Report (RRR) using a casestudy of the  Hutchinson Drought Index.  The project is available under GNU licence at &lt;a href=&quot;https://github.com/ivanhanigan/HutchinsonDroughtIndex&quot;&gt;https://github.com/ivanhanigan/HutchinsonDroughtIndex&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3&gt;Aims&lt;/h3&gt;
-
-&lt;p&gt;This example will clone the repository from github and run the replication codes using the replication datasets.&lt;/p&gt;
-
-&lt;h3&gt;Materials and Methods&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;assumes you are connected to the internet&lt;/li&gt;
-&lt;li&gt;assumes you have git, a github account and ssh key set up&lt;/li&gt;
-&lt;li&gt;assumes you have R and GDAL configured&lt;/li&gt;
-&lt;li&gt;assumes BoM and ABS have kept their data in the locations I specified to download from&lt;/li&gt;
+				<title>graphviz-automagic-flowcharts</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;Back in 2009 Joseph Guillaume worked with me on a complicated workflow&lt;/li&gt;
+&lt;li&gt;He came up with this python script to help keep track of the steps&lt;/li&gt;
+&lt;li&gt;The simple text file is a list of transformations, inputs and output&lt;/li&gt;
+&lt;li&gt;It is converted to the right format and graphviz creates a html page with pop-outs&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h3&gt;Hutchinsons Drought Index&lt;/h3&gt;
+&lt;h4&gt;Simple text list&lt;/h4&gt;
 
-&lt;p&gt;The Hutchinson Drought Index (or Drought Severity Index) is a climatic drought index
-that was designed to reflect agricultural droughts using only rainfall data.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Transformation
+        description
+                the thing 
+        inputs
+                the thing before
+                another thing
+        output
+                the next thing
+        notes
+                the thing is this other thing   this is a really long description 
+                blah blah asdfasdfasdfasdfasdfa 
 
-&lt;p&gt;The index was invented by Professor Mike Hutchinson at the ANU in 1992 (1) and
-this project includes R codes written to describe the calculations
-and also to download data (2,3) to play with.&lt;/p&gt;
-
-&lt;h3&gt;Results&lt;/h3&gt;
-
-&lt;h4&gt;Replication Codes to run in the terminal&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;git clone git@github.com:ivanhanigan/HutchinsonDroughtIndex.git ~/data/HutchinsonDroughtIndex
-R
-setwd(&quot;~/data/HutchinsonDroughtIndex&quot;)
-source(&quot;HutchinsonDroughtIndex_go.r&quot;)
+Transformation
+        description
+                yet another thing
+        inputs
+                the next thing
+        output
+                a final thing
+        notes
+                this is a note
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
 &lt;ul&gt;
-&lt;li&gt;WARNING this downloads 5.4MB from BoM and 19.9MB from ABS&lt;/li&gt;
-&lt;li&gt;This runs the codes and produces graphs&lt;/li&gt;
-&lt;li&gt;an alternative workflow would be to run the sweave file in the reports directory but I dont like that method as much and have set all the evaluation commands to false.&lt;/li&gt;
-&lt;li&gt;it will run now that we have the graphs though, to create a report:&lt;/li&gt;
+&lt;li&gt;keep this in your work directory and update it whenever you add a step to the workflow&lt;/li&gt;
+&lt;li&gt;the list can be as big as you like (hundreds of steps), and entered in any order, the inputs/output relationships determine how the graph looks at the end&lt;/li&gt;
+&lt;li&gt;to run the script just do the one line&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;Code:&lt;/h4&gt;
+&lt;h4&gt;Python code: run&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;setwd(&quot;reports&quot;)
-Sweave(&quot;HutchinsonDroughtIndex_transformations_doc.Rnw&quot;)
+&lt;pre&gt;&lt;code&gt;python transformations.py workflow_steps.txt index
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
 &lt;ul&gt;
-&lt;li&gt;which creates a tex file that can create &lt;a href=&quot;/pdfs/HutchinsonDroughtIndex_transformations_doc.pdf&quot;&gt;this pdf&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;but the simplest example I gave above will compute the index and create the graphs (one is shown below)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/CentralWestDrought8283.png&quot; alt=&quot;CentralWestDrought8283.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;So what actually happened?&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This project adheres to the &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;Reichian LCFD model of writing R code&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;In this the code is bundled into modules Func (tools), Load, Do, Clean (check).  These live in the src directory (following teh White ProjectTemplate model - well almost, He would put tools/func into lib)&lt;/li&gt;
-&lt;li&gt;then a main.r (or go.r) script calls these modules&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;go.r&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt; source('src/HutchinsonDroughtIndex_tools.r')
- source('src/HutchinsonDroughtIndex_load.r')
- source('src/HutchinsonDroughtIndex_do.r')
- source('src/HutchinsonDroughtIndex_check.r')
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;The really interesting bit is &lt;a href=&quot;https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r&quot;&gt;a tool written for this project&lt;/a&gt; that is called from within tools.r&lt;/p&gt;
-
-&lt;p&gt;   source('src/HutchinsonDroughtIndex_tools_droughtIndex.r')&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;A keen reader would look in that script to find out exactly what the function does&lt;/li&gt;
-&lt;li&gt;A keen author would push that function to an R package (a super keen bean would publish this on CRAN)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Discussion&lt;/h3&gt;
-
-&lt;h4&gt;Strengths:&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;full codes are provided to reproduce the data access, manipulation and analysis&lt;/li&gt;
-&lt;li&gt;the gory details are hidden from the casual user&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Weaknesses:&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the important details are hidden from the technical user&lt;/li&gt;
-&lt;li&gt;the script depends on a bunch of things that might not be true&lt;/li&gt;
+&lt;li&gt;open the html page and click on a square box to bring up the pop-out&lt;/li&gt;
+&lt;li&gt;short text is shown, long text is replaced by an ellipse and only shown in pop-out&lt;/li&gt;
 &lt;/ul&gt;
 
 
 &lt;h4&gt;Conclusions&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;This is an example of a self-contained RRR&lt;/li&gt;
+&lt;li&gt;I've popped the script up as a &lt;a href=&quot;https://github.com/ivanhanigan/transformations&quot;&gt;Github repo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The example is in the &lt;a href=&quot;http://ivanhanigan.github.io/transformations/&quot;&gt;gh-pages branch&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-
-&lt;h3&gt;References&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Smith, D. I, Hutchinson, M. F, &amp;amp; McArthur, R. J. (1992) Climatic and
-Agricultural Drought: Payments and Policy. (Centre for Resource and Environmental
-Studies, Australian National University, Canberra, Australia).&lt;br/&gt;
-http://fennerschool-research.anu.edu.au/spatio-temporal/publications/cres_paper1992.pdf&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Bureau of Meteorology High Quality Monthly precipitation data
-downloaded on 2012-01-09
-from ftp://ftp.bom.gov.au/anon/home/ncc/www/change/HQmonthlyR/HQ_monthly_prcp_txt.tar&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Australian Bureau of Statistics Statistical Divisions 2006
-downloaded on 2012-01-09
-from http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.0022006?OpenDocument&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h3&gt;Acknowledgements&lt;/h3&gt;
-
-&lt;p&gt;Financial support was provided by Professor Tony McMichael's
-&quot;Australia Fellowship&quot; from the the National Health and Medical Research Council, via the
-National Centre for Epidemiology and Population Health, Australian National University.&lt;/p&gt;
 </description>
-				<published>Wed Nov 06 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/</link>
+				<published>Sun Dec 01 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/graphviz-automagic-flowcharts/</link>
 			</item>
 		
 			<item>
-				<title>climatic-drought-guestpost-by-luciana-porfirio</title>
-				<description>&lt;h3&gt;Guest post by Luciana Porfirio with code contributions by Francis Markham&lt;/h3&gt;
+				<title>Gantt Charts For Health Professionals</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;Gantt Charts are a method used in Project Management to visualise the task list and progress with a calendar.&lt;/li&gt;
+&lt;li&gt;The title of this post comes from &lt;a href=&quot;http://berkeley.academia.edu/TomasAragon/Teaching/31679/Project_Management_for_Health_Professionals&quot;&gt;Dr Tomas Aragon's paper 'Project Management for Health Professionals'&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;There is also an accompanying &lt;a href=&quot;http://medepi.com/2012/02/05/project-mgmt/&quot;&gt;Tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dr Aragon also has a couple of suggestions for software to use for creating Gantt Charts &lt;a href=&quot;http://medepi.com/2011/11/29/software-recs/&quot;&gt;on this page&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I haven't used those but here are some I have used&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Gantter&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Recently I encountered a student doing an analysis who was doing everything in excel, and I couldn't contain my mouth and say R would be better... but it isn't a simple task. So any here are some tips.&lt;/li&gt;
-&lt;li&gt;There is a table with 62 years * 12 months of rain data in mm. We calculated the cumulative distribution using ecdf: empirical cumulative distribution function. So the table looks like this: Year Jan Feb Mach (...) each cell contains the cum dist.&lt;/li&gt;
-&lt;li&gt;We also got the number of months per year with less than X mm of rain. But he needs to know how many months  are between the drought months, regardless the year. So, I thought that converting the data into a ts was going to facilitate the task, but it doesn't, because now I don't' have columns and rows any longer.&lt;/li&gt;
-&lt;li&gt;But I struggled to handle a ts object to do for example an ifelse.&lt;/li&gt;
-&lt;li&gt;Luckily there are many many tricks about R, and with the code below we solved all his problems (and many months of work in excel).&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;/data/raj_rain_data.csv&quot;&gt;Get the example data here&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;This is how it looks like:&lt;/li&gt;
+&lt;li&gt;This is an online tool, that can integrate with Google Drive &lt;a href=&quot;http://www.gantter.com/&quot;&gt;http://www.gantter.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;It also imports MS Project files&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;R Code:&lt;/h4&gt;
+&lt;h4&gt;Taskjuggler&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;###############################################
-require(reshape2)
-
-###############################################
-#read csv file with rain BoM data
-dat = read.csv('raj_rain_data.csv')
-
-fn &amp;lt;- apply(dat[,2:13], 2, ecdf) # equivalent to Excel's percentrank function, only for cols 2 to 13 but you need to apply the function to each month
-
-#this fun does all the months at once
-fn2 = data.frame(t(do.call(&quot;rbind&quot;, sapply(1:12, FUN = function(i) fn[[i]](dat[,i+1]), simplify = FALSE))))
-colnames(fn2) = colnames(dat[,2:13])
-fn2$year = dat$Year
-
-#if the value is lower than 0.4, retrieves a 1, otherwise 0
-fn2$drought = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.4)==TRUE, 1,0))
-
-#if the value is lower than 0.1, retrieves a 1, otherwise 0
-fn2$extreme = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &amp;lt; 0.1)==TRUE, 1,0))
-
-str(fn2)
-names(fn2)
-
-#ts didn't work - Francis suggested to melt the data.frame # Melt
-#fn2 to tall data set
-fn2.tall &amp;lt;- melt(fn2, id.vars=&quot;year&quot;)
-
-# Get the year-month into date format
-fn2.tall$date &amp;lt;- with(fn2.tall,
-                             as.Date(paste(&quot;1&quot;, variable, year), &quot;%d %b %Y&quot;))
-
-# Convert dates into months since 0 BC/AD (arbitrary, but doesn't
-# matter)
-#I'm not using the month.idx with Ivan's solution (remove)
-fn2.tall$mnth.idx &amp;lt;- sapply(fn2.tall$date, function(x){
-  12*as.integer(format(x, &quot;%Y&quot;)) + (as.integer(format(x, &quot;%m&quot;)) - 1)
-})
-
-# Sort by date
-fn2.tall &amp;lt;- fn2.tall[order(fn2.tall$date),]
+&lt;ul&gt;
+&lt;li&gt;Emacs orgmode can be used with a Ruby package called Taskjuggler (tj3)&lt;/li&gt;
+&lt;li&gt;The command C-c C-e j will export a file such as this description ready for conversion &lt;a href=&quot;http://orgmode.org/worg/org-tutorials/org-taskjuggler.html&quot;&gt;http://orgmode.org/worg/org-tutorials/org-taskjuggler.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I also needed to include this suggested by d.tchin 29 Feb 2012,  &lt;a href=&quot;http://permalink.gmane.org/gmane.emacs.orgmode/52844&quot;&gt;http://permalink.gmane.org/gmane.emacs.orgmode/52844&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;an example I use for a template is in my &lt;a href=&quot;https://raw.github.com/ivanhanigan/disentangle/gh-pages/gantt-tj3/gantt-tj3.org&quot;&gt;disentangle Github repo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;which produces &lt;a href=&quot;http://ivanhanigan.github.io/disentangle/gantt-tj3/Gantt%20Chart.html&quot;&gt;this output&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 
-#Ivan's solution
-
-x&amp;lt;-fn2.tall$value&amp;lt;0.4
-xx &amp;lt;- (cumsum(!x) + 1) * x
-x2&amp;lt;-(seq_along(x) - match(xx, xx) + 1) * x
-fn2.tall$count&amp;lt;-x2
-
-#counts the number of cases of drought
-as.data.frame(table(fn2.tall$count))
-###############################################
-###############################################
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/images/gantt-tj3.png&quot; alt=&quot;gantt-tj3.png&quot; /&gt;&lt;/p&gt;
 </description>
-				<published>Fri Nov 01 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/11/climatic-drought-guestpost-by-luciana-porfirio/</link>
+				<published>Sun Dec 01 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/gantt-charts-for-health-professionals/</link>
 			</item>
 		
 			<item>
-				<title>quantum-gis-visualisations</title>
+				<title>sharing-and-extending-research-protocols</title>
 				<description>&lt;ul&gt;
-&lt;li&gt;This is a quick post on Quantum GIS for spatial data visualisation&lt;/li&gt;
-&lt;li&gt;it is also a follow up on &lt;a href=&quot;http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/&quot;&gt;this post about area concordance&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps&lt;/li&gt;
-&lt;li&gt;QGIS can use &lt;a href=&quot;http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/&quot;&gt;remote PostGIS geodatabases on the Cloud as the backend&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Last week I started a new discussion about sharing and extending research protocols.&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;R Code: use postgis to create area-concordance&lt;/h4&gt;
+&lt;h4&gt;My Colleague sent me a link to the &lt;a href=&quot;http://prometheuswiki.publish.csiro.au/tiki-custom_home.php&quot;&gt;Prometheus Wiki&lt;/a&gt;​&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;require(devtools)
-install_github(&quot;gisviz&quot;, &quot;ivanhanigan&quot;)
-require(gisviz)
-require(swishdbtools)
-ch &amp;lt;- connect2postgres2(&quot;gislibrary&quot;)
-# make a temporary tablename, to avoid clobbering
-temp_table &amp;lt;- swish_temptable(&quot;gislibrary&quot;)
-temp_table &amp;lt;- paste(&quot;public&quot;, temp_table$table, sep = &quot;.&quot;)
-temp_table
-# this is going to be public.foo11c7673416ea
+&lt;pre&gt;&lt;code&gt;a site for sharing research protocols. The idea is to give people
+a place to post research protocols since everyone develops them
+and then mentions them in papers but they rarely make it online in
+a usable format. We see this as a big bottleneck in the rate of
+knowledge discovery. Since users will always want to change and
+adapt a given protocol for changing applications or new technology
+or just to improve it. This sort of thing is done with open source
+all the time (i.e. git) but how you'd do it with an online
+protocol based out of a wiki is unknown. The current version of
+the website is not very flexible and doesn't really enable the
+sort of dynamic collaboration that I envision would make this a
+really useful tool. Git seems like an obvious conceptual starting
+point but there'd need to be a front end markup system in place
+that was integrated with that git-type backend. Since you've
+mentioned git a few times and the open science project, I thought
+you might find this interesting to think about. any suggestions or
+inspirations would be welcomed
+&lt;/code&gt;&lt;/pre&gt;
 
-sql &amp;lt;- postgis_concordance(conn = ch, source_table = &quot;abs_sla.nswsla91&quot;,
-   source_zones_code = 'sla_id', target_table = &quot;abs_sla.nswsla01&quot;,
-   target_zones_code = &quot;sla_code&quot;,
-   into = temp_table, tolerance = 0.01,
-   subset_target_table = &quot;cast(sla_code as text) like '105%'&quot;, 
-   eval = F) 
-cat(sql)
-dbSendQuery(ch, sql)
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;My past experience&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I have previously tried to use a wiki for the development of new sections in an existing study protocol on estimating the effects of bushfire smoke air pollution and human health.&lt;/li&gt;
+&lt;li&gt;We combined elements of two major air pollution/health study protocols (one from Europe, one from America) with local considerations and decisions made within our team.&lt;/li&gt;
+&lt;li&gt;On reflection all this was mostly useful for me, to a lesser extent the other programmer and I don't think the project manager or statistician ever even looked at any of this.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Jeff Leek's current approach using GitHub&lt;/h4&gt;
+
+&lt;p&gt;I have been keeping an eye on the work by Jeff Leek on putting protocols onto Github and inviting collaboration to edit and extend them &lt;a href=&quot;http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/&quot;&gt;as he says&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;I put it on Github because I'm still not 100% sure I got it
+right... I would welcome feedback/pull requests on how we can
+improve the policy to make it better
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;Leek Group policies and protocols on github so far&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jtleek/rpackages&quot;&gt;https://github.com/jtleek/rpackages&lt;/a&gt; accompanied by &lt;a href=&quot;http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/&quot;&gt;this post&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jtleek/reviews&quot;&gt;https://github.com/jtleek/reviews&lt;/a&gt; accompanied by &lt;a href=&quot;http://simplystatistics.org/2013/10/23/the-leek-group-guide-to-reviewing-scientific-papers/&quot;&gt;this post&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jtleek/datasharing&quot;&gt;https://github.com/jtleek/datasharing&lt;/a&gt; accompanied by &lt;a href=&quot;http://simplystatistics.org/2013/11/14/the-leek-group-guide-to-sharing-data-with-a-statistician-to-speed-collaboration/&quot;&gt;this post&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;I forked &quot;datasharing&quot; for my own. Renamed: &quot;How to share data to avoid misunderstanding&quot;&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I liked the datasharing policy so much &lt;a href=&quot;http://ivanhanigan.github.io/datasharing/&quot;&gt;I forked it for my own collaborations&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;I initially just made a minor recommendation to one of the lines in the original using the great Github feature that if you edit a repo you don't have access to, it forks the repo and creates a feature branch behind the scenes. After you submit the changes (which is a commit) it puts you right into the pull request form.&lt;/li&gt;
+&lt;li&gt;Therefore it can all be done on the GitHub site. I submitted &lt;a href=&quot;https://github.com/jtleek/datasharing/pull/11&quot;&gt;the pull request without leaving my web browser&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;But then I thought I would have done things a bit differently.  In particular I'd like a webpage with a table of contents, and a nicer looking landing page.&lt;/li&gt;
+&lt;li&gt;so I cloned my fork of the repo, then created a new branch called gh-pages, then copied the original to a new file called index.org, added some Emacs Orgmode HTML export magic and then &quot;C-c C-e h&quot; and WHAMM-O I've got my own version for extending with at &lt;a href=&quot;http://ivanhanigan.github.io/datasharing/&quot;&gt;http://ivanhanigan.github.io/datasharing/&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;The code version:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone git@github.com:ivanhanigan/datasharing.git ~/tools/datasharing
+cd ~/tools/datasharing
+git checkout -b gh-pages
+mv README.md index.org
+touch README.md
+# edits to index.org, &quot;C-c C-e h&quot; and WHAMM-O
+git add index.org index.html README.md
+git push origin gh-pages
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
 &lt;ul&gt;
-&lt;li&gt;now connect to PostGIS using QGIS &lt;a href=&quot;http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/&quot;&gt;as described in this tute&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;and add the layer to the map&lt;/li&gt;
-&lt;li&gt;Style it how you like, I also added NSWSLA1991 over the top&lt;/li&gt;
-&lt;li&gt;go into the &quot;new print composer&quot;&lt;/li&gt;
+&lt;li&gt;In this way I think people can share and collaborate easily &lt;a href=&quot;http://yihui.name/en/2013/06/fix-typo-in-documentation/&quot;&gt;(if they know git)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;as well as easily take work started by someone else and extend it for their own work.&lt;/li&gt;
+&lt;li&gt;I wonder a little bit about how much of my extensions I should offer back to Jeff Leek as the original author.&lt;/li&gt;
+&lt;li&gt;I guess he can always track what I do to it via the link back to his original shown in &lt;a href=&quot;https://github.com/jtleek/datasharing/network&quot;&gt;https://github.com/jtleek/datasharing/network&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;&lt;img src=&quot;/images/qgis-new-print-composer.png&quot; alt=&quot;qgis-new-print-composer.png&quot; /&gt;&lt;/p&gt;
+&lt;h4&gt;PS Jeff Leek uses github a lot!&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/qgis-add-new-map.png&quot; alt=&quot;qgis-add-new-map.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;As he says in &lt;a href=&quot;http://simplystatistics.org/2013/11/21/future-of-statistics-take-home-messages-futureofstats/&quot;&gt;this post from the future-of-statistics unconference&lt;/a&gt;:&lt;/p&gt;
 
-&lt;h3&gt;Results&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;You can read it on Github here (https://github.com/jtleek/futureofstats).
+I put it on Github for two reasons:
 
-&lt;ul&gt;
-&lt;li&gt;hit the export to image and viola&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/qgis-export-image.png&quot; alt=&quot;qgis-export-image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Don't forget to clean up the database!&lt;/h3&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;dbSendQuery(ch, sprintf(&quot;drop table %s&quot;, temp_table))
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>Thu Oct 31 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/10/quantum-gis-visualisations/</link>
-			</item>
-		
-			<item>
-				<title>notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;Yesterday I met with Sarunya Sujaritpong a PhD student working with &lt;a href=&quot;http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/&quot;&gt;spatially structured time-series models as described previously&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern&lt;/li&gt;
-&lt;li&gt;The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk&lt;/li&gt;
-&lt;li&gt;The beta coefficient itself shouldn't be affected.&lt;/li&gt;
-&lt;li&gt;So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are &lt;a href=&quot;http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360&quot;&gt;starting to include this in their models&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series&lt;/li&gt;
-&lt;li&gt;I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens&lt;/li&gt;
-&lt;li&gt;So I asked Sarunya for a discussion about her research&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Sarunya's model is essentially like this&lt;/h3&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;fit &amp;lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
-       ns(temp, df) + ns(humidity, df) +
-       ns(time, df = 7*numYears) +
-       SLA * ns(time, df = 2),
-       data = analyte, family = poisson
-       )
+- I agree with Hadley's statement that the future of statistics is on Github.
+- I summarized them based on my interpretation and would love
+  collaboration on the document. If you want to add your new
+  thoughts/summaries, add a new section with your bullet pointed
+  ideas and send me a pull request!
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;ul&gt;
-&lt;li&gt;SLA is Statistical Local Area (now called SA2, like a suburb)&lt;/li&gt;
-&lt;li&gt;Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city&lt;/li&gt;
-&lt;li&gt;turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION&lt;/li&gt;
-&lt;li&gt;therefore this study avoids the issue by it's intentional design to compare betas not se&lt;/li&gt;
-&lt;li&gt;Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.&lt;/li&gt;
-&lt;li&gt;this is fascinating in itself, but a separate issue for another post&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
+&lt;h4&gt;Conclusions&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results&lt;/li&gt;
-&lt;li&gt;if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.&lt;/li&gt;
+&lt;li&gt;Jeff Leek is on to something really interesting with these github policies and protocols&lt;/li&gt;
+&lt;li&gt;I find the look of his plain markdown README.md pages a bit un-inspiring&lt;/li&gt;
+&lt;li&gt;but then I spend too much of my time tweaking my html by far (while Jeff is getting on with the real work of publishing papers)&lt;/li&gt;
 &lt;/ul&gt;
 
-
-&lt;p&gt;THANKS Sarunya!&lt;/p&gt;
 </description>
-				<published>Thu Oct 31 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/</link>
+				<published>Wed Nov 27 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/11/sharing-and-extending-research-protocols/</link>
 			</item>
 		
 	</channel>
