@@ -54,6 +54,7 @@
 
   <div class="full">
     <h1 class="entry-title">
+<<<<<<< HEAD
       <a href="/2013/10/simple-example-using-nmmaps/" title="simple-example-using-nmmaps" rel="bookmark">simple-example-using-nmmaps</a>
     </h1>
     <div class="entry-content full-content">
@@ -433,262 +434,57 @@ My new understanding of the topic.</p></li>
   <div class="full">
     <h1 class="entry-title">
       <a href="/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/" title="spatially-structured-timeseries-vs-spatiotemporal-modelling" rel="bookmark">spatially-structured-timeseries-vs-spatiotemporal-modelling</a>
+=======
+      <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
     </h1>
     <div class="entry-content full-content">
-      <p><head>
-<title>Spatiotemporal Regression Modelling</title>
-<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
-<meta name="title" content="Spatiotemporal Regression Modelling"/>
-<meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-09-26T10:18+1000"/>
-<meta name="author" content="Ivan Hanigan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/></p>
-
-
-
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-
-
-<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
-/**
- *
- * @source: http://orgmode.org/mathjax/MathJax.js
- *
- * @licstart  The following is the entire license notice for the
- *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- * Copyright (C) 2012-2013  MathJax
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @licend  The above is the entire license notice
- * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- */
-
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code below.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code below is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code below.
-*/
-<!--/*--><![CDATA[/*><!--*/
-    MathJax.Hub.Config({
-        // Only one of the two following lines, depending on user settings
-        // First allows browser-native MathML display, second forces HTML/CSS
-        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
-            jax: ["input/TeX", "output/HTML-CSS"],
-        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
-                     "TeX/noUndefined.js"],
-        tex2jax: {
-            inlineMath: [ ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
-            skipTags: ["script","noscript","style","textarea","pre","code"],
-            ignoreClass: "tex2jax_ignore",
-            processEscapes: false,
-            processEnvironments: true,
-            preview: "TeX"
-        },
-        showProcessingMessages: true,
-        displayAlign: "center",
-        displayIndent: "2em",
-
-        "HTML-CSS": {
-             scale: 100,
-             availableFonts: ["STIX","TeX"],
-             preferredFont: "TeX",
-             webFont: "TeX",
-             imageFont: "TeX",
-             showMathMenu: true,
-        },
-        MMLorHTML: {
-             prefer: {
-                 MSIE:    "MML",
-                 Firefox: "MML",
-                 Opera:   "HTML",
-                 other:   "HTML"
-             }
-        }
-    });
-/*]]>*///-->
-</script>
-
-
-<p></head>
-<body></p>
-
-<div id="preamble">
-
-</div>
-
-
-
-
-<div id="content">
-<h1 class="title">Spatiotemporal Regression Modelling</h1>
-
-
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 Spatially Structured Timeseries Vs Spatiotemporal Modelling</a>
-<ul>
-<li><a href="#sec-1-1">1.1 Spatially Structured Time Series</a></li>
-<li><a href="#sec-1-2">1.2 Spatiotemporal modelling</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="section-number-3">1</span> Spatially Structured Timeseries Vs Spatiotemporal Modelling</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>In my last post about <a href="http://ivanhanigan.github.io/2013/09/reflections-bob-haining-update">spatiotemporal regression modelling</a> I mentioned that I am mostly interested in "spatially structured time-series models" rather than spatial models at a single point in time. By this I mean that we have several neighbouring areal units observed over a period of time. In this framework the general methods of time series modelling are used to control for temporal autocorrelation. However this makes the methods of spatial error and spatial lag models tricky because the spatial autocorrelation needs to be assessed at many points in time.
-</p>
-<p>
-I want to expand more on this topic because I want to be clear that the organisation of the material I am aiming to bring to this notebook topic is not aimed at purely spatial regression models <a href="https://geodacenter.asu.edu/spatial-lag-and">(there is a lot of material and tools out there already for that)</a>.  I am trying with these notes to document my learning steps toward integrating spatial methods with time-series methods to allow me to practice (and understand) spatiotemporal regression modelling.
-</p>
-
-</div>
-
-<div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Spatially Structured Time Series</h4>
-<div class="outline-text-4" id="text-1-1">
-
-<p>In <a href="http://www.pnas.org/content/early/2012/08/08/1112965109.full.pdf+html">my most successful previous attempt to conduct a spatiotemporal analysis of Suicide and Droughts</a> I built on my knowledge of time-series regression models from single-city air pollution studies where the whole city is the unit of analysis and the temporal variation is modelled with controlling techniques for temporal autocorrelation.  These techniques are also valid for multi-city studies because it is pretty safe to assume the cities are all independent at each time point.  I structured my study by Eleven large zones (Census Statistical Divisions) of NSW and assumed each of these would vary over time independent of each other, and I fitted a zone-specific time trend and cycle. This is what I call "spatially structured time-series" modelling.  
-</p>
-<p>
-I justify using this model in this case because aggregating up to these very large regions will diminish the possibility of spatial autocorrelation and because Droughts vary over large spatial zones too, we will not suffer from exposure misclassificaiton bias.
-</p>
-<p>
-So this model is a simple time-series regression (with trend and seasonality) and an additional term for spatial Zone.
-</p>
-
-
-\begin{eqnarray*}
-        log({\color{red} O_{ijk}})  & = & s({\color{red}ExposureVariable})  + {\color{blue} OtherExplanators}  \\
-        & &   + AgeGroup_{i} + Sex_{j} \\
-        & &   + {\color{blue} SpatialZone_{k}}  \\
-        & &  + sin(Time \times 2 \times \pi) + cos(Time \times 2 \times \pi) \\
-        & &  + Trend \\
-        & &   + offset({\color{blue} log(Pop_{ijk})})\\
-\end{eqnarray*}
-
-<p>
-Where:<br/>
-</p>
-<ul>
-<li>\({\color{red}O_{ijk}}\) = Outcome (counts) by Age\(_{i}\), Sex\(_{j}\) and SpatialZone\(_{k}\) <br/>
-</li>
-<li>{\color{red}ExposureVariable} = Data with {\color{red}Restrictive Intellectual Property~(IP)} <br/>
-</li>
-<li>{\color{blue}OtherExplanators} = Other {\color{blue}Less Restricted}  Explanatory variables <br/>
-</li>
-<li>s( ) = penalized regression splines <br/>
-</li>
-<li>\({\color{blue} SpatialZone_{k}}\)  = {\color{blue} Less Restricted} data representing the \(SpatialZone_{k}\)  <br/>
-</li>
-<li>Trend = Longterm smooth trend(s) <br/>
-</li>
-<li>\({\color{blue}Pop_{ijk}}\) = interpolated Census populations, by time in each group<br/>
-</li>
+      <ul>
+<li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
+<li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
+<li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
+<li>The beta coefficient itself shouldn't be affected.</li>
+<li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
+<li>To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
+<li>I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
+<li>So I asked Sarunya for a discussion about her research</li>
 </ul>
 
 
-</div>
+<h3>Sarunya's model is essentially like this</h3>
 
-</div>
+<h4>R Code:</h4>
 
-<div id="outline-container-1-2" class="outline-4">
-<h4 id="sec-1-2"><span class="section-number-4">1.2</span> <span class="todo TODO">TODO</span> Spatiotemporal modelling</h4>
-<div class="outline-text-4" id="text-1-2">
+<pre><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
+       ns(temp, df) + ns(humidity, df) +
+       ns(time, df = 7*numYears) +
+       SLA * ns(time, df = 2),
+       data = analyte, family = poisson
+       )
+</code></pre>
 
-<p>In contrast to the above model for modelling exposures that have fine resolution spatial variation (such as air pollution) the exposure misclassification effect of aggregating up to very large spatial zones will conteract the benefits of avoiding spatially autocorrelated errors and this might be unacceptable for certain research questions.  Therefore it is important to move toward a spatiotemporal regression model that replaces the \(SpatialZone_{k}\) term with a more spatial error or spatial lag approach.
-</p></div>
-</div>
-</div>
-</div>
+<p></p>
 
 
-<p></body>
-</html></p>
+<ul>
+<li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
+<li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
+<li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
+<li>therefore this study avoids the issue by it's intentional design to compare betas not se</li>
+<li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
+<li>this is fascinating in itself, but a separate issue for another post</li>
+</ul>
+
+
+<h3>Conclusions</h3>
+
+<ul>
+<li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
+<li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
+</ul>
+
+
+<p>THANKS Sarunya!</p>
 
       <div class="clear"></div>
     </div>
@@ -700,12 +496,12 @@ Where:<br/>
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/#disqus_thread'>Comments</a>
+      <a href='/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Thu Sep 26 00:00:00 +1000 2013">26 Sep 2013</abbr>
+        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -714,179 +510,188 @@ Where:<br/>
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/09/reflections-bob-haining-update/" title="reflections-bob-haining-update" rel="bookmark">reflections-bob-haining-update</a>
+      <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
     </h1>
     <div class="entry-content full-content">
-      <!-- <?xml version="1.0" encoding="utf-8"?> -->
+      <ul>
+<li>today I was in a meeting where the discussion turned to maps of crude incidence rates, age-standardised rates and regression models controlling for age</li>
+<li>If disease incidence does not vary with age then there is not much point in controlling for this,</li>
+<li>apart from the work done in exploratory data analysis to ascertain whether or not this is the case</li>
+<li>I proposed that if you've done all the work on age-specific rates needed to test if incidence varies with age, then you might as well present age adjusted rates seeing as you've already done the work anyway</li>
+</ul>
 
 
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" -->
+<h3>An example</h3>
+
+<ul>
+<li>The project is highly confidential due to the nature of the data</li>
+<li>We;ll call the study location South Kingsland to protect the identity</li>
+</ul>
 
 
-<!--                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> -->
+<h4>R Code:</h4>
+
+<pre><code># get spatial data
+require(swishdbtools) # github package, under
+                      # swish-climate-impact-assessment
+
+Tab1 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
+Tab1 &lt;- as.data.frame(table(Tab1$SLA))
+nrow(Tab1)
+write.csv(Tab1, "data/SLA.csv", row.names = F)
+load2postgres("data/SLA.csv", schema="ivan_hanigan", tablename="sla", ip = "brawn.anu.edu.au",
+              db = "gislibrary", pguser = "ivan_hanigan", printcopy = F)
 
 
-<!-- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> -->
+ch  &lt;- connect2postgres2("gislibrary")
+sql_subset(ch, "ivan_hanigan.sla", eval = T, limit = 10)
 
 
-<p><head></p>
+sql_subset(ch, "abs_sla.qldsla01", select =  "sla_name, st_y(st_centroid(geom))", eval = T, limit = 10)
+dbSendQuery(ch,
+  "select sla_name, geom
+  into southkingsland
+  from abs_sla.qldsla01 t1
+  join
+  sla t2
+  on t1.sla_name = t2.var1;
+  alter table southkingsland add column gid serial primary key;
+  ")
+# these are missing from spatial data
+## 42                      West End                          &lt;NA&gt;
+## 43                OVERSEAS-OTHER                          &lt;NA&gt;
+## 44                  Yarrabah (S)                          &lt;NA&gt;
+## 45     Rowes Bay-Belgian gardens                          &lt;NA&gt;
+</code></pre>
 
-<!-- <title>spatiotemporal </title> -->
-
-
-<p><meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="spatiotemporal "/>
-<meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-09-25T14:46+1000"/>
-<meta name="author" content="Ivan Hanigan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/></p>
-
-
-
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
+<p></p>
 
 
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
+<h3>visualise with QGIS</h3>
+
+<p><img src="/images/southkingsland.png" alt="southkingsland.png" /></p>
+
+<h4>R Code:</h4>
+
+<pre><code># func
+require(plyr)
+
+# load
+Tab2 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
+names(Tab2)
+# [1] "SLA"       "agegrp"    "Sex"       "district"  "dm"        "ninf"     
+# [7] "popSLA"    "Month"     "Year"      "groupyear"
+test_sla  &lt;- names(table(Tab2$SLA)[1])
+subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "MALE")
+subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "FEMALE")
+
+# clean
+summary(Tab2)
+## remove any SLA with NA populations
+Tab2 &lt;- Tab2[which(!is.na(Tab2$popSLA)),]     
+
+# do
+## first total cases by annualised pop
+analyte  &lt;- ddply(Tab2, c("SLA", "Year", "agegrp", "Sex"), summarise,
+                  ninf=sum(ninf),
+                  popSLA=mean(popSLA)
+                  )
+#str(analyte)
+
+#subset(analyte, SLA == test_sla)
+subset(analyte, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1)
+
+## now annual totals for study region
+analyte2  &lt;- ddply(analyte, c("Year", "agegrp"), summarise,
+                  ninf=sum(ninf),
+                  popSLA=sum(popSLA)
+                  )
+str(analyte2)
+
+qc &lt;- subset(analyte2,  Year == 2001)
+qc
+sum(qc$popSLA)
+
+## now totals
+qc  &lt;- ddply(analyte2, c("Year"), summarise,
+             ninf=sum(ninf),
+             popSLA=sum(popSLA)
+             )
+qc
+sum(qc$ninf)
+mean(qc$popSLA)
+
+## totals by age
+subset(analyte2,  agegrp == 1)
+analyte3  &lt;- ddply(analyte2, c("agegrp"), summarise,
+                  ninf=sum(ninf),
+                  popSLA=mean(popSLA)
+                  )
+analyte3
+sum(analyte3$popSLA)
+analyte3$asr  &lt;- (analyte3$ninf / analyte3$popSLA) * 1000
+analyte3
+
+png("graphs/south-kingsland-age-specific-rates.png") 
+mp &lt;- barplot(analyte3$asr, names.arg = analyte3$agegrp)
+box()
+dev.off()
+</code></pre>
+
+<p></p>
 
 
-<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
-/**
- *
- * @source: http://orgmode.org/mathjax/MathJax.js
- *
- * @licstart  The following is the entire license notice for the
- *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- * Copyright (C) 2012-2013  MathJax
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @licend  The above is the entire license notice
- * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- */
+<h3>Plot Age Specific Rates</h3>
 
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code below.
+<p>Great so with that bit of work we should have an idea of the variation of incidence by age</p>
 
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
+<p><img src="/images/south-kingsland-age-specific-rates.png" alt="south-kingsland-age-specific-rates.png" /></p>
 
-The JavaScript code below is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+<h1>Results and Discussion</h1>
 
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
+<ul>
+<li>It looks like the incidence does vary with age</li>
+<li>TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)</li>
+<li>TODO make graphs by city, by sex</li>
+<li>age-standardised rates probably need different age categories, only 4 or 5?</li>
+<li>worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)</li>
+</ul>
 
 
-@licend  The above is the entire license notice
-for the JavaScript code below.
-*/
-<!--/*--><![CDATA[/*><!--*/
-    MathJax.Hub.Config({
-        // Only one of the two following lines, depending on user settings
-        // First allows browser-native MathML display, second forces HTML/CSS
-        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
-            jax: ["input/TeX", "output/HTML-CSS"],
-        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
-                     "TeX/noUndefined.js"],
-        tex2jax: {
-            inlineMath: [ ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
-            skipTags: ["script","noscript","style","textarea","pre","code"],
-            ignoreClass: "tex2jax_ignore",
-            processEscapes: false,
-            processEnvironments: true,
-            preview: "TeX"
-        },
-        showProcessingMessages: true,
-        displayAlign: "center",
-        displayIndent: "2em",
+<h4>Clean up database!</h4>
 
-        "HTML-CSS": {
-             scale: 100,
-             availableFonts: ["STIX","TeX"],
-             preferredFont: "TeX",
-             webFont: "TeX",
-             imageFont: "TeX",
-             showMathMenu: true,
-        },
-        MMLorHTML: {
-             prefer: {
-                 MSIE:    "MML",
-                 Firefox: "MML",
-                 Opera:   "HTML",
-                 other:   "HTML"
-             }
-        }
-    });
-/*]]>*///-->
-</script>
+<pre><code>dbSendQuery(ch, "drop table sla")
+dbSendQuery(ch, "drop table southkingsland")
+</code></pre>
 
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/rates theory" title="rates theory" rel="category tag">rates theory</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/if-disease-incidence-varies-with-age-control-for-it/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
 
-<p></head>
-<body></p>
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p><body></p>
 
 <div id="preamble">
 
@@ -896,21 +701,28 @@ for the JavaScript code below.
 
 
 <div id="content">
-<!-- <h1 class="title">spatiotemporal </h1> -->
+<h1 class="title">Disentangle Things</h1>
 
 
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1 Update on reflections from Bob Haining's Lecture</a>
+<li><a href="#sec-1">1 morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
 <ul>
-<li><a href="#sec-1-1">1.1 CART Tree analysis that addresses the (potential)spatial autocorrelation problem</a></li>
-<li><a href="#sec-1-2">1.2 Modeling with control for spatial autocorrelation</a></li>
-<li><a href="#sec-1-3">1.3 The Spatial Error Model</a></li>
-<li><a href="#sec-1-4">1.4 The Spatial Lag Model</a></li>
-<li><a href="#sec-1-5">1.5 Spatially Lagged Independent Variable(s)</a></li>
-<li><a href="#sec-1-6">1.6 Discussion</a></li>
+<li><a href="#sec-1-1">1.1 Background</a></li>
+<li><a href="#sec-1-2">1.2 Speed and Rigour</a></li>
+<li><a href="#sec-1-3">1.3 Analysts can often trade-off completeness of documentation for speed</a></li>
+<li><a href="#sec-1-4">1.4 Librarians produce gold plated documentation and can take longer to produce this</a></li>
+<li><a href="#sec-1-5">1.5 An example</a></li>
+<li><a href="#sec-1-6">1.6 Embracing Inaccuracy and Incompleteness</a></li>
+<li><a href="#sec-1-7">1.7 Aim</a></li>
+<li><a href="#sec-1-8">1.8 Step 1: load a simple example dataset</a></li>
+<li><a href="#sec-1-9">1.9 Step 2 create a function to deliver the minimal metadata object</a></li>
+<li><a href="#sec-1-10">1.10 reml<sub>boilerplate</sub>-code</a></li>
+<li><a href="#sec-1-11">1.11 reml<sub>boilerplate</sub>-test-code</a></li>
+<li><a href="#sec-1-12">1.12 Results: This loads into Morpho with some errors</a></li>
+<li><a href="#sec-1-13">1.13 Conclusions</a></li>
 </ul>
 </li>
 </ul>
@@ -918,145 +730,352 @@ for the JavaScript code below.
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="section-number-3">1</span> Update on reflections from Bob Haining's Lecture</h3>
+<h3 id="sec-1"><span class="section-number-3">1</span> morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</h3>
 <div class="outline-text-3" id="text-1">
 
-<p><a href="http://ivanhanigan.github.io/2013/04/reflections-bob-haining/">Earlier this year</a> Prof Bob Haining from the Geography Department Cambridge visited and gave us a great lecture on spatial regression.
-</p>
-<p>
-This Tuesday at the <a href="http://gis-forum.github.io">GIS Forum</a> we were lucky to be joined by statistician Phil Kokic from CSIRO who had heard we'd be discussing spatial autocorrelation (Phil is my PhD supervisor). Here are some quick notes I made:
-</p>
 
 </div>
 
 <div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1"><span class="section-number-4">1.1</span> CART Tree analysis that addresses the (potential)spatial autocorrelation problem</h4>
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Background</h4>
 <div class="outline-text-4" id="text-1-1">
 
-<p>We started off the discussion with an assessment of the approach described in this post <a href="http://thebiobucket.blogspot.com.au/2012/03/classification-trees-allowing-for.html">Classification Trees and Spatial Autocorrelation</a>.
-</p>
-<p>
-I've been thinking more and more about decision trees/CART/random forest methods for selecting a subset of relevant variables (and interations) for use in GLM or GAM model construction.  In a perfect world I'd have data on the main predictor I wanted to model and enough data about all the relevant other predictors (especially confounding or modifying variables) to ensure I get a 'well behaved model'. But with all the data around and so many potentially plausible relationships one might choose to include we need a way to narrow down these to just include the most important covariates, confounders and interactions.  CART or some variation on it seems a good way to do this, but is prone to the potential problem of spatially correlated errors too.
-</p>
-<p>
-The idea from that blog post is:
-</p>
-<p>
-"compute the classification tree, calculate residuals and use it for a Mantel-test and Mantel correlograms.
-The Mantel correlograms test differrences in dissimilarities of
-the residuals across several spatial distances and thus enable you to detect lag-distances where possible spatial autocorrelation vanishes.
-&hellip;If encounter autocorrelation&hellip; try to use subsamples of the data avoiding resampling within the lag-distance.."
-</p>
-<p>
-I think the workflow would be to
-</p>
+
 <ul>
-<li>fit the classification tree (Question: best to use all the data or with a sample like using cross-validation)
+<li>The Morpho/Metacat system is great for a data repository
 </li>
-<li>get the residuals and visually assess the lagged distances plot provided by the Mantel correlogram.  Decide on a threshold (Question: is there an objective way to do this?).
+<li>Morpho also claims to be suitable for Ecologists to document their data
 </li>
-<li>Sample from the data and select out from this sample only data from pairs with distances greater than the threshold (have to keep one out of each close pair or else we'd only be getting data from the sparsely sampled parts of our study region).
+<li>But in my experience it leaves a little to be desired in ease of use for both purposes
+</li>
+<li>Specifically the speed that documentation can be entered into Morpho is slow
+</li>
+<li>This post is a first attempt to create some boilerplate code to quickly generate EML metadata using REML.
 </li>
 </ul>
 
 
-<p>
-We all agreed this sounded OK, but only avoids the problem of spatial autocorrelation (and loses data).
-</p>
 </div>
 
 </div>
 
 <div id="outline-container-1-2" class="outline-4">
-<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Modeling with control for spatial autocorrelation</h4>
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Speed and Rigour</h4>
 <div class="outline-text-4" id="text-1-2">
 
-<p>So we all agreed we'd prefer if our model can control for spatial autocorrelation.  I confessed that I'd always found the GeoBUGS tutorial and other tutorials about Bayesian methods for this very difficult and would really like a "Simple" way to make the problem go away.  So first we briefly reviewed Prof Hainings 3 equations again:
+<p>As I noted in a previous post, there are [two types of data documentation workflow](<a href="http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/">http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/</a>).  
 </p>
-<p>
-NOTE: THE FOLLOWING IDEAS WORK BEST FOR AREAL DATA.
+<ul>
+<li>GUI
+</li>
+<li>Programatic
+</li>
+</ul>
+
+
+<p>  
+I also think there are two types of users with different motivations and constraints:
 </p>
+<ul>
+<li>1) Data Analysts
+</li>
+<li>2) Data Librarians
+</li>
+</ul>
+
+
 </div>
 
 </div>
 
 <div id="outline-container-1-3" class="outline-4">
-<h4 id="sec-1-3"><span class="section-number-4">1.3</span> The Spatial Error Model</h4>
+<h4 id="sec-1-3"><span class="section-number-4">1.3</span> Analysts can often trade-off completeness of documentation for speed</h4>
 <div class="outline-text-4" id="text-1-3">
 
-
-
-
-\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + \eta_{i}\)
-
-<p>
-Where:
+<p>In my view the Analysts group of users need a tool that will very rapidly document their data and workflow steps and can live with a bit less rigour in the quality of documentation.  Obviously this is not ideal but seems an inevitable trade-off needed to enable analysts to keep up the momentum of the data processing and modelling without getting distracted by tedious (and potentially unnecessary) data documentation tasks.
 </p>
-<p>
-\(\eta_{i}\) = Spatially autocorrelated errors.
-</p>
-
 </div>
 
 </div>
 
 <div id="outline-container-1-4" class="outline-4">
-<h4 id="sec-1-4"><span class="section-number-4">1.4</span> The Spatial Lag Model</h4>
+<h4 id="sec-1-4"><span class="section-number-4">1.4</span> Librarians produce gold plated documentation and can take longer to produce this</h4>
 <div class="outline-text-4" id="text-1-4">
 
-
-
-
-\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + \rho(Neighbours Y_{ij}) + e_{i}\)
-
-<p>
-Where:
-</p>
-<p>
-\(\rho_(Neighbours Y_{ij})\) = is an additional explanatory variable which is the value of the dependent variable in neighbouring areas. 
+<p>On the other hand the role of the Librarian group is to produce documentation to the best level possible (given time and resource constraints) the datasets and methodologies that lead to the creation of the datasets.  For that group Rigour will take precedence and there will be a trade-off in terms of the amount of time needed to produce the documentation.
 </p>
 </div>
 
 </div>
 
 <div id="outline-container-1-5" class="outline-4">
-<h4 id="sec-1-5"><span class="section-number-4">1.5</span> Spatially Lagged Independent Variable(s)</h4>
+<h4 id="sec-1-5"><span class="section-number-4">1.5</span> An example</h4>
 <div class="outline-text-4" id="text-1-5">
 
-
-
-
-\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + \beta_{2L} X_{2ij} + e_{i}\)
-
-<p>
-Where:
+<p>As an example of the two different groups, an analyst working with weather data in Australia may want to specify that their variable "temperature" is the average of the daily maxima and minima, but might not need to specify that the observations were taken inside a Stevenson Screen, or even if they are in Celsius, Farenhiet or Kelvin.  They will be very keen to start the analysis to identify any associations between weather variables and the response variable they are investigating.   The data librarian on the other hand will be more likely to need to include this information so that the users of the temperature data do not mis-interpret it.
 </p>
-<p>
-\(\beta_{2L} X_{2ij}\) = is the independent variable X2 that is spatially lagged.
-</p>
-
 </div>
 
 </div>
 
 <div id="outline-container-1-6" class="outline-4">
-<h4 id="sec-1-6"><span class="section-number-4">1.6</span> Discussion</h4>
+<h4 id="sec-1-6"><span class="section-number-4">1.6</span> Embracing Inaccuracy and Incompleteness</h4>
 <div class="outline-text-4" id="text-1-6">
 
+
 <ul>
-<li>Phil agreed with Bob that the spatial error model is the best, spatial lag model is OK and spatially lagged covariates not so great.
+<li>I've been talking about this for a while got referred to this document by Ben Davies at the ANUSF
 </li>
-<li>For spatial error model fitting Phil suggested looking at R packages spBayes and spTimer.
+</ul>
+
+<p>[http://thedailywtf.com/Articles/Documentation-Done-Right.aspx](<a href="http://thedailywtf.com/Articles/Documentation-Done-Right.aspx">http://thedailywtf.com/Articles/Documentation-Done-Right.aspx</a>)
+</p><ul>
+<li>It has this bit:
 </li>
-<li>I pointed out that I am mostly interested in "spatially structured time-series models" rather than spatial models at a single point in time.  By this I mean that we have several neighbouring areal units observed over a period of time.  In this framework the general methods of time series modelling are used to control for temporal autocorrelation.  However this makes the methods of spatial error and spatial lag models tricky because the spatial autocorrelation needs to be assessed at many points in time.
+</ul>
+
+
+
+
+<pre class="src src-R">  
+   
+Embracing Inaccuracy and Incompleteness 
+    
+The immediate answer to what&#8217;s the right way to do documentation is
+clear: produce the least amount of documentation needed to facilitate
+the most understanding, and be very explicit about which documentation
+is to be maintained and which is to be archived (i.e., read-only and
+left to rot).
+</pre>
+
+
+<ul>
+<li>Roughly speaking, a full EML document produced by Morpho is a bit like a whole bunch of cruft that isnt needed and gets in the way (and is more confusing)
 </li>
-<li>I asked that if spatial lag is OK (and it seems easier to fit into the time-series model framework) how can I check to know if it has done the trick?  If this were purely a spatial model we could check for spatial autocorrelation in the residuals just as they described in the CART blog above, but here we have many maps we could make (one every time point), and our spatial autocorrelation measure would surely vary a lot over time.  SO would a simple way just be to asses the effect on the Standard Error on beta1 (our primary interest) and if it is bigger but still significant we can be reassured that our result isn't affected? Or perhaps we should assess the beta on the lagged variable, for instance is a significant p-value on the lagged Beta an indication that it is capturing the unmeasured spatial associations represented by the neighbourhood variable?  
+<li>Whereas a minimal version Im thinking of covers almost all the generic entries providing the "minimum amount of stuff to make it work right".
 </li>
-<li>If it hadn't done the trick Nerida pointed out this might be because the Neighbourhoods are actually not appropriately represented by the first order neighbours and therefore more neighbours could be included, like moving out several concentric circles to wider and wider neighbourhoods
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-7" class="outline-4">
+<h4 id="sec-1-7"><span class="section-number-4">1.7</span> Aim</h4>
+<div class="outline-text-4" id="text-1-7">
+
+
+<ul>
+<li>This experiment aims to speed up the creation of a minimal "skeleton" of metadata to a level that both the groups above can be comfortable with AS A FIRST STEP.
 </li>
-<li>Nasser and Phil pointed out that the lagged variable (the outcome in the neighbours) includes an element of the exposure variables, and said that it would be difficult to 'unpack' what that part of the model meant.
+<li>It is assumed that additional steps will then need to be taken to complete the documentation, but the automation of the first part of the process should shave off enough time to suit the purposes of both groups
 </li>
-<li>so it looks like there is no simple answer and spatial error model is still preferred.
+<li>It is an imperative that the quick-start creation of the metadata does not end up costing the documentor more time later on down the track if they need to go back to many of the elements for additional editing.
+</li>
+</ul>
+
+
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-8" class="outline-4">
+<h4 id="sec-1-8"><span class="section-number-4">1.8</span> Step 1: load a simple example dataset</h4>
+<div class="outline-text-4" id="text-1-8">
+
+<p>I've been using a [fictitious dataset from a Statistics Methodology paper by Ritschard 2006](<a href="http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/">http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/</a>).  It will do as a first cut but when it comes to actually test this out it would be good to have something that would take a bit longer (so that the frustrations of using Morpho become very apparent).
+</p>
+
+
+
+<pre class="src src-R">  <span style="color: #586e75;">#### </span><span style="color: #586e75;">R Code:</span>
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">func</span>
+      <span style="color: #268bd2; font-weight: bold;">require</span>(devtools)
+      install_github(<span style="color: #2aa198;">"disentangle"</span>, <span style="color: #2aa198;">"ivanhanigan"</span>)
+      <span style="color: #268bd2; font-weight: bold;">require</span>(disentangle)
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">load</span>
+      fpath <span style="color: #268bd2; font-weight: bold;">&lt;-</span> system.file(
+          file.path(<span style="color: #2aa198;">"extdata"</span>, <span style="color: #2aa198;">"civst_gend_sector_full.csv"</span>),
+          package = <span style="color: #2aa198;">"disentangle"</span>
+          )
+      data_set <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(fpath)
+      summary(data_set)
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">store it in the current project workspace</span>
+      write.csv(data_set, <span style="color: #2aa198;">"data/civst_gend_sector_full.csv"</span>, row.names = F)
+      
+
+
+
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| divorced/widowed: 33 | female:132 | primary  :116 | Min.   : 128.9 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| married         :120 | male  :141 | secondary: 99 | 1st Qu.: 768.3 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| single          :120 | nil        | tertiary : 58 | Median : 922.8 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | Mean   : 908.4 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | 3rd Qu.:1079.1 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | Max.   :1479.4 |</span>
+
+</pre>
+
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-9" class="outline-4">
+<h4 id="sec-1-9"><span class="section-number-4">1.9</span> Step 2 create a function to deliver the minimal metadata object</h4>
+<div class="outline-text-4" id="text-1-9">
+
+<ul>
+<li>the package REML will create a EML metadata document quite easily
+</li>
+<li>I will assume that a lot of the data elements are self explanatory and take column names and factor levels as the descriptions
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-10" class="outline-4">
+<h4 id="sec-1-10"><span class="section-number-4">1.10</span> reml<sub>boilerplate</sub>-code</h4>
+<div class="outline-text-4" id="text-1-10">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">################################################################</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">name:reml_boilerplate</span>
+ 
+<span style="color: #586e75;"># </span><span style="color: #586e75;">func</span>
+<span style="color: #859900; font-weight: bold;">if</span>(!<span style="color: #268bd2; font-weight: bold;">require</span>(reml)) {
+  <span style="color: #268bd2; font-weight: bold;">require</span>(devtools)
+  install_github(<span style="color: #2aa198;">"reml"</span>, <span style="color: #2aa198;">"ropensci"</span>)
+  } 
+<span style="color: #268bd2; font-weight: bold;">require</span>(reml)
+
+<span style="color: #268bd2;">reml_boilerplate</span> <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #859900; font-weight: bold;">function</span>(data_set, created_by = <span style="color: #2aa198;">"Ivan Hanigan &lt;<a href="mailto:ivanhanigan&#64;gmail.com">ivanhanigan&#64;gmail.com</a>&gt;"</span>, data_dir = getwd(), titl = <span style="color: #b58900;">NA</span>, desc = <span style="color: #2aa198;">""</span>)
+{
+
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">essential</span>
+  <span style="color: #859900; font-weight: bold;">if</span>(is.na(titl)) <span style="color: #859900; font-weight: bold;">stop</span>(print(<span style="color: #2aa198;">"must specify title"</span>))
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">we can get the col names easily</span>
+  col_defs <span style="color: #268bd2; font-weight: bold;">&lt;-</span> names(data_set)
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">next create a list from the data</span>
+  unit_defs <span style="color: #268bd2; font-weight: bold;">&lt;-</span> list()
+  <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(data_set))
+    {
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">i = 4</span>
+      <span style="color: #859900; font-weight: bold;">if</span>(is.numeric(data_set[,i])){
+        unit_defs[[i]] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #2aa198;">"numeric"</span>
+      } <span style="color: #859900; font-weight: bold;">else</span> {
+        unit_defs[[i]] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> names(table(data_set[,i]))          
+      }
+    }
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">unit_defs</span>
+  
+  ds <span style="color: #268bd2; font-weight: bold;">&lt;-</span> data.set(data_set,
+                 col.defs = col_defs,
+                 unit.defs = unit_defs
+                 )
+  <span style="color: #586e75;">#</span><span style="color: #586e75;">str(ds)</span>
+
+  metadata  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> metadata(ds)
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">needs names</span>
+  <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(data_set))
+    {
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">i = 4</span>
+      <span style="color: #859900; font-weight: bold;">if</span>(is.numeric(data_set[,i])){
+        names(metadata[[i]][[3]]) <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #2aa198;">"number"</span>
+      } <span style="color: #859900; font-weight: bold;">else</span> {
+        names(metadata[[i]][[3]]) <span style="color: #268bd2; font-weight: bold;">&lt;-</span> metadata[[i]][[3]]
+      }
+    }
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">metadata</span>
+  oldwd <span style="color: #268bd2; font-weight: bold;">&lt;-</span> getwd()
+  setwd(data_dir)
+  eml_write(data_set, metadata,
+            title = titl,  
+            description = desc,
+            creator = created_by
+            )
+  setwd(oldwd)
+  sprintf(<span style="color: #2aa198;">"your metadata has been created in the '%s' directory"</span>, data_dir)
+  }
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-11" class="outline-4">
+<h4 id="sec-1-11"><span class="section-number-4">1.11</span> reml<sub>boilerplate</sub>-test-code</h4>
+<div class="outline-text-4" id="text-1-11">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">################################################################</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">name:reml_boilerplate-test</span>
+
+analyte <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #2aa198;">"data/civst_gend_sector_full.csv"</span>)
+reml_boilerplate(
+  data_set = analyte,
+  created_by = <span style="color: #2aa198;">"Ivan Hanigan &lt;<a href="mailto:ivanhanigan&#64;gmail.com">ivanhanigan&#64;gmail.com</a>&gt;"</span>,
+  data_dir = <span style="color: #2aa198;">"data"</span>,
+  titl = <span style="color: #2aa198;">"civst_gend_sector_full"</span>,
+  desc = <span style="color: #2aa198;">"An example, fictional dataset"</span>
+  )
+
+dir(<span style="color: #2aa198;">"data"</span>)
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-12" class="outline-4">
+<h4 id="sec-1-12"><span class="section-number-4">1.12</span> Results: This loads into Morpho with some errors</h4>
+<div class="outline-text-4" id="text-1-12">
+
+<ul>
+<li>Notably unable to import the data file
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morpho-reml-boilerplate.png" alt = "morpho-reml-boilerplate.png">
+</p>
+<ul>
+<li>Also "the saved document is not valid for some reason"
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morpho-reml-boilerplate2.png" alt = "morpho-reml-boilerplate2.png">
+</p></div>
+
+</div>
+
+<div id="outline-container-1-13" class="outline-4">
+<h4 id="sec-1-13"><span class="section-number-4">1.13</span> Conclusions</h4>
+<div class="outline-text-4" id="text-1-13">
+
+<ul>
+<li>This needs testing
+</li>
+<li>A real deal breaker is if the EML is not valid 
+</li>
+<li>In some cases not having the data table included will be a deal breaker (ie KNB repositories designed for downloading complete data packs
+</li>
+<li>A definite failure would be that even if it is quicker to get started if it takes a long time and is difficult to fix up it might increase the risk of misunderstandings.
 </li>
 </ul>
 
@@ -1075,96 +1094,102 @@ Where:
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/09/reflections-bob-haining-update/#disqus_thread'>Comments</a>
+      <a href='/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Wed Sep 25 00:00:00 +1000 2013">25 Sep 2013</abbr>
+        <abbr class="published" title="Tue Oct 29 00:00:00 +1100 2013">29 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
   </div>
   <div class="rule"><hr/></div>
 
+<<<<<<< HEAD
+=======
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/09/workflow-flowcharts-update/" title="workflow-flowcharts-update" rel="bookmark">workflow-flowcharts-update</a>
+      <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Workflow flowcharts - Update</h1>
+      <p>I got this question today from a Drought researcher:</p>
 
-<p>A while back I posted about <a href="/2013/07/worflow-flowcharts/">my work with the Rgraphviz toolbox</a> toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
-This update includes notes from a discussion I had with Keith about this.</p>
+<h4>Question:</h4>
 
-<h4>The basic use case is described by this code:</h4>
+<pre><code>There a table with 62 years * 12 months of rain data in mm. We
+calculated the cumulative distribution using ecdf: empirical
+cumulative distribution function. So the table looks like this:
+Year Jan Feb Mach (…) each cell contains the cum dist.
 
-<pre><code>require(disentangle)
-# Decide on the first step and create the starting node of the flowchart 
-nodes &lt;- newnode(name="NAME", inputs="INPUT", newgraph=T)
-# FirstStep.
-# Comment: do a bit of work
-NAME &lt;- myWorkFunction(INPUT)
-# Decide on next step
-nodes &lt;- newnode(name="OUTPUT", inputs=c("NAME","ANOTHER THING"))
-# Do the second step
-OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
+We also got the number of months per year with less than X mm of
+rain. But he needs to know how many months are between the
+drought months, regardless the year. So, I thought that
+converting the data into a ts was going to facilitate the task,
+but it doesn’t, because now I don’t’ have columns and rows any
+longer.
+
+How do I handle a ts object to do for example an ifelse?
 </code></pre>
 
 <p></p>
 
 
-<p><img src="/images/workflow-flowchart1.png" alt="workflow-flowchart1.png" /></p>
+<p>I answered:</p>
 
-<p>So as the scripted workflow develops, so does the flow chart. The alternative I described previously is to make a list of all the steps in a Balzerian Filelist Table.</p>
-
-<h4>Keith's comments:</h4>
-
-<p>Keith gave me some great comments on that post.  I'll just jot them down here for now but will have to come back and re-write parts of my function and the descriptive blog post to address these at another time.</p>
-
-<p>First section:</p>
+<p>This looks a lot like the Hutchinson Drought Index which I've coded up here</p>
 
 <ul>
-<li>I said that multiple datasets used in an analysis could be broken down into discrete data packages.  Keith asked if I thought they "should be".</li>
-<li>questioned whether the data warehouse at my work really is "Big Data"</li>
-<li>I need to cite the graphviz and Rgraphviz software better</li>
-<li>the function currently requires users to speciify newgraph = T to start, and fails to do anything if "nodes" object doesn't exist.  This is uneccessary.  should make it create "nodes" if doesn't exist. Then the newgraph argument is only needed to delete an old graph and start again.</li>
-<li>is it required that any of these actually be new?  if not then "newnode" seems a poor name for the function</li>
+<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
+<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
+<li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
 </ul>
 
 
-<p>From section "Code:adding nodes":</p>
+<p>This is the key bit for counting consecutive months below a threshold</p>
+
+<h4>R Code:</h4>
+
+<pre><code>x&lt;-data$index&lt;=-1
+xx &lt;- (cumsum(!x) + 1) * x
+x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
+data$count&lt;-x2
+</code></pre>
+
+<p></p>
+
+
+<p>
+I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
+and looked in wonder at the structure and am amazed it works.</p>
+
+<p>I also really like the cumulative summing version a lot</p>
+
+<h4>R Code:</h4>
+
+<pre><code>data$sums&lt;-as.numeric(0)
+y &lt;- ifelse(data$index &gt;= -1, 0, data$index)
+f &lt;- data$index &lt; -1
+f &lt;- (cumsum(!f) + 1) * f
+z &lt;- unsplit(lapply(split(y,f),cumsum),f)
+data$sums &lt;- z
+</code></pre>
+
+<p></p>
+
+
+<p>
+Several things I'd like to change.</p>
 
 <ul>
-<li>the line where output is the name is confusing.  Keith felt that output was not the name of the newnode (but it really is).</li>
-<li>the name of the nodes object is hardcoded to be "nodes".  therefore don't need to give it as an argument</li>
-<li>proposed better syntac: newnode(name= "ANOTHER THING", output = "OUTPUT") which I think will also work?</li>
-<li>wouldn't it be great if links could be labelled? maybe better to focus on links rather than nodes? this seems more logical because links are transitions and where the action is, not at the nodes.</li>
-<li>it might be helpful to review common actions to see what graph structures each implies.</li>
-<li>RE lab-book from Chemistry: most people would not be familiar with how lab-books are written.</li>
-<li>can newnode build circuits/cycles?  can it add links between existing nodes?</li>
-</ul>
-
-
-<p>Section after "shows this result"</p>
-
-<ul>
-<li>tablexyz -> FileA -> Input1 should be one step because fileA is not used again. ditto fileB.</li>
-<li>analysisResults is a different kind of thing. this is confusing.</li>
-<li>why do I have to type "nodes &lt;-" every time?  if it has to have this name It could be hidden</li>
-</ul>
-
-
-<p>Under example two, "Step three"</p>
-
-<ul>
-<li><p>huh? does input1 have "id"?</p></li>
-<li><p>"the result" graph is  a bit dense and hard to follow.  Perhaps simpler labels?  ie instead of FileA just "A"?</p></li>
+<li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
+<li>I'd like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
+<li>I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
 </ul>
 
 
@@ -1173,23 +1198,60 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/workflow" title="workflow" rel="category tag">workflow</a>
+      <a href="/categories/climatic and agricultural drought" title="climatic and agricultural drought" rel="category tag">climatic and agricultural drought</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/09/workflow-flowcharts-update/#disqus_thread'>Comments</a>
+      <a href='/2013/10/counting-number-of-consecutive-months-in-drought/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Mon Sep 23 00:00:00 +1000 2013">23 Sep 2013</abbr>
+        <abbr class="published" title="Tue Oct 29 00:00:00 +1100 2013">29 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
   </div>
   <div class="rule"><hr/></div>
 
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors</li>
+<li>We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement</li>
+<li>I've hacked together some very very ugly code to construct the lagged variable</li>
+<li><a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3">http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3</a></li>
+<li>There may be errors, it's been a long day, but I won't have a chance to check back on this till next week so I thought I'd put it out there as is.</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Mon Oct 28 00:00:00 +1100 2013">28 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
 
 <div class="pagination">
   <span class="previous">
@@ -1244,6 +1306,7 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
+<<<<<<< HEAD
                 <li><a href="/categories/Energymark">Energymark (1)</a></li>
                 
                 <li><a href="/categories/notebook">notebook (1)</a></li>
@@ -1255,13 +1318,17 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                 <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
                 <li><a href="/categories/blogger">blogger (1)</a></li>
+=======
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
+                <li><a href="/categories/data documentation">data documentation (12)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                <li><a href="/categories/python">python (2)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/GIS">GIS (1)</a></li>
                 
                 <li><a href="/categories/packages">packages (1)</a></li>
@@ -1271,6 +1338,17 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                 <li><a href="/categories/orgmode">orgmode (1)</a></li>
                 
                 <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+=======
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (18)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
                 <li><a href="/categories/ecology">ecology (1)</a></li>
                 
@@ -1282,18 +1360,33 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                 
                 <li><a href="/categories/open notebook">open notebook (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
                 
                 <li><a href="/categories/Drought">Drought (1)</a></li>
+=======
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
                 <li><a href="/categories/drought">drought (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
                 
                 <li><a href="/categories/links">links (1)</a></li>
+=======
+                <li><a href="/categories/animation">animation (1)</a></li>
                 
-                <li><a href="/categories/systems">systems (1)</a></li>
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
+                <li><a href="/categories/links">links (1)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
                 
                 <li><a href="/categories/organising">organising (2)</a></li>
@@ -1325,9 +1418,43 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                 <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
                 
                 <li><a href="/categories/ons">ons (1)</a></li>
+=======
+                <li><a href="/categories/concordance">concordance (1)</a></li>
                 
-                <li><a href="/categories/animation">animation (1)</a></li>
+                <li><a href="/categories/ons">ons (2)</a></li>
                 
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/statistical models">statistical models (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
+                
+                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/Suicide">Suicide (1)</a></li>
                 
                 <li><a href="/categories/tools">tools (1)</a></li>
@@ -1347,13 +1474,37 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                 <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
                 <li><a href="/categories/climate change">climate change (1)</a></li>
+=======
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                <li><a href="/categories/workflow">workflow (4)</a></li>
                 
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/suicide">suicide (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/kepler">kepler (1)</a></li>
+=======
+                <li><a href="/categories/gis">gis (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/surveys">surveys (1)</a></li>
                 
                 <li><a href="/categories/gisviz">gisviz (1)</a></li>
@@ -1363,8 +1514,29 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                 <li><a href="/categories/spatial">spatial (2)</a></li>
                 
                 <li><a href="/categories/Modelling">Modelling (1)</a></li>
+=======
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/modelling">modelling (1)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
                 <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
               </ul>
             </div>
@@ -1375,6 +1547,7 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
               <ul>
                 
                 <li>
+<<<<<<< HEAD
                   <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
                 </li>
                 
@@ -1384,6 +1557,81 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                 
                 <li>
                   <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
+=======
+                  <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
+                </li>
+                
+                <li>
+                  <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/auto-download-bureau-meteorology-diurnal-data/" title="auto-download-bureau-meteorology-diurnal-data" rel="bookmark">auto-download-bureau-meteorology-diurnal-data</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/the-history-of-ons/" title="the-history-of-ons" rel="bookmark">the-history-of-ons</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/" title="non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms" rel="bookmark">non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/research-protocol-for-manitoba-centre-for-health-policy/" title="research-protocol-for-manitoba-centre-for-health-policy" rel="bookmark">research-protocol-for-manitoba-centre-for-health-policy</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
                 </li>
                 
                 <li>
@@ -1502,6 +1750,8 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                   <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
                 </li>
                 
+<<<<<<< HEAD
+=======
                 <li>
                   <a href="/2013/09/transformational-adaptation/" title="transformational-adaptation" rel="bookmark">transformational-adaptation</a>
                 </li>
@@ -1510,70 +1760,7 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
                   <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
                 </li>
                 
-                <li>
-                  <a href="/2013/09/energymark/" title="energymark" rel="bookmark">energymark</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/09/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/09/ons/" title="Starting my Open Notebook Science Blog" rel="bookmark">Starting my Open Notebook Science Blog</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/07/worflow-flowcharts/" title="Worflow flowcharts" rel="bookmark">Worflow flowcharts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/07/animated-maps/" title="animated-maps" rel="bookmark">animated-maps</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/06/spatio-temporal-animations/" title="spatio-temporal-animations" rel="bookmark">spatio-temporal-animations</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/05/data-dredging/" title="Complex Model Selection (or Data Dredging)" rel="bookmark">Complex Model Selection (or Data Dredging)</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/pioz-et-al-2012-model-selection/" title="Pioz et al 2012 model selection" rel="bookmark">Pioz et al 2012 model selection</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/suicide-and-drought-evidence-from-literature/" title="Suicide And Drought Evidence From Literature" rel="bookmark">Suicide And Drought Evidence From Literature</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/timeseries-with-spatial-lag/" title="Timeseries with Spatial Lag" rel="bookmark">Timeseries with Spatial Lag</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/reflections-bob-haining/" title="Reflections on Spatial Regression Class with Prof Bob Haining" rel="bookmark">Reflections on Spatial Regression Class with Prof Bob Haining</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/09/software-ism/" title="software-ism" rel="bookmark">software-ism</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/07/the-ecological-fallacy-is-itself-a-fallacy/" title="The Ecological Fallacy is Itself a Fallacy" rel="bookmark">The Ecological Fallacy is Itself a Fallacy</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/06/centenial-scale-rainfall-in-southeastern-australia/" title="Centennial Scale Rainfall in Southeastern Australia" rel="bookmark">Centennial Scale Rainfall in Southeastern Australia</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/05/how-to-explain-my-current-research/" title="How to explain my current research interests?" rel="bookmark">How to explain my current research interests?</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/05/historical-evidence-of-dengue-in-southeastern-australia/" title="Historical GIS evidence of Dengue in the far southeast of Australia?" rel="bookmark">Historical GIS evidence of Dengue in the far southeast of Australia?</a>
-                </li>
-                
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
               </ul>
               <div class="clear"></div>
             </div>

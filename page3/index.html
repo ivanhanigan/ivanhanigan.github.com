@@ -54,6 +54,7 @@
 
   <div class="full">
     <h1 class="entry-title">
+<<<<<<< HEAD
       <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
     </h1>
     <div class="entry-content full-content">
@@ -658,559 +659,779 @@ dir(<span style="color: #2aa198;">"data"</span>)
   <div class="full">
     <h1 class="entry-title">
       <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
+=======
+      <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
     </h1>
     <div class="entry-content full-content">
-      <p>I got this question today from a Drought researcher:</p>
-
-<h4>Question:</h4>
-
-<pre><code>There a table with 62 years * 12 months of rain data in mm. We
-calculated the cumulative distribution using ecdf: empirical
-cumulative distribution function. So the table looks like this:
-Year Jan Feb Mach (…) each cell contains the cum dist.
-
-We also got the number of months per year with less than X mm of
-rain. But he needs to know how many months are between the
-drought months, regardless the year. So, I thought that
-converting the data into a ts was going to facilitate the task,
-but it doesn’t, because now I don’t’ have columns and rows any
-longer.
-
-How do I handle a ts object to do for example an ifelse?
-</code></pre>
-
-<p></p>
-
-
-<p>I answered:</p>
-
-<p>This looks a lot like the Hutchinson Drought Index which I've coded up here</p>
+      <p>Finally our article has been published in final version in Environmental Health.</p>
 
 <ul>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
-<li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
+<li>Title: The impact of heat on mortality and morbidity in the Greater Metropolitan Sydney Region: a case crossover analysis</li>
+<li>Authors: Wilson Ann Leigh, Gerard Morgan  Geoffrey, Hanigan Charles Ivan, Johnston H Fay, Abu-Rayya  Hisham, Broome  Richard, Gaskin  Clive, Jalaludin  Bin,</li>
+<li>Environmental Health.2013, 12:98.</li>
+<li>DOI: 10.1186/10.1186/1476-069X-12-98</li>
+<li>URL: <a href="http://www.ehjournal.net/content/12/1/98">http://www.ehjournal.net/content/12/1/98</a></li>
 </ul>
 
 
-<p>This is the key bit for counting consecutive months below a threshold</p>
+<p>Finally.......
+thanks to everyone,  especially Geoff Morgan, Richard Broome, Fay Johnston; Bin Jalaludin</p>
 
-<h4>R Code:</h4>
-
-<pre><code>x&lt;-data$index&lt;=-1
-xx &lt;- (cumsum(!x) + 1) * x
-x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
-data$count&lt;-x2
-</code></pre>
-
-<p></p>
-
-
-<p>
-I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
-and looked in wonder at the structure and am amazed it works.</p>
-
-<p>I also really like the cumulative summing version a lot</p>
-
-<h4>R Code:</h4>
-
-<pre><code>data$sums&lt;-as.numeric(0)
-y &lt;- ifelse(data$index &gt;= -1, 0, data$index)
-f &lt;- data$index &lt; -1
-f &lt;- (cumsum(!f) + 1) * f
-z &lt;- unsplit(lapply(split(y,f),cumsum),f)
-data$sums &lt;- z
-</code></pre>
-
-<p></p>
-
-
-<p>
-Several things I'd like to change.</p>
-
-<ul>
-<li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
-<li>I'd like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
-<li>I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
-</ul>
-
+<p>And especially Leigh Wilson.</p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
-      
-      <a href="/categories/climatic and agricultural drought" title="climatic and agricultural drought" rel="category tag">climatic and agricultural drought</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/counting-number-of-consecutive-months-in-drought/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Oct 29 00:00:00 +1100 2013">29 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors</li>
-<li>We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement</li>
-<li>I've hacked together some very very ugly code to construct the lagged variable</li>
-<li><a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3">http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3</a></li>
-<li>There may be errors, it's been a long day, but I won't have a chance to check back on this till next week so I thought I'd put it out there as is.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Mon Oct 28 00:00:00 +1100 2013">28 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p><body></p>
-
-<div id="preamble">
-
-</div>
-
-
-
-
-<div id="content">
-<h1 class="title">AWAP GRIDS </h1>
-
-
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 Introduction and Methods</a>
-<ul>
-<li><a href="#sec-1-1">1.1 Authors</a></li>
-<li><a href="#sec-1-2">1.2 Background</a></li>
-<li><a href="#sec-1-3">1.3 Material and Methods</a></li>
-</ul>
-</li>
-<li><a href="#sec-2">2 R-code-for-extraction</a></li>
-<li><a href="#sec-3">3 Results</a></li>
-<li><a href="#sec-4">4 R-code-for-comparison</a></li>
-<li><a href="#sec-5">5 Discussion</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="section-number-3">1</span> Introduction and Methods</h3>
-<div class="outline-text-3" id="text-1">
-
-
-<p>
-This is a work in progress.  It is a stub of an article I want to put together which shows how to use several online data repositories together as a showcase of the [Scientific Workflow and Integration Software for Health (SWISH) Climate Impact Assessments](<a href="https://github.com/swish-climate-impact-assessment">https://github.com/swish-climate-impact-assessment</a>) project.
-</p>
-
-</div>
-
-<div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Authors</h4>
-<div class="outline-text-4" id="text-1-1">
-
-<ul>
-<li>Ivan Hanigan and [Markus Nolf](<a href="http://www.thinkoholic.com">http://www.thinkoholic.com</a>)
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-1-2" class="outline-4">
-<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Background</h4>
-<div class="outline-text-4" id="text-1-2">
-
-
-<ul>
-<li>Markus Nolf offers this use case of the [SWISH EWEDB](<a href="http://swish-climate-impact-assessment.github.io/">http://swish-climate-impact-assessment.github.io/</a>)
-</li>
-<li>Markus is pulling together his  Daintree Rainforest Observatory (DRO) data into a manuscript for publication, and was looking for climate data from 2012 as well as long-term. 
-</li>
-<li>More specifically, the annual precipitation and mean annual temperature for both 2012 and the 30-year mean.
-</li>
-<li>The Australian Bureau of Meteorology has a nice rainfall dataset available at <a href="http://www.bom.gov.au/climate/data/">http://www.bom.gov.au/climate/data/</a> ("Cape Trib Store" weather station), but it seems like the temperature records are patchy.
-</li>
-<li>So it is advised to use the data the DRO collects its self
-</li>
-<li>You need to apply through the [ASN SuperSite data portal](<a href="http://www.tern-supersites.net.au/knb/">http://www.tern-supersites.net.au/knb/</a>) for access to the daily data for the DRO.
-</li>
-<li>Note the use of the DRO met data will need to be properly cited as it is harder to keep
-</li>
-</ul>
-
-<p>an AWS station running in the tropics for years than it is to collect most other data. 
-The citation information is provided when you make a request to access the data.
-</p><ul>
-<li>The long term mean used by most DRO researchers is from the BOM station as we only have a short record from the station itself.  The offset is around 1000mm.
-</li>
-<li>However what we want is mean annual temperatures but the BOM website seems to focus more on mean minimum and maximum temperatures.
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-1-3" class="outline-4">
-<h4 id="sec-1-3"><span class="section-number-4">1.3</span> Material and Methods</h4>
-<div class="outline-text-4" id="text-1-3">
-
-
-<ul>
-<li id="sec-1-3-1">Baseline Climate Data 2012, Far North Queensland Rainforest Supersite, Cape Tribulation Node<br/>
-
-<ul>
-<li>We can use the data portal too see [the data file in question](<a href="http://www.tern-supersites.net.au/knb/metacat/lloyd.238.13/html">http://www.tern-supersites.net.au/knb/metacat/lloyd.238.13/html</a>)
-</li>
-<li>Application for access is via email
-</li>
-</ul>
-
-
-</li>
-</ul>
-<ul>
-<li id="sec-1-3-2">Extract mean annual temperatures at the BOM website<br/>
-
-<ul>
-<li>SWISH uses BoM data a fair bit and aims to streamline access to BoM data for extreme weather event analysis (which require long term average climatology to provide the baseline that extremes are measured against).
-</li>
-<li>WRT to temperature most daily averages from BoM are calculated as average of maximum<sub>temperature</sub><sub>in</sub><sub>24</sub><sub>hours</sub><sub>after</sub><sub>9am</sub><sub>local</sub><sub>time</sub><sub>in</sub><sub>degrees</sub> and minimum<sub>temperature</sub><sub>in</sub><sub>24</sub><sub>hours</sub><sub>before</sub><sub>9am</sub><sub>local</sub><sub>time</sub><sub>in</sub><sub>degree</sub> (only couple of hundred AWS provide hourly data to get the proper mean of 24 obs).
-</li>
-<li>The Bureau of Meteorology has generated a range of gridded meteorological datasets for Australia as a contribution to the Australian Water Availability Project (AWAP). These include daily max and min temperature which you could use to generate daily averages, then calculate your long term averages from those?  
-</li>
-<li><a href="http://www.bom.gov.au/jsp/awap/">http://www.bom.gov.au/jsp/awap/</a>
-</li>
-<li>Documentation is at <a href="http://www.bom.gov.au/amm/docs/2009/jones.pdf">http://www.bom.gov.au/amm/docs/2009/jones.pdf</a>
-</li>
-</ul>
-
-
-</li>
-</ul>
-<ul>
-<li id="sec-1-3-3">A workflow to download and process the public BoM weather grids.<br/>
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="section-number-3">1</span> R-depends</h3>
-<div class="outline-text-3" id="text-1">
-
-
-
-
-<pre class="src src-R"><span style="color: #7f9f7f;"># </span><span style="color: #7f9f7f;">depends</span>
-install.packages(c(<span style="color: #cc9393;">'raster'</span>, <span style="color: #cc9393;">'rgdal'</span>, <span style="color: #cc9393;">'plyr'</span>, <span style="color: #cc9393;">'RODBC'</span>, <span style="color: #cc9393;">'RCurl'</span>, <span style="color: #cc9393;">'XML'</span>, <span style="color: #cc9393;">'ggmap'</span>, <span style="color: #cc9393;">'maptools'</span>, <span style="color: #cc9393;">'spdep'</span>))
-
-</pre>
-
-</div>
-</div>
-
-<ul>
-<li>This workflow uses the open source R software with some of our custom written packages:
-</li>
-</ul>
-
-
-
-</li>
-</ul>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2"><span class="section-number-3">2</span> R-code-for-extraction</h3>
-<div class="outline-text-3" id="text-2">
-
-
-
-
-<pre class="src src-R"><span style="color: #93a1a1;">################################################################</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">name:r-code</span>
-
-
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">aim daily weather for any point location from online BoM weather grids</span>
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">depends on some github packages</span>
-<span style="color: #268bd2; font-weight: bold;">require</span>(awaptools)
-<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">http://swish-climate-impact-assessment.github.io/tools/awaptools/awaptools-downloads.html</span>
-<span style="color: #268bd2; font-weight: bold;">require</span>(swishdbtools)
-<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">http://swish-climate-impact-assessment.github.io/tools/swishdbtools/swishdbtools-downloads.html</span>
-<span style="color: #268bd2; font-weight: bold;">require</span>(gisviz)
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">http://ivanhanigan.github.io/gisviz/</span>
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">and this from CRAN</span>
-<span style="color: #859900; font-weight: bold;">if</span>(!<span style="color: #268bd2; font-weight: bold;">require</span>(raster)) install.packages(<span style="color: #2aa198;">'raster'</span>); <span style="color: #268bd2; font-weight: bold;">require</span>(raster)
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">get weather data, beware that each grid is a couple of megabytes</span>
-vars <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(<span style="color: #2aa198;">"maxave"</span>,<span style="color: #2aa198;">"minave"</span>,<span style="color: #2aa198;">"totals"</span>,<span style="color: #2aa198;">"vprph09"</span>,<span style="color: #2aa198;">"vprph15"</span>) <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">,"solarave") </span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">solar only available after 1990</span>
-<span style="color: #859900; font-weight: bold;">for</span>(measure <span style="color: #859900; font-weight: bold;">in</span> vars)
-{
-  <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">measure &lt;- vars[1]</span>
-  get_awap_data(start = <span style="color: #2aa198;">'1960-01-01'</span>,end = <span style="color: #2aa198;">'1960-01-02'</span>, measure)
-}
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">get location</span>
-locn <span style="color: #268bd2; font-weight: bold;">&lt;-</span> geocode(<span style="color: #2aa198;">"daintree rainforest"</span>)
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">this uses google maps API, better check this</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">lon       lat</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">1 145.4185 -16.17003</span>
-<span style="color: #93a1a1;">## </span><span style="color: #93a1a1;">Treat data frame as spatial points</span>
-epsg <span style="color: #268bd2; font-weight: bold;">&lt;-</span> make_EPSG()
-shp <span style="color: #268bd2; font-weight: bold;">&lt;-</span> SpatialPointsDataFrame(cbind(locn$lon,locn$lat),locn,
-                              proj4string=CRS(epsg$prj4[epsg$code %<span style="color: #859900; font-weight: bold;">in</span>% <span style="color: #2aa198;">'4283'</span>]))
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">now loop over grids and extract met data</span>
-cfiles <span style="color: #268bd2; font-weight: bold;">&lt;-</span>  dir(pattern=<span style="color: #2aa198;">"grid$"</span>)
-
-<span style="color: #859900; font-weight: bold;">for</span> (i <span style="color: #859900; font-weight: bold;">in</span> seq_len(length(cfiles))) {
-  <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">i &lt;- 1 ## for stepping thru</span>
-  gridname <span style="color: #268bd2; font-weight: bold;">&lt;-</span> cfiles[[i]]
-  r <span style="color: #268bd2; font-weight: bold;">&lt;-</span> raster(gridname)
-  <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">image(r) # plot to look at</span>
-  e <span style="color: #268bd2; font-weight: bold;">&lt;-</span> extract(r, shp, df=T)
-  <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">str(e) ## print for debugging</span>
-  e1 <span style="color: #268bd2; font-weight: bold;">&lt;-</span> shp
-  e1@data$values <span style="color: #268bd2; font-weight: bold;">&lt;-</span> e[,2]
-  e1@data$gridname <span style="color: #268bd2; font-weight: bold;">&lt;-</span> gridname
-  <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">write to to target file</span>
-  write.table(e1@data,<span style="color: #2aa198;">"output.csv"</span>,
-    col.names = i == 1, append = i&gt;1 , sep = <span style="color: #2aa198;">","</span>, row.names = <span style="color: #b58900;">FALSE</span>)
-}
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">further work is required to format the column with the gridname to get out the date and weather paramaters.</span>
-</pre>
-
-</div>
-
-</div>
-
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3"><span class="section-number-3">3</span> Results</h3>
-<div class="outline-text-3" id="text-3">
-
-<ul>
-<li id="sec-3-1">Results<br/>
-
-<ul>
-<li>Markus reports:
-</li>
-<li>"The R-script worked great once i had set a working directory that did not include spaces. (It may have been a different problem that got solved by changing the wd, but the important thing is it's running now.)"
-</li>
-<li>Markus downloaded 70+ GB of gridded weather data from the BoM website to his local computer
-</li>
-<li>Also note there is another set of gridded data available from the BOM, which contains pre-computed longterm mean temps, [ready to be extracted with the script](<a href="http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;period=#maps">http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;period=#maps</a>)
-</li>
-<li>"Using this file, I only needed to get the 2012 temp grids for a comparison of 2012 vs. 30-year data. I'm going to run the extraction of 1961-1990 data, just to be sure."
-</li>
-<li>"When we finished analysis of the long-term temperature from daily means found:
-</li>
-<li>While the official, pre-computed long-term mean (i.e. 30-year grid file, analysed with your script) was 22.29 °C for the DRO coordinates (145.4494, -16.1041), the new value from daily means (i.e. daily minave and maxave averaged) is 24.91 °C.
-</li>
-<li>We're not sure what causes this discrepancy, but thought we'd note that there is one.
-</li>
-<li>For the manuscript, we ended up using the means obtained via BOM's method* to compare 1961-1990 values to 2012, both computed with the above script.
-</li>
-<li>(* average of daily min/max temperature for each year, then averaged across the entire 30 year period)
-</li>
-</ul>
-
-
-</li>
-</ul>
-<ul>
-<li id="sec-3-2">Dataset discrepancy<br/>
-
-<ul>
-<li>Following up on the interesting a difference between the two BoM datasets. 
-</li>
-<li>One thing that might cause this might be if you are calculating the average of the annual averages ie sum(annavs)/30 or the average of all the daily averages as sum(dailyavs)/(30 * 365 or 366)?  the variance will differ by these methods.
-</li>
-<li>looks like the 30 year dataset is the former:
-</li>
-<li>"Average annual temperatures (maximum, minimum or mean) are calculated by adding daily temperature values each year, dividing by the number of days in that year to get an average for that particular year. The average values for each year in a specified period (1961 to 1990) are added together and the final value is calculated by dividing by the number of years in the period (30 years in this case)."
-</li>
-</ul>
-
-<p>[metadata](<a href="http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;period=#maps">http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;period=#maps</a>)
-</p><ul>
-<li>Markus followed the BOM calculation method, and just compared it with two other approaches.
-</li>
-<li>average of all 21914 values
-</li>
-<li>average of yearly sum(min and max values per year)/(ndays*2)
-</li>
-<li>average of yearly sum(daily average)/ndays)
-</li>
-<li>where ndays = number of days per year.
-</li>
-<li>Differences between these methods show only in the 6th decimal place, far from 2.62 degrees.
-</li>
-</ul>
-
-
-
-</li>
-</ul>
-</div>
-
-</div>
-
-<div id="outline-container-4" class="outline-3">
-<h3 id="sec-4"><span class="section-number-3">4</span> R-code-for-comparison</h3>
-<div class="outline-text-3" id="text-4">
-
-
-
-
-<pre class="src src-R"><span style="color: #93a1a1;">################################################################</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">This is Markus' comparison script </span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">also see the formatted table csv, as well as the SWISH script's raw output csv</span>
-
-setwd(<span style="color: #2aa198;">"E:\\markus\\ph.d\\aus-daintree\\data-analysis\\climate"</span>)
-climate <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #2aa198;">"minmaxave-30year-daily.csv"</span>, sep=<span style="color: #2aa198;">","</span>, dec=<span style="color: #2aa198;">"."</span>)
-
-climate$year <span style="color: #268bd2; font-weight: bold;">&lt;-</span> substr(climate$file,1,4)
-climate$dailymean <span style="color: #268bd2; font-weight: bold;">&lt;-</span> (climate$maxave+climate$minave)/2
-head(climate)
-
-
-<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">total average across all days and values</span>
-annmean <span style="color: #268bd2; font-weight: bold;">&lt;-</span> mean(c(climate$maxave,climate$minave))
-annmean
-
-
-<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">daily means averaged by year, then total average</span>
-annmean1 <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(1,2)
-<span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:30) {
-        annmean1[i] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> mean(climate[climate$year==(i+1960),]$dailymean)
-        <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">print(annmean1[i])</span>
-}
-annmean1
-mean(annmean1)
-
-
-<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">mean of all values per year, then total average</span>
-annmean2 <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(1,2)
-<span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:30) {
-        tmpdata <span style="color: #268bd2; font-weight: bold;">&lt;-</span> climate[climate$year==(i+1960),]
-        annmean2[i] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> (sum(tmpdata$maxave) + sum(tmpdata$minave))/(length(tmpdata$maxave)+length(tmpdata$minave))
-        <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">print(annmean2[i])</span>
-}
-annmean2; mean(annmean2)
-
-
-<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">differences</span>
-annmean - mean(annmean1)
-annmean - mean(annmean2)
-mean(annmean1) - mean(annmean2)
-
-
-</pre>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-5" class="outline-3">
-<h3 id="sec-5"><span class="section-number-3">5</span> Discussion</h3>
-<div class="outline-text-3" id="text-5">
-
-
-<ul>
-<li>Principal findings: Very convenient automated extraction of location-based time series data for the precise period that is requested.
-</li>
-<li>Weaknesses (whole method, not your script): very long download time for daily grids (~11.000 grids = huge dataset, took several days in my case). Yearly grids would be beneficial (and I believe most others are also looking mainly for data on a yearly (or larger) scale).
-</li>
-</ul>
-
-
-<ul>
-<li id="sec-5-1">Conclusion<br/>
-
-<ul>
-<li>Take home message: Seems like a perfect case of "double-check the data using one and the same method".
-</li>
-</ul>
-
-
-</li>
-</ul>
-</div>
-</div>
-</div>
-
-
-<p></body>
-</html></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/awap grids" title="awap grids" rel="category tag">awap grids</a>
       
       <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/10/extract-weather-data-from-awap-grids/#disqus_thread'>Comments</a>
+      <a href='/2013/11/our-paper-is-out-heat-health-warning-systems/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Sat Oct 26 00:00:00 +1100 2013">26 Oct 2013</abbr>
+        <abbr class="published" title="Wed Nov 27 00:00:00 +1100 2013">27 Nov 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
   </div>
   <div class="rule"><hr/></div>
 
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I asked my colleague <a href="https://twitter.com/fahmiger">Marco Fahmi</a> to
+post this as a guest post.  It came my way as a part of an email
+exchange in which another colleague had a question regarding their task
+of recording previous work in an ecological field study:</p>
+
+<pre><code>ideally in such a way that we would end up with a complete metadata
+profile of previous work carried out. I would also like to see the
+establishment of a system that could also be used by the group going
+forward to keep track of information and data produced at the
+site. I hear you have been involved with establishing the
+a metadata reporting system. How does this effort currently stand,
+is it online? I was also wondering if you would be amenable to sharing
+what you have with us with the hope that i could use this as a model
+for our own system.
+</code></pre>
+
+<p></p>
+
+
+<h4>Our colleague Sheila responded first that:</h4>
+
+<p>All metadata are created using a standard template document and then transfered into a software package called <a href="http://knb.ecoinformatics.org/morphoportal.jsp">Morpho</a>.  Metadata are then uploaded with the data to the Australian Supersite Network (ASN) Portal <a href="http://www.tern-supersites.net.au/knb/">http://www.tern-supersites.net.au/knb/</a>.   Any other useful documents are uploaded to the website <a href="http://www.tern-supersites.net.au">http://www.tern-supersites.net.au</a> either under the specific supersite tab on the left hand menu or under the Publications - Resources for SuperSite Users tab.</p>
+
+<h4>Marco says:</h4>
+
+<p>Morpho is an open source piece of software designed to host all kinds of ecological data. More information about how we use it at ASN can be found here: <a href="http://www.tern-supersites.net.au/index.php/data/repository-tutorial">http://www.tern-supersites.net.au/index.php/data/repository-tutorial</a></p>
+
+<p>Morpho should be enough for an individual researcher to organise and describe their personal data collection. If you want to share the data with colleagues or publish them online, then you will also need Metacat. There is a worldwide Metacat server available from the link account. All you need to do is request an account and connect to it via Morpho. Alternatively you can set up your own; but then you will need your own server and tech knowhow to configure it (and maintain it).</p>
+
+<p>For technical reasons, we have our own server running an older version of the Metacat software. You are welcome to use it if you wish (Shiela can issue you an account to log in and upload). We are also happy to provide assistance if you want to set something a standalone server for DRO. (Like any other piece of infrastructure, someone will need to look after the server after it is set up, so that's probably a decision that will need to be considered carefully).</p>
+
+<h4>My comment:</h4>
+
+<pre><code>"Morpho should be enough for an individual researcher to organise
+and describe their personal data collection"
+</code></pre>
+
+<p>I agree, but would emphasise the <em>should</em> and then say <em>but</em> ...
+Ultimately I'd like to see something as easy and intuitive as iTunes for music or Endnote and Mendeley for bibliographies, but...</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/guest-post-by-marco-fahmi-why-morpho/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 27 00:00:00 +1100 2013">27 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I got this header for a nice looking report from Bull, G. (2011). Example Sweave Document. SharpStatistics.co.uk.</li>
+<li>This has a bunch of useful parameters, but I just really like the header and footer on pages 2 onward</li>
+<li>The original was a Sweave file.  I really like Sweave but orgmode allows other languages as well as R to be inter-woven into the script</li>
+<li>An alternative to Sweave is knitr and is still on my todo list, but this works well at the moment</li>
+<li>I also like how you can quickly change this to a Beamer presentation style.</li>
+<li>Once this is in your file use C-c C-e d to export and compile the PDF</li>
+<li>This example is available at <a href="/pdfs/SharpReportTemplate.pdf">this link</a></li>
+</ul>
+
+
+<h4>Emacs orgmode Code: Put this into your .org file</h4>
+
+<pre><code>#+TITLE: Sharp Report Template
+#+AUTHOR: Ivan Hanigan
+#+email: ivan.hanigan@anu.edu.au
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LaTeX_HEADER: \usepackage{amssymb,amsmath}
+#+LaTeX_HEADER: \usepackage{fancyhdr} %For headers and footers
+#+LaTeX_HEADER: \pagestyle{fancy} %For headers and footers
+#+LaTeX_HEADER: \usepackage{lastpage} %For getting page x of y
+#+LaTeX_HEADER: \usepackage{float} %Allows the figures to be positioned and formatted nicely
+#+LaTeX_HEADER: \floatstyle{boxed} %using this
+#+LaTeX_HEADER: \restylefloat{figure} %and this command
+#+LaTeX_HEADER: \usepackage{url} %Formatting of yrls
+#+LaTeX_HEADER: \lhead{ivanhanigan.github.com}
+#+LaTeX_HEADER: \chead{}
+#+LaTeX_HEADER: \rhead{\today}
+#+LaTeX_HEADER: \lfoot{Draft}
+#+LaTeX_HEADER: \cfoot{}
+#+LaTeX_HEADER: \rfoot{\thepage\ of \pageref{LastPage}}
+#+LATEX: \tableofcontents
+
+* Introduction
+This is a sharp looking report template I got from an R blogger \cite{Bull2011}.
+
+The pages after the first page have a nice looking header, footer and page number.
+\clearpage
+
+* Section 1
+In the Org file you can see some hidden R code that computes a linear regression and returns the results shown in Table \ref{ATable}.
+\input{ATable.tex}
+\clearpage
+*** COMMENT some-code
+#+name:some-code
+#+begin_src R :session *R* :tangle no :exports none :eval yes
+#### name:some-code ####
+x&lt;-rnorm(100,10,5)
+y&lt;-rnorm(100,20,15)
+fit &lt;- lm(y~x)
+library(xtable)
+sink("ATable.tex")
+xtable(fit, caption="Example Table",digits=4,table.placement="H",label="ATable")
+sink()
+#+end_src
+
+#+RESULTS: some-code
+
+
+
+* References
+\bibliographystyle{apalike}
+\bibliography{/home/ivan_hanigan/references/library}
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/a-sharp-looking-orgmode-latex-export-header/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Tue Nov 26 00:00:00 +1100 2013">26 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This post describes some ideas and techniques I use to set up a "workflow script".  I use this term to refer to the structured combination of code, data and narrative that make an executable Reproducible Research Report (RRR).</p>
+
+<p>A lot of these ideas are inpsired by  a great paper by Kieran Healy called  "Choosing Your Workflow Applications" available at <a href="https://github.com/kjhealy/workflow-paper">https://github.com/kjhealy/workflow-paper</a> to accompany <a href="http://kieranhealyo.org/resources/emacs-starter-kit.html">his Emacs Starter Kit</a>. My shortened version of his main points are:</p>
+
+<ul>
+<li>1 use a good code editor</li>
+<li>2 analyse data with scripts</li>
+<li>3 store your work simply and document it properly</li>
+<li>4 use a version control system</li>
+<li>5 Automate back ups</li>
+<li>6 Avoid distracting gadgets</li>
+</ul>
+
+
+<h4>Here's my current approach in each of these categories</h4>
+
+<ul>
+<li>1 use Emacs with Orgmode (and kjhealy's drop-in set of useful defaults)</li>
+<li>2 Scripts that utilise the literate programming technique of mixing Code Chunks in with descriptive prose</li>
+<li>3 John Myles White's ProjectTemplate R Package and Josh Riech's LCFD paradigm</li>
+<li>4 git and GitHub for version control</li>
+</ul>
+
+
+<p>5 Automated Backups and 6 Avoiding Gadgets are still somethings I find challenging</p>
+
+<h4>1 Use a good code editor</h4>
+
+<p>I like using Emacs with Orgmode.</p>
+
+<ul>
+<li>I have previously tried a variety of code editors from Tinn-r, NppToR, Rstudio and Eclipse.</li>
+<li>Emacs with Orgmode suits me the most because it has a great number of features especially the linkage with LaTeX or HTML export</li>
+<li>A key reference to look at for reasons why Emacs is so good for scientific work is Eric Schulte et al <a href="www.jstatsoft.org/v46/i03%E2%80%8E">"A Multi-Language Computing Environment for Literate Programming"</a></li>
+<li>Here is a <a href="http://doc.norang.ca/org-mode.html">link to a great orgmode description</a></li>
+<li>(this guy spends a lot of time on tweaking his set up)</li>
+</ul>
+
+
+<h4>2 Analyse data with Scripts (stitch together code chunks)</h4>
+
+<p>I use Scripts but prefer to think of them as stitched together Code Chunks with prose into Compendia.</p>
+
+<ul>
+<li>Compendia are documents that weave together Code and Prose into an executable report</li>
+<li>The underlying philosophy is called Reproducible Research Reports</li>
+<li>A very useful tool is a keyboard shortcut to quickly create a chunk for code</li>
+<li>so you can be writing parts of the report like this: "Blah Blah Blah as shown in Figure X and Table Y"</li>
+<li>then just hit the correct keys and WHAMM-O there is a new chunk ready for the code that creates Figure X and Table Y to be written.</li>
+<li>Here is how I use Emacs to achieve this (the other editors I mentioned above also have the abiltiy to do this too).  The IPython Notebook does this stuff too but calls chunks "cells" for some reason.</li>
+</ul>
+
+
+<h4>Emacs Code: Put this into the ~/.emacs.d/init.el file</h4>
+
+<pre><code>(define-skeleton chunk-skeleton
+  "Info for a code chunk."
+  "Title: "
+  "*** " str "-code\n"
+  "#+name:" str "\n"
+  "#+begin_src R :session *R* :tangle src/" str ".r :exports reports :eval no\n"
+  "#### name:" str " ####\n"
+  "\n"
+  "#+end_src\n"
+)
+(global-set-key [?\C-x ?\C-\\] 'chunk-skeleton)
+</code></pre>
+
+<h4>Using the Emacs Shortcut</h4>
+
+<ul>
+<li>now whenever you type Control-x control-\ a new code chunk will appear</li>
+<li>you'll be typing "blah blah blah" and think I need a figure or table, just hit it.</li>
+<li>move into the empty section and add some code</li>
+<li>you can hit C-c ' to enter a org-babel code execution session that will be able to send these line by line to an R session</li>
+<li>or within the main org buffer if your eval flag is set to yes then you can run the entire chunk (and return tabular output to the doc) using C-c C-c</li>
+<li>To export the code chunks and create the modular code scripts without the narrative prose use C-c C-v t</li>
+<li>this is called "tangling" and the chunks will be written out to the file specified in the chunk header ":tangle" flag</li>
+</ul>
+
+
+<h4>Compiling the resulting Compendium</h4>
+
+<ul>
+<li>Emacs uses LaTeX or HTML to produce the Report</li>
+<li>I find both of these outputs very pleasing</li>
+<li>to compile to TEX use C-c C-e d</li>
+<li>for HTML use C-c C-e h (FOR CODE HIGHLIGHTING INSTALL htmlize.el)</li>
+<li>these commands will also evaluate all the chunks where ":eval" = yes to load the data and calculate the results fresh.</li>
+<li>AWESOME!</li>
+</ul>
+
+
+<h4>3 Store your work simply and document it properly</h4>
+
+<ul>
+<li>I use the <a href="http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/">ProjectTemplate R package</a> to organise my code sections into modules</li>
+<li>These modules are organised into the Reichian LCFD paradigm described first <a href="http://stackoverflow.com/a/1434424">on StackOverflow here</a>, and encoded into <a href="http://cran.r-project.org/web/packages/makeProject/makeProject.pdf">the makeProject R package</a></li>
+<li>documentation is within the main orgmode script</li>
+<li>data documentation is a whole other universe that I will deal with in a separate post</li>
+</ul>
+
+
+<h4>4 use a version control system using git and github</h4>
+
+<pre><code># once you have the project via R
+R
+require(ProjectTemplate)
+create.project("AwesomeProject", minimal = T)
+q()
+# use the shell to start a git repo
+cd AwesomeProject
+git init
+# and commit the TODO
+git add TODO
+git commit -m "first commit"
+# tada!
+</code></pre>
+
+<ul>
+<li>Emacs can now be used to manage the git repo using the C-x g command</li>
+<li>Rstudio has a really nice GUI for doing this inside it;s Project management interface too.</li>
+</ul>
+
+
+<h4>Using Github or another Git Server</h4>
+
+<ul>
+<li>You can easily set up a Github repo for this now but it will be public</li>
+<li>Alternatative is to set up your own private Git server.  I followed <a href="http://blog.goosoftware.co.uk/2012/02/07/quick-git-server/">these instructions to Running a Simple Git Server Using SSH</a></li>
+<li>Either way once you have set up your remote git repo you need to set the remote tracking</li>
+</ul>
+
+
+<h4>Git Code:</h4>
+
+<pre><code>cd /path/to/local/git/repo
+git remote add origin git@github-or-other-server:myname/myproject.git
+git push origin master
+</code></pre>
+
+<h4>5 Automate back ups AND 6 Avoid distracting gadgets</h4>
+
+<ul>
+<li>OMG backups stress me out</li>
+<li>ideally I would follow <a href="http://www.jwz.org/blog/2007/09/psa-backups/">this advice because "when it comes to losing your data the universe tends toward maximum irony. Don't push it."</a></li>
+<li>But I don;t fully comply</li>
+<li>Instead I generally use Dropbox for  basic project management admin stuff</li>
+<li>I use github for code projects I am happy to share, I also pay for 10 private repos</li>
+<li>I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this</li>
+<li>In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.</li>
+</ul>
+
+
+<h4>Conclusions</h4>
+
+<ul>
+<li>This is how I've worked for a couple of years</li>
+<li>I find it very enjoyable, mostly productive but prone to the distractions of "distractions by gadgets"</li>
+<li>The main thing I want to point out is the usage of Code Chunks in RRR scripts.</li>
+<li>These things are awesome.</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/setting-up-a-workflow-with-code-chunks/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Mon Nov 25 00:00:00 +1100 2013">25 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+<<<<<<< HEAD
+=======
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h4>Background</h4>
+
+<ul>
+<li>I use Mendeley (despite them being bought out by Elsevier, who used to sell guns)</li>
+<li>My Colleagues use EndNote</li>
+<li>Need to sync, they find Endnote better for their workflow</li>
+<li>I tried to export my Mendeley as XML and import to Endnote, but found many duplicates that took time to rectify</li>
+<li>(and the risk is there that the RefNo they used in the Doc will be the duplicate that I removed)</li>
+</ul>
+
+
+<h4>Aims</h4>
+
+<ul>
+<li>test if R and the XML package can help find refs in Endnote that aren't in Mendeley</li>
+<li>If so can I write those into an Mendeley import for seamless integrations</li>
+<li>and what about going from Mendeley to Endnote?</li>
+</ul>
+
+
+<h4>Methods</h4>
+
+<ul>
+<li>The R XML package seems an obvious place to start</li>
+<li>before writing a function, just step thru the process</li>
+</ul>
+
+
+<h4>Step 1: export XML from Mendeley and Endnote</h4>
+
+<ul>
+<li>In Mendeley Just select the refs in the list and then from the file menu</li>
+<li>In Endnote it is also under File menu</li>
+</ul>
+
+
+<h4>Step 2: R Code:</h4>
+
+<pre><code># func
+# might need sudo apt-get install r-cran-xml?
+require(XML)
+
+# load
+dir()
+[1] "EndnoteCollection.xml"
+    "MendeleyCollection.Data"
+[3] "MendeleyCollection.xml" 
+
+d1 &lt;- xmlTreeParse("EndnoteCollection.xml", useInternal=T)
+
+# clean
+str(d1)
+# ooooh xml schmexemhel voodoo?
+
+# do
+top &lt;- xmlRoot(d1)
+str(top)
+names(top)
+# top [[1]] # prints the whole thing
+top [[1]][[1]]
+top [[1]][[2]]
+# prints a record (1 or 2)
+
+# just messing around
+length(top[[1]])
+top [[1]][[120]]
+names(top [[1]][[120]])
+names(top [[1]][[120]][["contributors"]])
+names(top [[1]][[120]][["contributors"]][["authors"]])
+top [[1]][[120]][["contributors"]][["authors"]][[2]]
+
+i &lt;- 110
+top [[1]][[i]]
+as.matrix(names(top [[1]][[i]]))
+</code></pre>
+
+<h4>OK so XML as a list.</h4>
+
+<ul>
+<li>I think if I do a merge of two author-date-title dataframes I can easily find the diffs</li>
+</ul>
+
+
+<h4>TRY a square wheel</h4>
+
+<h4>R Code:</h4>
+
+<pre><code>endnote_mendeley_df &lt;- function(input_xml,
+                                nrow_to_try = 1000){
+  d1 &lt;- xmlTreeParse(input_xml, useInternal=T)
+  top &lt;- xmlRoot(d1)
+
+  output &lt;- matrix(ncol = 4, nrow = 0)
+  for(i in 1:nrow_to_try)
+  {
+  # i = 1000
+    if(is.na(xmlValue(top [[1]][[i]]))) break
+    if(
+      !is.na(xmlValue(top [[1]][[i]][["contributors"]][["authors"]][[2]]))
+      )
+    {
+      author &lt;- paste(xmlValue(top [[1]][[i]][["contributors"]][["authors"]][[1]]), "et al", " ")
+    } else {
+      author &lt;- xmlValue(top [[1]][[i]][["contributors"]][["authors"]][[1]])
+    }
+    year &lt;- xmlValue(top [[1]][[i]][["dates"]][["year"]])
+    title &lt;- xmlValue(top [[1]][[i]][["titles"]][[1]])
+    endnoteref &lt;- xmlValue(top [[1]][[i]][["rec-number"]])
+    output &lt;- rbind(output, c(author, year, title, endnoteref))
+
+  }
+  output &lt;- as.data.frame(output)
+  return(output)
+}
+</code></pre>
+
+<h4>R Test:</h4>
+
+<pre><code>output &lt;- endnote_mendeley_df(
+  input_xml = "EndnoteCollection.xml"
+  ,
+  nrow_to_try = 10
+  )
+
+nrow(output)
+write.csv(output, "EndnoteCollection.csv", row.names = F)
+output  &lt;- read.csv("EndnoteCollection.csv", stringsAsFactors = F)
+str(output)
+output[,1:2]
+</code></pre>
+
+<h4>R Do-read:</h4>
+
+<pre><code>endnote &lt;- endnote_mendeley_df(
+  input_xml = "EndnoteCollection.xml"
+  )
+nrow(endnote)
+mendeley &lt;- endnote_mendeley_df(
+  input_xml = "MendeleyCollection.xml"
+  )
+nrow(mendeley)
+</code></pre>
+
+<h4>R Do-concatenate and lowercase</h4>
+
+<pre><code># TODO this is a really terrible way to do this.
+# FIXME find out how to compare the two better
+require(stringr)
+mendeley2 &lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
+mendeley2 &lt;- gsub(" ", "", mendeley2)
+mendeley2 &lt;- gsub(",", "", mendeley2)
+mendeley2 &lt;- tolower(mendeley2)
+mendeley2[1:5]
+mendeley$mendeley2 &lt;- mendeley2
+
+# now do this again from endnote
+endnote2 &lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
+endnote2 &lt;- gsub(" ", "", endnote2)
+endnote2 &lt;- gsub(",", "", endnote2)
+endnote2 &lt;- tolower(endnote2)
+endnote2[1:5]
+endnote$endnote2 &lt;- endnote2
+</code></pre>
+
+<h4>R Do-merge:</h4>
+
+<pre><code>endnote_not_in_mendeley &lt;- merge(endnote,
+                                 mendeley,
+                                 by.x = "endnote2",
+                                 by.y = "mendeley2",
+                                 all.x = T)
+str(endnote_not_in_mendeley)
+nrow(endnote_not_in_mendeley)
+head(endnote_not_in_mendeley)
+endnote_not_in_mendeley &lt;- endnote_not_in_mendeley[
+                                                   is.na(endnote_not_in_mendeley$V1.y),
+                                                   ]
+nrow(endnote_not_in_mendeley)
+# 66 refs in endnote are not in mendeley
+write.csv(endnote_not_in_mendeley,
+      "endnote_not_in_mendeley.csv", row.names = F)
+</code></pre>
+
+<h4>Open this as spreadsheet and cross check</h4>
+
+<ul>
+<li>make a new column for comments</li>
+<li>check off which ones were in AllDocuments and not in the Mendeley group</li>
+<li>this diff was because of when I imported the Endnote XML but had not assigned these to the mendeley group</li>
+<li>once have cleaned up the mendeley group export again and then check which are in mendeley but not in endnote</li>
+</ul>
+
+
+<h4>First here is a note</h4>
+
+<ul>
+<li>about a way to speed up the checks, excluding false positives using fuzzy matching</li>
+<li>my method relies on the author, date and title to be written the same in both ie initials then surname or visa verca</li>
+<li>But this is not always true</li>
+<li>I previously used levenshtein string matching to identify strings that are close but not identical</li>
+<li><a href="http://wiki.r-project.org/rwiki/doku.php?id=tips:data-strings:levenshtein">Try this link</a></li>
+<li><a href="http://rwiki.sciviews.org/doku.php?id=tips:data-strings:levenshtein">OR this link</a></li>
+<li>TODO I will share this code as a GitHub Gist later!</li>
+</ul>
+
+
+<h4>R Code: possibility to speed up Checks</h4>
+
+<pre><code>tmp1 &lt;- mendeley[grep("Walker", mendeley$V1),"mendeley2"]
+tmp2 &lt;- endnote[grep("Walker", endnote$V1),"endnote2"]
+
+# these differ slightly
+# B. Walker et al vs Walker, Brian et al
+source("~/Dropbox/tools/levenshtein.r")
+levenshtein(
+    tmp1
+    ,
+    tmp2
+    )
+# gives 92percent match
+</code></pre>
+
+<h4>R Code: Find mendeley refs without endnote</h4>
+
+<pre><code>  endnote &lt;- endnote_mendeley_df(
+    input_xml = "EndnoteCollection.xml"
+    )
+  nrow(endnote)
+  mendeley &lt;- endnote_mendeley_df(
+    input_xml = "MendeleyCollection2.xml"
+    )
+  nrow(mendeley)
+</code></pre>
+
+<h4>R Code: Do-concatenate and lowercase</h4>
+
+<pre><code>require(stringr)
+mendeley2 &lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
+mendeley2 &lt;- gsub(" ", "", mendeley2)
+mendeley2 &lt;- gsub(",", "", mendeley2)
+mendeley2 &lt;- tolower(mendeley2)
+mendeley2[1:5]
+mendeley$mendeley2 &lt;- mendeley2
+
+# now do this again from endnote
+endnote2 &lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
+endnote2 &lt;- gsub(" ", "", endnote2)
+endnote2 &lt;- gsub(",", "", endnote2)
+endnote2 &lt;- tolower(endnote2)
+endnote2[1:5]
+endnote$endnote2 &lt;- endnote2
+</code></pre>
+
+<h4>R Do-merge:</h4>
+
+<pre><code>mendeley_not_in_endnote &lt;- merge(mendeley,
+                                 endnote,
+                                 by.y = "endnote2",
+                                 by.x = "mendeley2",
+                                 all.x = T)
+str(mendeley_not_in_endnote)
+nrow(mendeley_not_in_endnote)
+head(mendeley_not_in_endnote)
+mendeley_not_in_endnote &lt;- mendeley_not_in_endnote[
+                                                      is.na(mendeley_not_in_endnote$V1.y),
+                                                      ]
+nrow(mendeley_not_in_endnote)
+# 92 refs in endnote are not in mendeley
+write.csv(mendeley_not_in_endnote,
+      "mendeley_not_in_endnote.csv", row.names = F)
+</code></pre>
+
+<h4>Not all these 92 will be true</h4>
+
+<ul>
+<li>so let;s try the string matching</li>
+</ul>
+
+
+<h4>R Code:</h4>
+
+<pre><code>source("~/Dropbox/tools/levenshtein.r")
+pcnt_threshold &lt;- 0.6
+out_list &lt;- matrix(ncol = 3, nrow = 0)
+#out_list &lt;- read.csv("mendeley_not_in_endnote_fz_match.csv", stringsAsFactors = F)
+for(i in 36:nrow(mendeley_not_in_endnote))
+    {
+        print(i)
+#        i = 2
+tmp1 &lt;- mendeley_not_in_endnote[i,1]
+    for(j in 1:nrow(endnote))
+        {
+    #        j = 2
+    if(exists("out")) rm(out)
+    tmp2 &lt;- endnote$endnote2[j]
+    pcnt &lt;- levenshtein(
+            tmp1
+            ,
+            tmp2
+            )
+    #pcnt
+    if(pcnt &gt;= pcnt_threshold) out &lt;- tmp2
+    if(exists("out"))
+        out_list &lt;- rbind(out_list, c(tmp1, tmp2, pcnt))
+    if(exists("out")) break
+        }
+
+    }
+out_list
+write.csv(out_list, "mendeley_not_in_endnote_fz_match.csv", row.names = F)
+</code></pre>
+
+<h4>R Code: Do-concatenate and lowercase</h4>
+
+<pre><code>require(stringr)
+out_list &lt;- read.csv("mendeley_not_in_endnote_fz_match.csv", stringsAsFactors = F)
+mendeley2 &lt;- read.csv("mendeley_not_in_endnote.csv", stringsAsFactors=F)
+mendeley2[1,]
+out_list[1,]
+mendeley2 &lt;- merge(mendeley_not_in_endnote, out_list,
+                   by.x = "mendeley2",
+                   by.y = "V1", all.x = T)
+mendeley2[2,]
+mendeley2 &lt;- mendeley2[is.na(mendeley2$V3),]
+nrow(mendeley2)
+# 48 records
+write.csv(mendeley2, "mendeley_not_in_endnote_best_estimate.csv", row.names=F)
+</code></pre>
+
+<h4>Results</h4>
+
+<ul>
+<li>I found that XML package in R can work with the Endnote and Mendeley export Files</li>
+<li>I think I made a lot of bad decisions about the way I went about  doing this!</li>
+<li>It seemed quite difficult to get the XML stuff to make sense to me</li>
+<li>I;ve heard that python has better libraries for working with XML</li>
+<li>the levenshtein string matching code proved useful again.  I should get out of the habit of looping and start using lapply etc to speed this up.</li>
+</ul>
+
+
+<h4>Conclusions</h4>
+
+<ul>
+<li>This was an interesting if frustrating experiment</li>
+<li>The minor issues with importing from mendeley/endnote and deduplicating using their own tools was probably not worth writing all this half-baked R code.</li>
+<li>But I did learn more about working with XML in R (and realised this is probably not one of R's Strengths -- or mine for that matter!)</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/sync-endnote-and-mendeley-using-r-xml/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 20 00:00:00 +1100 2013">20 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
 
 <div class="pagination">
   <span class="previous">
@@ -1265,6 +1486,7 @@ mean(annmean1) - mean(annmean2)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
+<<<<<<< HEAD
                 <li><a href="/categories/Energymark">Energymark (1)</a></li>
                 
                 <li><a href="/categories/notebook">notebook (1)</a></li>
@@ -1276,13 +1498,19 @@ mean(annmean1) - mean(annmean2)
                 <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
                 <li><a href="/categories/blogger">blogger (1)</a></li>
+=======
+                <li><a href="/categories/surveys">surveys (1)</a></li>
                 
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
+                <li><a href="/categories/data documentation">data documentation (12)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                <li><a href="/categories/python">python (2)</a></li>
                 
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/GIS">GIS (1)</a></li>
                 
                 <li><a href="/categories/packages">packages (1)</a></li>
@@ -1292,6 +1520,15 @@ mean(annmean1) - mean(annmean2)
                 <li><a href="/categories/orgmode">orgmode (1)</a></li>
                 
                 <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+=======
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (18)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
                 <li><a href="/categories/ecology">ecology (1)</a></li>
                 
@@ -1303,18 +1540,33 @@ mean(annmean1) - mean(annmean2)
                 
                 <li><a href="/categories/open notebook">open notebook (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
                 
                 <li><a href="/categories/Drought">Drought (1)</a></li>
+=======
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
                 <li><a href="/categories/drought">drought (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+=======
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
                 <li><a href="/categories/links">links (1)</a></li>
                 
-                <li><a href="/categories/systems">systems (1)</a></li>
+                <li><a href="/categories/concordance">concordance (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
                 
                 <li><a href="/categories/organising">organising (2)</a></li>
@@ -1332,9 +1584,29 @@ mean(annmean1) - mean(annmean2)
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
                 <li><a href="/categories/opinion">opinion (1)</a></li>
+=======
+                <li><a href="/categories/ons">ons (2)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
                 <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/graphviz">graphviz (1)</a></li>
                 
                 <li><a href="/categories/python">python (2)</a></li>
@@ -1346,9 +1618,21 @@ mean(annmean1) - mean(annmean2)
                 <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
                 
                 <li><a href="/categories/ons">ons (1)</a></li>
+=======
+                <li><a href="/categories/systems">systems (1)</a></li>
                 
-                <li><a href="/categories/animation">animation (1)</a></li>
+                <li><a href="/categories/statistical models">statistical models (1)</a></li>
                 
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/surveytools">surveytools (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
+                
+                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/Suicide">Suicide (1)</a></li>
                 
                 <li><a href="/categories/tools">tools (1)</a></li>
@@ -1368,13 +1652,37 @@ mean(annmean1) - mean(annmean2)
                 <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
                 <li><a href="/categories/climate change">climate change (1)</a></li>
+=======
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                <li><a href="/categories/workflow">workflow (4)</a></li>
                 
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/suicide">suicide (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+<<<<<<< HEAD
                 <li><a href="/categories/kepler">kepler (1)</a></li>
+=======
+                <li><a href="/categories/gis">gis (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/categories/surveys">surveys (1)</a></li>
                 
                 <li><a href="/categories/gisviz">gisviz (1)</a></li>
@@ -1384,8 +1692,29 @@ mean(annmean1) - mean(annmean2)
                 <li><a href="/categories/spatial">spatial (2)</a></li>
                 
                 <li><a href="/categories/Modelling">Modelling (1)</a></li>
+=======
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/modelling">modelling (1)</a></li>
+                
+                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
                 
                 <li><a href="/categories/workflow">workflow (3)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
               </ul>
             </div>
@@ -1396,6 +1725,7 @@ mean(annmean1) - mean(annmean2)
               <ul>
                 
                 <li>
+<<<<<<< HEAD
                   <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
                 </li>
                 
@@ -1405,6 +1735,81 @@ mean(annmean1) - mean(annmean2)
                 
                 <li>
                   <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
+=======
+                  <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
+                </li>
+                
+                <li>
+                  <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/auto-download-bureau-meteorology-diurnal-data/" title="auto-download-bureau-meteorology-diurnal-data" rel="bookmark">auto-download-bureau-meteorology-diurnal-data</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/the-history-of-ons/" title="the-history-of-ons" rel="bookmark">the-history-of-ons</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/" title="non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms" rel="bookmark">non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/research-protocol-for-manitoba-centre-for-health-policy/" title="research-protocol-for-manitoba-centre-for-health-policy" rel="bookmark">research-protocol-for-manitoba-centre-for-health-policy</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
                 </li>
                 
                 <li>
@@ -1523,6 +1928,8 @@ mean(annmean1) - mean(annmean2)
                   <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
                 </li>
                 
+<<<<<<< HEAD
+=======
                 <li>
                   <a href="/2013/09/transformational-adaptation/" title="transformational-adaptation" rel="bookmark">transformational-adaptation</a>
                 </li>
@@ -1531,70 +1938,7 @@ mean(annmean1) - mean(annmean2)
                   <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
                 </li>
                 
-                <li>
-                  <a href="/2013/09/energymark/" title="energymark" rel="bookmark">energymark</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/09/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/09/ons/" title="Starting my Open Notebook Science Blog" rel="bookmark">Starting my Open Notebook Science Blog</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/07/worflow-flowcharts/" title="Worflow flowcharts" rel="bookmark">Worflow flowcharts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/07/animated-maps/" title="animated-maps" rel="bookmark">animated-maps</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/06/spatio-temporal-animations/" title="spatio-temporal-animations" rel="bookmark">spatio-temporal-animations</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/05/data-dredging/" title="Complex Model Selection (or Data Dredging)" rel="bookmark">Complex Model Selection (or Data Dredging)</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/pioz-et-al-2012-model-selection/" title="Pioz et al 2012 model selection" rel="bookmark">Pioz et al 2012 model selection</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/suicide-and-drought-evidence-from-literature/" title="Suicide And Drought Evidence From Literature" rel="bookmark">Suicide And Drought Evidence From Literature</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/timeseries-with-spatial-lag/" title="Timeseries with Spatial Lag" rel="bookmark">Timeseries with Spatial Lag</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/04/reflections-bob-haining/" title="Reflections on Spatial Regression Class with Prof Bob Haining" rel="bookmark">Reflections on Spatial Regression Class with Prof Bob Haining</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/09/software-ism/" title="software-ism" rel="bookmark">software-ism</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/07/the-ecological-fallacy-is-itself-a-fallacy/" title="The Ecological Fallacy is Itself a Fallacy" rel="bookmark">The Ecological Fallacy is Itself a Fallacy</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/06/centenial-scale-rainfall-in-southeastern-australia/" title="Centennial Scale Rainfall in Southeastern Australia" rel="bookmark">Centennial Scale Rainfall in Southeastern Australia</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/05/how-to-explain-my-current-research/" title="How to explain my current research interests?" rel="bookmark">How to explain my current research interests?</a>
-                </li>
-                
-                <li>
-                  <a href="/2012/05/historical-evidence-of-dengue-in-southeastern-australia/" title="Historical GIS evidence of Dengue in the far southeast of Australia?" rel="bookmark">Historical GIS evidence of Dengue in the far southeast of Australia?</a>
-                </li>
-                
+>>>>>>> fb9a3647a29cac2464aa6f33a1a3b2dfd95651eb
               </ul>
               <div class="clear"></div>
             </div>
