@@ -54,6 +54,47 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This post is just a short note about something I'm thinking of calling "documentation-driven development".
+It is based on the concept of <a href="http://en.wikipedia.org/wiki/Test-driven_development">"test-driven development"</a>, and more recently:</p>
+
+<ul>
+<li><a href="http://lamages.blogspot.in/2013/04/test-driven-analysis.html">"test-driven analysis"</a></li>
+<li>or even <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">"Evidence-based Data Analysis"</a>).</li>
+<li>It is also a kind of a critique on the paradigm suggested by the BCCVL statement on <a href="http://bccvl.org.au/blog/2013/08/20/just-in-time-metadata/">"Just-In-Time metadata"</a>.</li>
+</ul>
+
+
+<p>Anyway, it is a small thing but hopefully big things will grow.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/document-first-ask-questions-later/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Fri Oct 25 00:00:00 +1100 2013">25 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
     </h1>
     <div class="entry-content full-content">
@@ -588,92 +629,6 @@ system("python3 dcuploader.py -c metadata.txt")
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/reml-and-rfigshare-part-2/" title="reml-and-rfigshare-part-2" rel="bookmark">reml-and-rfigshare-part-2</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>In the last post I explored the functionality of reml.
-This time I will try to send data to figshare.</p>
-
-<ul>
-<li>First follow <a href="https://github.com/ropensci/rfigshare">These Instructions</a> to get rfigshare set up.  In particular store your figshare credentials in ~/.Rprofile</li>
-</ul>
-
-
-<h4>Code:reml-and-rfigshare-part-2</h4>
-
-<pre><code># func
-require(devtools)
-install_github("reml", "ropensci")
-require(reml)
-install_github("rfigshare", "ropensci")
-require(rfigshare)
-install_github("disentangle", "ivanhanigan")
-require(disentangle)
-# load
-fpath &lt;- system.file(file.path("extdata","civst_gend_sector_eml.xml"), package = "disentangle")
-setwd(dirname(fpath))
-obj &lt;- eml_read(fpath)
-# clean
-obj
-# do
-
-## STEP 1: find one of the preset categories
-# available. We can ask the API for
-# a list of all the categories:
-list &lt;- fs_category_list()
-list[grep("Survey", list)]
-
-## STEP 2: PUBLISH TO FIGSHARE
-id &lt;- eml_publish(fname,
-                  description="Example EML
-                    A fictional dataset",
-                  categories = "Survey results",
-                  tags = "EML",
-                  destination="figshare"
-                  )
-# there are several warnings
-# but go to figshare and it has sent the metadata and data OK
-
-# make public using either the figshare web interface, the
-# rfigshare package (using fs_make_public(id)) or just by adding
-# the argument visibility = TRUE to the above eml_publish
-fs_make_public(id)
-</code></pre>
-
-<p></p>
-
-
-<h1>Now these data are on figshare</h1>
-
-<p>Now I have published the data they are visible and have a DOI</p>
-
-<iframe src="http://wl.figshare.com/articles/820158/embed?show_title=1" width="568" height="157" frameborder="0"></iframe>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/reml-and-rfigshare-part-2/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Sat Oct 12 00:00:00 +1100 2013">12 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -728,125 +683,127 @@ fs_make_public(id)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
-                
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (4)</a></li>
-                
-                <li><a href="/categories/gis">gis (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
+                <li><a href="/categories/visualisation">visualisation (1)</a></li>
                 
                 <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
                 <li><a href="/categories/surveytools">surveytools (1)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                <li><a href="/categories/workflow">workflow (4)</a></li>
                 
-                <li><a href="/categories/climate change">climate change (1)</a></li>
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
                 
-                <li><a href="/categories/python">python (2)</a></li>
+                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
                 
-                <li><a href="/categories/tools">tools (1)</a></li>
+                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
                 
-                <li><a href="/categories/blogging">blogging (1)</a></li>
+                <li><a href="/categories/packages">packages (1)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/organising">organising (2)</a></li>
                 
-                <li><a href="/categories/research methods">research methods (20)</a></li>
+                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
                 
                 <li><a href="/categories/orgmode">orgmode (1)</a></li>
                 
                 <li><a href="/categories/data science">data science (1)</a></li>
                 
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
                 <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
-                
-                <li><a href="/categories/india overview">india overview (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (13)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
                 
                 <li><a href="/categories/drought and suicide">drought and suicide (1)</a></li>
                 
                 <li><a href="/categories/concordance">concordance (1)</a></li>
                 
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                <li><a href="/categories/modelling">modelling (1)</a></li>
                 
-                <li><a href="/categories/ecology">ecology (1)</a></li>
+                <li><a href="/categories/drought">drought (2)</a></li>
                 
-                <li><a href="/categories/packages">packages (1)</a></li>
+                <li><a href="/categories/gis">gis (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
                 
                 <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
                 
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/india overview">india overview (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/energymark">energymark (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (13)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (21)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/ons">ons (2)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/statistical models">statistical models (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
                 <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
               </ul>
             </div>
@@ -855,6 +812,10 @@ fs_make_public(id)
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2013/12/animations-using-R/" title="animations-using-R" rel="bookmark">animations-using-R</a>
+                </li>
                 
                 <li>
                   <a href="/2013/12/links-to-useful-data-munging-posts/" title="links-to-useful-data-munging-posts" rel="bookmark">links-to-useful-data-munging-posts</a>
@@ -1050,10 +1011,6 @@ fs_make_public(id)
                 
                 <li>
                   <a href="/2013/09/workflow-flowcharts-update/" title="workflow-flowcharts-update" rel="bookmark">workflow-flowcharts-update</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/09/introduction-to-ons-theory-and-practice/" title="introduction-to-ons-theory-and-practice" rel="bookmark">introduction-to-ons-theory-and-practice</a>
                 </li>
                 
               </ul>

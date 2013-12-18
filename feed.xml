@@ -6,6 +6,35 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>animations-using-R</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;following on from my previous posts about &lt;a href=&quot;http://ivanhanigan.github.io/2013/07/animated-maps/&quot;&gt;animated maps&lt;/a&gt;, &lt;a href=&quot;http://ivanhanigan.github.io/2013/06/spatio-temporal-animations/&quot;&gt;spatio-temporal animations&lt;/a&gt; and animations &lt;a href=&quot;http://ivanhanigan.github.io/button/index.html&quot;&gt;with buttons for go, stop and reverse&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Here is a quick note about how to do a simple animation with R to create a movie file (GIF)&lt;/li&gt;
+&lt;li&gt;To create this movie&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;animation/animation.gif&quot; alt=&quot;animation.gif&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Code:animations-using-R&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;if(!require(animation)) install.packages(&quot;animation&quot;);
+require(animation)
+saveGIF(
+{
+ani.options(nmax = 100, interval = 0.5)
+par(mar = c(3, 2.5, 0.5, 0.2), pch = 20, mgp = c(1.5, 0.5,0))
+buffon.needle(mat = matrix(c(1, 2, 1, 3), 2))
+},
+outdir = getwd()
+)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+				<published>Wed Dec 18 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/animations-using-R/</link>
+			</item>
+		
+			<item>
 				<title>links-to-useful-data-munging-posts</title>
 				<description>&lt;p&gt;Here are a few links to some recent data munging tips I picked up last week:&lt;/p&gt;
 
@@ -1526,77 +1555,6 @@ In this case it is MCHP and Manitoba Health Reports - an example of cross-checki
 </description>
 				<published>Mon Dec 02 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/12/research-protocol-for-manitoba-centre-for-health-policy/</link>
-			</item>
-		
-			<item>
-				<title>graphviz-automagic-flowcharts</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;Back in 2009 Joseph Guillaume worked with me on a complicated workflow&lt;/li&gt;
-&lt;li&gt;He came up with this python script to help keep track of the steps&lt;/li&gt;
-&lt;li&gt;The simple text file is a list of transformations, inputs and output&lt;/li&gt;
-&lt;li&gt;It is converted to the right format and graphviz creates a html page with pop-outs&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Simple text list&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Transformation
-        description
-                the thing 
-        inputs
-                the thing before
-                another thing
-        output
-                the next thing
-        notes
-                the thing is this other thing   this is a really long description 
-                blah blah asdfasdfasdfasdfasdfa 
-
-Transformation
-        description
-                yet another thing
-        inputs
-                the next thing
-        output
-                a final thing
-        notes
-                this is a note
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;keep this in your work directory and update it whenever you add a step to the workflow&lt;/li&gt;
-&lt;li&gt;the list can be as big as you like (hundreds of steps), and entered in any order, the inputs/output relationships determine how the graph looks at the end&lt;/li&gt;
-&lt;li&gt;to run the script just do the one line&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Python code: run&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;python transformations.py workflow_steps.txt index
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;open the html page and click on a square box to bring up the pop-out&lt;/li&gt;
-&lt;li&gt;short text is shown, long text is replaced by an ellipse and only shown in pop-out&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Conclusions&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I've popped the script up as a &lt;a href=&quot;https://github.com/ivanhanigan/transformations&quot;&gt;Github repo&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;The example is in the &lt;a href=&quot;http://ivanhanigan.github.io/transformations/&quot;&gt;gh-pages branch&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Sun Dec 01 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/12/graphviz-automagic-flowcharts/</link>
 			</item>
 		
 	</channel>

@@ -4,13 +4,43 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-12-16T10:38:23+11:00</updated>
+ <updated>2013-12-18T21:03:09+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>animations-using-R</title>
+   <link href="http://ivanhanigan.github.com/2013/12/animations-using-R/"/>
+   <updated>2013-12-18T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/12/animations-using-R</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;following on from my previous posts about &lt;a href=&quot;http://ivanhanigan.github.io/2013/07/animated-maps/&quot;&gt;animated maps&lt;/a&gt;, &lt;a href=&quot;http://ivanhanigan.github.io/2013/06/spatio-temporal-animations/&quot;&gt;spatio-temporal animations&lt;/a&gt; and animations &lt;a href=&quot;http://ivanhanigan.github.io/button/index.html&quot;&gt;with buttons for go, stop and reverse&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Here is a quick note about how to do a simple animation with R to create a movie file (GIF)&lt;/li&gt;
+&lt;li&gt;To create this movie&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;animation/animation.gif&quot; alt=&quot;animation.gif&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Code:animations-using-R&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;if(!require(animation)) install.packages(&quot;animation&quot;);
+require(animation)
+saveGIF(
+{
+ani.options(nmax = 100, interval = 0.5)
+par(mar = c(3, 2.5, 0.5, 0.2), pch = 20, mgp = c(1.5, 0.5,0))
+buffon.needle(mat = matrix(c(1, 2, 1, 3), 2))
+},
+outdir = getwd()
+)
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>links-to-useful-data-munging-posts</title>
@@ -6830,6 +6860,8 @@ for(i in 1:nrow(filesList))
    <content type="html">&lt;h1&gt;Animated maps to allow exploration of alternate levels of 'jitter'&lt;/h1&gt;
 
 &lt;p&gt;In a &lt;a href=&quot;http://www.ncbi.nlm.nih.gov/pubmed/22672028&quot;&gt;previous project&lt;/a&gt; we published a map of point locations that had been 'jittered', ie adding random noise to the latitude and longitude.  We did this by testing out a few maps and deciding on one that we thought protected privacy adequately whilst not destroying the spatial pattern we wished to display (evocatively).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;jitter/Figure%202_FINAL.jpg&quot; alt=&quot;Figure 2_FINAL.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I always wondered about a way to interactively do this and I think the animation package might do the trick, with the ability to step thru levels of jittering with the pause, fwd and back buttons.&lt;/p&gt;
 
