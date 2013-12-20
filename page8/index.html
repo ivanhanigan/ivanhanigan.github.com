@@ -54,6 +54,108 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I got this question today from a Drought researcher:</p>
+
+<h4>Question:</h4>
+
+<pre><code>There a table with 62 years * 12 months of rain data in mm. We
+calculated the cumulative distribution using ecdf: empirical
+cumulative distribution function. So the table looks like this:
+Year Jan Feb Mach (…) each cell contains the cum dist.
+
+We also got the number of months per year with less than X mm of
+rain. But he needs to know how many months are between the
+drought months, regardless the year. So, I thought that
+converting the data into a ts was going to facilitate the task,
+but it doesn’t, because now I don’t’ have columns and rows any
+longer.
+
+How do I handle a ts object to do for example an ifelse?
+</code></pre>
+
+<p></p>
+
+
+<p>I answered:</p>
+
+<p>This looks a lot like the Hutchinson Drought Index which I've coded up here</p>
+
+<ul>
+<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
+<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
+<li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
+</ul>
+
+
+<p>This is the key bit for counting consecutive months below a threshold</p>
+
+<h4>R Code:</h4>
+
+<pre><code>x&lt;-data$index&lt;=-1
+xx &lt;- (cumsum(!x) + 1) * x
+x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
+data$count&lt;-x2
+</code></pre>
+
+<p></p>
+
+
+<p>
+I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
+and looked in wonder at the structure and am amazed it works.</p>
+
+<p>I also really like the cumulative summing version a lot</p>
+
+<h4>R Code:</h4>
+
+<pre><code>data$sums&lt;-as.numeric(0)
+y &lt;- ifelse(data$index &gt;= -1, 0, data$index)
+f &lt;- data$index &lt; -1
+f &lt;- (cumsum(!f) + 1) * f
+z &lt;- unsplit(lapply(split(y,f),cumsum),f)
+data$sums &lt;- z
+</code></pre>
+
+<p></p>
+
+
+<p>
+Several things I'd like to change.</p>
+
+<ul>
+<li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
+<li>I'd like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
+<li>I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/climatic and agricultural drought" title="climatic and agricultural drought" rel="category tag">climatic and agricultural drought</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/counting-number-of-consecutive-months-in-drought/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Tue Oct 29 00:00:00 +1100 2013">29 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
     </h1>
     <div class="entry-content full-content">
@@ -706,198 +808,6 @@ dev.off()
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/spatially-structured-time-series-with-nmmaps/" title="spatially-structured-time-series-with-nmmaps" rel="bookmark">spatially-structured-time-series-with-nmmaps</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I will use the NMMAPSlite datasets for a simple example of what I
-describe as "Spatially Structured Timeseries" as opposed to
-"Spatio-Temporal" which I think more explicitly includes spatial
-structure in the model.  <a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/">See This Report</a> for all the gory details.</p>
-
-<h1>R Codes</h1>
-
-<!-- <?xml version="1.0" encoding="utf-8"?> -->
-
-
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" -->
-
-
-<!--                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> -->
-
-
-<!-- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> -->
-
-
-<p><head>
-<title>Spatiotemporal Regression Modelling</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="Spatiotemporal Regression Modelling"/>
-<meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-10-16T15:17+1100"/>
-<meta name="author" content="Ivan Hanigan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/></p>
-
-
-
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-
-
-<p></head>
-<body></p>
-
-<div id="preamble">
-
-</div>
-
-
-
-
-<div id="content">
-<h1 class="title">Spatiotemporal Regression Modelling</h1>
-
-
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 Core Model</a></li>
-<li><a href="#sec-2">2 Core Model Plots</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-4">
-<h4 id="sec-1"><span class="section-number-4">1</span> Core Model</h4>
-<div class="outline-text-4" id="text-1">
-
-
-
-
-<pre class="src src-R"><span style="color: #5F7F5F;">################################################################</span>
-<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">name:core</span>
-<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">func</span>
-setwd(<span style="color: #CC9393;">"~/projects/spatiotemporal-regression-models/NMMAPS-example"</span>)
-<span style="color: #BFEBBF; font-weight: bold;">require</span>(mgcv)
-<span style="color: #BFEBBF; font-weight: bold;">require</span>(splines)
-
-<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">load</span>
-analyte <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #CC9393;">"analyte.csv"</span>)
-
-<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">clean</span>
-analyte$yy <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> substr(analyte$date,1,4)
-numYears<span style="color: #BFEBBF; font-weight: bold;">&lt;-</span>length(names(table(analyte$yy)))
-analyte$date <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> as.Date(analyte$date)
-analyte$time <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> as.numeric(analyte$date)
-analyte$agecat <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> factor(analyte$agecat,
-                          levels = c(<span style="color: #CC9393;">"under65"</span>,
-                              <span style="color: #CC9393;">"65to74"</span>, <span style="color: #CC9393;">"75p"</span>),
-                          ordered = <span style="color: #7CB8BB;">TRUE</span>
-                          )
-
-<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">do</span>
-fit <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> gam(cvd ~ s(tmax) + s(dptp) +
-           city + agecat +
-           s(time, k= 7*numYears, fx=T) +
-           offset(log(pop)),
-           data = analyte, family = poisson
-           )
-
-<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">plot of response functions</span>
-png(<span style="color: #CC9393;">"images/nmmaps-eg-core.png"</span>, width = 1000, height = 750, res = 150)
-par(mfrow=c(2,3))
-plot(fit, all.terms = <span style="color: #7CB8BB;">TRUE</span>)
-dev.off()
-
-
-</pre>
-
-</div>
-
-</div>
-
-<div id="outline-container-2" class="outline-4">
-<h4 id="sec-2"><span class="section-number-4">2</span> Core Model Plots</h4>
-<div class="outline-text-4" id="text-2">
-
-<p><img src="/images/nmmaps-eg-core.png"  alt="/images/nmmaps-eg-core.png" />
-</p></div>
-</div>
-</div>
-
-
-<p></body>
-</html></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/spatially-structured-time-series-with-nmmaps/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Wed Oct 16 00:00:00 +1100 2013">16 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -952,139 +862,139 @@ dev.off()
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (21)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
                 
                 <li><a href="/categories/me">me (3)</a></li>
                 
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                <li><a href="/categories/opinion">opinion (1)</a></li>
                 
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/science">science (1)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (13)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
                 
                 <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/science">science (2)</a></li>
                 
                 <li><a href="/categories/gisviz">gisviz (1)</a></li>
                 
                 <li><a href="/categories/surveys">surveys (1)</a></li>
                 
-                <li><a href="/categories/versions">versions (1)</a></li>
+                <li><a href="/categories/replication">replication (1)</a></li>
                 
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
+                <li><a href="/categories/animation">animation (1)</a></li>
                 
                 <li><a href="/categories/kepler">kepler (1)</a></li>
                 
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (13)</a></li>
                 
                 <li><a href="/categories/ecology">ecology (1)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
+                <li><a href="/categories/versions">versions (1)</a></li>
                 
                 <li><a href="/categories/overview">overview (4)</a></li>
                 
-                <li><a href="/categories/GIS">GIS (1)</a></li>
+                <li><a href="/categories/data science">data science (1)</a></li>
                 
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
+                <li><a href="/categories/outlines">outlines (1)</a></li>
                 
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
                 
-                <li><a href="/categories/drought">drought (1)</a></li>
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (2)</a></li>
+                
+                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
+                
+                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
+                
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/statistical models">statistical models (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (21)</a></li>
+                
+                <li><a href="/categories/GIS">GIS (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/Modelling">Modelling (1)</a></li>
                 
                 <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
                 <li><a href="/categories/workflow">workflow (4)</a></li>
                 
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
                 
                 <li><a href="/categories/jekyll">jekyll (2)</a></li>
                 
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                <li><a href="/categories/visualisation">visualisation (1)</a></li>
                 
               </ul>
             </div>
@@ -1093,6 +1003,10 @@ dev.off()
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/" title="add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot" rel="bookmark">add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</a>
+                </li>
                 
                 <li>
                   <a href="/2013/12/animation-illustrating-catastrophic-regime-shifts/" title="Animation Illustrating Catastrophic Regime Shifts" rel="bookmark">Animation Illustrating Catastrophic Regime Shifts</a>
@@ -1288,10 +1202,6 @@ dev.off()
                 
                 <li>
                   <a href="/2013/10/reviewing-lessons/" title="reviewing-lessons" rel="bookmark">reviewing-lessons</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/" title="spatially-structured-timeseries-vs-spatiotemporal-modelling" rel="bookmark">spatially-structured-timeseries-vs-spatiotemporal-modelling</a>
                 </li>
                 
               </ul>

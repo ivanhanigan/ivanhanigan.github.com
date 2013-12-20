@@ -6,6 +6,171 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</title>
+				<description>&lt;p&gt;&lt;head&gt;
+&lt;title&gt;Catastrophic Regime Shifts Visualisation &lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;Catastrophic Regime Shifts Visualisation &quot;/&gt;
+&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-12-21T01:01+1100&quot;/&gt;
+&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
+
+
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = &quot;code-highlighted&quot;;
+     elem.className   = &quot;code-highlighted&quot;;
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;p&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Catastrophic Regime Shifts Visualisation &lt;/h1&gt;
+
+
+&lt;hr/&gt;
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Try adding 2D plot of the trend overtime and the variation within basins of attraction&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 figure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; Try adding 2D plot of the trend overtime and the variation within basins of attraction&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+
+&lt;p&gt;Following on from the previous work I now want to calculate the 2D paths.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; figure&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/TrendsAndTriggers-v2.1.png&quot;  alt=&quot;/images/TrendsAndTriggers-v2.1.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; code&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;functions&lt;/span&gt;
+x &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; seq(from=-2.5, to=2.5, by=0.1)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;load&lt;/span&gt;
+data_out &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;TrendsAndTriggers-v2.csv&quot;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;do&lt;/span&gt;
+x2d  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; matrix(&lt;span style=&quot;color: #b58900;&quot;&gt;NA&lt;/span&gt;, ncol = 3, nrow = 0)
+xindex  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(rep(-1.9, 5), 
+             -1.7, -1.5 , -1.3, -1.1, 0, 1.1, 1.3, 1.5, 1.7
+             , rep(2, 4))
+j  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; 1
+xind  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; xindex[j]
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(index &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; c(1:5,rep(5,8), 6:10)){
+x2d &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; rbind(x2d, subset(data_out, y == index &amp;amp; x == xind))
+j &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; j + 1
+xind &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; xindex[j]
+}
+&lt;span style=&quot;color: #586e75;&quot;&gt;#  &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;x2d&lt;/span&gt;
+
+png(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;/images/TrendsAndTriggers-v2.1.png&quot;&lt;/span&gt;)
+layout(matrix(c(1,2,1,3), 2, 2, byrow = &lt;span style=&quot;color: #b58900;&quot;&gt;TRUE&lt;/span&gt;), widths=c(2,1), heights=c(1,2))
+res &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt;  persp(x, 1:10, matrix(data_out$z, ncol = 10, nrow = length(x)),
+               ylab= &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;y&quot;&lt;/span&gt;,  xlab= &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x&quot;&lt;/span&gt;, zlab = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;z&quot;&lt;/span&gt;,  
+               theta = 140, 
+               phi = 42, ltheta = 120, shade = 0.75,
+               expand = 0.5, col = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;lightgrey&quot;&lt;/span&gt;)
+lines (trans3d(x2d$x, x2d$y, x2d$z, pmat = res), col = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;red&quot;&lt;/span&gt;, lwd = 4)
+plot(x2d$x, x2d$z, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;)
+plot(x2d$y, x2d$z, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;)
+dev.off()
+&lt;/pre&gt;
+
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+				<published>Sat Dec 21 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/</link>
+			</item>
+		
+			<item>
 				<title>Animation Illustrating Catastrophic Regime Shifts</title>
 				<description>&lt;p&gt;&lt;head&gt;
 &lt;title&gt;Trends and Triggers Figure &lt;/title&gt;
@@ -138,7 +303,7 @@ Which was based on
 
 
 &lt;p&gt;
-&lt;img src=&quot;/images/catastrophe.png&quot;  alt=&quot;/images/catastrophe.png&quot; /&gt;
+&lt;img src=&quot;file:///images/catastrophe.png&quot;  alt=&quot;file:///images/catastrophe.png&quot; /&gt;
 &lt;/p&gt;
 
 
@@ -160,7 +325,7 @@ Which was based on
 
 
 &lt;p&gt;
-&lt;img src=&quot;/images/TrendsAndTriggers-v2.png&quot;  alt=&quot;/images/TrendsAndTriggers-v2.png&quot; /&gt;
+&lt;img src=&quot;file:///images/TrendsAndTriggers-v2.png&quot;  alt=&quot;file:///images/TrendsAndTriggers-v2.png&quot; /&gt;
 &lt;/p&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -217,7 +382,7 @@ dev.off()
 &lt;h3 id=&quot;sec-4-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.1&lt;/span&gt; figure&lt;/h3&gt;
 &lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-1&quot;&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/animation.gif&quot;  alt=&quot;/images/animation.gif&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;file:///images/animation.gif&quot;  alt=&quot;file:///images/animation.gif&quot; /&gt;
 &lt;/p&gt;&lt;/div&gt;
 
 &lt;/div&gt;
@@ -982,340 +1147,6 @@ dev.off()
 </description>
 				<published>Wed Dec 04 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/12/the-history-of-ons/</link>
-			</item>
-		
-			<item>
-				<title>non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</title>
-				<description>&lt;p&gt;&lt;head&gt;
-&lt;title&gt;non-linear-model-vs-non-linear-relationship &lt;/title&gt;
-&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=iso-8859-1&quot;/&gt;
-&lt;meta name=&quot;title&quot; content=&quot;non-linear-model-vs-non-linear-relationship &quot;/&gt;
-&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
-&lt;meta name=&quot;generated&quot; content=&quot;2013-12-03T17:29+1100&quot;/&gt;
-&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
-&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
-&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
-
-
-
-&lt;script type=&quot;text/javascript&quot;&gt;
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = &quot;code-highlighted&quot;;
-     elem.className   = &quot;code-highlighted&quot;;
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]&gt;*///--&gt;
-&lt;/script&gt;
-
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;http://orgmode.org/mathjax/MathJax.js&quot;&gt;
-/**
- *
- * @source: http://orgmode.org/mathjax/MathJax.js
- *
- * @licstart  The following is the entire license notice for the
- *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- * Copyright (C) 2012-2013  MathJax
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @licend  The above is the entire license notice
- * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- */
-
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code below.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code below is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code below.
-*/
-&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
-    MathJax.Hub.Config({
-        // Only one of the two following lines, depending on user settings
-        // First allows browser-native MathML display, second forces HTML/CSS
-        //  config: [&quot;MMLorHTML.js&quot;], jax: [&quot;input/TeX&quot;],
-            jax: [&quot;input/TeX&quot;, &quot;output/HTML-CSS&quot;],
-        extensions: [&quot;tex2jax.js&quot;,&quot;TeX/AMSmath.js&quot;,&quot;TeX/AMSsymbols.js&quot;,
-                     &quot;TeX/noUndefined.js&quot;],
-        tex2jax: {
-            inlineMath: [ [&quot;\\(&quot;,&quot;\\)&quot;] ],
-            displayMath: [ ['$$','$$'], [&quot;\\[&quot;,&quot;\\]&quot;], [&quot;\\begin{displaymath}&quot;,&quot;\\end{displaymath}&quot;] ],
-            skipTags: [&quot;script&quot;,&quot;noscript&quot;,&quot;style&quot;,&quot;textarea&quot;,&quot;pre&quot;,&quot;code&quot;],
-            ignoreClass: &quot;tex2jax_ignore&quot;,
-            processEscapes: false,
-            processEnvironments: true,
-            preview: &quot;TeX&quot;
-        },
-        showProcessingMessages: true,
-        displayAlign: &quot;center&quot;,
-        displayIndent: &quot;2em&quot;,
-
-        &quot;HTML-CSS&quot;: {
-             scale: 100,
-             availableFonts: [&quot;STIX&quot;,&quot;TeX&quot;],
-             preferredFont: &quot;TeX&quot;,
-             webFont: &quot;TeX&quot;,
-             imageFont: &quot;TeX&quot;,
-             showMathMenu: true,
-        },
-        MMLorHTML: {
-             prefer: {
-                 MSIE:    &quot;MML&quot;,
-                 Firefox: &quot;MML&quot;,
-                 Opera:   &quot;HTML&quot;,
-                 other:   &quot;HTML&quot;
-             }
-        }
-    });
-/*]]&gt;*///--&gt;
-&lt;/script&gt;
-
-
-&lt;p&gt;&lt;/head&gt;
-&lt;body&gt;&lt;/p&gt;
-
-&lt;div id=&quot;preamble&quot;&gt;
-
-&lt;/div&gt;
-
-
-
-
-&lt;div id=&quot;content&quot;&gt;
-&lt;h1 class=&quot;title&quot;&gt;non-linear-model-vs-non-linear-relationship &lt;/h1&gt;
-
-
-&lt;hr/&gt;
-
-
-&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 non-linear-relationships-vs-non-linear-models&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 Nonlinear Regression vs. Linear Regression&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1 Model 1&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2 Model 2&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 Conclusions&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; non-linear-relationships-vs-non-linear-models&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;I value precise language very highly
-&lt;/li&gt;
-&lt;li&gt;this is because in multi-disciplinary teams it is easy to talk using the same words and mean different things
-&lt;/li&gt;
-&lt;li&gt;in recent discussion about &lt;a href=&quot;http://cran.r-project.org/web/packages/dlnm/index.html&quot;&gt;Distributed Lag Non-linear Models&lt;/a&gt; I started to reflect on something that has bothered me for a While
-&lt;/li&gt;
-&lt;li&gt;back in 2005 my old mate Prof Keith Dear picked me up on using the term &quot;non-linear model&quot; incorrectly and explained the maths&amp;hellip;
-&lt;/li&gt;
-&lt;li&gt;I kind of understood but promptly forgot and found a lot of people use the term non-linear model a bit carelessly
-&lt;/li&gt;
-&lt;li&gt;Yesterday I was in a discussion about comparing non-linear relationships between different studies in a meta-analysis
-&lt;/li&gt;
-&lt;li&gt;I immediatly felt uncomfortable when we started to discuss these as &quot;non-linear models&quot;
-&lt;/li&gt;
-&lt;li&gt;so here is a quick bit of google fu (with a session at the coffee shop with Steve and Mishka) to remind me about the difference between 
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; Nonlinear Regression vs. Linear Regression&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;the following comes from
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.ats.ucla.edu/stat/sas/library/SASNLin_os.htm&quot;&gt;http://www.ats.ucla.edu/stat/sas/library/SASNLin_os.htm&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;verbatim except for my attempt at mathjax notation in latex
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;
-A regression model is called nonlinear, if the derivatives
-of the model with respect to the model parameters depends on one or
-more parameters. This definition is essential to distinguish nonlinear
-from curvilinear regression. A regression model is not necessarily
-nonlinear if the graphed regression trend is curved. A polynomial
-model such as this:
-&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-1-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; Model 1&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
-
-
-
-
-\(Y_{i} = \beta_{0} + \beta_{1} X_{i} + \beta_{2} X_{i}^2 + \epsilon_{i}\)
-
-&lt;ul&gt;
-&lt;li&gt;appears curved when y is plotted against x. It is, however, not a nonlinear model. To see this, take derivatives of y with respect to the parameters b0, b1
-&lt;/li&gt;
-&lt;li&gt;dy/db0 = 1 
-&lt;/li&gt;
-&lt;li&gt;dy/db1 = x 
-&lt;/li&gt;
-&lt;li&gt;dy/db2 = x&lt;sup&gt;2&lt;/sup&gt; 
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-
-&lt;ul&gt;
-&lt;li&gt;None of these derivatives depends on a model parameter, the model is linear. In contrast, consider the log-logistic model 
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-1-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; Model 2&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
-
-
-
-
-\(Y_{i} = d + (a - d)/(1 + e^{b \times log(x/g)}) + \epsilon\)
-
-&lt;ul&gt;
-&lt;li&gt;Take derivatives with respect to d, for example: 
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-
-
-\(dy/dd = 1 - 1/(1 + e^{b \times log(x/g)})\)
-
-&lt;ul&gt;
-&lt;li&gt;The derivative involves other parameters, hence the model is nonlinear.
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; Conclusions&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;It is probably best to refer to the polynomial as a &quot;non-linear relationship&quot; in a linear model
-&lt;/li&gt;
-&lt;li&gt;reserving &quot;non-linear model&quot; for things like Model 2
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;p&gt;&lt;/body&gt;
-&lt;/html&gt;&lt;/p&gt;
-</description>
-				<published>Tue Dec 03 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/</link>
 			</item>
 		
 	</channel>
