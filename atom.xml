@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-12-21T01:16:59+11:00</updated>
+ <updated>2013-12-21T11:45:09+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -18,11 +18,11 @@
    <updated>2013-12-21T00:00:00+11:00</updated>
    <id>http://schamberlain.github.com/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</id>
    <content type="html">&lt;p&gt;&lt;head&gt;
-&lt;title&gt;Catastrophic Regime Shifts Visualisation &lt;/title&gt;
+&lt;title&gt;Catastrophic Regime Shifts Visualisation  &lt;/title&gt;
 &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
-&lt;meta name=&quot;title&quot; content=&quot;Catastrophic Regime Shifts Visualisation &quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;Catastrophic Regime Shifts Visualisation  &quot;/&gt;
 &lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
-&lt;meta name=&quot;generated&quot; content=&quot;2013-12-21T01:01+1100&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-12-21T11:39+1100&quot;/&gt;
 &lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
 &lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
 &lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
@@ -88,7 +88,7 @@ for the JavaScript code in this tag.
 
 
 &lt;div id=&quot;content&quot;&gt;
-&lt;h1 class=&quot;title&quot;&gt;Catastrophic Regime Shifts Visualisation &lt;/h1&gt;
+&lt;h1 class=&quot;title&quot;&gt;Catastrophic Regime Shifts Visualisation  &lt;/h1&gt;
 
 
 &lt;hr/&gt;
@@ -111,15 +111,27 @@ for the JavaScript code in this tag.
 &lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; Try adding 2D plot of the trend overtime and the variation within basins of attraction&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
 
-&lt;p&gt;Following on from the previous work I now want to calculate the 2D paths.
-&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Following on from the previous work I now want to calculate the 2D paths.
+&lt;/li&gt;
+&lt;li&gt;This will then form the basis for a &quot;walk through&quot; animation 
+&lt;/li&gt;
+&lt;li&gt;Either with recorded narration or annotations that appear at the right time to describe each transition
+&lt;/li&gt;
+&lt;li&gt;This is most of what I want to include except I have not added the wiggly variations around the main trend line, that show the system varying within the basin of attraction
+&lt;/li&gt;
+&lt;li&gt;I got advice that Blender3d was the best way to finish this off.  Any other suggestions?
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
 &lt;/div&gt;
 
 &lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-3&quot;&gt;
 &lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; figure&lt;/h3&gt;
 &lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/TrendsAndTriggers-v2.1.png&quot;  alt=&quot;/images/TrendsAndTriggers-v2.1.png&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;/images/TrendsAndTriggers-v2.1.gif&quot;  alt=&quot;/images/TrendsAndTriggers-v2.1.gif&quot; /&gt;
 &lt;/p&gt;
 
 &lt;/div&gt;
@@ -153,19 +165,32 @@ xind &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&
 }
 &lt;span style=&quot;color: #586e75;&quot;&gt;#  &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;x2d&lt;/span&gt;
 
-png(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;/images/TrendsAndTriggers-v2.1.png&quot;&lt;/span&gt;)
-layout(matrix(c(1,2,1,3), 2, 2, byrow = &lt;span style=&quot;color: #b58900;&quot;&gt;TRUE&lt;/span&gt;), widths=c(2,1), heights=c(1,2))
+&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;png(&quot;/images/TrendsAndTriggers-v2.1.gif&quot;)&lt;/span&gt;
+setwd(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;images&quot;&lt;/span&gt;)
+saveGIF(
+{
+ani.options(interval = 0.2)  
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(ith &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; 100:140){
+layout(matrix(c(1,2,1,3,1,4), 3, 2, byrow = &lt;span style=&quot;color: #b58900;&quot;&gt;TRUE&lt;/span&gt;), widths=c(2,1), heights=c(2,2,2))
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;layout.show(4)&lt;/span&gt;
 res &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt;  persp(x, 1:10, matrix(data_out$z, ncol = 10, nrow = length(x)),
                ylab= &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;y&quot;&lt;/span&gt;,  xlab= &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x&quot;&lt;/span&gt;, zlab = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;z&quot;&lt;/span&gt;,  
-               theta = 140, 
+               theta = ith, 
                phi = 42, ltheta = 120, shade = 0.75,
                expand = 0.5, col = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;lightgrey&quot;&lt;/span&gt;)
 lines (trans3d(x2d$x, x2d$y, x2d$z, pmat = res), col = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;red&quot;&lt;/span&gt;, lwd = 4)
-plot(x2d$x, x2d$z, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;)
-plot(x2d$y, x2d$z, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;)
-dev.off()
-&lt;/pre&gt;
+plot(x2d$x, x2d$y, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;, xlab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x&quot;&lt;/span&gt;, ylab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;y&quot;&lt;/span&gt;)
+plot(x2d$x, x2d$z, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;, xlab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x&quot;&lt;/span&gt;, ylab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;z&quot;&lt;/span&gt;)
+plot(x2d$y, x2d$z, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;, xlab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;y&quot;&lt;/span&gt;, ylab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;z&quot;&lt;/span&gt;)
+}
+}
 
+outdir = getwd(), movie.name = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;TrendsAndTriggers-v2.1.gif&quot;&lt;/span&gt;
+)
+setwd(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;..&quot;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;#  &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;dev.off()&lt;/span&gt;
+&lt;/pre&gt;
 
 
 &lt;/div&gt;
@@ -3261,11 +3286,11 @@ My new understanding of the topic.
 
 
 
-&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;p&gt;&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
 &lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; dev-table&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;&lt;/p&gt;
 
-&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;p&gt;&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
 &lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;
 &lt;/colgroup&gt;
 &lt;thead&gt;
@@ -3280,14 +3305,13 @@ My new understanding of the topic.
 &lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;more responsive to seasonal&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;conditions&lt;/td&gt;&lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;/table&gt;&lt;/p&gt;
 
-&lt;/div&gt;
+&lt;p&gt;&lt;/div&gt;
 &lt;!-- &lt;/div&gt; --&gt;
 &lt;!-- &lt;/div&gt; --&gt;
 &lt;!-- + Unfortunately Dr Nambi was out of action with a back injury but I was very lucky to have made an alternative contact in Dr R Rukmani, Director of the Food Security Program at MSSRF who had also researched Farmer Suicides.
---&gt;
-
+--&gt;&lt;/p&gt;
 </content>
  </entry>
  
