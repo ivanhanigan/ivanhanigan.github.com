@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-12-24T00:59:34+11:00</updated>
+ <updated>2013-12-24T09:42:39+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,10 +13,28 @@
 
  
  <entry>
-   <title>a-few-best-practices-for-statistical-programming</title>
-   <link href="http://ivanhanigan.github.com/2013/12/+a-few-best-practices-for-statistical-programming/"/>
+   <title>extend-Rs-data-frame-class-with-metadata</title>
+   <link href="http://ivanhanigan.github.com/2013/12/extend-Rs-data-frame-class-with-metadata/"/>
    <updated>2013-12-24T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2013/12/ a-few-best-practices-for-statistical-programming</id>
+   <id>http://ivanhanigan.github.com/2013/12/extend-Rs-data-frame-class-with-metadata</id>
+   <content type="html">&lt;p&gt;&quot;reml now extends R's data.frame class by introducing the data.set class which includes additional metadata required by EML&quot;
+https://github.com/ropensci/reml&lt;/p&gt;
+
+&lt;p&gt;and
+&quot;I’d like to define a class that acts just like a data.frame, just like the data.table class does, but contains some additional metadata (e.g. the units associated with the columns) and has some additional methods associated with it (e.g. that might do something with those units) while also working with any function that simply knows how to handle data.frame objects.
+How might this be done?&quot;
+http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/p&gt;
+
+&lt;p&gt;Also this guys attempt was interesting (I like TraMineR too!)
+http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>a-few-best-practices-for-statistical-programming</title>
+   <link href="http://ivanhanigan.github.com/2013/12/a-few-best-practices-for-statistical-programming/"/>
+   <updated>2013-12-24T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2013/12/a-few-best-practices-for-statistical-programming</id>
    <content type="html">&lt;ul&gt;
 &lt;li&gt;John Myles White invented the ProjectTemplate R Package&lt;/li&gt;
 &lt;li&gt;This is a great application that helps streamline the process of creating a data analysis project&lt;/li&gt;
@@ -28,7 +46,8 @@
 
 &lt;ul&gt;
 &lt;li&gt;Write Out a Directed Acyclic Graph (DAG)&lt;/li&gt;
-&lt;li&gt;Vectorize Your Operations (profile your code and understand where it spends its time)&lt;/li&gt;
+&lt;li&gt;Vectorize Your Operations&lt;/li&gt;
+&lt;li&gt;Profile your code and understand where it spends its time&lt;/li&gt;
 &lt;li&gt;Generate Data and Fit Models&lt;/li&gt;
 &lt;li&gt;Correctness: always ensure that code infers  parameters of models given simulated data with known parameters.&lt;/li&gt;
 &lt;/ul&gt;
@@ -38,7 +57,8 @@
 
 &lt;ul&gt;
 &lt;li&gt;Unit Testing (use testthat)&lt;/li&gt;
-&lt;li&gt;Re-factoring - as above, but with extra attention to system.time()&lt;/li&gt;
+&lt;li&gt;Create modular code with discrete chunks&lt;/li&gt;
+&lt;li&gt;Write functions as much as possible, put these into a personal 'misc' package&lt;/li&gt;
 &lt;/ul&gt;
 
 </content>
@@ -3318,11 +3338,11 @@ My new understanding of the topic.
 
 
 
-&lt;p&gt;&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
 &lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; dev-table&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;&lt;/p&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
 
-&lt;p&gt;&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
 &lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;
 &lt;/colgroup&gt;
 &lt;thead&gt;
@@ -3337,13 +3357,14 @@ My new understanding of the topic.
 &lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;more responsive to seasonal&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;conditions&lt;/td&gt;&lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;&lt;/p&gt;
+&lt;/table&gt;
 
-&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;!-- &lt;/div&gt; --&gt;
 &lt;!-- &lt;/div&gt; --&gt;
 &lt;!-- + Unfortunately Dr Nambi was out of action with a back injury but I was very lucky to have made an alternative contact in Dr R Rukmani, Director of the Food Security Program at MSSRF who had also researched Farmer Suicides.
---&gt;&lt;/p&gt;
+--&gt;
+
 </content>
  </entry>
  
@@ -8710,36 +8731,47 @@ fitting the spatial lag model as it seems easier.
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
 &lt;th&gt; speed &lt;/th&gt;
 &lt;th&gt; dist &lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; Min.   : 4.0 &lt;/td&gt;
-&lt;td&gt; Min.   :  2.00&lt;/td&gt;
+&lt;td&gt; Min.   :  2.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; 1st Qu.:12.0 &lt;/td&gt;
-&lt;td&gt; 1st Qu.: 26.00&lt;/td&gt;
+&lt;td&gt; 1st Qu.: 26.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; Median :15.0 &lt;/td&gt;
-&lt;td&gt; Median : 36.00&lt;/td&gt;
+&lt;td&gt; Median : 36.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; Mean   :15.4 &lt;/td&gt;
-&lt;td&gt; Mean   : 42.98&lt;/td&gt;
+&lt;td&gt; Mean   : 42.98  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; 3rd Qu.:19.0 &lt;/td&gt;
-&lt;td&gt; 3rd Qu.: 56.00&lt;/td&gt;
+&lt;td&gt; 3rd Qu.: 56.00  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt; Max.   :25.0 &lt;/td&gt;
+&lt;td&gt; Max.   :120.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
 
-&lt;h2&gt;| Max.   :25.0 | Max.   :120.00  &lt;/h2&gt;
+&lt;hr /&gt;
 
 &lt;p&gt;You can also embed plots, for example:&lt;/p&gt;
 
@@ -8784,36 +8816,47 @@ categories:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
 &lt;th&gt; speed &lt;/th&gt;
 &lt;th&gt; dist &lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; Min.   : 4.0 &lt;/td&gt;
-&lt;td&gt; Min.   :  2.00&lt;/td&gt;
+&lt;td&gt; Min.   :  2.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; 1st Qu.:12.0 &lt;/td&gt;
-&lt;td&gt; 1st Qu.: 26.00&lt;/td&gt;
+&lt;td&gt; 1st Qu.: 26.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; Median :15.0 &lt;/td&gt;
-&lt;td&gt; Median : 36.00&lt;/td&gt;
+&lt;td&gt; Median : 36.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; Mean   :15.4 &lt;/td&gt;
-&lt;td&gt; Mean   : 42.98&lt;/td&gt;
+&lt;td&gt; Mean   : 42.98  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt; 3rd Qu.:19.0 &lt;/td&gt;
-&lt;td&gt; 3rd Qu.: 56.00&lt;/td&gt;
+&lt;td&gt; 3rd Qu.: 56.00  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt; Max.   :25.0 &lt;/td&gt;
+&lt;td&gt; Max.   :120.00  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
 
-&lt;h2&gt;| Max.   :25.0 | Max.   :120.00  &lt;/h2&gt;
+&lt;hr /&gt;
 </content>
  </entry>
  

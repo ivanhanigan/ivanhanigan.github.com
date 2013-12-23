@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-12-24T00:59:34+11:00</updated>
+ <updated>2013-12-24T09:42:39+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -13,10 +13,28 @@
 
  
  <entry>
-   <title>a-few-best-practices-for-statistical-programming</title>
-   <link href="http://schamberlain.github.com/2013/12/+a-few-best-practices-for-statistical-programming/"/>
+   <title>extend-Rs-data-frame-class-with-metadata</title>
+   <link href="http://schamberlain.github.com/2013/12/extend-Rs-data-frame-class-with-metadata/"/>
    <updated>2013-12-24T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/12/ a-few-best-practices-for-statistical-programming</id>
+   <id>http://schamberlain.github.com/2013/12/extend-Rs-data-frame-class-with-metadata</id>
+   <content type="html">&lt;p&gt;&quot;reml now extends R's data.frame class by introducing the data.set class which includes additional metadata required by EML&quot;
+https://github.com/ropensci/reml&lt;/p&gt;
+
+&lt;p&gt;and
+&quot;I’d like to define a class that acts just like a data.frame, just like the data.table class does, but contains some additional metadata (e.g. the units associated with the columns) and has some additional methods associated with it (e.g. that might do something with those units) while also working with any function that simply knows how to handle data.frame objects.
+How might this be done?&quot;
+http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/p&gt;
+
+&lt;p&gt;Also this guys attempt was interesting (I like TraMineR too!)
+http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>a-few-best-practices-for-statistical-programming</title>
+   <link href="http://schamberlain.github.com/2013/12/a-few-best-practices-for-statistical-programming/"/>
+   <updated>2013-12-24T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2013/12/a-few-best-practices-for-statistical-programming</id>
    <content type="html">&lt;ul&gt;
 &lt;li&gt;John Myles White invented the ProjectTemplate R Package&lt;/li&gt;
 &lt;li&gt;This is a great application that helps streamline the process of creating a data analysis project&lt;/li&gt;
@@ -28,7 +46,8 @@
 
 &lt;ul&gt;
 &lt;li&gt;Write Out a Directed Acyclic Graph (DAG)&lt;/li&gt;
-&lt;li&gt;Vectorize Your Operations (profile your code and understand where it spends its time)&lt;/li&gt;
+&lt;li&gt;Vectorize Your Operations&lt;/li&gt;
+&lt;li&gt;Profile your code and understand where it spends its time&lt;/li&gt;
 &lt;li&gt;Generate Data and Fit Models&lt;/li&gt;
 &lt;li&gt;Correctness: always ensure that code infers  parameters of models given simulated data with known parameters.&lt;/li&gt;
 &lt;/ul&gt;
@@ -38,7 +57,8 @@
 
 &lt;ul&gt;
 &lt;li&gt;Unit Testing (use testthat)&lt;/li&gt;
-&lt;li&gt;Re-factoring - as above, but with extra attention to system.time()&lt;/li&gt;
+&lt;li&gt;Create modular code with discrete chunks&lt;/li&gt;
+&lt;li&gt;Write functions as much as possible, put these into a personal 'misc' package&lt;/li&gt;
 &lt;/ul&gt;
 
 </content>
@@ -3318,11 +3338,11 @@ My new understanding of the topic.
 
 
 
-&lt;p&gt;&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
 &lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; dev-table&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;&lt;/p&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
 
-&lt;p&gt;&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
 &lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;
 &lt;/colgroup&gt;
 &lt;thead&gt;
@@ -3337,13 +3357,14 @@ My new understanding of the topic.
 &lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;more responsive to seasonal&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;conditions&lt;/td&gt;&lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;&lt;/p&gt;
+&lt;/table&gt;
 
-&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;!-- &lt;/div&gt; --&gt;
 &lt;!-- &lt;/div&gt; --&gt;
 &lt;!-- + Unfortunately Dr Nambi was out of action with a back injury but I was very lucky to have made an alternative contact in Dr R Rukmani, Director of the Food Security Program at MSSRF who had also researched Farmer Suicides.
---&gt;&lt;/p&gt;
+--&gt;
+
 </content>
  </entry>
  
@@ -6044,293 +6065,6 @@ dev.off()
 &lt;h4&gt;The Result&lt;/h4&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/fit1.png&quot; alt=&quot;fit1.png&quot; /&gt;&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>simple-example-using-nmmaps</title>
-   <link href="http://schamberlain.github.com/2013/10/simple-example-using-nmmaps/"/>
-   <updated>2013-10-10T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/10/simple-example-using-nmmaps</id>
-   <content type="html">&lt;p&gt;I will use the NMMAPSlite datasets for a simple example of what I am trying to do.&lt;/p&gt;
-
-&lt;!-- begin_src R :session *R* :tangle NMMAPS-example/NMMAPS-example-code.r :exports none :eval no --&gt;
-
-
-&lt;h4&gt;Code: get nmmaps data&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# func
-if(!require(NMMAPSlite)) install.packages('NMMAPSlite');require(NMMAPSlite)
-require(mgcv)
-require(splines)
-
-######################################################
-# load  
-setwd('data')
-initDB('data/NMMAPS') # this requires that we connect to the web,
-                      # so lets get local copies
-setwd('..')
-cities &amp;lt;- getMetaData('cities')
-head(cities)
-citieslist &amp;lt;- cities$cityname
-# write out a few cities for access later
-for(city_i in citieslist[sample(1:nrow(cities), 9)])
-{
- city &amp;lt;- subset(cities, cityname == city_i)$city
- data &amp;lt;- readCity(city)
- write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
- row.names = F, sep = ',')
-}
-# these are all tiny, go some big ones
-for(city_i in c('New York', 'Los Angeles', 'Madison', 'Boston'))
-{
- city &amp;lt;- subset(cities, cityname == city_i)$city
- data &amp;lt;- readCity(city)
- write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
- row.names = F, sep = ',')
-}
-
-######################################################
-# now we can use these locally
-dir(&quot;data&quot;)
-city &amp;lt;- &quot;Chicago&quot;
-data &amp;lt;- read.csv(sprintf(&quot;data/%s.csv&quot;, city), header=T)
-str(data)
-data$yy &amp;lt;- substr(data$date,1,4)
-data$date &amp;lt;- as.Date(data$date)
-######################################################
-# check
-par(mfrow=c(2,1), mar=c(4,4,3,1))
-with(subset(data[,c(1,15:25)], agecat == '75p'),
-  plot(date, tmax)
- )
-with(subset(data[,c(1,4,15:25)], agecat == '75p'),
-        plot(date, cvd, type ='l', col = 'grey')
-        )
-with(subset(data[,c(1,4,15:25)], agecat == '75p'),
-        lines(lowess(date, cvd, f = 0.015))
-        )
-# I am worried about that outlier
-data$date[which(data$cvd &amp;gt; 100)]
-# [1] &quot;1995-07-15&quot; &quot;1995-07-16&quot;
-
-######################################################
-# do standard NMMAPS timeseries poisson GAM model
-numYears&amp;lt;-length(names(table(data$yy)))
-df &amp;lt;- subset(data, agecat == '75p')
-df$time &amp;lt;- as.numeric(df$date)
-fit &amp;lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = poisson)
-# plot of response functions
-par(mfrow=c(2,2))
-plot(fit)
-dev.off()
-
-######################################################
-# some diagnostics
-summary(fit)
-# note the R-sq.(adj) =   0.21
-gam.check(fit)
-# note the lack of a leverage plot.  for that we need glm
-
-######################################################
-# do same model as glm
-fit2 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
-# plot responses
-par(mfrow=c(2,2))
-termplot(fit2, se =T)
-dev.off()
-
-# plot prediction
-df$predictedCvd &amp;lt;- predict(fit2, df, 'response')
-# baseline is given by the intercept
-fit3 &amp;lt;- glm(cvd ~ 1, data = df, family = poisson)
-df$baseline &amp;lt;-  predict(fit3, df, 'response')
-with(subset(df, date&amp;gt;=as.Date('1995-01-01') &amp;amp; date &amp;lt;= as.Date('1995-07-31')),
- plot(date, cvd, type ='l', col = 'grey')
-        )
-with(subset(df, date&amp;gt;=as.Date('1995-01-01') &amp;amp; date &amp;lt;= as.Date('1995-07-31')),
-        lines(date,predictedCvd)
-        )
-with(subset(df, date&amp;gt;=as.Date('1995-01-01') &amp;amp; date &amp;lt;= as.Date('1995-07-31')),
- lines(date,baseline)
-        )
-######################################################
-# some diagnostics
-# need to load a function to calculate poisson adjusted R squared
-# original S code from
-# The formula for pseudo-R^2 is taken from G. S. Maddalla,
-# Limited-dependent and Qualitative Variables in Econometrics, Cambridge:Cambridge Univ. Press, 1983. page 40, equation 2.50.
-RsquaredGlm &amp;lt;- function(o) {
- n &amp;lt;- length(o$residuals)
- ll &amp;lt;- logLik(o)[1]
- ll_0 &amp;lt;- logLik(update(o,~1))[1]
- R2 &amp;lt;- (1 - exp(((-2*ll) - (-2*ll_0))/n))/(1 - exp( - (-2*ll_0)/n))
- names(R2) &amp;lt;- 'pseudo.Rsquared'
- R2
- }
-RsquaredGlm(fit2)
-# 0.51
-# the difference is presumably due to the arguments about how to account for unexplainable variance in the poisson distribution?
-
-# significance of spline terms
-drop1(fit2, test='Chisq')
-# also note AIC. best model includes all of these terms
-# BIC can be computed instead (but still labelled AIC) using
-drop1(fit2, test='Chisq', k = log(nrow(data)))
-
-# diagnostic plots
-par(mfrow=c(2,2))
-plot(fit2)
-dev.off()
-# note high leverage plus residuals points are labelled
-# leverage doesn't seem to be too high though which is good
-# NB the numbers refer to the row.names attribute which still refer to the original dataset, not this subset
-df[row.names(df) %in% c(9354,9356),]$date
-# as suspected [1] &quot;1995-07-15&quot; &quot;1995-07-16&quot;
-
-######################################################
-# so lets re run without these obs
-df2 &amp;lt;- df[!row.names(df) %in% c(9354,9356),]
-# to avoid duplicating code just re run fit2, replacing data=df with df2
-# tmax still significant but not so extreme
-# check diagnostic plots again
-par(mfrow=c(2,2))
-plot(fit2)
-dev.off()
-# looks like a well behaved model now.
-
-# if we were still worried about any high leverage values we could identify these with
-df3 &amp;lt;- na.omit(df2[,c('cvd','pm10tmean','tmax','dptp','time')])
-df3$hatvalue &amp;lt;- hatvalues(fit2)
-df3$res &amp;lt;- residuals(fit2, 'pearson')
-with(df3, plot(hatvalue, res))
-# this is the same as the fourth default glm diagnostic plot, which they label x-axis as leverage
-summary(df3$hatvalue)
-# gives us an idea of the distribution of hat values
-# decide on a threshold and look at it
-hatThreshold &amp;lt;- 0.1
-with(subset(df3, hatvalue &amp;gt; hatThreshold), points(hatvalue, res, col = 'red', pch = 16))
-abline(0,0)
-segments(hatThreshold,-2,hatThreshold,15)
-dev.off()
-
-fit3 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = subset(df3, hatvalue &amp;lt; hatThreshold), family = poisson)
-par(mfrow=c(2,2))
-termplot(fit3, se = T)
-# same same
-plot(fit3)
-# no better
-
-# or we could go nuts with a whole number of ways of estimating influence
-# check all influential observations
-infl &amp;lt;- influence.measures(fit2)
-# which observations 'are' influential
-inflk &amp;lt;- which(apply(infl$is.inf, 1, any))
-length(inflk)
-
-
-######################################################
-# now what about serial autocorrelation in the residuals?
-
-par(mfrow = c(2,1))
-with(df3, acf(res))
-with(df3, pacf(res))
-dev.off()
-
-
-
-######################################################
-# just check for overdispersion
-fit &amp;lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = quasipoisson)
-summary(fit)
-# note the Scale est. = 1.1627
-# alternatively check the glm
-fit2 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = quasipoisson)
-summary(fit2)
-# (Dispersion parameter for quasipoisson family taken to be 1.222640)
-# this is probably near enough to support a standard poisson model...
-
-# if we have overdispersion we can use QAIC (A quasi- mode does not have a likelihood and so does not have an AIC,  by definition)
-# we can use the poisson model and calculate the overdispersion
-fit2 &amp;lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
-1- pchisq(deviance(fit2), df.residual(fit2))
-
-# QAIC, c is the variance inflation factor, the ratio of the residual deviance of the global (most complicated) model to the residual degrees of freedom
-c=deviance(fit2)/df.residual(fit2)
-QAIC.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1)
-QAIC.1
-
-# Actually lets use QAICc which is more conservative about parameters,
-QAICc.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1) + 2*(length(coef(fit2)) + 1)*(length(coef(fit2)) + 1 + 1)/(nrow(na.omit(df[,c('cvd','pm10tmean','tmax','dptp','time')]))- (length(coef(fit2))+1)-1)
-QAICc.1
-
-
-######################################################
-# the following is old work, some may be interesting
-# such as the use of sinusoidal wave instead of smooth function of time
-
-
-# # sine wave
-# timevar &amp;lt;- as.data.frame(names(table(df$date)))
-# index &amp;lt;- 1:length(names(table(df$date)))
-# timevar$time2 &amp;lt;- index / (length(index) / (length(index)/365.25))
-# names(timevar) &amp;lt;- c('date','timevar')
-# timevar$date &amp;lt;- as.Date(timevar$date)
-# df &amp;lt;- merge(df,timevar)
-
-# fit &amp;lt;- gam(cvd ~ s(tmax) + s(dptp) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
-# summary(fit)
-# par(mfrow=c(3,2))
-# plot(fit, all.terms = T)
-# dev.off()
-
-# # now just explore the season fit
-# fit &amp;lt;- gam(cvd ~ sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
-# yhat &amp;lt;- predict(fit)
-# head(yhat)
-
-# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(15,55)))
-# lines(df[,'date'],exp(yhat),col='red')
-
-
-# # drop1(fit, test= 'Chisq')
-
-# # drop1 only works in glm?
-# # fit with weather variables, use degrees of freedom estimated by gam
-# fit &amp;lt;- glm(cvd ~ ns(tmax,8) + ns(dptp,2) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
-# drop1(fit, test= 'Chisq')
-# # use plot.glm for diagnostics
-# par(mfrow=c(2,2))
-# plot(fit)
-# par(mfrow=c(3,2))
-# termplot(fit, se=T)
-# dev.off()
-
-# # cyclic spline, overlay on prior sinusoidal
-# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(0,55)))
-# lines(df[,'date'],exp(yhat),col='red')
-
-# df$daynum &amp;lt;- as.numeric(format(df$date, &quot;%j&quot;))
-# df[360:370,c('date','daynum')]
-# fit &amp;lt;- gam(cvd ~ s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
-# yhat2 &amp;lt;- predict(fit)
-# head(yhat2)
-
-# lines(df[,'date'],exp(yhat2),col='blue')
-
-
-# par(mfrow=c(1,2))
-# plot(fit)
-
-
-# # fit weather with season
-# fit &amp;lt;- gam(cvd ~ s(tmax) + s(dptp) +
-  # s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
-# par(mfrow=c(2,2))
-# plot(fit)
-
-# summary(fit)
-&lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
  

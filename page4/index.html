@@ -54,6 +54,100 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Back in 2009 Joseph Guillaume worked with me on a complicated workflow</li>
+<li>He came up with this python script to help keep track of the steps</li>
+<li>The simple text file is a list of transformations, inputs and output</li>
+<li>It is converted to the right format and graphviz creates a html page with pop-outs</li>
+</ul>
+
+
+<h4>Simple text list</h4>
+
+<pre><code>Transformation
+        description
+                the thing 
+        inputs
+                the thing before
+                another thing
+        output
+                the next thing
+        notes
+                the thing is this other thing   this is a really long description 
+                blah blah asdfasdfasdfasdfasdfa 
+
+Transformation
+        description
+                yet another thing
+        inputs
+                the next thing
+        output
+                a final thing
+        notes
+                this is a note
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>keep this in your work directory and update it whenever you add a step to the workflow</li>
+<li>the list can be as big as you like (hundreds of steps), and entered in any order, the inputs/output relationships determine how the graph looks at the end</li>
+<li>to run the script just do the one line</li>
+</ul>
+
+
+<h4>Python code: run</h4>
+
+<pre><code>python transformations.py workflow_steps.txt index
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>open the html page and click on a square box to bring up the pop-out</li>
+<li>short text is shown, long text is replaced by an ellipse and only shown in pop-out</li>
+</ul>
+
+
+<h4>Conclusions</h4>
+
+<ul>
+<li>I've popped the script up as a <a href="https://github.com/ivanhanigan/transformations">Github repo</a></li>
+<li>The example is in the <a href="http://ivanhanigan.github.io/transformations/">gh-pages branch</a></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+      <a href="/categories/workflow" title="workflow" rel="category tag">workflow</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/12/graphviz-automagic-flowcharts/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Dec 01 00:00:00 +1100 2013">01 Dec 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
     </h1>
     <div class="entry-content full-content">
@@ -365,99 +459,6 @@ Ultimately I'd like to see something as easy and intuitive as iTunes for music o
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>I got this header for a nice looking report from Bull, G. (2011). Example Sweave Document. SharpStatistics.co.uk.</li>
-<li>This has a bunch of useful parameters, but I just really like the header and footer on pages 2 onward</li>
-<li>The original was a Sweave file.  I really like Sweave but orgmode allows other languages as well as R to be inter-woven into the script</li>
-<li>An alternative to Sweave is knitr and is still on my todo list, but this works well at the moment</li>
-<li>I also like how you can quickly change this to a Beamer presentation style.</li>
-<li>Once this is in your file use C-c C-e d to export and compile the PDF</li>
-<li>This example is available at <a href="/pdfs/SharpReportTemplate.pdf">this link</a></li>
-</ul>
-
-
-<h4>Emacs orgmode Code: Put this into your .org file</h4>
-
-<pre><code>#+TITLE: Sharp Report Template
-#+AUTHOR: Ivan Hanigan
-#+email: ivan.hanigan@anu.edu.au
-#+LaTeX_CLASS: article
-#+LaTeX_CLASS_OPTIONS: [a4paper]
-#+LaTeX_HEADER: \usepackage{amssymb,amsmath}
-#+LaTeX_HEADER: \usepackage{fancyhdr} %For headers and footers
-#+LaTeX_HEADER: \pagestyle{fancy} %For headers and footers
-#+LaTeX_HEADER: \usepackage{lastpage} %For getting page x of y
-#+LaTeX_HEADER: \usepackage{float} %Allows the figures to be positioned and formatted nicely
-#+LaTeX_HEADER: \floatstyle{boxed} %using this
-#+LaTeX_HEADER: \restylefloat{figure} %and this command
-#+LaTeX_HEADER: \usepackage{url} %Formatting of yrls
-#+LaTeX_HEADER: \lhead{ivanhanigan.github.com}
-#+LaTeX_HEADER: \chead{}
-#+LaTeX_HEADER: \rhead{\today}
-#+LaTeX_HEADER: \lfoot{Draft}
-#+LaTeX_HEADER: \cfoot{}
-#+LaTeX_HEADER: \rfoot{\thepage\ of \pageref{LastPage}}
-#+LATEX: \tableofcontents
-
-* Introduction
-This is a sharp looking report template I got from an R blogger \cite{Bull2011}.
-
-The pages after the first page have a nice looking header, footer and page number.
-\clearpage
-
-* Section 1
-In the Org file you can see some hidden R code that computes a linear regression and returns the results shown in Table \ref{ATable}.
-\input{ATable.tex}
-\clearpage
-*** COMMENT some-code
-#+name:some-code
-#+begin_src R :session *R* :tangle no :exports none :eval yes
-#### name:some-code ####
-x&lt;-rnorm(100,10,5)
-y&lt;-rnorm(100,20,15)
-fit &lt;- lm(y~x)
-library(xtable)
-sink("ATable.tex")
-xtable(fit, caption="Example Table",digits=4,table.placement="H",label="ATable")
-sink()
-#+end_src
-
-#+RESULTS: some-code
-
-
-
-* References
-\bibliographystyle{apalike}
-\bibliography{/home/ivan_hanigan/references/library}
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/a-sharp-looking-orgmode-latex-export-header/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Nov 26 00:00:00 +1100 2013">26 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -512,133 +513,141 @@ sink()
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/modelling">modelling (1)</a></li>
-                
-                <li><a href="/categories/projecttemplate">projecttemplate (1)</a></li>
-                
-                <li><a href="/categories/drought and suicide">drought and suicide (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/tree-based methods">tree-based methods (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (22)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/energymark">energymark (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/ranalyticflow">ranalyticflow (1)</a></li>
-                
-                <li><a href="/categories/science">science (2)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/suicide">suicide (1)</a></li>
-                
-                <li><a href="/categories/drought">drought (2)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
-                
-                <li><a href="/categories/surveytools">surveytools (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (4)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
                 
                 <li><a href="/categories/python">python (2)</a></li>
                 
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (13)</a></li>
-                
-                <li><a href="/categories/gis">gis (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
-                
-                <li><a href="/categories/india overview">india overview (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (2)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
                 <li><a href="/categories/graphviz">graphviz (1)</a></li>
                 
-                <li><a href="/categories/tools">tools (1)</a></li>
+                <li><a href="/categories/research methods">research methods (23)</a></li>
                 
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                <li><a href="/categories/organising">organising (2)</a></li>
                 
-                <li><a href="/categories/overview">overview (4)</a></li>
+                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
                 
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
                 
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
                 
                 <li><a href="/categories/kepler">kepler (1)</a></li>
                 
-                <li><a href="/categories/r/sweave">r/sweave (1)</a></li>
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/statistical models">statistical models (1)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (4)</a></li>
+                
+                <li><a href="/categories/ons">ons (2)</a></li>
+                
+                <li><a href="/categories/drought">drought (1)</a></li>
+                
+                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
+                
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/Modelling">Modelling (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/GIS">GIS (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                
+                <li><a href="/categories/visualisation">visualisation (1)</a></li>
+                
+                <li><a href="/categories/science">science (2)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (13)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (4)</a></li>
                 
               </ul>
             </div>
@@ -649,7 +658,11 @@ sink()
               <ul>
                 
                 <li>
-                  <a href="/2013/12/+a-few-best-practices-for-statistical-programming/" title="a-few-best-practices-for-statistical-programming" rel="bookmark">a-few-best-practices-for-statistical-programming</a>
+                  <a href="/2013/12/extend-Rs-data-frame-class-with-metadata/" title="extend-Rs-data-frame-class-with-metadata" rel="bookmark">extend-Rs-data-frame-class-with-metadata</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/a-few-best-practices-for-statistical-programming/" title="a-few-best-practices-for-statistical-programming" rel="bookmark">a-few-best-practices-for-statistical-programming</a>
                 </li>
                 
                 <li>
@@ -842,10 +855,6 @@ sink()
                 
                 <li>
                   <a href="/2013/10/test-data-for-classification-trees/" title="test-data-for-classification-trees" rel="bookmark">test-data-for-classification-trees</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/simple-example-using-nmmaps/" title="simple-example-using-nmmaps" rel="bookmark">simple-example-using-nmmaps</a>
                 </li>
                 
               </ul>
