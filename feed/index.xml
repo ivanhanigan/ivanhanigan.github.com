@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2013-12-24T10:08:14+11:00</updated>
+ <updated>2014-01-03T12:13:45+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,20 +13,79 @@
 
  
  <entry>
+   <title>tumbarumba-supersite-dem</title>
+   <link href="http://ivanhanigan.github.com/2014/01/tumbarumba-supersite-dem/"/>
+   <updated>2014-01-03T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2014/01/tumbarumba-supersite-dem</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;The first dataset I downloaded from ASN for playing around with was the Tumba Lidar.&lt;/li&gt;
+&lt;li&gt;I had thought it might be better to offer this as a OGC service rather than downloadable geotiff&lt;/li&gt;
+&lt;li&gt;just in terms of the size firstly (104MB)&lt;/li&gt;
+&lt;li&gt;but I also soon realised it would need some specialised tweaking which non-GIS users might struggle a bit and could avoid if the serverside data is set up by a GIS specialist (although can we assume only GIS specialists will download this kind of data)?&lt;/li&gt;
+&lt;li&gt;kudos to &lt;a href=&quot;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&quot;&gt;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:tumbarumba-supersite-dem&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;setwd(&quot;~/data/supersite/tumba-lidar&quot;)
+require(raster)
+fname  &amp;lt;- dir(pattern = &quot;tif$&quot;)
+fname
+r  &amp;lt;- raster(fname)
+str(r)
+dfr &amp;lt;- as.data.frame(r)
+summary(dfr)
+# the -1 code looks like it might be missing?  They are around the edge.
+rna &amp;lt;- reclassify(r, cbind(-1, 1197))
+png(&quot;tumba-lidar.png&quot;)
+plot(rna, col=terrain.colors(100), xlab = &quot;eastings (m)&quot;, ylab = &quot;northings (m)&quot;)
+title(&quot;Tumbarumba Supersite Digital Elevation Model&quot;)
+title(sub = &quot;packageId=lloyd.374.2&quot;)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/tumba-lidar.png&quot; alt=&quot;tumba-lidar.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Alternately use a geoserver&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If we use a Geoserver we could set it up so people can view this without downloading the data&lt;/li&gt;
+&lt;li&gt;following the instructions &lt;a href=&quot;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&quot;&gt;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;using the ANU GIS library server&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;http://brawn.anu.edu.au:8081/geoexplorer/viewer/#maps/1&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PS the map might take a minute to show up, not sure why, might ask the sysadmin to look at the server performance&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
    <title>extend-Rs-data-frame-class-with-metadata</title>
    <link href="http://ivanhanigan.github.com/2013/12/extend-Rs-data-frame-class-with-metadata/"/>
    <updated>2013-12-24T00:00:00+11:00</updated>
    <id>http://ivanhanigan.github.com/2013/12/extend-Rs-data-frame-class-with-metadata</id>
    <content type="html">&lt;p&gt;&quot;reml now extends R's data.frame class by introducing the data.set class which includes additional metadata required by EML&quot;
-&lt;a href=&quot;https://github.com/ropensci/reml&quot;&gt;https://github.com/ropensci/reml&lt;/a&gt;&lt;/p&gt;
+https://github.com/ropensci/reml&lt;/p&gt;
 
 &lt;p&gt;and
 &quot;I’d like to define a class that acts just like a data.frame, just like the data.table class does, but contains some additional metadata (e.g. the units associated with the columns) and has some additional methods associated with it (e.g. that might do something with those units) while also working with any function that simply knows how to handle data.frame objects.
 How might this be done?&quot;
-&lt;a href=&quot;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&quot;&gt;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/a&gt;&lt;/p&gt;
+http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/p&gt;
 
 &lt;p&gt;Also this guys attempt was interesting (I like TraMineR too!)
-&lt;a href=&quot;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&quot;&gt;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/a&gt;&lt;/p&gt;
+http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/p&gt;
 </content>
  </entry>
  
@@ -3477,7 +3536,7 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf&lt;/li&gt;
    <link href="http://ivanhanigan.github.com/2013/11/librarians-and-python/"/>
    <updated>2013-11-06T00:00:00+11:00</updated>
    <id>http://ivanhanigan.github.com/2013/11/librarians-and-python</id>
-   <content type="html">&lt;p&gt;I stumbled on these posts by &quot;Data Scientist Training for Librarians&quot;:&lt;/p&gt;
+   <content type="html">&lt;p&gt;I stumbled on these posts about python and IPython Notebook by &quot;Data Scientist Training for Librarians&quot;:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&quot;&gt;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&lt;/a&gt;&lt;/li&gt;
@@ -3485,17 +3544,17 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.&lt;/p&gt;
+&lt;p&gt;I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.  You can get my ipython notebook file for this here: &lt;a href=&quot;/data/olive.ipynb&quot;&gt;olive.ipynb&lt;/a&gt;, but first run the following R code snippet to get the replication dataset 'olive.csv' into your home directory.&lt;/p&gt;
 
 &lt;h4&gt;R Code: get the olive oil dataset&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code&gt;install.packages(&quot;pgmm&quot;)
 require(pgmm)
 data(olive)
-write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
-olive &amp;lt;- read.csv(&quot;~/olive.csv&quot;)
 names(olive) &amp;lt;- tolower(names(olive))
 str(olive)
+write.csv(olive, &quot;olive.csv&quot;, row.names = F)
+# actualy home might be easier for ipython to access
 write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -3504,7 +3563,7 @@ write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
 
 &lt;h3&gt;OK now reproduce the example&lt;/h3&gt;
 
-&lt;p&gt;I quite like the histograms from the second example.&lt;/p&gt;
+&lt;p&gt;I quite like the histograms from the second example.  Here is the raw code extracted from the ipynb&lt;/p&gt;
 
 &lt;h4&gt;Code:&lt;/h4&gt;
 
@@ -3557,9 +3616,14 @@ for ax in axes.flatten(): # Starts a loop to go through our plot and render each
 
 &lt;h3&gt;Conclusions&lt;/h3&gt;
 
-&lt;p&gt;I am not sure how to do the transparency but the rest of it would make more sense to me with R&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I am not sure how to do the transparency but the rest of it would make more sense to me with R&lt;/li&gt;
+&lt;li&gt;Will try to reproduce in R for head-to-head shoot out.&lt;/li&gt;
+&lt;li&gt;I also plan to look into the new &lt;a href=&quot;http://trestletechnology.net/2013/11/ace-code-editor-in-shiny-shinyace/&quot;&gt;shinyAce browser based R editor&lt;/a&gt; for similar work&lt;/li&gt;
+&lt;li&gt;I'm still really enjoying Emacs Orgmode for this kind of functionality though and thoroughly recommend &lt;a href=&quot;http://kieranhealy.org/resources/emacs-starter-kit.html&quot;&gt;KJ Healy's starter kit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;(I've installed and config thison Ubuntu, Windoze and Mac, but LaTeX and exporting R code can be tricky)&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Will try to reproduce in R for head-to-head shoot out.&lt;/p&gt;
 </content>
  </entry>
  

@@ -6,17 +6,75 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>tumbarumba-supersite-dem</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;The first dataset I downloaded from ASN for playing around with was the Tumba Lidar.&lt;/li&gt;
+&lt;li&gt;I had thought it might be better to offer this as a OGC service rather than downloadable geotiff&lt;/li&gt;
+&lt;li&gt;just in terms of the size firstly (104MB)&lt;/li&gt;
+&lt;li&gt;but I also soon realised it would need some specialised tweaking which non-GIS users might struggle a bit and could avoid if the serverside data is set up by a GIS specialist (although can we assume only GIS specialists will download this kind of data)?&lt;/li&gt;
+&lt;li&gt;kudos to &lt;a href=&quot;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&quot;&gt;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:tumbarumba-supersite-dem&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;setwd(&quot;~/data/supersite/tumba-lidar&quot;)
+require(raster)
+fname  &amp;lt;- dir(pattern = &quot;tif$&quot;)
+fname
+r  &amp;lt;- raster(fname)
+str(r)
+dfr &amp;lt;- as.data.frame(r)
+summary(dfr)
+# the -1 code looks like it might be missing?  They are around the edge.
+rna &amp;lt;- reclassify(r, cbind(-1, 1197))
+png(&quot;tumba-lidar.png&quot;)
+plot(rna, col=terrain.colors(100), xlab = &quot;eastings (m)&quot;, ylab = &quot;northings (m)&quot;)
+title(&quot;Tumbarumba Supersite Digital Elevation Model&quot;)
+title(sub = &quot;packageId=lloyd.374.2&quot;)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/tumba-lidar.png&quot; alt=&quot;tumba-lidar.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Alternately use a geoserver&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If we use a Geoserver we could set it up so people can view this without downloading the data&lt;/li&gt;
+&lt;li&gt;following the instructions &lt;a href=&quot;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&quot;&gt;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;using the ANU GIS library server&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;http://brawn.anu.edu.au:8081/geoexplorer/viewer/#maps/1&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PS the map might take a minute to show up, not sure why, might ask the sysadmin to look at the server performance&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Fri Jan 03 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/01/tumbarumba-supersite-dem/</link>
+			</item>
+		
+			<item>
 				<title>extend-Rs-data-frame-class-with-metadata</title>
 				<description>&lt;p&gt;&quot;reml now extends R's data.frame class by introducing the data.set class which includes additional metadata required by EML&quot;
-&lt;a href=&quot;https://github.com/ropensci/reml&quot;&gt;https://github.com/ropensci/reml&lt;/a&gt;&lt;/p&gt;
+https://github.com/ropensci/reml&lt;/p&gt;
 
 &lt;p&gt;and
 &quot;I’d like to define a class that acts just like a data.frame, just like the data.table class does, but contains some additional metadata (e.g. the units associated with the columns) and has some additional methods associated with it (e.g. that might do something with those units) while also working with any function that simply knows how to handle data.frame objects.
 How might this be done?&quot;
-&lt;a href=&quot;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&quot;&gt;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/a&gt;&lt;/p&gt;
+http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/p&gt;
 
 &lt;p&gt;Also this guys attempt was interesting (I like TraMineR too!)
-&lt;a href=&quot;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&quot;&gt;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/a&gt;&lt;/p&gt;
+http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/p&gt;
 </description>
 				<published>Tue Dec 24 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/12/extend-Rs-data-frame-class-with-metadata/</link>
@@ -785,21 +843,6 @@ git push -u origin master
 </description>
 				<published>Mon Dec 09 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/12/dual-code-repository-and-project-website/</link>
-			</item>
-		
-			<item>
-				<title>bitbucket-has-unlimited-private-git-repositories-for-universities</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;I just got introduced to bitbucket, an alternative to Github&lt;/li&gt;
-&lt;li&gt;I've used Github for a couple of years and have been paying for extra private repositories&lt;/li&gt;
-&lt;li&gt;I did not realise that bitbucket worked with git too (I thought it was just for Mercurial)&lt;/li&gt;
-&lt;li&gt;it offers unlimited public and private repository and unlimited users (to collaborate) if you have the Academic plan.&lt;/li&gt;
-&lt;li&gt;when you sign up with your academic email address, &lt;a href=&quot;http://blog.bitbucket.org/2011/04/01/free-unlimited-user-source-code-hosting-for-university-students/&quot;&gt;you automatically get an unlimited academic plan&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Mon Dec 09 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/</link>
 			</item>
 		
 	</channel>

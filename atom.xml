@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2013-12-24T10:08:14+11:00</updated>
+ <updated>2014-01-03T12:13:45+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -13,20 +13,79 @@
 
  
  <entry>
+   <title>tumbarumba-supersite-dem</title>
+   <link href="http://schamberlain.github.com/2014/01/tumbarumba-supersite-dem/"/>
+   <updated>2014-01-03T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2014/01/tumbarumba-supersite-dem</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;The first dataset I downloaded from ASN for playing around with was the Tumba Lidar.&lt;/li&gt;
+&lt;li&gt;I had thought it might be better to offer this as a OGC service rather than downloadable geotiff&lt;/li&gt;
+&lt;li&gt;just in terms of the size firstly (104MB)&lt;/li&gt;
+&lt;li&gt;but I also soon realised it would need some specialised tweaking which non-GIS users might struggle a bit and could avoid if the serverside data is set up by a GIS specialist (although can we assume only GIS specialists will download this kind of data)?&lt;/li&gt;
+&lt;li&gt;kudos to &lt;a href=&quot;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&quot;&gt;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:tumbarumba-supersite-dem&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;setwd(&quot;~/data/supersite/tumba-lidar&quot;)
+require(raster)
+fname  &amp;lt;- dir(pattern = &quot;tif$&quot;)
+fname
+r  &amp;lt;- raster(fname)
+str(r)
+dfr &amp;lt;- as.data.frame(r)
+summary(dfr)
+# the -1 code looks like it might be missing?  They are around the edge.
+rna &amp;lt;- reclassify(r, cbind(-1, 1197))
+png(&quot;tumba-lidar.png&quot;)
+plot(rna, col=terrain.colors(100), xlab = &quot;eastings (m)&quot;, ylab = &quot;northings (m)&quot;)
+title(&quot;Tumbarumba Supersite Digital Elevation Model&quot;)
+title(sub = &quot;packageId=lloyd.374.2&quot;)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/tumba-lidar.png&quot; alt=&quot;tumba-lidar.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Alternately use a geoserver&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If we use a Geoserver we could set it up so people can view this without downloading the data&lt;/li&gt;
+&lt;li&gt;following the instructions &lt;a href=&quot;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&quot;&gt;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;using the ANU GIS library server&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;http://brawn.anu.edu.au:8081/geoexplorer/viewer/#maps/1&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PS the map might take a minute to show up, not sure why, might ask the sysadmin to look at the server performance&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
    <title>extend-Rs-data-frame-class-with-metadata</title>
    <link href="http://schamberlain.github.com/2013/12/extend-Rs-data-frame-class-with-metadata/"/>
    <updated>2013-12-24T00:00:00+11:00</updated>
    <id>http://schamberlain.github.com/2013/12/extend-Rs-data-frame-class-with-metadata</id>
    <content type="html">&lt;p&gt;&quot;reml now extends R's data.frame class by introducing the data.set class which includes additional metadata required by EML&quot;
-&lt;a href=&quot;https://github.com/ropensci/reml&quot;&gt;https://github.com/ropensci/reml&lt;/a&gt;&lt;/p&gt;
+https://github.com/ropensci/reml&lt;/p&gt;
 
 &lt;p&gt;and
 &quot;I’d like to define a class that acts just like a data.frame, just like the data.table class does, but contains some additional metadata (e.g. the units associated with the columns) and has some additional methods associated with it (e.g. that might do something with those units) while also working with any function that simply knows how to handle data.frame objects.
 How might this be done?&quot;
-&lt;a href=&quot;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&quot;&gt;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/a&gt;&lt;/p&gt;
+http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/p&gt;
 
 &lt;p&gt;Also this guys attempt was interesting (I like TraMineR too!)
-&lt;a href=&quot;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&quot;&gt;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/a&gt;&lt;/p&gt;
+http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/p&gt;
 </content>
  </entry>
  
@@ -3477,7 +3536,7 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf&lt;/li&gt;
    <link href="http://schamberlain.github.com/2013/11/librarians-and-python/"/>
    <updated>2013-11-06T00:00:00+11:00</updated>
    <id>http://schamberlain.github.com/2013/11/librarians-and-python</id>
-   <content type="html">&lt;p&gt;I stumbled on these posts by &quot;Data Scientist Training for Librarians&quot;:&lt;/p&gt;
+   <content type="html">&lt;p&gt;I stumbled on these posts about python and IPython Notebook by &quot;Data Scientist Training for Librarians&quot;:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&quot;&gt;http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/&lt;/a&gt;&lt;/li&gt;
@@ -3485,17 +3544,17 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.&lt;/p&gt;
+&lt;p&gt;I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.  You can get my ipython notebook file for this here: &lt;a href=&quot;/data/olive.ipynb&quot;&gt;olive.ipynb&lt;/a&gt;, but first run the following R code snippet to get the replication dataset 'olive.csv' into your home directory.&lt;/p&gt;
 
 &lt;h4&gt;R Code: get the olive oil dataset&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code&gt;install.packages(&quot;pgmm&quot;)
 require(pgmm)
 data(olive)
-write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
-olive &amp;lt;- read.csv(&quot;~/olive.csv&quot;)
 names(olive) &amp;lt;- tolower(names(olive))
 str(olive)
+write.csv(olive, &quot;olive.csv&quot;, row.names = F)
+# actualy home might be easier for ipython to access
 write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -3504,7 +3563,7 @@ write.csv(olive, &quot;~/olive.csv&quot;, row.names = F)
 
 &lt;h3&gt;OK now reproduce the example&lt;/h3&gt;
 
-&lt;p&gt;I quite like the histograms from the second example.&lt;/p&gt;
+&lt;p&gt;I quite like the histograms from the second example.  Here is the raw code extracted from the ipynb&lt;/p&gt;
 
 &lt;h4&gt;Code:&lt;/h4&gt;
 
@@ -3557,9 +3616,14 @@ for ax in axes.flatten(): # Starts a loop to go through our plot and render each
 
 &lt;h3&gt;Conclusions&lt;/h3&gt;
 
-&lt;p&gt;I am not sure how to do the transparency but the rest of it would make more sense to me with R&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I am not sure how to do the transparency but the rest of it would make more sense to me with R&lt;/li&gt;
+&lt;li&gt;Will try to reproduce in R for head-to-head shoot out.&lt;/li&gt;
+&lt;li&gt;I also plan to look into the new &lt;a href=&quot;http://trestletechnology.net/2013/11/ace-code-editor-in-shiny-shinyace/&quot;&gt;shinyAce browser based R editor&lt;/a&gt; for similar work&lt;/li&gt;
+&lt;li&gt;I'm still really enjoying Emacs Orgmode for this kind of functionality though and thoroughly recommend &lt;a href=&quot;http://kieranhealy.org/resources/emacs-starter-kit.html&quot;&gt;KJ Healy's starter kit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;(I've installed and config thison Ubuntu, Windoze and Mac, but LaTeX and exporting R code can be tricky)&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Will try to reproduce in R for head-to-head shoot out.&lt;/p&gt;
 </content>
  </entry>
  
@@ -5924,147 +5988,6 @@ all.equal(df, df3)
 df &amp;lt;- arrange(airquality, Temp, Ozone)
 head(df)
 &lt;/code&gt;&lt;/pre&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>test-data-for-classification-trees</title>
-   <link href="http://schamberlain.github.com/2013/10/test-data-for-classification-trees/"/>
-   <updated>2013-10-10T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/10/test-data-for-classification-trees</id>
-   <content type="html">&lt;h4&gt;A fictitious sample dataset&lt;/h4&gt;
-
-&lt;p&gt;For discussion, I'll use a fictional example dataset that I'm using to work through some statistical theory related to Classification and Regression Trees (CART).
-In the motivating example use case we are interested in predicting the civil status (married, single, divorced/widowed) of individuals from their sex (male, female) and sector of activity (primary, secondary, tertiary). The data set is composed of 273 cases.&lt;/p&gt;
-
-&lt;p&gt;The data (and related statistical theory) come from:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from &lt;a href=&quot;http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Ritschard, G., Pisetta, V., &amp;amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from &lt;a href=&quot;http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# copy and paste the data from the PDF (Table 1 in both papers)
-civst_gend_sector  &amp;lt;- read.csv(textConnection(
-    &quot;civil_status gender activity_sector number_of_cases
-         married   male         primary              50
-         married   male       secondary              40
-         married   male        tertiary               6
-         married female         primary               0
-         married female       secondary              14
-         married female        tertiary              10
-          single   male         primary               5
-          single   male       secondary               5
-          single   male        tertiary              12
-          single female         primary              50
-          single female       secondary              30
-          single female        tertiary              18
-divorced/widowed   male         primary               5
-divorced/widowed   male       secondary               8
-divorced/widowed   male        tertiary              10
-divorced/widowed female         primary               6
-divorced/widowed female       secondary               2
-divorced/widowed female        tertiary               2
-&quot;),sep = &quot;&quot;)
-
-# save this to my personal R utilities package &quot;disentangle&quot; 
-# for use later when I am exploring functions
-dir.create(&quot;inst/extdata&quot;, recursive=T)
-write.csv(civst_gend_sector, &quot;inst/extdata/civst_gend_sector.csv&quot;, row.names = F)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;That is fine and good, we can use the case weights option to include number of cases but sometimes we want to use one row per person.
-In the next chunk of code I;ll reformat the data, and also add another fictitious variable called income and contrive an example where a certain group earns less based on their activity sector.&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;df &amp;lt;- as.data.frame(matrix(NA, nrow = 0, ncol = 3))
-for(i in 1:nrow(civst_gend_sector))
-    {
-    #    i &amp;lt;- 1
-        n &amp;lt;- civst_gend_sector$number_of_cases[i]
-        if(n == 0) next
-        for(j in 1:n)
-            {
-              df &amp;lt;- rbind(df, civst_gend_sector[i,1:3])              
-            }
-
-    }
-
-df$income  &amp;lt;- rnorm(nrow(df), 1000,200)
-# Let us say secondary men earn less
-df$income[df$gender == &quot;male&quot; &amp;amp; df$activity == &quot;secondary&quot;]  &amp;lt;- df$income[df$gender == &quot;male&quot; &amp;amp; df$activity == &quot;secondary&quot;] - 500
-str(df)
-# save this for use later
-write.csv(df, &quot;inst/extdata/civst_gend_sector_full.csv&quot;, row.names = F)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Motivating reason for using these data&lt;/h4&gt;
-
-&lt;p&gt;Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.&lt;/p&gt;
-
-&lt;p&gt;I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.&lt;/p&gt;
-
-&lt;p&gt;For example if we look at the reduction in deviance between the Null model and the fitted tree we can say that the tree explains about XYZ% of the variation. We can also test if this is a statistically significant reduction based on a chi-squared test.&lt;/p&gt;
-
-&lt;p&gt;Consider this example from page 310 of Hastie, T., Tibshirani, R., &amp;amp; Friedman, J. (2001). The elements of statistical learning. 2nd Edition:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;in a two-class problem with 400 observations in each class (denote this by (400, 400))&lt;/li&gt;
-&lt;li&gt;suppose one split created nodes (300, 100) and (100, 300),&lt;/li&gt;
-&lt;li&gt;the other created nodes (200, 400) and (200, 0).&lt;/li&gt;
-&lt;li&gt;Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write... I thought would publish it properly.&lt;/p&gt;
-
-&lt;h4&gt;The Tree Model&lt;/h4&gt;
-
-&lt;p&gt;So just before we leave Ritschard and the CART method, let's just fit the model.  Let's also install my R utilities package &quot;disentangle&quot;, to test that we can access the data from it.&lt;/p&gt;
-
-&lt;p&gt;In this analysis the civil status is the outcome (or response or decision or dependent) variable, while sex and activity sector are the predictors (or condition or independent variables).&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# func
-require(rpart)
-require(partykit) 
-require(devtools)
-install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
-
-# load
-fpath &amp;lt;- system.file(file.path(&quot;extdata&quot;, &quot;civst_gend_sector.csv&quot;),
-                     package = &quot;disentangle&quot;
-                     )
-civst_gend_sector &amp;lt;- read.csv(fpath)
-
-# clean
-str(civst_gend_sector)
-
-# do
-fit &amp;lt;- rpart(civil_status ~ gender + activity_sector,
-             data = civst_gend_sector, weights = number_of_cases,
-             control=rpart.control(minsplit=1))
-# NB need minsplit to be adjusted for weights.
-summary(fit)
-
-# report
-dir.create(&quot;images&quot;)
-png(&quot;images/fit1.png&quot;, 1000, 480)
-plot(as.party(fit))
-dev.off()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;The Result&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/fit1.png&quot; alt=&quot;fit1.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  
