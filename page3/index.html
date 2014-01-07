@@ -54,6 +54,88 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I really like the idea of using github or bitbucket for a dual code repository and project website</li>
+<li>in Github I set up the master branch with the R package code</li>
+<li>and set up the website using the gh-pages branch</li>
+<li>it has to be called gh-pages, and add an index.html, it will appear at your-username.github.com/repo-name</li>
+</ul>
+
+
+<h4>Github</h4>
+
+<ul>
+<li>The best bit about doing this on github is that the R package "devtools" can be used to install the package (so long as you can compile the package)</li>
+<li>on windows you may need to install Rtools and configure the path</li>
+</ul>
+
+
+<h4>R Code: install_github</h4>
+
+<pre><code>require(devtools)
+install_github("repo-name", "github-account-name")
+</code></pre>
+
+<h4>Bitbucket</h4>
+
+<ul>
+<li>I recently took these notes about setting up a website on Bitbucket</li>
+<li>I am not sure about how this would work for R packages (the devtools installer mentioned above is a great tool for developing)</li>
+<li>but with unlimited private repositories this seems like a good platform for my "open notebook - selected content" (I need to be selective about what I share and what I keep restricted access only)</li>
+<li>the page is available for "your-account".bitbucket.org</li>
+<li>create a new repo on the web UI</li>
+<li>I kept the repo private, but the pages will be public,</li>
+<li>added issue tracking and Wiki</li>
+</ul>
+
+
+<h4>using git shell</h4>
+
+<pre><code>mkdir ~/projects/your-account.bitbucket.org
+cd ~/projects/your-account.bitbucket.org
+git init
+git remote add origin ssh://git@bitbucket.org/your-account/your-account.bitbucket.org.git
+touch index.org
+# use emacs to make changes and publish the html (C-c C-e h)
+
+git commit -m "First commit"
+git push -u origin master
+</code></pre>
+
+<ul>
+<li><p>now it is online at http://your-account.bitbucket.org/</p></li>
+<li><p>More info at:
+<a href="https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket">https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket</a></p></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/12/dual-code-repository-and-project-website/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Mon Dec 09 00:00:00 +1100 2013">09 Dec 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
     </h1>
     <div class="entry-content full-content">
@@ -911,65 +993,6 @@ model such as this:
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>For a three year project on Bushfire smoke and Health we used the following structure in a wiki</li>
-</ul>
-
-
-<h4>Sections:</h4>
-
-<pre><code>A.Background        
-B.Proposals         
-C.Approvals         
-D.Budget    
-E.Datasets  
-F.Analysis  
-G.Literature        
-H.Communication     
-I.Correspondance    
-J.Meetings  
-K.Completion        
-ContactDetails      
-README
-TODO        
-</code></pre>
-
-<h4>Conclusion</h4>
-
-<ul>
-<li>it worked quite well in the first year.</li>
-<li>we didn't use it much after that.</li>
-<li>it is still on the ANU webserver.  I sometimes refer back to it now, a couple of years later.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/12/research-protocol-we-used-for-our-bushfire-project/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Mon Dec 02 00:00:00 +1100 2013">02 Dec 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1024,145 +1047,145 @@ TODO
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                <li><a href="/categories/blogging">blogging (1)</a></li>
                 
-                <li><a href="/categories/drought">drought (1)</a></li>
+                <li><a href="/categories/research methods">research methods (23)</a></li>
                 
-                <li><a href="/categories/me">me (3)</a></li>
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
-                
-                <li><a href="/categories/supersite">supersite (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
                 
                 <li><a href="/categories/Modelling">Modelling (1)</a></li>
                 
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
                 <li><a href="/categories/orgmode">orgmode (1)</a></li>
                 
                 <li><a href="/categories/workflow">workflow (4)</a></li>
                 
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (13)</a></li>
+                <li><a href="/categories/animation">animation (1)</a></li>
                 
                 <li><a href="/categories/tools">tools (1)</a></li>
                 
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                <li><a href="/categories/make">make (1)</a></li>
                 
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
-                
-                <li><a href="/categories/science">science (2)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
                 
                 <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
                 
-                <li><a href="/categories/research methods">research methods (23)</a></li>
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
                 <li><a href="/categories/organising">organising (2)</a></li>
                 
-                <li><a href="/categories/outlines">outlines (1)</a></li>
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
                 
-                <li><a href="/categories/blogger">blogger (1)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (14)</a></li>
                 
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
                 
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
                 
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                <li><a href="/categories/GIS">GIS (1)</a></li>
                 
                 <li><a href="/categories/statistical models">statistical models (1)</a></li>
                 
-                <li><a href="/categories/blogging">blogging (1)</a></li>
+                <li><a href="/categories/kepler">kepler (1)</a></li>
                 
-                <li><a href="/categories/animation">animation (1)</a></li>
+                <li><a href="/categories/me">me (3)</a></li>
                 
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
                 
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
                 
                 <li><a href="/categories/systems">systems (1)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                <li><a href="/categories/opinion">opinion (1)</a></li>
                 
-                <li><a href="/categories/GIS">GIS (1)</a></li>
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
+                
+                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/science">science (2)</a></li>
+                
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (1)</a></li>
+                
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (2)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/supersite">supersite (1)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/visualisation">visualisation (1)</a></li>
+                
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
                 
               </ul>
             </div>
@@ -1171,6 +1194,10 @@ TODO
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
+                </li>
                 
                 <li>
                   <a href="/2014/01/tumbarumba-supersite-dem/" title="tumbarumba-supersite-dem" rel="bookmark">tumbarumba-supersite-dem</a>
@@ -1366,10 +1393,6 @@ TODO
                 
                 <li>
                   <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/" title="wickhams-tidy-tools-only-get-you-90-pct-the-way" rel="bookmark">wickhams-tidy-tools-only-get-you-90-pct-the-way</a>
                 </li>
                 
               </ul>

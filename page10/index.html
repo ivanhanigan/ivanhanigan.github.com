@@ -54,6 +54,71 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/morpho-and-rfigshare/" title="morpho-and-rfigshare" rel="bookmark">morpho-and-rfigshare</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In this Case Study I will use Morpho to compare directly with reml.</p>
+
+<h1>Step one: Set up morpho</h1>
+
+<ul>
+<li>Follow the instructions at the ASN SuperSite website and install Morpho 1.8 rather than latest version because it has technical issues that stop it from setting permissions.</li>
+<li><a href="http://www.tern-supersites.net.au/index.php/data/repository-tutorial">Configure morpho</a>.  (I will follow the ASN SuperSite instructions as a future Case Study will be to use their KNB Metacat service).</li>
+<li>Do not configure to connect to the Metacat repository, will need a password to be assigned by ASN data manager.</li>
+</ul>
+
+
+<h1>Step 2: Look at the REML created metadata using Morpho</h1>
+
+<ul>
+<li>Morpho offers to open existing sets for modification.</li>
+</ul>
+
+
+<h4>Code: get location of my example dataset</h4>
+
+<pre><code>require(disentangle)
+fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"), package="disentangle")
+fpath
+dirname(fpath)
+# [1] "/home/ivan_hanigan/Rlibs/disentangle/extdata"
+</code></pre>
+
+<ul>
+<li>Morpho > File > import = civst_gend_sector_eml.xml</li>
+<li>(not the figshare_civst_gend_sector_eml.xml that was created when sending to figshare)</li>
+<li>Error encountered.  could not open metadata, open empty data package.  Offered to upgrade (unable to edit > accepted)</li>
+<li>unable to display data, empty data package will be shown</li>
+<li>top menu > Documentation > Add/Edit ion
+
+<h1>Step 3: Create new datasets with Morpho</h1></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/morpho-and-rfigshare/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Mon Oct 14 00:00:00 +1100 2013">14 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
     </h1>
     <div class="entry-content full-content">
@@ -502,188 +567,6 @@ time...."</li>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/" title="wickhams-tidy-tools-only-get-you-90-pct-the-way" rel="bookmark">wickhams-tidy-tools-only-get-you-90-pct-the-way</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h4>Hadley Wickham's tidy tools</h4>
-
-<p>In this video at 8 mins 50 seconds he says "these four tools do 90% of the job"</p>
-
-<ul>
-<li>subset,</li>
-<li>transform,</li>
-<li>summarise, and</li>
-<li>arrange</li>
-<li>TODO I noticed <a href="http://www.rstudio.com/training/curriculum/data-manipulation.html">at the website for an Rstudio  course</a> transform has been replaced by mutate as one of the "four basic verbs of data manipulation".</li>
-</ul>
-
-
-<iframe src="//player.vimeo.com/video/33727555" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-
-<p> <p><a href="http://vimeo.com/33727555">Tidy Data</a> from <a href="http://vimeo.com/user2150538">Drew Conway</a> on <a href="https://vimeo.com">Vimeo</a>.</p></p>
-
-<p>So I thought what's the other 10?  Here's a few contenders for my work:</p>
-
-<ul>
-<li>merge</li>
-<li>reshape::cast and reshape::melt</li>
-<li>unlist</li>
-<li>t() transpose</li>
-<li>sprintf or paste</li>
-</ul>
-
-
-<p></p>
-
-
-<h4>R-subset</h4>
-
-<pre><code># Filter rows by criteria
-subset(airquality, Temp &gt; 90, select = c(Ozone, Temp))
-
-## NB This is a convenience function intended for use interactively.  For
-## programming it is better to use the standard subsetting functions like
-## ‘[’, and in particular the non-standard evaluation of argument
-## ‘subset’ can have unanticipated consequences.
-
-with(airquality,
-     airquality[Temp &gt; 90, c("Ozone", "Temp")]
-     )
-
-# OR
-
-airquality[airquality$Temp &gt; 90,  c("Ozone", "Temp")]
-</code></pre>
-
-<h4>R-transform</h4>
-
-<pre><code># New columns that are functions of other columns       
-df &lt;- transform(airquality,
-                new = -Ozone,
-                Temp2 = (Temp-32)/1.8
-                )
-head(df)
-</code></pre>
-
-<h4>R-mutate</h4>
-
-<pre><code>require(plyr)
-# same thing as transform
-df &lt;- mutate(airquality, new = -Ozone, Temp = (Temp - 32) / 1.8)    
-# Things transform can't do
-df &lt;- mutate(airquality, Temp = (Temp - 32) / 1.8, OzT = Ozone / Temp)
-
-# mutate is rather faster than transform
-system.time(transform(baseball, avg_ab = ab / g))
-system.time(mutate(baseball, avg_ab = ab / g))
-</code></pre>
-
-<h4>R-summarise</h4>
-
-<pre><code># New data.frame where columns are functions of existing columns
-require(plyr)    
-df &lt;- ddply(.data = airquality,
-            .variables = "Month",
-            .fun = summarise,
-            tmax = max(Temp),
-            tav = mean(Temp),
-            ndays = length(unique(Day))
-            )
-head(df)
-</code></pre>
-
-<h4>Passing variables to ddply for summary</h4>
-
-<pre><code># Notice how the name of the variable Temp doesn't need quotes?
-# this means that you need to hard code the names
-# But if you want to pass variables to this inside a function we need a
-# different approach.
-
-summarise_df  &lt;- function(x, by, var1, var2, var3)
-  {
-    data_out &lt;- ddply(x,
-                      by,
-                      function(df) return(
-                        c(
-                          tmax = max(df[,var1]),
-                          tav = mean(df[,var2]),
-                          ndays = length(unique(df[,var3]))
-                          )
-                        )
-                      )
-    return(data_out)
-  }
-
-df2 &lt;- summarise_df(x = airquality, by = "Month",
-                   var1 = "Temp", var2 = "Temp", var3 = "Day"
-                   )
-
-head(df2)
-all.equal(df,df2)
-# TRUE
-</code></pre>
-
-<h4>Another alternative, if we want to pass the dataset as string too</h4>
-
-<pre><code>summarise_df2  &lt;- function(x, by, var1, var2, var3)
-  {
-    data_out &lt;- eval(
-      parse(
-        text =
-        sprintf(
-          "ddply(.data = %s,
-            .variables = '%s',
-            .fun = summarise,
-            tmax = max(%s),
-            tav = mean(%s),
-            ndays = length(unique(%s))
-            )", x, by, var1, var2, var3
-          )
-        )
-      )
-    return(data_out)
-  }
-
-df3 &lt;- summarise_df2(x = "airquality", by = "Month",
-                     var1 = "Temp", var2 = "Temp", var3 = "Day"
-                     )
-head(df3)
-all.equal(df, df3)
-# TRUE
-</code></pre>
-
-<h4>R-arrange</h4>
-
-<pre><code># Re-order the rows of a data.frame
-df &lt;- arrange(airquality, Temp, Ozone)
-head(df)
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Oct 10 00:00:00 +1100 2013">10 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -738,145 +621,145 @@ head(df)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                <li><a href="/categories/blogging">blogging (1)</a></li>
                 
-                <li><a href="/categories/drought">drought (1)</a></li>
+                <li><a href="/categories/research methods">research methods (23)</a></li>
                 
-                <li><a href="/categories/me">me (3)</a></li>
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
-                
-                <li><a href="/categories/supersite">supersite (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
                 
                 <li><a href="/categories/Modelling">Modelling (1)</a></li>
                 
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
                 <li><a href="/categories/orgmode">orgmode (1)</a></li>
                 
                 <li><a href="/categories/workflow">workflow (4)</a></li>
                 
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (13)</a></li>
+                <li><a href="/categories/animation">animation (1)</a></li>
                 
                 <li><a href="/categories/tools">tools (1)</a></li>
                 
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                <li><a href="/categories/make">make (1)</a></li>
                 
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
-                
-                <li><a href="/categories/science">science (2)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
                 
                 <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
                 
-                <li><a href="/categories/research methods">research methods (23)</a></li>
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
                 <li><a href="/categories/organising">organising (2)</a></li>
                 
-                <li><a href="/categories/outlines">outlines (1)</a></li>
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
                 
-                <li><a href="/categories/blogger">blogger (1)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (14)</a></li>
                 
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
                 
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
                 
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                <li><a href="/categories/GIS">GIS (1)</a></li>
                 
                 <li><a href="/categories/statistical models">statistical models (1)</a></li>
                 
-                <li><a href="/categories/blogging">blogging (1)</a></li>
+                <li><a href="/categories/kepler">kepler (1)</a></li>
                 
-                <li><a href="/categories/animation">animation (1)</a></li>
+                <li><a href="/categories/me">me (3)</a></li>
                 
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
                 
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
                 
                 <li><a href="/categories/systems">systems (1)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                <li><a href="/categories/opinion">opinion (1)</a></li>
                 
-                <li><a href="/categories/GIS">GIS (1)</a></li>
+                <li><a href="/categories/overview">overview (4)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
+                
+                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/science">science (2)</a></li>
+                
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (1)</a></li>
+                
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (2)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/supersite">supersite (1)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/visualisation">visualisation (1)</a></li>
+                
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
                 
               </ul>
             </div>
@@ -885,6 +768,10 @@ head(df)
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
+                </li>
                 
                 <li>
                   <a href="/2014/01/tumbarumba-supersite-dem/" title="tumbarumba-supersite-dem" rel="bookmark">tumbarumba-supersite-dem</a>
@@ -1080,10 +967,6 @@ head(df)
                 
                 <li>
                   <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/" title="wickhams-tidy-tools-only-get-you-90-pct-the-way" rel="bookmark">wickhams-tidy-tools-only-get-you-90-pct-the-way</a>
                 </li>
                 
               </ul>
