@@ -6,17 +6,113 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>cwt-lter-data-submission-template-critique</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;A colleague sent me the cwt_data_subm_template_2013.xls today&lt;/li&gt;
+&lt;li&gt;LTER is The U.S. Long-Term Ecological Research (LTER) network&lt;/li&gt;
+&lt;li&gt;I made the following notes, this is not intended to be a nasty critique&lt;/li&gt;
+&lt;li&gt;The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Critique&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;opened first on windows, saw comments on cells with instructions&lt;/li&gt;
+&lt;li&gt;opened next on linux with libreOffice and comments are gone&lt;/li&gt;
+&lt;li&gt;opened at the last tab (split in two for no reason?)&lt;/li&gt;
+&lt;li&gt;noticed recommended name &quot;GCE site&quot; = Site, otherwise &quot;permanent plot&quot; =      Plot?&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://nsmn1.uh.edu/steve/research/gce/gce.htm&quot;&gt;GCE = Georgia Coastal Ecosystems LTER program&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;flip to first tab, point 4 suggests there is some export functionality I cannot see (a VBA script?)&lt;/li&gt;
+&lt;li&gt;cell 11 a    NOTE: When submitting updated metadata or re-using templates please highlight fields with modified contents in yellow&lt;/li&gt;
+&lt;li&gt;and use glitter pen???&lt;/li&gt;
+&lt;li&gt;personnell tab OK&lt;/li&gt;
+&lt;li&gt;instrumentation, variable measured is free text. ok but for eg &quot;max temp&quot;, &quot;temperature maxima&quot;, &quot;maximum temperature (c)&quot; &quot;maximum temperature in 24 hours after 9am local time in degrees&quot; etc&lt;/li&gt;
+&lt;li&gt;too wide, last column was off my wide screen! noticed wasted real estate in column A&lt;/li&gt;
+&lt;li&gt;tabular data &quot;–  Paste or enter your data values into the 'Values' section (white cells), starting with the indicated cell&quot;&lt;/li&gt;
+&lt;li&gt;this is an invitation for clerical error!
+–  Fill in missing values in the table with NaN (not a number), including text fields, and do not skip columns&lt;/li&gt;
+&lt;li&gt;but what about missing values imbued with other meanings (NA = not observed, censored etc)?&lt;/li&gt;
+&lt;li&gt;ask users to format digit rounding in Excel?? oh no&lt;/li&gt;
+&lt;li&gt;old excel users may still be restricted to 65,536 rows by 256 columns.&lt;/li&gt;
+&lt;li&gt;non tabular sheet is ok&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Tue Jan 07 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/01/cwt-lter-data-submission-template-critique/</link>
+			</item>
+		
+			<item>
+				<title>tumbarumba-supersite-dem</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;The first dataset I downloaded from ASN for playing around with was the Tumba Lidar.&lt;/li&gt;
+&lt;li&gt;I had thought it might be better to offer this as a OGC service rather than downloadable geotiff&lt;/li&gt;
+&lt;li&gt;just in terms of the size firstly (104MB)&lt;/li&gt;
+&lt;li&gt;but I also soon realised it would need some specialised tweaking which non-GIS users might struggle a bit and could avoid if the serverside data is set up by a GIS specialist (although can we assume only GIS specialists will download this kind of data)?&lt;/li&gt;
+&lt;li&gt;kudos to &lt;a href=&quot;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&quot;&gt;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:tumbarumba-supersite-dem&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;setwd(&quot;~/data/supersite/tumba-lidar&quot;)
+require(raster)
+fname  &amp;lt;- dir(pattern = &quot;tif$&quot;)
+fname
+r  &amp;lt;- raster(fname)
+str(r)
+dfr &amp;lt;- as.data.frame(r)
+summary(dfr)
+# the -1 code looks like it might be missing?  They are around the edge.
+rna &amp;lt;- reclassify(r, cbind(-1, 1197))
+png(&quot;tumba-lidar.png&quot;)
+plot(rna, col=terrain.colors(100), xlab = &quot;eastings (m)&quot;, ylab = &quot;northings (m)&quot;)
+title(&quot;Tumbarumba Supersite Digital Elevation Model&quot;)
+title(sub = &quot;packageId=lloyd.374.2&quot;)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/tumba-lidar.png&quot; alt=&quot;tumba-lidar.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Alternately use a geoserver&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If we use a Geoserver we could set it up so people can view this without downloading the data&lt;/li&gt;
+&lt;li&gt;following the instructions &lt;a href=&quot;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&quot;&gt;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;using the ANU GIS library server&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;http://brawn.anu.edu.au:8081/geoexplorer/viewer/#maps/1&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PS the map might take a minute to show up, not sure why, might ask the sysadmin to look at the server performance&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Fri Jan 03 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/01/tumbarumba-supersite-dem/</link>
+			</item>
+		
+			<item>
 				<title>extend-Rs-data-frame-class-with-metadata</title>
 				<description>&lt;p&gt;&quot;reml now extends R's data.frame class by introducing the data.set class which includes additional metadata required by EML&quot;
-&lt;a href=&quot;https://github.com/ropensci/reml&quot;&gt;https://github.com/ropensci/reml&lt;/a&gt;&lt;/p&gt;
+https://github.com/ropensci/reml&lt;/p&gt;
 
 &lt;p&gt;and
 &quot;I’d like to define a class that acts just like a data.frame, just like the data.table class does, but contains some additional metadata (e.g. the units associated with the columns) and has some additional methods associated with it (e.g. that might do something with those units) while also working with any function that simply knows how to handle data.frame objects.
 How might this be done?&quot;
-&lt;a href=&quot;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&quot;&gt;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/a&gt;&lt;/p&gt;
+http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/p&gt;
 
 &lt;p&gt;Also this guys attempt was interesting (I like TraMineR too!)
-&lt;a href=&quot;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&quot;&gt;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/a&gt;&lt;/p&gt;
+http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/p&gt;
 </description>
 				<published>Tue Dec 24 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/12/extend-Rs-data-frame-class-with-metadata/</link>
@@ -724,82 +820,6 @@ outdir = getwd()
 </description>
 				<published>Fri Dec 13 00:00:00 +1100 2013</published>
 				<link>http://schamberlain.github.com/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode/</link>
-			</item>
-		
-			<item>
-				<title>dual-code-repository-and-project-website</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;I really like the idea of using github or bitbucket for a dual code repository and project website&lt;/li&gt;
-&lt;li&gt;in Github I set up the master branch with the R package code&lt;/li&gt;
-&lt;li&gt;and set up the website using the gh-pages branch&lt;/li&gt;
-&lt;li&gt;it has to be called gh-pages, and add an index.html, it will appear at your-username.github.com/repo-name&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Github&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The best bit about doing this on github is that the R package &quot;devtools&quot; can be used to install the package (so long as you can compile the package)&lt;/li&gt;
-&lt;li&gt;on windows you may need to install Rtools and configure the path&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code: install_github&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(devtools)
-install_github(&quot;repo-name&quot;, &quot;github-account-name&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Bitbucket&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I recently took these notes about setting up a website on Bitbucket&lt;/li&gt;
-&lt;li&gt;I am not sure about how this would work for R packages (the devtools installer mentioned above is a great tool for developing)&lt;/li&gt;
-&lt;li&gt;but with unlimited private repositories this seems like a good platform for my &quot;open notebook - selected content&quot; (I need to be selective about what I share and what I keep restricted access only)&lt;/li&gt;
-&lt;li&gt;the page is available for &quot;your-account&quot;.bitbucket.org&lt;/li&gt;
-&lt;li&gt;create a new repo on the web UI&lt;/li&gt;
-&lt;li&gt;I kept the repo private, but the pages will be public,&lt;/li&gt;
-&lt;li&gt;added issue tracking and Wiki&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;using git shell&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;mkdir ~/projects/your-account.bitbucket.org
-cd ~/projects/your-account.bitbucket.org
-git init
-git remote add origin ssh://git@bitbucket.org/your-account/your-account.bitbucket.org.git
-touch index.org
-# use emacs to make changes and publish the html (C-c C-e h)
-
-git commit -m &quot;First commit&quot;
-git push -u origin master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;now it is online at http://your-account.bitbucket.org/&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;More info at:
-&lt;a href=&quot;https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket&quot;&gt;https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Mon Dec 09 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/12/dual-code-repository-and-project-website/</link>
-			</item>
-		
-			<item>
-				<title>bitbucket-has-unlimited-private-git-repositories-for-universities</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;I just got introduced to bitbucket, an alternative to Github&lt;/li&gt;
-&lt;li&gt;I've used Github for a couple of years and have been paying for extra private repositories&lt;/li&gt;
-&lt;li&gt;I did not realise that bitbucket worked with git too (I thought it was just for Mercurial)&lt;/li&gt;
-&lt;li&gt;it offers unlimited public and private repository and unlimited users (to collaborate) if you have the Academic plan.&lt;/li&gt;
-&lt;li&gt;when you sign up with your academic email address, &lt;a href=&quot;http://blog.bitbucket.org/2011/04/01/free-unlimited-user-source-code-hosting-for-university-students/&quot;&gt;you automatically get an unlimited academic plan&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Mon Dec 09 00:00:00 +1100 2013</published>
-				<link>http://schamberlain.github.com/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/</link>
 			</item>
 		
 	</channel>
