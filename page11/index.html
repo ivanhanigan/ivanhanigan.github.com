@@ -54,6 +54,92 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/reml-and-rfigshare-part-2/" title="reml-and-rfigshare-part-2" rel="bookmark">reml-and-rfigshare-part-2</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In the last post I explored the functionality of reml.
+This time I will try to send data to figshare.</p>
+
+<ul>
+<li>First follow <a href="https://github.com/ropensci/rfigshare">These Instructions</a> to get rfigshare set up.  In particular store your figshare credentials in ~/.Rprofile</li>
+</ul>
+
+
+<h4>Code:reml-and-rfigshare-part-2</h4>
+
+<pre><code># func
+require(devtools)
+install_github("reml", "ropensci")
+require(reml)
+install_github("rfigshare", "ropensci")
+require(rfigshare)
+install_github("disentangle", "ivanhanigan")
+require(disentangle)
+# load
+fpath &lt;- system.file(file.path("extdata","civst_gend_sector_eml.xml"), package = "disentangle")
+setwd(dirname(fpath))
+obj &lt;- eml_read(fpath)
+# clean
+obj
+# do
+
+## STEP 1: find one of the preset categories
+# available. We can ask the API for
+# a list of all the categories:
+list &lt;- fs_category_list()
+list[grep("Survey", list)]
+
+## STEP 2: PUBLISH TO FIGSHARE
+id &lt;- eml_publish(fname,
+                  description="Example EML
+                    A fictional dataset",
+                  categories = "Survey results",
+                  tags = "EML",
+                  destination="figshare"
+                  )
+# there are several warnings
+# but go to figshare and it has sent the metadata and data OK
+
+# make public using either the figshare web interface, the
+# rfigshare package (using fs_make_public(id)) or just by adding
+# the argument visibility = TRUE to the above eml_publish
+fs_make_public(id)
+</code></pre>
+
+<p></p>
+
+
+<h1>Now these data are on figshare</h1>
+
+<p>Now I have published the data they are visible and have a DOI</p>
+
+<iframe src="http://wl.figshare.com/articles/820158/embed?show_title=1" width="568" height="157" frameborder="0"></iframe>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/reml-and-rfigshare-part-2/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sat Oct 12 00:00:00 +1100 2013">12 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/data-documentation-case-study-reml-and-rfigshare/" title="data-documentation-case-study-reml-and-rfigshare" rel="bookmark">data-documentation-case-study-reml-and-rfigshare</a>
     </h1>
     <div class="entry-content full-content">
@@ -641,313 +727,6 @@ dev.off()
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/simple-example-using-nmmaps/" title="simple-example-using-nmmaps" rel="bookmark">simple-example-using-nmmaps</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I will use the NMMAPSlite datasets for a simple example of what I am trying to do.</p>
-
-<!-- begin_src R :session *R* :tangle NMMAPS-example/NMMAPS-example-code.r :exports none :eval no -->
-
-
-<h4>Code: get nmmaps data</h4>
-
-<pre><code># func
-if(!require(NMMAPSlite)) install.packages('NMMAPSlite');require(NMMAPSlite)
-require(mgcv)
-require(splines)
-
-######################################################
-# load  
-setwd('data')
-initDB('data/NMMAPS') # this requires that we connect to the web,
-                      # so lets get local copies
-setwd('..')
-cities &lt;- getMetaData('cities')
-head(cities)
-citieslist &lt;- cities$cityname
-# write out a few cities for access later
-for(city_i in citieslist[sample(1:nrow(cities), 9)])
-{
- city &lt;- subset(cities, cityname == city_i)$city
- data &lt;- readCity(city)
- write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
- row.names = F, sep = ',')
-}
-# these are all tiny, go some big ones
-for(city_i in c('New York', 'Los Angeles', 'Madison', 'Boston'))
-{
- city &lt;- subset(cities, cityname == city_i)$city
- data &lt;- readCity(city)
- write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
- row.names = F, sep = ',')
-}
-
-######################################################
-# now we can use these locally
-dir("data")
-city &lt;- "Chicago"
-data &lt;- read.csv(sprintf("data/%s.csv", city), header=T)
-str(data)
-data$yy &lt;- substr(data$date,1,4)
-data$date &lt;- as.Date(data$date)
-######################################################
-# check
-par(mfrow=c(2,1), mar=c(4,4,3,1))
-with(subset(data[,c(1,15:25)], agecat == '75p'),
-  plot(date, tmax)
- )
-with(subset(data[,c(1,4,15:25)], agecat == '75p'),
-        plot(date, cvd, type ='l', col = 'grey')
-        )
-with(subset(data[,c(1,4,15:25)], agecat == '75p'),
-        lines(lowess(date, cvd, f = 0.015))
-        )
-# I am worried about that outlier
-data$date[which(data$cvd &gt; 100)]
-# [1] "1995-07-15" "1995-07-16"
-
-######################################################
-# do standard NMMAPS timeseries poisson GAM model
-numYears&lt;-length(names(table(data$yy)))
-df &lt;- subset(data, agecat == '75p')
-df$time &lt;- as.numeric(df$date)
-fit &lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = poisson)
-# plot of response functions
-par(mfrow=c(2,2))
-plot(fit)
-dev.off()
-
-######################################################
-# some diagnostics
-summary(fit)
-# note the R-sq.(adj) =   0.21
-gam.check(fit)
-# note the lack of a leverage plot.  for that we need glm
-
-######################################################
-# do same model as glm
-fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
-# plot responses
-par(mfrow=c(2,2))
-termplot(fit2, se =T)
-dev.off()
-
-# plot prediction
-df$predictedCvd &lt;- predict(fit2, df, 'response')
-# baseline is given by the intercept
-fit3 &lt;- glm(cvd ~ 1, data = df, family = poisson)
-df$baseline &lt;-  predict(fit3, df, 'response')
-with(subset(df, date&gt;=as.Date('1995-01-01') &amp; date &lt;= as.Date('1995-07-31')),
- plot(date, cvd, type ='l', col = 'grey')
-        )
-with(subset(df, date&gt;=as.Date('1995-01-01') &amp; date &lt;= as.Date('1995-07-31')),
-        lines(date,predictedCvd)
-        )
-with(subset(df, date&gt;=as.Date('1995-01-01') &amp; date &lt;= as.Date('1995-07-31')),
- lines(date,baseline)
-        )
-######################################################
-# some diagnostics
-# need to load a function to calculate poisson adjusted R squared
-# original S code from
-# The formula for pseudo-R^2 is taken from G. S. Maddalla,
-# Limited-dependent and Qualitative Variables in Econometrics, Cambridge:Cambridge Univ. Press, 1983. page 40, equation 2.50.
-RsquaredGlm &lt;- function(o) {
- n &lt;- length(o$residuals)
- ll &lt;- logLik(o)[1]
- ll_0 &lt;- logLik(update(o,~1))[1]
- R2 &lt;- (1 - exp(((-2*ll) - (-2*ll_0))/n))/(1 - exp( - (-2*ll_0)/n))
- names(R2) &lt;- 'pseudo.Rsquared'
- R2
- }
-RsquaredGlm(fit2)
-# 0.51
-# the difference is presumably due to the arguments about how to account for unexplainable variance in the poisson distribution?
-
-# significance of spline terms
-drop1(fit2, test='Chisq')
-# also note AIC. best model includes all of these terms
-# BIC can be computed instead (but still labelled AIC) using
-drop1(fit2, test='Chisq', k = log(nrow(data)))
-
-# diagnostic plots
-par(mfrow=c(2,2))
-plot(fit2)
-dev.off()
-# note high leverage plus residuals points are labelled
-# leverage doesn't seem to be too high though which is good
-# NB the numbers refer to the row.names attribute which still refer to the original dataset, not this subset
-df[row.names(df) %in% c(9354,9356),]$date
-# as suspected [1] "1995-07-15" "1995-07-16"
-
-######################################################
-# so lets re run without these obs
-df2 &lt;- df[!row.names(df) %in% c(9354,9356),]
-# to avoid duplicating code just re run fit2, replacing data=df with df2
-# tmax still significant but not so extreme
-# check diagnostic plots again
-par(mfrow=c(2,2))
-plot(fit2)
-dev.off()
-# looks like a well behaved model now.
-
-# if we were still worried about any high leverage values we could identify these with
-df3 &lt;- na.omit(df2[,c('cvd','pm10tmean','tmax','dptp','time')])
-df3$hatvalue &lt;- hatvalues(fit2)
-df3$res &lt;- residuals(fit2, 'pearson')
-with(df3, plot(hatvalue, res))
-# this is the same as the fourth default glm diagnostic plot, which they label x-axis as leverage
-summary(df3$hatvalue)
-# gives us an idea of the distribution of hat values
-# decide on a threshold and look at it
-hatThreshold &lt;- 0.1
-with(subset(df3, hatvalue &gt; hatThreshold), points(hatvalue, res, col = 'red', pch = 16))
-abline(0,0)
-segments(hatThreshold,-2,hatThreshold,15)
-dev.off()
-
-fit3 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = subset(df3, hatvalue &lt; hatThreshold), family = poisson)
-par(mfrow=c(2,2))
-termplot(fit3, se = T)
-# same same
-plot(fit3)
-# no better
-
-# or we could go nuts with a whole number of ways of estimating influence
-# check all influential observations
-infl &lt;- influence.measures(fit2)
-# which observations 'are' influential
-inflk &lt;- which(apply(infl$is.inf, 1, any))
-length(inflk)
-
-
-######################################################
-# now what about serial autocorrelation in the residuals?
-
-par(mfrow = c(2,1))
-with(df3, acf(res))
-with(df3, pacf(res))
-dev.off()
-
-
-
-######################################################
-# just check for overdispersion
-fit &lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = quasipoisson)
-summary(fit)
-# note the Scale est. = 1.1627
-# alternatively check the glm
-fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = quasipoisson)
-summary(fit2)
-# (Dispersion parameter for quasipoisson family taken to be 1.222640)
-# this is probably near enough to support a standard poisson model...
-
-# if we have overdispersion we can use QAIC (A quasi- mode does not have a likelihood and so does not have an AIC,  by definition)
-# we can use the poisson model and calculate the overdispersion
-fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
-1- pchisq(deviance(fit2), df.residual(fit2))
-
-# QAIC, c is the variance inflation factor, the ratio of the residual deviance of the global (most complicated) model to the residual degrees of freedom
-c=deviance(fit2)/df.residual(fit2)
-QAIC.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1)
-QAIC.1
-
-# Actually lets use QAICc which is more conservative about parameters,
-QAICc.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1) + 2*(length(coef(fit2)) + 1)*(length(coef(fit2)) + 1 + 1)/(nrow(na.omit(df[,c('cvd','pm10tmean','tmax','dptp','time')]))- (length(coef(fit2))+1)-1)
-QAICc.1
-
-
-######################################################
-# the following is old work, some may be interesting
-# such as the use of sinusoidal wave instead of smooth function of time
-
-
-# # sine wave
-# timevar &lt;- as.data.frame(names(table(df$date)))
-# index &lt;- 1:length(names(table(df$date)))
-# timevar$time2 &lt;- index / (length(index) / (length(index)/365.25))
-# names(timevar) &lt;- c('date','timevar')
-# timevar$date &lt;- as.Date(timevar$date)
-# df &lt;- merge(df,timevar)
-
-# fit &lt;- gam(cvd ~ s(tmax) + s(dptp) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
-# summary(fit)
-# par(mfrow=c(3,2))
-# plot(fit, all.terms = T)
-# dev.off()
-
-# # now just explore the season fit
-# fit &lt;- gam(cvd ~ sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
-# yhat &lt;- predict(fit)
-# head(yhat)
-
-# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(15,55)))
-# lines(df[,'date'],exp(yhat),col='red')
-
-
-# # drop1(fit, test= 'Chisq')
-
-# # drop1 only works in glm?
-# # fit with weather variables, use degrees of freedom estimated by gam
-# fit &lt;- glm(cvd ~ ns(tmax,8) + ns(dptp,2) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
-# drop1(fit, test= 'Chisq')
-# # use plot.glm for diagnostics
-# par(mfrow=c(2,2))
-# plot(fit)
-# par(mfrow=c(3,2))
-# termplot(fit, se=T)
-# dev.off()
-
-# # cyclic spline, overlay on prior sinusoidal
-# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(0,55)))
-# lines(df[,'date'],exp(yhat),col='red')
-
-# df$daynum &lt;- as.numeric(format(df$date, "%j"))
-# df[360:370,c('date','daynum')]
-# fit &lt;- gam(cvd ~ s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
-# yhat2 &lt;- predict(fit)
-# head(yhat2)
-
-# lines(df[,'date'],exp(yhat2),col='blue')
-
-
-# par(mfrow=c(1,2))
-# plot(fit)
-
-
-# # fit weather with season
-# fit &lt;- gam(cvd ~ s(tmax) + s(dptp) +
-  # s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
-# par(mfrow=c(2,2))
-# plot(fit)
-
-# summary(fit)
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/simple-example-using-nmmaps/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Oct 10 00:00:00 +1100 2013">10 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1002,147 +781,147 @@ QAICc.1
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/GIS">GIS (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (15)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (24)</a></li>
-                
-                <li><a href="/categories/supersite">supersite (1)</a></li>
-                
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
-                
-                <li><a href="/categories/science">science (2)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
                 <li><a href="/categories/datasharing">datasharing (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
-                
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
                 
                 <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
                 <li><a href="/categories/gisviz">gisviz (1)</a></li>
                 
-                <li><a href="/categories/notebook">notebook (1)</a></li>
+                <li><a href="/categories/data science">data science (1)</a></li>
                 
-                <li><a href="/categories/overview">overview (4)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
                 
                 <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
                 
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
                 
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
                 
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
                 
-                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (5)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (15)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
                 
                 <li><a href="/categories/workflow">workflow (4)</a></li>
                 
                 <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
                 
                 <li><a href="/categories/drought">drought (1)</a></li>
                 
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                
+                <li><a href="/categories/India Overview">India Overview (1)</a></li>
                 
                 <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
+                
+                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/ons">ons (2)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                
+                <li><a href="/categories/statistical models">statistical models (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/visualisation">visualisation (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/GIS">GIS (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                
+                <li><a href="/categories/Modelling">Modelling (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (25)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
+                
+                <li><a href="/categories/science">science (2)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                
+                <li><a href="/categories/supersite">supersite (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
                 
               </ul>
             </div>
@@ -1151,6 +930,10 @@ QAICc.1
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
+                </li>
                 
                 <li>
                   <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
@@ -1346,10 +1129,6 @@ QAICc.1
                 
                 <li>
                   <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/reml-and-rfigshare-part-2/" title="reml-and-rfigshare-part-2" rel="bookmark">reml-and-rfigshare-part-2</a>
                 </li>
                 
               </ul>
