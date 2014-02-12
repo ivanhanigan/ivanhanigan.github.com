@@ -4,13 +4,38 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2014-01-26T08:03:24+11:00</updated>
+ <updated>2014-02-12T14:27:21+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Template Reproducible Research with R TEX and Sweave</title>
+   <link href="http://schamberlain.github.com/2014/02/template-reproducible-research-with-r-tex-and-sweave/"/>
+   <updated>2014-02-12T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2014/02/template-reproducible-research-with-r-tex-and-sweave</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;Last year I wrote to a Professor to let them know some numbers that quantified their effect estimate (computed be exponentiating their beta coefficient) described in their results section was inconsistent with the numbers in their table (the raw coefficients).&lt;/li&gt;
+&lt;li&gt;Happily the recalculation showed that they had underestimated the effect size and their conclusions were not wrong, but erroneously conservative.&lt;/li&gt;
+&lt;li&gt;Previously I would use Sweave documents to keep track of all my calculations, but I was still copy-and-pasting the key numbers into the text.&lt;/li&gt;
+&lt;li&gt;I've become more interested now in using Inline R Outputs (called Sexpr - S expressions)&lt;/li&gt;
+&lt;li&gt;This is also the first time I've created a report using the Palatino font, on the advice of a new colleague of mine.&lt;/li&gt;
+&lt;li&gt;I popped up a &lt;a href=&quot;https://github.com/ivanhanigan/DataDocumentation&quot;&gt;Github repo with a Sweave template for Reproducible Reports with a few notes I made&lt;/a&gt;.  Which looks like&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/sexpr.png&quot; alt=&quot;/images/sexpr.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.pdf&quot;&gt;PDF output is here&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.Rnw&quot;&gt;Sweave file is here&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</title>
@@ -5725,106 +5750,6 @@ dirname(fpath)
 &lt;li&gt;top menu &gt; Documentation &gt; Add/Edit ion
 
 &lt;h1&gt;Step 3: Create new datasets with Morpho&lt;/h1&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</content>
- </entry>
- 
- <entry>
-   <title>dc-uploader-and-ANU-DataCommons</title>
-   <link href="http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons/"/>
-   <updated>2013-10-13T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/10/dc-uploader-and-ANU-DataCommons</id>
-   <content type="html">&lt;p&gt;In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.&lt;/p&gt;
-
-&lt;h1&gt;What does it do?&lt;/h1&gt;
-
-&lt;p&gt;The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.&lt;/p&gt;
-
-&lt;p&gt;Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.&lt;/p&gt;
-
-&lt;h1&gt;Create the metadata.txt&lt;/h1&gt;
-
-&lt;p&gt;You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.&lt;/p&gt;
-
-&lt;p&gt;change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.&lt;/p&gt;
-
-&lt;p&gt;Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.&lt;/p&gt;
-
-&lt;p&gt;You can look int the &quot;Keys.txt&quot; file that contains the full list of values that can be specified in this metadata.txt file.&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;setwd(&quot;~/tools/dcupload&quot;)
-sink(&quot;metadata.txt&quot;)
-cat(&quot;
-# This file, referred to as a collection parameter file, consists of
-# data in key=value pairs. This data is sent to the ANU Data Commons
-# to create a collection, establish relations with other records,
-# and/or upload files to those collections.
-
-# The metadata section consists of metadata for use in creation (not
-# for modification) of record metadata in ANU Data Commons. The
-# following fields are required for the creation of a record. The file
-# Keys.txt contains the full list of values that can be specified in
-# this file. Based on this information below, a collection record of
-# type databaset with the title &quot;Test Collection 6/05/2013&quot; will be
-# created owned by Meteorology and Health group.
-[metadata]
-type = Collection
-subType = dataset
-ownerGroup = 5
-# 6 on production, 5 on dev
-name = Civil Status, Gender and Activity Sector
-briefDesc = An example, fictional dataset for Decision Tree Models
-citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
-email = ivan.hanigan@anu.edu.au
-anzforSubject = 1601
-
-# The relations section allows you to specify the relation this record
-# has with other records in the system.  Currently relations with NLA
-# identifiers is not supported.
-[relations]
-isOutputOf = anudc:123
-
-# This section contains a line of the form 'pid = anudc:123' once a
-# record has been created so executing the uploader script with the
-# same collection parameter file doesnt create a new record with the
-# same metadata.
-[pid]
-&quot;)
-sink()
-
-# run the dcload
-system(&quot;python3 dcuploader.py -c metadata.txt&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;What happened?&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Looking in the metadata.txt file it now has a pid like &quot;pid = test:3527&quot;&lt;/li&gt;
-&lt;li&gt;And we have created a new record in our account on the DataCommons server.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h1&gt;go to the website&lt;/h1&gt;
-
-&lt;p&gt;Now go to &lt;a href=&quot;https://dc7-dev2.anu.edu.au:8443/DataCommons/&quot;&gt;the dev site&lt;/a&gt; and you can continue editing the record manually in the browser.&lt;/p&gt;
-
-&lt;p&gt;Or if we have ironed out the wrinkles you could go straight to the production server at &lt;a href=&quot;https://datacommons.anu.edu.au:8443/DataCommons&quot;&gt;This Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1&gt;Uploading the data&lt;/h1&gt;
-
-&lt;p&gt;The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.&lt;/p&gt;
-
-&lt;h1&gt;Notes&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 </content>
