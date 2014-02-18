@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+	<channel>
+		<title>Recology</title>
+		<description>An exploration of using R for ecology, evolution, and open science.</description>
+		<link>http://schamberlain.github.com</link>
+		
+			<item>
+				<title>Template Reproducible Research with R TEX and Sweave</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;Last year I wrote to a Professor to let them know some numbers that quantified their effect estimate (computed be exponentiating their beta coefficient) described in their results section was inconsistent with the numbers in their table (the raw coefficients).&lt;/li&gt;
+&lt;li&gt;Happily the recalculation showed that they had underestimated the effect size and their conclusions were not wrong, but erroneously conservative.&lt;/li&gt;
+&lt;li&gt;Previously I would use Sweave documents to keep track of all my calculations, but I was still copy-and-pasting the key numbers into the text.&lt;/li&gt;
+&lt;li&gt;I've become more interested now in using Inline R Outputs (called Sexpr - S expressions)&lt;/li&gt;
+&lt;li&gt;This is also the first time I've created a report using the Palatino font, on the advice of a new colleague of mine.&lt;/li&gt;
+&lt;li&gt;I popped up a &lt;a href=&quot;https://github.com/ivanhanigan/DataDocumentation&quot;&gt;Github repo with a Sweave template for Reproducible Reports with a few notes I made&lt;/a&gt;.  Which looks like&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/sexpr.png&quot; alt=&quot;/images/sexpr.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.pdf&quot;&gt;PDF output is here&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.Rnw&quot;&gt;Sweave file is here&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Wed Feb 12 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/02/template-reproducible-research-with-r-tex-and-sweave/</link>
+			</item>
+		
+			<item>
+				<title>studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</title>
+				<description>&lt;p&gt;Yesterday I had the opportunity to review the Tree based modelling methods we are implementing in a study I'm working on at the moment.
+I based the discussion on &lt;a href=&quot;http://www.tandfonline.com/doi/abs/10.1080/00330124.2012.724347&quot;&gt;a paper from 2012&lt;/a&gt;, along with &lt;a href=&quot;/pdfs/TreeModelNotes.pdf&quot;&gt;some notes I have made related to the use of these methods in our context&lt;/a&gt;.
+I had an hour and a half with a couple of senior statisticians and a bunch of sociologists at the study group yesterday.&lt;/p&gt;
+
+&lt;h4&gt;My main question for the group was:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;What do you think of the proposition that these models are suitable for &quot;studies that test hypotheses generated from multiple theories&quot;?&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;The statisticians where underwhelmed by the Cutts study, but thought the stats method was &quot;neat&quot; and one had not heard of tree models before (!).&lt;/p&gt;
+
+&lt;h4&gt;Key outcomes of that session were:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;First stage PCA&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Q: did they need to do the PCA first stage to either a) reduce the the large number of potentially collinear variables or b) to control for measurement error?&lt;/li&gt;
+&lt;li&gt;A: No they didn't need the PCA.  The large number, collinearity and measurement efficacy are dealt with by the tree based methods (ie cross-validation on steroids, grouping primary and surrogate splits, etc).  Also the trees have an advantage with the large number of predictors in that they are non-parametric and able to automatically detect interactions whereas PCA is parametric and typically assumes linearity. (Note that I saw Steve afterward and he is still not convinced.  Maybe he will respond to this with some description of the reason why not?)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Rescaling the variables&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Q: Did they need to centre each variable on the grand sample mean so that the relative weight of each variable was even?&lt;/li&gt;
+&lt;li&gt;A: No the tree models are not effected by this, and it reduced the interpret-ability of the decision tree graphic.  The PCA is effected, however, and maybe that is why they did it.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Multiple working hypotheses&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Q: What do you think of the Cutts et al proposition that these models are suitable for &quot;studies that test hypotheses generated from multiple theories&quot;?&lt;/li&gt;
+&lt;li&gt;A: It is a promising approach.  Not clear from this study if it is successful but the proposition is plausible.  It has more of a chance than the General Linear Model approach which cannot (this point was made categorically by one of the statisticians).  It will be important to be very clear about what exactly each of the &quot;Theories&quot; are predicting, so that the explanatory power attributable to those variables from one &quot;theory&quot; can be compared with that of the other theories.  The ability to uncover complex interactions is very attractive (extrovert/introvert personality type interacting with group demographics etc) but it also increases the potential for spurious results (and 'chasing the noise') ergo the need to base inferences on what the theories predict, not just on what the data reveal.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In general we thought that authors had overdone the stats.  It showed what 'could' be done with trees and forests, but possibly not what 'should' be done.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Is the A3 variable really missing from ctree output but dominant in the randomForest in Figure3?&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;when another group I'm in reviewed it last year it was noted as odd that fig3 has A3 most important in randomforest but does not appear in ctree. At the time I thought this might be due to the cross validation like in the rpart or tree package, but it turns out that ctree does not do that....&lt;/li&gt;
+&lt;li&gt;Mislabelling is a possibility as these graphics appear to be edited from the default produced by the 'party' package.&lt;/li&gt;
+&lt;li&gt;However, it also reasonable that these results could be correct. ctree (and rpart, tree, etc.) use greedy algorithms, meaning that the best local split is used even if this is suboptimal globally.&lt;/li&gt;
+&lt;li&gt;Basically there are algorithmic reasons that this might be a true difference between ctree and randomforest.  It might just have been the way the cookie crumbled for the ctree's best local split which may not have survived through the randomForest's  thousands of iterations.&lt;/li&gt;
+&lt;li&gt;But on page 569 they do say &quot;total knowledge is lowest among those whod do not think that they are empowered and are unaware of information sources&quot; which implies to me that the top or left-most node might be mis-labelled I3 when it is actually A3.&lt;/li&gt;
+&lt;li&gt;this would give the appropriate left most box plot (ie I3 &amp;lt;= -0.22 &amp;amp; A3 &amp;lt;= -0.64 gives lowest total knowledge??)&lt;/li&gt;
+&lt;li&gt;at the group yesterday people also generally suspected mislabelling, given the dominance of A3 in randomforest.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Thu Jan 23 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/</link>
+			</item>
+		
+			<item>
+				<title>Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</title>
+				<description>&lt;h1&gt;Aim&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;a href=&quot;https://github.com/ropensci/EML&quot;&gt;EML R package&lt;/a&gt; uses the Ecological Metadata Language (EML) approach that allows archiving of very heterogeneous data without having to standardize everything into a narrow and pre-defined syntax.&lt;/li&gt;
+&lt;li&gt;XML files in specificed schemas involve strict criteria and are thus best generated by software.&lt;/li&gt;
+&lt;li&gt;Morpho is an application that provides another GUI based method of generating EML but is a rather tedious tool for generating EML files. Unfortunately, without the ability to script inputs or automatically detect existing data structures, we are forced through the rather arduous process of adding all metadata annotation each time.&lt;/li&gt;
+&lt;li&gt;The aim of this experiment is to use the EML package to create some advanced metadata quickly and then finish this off with Morpho, using &lt;a href=&quot;http://en.wikipedia.org/wiki/Boilerplate_code&quot;&gt;&quot;boilerplate code&quot;&lt;/a&gt; wherever possible.&lt;/li&gt;
+&lt;li&gt;this builds on my previous post &lt;a href=&quot;http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry&quot;&gt;http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Background&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I am basically very lazy when it comes to entering metadata and when I use the Morpho package for metadata data entry I get frustrated with having to step through ever SINGLE variable and use the drop down menus etc to describe them as essentially &quot;number&quot; or &quot;text&quot;&lt;/li&gt;
+&lt;li&gt;A big reason I like Morpho is because Metacat is a great data portal and Kepler is a promising scientific workflow tool, and all three are produced by the same group so it would be great to get them working together...&lt;/li&gt;
+&lt;li&gt;Morpho and Metacat are open source software designed to host all kinds of ecological data. More information about it can be found &lt;a href=&quot;http://knb.ecoinformatics.org/index.jsp&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;More info about the Metacat Data Portal System is &lt;a href=&quot;https://knb.ecoinformatics.org/knb/docs/&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;For technical reasons, I'm running an older version of the Morpho software because I'm working with an older version of the  Metacat portal software and so are also constrained to running the older Morpho version too (but will be upgrading soon).&lt;/li&gt;
+&lt;li&gt;You might want to look at the background of the Ecological Metadata Language (EML) standard.  I like this page &lt;a href=&quot;http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html&quot;&gt;http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html&lt;/a&gt; along with the references he cites at the bottom.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Material&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;To tie this experiment back to something that is actually useful for a scientist, I will use the field-based example data on the effects on mulgara of removing spinifex, from:&lt;/p&gt;
+
+&lt;p&gt;  McCarthy, M. a., &amp;amp; Masters, P. (2005). Profiting from prior
+  information in Bayesian analyses of ecological data. Journal of
+  Applied Ecology, 42(6),
+  1012–1019. doi:10.1111/j.1365-2664.2005.01101.x&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Brief description is:&lt;/p&gt;
+
+&lt;p&gt;  an experimental manipulation of habitat was conducted by Masters,
+  Dickman &amp;amp; Crowther (2003) in which vegetation cover of a site in
+  arid inland Australia was reduced and the response of the mammal
+  fauna monitored.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;you can find the data in the download file from &lt;a href=&quot;http://www.nceas.ucsb.edu/~mccarthy/research.html&quot;&gt;the &quot;Code for analysing the mulgara experiment&quot; from here&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;I first checked that these data aren;t already on &lt;a href=&quot;https://knb.ecoinformatics.org/m/&quot;&gt;the KNB repository&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I searched for Marsupial, Australia, Mulgara and etc, finding no hits.&lt;/li&gt;
+&lt;li&gt;We will assume that these data are not already published there.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Methods&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Step one install the github version of EML and &lt;a href=&quot;http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/#sec-1-9&quot;&gt;a function I wrote for this a while back&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Note that I made a few changes since that post &lt;a href=&quot;https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r&quot;&gt;https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# func
+library(&quot;devtools&quot;)
+install_github(&quot;EML&quot;, &quot;ropensci&quot;)       
+library(&quot;EML&quot;)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)       
+library(&quot;disentangle&quot;)
+
+# load                                                                    
+datatext &amp;lt;- 'Treat, Before, After1, After2
+0,  2.833213344,    1.609437912,    2.48490665
+0,  1.791759469,    2.197224577,    2.079441542
+0,  3.044522438,    2.708050201,    3.135494216
+0,  2.772588722,    1.791759469,    2.197224577
+0,  1.098612289,    1.609437912,    2.63905733
+1,  2.944438979,    0.693147181,    1.791759469
+1,  2.564949357,    0.693147181,    1.791759469
+1,  2.564949357,    1.609437912,    1.609437912
+1,  0.693147181,    1.098612289,    1.098612289
+1,  1.609437912,    0,      1.098612289'
+analyte &amp;lt;- read.csv(textConnection(datatext))
+
+# check
+analyte
+
+# do
+## from a work dir with a subdir for data
+write.csv(analyte, &quot;data/mulgara.csv&quot;, row.names = F)
+reml_boilerplate(
+  data_set = analyte
+  ,
+  created_by = &quot;Ivan Hanigan &amp;lt;ivanhanigan@gmail.com&amp;gt;&quot;
+  ,
+  data_dir = &quot;data&quot;
+  ,
+  titl = &quot;mulgara&quot;
+  ,
+  desc = &quot;Experimental data: effect of cover reduction on mulgara Dasycercus cristicauda&quot;
+  )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Now open morpho and under file &gt; import browse to this  data directory and import.&lt;/li&gt;
+&lt;li&gt;Got several warnings, about unable to display data, and an older version that could be updated&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Results&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Result does not display  in morpho&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/mulgara-morpho-import.png&quot; alt=&quot;mulgara-morpho-import.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Discussion&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;There is something different about the way the EML R package writes the data and what Morpho 1.8 is expecting.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Conclusions&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Further research is required.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Tue Jan 21 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/</link>
+			</item>
+		
+			<item>
+				<title>Github, gh-pages and disqus comments</title>
+				<description>&lt;p&gt;A while ago I posted about &lt;a href=&quot;http://ivanhanigan.github.io/2013/11/sharing-and-extending-research-protocols/&quot;&gt;sharing-and-extending-research-protocols&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I've started a new experiment for hosting a discussion around issues, suggesting new issues, agreeing on solutions, toward an agreement on methods that could become a protocol:
+&lt;a href=&quot;http://ivanhanigan.github.com/datasharing&quot;&gt;http://ivanhanigan.github.com/datasharing&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I forked the material from the original author Jeff Leek &lt;a href=&quot;https://github.com/jtleek/datasharing/network&quot;&gt;https://github.com/jtleek/datasharing/network&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The goal of my experiment is something along the lines of the Prometheus Wiki &lt;a href=&quot;http://prometheuswiki.publish.csiro.au&quot;&gt;http://prometheuswiki.publish.csiro.au&lt;/a&gt;​ which is a site for sharing research protocols. That idea is to give people a place to post research protocols since everyone develops them and then mentions them in papers but they rarely make it online in a usable format.&lt;/p&gt;
+
+&lt;p&gt;But I was talking with an user of that and he complained it lacked a kind of &quot;dynamic collaboration with a front-end markup system in place that was integrated with a good website-type backend&quot;.  This is what the github site might be able to do.&lt;/p&gt;
+
+&lt;p&gt;I discussed with a colleague and he seemed to be receptive to experimenting with this, so long as it was not more cumbersome than:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;shooting off an email with a list of points or&lt;/li&gt;
+&lt;li&gt;catching me in the tea room and saying &quot;by the way - missing values should never be -9999&quot;&lt;/li&gt;
+&lt;li&gt;and then these being copied into a master document we all share.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;The system I'm using in the proposed experiment uses the hi-tech tools gh-pages with disqus comments.  This let's:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;casual users chip in their two cents worth quickly via the  comments,&lt;/li&gt;
+&lt;li&gt;users can vote up or vote down other peoples comments,&lt;/li&gt;
+&lt;li&gt;track the discussion via their emails (if they choose that option),&lt;/li&gt;
+&lt;li&gt;but those wanting  deeper involvement can fork and edit the pages and then submit pull  requests to the lead author.&lt;/li&gt;
+&lt;li&gt;Github's wiki and issues tracking functionality also could be used for serious development.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Tue Jan 14 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/01/github-gh-pages-and-disqus-commentsdatasharing/</link>
+			</item>
+		
+			<item>
+				<title>cwt-lter-data-submission-template-critique</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;A colleague sent me the cwt_data_subm_template_2013.xls today&lt;/li&gt;
+&lt;li&gt;LTER is The U.S. Long-Term Ecological Research (LTER) network&lt;/li&gt;
+&lt;li&gt;I made the following notes, this is not intended to be a nasty critique&lt;/li&gt;
+&lt;li&gt;The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Critique&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;opened first on windows, saw comments on cells with instructions&lt;/li&gt;
+&lt;li&gt;opened next on linux with libreOffice and comments are gone&lt;/li&gt;
+&lt;li&gt;opened at the last tab (split in two for no reason?)&lt;/li&gt;
+&lt;li&gt;noticed recommended name &quot;GCE site&quot; = Site, otherwise &quot;permanent plot&quot; =      Plot?&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://nsmn1.uh.edu/steve/research/gce/gce.htm&quot;&gt;GCE = Georgia Coastal Ecosystems LTER program&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;flip to first tab, point 4 suggests there is some export functionality I cannot see (a VBA script?)&lt;/li&gt;
+&lt;li&gt;cell 11 a    NOTE: When submitting updated metadata or re-using templates please highlight fields with modified contents in yellow&lt;/li&gt;
+&lt;li&gt;and use glitter pen???&lt;/li&gt;
+&lt;li&gt;personnell tab OK&lt;/li&gt;
+&lt;li&gt;instrumentation, variable measured is free text. ok but for eg &quot;max temp&quot;, &quot;temperature maxima&quot;, &quot;maximum temperature (c)&quot; &quot;maximum temperature in 24 hours after 9am local time in degrees&quot; etc&lt;/li&gt;
+&lt;li&gt;too wide, last column was off my wide screen! noticed wasted real estate in column A&lt;/li&gt;
+&lt;li&gt;tabular data &quot;–  Paste or enter your data values into the 'Values' section (white cells), starting with the indicated cell&quot;&lt;/li&gt;
+&lt;li&gt;this is an invitation for clerical error!
+–  Fill in missing values in the table with NaN (not a number), including text fields, and do not skip columns&lt;/li&gt;
+&lt;li&gt;but what about missing values imbued with other meanings (NA = not observed, censored etc)?&lt;/li&gt;
+&lt;li&gt;ask users to format digit rounding in Excel?? oh no&lt;/li&gt;
+&lt;li&gt;old excel users may still be restricted to 65,536 rows by 256 columns.&lt;/li&gt;
+&lt;li&gt;non tabular sheet is ok&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Tue Jan 07 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/01/cwt-lter-data-submission-template-critique/</link>
+			</item>
+		
+			<item>
+				<title>tumbarumba-supersite-dem</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;The first dataset I downloaded from ASN for playing around with was the Tumba Lidar.&lt;/li&gt;
+&lt;li&gt;I had thought it might be better to offer this as a OGC service rather than downloadable geotiff&lt;/li&gt;
+&lt;li&gt;just in terms of the size firstly (104MB)&lt;/li&gt;
+&lt;li&gt;but I also soon realised it would need some specialised tweaking which non-GIS users might struggle a bit and could avoid if the serverside data is set up by a GIS specialist (although can we assume only GIS specialists will download this kind of data)?&lt;/li&gt;
+&lt;li&gt;kudos to &lt;a href=&quot;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&quot;&gt;http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:tumbarumba-supersite-dem&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;setwd(&quot;~/data/supersite/tumba-lidar&quot;)
+require(raster)
+fname  &amp;lt;- dir(pattern = &quot;tif$&quot;)
+fname
+r  &amp;lt;- raster(fname)
+str(r)
+dfr &amp;lt;- as.data.frame(r)
+summary(dfr)
+# the -1 code looks like it might be missing?  They are around the edge.
+rna &amp;lt;- reclassify(r, cbind(-1, 1197))
+png(&quot;tumba-lidar.png&quot;)
+plot(rna, col=terrain.colors(100), xlab = &quot;eastings (m)&quot;, ylab = &quot;northings (m)&quot;)
+title(&quot;Tumbarumba Supersite Digital Elevation Model&quot;)
+title(sub = &quot;packageId=lloyd.374.2&quot;)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/tumba-lidar.png&quot; alt=&quot;tumba-lidar.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Alternately use a geoserver&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If we use a Geoserver we could set it up so people can view this without downloading the data&lt;/li&gt;
+&lt;li&gt;following the instructions &lt;a href=&quot;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&quot;&gt;http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;using the ANU GIS library server&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;http://brawn.anu.edu.au:8081/geoexplorer/viewer/#maps/1&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PS the map might take a minute to show up, not sure why, might ask the sysadmin to look at the server performance&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Fri Jan 03 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/01/tumbarumba-supersite-dem/</link>
+			</item>
+		
+			<item>
+				<title>extend-Rs-data-frame-class-with-metadata</title>
+				<description>&lt;p&gt;&quot;reml now extends R's data.frame class by introducing the data.set class which includes additional metadata required by EML&quot;
+&lt;a href=&quot;https://github.com/ropensci/reml&quot;&gt;https://github.com/ropensci/reml&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;and
+&quot;I’d like to define a class that acts just like a data.frame, just like the data.table class does, but contains some additional metadata (e.g. the units associated with the columns) and has some additional methods associated with it (e.g. that might do something with those units) while also working with any function that simply knows how to handle data.frame objects.
+How might this be done?&quot;
+&lt;a href=&quot;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&quot;&gt;http://carlboettiger.info/2013/09/11/extending-data-frame-class.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Also this guys attempt was interesting (I like TraMineR too!)
+&lt;a href=&quot;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&quot;&gt;http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/&lt;/a&gt;&lt;/p&gt;
+</description>
+				<published>Tue Dec 24 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/extend-Rs-data-frame-class-with-metadata/</link>
+			</item>
+		
+			<item>
+				<title>a-few-best-practices-for-statistical-programming</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;John Myles White invented the ProjectTemplate R Package&lt;/li&gt;
+&lt;li&gt;This is a great application that helps streamline the process of creating a data analysis project&lt;/li&gt;
+&lt;li&gt;Recently John posted about some tips for &lt;a href=&quot;http://www.johnmyleswhite.com/notebook/2013/01/24/writing-better-statistical-programs-in-r/&quot;&gt;best practices for statistical programming&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Best Practices for Statistical Programming&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Write Out a Directed Acyclic Graph (DAG)&lt;/li&gt;
+&lt;li&gt;Vectorize Your Operations&lt;/li&gt;
+&lt;li&gt;Profile your code and understand where it spends its time&lt;/li&gt;
+&lt;li&gt;Generate Data and Fit Models&lt;/li&gt;
+&lt;li&gt;Correctness: always ensure that code infers  parameters of models given simulated data with known parameters.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Additional suggestions&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Unit Testing (use testthat)&lt;/li&gt;
+&lt;li&gt;Create modular code with discrete chunks&lt;/li&gt;
+&lt;li&gt;Write functions as much as possible, put these into a personal 'misc' package&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Tue Dec 24 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/a-few-best-practices-for-statistical-programming/</link>
+			</item>
+		
+			<item>
+				<title>add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</title>
+				<description>&lt;p&gt;&lt;head&gt;
+&lt;title&gt;Catastrophic Regime Shifts Visualisation  &lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;Catastrophic Regime Shifts Visualisation  &quot;/&gt;
+&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-12-21T11:39+1100&quot;/&gt;
+&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
+
+
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = &quot;code-highlighted&quot;;
+     elem.className   = &quot;code-highlighted&quot;;
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;p&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Catastrophic Regime Shifts Visualisation  &lt;/h1&gt;
+
+
+&lt;hr/&gt;
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Try adding 2D plot of the trend overtime and the variation within basins of attraction&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 figure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; Try adding 2D plot of the trend overtime and the variation within basins of attraction&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Following on from the previous work I now want to calculate the 2D paths.
+&lt;/li&gt;
+&lt;li&gt;This will then form the basis for a &quot;walk through&quot; animation 
+&lt;/li&gt;
+&lt;li&gt;Either with recorded narration or annotations that appear at the right time to describe each transition
+&lt;/li&gt;
+&lt;li&gt;This is most of what I want to include except I have not added the wiggly variations around the main trend line, that show the system varying within the basin of attraction
+&lt;/li&gt;
+&lt;li&gt;I got advice that Blender3d was the best way to finish this off.  Any other suggestions?
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; figure&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/TrendsAndTriggers-v2.1.gif&quot;  alt=&quot;/images/TrendsAndTriggers-v2.1.gif&quot; /&gt;
+&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; code&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;functions&lt;/span&gt;
+x &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; seq(from=-2.5, to=2.5, by=0.1)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;load&lt;/span&gt;
+data_out &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;TrendsAndTriggers-v2.csv&quot;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;do&lt;/span&gt;
+x2d  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; matrix(&lt;span style=&quot;color: #b58900;&quot;&gt;NA&lt;/span&gt;, ncol = 3, nrow = 0)
+xindex  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(rep(-1.9, 5), 
+             -1.7, -1.5 , -1.3, -1.1, 0, 1.1, 1.3, 1.5, 1.7
+             , rep(2, 4))
+j  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; 1
+xind  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; xindex[j]
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(index &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; c(1:5,rep(5,8), 6:10)){
+x2d &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; rbind(x2d, subset(data_out, y == index &amp;amp; x == xind))
+j &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; j + 1
+xind &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; xindex[j]
+}
+&lt;span style=&quot;color: #586e75;&quot;&gt;#  &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;x2d&lt;/span&gt;
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;#&lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;png(&quot;/images/TrendsAndTriggers-v2.1.gif&quot;)&lt;/span&gt;
+setwd(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;images&quot;&lt;/span&gt;)
+saveGIF(
+{
+ani.options(interval = 0.2)  
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(ith &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; 100:140){
+layout(matrix(c(1,2,1,3,1,4), 3, 2, byrow = &lt;span style=&quot;color: #b58900;&quot;&gt;TRUE&lt;/span&gt;), widths=c(2,1), heights=c(2,2,2))
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;layout.show(4)&lt;/span&gt;
+res &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt;  persp(x, 1:10, matrix(data_out$z, ncol = 10, nrow = length(x)),
+               ylab= &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;y&quot;&lt;/span&gt;,  xlab= &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x&quot;&lt;/span&gt;, zlab = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;z&quot;&lt;/span&gt;,  
+               theta = ith, 
+               phi = 42, ltheta = 120, shade = 0.75,
+               expand = 0.5, col = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;lightgrey&quot;&lt;/span&gt;)
+lines (trans3d(x2d$x, x2d$y, x2d$z, pmat = res), col = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;red&quot;&lt;/span&gt;, lwd = 4)
+plot(x2d$x, x2d$y, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;, xlab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x&quot;&lt;/span&gt;, ylab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;y&quot;&lt;/span&gt;)
+plot(x2d$x, x2d$z, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;, xlab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;x&quot;&lt;/span&gt;, ylab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;z&quot;&lt;/span&gt;)
+plot(x2d$y, x2d$z, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;, xlab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;y&quot;&lt;/span&gt;, ylab=&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;z&quot;&lt;/span&gt;)
+}
+}
+
+outdir = getwd(), movie.name = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;TrendsAndTriggers-v2.1.gif&quot;&lt;/span&gt;
+)
+setwd(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;..&quot;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;#  &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;dev.off()&lt;/span&gt;
+&lt;/pre&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+				<published>Sat Dec 21 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/</link>
+			</item>
+		
+			<item>
+				<title>Animation Illustrating Catastrophic Regime Shifts</title>
+				<description>&lt;p&gt;&lt;head&gt;
+&lt;title&gt;Trends and Triggers Figure &lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
+&lt;meta name=&quot;title&quot; content=&quot;Trends and Triggers Figure &quot;/&gt;
+&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
+&lt;meta name=&quot;generated&quot; content=&quot;2013-12-20T00:18+1100&quot;/&gt;
+&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;&lt;/p&gt;
+
+
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = &quot;code-highlighted&quot;;
+     elem.className   = &quot;code-highlighted&quot;;
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]&gt;*///--&gt;
+&lt;/script&gt;
+
+
+&lt;p&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;Trends and Triggers Figure &lt;/h1&gt;
+
+
+&lt;hr/&gt;
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2 The History&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3 3D surface&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3-1&quot;&gt;3.1 figure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3-2&quot;&gt;3.2 code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4 Try an animation&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4-1&quot;&gt;4.1 figure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4-2&quot;&gt;4.2 code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5 Next Steps&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; Introduction&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+
+&lt;p&gt;This work toward a enhanced figure that might be used to tell a detailed story about the mixture of trend, triggers and wiggles.
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-2&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; The History&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
+
+&lt;p&gt;The original image I base my imagination on is:
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Scheffer, M., &amp;amp; Carpenter, S. R. (2003). Catastrophic regime shifts in ecosystems: linking theory to observation [Review]. TRENDS in Ecology and Evolution, 18(12), 648–656. Retrieved from &lt;a href=&quot;http://eaton.math.rpi.edu/csums/papers/Ecostability/scheffercatastrophe.pdf&quot;&gt;http://eaton.math.rpi.edu/csums/papers/Ecostability/scheffercatastrophe.pdf&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;
+Which was based on 
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Scheffer, M., Carpenter, S., Foley, J. a, Folke, C., &amp;amp; Walker, B. (2001). Catastrophic shifts in ecosystems. Nature, 413(6856), 591–6. &lt;i&gt;&amp;lt;doi:10.1038/35098000&amp;gt;&lt;/i&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;
+&lt;img src=&quot;/images/catastrophe.png&quot;  alt=&quot;/images/catastrophe.png&quot; /&gt;
+&lt;/p&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-3&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 3D surface&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
+
+&lt;p&gt;First I want to generate a 3d computer image to play with perspective and shading.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-3-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-3-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.1&lt;/span&gt; figure&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-1&quot;&gt;
+
+
+&lt;p&gt;
+&lt;img src=&quot;/images/TrendsAndTriggers-v2.png&quot;  alt=&quot;/images/TrendsAndTriggers-v2.png&quot; /&gt;
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-3-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-3-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.2&lt;/span&gt; code&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-2&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;#### &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;name:generate-surface ####&lt;/span&gt;
+x &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; seq(from=-2.5, to=2.5, by=0.1)
+zid &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; .1
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(y &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; 1:10)
+{    
+  z &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; x^4 - zid * x^3 - 7 * x^2 + x + 6
+  &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(y == 1)
+  {
+    data_out &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; cbind(x,y,z)  
+  } &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;else&lt;/span&gt; {
+    data_out &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; rbind(data_out, cbind(x,y,z))
+  }
+  zid &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; zid + 0.1
+}
+
+data_out &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; as.data.frame(data_out)
+write.csv(data_out, &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;TrendsAndTriggers-v2.csv&quot;&lt;/span&gt;, row.names = F)
+
+png(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;/images/TrendsAndTriggers-v2.png&quot;&lt;/span&gt;)
+persp(x, 1:10, matrix(data_out$z, ncol = 10, nrow = length(x)), ylab= &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;&quot;&lt;/span&gt;,  xlab= &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;&quot;&lt;/span&gt;, zlab = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;&quot;&lt;/span&gt;,  
+      theta = 140, 
+      phi = 42, 
+      expand = 0.5, col = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;lightgrey&quot;&lt;/span&gt;)
+dev.off()
+&lt;/pre&gt;
+
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-4&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; Try an animation&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
+
+&lt;p&gt;I'd like to move the ball through the surface.  First need to calculate the path.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-4-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-4-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.1&lt;/span&gt; figure&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-1&quot;&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/animation.gif&quot;  alt=&quot;/images/animation.gif&quot; /&gt;
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-4-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-4-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.2&lt;/span&gt; code&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-2&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;functions&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(animation)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;animation&quot;&lt;/span&gt;);
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(animation)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;load&lt;/span&gt;
+data_out &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;TrendsAndTriggers-v2.csv&quot;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;## &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;do&lt;/span&gt;
+setwd(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;images&quot;&lt;/span&gt;)
+saveGIF(
+{
+  ani.options(interval = 0.2)
+  xindex  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; c(0, -1, rep(-1.9, 6), -1, 0, 1, rep(2, 6), 1, 0 , 0)
+  j  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; 1
+  xind  &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; xindex[j]
+  &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;for&lt;/span&gt;(index &lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;in&lt;/span&gt; c(1:10, 9:1)){
+  with(subset(data_out, y == index),
+       plot(x, z, type = &lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;l&quot;&lt;/span&gt;, ylim = c(-15,15))
+       )
+  with(subset(data_out, y == index &amp;amp; x == xind),
+       points(x,z,pch=16,cex = 3)
+       )
+  j &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; j + 1
+  xind &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; xindex[j]
+  }
+},
+outdir = getwd()
+)
+setwd(&lt;span style=&quot;color: #2aa198;&quot;&gt;&quot;..&quot;&lt;/span&gt;)
+&lt;/pre&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-5&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; Next Steps&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the polynomials should move up and down to give the height of originals
+&lt;/li&gt;
+&lt;li&gt;the hump in the middle needs to change, so the ball flips more easily
+&lt;/li&gt;
+&lt;li&gt;I'd like the ball to wiggle, add a random walk 
+&lt;/li&gt;
+&lt;li&gt;the time series dimension needs to be shown
+&lt;/li&gt;
+&lt;li&gt;It'd be great to combine this with 2D line plots as well
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+				<published>Fri Dec 20 00:00:00 +1100 2013</published>
+				<link>http://schamberlain.github.com/2013/12/animation-illustrating-catastrophic-regime-shifts/</link>
+			</item>
+		
+	</channel>
+</rss>

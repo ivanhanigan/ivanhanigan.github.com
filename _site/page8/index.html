@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ivan Hanigan - Disentangle Things</title>
+    <meta name="author" content="Ivan Hanigan" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
+    <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.github_v2.js"></script>
+  </head>
+
+  <body>
+
+
+    <div id="header" class="section">
+      <div class="wrapper">
+        <strong id="blog-title">
+          <a href="/" rel="home">Disentangle Things by Ivan Hanigan</a>
+        </strong>
+        <p id="blog-description"></p>
+        <div id="navigation">
+          <ul class="nav clearfix">
+            <li class="first-child"><a href="/research.html">Open Notebook</a></li>
+            <li> <a href="/blog.html">Blog</a></li>
+            <li><a href="/projects.html">Software</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/publications.html">Publications</a></li>
+            <li><a href="/cv.html">CV</a></li>
+            <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
+            <!--<li><a href="/donors.html">Donors</a></li>-->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="main" class="section">
+      <div class="wrapper">
+        <div id="content">
+          <h2>Welcome to my Open Notebook</h2>
+
+<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a> for documenting progress on my projects.</p>
+
+<p>  <img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
+
+          <!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style ">
+  <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+  <a class="addthis_button_tweet"></a>
+  <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+  <a class="addthis_counter addthis_pill_style"></a>
+</div>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=SChamberlain"></script>
+<!-- AddThis Button END -->
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I stumbled on these posts about python and IPython Notebook by "Data Scientist Training for Librarians":</p>
+
+<ul>
+<li><a href="http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/">http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/</a></li>
+<li><a href="http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/">http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/</a></li>
+</ul>
+
+
+<p>I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.  You can get my ipython notebook file for this here: <a href="/data/olive.ipynb">olive.ipynb</a>, but first run the following R code snippet to get the replication dataset 'olive.csv' into your home directory.</p>
+
+<h4>R Code: get the olive oil dataset</h4>
+
+<pre><code>install.packages("pgmm")
+require(pgmm)
+data(olive)
+names(olive) &lt;- tolower(names(olive))
+str(olive)
+write.csv(olive, "olive.csv", row.names = F)
+# actualy home might be easier for ipython to access
+write.csv(olive, "~/olive.csv", row.names = F)
+</code></pre>
+
+<p></p>
+
+
+<h3>OK now reproduce the example</h3>
+
+<p>I quite like the histograms from the second example.  Here is the raw code extracted from the ipynb</p>
+
+<h4>Code:</h4>
+
+<pre><code>%pylab inline
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import matplotlib.colors as colors
+
+acidlist=['palmitic', 'palmitoleic', 'stearic', 'oleic', 'linoleic', 'linolenic', 'arachidic', 'eicosenoic']
+dfsub=df[acidlist].apply(lambda x: x/100.0)
+dfsub.head()
+
+rkeys=[1,2,3]
+rvals=['South','Sardinia','North']
+rmap={e[0]:e[1] for e in zip(rkeys,rvals)}
+rmap
+
+fig, axes=plt.subplots(figsize=(10,20), nrows=len(acidlist), ncols=1) # sets up the framework for the graphs. Acidlist is defined elsewhere, and is a list of the acids we’re interested in.
+i=0 # Sets a counter to 0
+
+for ax in axes.flatten(): # Starts a loop to go through our plot and render each row
+
+    acid=acidlist[i]
+    seriesacid=df[acid] # creates seriesacid and sets it to df[acid], a list of the percent composition of the acid in the current iteration that’s in each olive oil.
+
+    minmax=[seriesacid.min(), seriesacid.max()] # the minimum and maximum values plotted will be the minimum and maximum percentages that we find in the data
+
+    for k,g in df.groupby('region'):  # starts a loop in the loop to plot the values by region
+        style = {'histtype':'stepfilled', 'alpha':0.5, 'label':rmap[k], 'ax':ax}
+        g[acid].hist(**style)
+
+        ax.set_xlim(minmax)
+
+        ax.set_title(acid)
+
+        ax.grid(False)
+
+        #construct legend
+        ax.legend()
+    i=i+1 # increments the counter, to move the loop on to the next acid.
+
+    fig.tight_layout()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/acid.png" alt="acid.png" /></p>
+
+<h3>Conclusions</h3>
+
+<ul>
+<li>I am not sure how to do the transparency but the rest of it would make more sense to me with R</li>
+<li>Will try to reproduce in R for head-to-head shoot out.</li>
+<li>I also plan to look into the new <a href="http://trestletechnology.net/2013/11/ace-code-editor-in-shiny-shinyace/">shinyAce browser based R editor</a> for similar work</li>
+<li>I'm still really enjoying Emacs Orgmode for this kind of functionality though and thoroughly recommend <a href="http://kieranhealy.org/resources/emacs-starter-kit.html">KJ Healy's starter kit</a></li>
+<li>(I've installed and config thison Ubuntu, Windoze and Mac, but LaTeX and exporting R code can be tricky)</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+      <a href="/categories/python" title="python" rel="category tag">python</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/librarians-and-python/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>R is generally very good for handling many different data types but</p>
+
+<h3>R has problems with survey data</h3>
+
+<p>This post is a stub about what packages Ive found with methods allowing to handle efficiently survey data: handle variable labels, values labels, and retrieve information about missing values</p>
+
+<h4>Base R:</h4>
+
+<pre><code>## Not run:
+require(foreign)
+analyte  &lt;- read.spss(filename, to.data.frame=T) 
+varslist &lt;- as.data.frame(attributes(analyte)$variable.labels)
+# this gives a pretty useful thing to use
+</code></pre>
+
+<p></p>
+
+
+<p>While I was digging around in <a href="http://mephisto.unige.ch/traminer">TraMineR</a> I found this link to Dataset, Emmanuel Rousseaux's package for handling, documenting and describing data sets of survey data.</p>
+
+<h4>Code:Dataset, a package for handling-survey-data-with-r</h4>
+
+<pre><code>if(!require(Dataset)) install.packages("Dataset", repos="http://R-Forge.R-project.org");
+require(Dataset)
+data(dds)
+str(dds)
+# cool
+description(dds$sexe)
+# excellent!
+</code></pre>
+
+<p></p>
+
+
+<h3>Conclusions</h3>
+
+<p>I'm sure there are plenty of other approaches.  I'll add them as I find them'</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+      <a href="/categories/surveys" title="surveys" rel="category tag">surveys</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/handling-survey-data-with-r/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h3>Background</h3>
+
+<p>This is an example of using github for a Reproducible Research Report (RRR) using a casestudy of the  Hutchinson Drought Index.  The project is available under GNU licence at <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a>.</p>
+
+<h3>Aims</h3>
+
+<p>This example will clone the repository from github and run the replication codes using the replication datasets.</p>
+
+<h3>Materials and Methods</h3>
+
+<ul>
+<li>assumes you are connected to the internet</li>
+<li>assumes you have git, a github account and ssh key set up</li>
+<li>assumes you have R and GDAL configured</li>
+<li>assumes BoM and ABS have kept their data in the locations I specified to download from</li>
+</ul>
+
+
+<h3>Hutchinsons Drought Index</h3>
+
+<p>The Hutchinson Drought Index (or Drought Severity Index) is a climatic drought index
+that was designed to reflect agricultural droughts using only rainfall data.</p>
+
+<p>The index was invented by Professor Mike Hutchinson at the ANU in 1992 (1) and
+this project includes R codes written to describe the calculations
+and also to download data (2,3) to play with.</p>
+
+<h3>Results</h3>
+
+<h4>Replication Codes to run in the terminal</h4>
+
+<pre><code>git clone git@github.com:ivanhanigan/HutchinsonDroughtIndex.git ~/data/HutchinsonDroughtIndex
+R
+setwd("~/data/HutchinsonDroughtIndex")
+source("HutchinsonDroughtIndex_go.r")
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>WARNING this downloads 5.4MB from BoM and 19.9MB from ABS</li>
+<li>This runs the codes and produces graphs</li>
+<li>an alternative workflow would be to run the sweave file in the reports directory but I dont like that method as much and have set all the evaluation commands to false.</li>
+<li>it will run now that we have the graphs though, to create a report:</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code>setwd("reports")
+Sweave("HutchinsonDroughtIndex_transformations_doc.Rnw")
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>which creates a tex file that can create <a href="/pdfs/HutchinsonDroughtIndex_transformations_doc.pdf">this pdf</a></li>
+<li>but the simplest example I gave above will compute the index and create the graphs (one is shown below)</li>
+</ul>
+
+
+<p><img src="/images/CentralWestDrought8283.png" alt="CentralWestDrought8283.png" /></p>
+
+<h3>So what actually happened?</h3>
+
+<ul>
+<li>This project adheres to the <a href="http://stackoverflow.com/a/1434424">Reichian LCFD model of writing R code</a></li>
+<li>In this the code is bundled into modules Func (tools), Load, Do, Clean (check).  These live in the src directory (following teh White ProjectTemplate model - well almost, He would put tools/func into lib)</li>
+<li>then a main.r (or go.r) script calls these modules</li>
+</ul>
+
+
+<h4>go.r</h4>
+
+<pre><code> source('src/HutchinsonDroughtIndex_tools.r')
+ source('src/HutchinsonDroughtIndex_load.r')
+ source('src/HutchinsonDroughtIndex_do.r')
+ source('src/HutchinsonDroughtIndex_check.r')
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li><p>The really interesting bit is <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">a tool written for this project</a> that is called from within tools.r</p>
+
+<p>   source('src/HutchinsonDroughtIndex_tools_droughtIndex.r')</p></li>
+</ul>
+
+
+<p></p>
+
+
+<ul>
+<li>A keen reader would look in that script to find out exactly what the function does</li>
+<li>A keen author would push that function to an R package (a super keen bean would publish this on CRAN)</li>
+</ul>
+
+
+<h3>Discussion</h3>
+
+<h4>Strengths:</h4>
+
+<ul>
+<li>full codes are provided to reproduce the data access, manipulation and analysis</li>
+<li>the gory details are hidden from the casual user</li>
+</ul>
+
+
+<h4>Weaknesses:</h4>
+
+<ul>
+<li>the important details are hidden from the technical user</li>
+<li>the script depends on a bunch of things that might not be true</li>
+</ul>
+
+
+<h4>Conclusions</h4>
+
+<ul>
+<li>This is an example of a self-contained RRR</li>
+</ul>
+
+
+<h3>References</h3>
+
+<ol>
+<li><p>Smith, D. I, Hutchinson, M. F, &amp; McArthur, R. J. (1992) Climatic and
+Agricultural Drought: Payments and Policy. (Centre for Resource and Environmental
+Studies, Australian National University, Canberra, Australia).<br/>
+http://fennerschool-research.anu.edu.au/spatio-temporal/publications/cres_paper1992.pdf</p></li>
+<li><p>Bureau of Meteorology High Quality Monthly precipitation data
+downloaded on 2012-01-09
+from ftp://ftp.bom.gov.au/anon/home/ncc/www/change/HQmonthlyR/HQ_monthly_prcp_txt.tar</p></li>
+<li><p>Australian Bureau of Statistics Statistical Divisions 2006
+downloaded on 2012-01-09
+from http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.0022006?OpenDocument</p></li>
+</ol>
+
+
+<h3>Acknowledgements</h3>
+
+<p>Financial support was provided by Professor Tony McMichael's
+"Australia Fellowship" from the the National Health and Medical Research Council, via the
+National Centre for Epidemiology and Population Health, Australian National University.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/climatic and agricultural drought" title="climatic and agricultural drought" rel="category tag">climatic and agricultural drought</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h3>Guest post by Luciana Porfirio with code contributions by Francis Markham</h3>
+
+<ul>
+<li>Recently I encountered a student doing an analysis who was doing everything in excel, and I couldn't contain my mouth and say R would be better... but it isn't a simple task. So any here are some tips.</li>
+<li>There is a table with 62 years * 12 months of rain data in mm. We calculated the cumulative distribution using ecdf: empirical cumulative distribution function. So the table looks like this: Year Jan Feb Mach (...) each cell contains the cum dist.</li>
+<li>We also got the number of months per year with less than X mm of rain. But he needs to know how many months  are between the drought months, regardless the year. So, I thought that converting the data into a ts was going to facilitate the task, but it doesn't, because now I don't' have columns and rows any longer.</li>
+<li>But I struggled to handle a ts object to do for example an ifelse.</li>
+<li>Luckily there are many many tricks about R, and with the code below we solved all his problems (and many months of work in excel).</li>
+<li><a href="/data/raj_rain_data.csv">Get the example data here</a></li>
+<li>This is how it looks like:</li>
+</ul>
+
+
+<h4>R Code:</h4>
+
+<pre><code>###############################################
+require(reshape2)
+
+###############################################
+#read csv file with rain BoM data
+dat = read.csv('raj_rain_data.csv')
+
+fn &lt;- apply(dat[,2:13], 2, ecdf) # equivalent to Excel's percentrank function, only for cols 2 to 13 but you need to apply the function to each month
+
+#this fun does all the months at once
+fn2 = data.frame(t(do.call("rbind", sapply(1:12, FUN = function(i) fn[[i]](dat[,i+1]), simplify = FALSE))))
+colnames(fn2) = colnames(dat[,2:13])
+fn2$year = dat$Year
+
+#if the value is lower than 0.4, retrieves a 1, otherwise 0
+fn2$drought = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &lt; 0.4)==TRUE, 1,0))
+
+#if the value is lower than 0.1, retrieves a 1, otherwise 0
+fn2$extreme = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &lt; 0.1)==TRUE, 1,0))
+
+str(fn2)
+names(fn2)
+
+#ts didn't work - Francis suggested to melt the data.frame # Melt
+#fn2 to tall data set
+fn2.tall &lt;- melt(fn2, id.vars="year")
+
+# Get the year-month into date format
+fn2.tall$date &lt;- with(fn2.tall,
+                             as.Date(paste("1", variable, year), "%d %b %Y"))
+
+# Convert dates into months since 0 BC/AD (arbitrary, but doesn't
+# matter)
+#I'm not using the month.idx with Ivan's solution (remove)
+fn2.tall$mnth.idx &lt;- sapply(fn2.tall$date, function(x){
+  12*as.integer(format(x, "%Y")) + (as.integer(format(x, "%m")) - 1)
+})
+
+# Sort by date
+fn2.tall &lt;- fn2.tall[order(fn2.tall$date),]
+
+
+#Ivan's solution
+
+x&lt;-fn2.tall$value&lt;0.4
+xx &lt;- (cumsum(!x) + 1) * x
+x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
+fn2.tall$count&lt;-x2
+
+#counts the number of cases of drought
+as.data.frame(table(fn2.tall$count))
+###############################################
+###############################################
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/climatic and agricultural drought" title="climatic and agricultural drought" rel="category tag">climatic and agricultural drought</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/climatic-drought-guestpost-by-luciana-porfirio/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Fri Nov 01 00:00:00 +1100 2013">01 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>This is a quick post on Quantum GIS for spatial data visualisation</li>
+<li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
+<li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
+<li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
+</ul>
+
+
+<h4>R Code: use postgis to create area-concordance</h4>
+
+<pre><code>require(devtools)
+install_github("gisviz", "ivanhanigan")
+require(gisviz)
+require(swishdbtools)
+ch &lt;- connect2postgres2("gislibrary")
+# make a temporary tablename, to avoid clobbering
+temp_table &lt;- swish_temptable("gislibrary")
+temp_table &lt;- paste("public", temp_table$table, sep = ".")
+temp_table
+# this is going to be public.foo11c7673416ea
+
+sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
+   source_zones_code = 'sla_id', target_table = "abs_sla.nswsla01",
+   target_zones_code = "sla_code",
+   into = temp_table, tolerance = 0.01,
+   subset_target_table = "cast(sla_code as text) like '105%'", 
+   eval = F) 
+cat(sql)
+dbSendQuery(ch, sql)
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
+<li>and add the layer to the map</li>
+<li>Style it how you like, I also added NSWSLA1991 over the top</li>
+<li>go into the "new print composer"</li>
+</ul>
+
+
+<p><img src="/images/qgis-new-print-composer.png" alt="qgis-new-print-composer.png" /></p>
+
+<p><img src="/images/qgis-add-new-map.png" alt="qgis-add-new-map.png" /></p>
+
+<h3>Results</h3>
+
+<ul>
+<li>hit the export to image and viola</li>
+</ul>
+
+
+<p><img src="/images/qgis-export-image.png" alt="qgis-export-image.png" /></p>
+
+<h3>Don't forget to clean up the database!</h3>
+
+<h4>R Code:</h4>
+
+<pre><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/gisviz" title="gisviz" rel="category tag">gisviz</a>
+      
+      <a href="/categories/concordance" title="concordance" rel="category tag">concordance</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/quantum-gis-visualisations/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+
+<div class="pagination">
+  <span class="previous">
+    
+      
+      <a href="/page7/" title="Previous Page">&laquo; Previous</a>
+      
+    
+  </span>
+  <span class="next">
+    
+    <a href="/page9/" title="Next Page">Next &raquo;</a>
+    
+  </span>
+</div>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=SChamberlain"></script>
+
+        </div>
+        <div id="sidebar">
+          <div id="carrington-subscribe" class="widget">
+            <h2 class="widget-title">Subscribe</h2>
+            <a class="feed alignright" title="RSS 2.0 feed for posts" rel="alternate" href="http://feeds.feedburner.com/Disentanglethings">
+              <img src="/images/rss-button.gif" alt="latest posts" title="latest posts">
+            </a>
+          </div>
+          <div id="carrington-about" class="widget">
+            <div class="about">
+              <h2 class="widget-title">About</h2>
+              <p>My name is Ivan Hanigan.  I am a data manager and part-time student at the Australian National University.</p>
+              <a class="more" href="/about.html">more →</a>
+            </div>
+          </div>
+          <!--
+          	<p>
+              <a href="http://ropensci.org/">
+                <img src="/images/ropensci.png">
+              </a>
+        	</p>
+			-->
+			<!--
+          <div id="carrington-link" class="widget">
+          	<a href="http://ropensci.org/">
+            <img src="/images/ropensci.png">
+          </div>
+          	-->
+          
+          <div id="primary-sidebar">
+            <div class="widget">
+              <h2 class="widget-title">Categories</h2>
+              <ul>
+<!-- <li> -->
+<!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
+<!-- </li> -->
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (2)</a></li>
+                
+                <li><a href="/categories/drought">drought (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/blogging">blogging (1)</a></li>
+                
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/visualisation">visualisation (1)</a></li>
+                
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                
+                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
+                
+                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
+                
+                <li><a href="/categories/science">science (2)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
+                
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (5)</a></li>
+                
+                <li><a href="/categories/supersite">supersite (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/statistical models">statistical models (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (4)</a></li>
+                
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
+                
+                <li><a href="/categories/organising">organising (2)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/ecology">ecology (1)</a></li>
+                
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (15)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                
+                <li><a href="/categories/surveys">surveys (1)</a></li>
+                
+                <li><a href="/categories/GIS">GIS (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/concordance">concordance (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
+                
+                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
+                
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
+                
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                
+                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/tools">tools (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/India Overview">India Overview (1)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (26)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                
+                <li><a href="/categories/ons">ons (2)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
+                
+                <li><a href="/categories/datasharing">datasharing (1)</a></li>
+                
+                <li><a href="/categories/Modelling">Modelling (1)</a></li>
+                
+                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+              </ul>
+            </div>
+          </div>
+          <div id="secondary-sidebar">
+            <div class="widget">
+              <h2 class="widget-title">Recent Posts</h2>
+              <ul>
+                
+                <li>
+                  <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/01/github-gh-pages-and-disqus-commentsdatasharing/" title="Github, gh-pages and disqus comments" rel="bookmark">Github, gh-pages and disqus comments</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/01/tumbarumba-supersite-dem/" title="tumbarumba-supersite-dem" rel="bookmark">tumbarumba-supersite-dem</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/extend-Rs-data-frame-class-with-metadata/" title="extend-Rs-data-frame-class-with-metadata" rel="bookmark">extend-Rs-data-frame-class-with-metadata</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/a-few-best-practices-for-statistical-programming/" title="a-few-best-practices-for-statistical-programming" rel="bookmark">a-few-best-practices-for-statistical-programming</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/" title="add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot" rel="bookmark">add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/animation-illustrating-catastrophic-regime-shifts/" title="Animation Illustrating Catastrophic Regime Shifts" rel="bookmark">Animation Illustrating Catastrophic Regime Shifts</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/marco-fahmi-farewell-from-asn-ltern-data-portal-team/" title="Marco Fahmi Farewell From ASN-LTERN Data Portal Team" rel="bookmark">Marco Fahmi Farewell From ASN-LTERN Data Portal Team</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/animations-using-R/" title="animations-using-R" rel="bookmark">animations-using-R</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/links-to-useful-data-munging-posts/" title="links-to-useful-data-munging-posts" rel="bookmark">links-to-useful-data-munging-posts</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode/" title="open-access-journal-templates-for-latex-with-emacs-orgmode" rel="bookmark">open-access-journal-templates-for-latex-with-emacs-orgmode</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/auto-download-bureau-meteorology-diurnal-data/" title="auto-download-bureau-meteorology-diurnal-data" rel="bookmark">auto-download-bureau-meteorology-diurnal-data</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/the-history-of-ons/" title="the-history-of-ons" rel="bookmark">the-history-of-ons</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/" title="non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms" rel="bookmark">non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/research-protocol-for-manitoba-centre-for-health-policy/" title="research-protocol-for-manitoba-centre-for-health-policy" rel="bookmark">research-protocol-for-manitoba-centre-for-health-policy</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/spatially-structured-time-series-with-nmmaps/" title="spatially-structured-time-series-with-nmmaps" rel="bookmark">spatially-structured-time-series-with-nmmaps</a>
+                </li>
+                
+                <li>
+                  <a href="/2013/10/morpho-and-rfigshare/" title="morpho-and-rfigshare" rel="bookmark">morpho-and-rfigshare</a>
+                </li>
+                
+              </ul>
+              <div class="clear"></div>
+            </div>
+            <!--
+            <div class="widget">
+              <h2 class="widget-title">Archives</h2>
+              <ul>
+                
+              </ul>
+              <div class="clear"></div>
+            </div>
+            -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer" class="section">
+      <div class="wrapper">
+        <a id="generator-link">
+          Banner Artwork by Cindy Hales. Site powered by
+          <a href="https://github.com/mojombo/jekyll" rel="generator">Jekyll</a>
+          with
+          <a href="http://carringtontheme.com" title="Carrington theme for WordPress">Carrington</a>
+          theme.
+      </div>
+      <div id="developer-link">
+      </div>
+    </div>
+    <!--
+	<a href="http://github.com/SChamberlain"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://assets2.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf?repo=&url=http%3A%2F%2Fs3.amazonaws.com%2Fgithub%2Fribbons%2Fforkme_right_red_aa0000.png&path=" alt="Fork me on GitHub"></a>
+	-->
+    <script type="text/javascript">
+      var disqus_shortname = 'disentanglethings';
+
+      (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-28059658-1");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+  </body>
+</html>
