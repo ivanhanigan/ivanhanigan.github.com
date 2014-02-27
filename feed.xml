@@ -6,6 +6,70 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>yearmon-class-and-interoperability-with-excel-and-access</title>
+				<description>&lt;h4&gt;Toward a standard and unambiguous format for sharing Year-Month data&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I am working in a new job where we are recieving data from a lot of different groups&lt;/li&gt;
+&lt;li&gt;we aim to review these datasets and then publish them for a wide audience of potential users&lt;/li&gt;
+&lt;li&gt;therefore usability and interoperability is a key concern&lt;/li&gt;
+&lt;li&gt;we recieved some data with Month and Year as Apr.12&lt;/li&gt;
+&lt;li&gt;I know this is easy to convert to a date/time class with in R but wondered what a better format would be to recommend for our datasets to use to maximise utility downstream (especially for non R users)&lt;/li&gt;
+&lt;li&gt;Apr.12 is assumed to be text in excel so need something else&lt;/li&gt;
+&lt;li&gt;Apr-12 is assumed to be the twelfth of April this year (ie 12/4/2014)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;In R the solution might be to use the zoo package&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(zoo)
+as.yearmon(&quot;Apr.12&quot;, &quot;%b.%y&quot;)
+# [1] &quot;Apr 2012&quot;
+
+# other options abound
+as.yearmon(&quot;apr12&quot;, &quot;%b%y&quot;)
+
+# the default is YYYY-MM or similar
+as.yearmon(&quot;2012-04&quot;)
+as.yearmon(&quot;2012-4&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;So I went looking at how Excel and Access deal with this&lt;/li&gt;
+&lt;li&gt;found that the best appeard to be MMM-YYYY in terms of how these software assume the data should look&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;as.yearmon(&quot;Apr-2012&quot;, &quot;%b-%Y&quot;)
+
+# but will need to specify format because otherwise fails
+as.yearmon(&quot;Apr-2012&quot;)
+# NA
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;Conclusion&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I recommend the MMM-YYYY option&lt;/li&gt;
+&lt;li&gt;it is pretty good that in Excel it is assumed 1/04/2012&lt;/li&gt;
+&lt;li&gt;and if MS access is set to date/time and format = mmm-yyyy is ok for data entry (but not importing)&lt;/li&gt;
+&lt;li&gt;to import this use a shorttext type, then post-import, change to date/time with mmm-yyyy (the . failed)&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Thu Feb 27 00:00:00 +1100 2014</published>
+				<link>http://schamberlain.github.com/2014/02/yearmon-class-and-interoperability-with-excel-and-access/</link>
+			</item>
+		
+			<item>
 				<title>gantting-like-a-hacker</title>
 				<description>&lt;h3&gt;Background&lt;/h3&gt;
 
@@ -68,126 +132,6 @@
 </description>
 				<published>Sat Feb 22 00:00:00 +1100 2014</published>
 				<link>http://schamberlain.github.com/2014/02/gantting-like-a-hacker/</link>
-			</item>
-		
-			<item>
-				<title>Aggregation Of Statistical Local Areas</title>
-				<description>&lt;h2&gt;Reproducibility&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;A subset of the data and code used for this blog post is available at &lt;a href=&quot;https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s&quot;&gt;https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Some parts of the data I used are not available due to shared Intellectual Property&lt;/li&gt;
-&lt;li&gt;The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics&lt;/li&gt;
-&lt;li&gt;The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;The Aim is to aggregate Statistical Local Areas (SLAs, recently relabelled SA2) Australian Standard Geographical Classification (ASGC, recently relabelled ASGS) to achieve a greater level of privacy protection.
-The rules to achieve a geography amenable to statistical comparisons are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;similar populations (around 20,000 to 30,000)&lt;/li&gt;
-&lt;li&gt;homogenous Index of Relative Socioeconomic Disadvantage&lt;/li&gt;
-&lt;li&gt;nested within the next level up in the ASGC/ASGS&lt;/li&gt;
-&lt;li&gt;so that SSD (recently relabelled SA3) are not split.&lt;/li&gt;
-&lt;li&gt;the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments&lt;/li&gt;
-&lt;li&gt;This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Results&lt;/h2&gt;
-
-&lt;h3&gt;Data Prep&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The data were prepared as spatial files&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/aggregation-of-sa2s.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Assess proposed split in Belconnen&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the proposed split in belconnen looks good&lt;/li&gt;
-&lt;li&gt;This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score&lt;/li&gt;
-&lt;li&gt;Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham&lt;/li&gt;
-&lt;li&gt;Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/belco-split.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Assess the outliers&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;this can be done by identifying their component CCD SEIFA within new groups&lt;/li&gt;
-&lt;li&gt;the seifa of CCD in outliers are compared to the others within their new groups&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/seifa-by-newgroups1.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;zoom in on croweded areas&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/seifa-by-newgroups1-2.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;!-- html table generated in R 3.0.2 by xtable 1.7-1 package --&gt;
-
-
-&lt;!-- Tue Feb 18 22:03:04 2014 --&gt;
-
-
-&lt;TABLE border=1&gt;
-&lt;TR&gt; &lt;TH&gt;  &lt;/TH&gt; &lt;TH&gt; sa2_name.x &lt;/TH&gt; &lt;TH&gt; new_sa2_group &lt;/TH&gt; &lt;TH&gt; notes &lt;/TH&gt;  &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 12 &lt;/TD&gt; &lt;TD&gt; Bruce &lt;/TD&gt; &lt;TD&gt; Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 14 &lt;/TD&gt; &lt;TD&gt; Campbell &lt;/TD&gt; &lt;TD&gt; Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 20 &lt;/TD&gt; &lt;TD&gt; Civic &lt;/TD&gt; &lt;TD&gt; Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 31 &lt;/TD&gt; &lt;TD&gt; Fadden &lt;/TD&gt; &lt;TD&gt; Fadden/ Gowrie (ACT)/ Macarthur/ Monash &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 32 &lt;/TD&gt; &lt;TD&gt; Farrer &lt;/TD&gt; &lt;TD&gt; Farrer/ Isaacs/ Mawson/ Pearce/ Torrens &lt;/TD&gt; &lt;TD&gt; higher than neighbours bar one ccd &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 37 &lt;/TD&gt; &lt;TD&gt; Forrest &lt;/TD&gt; &lt;TD&gt; Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 60 &lt;/TD&gt; &lt;TD&gt; Isaacs &lt;/TD&gt; &lt;TD&gt; Farrer/ Isaacs/ Mawson/ Pearce/ Torrens &lt;/TD&gt; &lt;TD&gt; higher than neighbours bar one ccd &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 64 &lt;/TD&gt; &lt;TD&gt; Kingston - Barton &lt;/TD&gt; &lt;TD&gt; Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 71 &lt;/TD&gt; &lt;TD&gt; Macarthur &lt;/TD&gt; &lt;TD&gt; Fadden/ Gowrie (ACT)/ Macarthur/ Monash &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 73 &lt;/TD&gt; &lt;TD&gt; Macquarie &lt;/TD&gt; &lt;TD&gt; Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 87 &lt;/TD&gt; &lt;TD&gt; O'Malley &lt;/TD&gt; &lt;TD&gt; Chifley/ Lyons (ACT)/ O'Malley/ Phillip &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 89 &lt;/TD&gt; &lt;TD&gt; Page &lt;/TD&gt; &lt;TD&gt; Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 98 &lt;/TD&gt; &lt;TD&gt; Scullin &lt;/TD&gt; &lt;TD&gt; Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-   &lt;/TABLE&gt;
-
-
-&lt;h3&gt;Investigating areas: eg the Kingston - Barton area&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;we can zoom in on some of these areas&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/kingston-barton.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Conclusions&lt;/h2&gt;
-
-&lt;p&gt;Basically, the problem comes from public housing policies in Canberra which distorts the effect of the housing market and land values in segregating rich from poor. Essentially, there are highly advantaged suburbs with pockets of disadvantaged public housing.&lt;/p&gt;
-
-&lt;p&gt;Other 'problematic' features re this are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;proximity to ornamental lakes&lt;/li&gt;
-&lt;li&gt;proximity to urban green space&lt;/li&gt;
-&lt;li&gt;proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement -- but different to 'distance from urban centre'&lt;/li&gt;
-&lt;li&gt;elevation, especially with a view.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Potentially the issue is going to be that this can't be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.&lt;/p&gt;
-</description>
-				<published>Tue Feb 18 00:00:00 +1100 2014</published>
-				<link>http://schamberlain.github.com/2014/02/aggregation-of-statistical-local-areas/</link>
 			</item>
 		
 			<item>
