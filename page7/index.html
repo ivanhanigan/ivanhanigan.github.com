@@ -54,6 +54,197 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This post describes some ideas and techniques I use to set up a "workflow script".  I use this term to refer to the structured combination of code, data and narrative that make an executable Reproducible Research Report (RRR).</p>
+
+<p>A lot of these ideas are inpsired by  a great paper by Kieran Healy called  "Choosing Your Workflow Applications" available at <a href="https://github.com/kjhealy/workflow-paper">https://github.com/kjhealy/workflow-paper</a> to accompany <a href="http://kieranhealyo.org/resources/emacs-starter-kit.html">his Emacs Starter Kit</a>. My shortened version of his main points are:</p>
+
+<ul>
+<li>1 use a good code editor</li>
+<li>2 analyse data with scripts</li>
+<li>3 store your work simply and document it properly</li>
+<li>4 use a version control system</li>
+<li>5 Automate back ups</li>
+<li>6 Avoid distracting gadgets</li>
+</ul>
+
+
+<h4>Here's my current approach in each of these categories</h4>
+
+<ul>
+<li>1 use Emacs with Orgmode (and kjhealy's drop-in set of useful defaults)</li>
+<li>2 Scripts that utilise the literate programming technique of mixing Code Chunks in with descriptive prose</li>
+<li>3 John Myles White's ProjectTemplate R Package and Josh Riech's LCFD paradigm</li>
+<li>4 git and GitHub for version control</li>
+</ul>
+
+
+<p>5 Automated Backups and 6 Avoiding Gadgets are still somethings I find challenging</p>
+
+<h4>1 Use a good code editor</h4>
+
+<p>I like using Emacs with Orgmode.</p>
+
+<ul>
+<li>I have previously tried a variety of code editors from Tinn-r, NppToR, Rstudio and Eclipse.</li>
+<li>Emacs with Orgmode suits me the most because it has a great number of features especially the linkage with LaTeX or HTML export</li>
+<li>A key reference to look at for reasons why Emacs is so good for scientific work is Eric Schulte et al <a href="www.jstatsoft.org/v46/i03%E2%80%8E">"A Multi-Language Computing Environment for Literate Programming"</a></li>
+<li>Here is a <a href="http://doc.norang.ca/org-mode.html">link to a great orgmode description</a></li>
+<li>(this guy spends a lot of time on tweaking his set up)</li>
+</ul>
+
+
+<h4>2 Analyse data with Scripts (stitch together code chunks)</h4>
+
+<p>I use Scripts but prefer to think of them as stitched together Code Chunks with prose into Compendia.</p>
+
+<ul>
+<li>Compendia are documents that weave together Code and Prose into an executable report</li>
+<li>The underlying philosophy is called Reproducible Research Reports</li>
+<li>A very useful tool is a keyboard shortcut to quickly create a chunk for code</li>
+<li>so you can be writing parts of the report like this: "Blah Blah Blah as shown in Figure X and Table Y"</li>
+<li>then just hit the correct keys and WHAMM-O there is a new chunk ready for the code that creates Figure X and Table Y to be written.</li>
+<li>Here is how I use Emacs to achieve this (the other editors I mentioned above also have the abiltiy to do this too).  The IPython Notebook does this stuff too but calls chunks "cells" for some reason.</li>
+</ul>
+
+
+<h4>Emacs Code: Put this into the ~/.emacs.d/init.el file</h4>
+
+<pre><code>(define-skeleton chunk-skeleton
+  "Info for a code chunk."
+  "Title: "
+  "*** " str "-code\n"
+  "#+name:" str "\n"
+  "#+begin_src R :session *R* :tangle src/" str ".r :exports reports :eval no\n"
+  "#### name:" str " ####\n"
+  "\n"
+  "#+end_src\n"
+)
+(global-set-key [?\C-x ?\C-\\] 'chunk-skeleton)
+</code></pre>
+
+<h4>Using the Emacs Shortcut</h4>
+
+<ul>
+<li>now whenever you type Control-x control-\ a new code chunk will appear</li>
+<li>you'll be typing "blah blah blah" and think I need a figure or table, just hit it.</li>
+<li>move into the empty section and add some code</li>
+<li>you can hit C-c ' to enter a org-babel code execution session that will be able to send these line by line to an R session</li>
+<li>or within the main org buffer if your eval flag is set to yes then you can run the entire chunk (and return tabular output to the doc) using C-c C-c</li>
+<li>To export the code chunks and create the modular code scripts without the narrative prose use C-c C-v t</li>
+<li>this is called "tangling" and the chunks will be written out to the file specified in the chunk header ":tangle" flag</li>
+</ul>
+
+
+<h4>Compiling the resulting Compendium</h4>
+
+<ul>
+<li>Emacs uses LaTeX or HTML to produce the Report</li>
+<li>I find both of these outputs very pleasing</li>
+<li>to compile to TEX use C-c C-e d</li>
+<li>for HTML use C-c C-e h (FOR CODE HIGHLIGHTING INSTALL htmlize.el)</li>
+<li>these commands will also evaluate all the chunks where ":eval" = yes to load the data and calculate the results fresh.</li>
+<li>AWESOME!</li>
+</ul>
+
+
+<h4>3 Store your work simply and document it properly</h4>
+
+<ul>
+<li>I use the <a href="http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/">ProjectTemplate R package</a> to organise my code sections into modules</li>
+<li>These modules are organised into the Reichian LCFD paradigm described first <a href="http://stackoverflow.com/a/1434424">on StackOverflow here</a>, and encoded into <a href="http://cran.r-project.org/web/packages/makeProject/makeProject.pdf">the makeProject R package</a></li>
+<li>documentation is within the main orgmode script</li>
+<li>data documentation is a whole other universe that I will deal with in a separate post</li>
+</ul>
+
+
+<h4>4 use a version control system using git and github</h4>
+
+<pre><code># once you have the project via R
+R
+require(ProjectTemplate)
+create.project("AwesomeProject", minimal = T)
+q()
+# use the shell to start a git repo
+cd AwesomeProject
+git init
+# and commit the TODO
+git add TODO
+git commit -m "first commit"
+# tada!
+</code></pre>
+
+<ul>
+<li>Emacs can now be used to manage the git repo using the C-x g command</li>
+<li>Rstudio has a really nice GUI for doing this inside it;s Project management interface too.</li>
+</ul>
+
+
+<h4>Using Github or another Git Server</h4>
+
+<ul>
+<li>You can easily set up a Github repo for this now but it will be public</li>
+<li>Alternatative is to set up your own private Git server.  I followed <a href="http://blog.goosoftware.co.uk/2012/02/07/quick-git-server/">these instructions to Running a Simple Git Server Using SSH</a></li>
+<li>Either way once you have set up your remote git repo you need to set the remote tracking</li>
+</ul>
+
+
+<h4>Git Code:</h4>
+
+<pre><code>cd /path/to/local/git/repo
+git remote add origin git@github-or-other-server:myname/myproject.git
+git push origin master
+</code></pre>
+
+<h4>5 Automate back ups AND 6 Avoid distracting gadgets</h4>
+
+<ul>
+<li>OMG backups stress me out</li>
+<li>ideally I would follow <a href="http://www.jwz.org/blog/2007/09/psa-backups/">this advice because "when it comes to losing your data the universe tends toward maximum irony. Don't push it."</a></li>
+<li>But I don;t fully comply</li>
+<li>Instead I generally use Dropbox for  basic project management admin stuff</li>
+<li>I use github for code projects I am happy to share, I also pay for 10 private repos</li>
+<li>I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this</li>
+<li>In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.</li>
+</ul>
+
+
+<h4>Conclusions</h4>
+
+<ul>
+<li>This is how I've worked for a couple of years</li>
+<li>I find it very enjoyable, mostly productive but prone to the distractions of "distractions by gadgets"</li>
+<li>The main thing I want to point out is the usage of Code Chunks in RRR scripts.</li>
+<li>These things are awesome.</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/setting-up-a-workflow-with-code-chunks/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Mon Nov 25 00:00:00 +1100 2013">25 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
     </h1>
     <div class="entry-content full-content">
@@ -576,75 +767,6 @@ sapply(x, simpleCap, tosplit = "/")
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook</h1>
-
-<h4>Aims:</h4>
-
-<p>It was suggested I could document the pumilio test build as an OpenNotebook.
-I imagined that I could link this blog to github repo and doco hosted on gh-pages.</p>
-
-<h4>Methods:</h4>
-
-<ul>
-<li>For ie the emacs html output now goes to <a href="http://ivanhanigan.github.io/pumilio-bushfm/">http://ivanhanigan.github.io/pumilio-bushfm/</a></li>
-<li>then collaborators can clone/fork <a href="https://github.com/ivanhanigan/pumilio-bushfm">https://github.com/ivanhanigan/pumilio-bushfm</a></li>
-<li>and comment/complain at <a href="https://github.com/ivanhanigan/pumilio-bushfm/wiki">https://github.com/ivanhanigan/pumilio-bushfm/wiki</a></li>
-</ul>
-
-
-<h4>Results:</h4>
-
-<ul>
-<li>I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud</li>
-<li>Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).</li>
-<li>then when I tried to upload a big sound file it broke :-(</li>
-<li>I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via</li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code>sudo nano /etc/mysql/my.cnf
-</code></pre>
-
-<p></p>
-
-
-<h4>BUT</h4>
-
-<ul>
-<li>it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...</li>
-<li>so I think I can <a href="http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition">just remount /var</a> onto the larger /mnt secondary disk.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/pumilio-bushfm" title="pumilio-bushfm" rel="category tag">pumilio-bushfm</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/pumilio-bushfm-test-dev-prod/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Nov 15 00:00:00 +1100 2013">15 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -699,147 +821,147 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                <li><a href="/categories/surveys">surveys (1)</a></li>
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
+                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
+                
+                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
+                
+                <li><a href="/categories/opinion">opinion (1)</a></li>
+                
+                <li><a href="/categories/visualisation">visualisation (1)</a></li>
+                
+                <li><a href="/categories/systems">systems (1)</a></li>
+                
+                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                
+                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                
+                <li><a href="/categories/ons">ons (2)</a></li>
+                
+                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (3)</a></li>
+                
+                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                
+                <li><a href="/categories/versions">versions (1)</a></li>
+                
+                <li><a href="/categories/datasharing">datasharing (1)</a></li>
+                
+                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
+                
+                <li><a href="/categories/workflow">workflow (4)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
+                
+                <li><a href="/categories/data science">data science (1)</a></li>
+                
+                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (5)</a></li>
+                
+                <li><a href="/categories/rates theory">rates theory (1)</a></li>
                 
                 <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                
+                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
+                
+                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                
+                <li><a href="/categories/animation">animation (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (27)</a></li>
+                
+                <li><a href="/categories/links">links (1)</a></li>
+                
+                <li><a href="/categories/make">make (1)</a></li>
+                
+                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
+                
+                <li><a href="/categories/me">me (3)</a></li>
+                
+                <li><a href="/categories/replication">replication (1)</a></li>
+                
+                <li><a href="/categories/python">python (2)</a></li>
                 
                 <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/Data Documentation">Data Documentation (15)</a></li>
-                
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
-                
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
-                
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
-                
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
-                
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
-                
-                <li><a href="/categories/GIS">GIS (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (5)</a></li>
-                
-                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (28)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                <li><a href="/categories/wordpress">wordpress (1)</a></li>
                 
                 <li><a href="/categories/blogging">blogging (1)</a></li>
                 
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
                 
                 <li><a href="/categories/tools">tools (1)</a></li>
                 
-                <li><a href="/categories/drought">drought (1)</a></li>
+                <li><a href="/categories/India Overview">India Overview (1)</a></li>
                 
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
                 
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
+                <li><a href="/categories/GIS">GIS (1)</a></li>
                 
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/science">science (2)</a></li>
-                
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
-                
-                <li><a href="/categories/datasharing">datasharing (1)</a></li>
-                
-                <li><a href="/categories/supersite">supersite (1)</a></li>
-                
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
-                
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (4)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
+                <li><a href="/categories/statistical models">statistical models (1)</a></li>
                 
                 <li><a href="/categories/organising">organising (2)</a></li>
                 
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                <li><a href="/categories/concordance">concordance (1)</a></li>
                 
-                <li><a href="/categories/me">me (3)</a></li>
+                <li><a href="/categories/ecology">ecology (1)</a></li>
                 
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (4)</a></li>
                 
-                <li><a href="/categories/make">make (1)</a></li>
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                <li><a href="/categories/Modelling">Modelling (1)</a></li>
                 
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
+                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
                 
                 <li><a href="/categories/awap grids">awap grids (1)</a></li>
                 
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
+                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                
+                <li><a href="/categories/packages">packages (1)</a></li>
+                
+                <li><a href="/categories/Drought">Drought (2)</a></li>
+                
+                <li><a href="/categories/jekyll">jekyll (2)</a></li>
+                
+                <li><a href="/categories/blogger">blogger (1)</a></li>
+                
+                <li><a href="/categories/notebook">notebook (1)</a></li>
+                
+                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                
+                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
+                
+                <li><a href="/categories/outlines">outlines (1)</a></li>
+                
+                <li><a href="/categories/science">science (2)</a></li>
+                
+                <li><a href="/categories/drought">drought (1)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (15)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
+                
+                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
+                
+                <li><a href="/categories/supersite">supersite (1)</a></li>
+                
+                <li><a href="/categories/graphviz">graphviz (1)</a></li>
+                
+                <li><a href="/categories/kepler">kepler (1)</a></li>
                 
               </ul>
             </div>
@@ -850,11 +972,15 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
               <ul>
                 
                 <li>
-                  <a href="/2014/02/yearmon-class-and-interoperability-with-excel-and-access/" title="yearmon-class-and-interoperability-with-excel-and-access" rel="bookmark">yearmon-class-and-interoperability-with-excel-and-access</a>
+                  <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
                 </li>
                 
                 <li>
                   <a href="/2014/02/gantting-like-a-hacker/" title="gantting-like-a-hacker" rel="bookmark">gantting-like-a-hacker</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/02/aggregation-of-statistical-local-areas/" title="Aggregation Of Statistical Local Areas" rel="bookmark">Aggregation Of Statistical Local Areas</a>
                 </li>
                 
                 <li>
@@ -1043,10 +1169,6 @@ I imagined that I could link this blog to github repo and doco hosted on gh-page
                 
                 <li>
                   <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
                 </li>
                 
               </ul>
