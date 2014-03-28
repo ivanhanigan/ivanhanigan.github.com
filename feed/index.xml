@@ -4,13 +4,124 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2014-02-28T07:41:36+11:00</updated>
+ <updated>2014-03-29T10:56:33+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Project Templates That Initialize A New Project With A Skeleton Automatically</title>
+   <link href="http://ivanhanigan.github.com/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/"/>
+   <updated>2014-03-29T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;I have been using &lt;a href=&quot;http://projecttemplate.net/&quot;&gt;John Myles Whites ProjectTemplate R package&lt;/a&gt; for ages&lt;/li&gt;
+&lt;li&gt;I really like the ease with which I can get up and running a new project&lt;/li&gt;
+&lt;li&gt;and the ease with which I can pick up an old project and start adding new work&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Quote from John's first post&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;My inspiration for this approach comes from the rails command from
+Ruby on Rails, which initializes a new Rails project with the proper
+skeletal structure automatically. Also taken from Rails is
+ProjectTemplate’s approach of preferring convention over
+configuration: the automatic data and library loading as well as the
+automatic testing work out of the box because assumptions are made
+about the directory structure and naming conventions that will be used
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;a href=&quot;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&quot;&gt;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I dont know anything about RoR but this philosophy works really well for my R programming too&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
+setwd(&quot;~/projects&quot;)
+create.project(&quot;my-project&quot;)
+setwd('my-project')
+dir()
+##  [1] &quot;cache&quot;       &quot;config&quot;      &quot;data&quot;        &quot;diagnostics&quot; &quot;doc&quot;        
+##  [6] &quot;graphs&quot;      &quot;lib&quot;         &quot;logs&quot;        &quot;munge&quot;       &quot;profiling&quot;  
+## [11] &quot;README&quot;      &quot;reports&quot;     &quot;src&quot;         &quot;tests&quot;       &quot;TODO&quot;   
+##### these are very sensible default directories to create a modular
+##### analysis workflow.  See the project homepage for descriptions
+
+# now all you need to do whenever you start a new day 
+load.project()
+# and your workspace will be recreated and any new data automagically analysed in
+# the manner you want
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;Project Administration&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I;ve found that these directories do not work so well for the administration of my projects and so I put together a different set of automatic defaults&lt;/li&gt;
+&lt;li&gt;Ive based it on the &lt;a href=&quot;http://ivanhanigan.github.io/2013/12/research-protocol-for-manitoba-centre-for-health-policy/&quot;&gt;University of Manitoba Centre for Health Policy&lt;/a&gt;- along with some other sources I can recall
+
+&lt;h4&gt;The full set&lt;/h4&gt;
+
+&lt;p&gt;  # A.Background      &lt;br/&gt;
+  # B.Proposals
+  # C.Approvals
+  # D.Budget  &lt;br/&gt;
+  # E.Datasets&lt;br/&gt;
+  # F.Analysis&lt;br/&gt;
+  # G.Literature      &lt;br/&gt;
+  # H.Communication           &lt;br/&gt;
+  # I.Correspondance  &lt;br/&gt;
+  # J.Meetings&lt;br/&gt;
+  # K.Completion      &lt;br/&gt;
+  # ContactDetails.txt&lt;br/&gt;
+  # README.md
+  # TODO.txt&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;R Code: my subset&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;AdminTemplate &amp;lt;- function(rootdir = getwd()){
+  setwd(rootdir)
+  dir.create(file.path(rootdir,'01_planning'))
+  dir.create(file.path(rootdir,'01_planning','proposal'))
+  dir.create(file.path(rootdir,'01_planning','scheduling'))
+  dir.create(file.path(rootdir,'02_budget'))
+  dir.create(file.path(rootdir,'03_communication'))
+  dir.create(file.path(rootdir,'04_reporting_and_meetings'))
+  file.create(file.path(rootdir,'contact_details.txt'))
+  file.create(file.path(rootdir,'README.md'))
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;Conclusion&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;hopefully by formalising some of these into my workflow I will find my projects easier to navigate through&lt;/li&gt;
+&lt;li&gt;and pick up or put down as needed&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>long-term-climatology-contextual-data-for-ecological-research</title>
@@ -183,6 +294,71 @@ png(&quot;season_hot.png&quot;)
 image(hot)
 dev.off()
 &lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>yearmon-class-and-interoperability-with-excel-and-access</title>
+   <link href="http://ivanhanigan.github.com/2014/02/yearmon-class-and-interoperability-with-excel-and-access/"/>
+   <updated>2014-02-27T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2014/02/yearmon-class-and-interoperability-with-excel-and-access</id>
+   <content type="html">&lt;h4&gt;Toward a standard and unambiguous format for sharing Year-Month data&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I am working in a new job where we are recieving data from a lot of different groups&lt;/li&gt;
+&lt;li&gt;we aim to review these datasets and then publish them for a wide audience of potential users&lt;/li&gt;
+&lt;li&gt;therefore usability and interoperability is a key concern&lt;/li&gt;
+&lt;li&gt;we recieved some data with Month and Year as Apr.12&lt;/li&gt;
+&lt;li&gt;I know this is easy to convert to a date/time class with in R but wondered what a better format would be to recommend for our datasets to use to maximise utility downstream (especially for non R users)&lt;/li&gt;
+&lt;li&gt;Apr.12 is assumed to be text in excel so need something else&lt;/li&gt;
+&lt;li&gt;Apr-12 is assumed to be the twelfth of April this year (ie 12/4/2014)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;In R the solution might be to use the zoo package&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(zoo)
+as.yearmon(&quot;Apr.12&quot;, &quot;%b.%y&quot;)
+# [1] &quot;Apr 2012&quot;
+
+# other options abound
+as.yearmon(&quot;apr12&quot;, &quot;%b%y&quot;)
+
+# the default is YYYY-MM or similar
+as.yearmon(&quot;2012-04&quot;)
+as.yearmon(&quot;2012-4&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;So I went looking at how Excel and Access deal with this&lt;/li&gt;
+&lt;li&gt;found that the best appeard to be MMM-YYYY in terms of how these software assume the data should look&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;as.yearmon(&quot;Apr-2012&quot;, &quot;%b-%Y&quot;)
+
+# but will need to specify format because otherwise fails
+as.yearmon(&quot;Apr-2012&quot;)
+# NA
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;Conclusion&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I recommend the MMM-YYYY option&lt;/li&gt;
+&lt;li&gt;it is pretty good that in Excel it is assumed 1/04/2012&lt;/li&gt;
+&lt;li&gt;and if MS access is set to date/time and format = mmm-yyyy is ok for data entry (but not importing)&lt;/li&gt;
+&lt;li&gt;to import this use a shorttext type, then post-import, change to date/time with mmm-yyyy (the . failed)&lt;/li&gt;
+&lt;/ul&gt;
+
 </content>
  </entry>
  
