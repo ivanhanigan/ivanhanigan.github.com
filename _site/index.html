@@ -21,12 +21,12 @@
         <p id="blog-description"></p>
         <div id="navigation">
           <ul class="nav clearfix">
-            <li class="first-child"><a href="/research.html">Open Notebook</a></li>
-            <li> <a href="/blog.html">Blog</a></li>
-            <li><a href="/projects.html">Software</a></li>
-            <li><a href="/about.html">About</a></li>
-            <li><a href="/publications.html">Publications</a></li>
-            <li><a href="/cv.html">CV</a></li>
+            <li class="first-child"><a href="/research.html">About My Notebook</a></li>
+            <li> <a href="/blog.html">Entries</a></li> 
+            <!-- <li><a href="/projects.html">Software</a></li>-->
+            <li><a href="/about.html">About Me</a></li>
+            <li><a href="/publications.html">My Publications</a></li>
+            <li><a href="/cv.html">My CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
             <!--<li><a href="/donors.html">Donors</a></li>-->
           </ul>
@@ -38,7 +38,7 @@
         <div id="content">
           <h2>Welcome to my Open Notebook</h2>
 
-<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a> for documenting progress on my projects.</p>
+<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a>. Find out more <a href="/research.html">Here</a>.</p>
 
 <p>  <img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
 
@@ -54,43 +54,355 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
+      <a href="/2014/04/using-morpho-for-cataloguing-personal-research-data/" title="Using Morpho for Cataloguing Personal Research Data" rel="bookmark">Using Morpho for Cataloguing Personal Research Data</a>
     </h1>
     <div class="entry-content full-content">
-      <ul>
-<li>Last year I wrote to a Professor to let them know some numbers that quantified their effect estimate (computed be exponentiating their beta coefficient) described in their results section was inconsistent with the numbers in their table (the raw coefficients).</li>
-<li>Happily the recalculation showed that they had underestimated the effect size and their conclusions were not wrong, but erroneously conservative.</li>
-<li>Previously I would use Sweave documents to keep track of all my calculations, but I was still copy-and-pasting the key numbers into the text.</li>
-<li>I've become more interested now in using Inline R Outputs (called Sexpr - S expressions)</li>
-<li>This is also the first time I've created a report using the Palatino font, on the advice of a new colleague of mine.</li>
-<li>I popped up a <a href="https://github.com/ivanhanigan/DataDocumentation">Github repo with a Sweave template for Reproducible Reports with a few notes I made</a>.  Which looks like</li>
+      <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 2014-04-20-using-morpho-orgmode</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Introduction</a></li>
+<li><a href="#sec-1-2">1.2 Cataloguing Personal Research Data with Morpho</a></li>
+<li><a href="#sec-1-3">1.3 How Morpho Works</a></li>
+<li><a href="#sec-1-4">1.4 Adding a dataset from my collection</a></li>
+<li><a href="#sec-1-5">1.5 the drought dataset:</a></li>
+<li><a href="#sec-1-6">1.6 Step One: define the project that I will keep locally</a></li>
+<li><a href="#sec-1-7">1.7 Contextual Metadata</a></li>
+<li><a href="#sec-1-8">1.8 Abstract</a></li>
+<li><a href="#sec-1-9">1.9 Australian FOR codes</a></li>
+<li><a href="#sec-1-10">1.10 GCMD Keywords</a></li>
+<li><a href="#sec-1-11">1.11 Geographic coverage</a></li>
+<li><a href="#sec-1-12">1.12 Save the metadata</a></li>
+<li><a href="#sec-1-13">1.13 Additional Metadata</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> 2014-04-20-using-morpho-orgmode</h3>
+<div class="outline-text-3" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Introduction</h4>
+<div class="outline-text-4" id="text-1-1">
+
+
+<p>
+The collection of scientific data is undertaken at an individual level
+by everybody in their own way. The layout of data collections that I
+have seen is incredibly varied; spread across multiple files and folders which can
+be difficult to navigate or search through. In some cases
+these collections are incomprehensible to all but the individual themselves. Given
+that a lot of projects are collaborative in nature and require
+extensive sharing, it is important that scientists maintain their
+data collection by some form of system that allows easy data extraction and
+use in other projects. Therefore, the maintenance of a personal catalogue of datasets is an
+important activity for scientists.
+</p>
+<p>
+By cataloguing I mean that a file or database is kept that stores all the
+information about the names of the datasets (and any other files the
+data may be spread across), where the datasets are located, any
+references (papers) that were developed from it and finally
+important information regarding the conditions it
+was formed under.
+</p>
+<p>
+While this may seem laborious, it keeps track of all the data that one
+has collected over time and gives one a reference system to find a
+dataset of interest when sharing with collaborators. Datasets can be
+saved in any filing system the scientist chooses, but with the help of
+their personal data catalogue they will always know the status of
+their data collection.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Cataloguing Personal Research Data with Morpho</h4>
+<div class="outline-text-4" id="text-1-2">
+
+
+<p>
+[Metacat](<a href="https://knb.ecoinformatics.org/knb/docs/intro.html">https://knb.ecoinformatics.org/knb/docs/intro.html</a>) is an
+online repository for data and metadata. It is a great resource for
+the publication of data, but not very useful for an individual
+scientist to use on their personal computer.  However
+[Morpho](<a href="https://knb.ecoinformatics.org/#tools/morpho">https://knb.ecoinformatics.org/#tools/morpho</a>) the Metadata
+Editor used by Metacat may be used locally by a researcher to
+catalogue their collection (and ultimately this will make publishing
+elements of the collection easier.)  Morpho uses the Ecological
+Metadata Language (EML) to author metadata with a graphical user
+interface wizard.
+</p>
+<p>
+I am using morpho 1.8 due to my group using older metacat server.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-4">
+<h4 id="sec-1-3"><span class="section-number-4">1.3</span> How Morpho Works</h4>
+<div class="outline-text-4" id="text-1-3">
+
+
+<p>
+When you install Morpho it creates a directory where you can run the
+program from, and another hidden directory called ".morpho" for it's
+database of all your metadata (and optionally any data you import to
+it).  Below is an image of mine, with a couple of test records I
+played around with (the XMLs/HTMLs) and a dataset I imported (the text
+file).
+</p>
+<ul>
+<li>~/.morpho/profiles/hanigan/data/hanigan/
+</li>
 </ul>
 
+<p>
+<img src="/images/morphodir1.png" alt="morphodir1.png">
+</p>
+<p>  
+Every time a modification is made to the metadata a new XML is saved here, with the major number being the ID of the package and incremented minor number to reflect the change.
+</p>
+<p>
+The GUI is tedious.
+</p>
 
-<p><img src="/images/sexpr.png" alt="/images/sexpr.png" /></p>
+</div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-4">
+<h4 id="sec-1-4"><span class="section-number-4">1.4</span> Adding a dataset from my collection</h4>
+<div class="outline-text-4" id="text-1-4">
+
+
+<p>
+I have already got a good amount of metadata I generated when I published [the drought data](<a href="http://dx.doi.org/10.4225/13/50BBFD7E6727A">http://dx.doi.org/10.4225/13/50BBFD7E6727A</a>)
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-4">
+<h4 id="sec-1-5"><span class="section-number-4">1.5</span> the drought dataset:</h4>
+<div class="outline-text-4" id="text-1-5">
+
+<p>    Hanigan, Ivan (2012): Monthly drought data for Australia 1890-2008
+    using the Hutchinson Drought Index. Australian National University Data Commons.
+    DOI: 10.4225/13/50BBFD7E6727A. 
+</p>
+<p>
+&lt;p&gt;&lt;/p&gt;
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-6" class="outline-4">
+<h4 id="sec-1-6"><span class="section-number-4">1.6</span> Step One: define the project that I will keep locally</h4>
+<div class="outline-text-4" id="text-1-6">
+
 
 <ul>
-<li><p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.pdf">PDF output is here</a></p></li>
-<li><p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.Rnw">Sweave file is here</a></p></li>
+<li>This is the Github repo <a href="https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS">https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS</a>
+</li>
+<li>I store this locally at ~/data/DROUGHT-BOM-GRIDS
+</li>
 </ul>
 
+
+</div>
+
+</div>
+
+<div id="outline-container-1-7" class="outline-4">
+<h4 id="sec-1-7"><span class="section-number-4">1.7</span> Contextual Metadata</h4>
+<div class="outline-text-4" id="text-1-7">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-8" class="outline-4">
+<h4 id="sec-1-8"><span class="section-number-4">1.8</span> Abstract</h4>
+<div class="outline-text-4" id="text-1-8">
+
+
+<p>
+I originally wrote the abstract as the description for a RIF-CS metadata object to publish for the ANU library.
+</p>
+<p>
+I got the following instructions from a Librarian: The "informative abstract" method.
+</p>
+<ul>
+<li>The abstract should be a descriptive of the data, not the research.
+</li>
+<li>Briefly outline the relevant project or study and describe the contents of the data package. 
+</li>
+<li>Include geographic location, the primary objectives of the study, what data was collected (species or phenomena), the year range the data was collected in, and collection frequency if applicable.
+</li>
+<li>Describe methodology techniques or approaches only to the degree necessary for comprehension – don’t go into any detail.
+</li>
+<li>Cite references and/or links to any publications that are related to the data package.
+</li>
+<li>Single paragraph
+</li>
+<li>200-250 words
+</li>
+<li>Use active voice and past tense.
+</li>
+<li>Use short complete sentences.
+</li>
+<li>Express terms in both their abbreviated and spelled out form for search retrieval purposes.
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-9" class="outline-4">
+<h4 id="sec-1-9"><span class="section-number-4">1.9</span> Australian FOR codes</h4>
+<div class="outline-text-4" id="text-1-9">
+
+<p>ANZSRC-FOR Codes: Australian and New Zealand Standard Research Classification – Fields of Research codes allow R&amp;D activity to be categorised according to the methodology used in the R&amp;D, rather than the activity of the unit performing the R&amp;D or the purpose of the R&amp;D.  
+<a href="http://www.abs.gov.au/Ausstats/abs@.nsf/Latestproducts/4AE1B46AE2048A28CA25741800044242?opendocument">http://www.abs.gov.au/Ausstats/abs@.nsf/Latestproducts/4AE1B46AE2048A28CA25741800044242?opendocument</a>
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-10" class="outline-4">
+<h4 id="sec-1-10"><span class="section-number-4">1.10</span> GCMD Keywords</h4>
+<div class="outline-text-4" id="text-1-10">
+
+<p>Olsen, L.M., G. Major, K. Shein, J. Scialdone, S. Ritz, T. Stevens, M. Morahan, A. Aleman, R. Vogel, S. Leicester, H. Weir, M. Meaux, S. Grebas, C.Solomon, M. Holland, T. Northcutt, R. A. Restrepo, R. Bilodeau, 2013. NASA/Global Change Master Directory (GCMD) Earth Science Keywords. Version 8.0.0.0.0 
+<a href="http://gcmd.nasa.gov/learn/keyword_list.html">http://gcmd.nasa.gov/learn/keyword_list.html</a>
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-11" class="outline-4">
+<h4 id="sec-1-11"><span class="section-number-4">1.11</span> Geographic coverage</h4>
+<div class="outline-text-4" id="text-1-11">
+
+<p>    &gt; require(devtools)
+    &gt; install<sub>github</sub>("disentangle", "ivanhanigan")
+    &gt; require(disentangle)
+    &gt; morpho<sub>bounding</sub><sub>box</sub>(d)
+                      X1                 X2                 X3
+    1               &lt;NA&gt; 10.1356954574585 S               &lt;NA&gt;
+    2 112.907211303711 E               &lt;NA&gt; 158.960372924805 E
+    3               &lt;NA&gt; 54.7538909912109 S               &lt;NA&gt;
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-12" class="outline-4">
+<h4 id="sec-1-12"><span class="section-number-4">1.12</span> Save the metadata</h4>
+<div class="outline-text-4" id="text-1-12">
+
+
+<ul>
+<li>the metadata is now ready to save to my .morpho catalogue
+</li>
+<li>without importing any data
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morphoimg2.png" alt="morphoimg2.png">
+</p>
+<ul>
+<li>this appears as a new XML
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morphoimg3.png" alt="morphoimg3.png">
+</p>
+<ul>
+<li>which looks like this
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morphoimg4.png" alt="morphoimg4.png">
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-13" class="outline-4">
+<h4 id="sec-1-13"><span class="section-number-4">1.13</span> Additional Metadata</h4>
+<div class="outline-text-4" id="text-1-13">
+
+
+<p>
+As this is metadata only about the dataset, it is innapropriate to refer to related publications etc in these elements.  Luckily EML has the additionalMetadata and additionalLinks fields.  Just open the XML and paste the following in the bottom.
+</p>
+<p>
+    &lt;additionalMetadata&gt;
+      &lt;metadata&gt;
+        &lt;additionalLinks&gt;
+          &lt;url name="Hanigan, IC, Butler, CD, Kokic, PN, Hutchinson, MF. Suicide and Drought in New South Wales, Australia, 1970-2007. Proceedings of the National Academy of Science USA 2012, vol. 109 no. 35 13950-13955, doi: 10.1073/pnas.1112965109"&gt;<a href="http://dx.doi.org/10.1073/pnas.1112965109">http://dx.doi.org/10.1073/pnas.1112965109</a>&lt;/url&gt;
+        &lt;/additionalLinks&gt;
+      &lt;/metadata&gt;
+    &lt;/additionalMetadata&gt;
+</p>
+<p>
+You can see this if you then open it up again in morpho and then under the documentation menu go to Add/Edit Documentation.
+</p>
+<p>
+<img src="/images/morphoimg5.png" alt="morphoimg5.png">
+</p></div>
+</div>
+</div>
+
+
+<p></div></p>
+
+<p></body>
+</html></p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2014/02/template-reproducible-research-with-r-tex-and-sweave/#disqus_thread'>Comments</a>
+      <a href='/2014/04/using-morpho-for-cataloguing-personal-research-data/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Wed Feb 12 00:00:00 +1100 2014">12 Feb 2014</abbr>
+        <abbr class="published" title="Sun Apr 20 00:00:00 +1000 2014">20 Apr 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -99,80 +411,57 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
+      <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
     </h1>
     <div class="entry-content full-content">
-      <p>Yesterday I had the opportunity to review the Tree based modelling methods we are implementing in a study I'm working on at the moment.
-I based the discussion on <a href="http://www.tandfonline.com/doi/abs/10.1080/00330124.2012.724347">a paper from 2012</a>, along with <a href="/pdfs/TreeModelNotes.pdf">some notes I have made related to the use of these methods in our context</a>.
-I had an hour and a half with a couple of senior statisticians and a bunch of sociologists at the study group yesterday.</p>
+      <p>I just revised the content of the <a href="/research.html">"About My Notebook"</a> page and thought it was also relevant to post as an entry.</p>
 
-<h4>My main question for the group was:</h4>
+<h4>Welcome to my Open Notebook</h4>
+
+<p>This is the public face of my Open Notebook, in which I keep all the details of the data, code and documents related to my research.  This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a> and aligns with the principles of the Open Notebook Science (ONS) movement.  The private side of my Open Notebook (the closed bit) is private either because it includes unpublished work that I wish to keep embargoed until after publication, or because it is all the gory, messy details of the day-to-day business of writing and rewriting code and prose to analyse data and make sense of the data I am analysing.  These elements of the notebook do not look like standalone journal entries and I store my personal archive either hosted by <a href="https://github.com/ivanhanigan/">GitHub</a> for the public parts (thanks to their superior integration with Jekyll websites thanks to gh-pages for each repository) or <a href="https://bitbucket.org/ivanhanigan/">BitBucket</a> for the private bits (thanks to bitbucket's free unlimited private repositories).</p>
+
+<h4>Categories</h4>
+
+<p>The different categories can be thought of as seperate lab notebooks. My projects are connected by being placed into one of these categories.</p>
 
 <ul>
-<li>What do you think of the proposition that these models are suitable for "studies that test hypotheses generated from multiple theories"?</li>
+<li><a href="http://ivanhanigan.github.io/categories/cloud%20building/">cloud building</a>: the experiments I am conducting in building Virtual Labs in the cloud</li>
+<li><a href="http://ivanhanigan.github.io/categories/Data%20Documentation/">Data Documentation</a>: how metadata tools interact with data analysis tools</li>
+<li><a href="http://ivanhanigan.github.io/categories/disentangle%20things/">disentangle things</a>: conceptual and methodological insights regarding complexity</li>
+<li><a href="http://ivanhanigan.github.io/categories/e-collaboration/">e-collaboration</a>: my interactions with other scientists online</li>
+<li><a href="http://ivanhanigan.github.io/categories/ecosocial%20tipping%20points/">ecosocial tipping points</a>: a major branch of my research</li>
+<li><a href="http://ivanhanigan.github.io/categories/extreme%20weather%20events/">extreme weather events</a>: another major branch of my research</li>
+<li><a href="http://ivanhanigan.github.io/categories/overview/">overview</a>: high level information about why I am doing this stuff</li>
+<li><a href="http://ivanhanigan.github.io/categories/research%20methods/">research methods</a>: low level information about how I am doing this stuff</li>
+<li><a href="http://ivanhanigan.github.io/categories/spatial/">spatial</a>: technical details about how to use spatial tools</li>
+<li><a href="http://ivanhanigan.github.io/categories/spatial%20dependence/">spatial dependence</a>: theoretical details about spatial statistics</li>
 </ul>
 
 
-<p>The statisticians where underwhelmed by the Cutts study, but thought the stats method was "neat" and one had not heard of tree models before (!).</p>
+<h4>What is Open Notebook Science?  And Why am I doing it?</h4>
 
-<h4>Key outcomes of that session were:</h4>
+<p>In <a href="http://www.infotoday.com/it/sep10/Poynder.shtml">2005 Jean-Claude Bradley launched a web-based initiative called UsefulChem</a> and named his new technique Open Notebook Science (ONS).  He described it as a way of doing science in which you make all your research freely available to the public in real time. The proposed benefits include greater impact on the public good and enhanced ability to connect with like-minded collaborators. Proposed risks of ONS practice include being scooped by competitors or falling foul of Journal rules regarding prior publication and licencing of Intellectual Property. To mitigate the proposed risks the concept of ONS was broadened to allow research to be made public after a delay.</p>
 
-<ul>
-<li><p>First stage PCA</p>
+<p>In 2010 <a href="http://carlboettiger.info/2012/09/28/Welcome-to-my-lab-notebook.html">Carl Boettiger</a> initiated an experiment "to see if any of the purported benefits or supposed risks were well-founded."  After three years of his experiment Boettiger reported that his "evidence suggests that the practice of open notebook science can faciliate both the performance and dissemination of research while remaining compatible and even synergistic with academic publishing."</p>
 
-<ul>
-<li>Q: did they need to do the PCA first stage to either a) reduce the the large number of potentially collinear variables or b) to control for measurement error?</li>
-<li>A: No they didn't need the PCA.  The large number, collinearity and measurement efficacy are dealt with by the tree based methods (ie cross-validation on steroids, grouping primary and surrogate splits, etc).  Also the trees have an advantage with the large number of predictors in that they are non-parametric and able to automatically detect interactions whereas PCA is parametric and typically assumes linearity. (Note that I saw Steve afterward and he is still not convinced.  Maybe he will respond to this with some description of the reason why not?)</li>
-</ul>
-</li>
-<li><p>Rescaling the variables</p>
-
-<ul>
-<li>Q: Did they need to centre each variable on the grand sample mean so that the relative weight of each variable was even?</li>
-<li>A: No the tree models are not effected by this, and it reduced the interpret-ability of the decision tree graphic.  The PCA is effected, however, and maybe that is why they did it.</li>
-</ul>
-</li>
-<li><p>Multiple working hypotheses</p>
-
-<ul>
-<li>Q: What do you think of the Cutts et al proposition that these models are suitable for "studies that test hypotheses generated from multiple theories"?</li>
-<li>A: It is a promising approach.  Not clear from this study if it is successful but the proposition is plausible.  It has more of a chance than the General Linear Model approach which cannot (this point was made categorically by one of the statisticians).  It will be important to be very clear about what exactly each of the "Theories" are predicting, so that the explanatory power attributable to those variables from one "theory" can be compared with that of the other theories.  The ability to uncover complex interactions is very attractive (extrovert/introvert personality type interacting with group demographics etc) but it also increases the potential for spurious results (and 'chasing the noise') ergo the need to base inferences on what the theories predict, not just on what the data reveal.</li>
-</ul>
-</li>
-<li><p>In general we thought that authors had overdone the stats.  It showed what 'could' be done with trees and forests, but possibly not what 'should' be done.</p></li>
-<li><p>Is the A3 variable really missing from ctree output but dominant in the randomForest in Figure3?</p>
-
-<ul>
-<li>when another group I'm in reviewed it last year it was noted as odd that fig3 has A3 most important in randomforest but does not appear in ctree. At the time I thought this might be due to the cross validation like in the rpart or tree package, but it turns out that ctree does not do that....</li>
-<li>Mislabelling is a possibility as these graphics appear to be edited from the default produced by the 'party' package.</li>
-<li>However, it also reasonable that these results could be correct. ctree (and rpart, tree, etc.) use greedy algorithms, meaning that the best local split is used even if this is suboptimal globally.</li>
-<li>Basically there are algorithmic reasons that this might be a true difference between ctree and randomforest.  It might just have been the way the cookie crumbled for the ctree's best local split which may not have survived through the randomForest's  thousands of iterations.</li>
-<li>But on page 569 they do say "total knowledge is lowest among those whod do not think that they are empowered and are unaware of information sources" which implies to me that the top or left-most node might be mis-labelled I3 when it is actually A3.</li>
-<li>this would give the appropriate left most box plot (ie I3 &lt;= -0.22 &amp; A3 &lt;= -0.64 gives lowest total knowledge??)</li>
-<li>at the group yesterday people also generally suspected mislabelling, given the dominance of A3 in randomforest.</li>
-</ul>
-</li>
-</ul>
-
+<p>This promising result has inspired me to follow these practices in my own part-time PhD and my full-time work as Data Manager at a University (to the extent I am allowed to by the rules of the University and the willingness of my boss to share our results).</p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
       
       <a href="/categories/overview" title="overview" rel="category tag">overview</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/#disqus_thread'>Comments</a>
+      <a href='/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Thu Jan 23 00:00:00 +1100 2014">23 Jan 2014</abbr>
+        <abbr class="published" title="Sat Apr 19 00:00:00 +1000 2014">19 Apr 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -181,135 +470,338 @@ I had an hour and a half with a couple of senior statisticians and a bunch of so
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
+      <a href="/2014/04/using-morpho-for-cataloguing-personal-research-data/" title="Using Morpho for Cataloguing Personal Research Data" rel="bookmark">Using Morpho for Cataloguing Personal Research Data</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Aim</h1>
+      <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 2014-04-19-using-morpho-orgmoed</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Introduction</a></li>
+<li><a href="#sec-1-2">1.2 Cataloguing Personal Research Data with Morpho</a></li>
+<li><a href="#sec-1-3">1.3 How Morpho Works</a></li>
+<li><a href="#sec-1-4">1.4 Adding a dataset from my collection</a></li>
+<li><a href="#sec-1-5">1.5 the drought dataset:</a></li>
+<li><a href="#sec-1-6">1.6 Step One: define the project that I will keep locally</a></li>
+<li><a href="#sec-1-7">1.7 Contextual Metadata</a></li>
+<li><a href="#sec-1-8">1.8 Abstract</a></li>
+<li><a href="#sec-1-9">1.9 Australian FOR codes</a></li>
+<li><a href="#sec-1-10">1.10 GCMD Keywords</a></li>
+<li><a href="#sec-1-11">1.11 Geographic coverage</a></li>
+<li><a href="#sec-1-12">1.12 Save the metadata</a></li>
+<li><a href="#sec-1-13">1.13 Additional Metadata</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> 2014-04-19-using-morpho-orgmoed</h3>
+<div class="outline-text-3" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Introduction</h4>
+<div class="outline-text-4" id="text-1-1">
+
+
+<p>
+The collection of scientific data is undertaken at an individual level
+by everybody in their own way. The layout of data collections that I
+have seen is incredibly varied; spread across multiple files and folders which can
+be difficult to navigate or search through. In some cases
+these collections are incomprehensible to all but the individual themselves. Given
+that a lot of projects are collaborative in nature and require
+extensive sharing, it is important that scientists maintain their
+data collection by some form of system that allows easy data extraction and
+use in other projects. Therefore, the maintenance of a personal catalogue of datasets is an
+important activity for scientists.
+</p>
+<p>
+By cataloguing I mean that a file or database is kept that stores all the
+information about the names of the datasets (and any other files the
+data may be spread across), where the datasets are located, any
+references (papers) that were developed from it and finally
+important information regarding the conditions it
+was formed under.
+</p>
+<p>
+While this may seem laborious, it keeps track of all the data that one
+has collected over time and gives one a reference system to find a
+dataset of interest when sharing with collaborators. Datasets can be
+saved in any filing system the scientist chooses, but with the help of
+their personal data catalogue they will always know the status of
+their data collection.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Cataloguing Personal Research Data with Morpho</h4>
+<div class="outline-text-4" id="text-1-2">
+
+
+<p>
+[Metacat](<a href="https://knb.ecoinformatics.org/knb/docs/intro.html">https://knb.ecoinformatics.org/knb/docs/intro.html</a>) is an
+online repository for data and metadata. It is a great resource for
+the publication of data, but not very useful for an individual
+scientist to use on their personal computer.  However
+[Morpho](<a href="https://knb.ecoinformatics.org/#tools/morpho">https://knb.ecoinformatics.org/#tools/morpho</a>) the Metadata
+Editor used by Metacat may be used locally by a researcher to
+catalogue their collection (and ultimately this will make publishing
+elements of the collection easier.)  Morpho uses the Ecological
+Metadata Language (EML) to author metadata with a graphical user
+interface wizard.
+</p>
+<p>
+I am using morpho 1.8 due to my group using older metacat server.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-4">
+<h4 id="sec-1-3"><span class="section-number-4">1.3</span> How Morpho Works</h4>
+<div class="outline-text-4" id="text-1-3">
+
+
+<p>
+When you install Morpho it creates a directory where you can run the
+program from, and another hidden directory called ".morpho" for it's
+database of all your metadata (and optionally any data you import to
+it).  Below is an image of mine, with a couple of test records I
+played around with (the XMLs/HTMLs) and a dataset I imported (the text
+file).
+</p>
+<ul>
+<li>~/.morpho/profiles/hanigan/data/hanigan/
+</li>
+</ul>
+
+<p>
+<img src="/images/morphodir1.png" alt="morphodir1.png">
+</p>
+<p>  
+Every time a modification is made to the metadata a new XML is saved here, with the major number being the ID of the package and incremented minor number to reflect the change.
+</p>
+<p>
+The GUI is tedious.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-4">
+<h4 id="sec-1-4"><span class="section-number-4">1.4</span> Adding a dataset from my collection</h4>
+<div class="outline-text-4" id="text-1-4">
+
+
+<p>
+I have already got a good amount of metadata I generated when I published [the drought data](<a href="http://dx.doi.org/10.4225/13/50BBFD7E6727A">http://dx.doi.org/10.4225/13/50BBFD7E6727A</a>)
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-4">
+<h4 id="sec-1-5"><span class="section-number-4">1.5</span> the drought dataset:</h4>
+<div class="outline-text-4" id="text-1-5">
+
+<p>    Hanigan, Ivan (2012): Monthly drought data for Australia 1890-2008
+    using the Hutchinson Drought Index. Australian National University Data Commons.
+    DOI: 10.4225/13/50BBFD7E6727A. 
+</p>
+<p>
+&lt;p&gt;&lt;/p&gt;
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-6" class="outline-4">
+<h4 id="sec-1-6"><span class="section-number-4">1.6</span> Step One: define the project that I will keep locally</h4>
+<div class="outline-text-4" id="text-1-6">
+
 
 <ul>
-<li>The <a href="https://github.com/ropensci/EML">EML R package</a> uses the Ecological Metadata Language (EML) approach that allows archiving of very heterogeneous data without having to standardize everything into a narrow and pre-defined syntax.</li>
-<li>XML files in specificed schemas involve strict criteria and are thus best generated by software.</li>
-<li>Morpho is an application that provides another GUI based method of generating EML but is a rather tedious tool for generating EML files. Unfortunately, without the ability to script inputs or automatically detect existing data structures, we are forced through the rather arduous process of adding all metadata annotation each time.</li>
-<li>The aim of this experiment is to use the EML package to create some advanced metadata quickly and then finish this off with Morpho, using <a href="http://en.wikipedia.org/wiki/Boilerplate_code">"boilerplate code"</a> wherever possible.</li>
-<li>this builds on my previous post <a href="http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry">http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry</a></li>
+<li>This is the Github repo <a href="https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS">https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS</a>
+</li>
+<li>I store this locally at ~/data/DROUGHT-BOM-GRIDS
+</li>
 </ul>
 
 
-<h1>Background</h1>
+</div>
 
+</div>
+
+<div id="outline-container-1-7" class="outline-4">
+<h4 id="sec-1-7"><span class="section-number-4">1.7</span> Contextual Metadata</h4>
+<div class="outline-text-4" id="text-1-7">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-8" class="outline-4">
+<h4 id="sec-1-8"><span class="section-number-4">1.8</span> Abstract</h4>
+<div class="outline-text-4" id="text-1-8">
+
+
+<p>
+I originally wrote the abstract as the description for a RIF-CS metadata object to publish for the ANU library.
+</p>
+<p>
+I got the following instructions from a Librarian: The "informative abstract" method.
+</p>
 <ul>
-<li>I am basically very lazy when it comes to entering metadata and when I use the Morpho package for metadata data entry I get frustrated with having to step through ever SINGLE variable and use the drop down menus etc to describe them as essentially "number" or "text"</li>
-<li>A big reason I like Morpho is because Metacat is a great data portal and Kepler is a promising scientific workflow tool, and all three are produced by the same group so it would be great to get them working together...</li>
-<li>Morpho and Metacat are open source software designed to host all kinds of ecological data. More information about it can be found <a href="http://knb.ecoinformatics.org/index.jsp">here</a></li>
-<li>More info about the Metacat Data Portal System is <a href="https://knb.ecoinformatics.org/knb/docs/">here</a>.</li>
-<li>For technical reasons, I'm running an older version of the Morpho software because I'm working with an older version of the  Metacat portal software and so are also constrained to running the older Morpho version too (but will be upgrading soon).</li>
-<li>You might want to look at the background of the Ecological Metadata Language (EML) standard.  I like this page <a href="http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html">http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html</a> along with the references he cites at the bottom.</li>
+<li>The abstract should be a descriptive of the data, not the research.
+</li>
+<li>Briefly outline the relevant project or study and describe the contents of the data package. 
+</li>
+<li>Include geographic location, the primary objectives of the study, what data was collected (species or phenomena), the year range the data was collected in, and collection frequency if applicable.
+</li>
+<li>Describe methodology techniques or approaches only to the degree necessary for comprehension – don’t go into any detail.
+</li>
+<li>Cite references and/or links to any publications that are related to the data package.
+</li>
+<li>Single paragraph
+</li>
+<li>200-250 words
+</li>
+<li>Use active voice and past tense.
+</li>
+<li>Use short complete sentences.
+</li>
+<li>Express terms in both their abbreviated and spelled out form for search retrieval purposes.
+</li>
 </ul>
 
 
-<h1>Material</h1>
+</div>
 
-<ul>
-<li><p>To tie this experiment back to something that is actually useful for a scientist, I will use the field-based example data on the effects on mulgara of removing spinifex, from:</p>
+</div>
 
-<p>  McCarthy, M. a., &amp; Masters, P. (2005). Profiting from prior
-  information in Bayesian analyses of ecological data. Journal of
-  Applied Ecology, 42(6),
-  1012–1019. doi:10.1111/j.1365-2664.2005.01101.x</p></li>
-<li><p>Brief description is:</p>
+<div id="outline-container-1-9" class="outline-4">
+<h4 id="sec-1-9"><span class="section-number-4">1.9</span> Australian FOR codes</h4>
+<div class="outline-text-4" id="text-1-9">
 
-<p>  an experimental manipulation of habitat was conducted by Masters,
-  Dickman &amp; Crowther (2003) in which vegetation cover of a site in
-  arid inland Australia was reduced and the response of the mammal
-  fauna monitored.</p></li>
-<li><p>you can find the data in the download file from <a href="http://www.nceas.ucsb.edu/~mccarthy/research.html">the "Code for analysing the mulgara experiment" from here</a></p></li>
-<li>I first checked that these data aren;t already on <a href="https://knb.ecoinformatics.org/m/">the KNB repository</a></li>
-<li>I searched for Marsupial, Australia, Mulgara and etc, finding no hits.</li>
-<li>We will assume that these data are not already published there.</li>
-</ul>
+<p>ANZSRC-FOR Codes: Australian and New Zealand Standard Research Classification – Fields of Research codes allow R&amp;D activity to be categorised according to the methodology used in the R&amp;D, rather than the activity of the unit performing the R&amp;D or the purpose of the R&amp;D.  
+<a href="http://www.abs.gov.au/Ausstats/abs@.nsf/Latestproducts/4AE1B46AE2048A28CA25741800044242?opendocument">http://www.abs.gov.au/Ausstats/abs@.nsf/Latestproducts/4AE1B46AE2048A28CA25741800044242?opendocument</a>
+</p>
+</div>
 
+</div>
 
-<h1>Methods</h1>
+<div id="outline-container-1-10" class="outline-4">
+<h4 id="sec-1-10"><span class="section-number-4">1.10</span> GCMD Keywords</h4>
+<div class="outline-text-4" id="text-1-10">
 
-<ul>
-<li>Step one install the github version of EML and <a href="http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/#sec-1-9">a function I wrote for this a while back</a></li>
-<li>Note that I made a few changes since that post <a href="https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r">https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r</a></li>
-</ul>
+<p>Olsen, L.M., G. Major, K. Shein, J. Scialdone, S. Ritz, T. Stevens, M. Morahan, A. Aleman, R. Vogel, S. Leicester, H. Weir, M. Meaux, S. Grebas, C.Solomon, M. Holland, T. Northcutt, R. A. Restrepo, R. Bilodeau, 2013. NASA/Global Change Master Directory (GCMD) Earth Science Keywords. Version 8.0.0.0.0 
+<a href="http://gcmd.nasa.gov/learn/keyword_list.html">http://gcmd.nasa.gov/learn/keyword_list.html</a>
+</p>
+</div>
 
+</div>
 
-<h4>R Code:</h4>
+<div id="outline-container-1-11" class="outline-4">
+<h4 id="sec-1-11"><span class="section-number-4">1.11</span> Geographic coverage</h4>
+<div class="outline-text-4" id="text-1-11">
 
-<pre><code># func
-library("devtools")
-install_github("EML", "ropensci")       
-library("EML")
-install_github("disentangle", "ivanhanigan")       
-library("disentangle")
+<p>    &gt; require(devtools)
+    &gt; install<sub>github</sub>("disentangle", "ivanhanigan")
+    &gt; require(disentangle)
+    &gt; morpho<sub>bounding</sub><sub>box</sub>(d)
+                      X1                 X2                 X3
+    1               &lt;NA&gt; 10.1356954574585 S               &lt;NA&gt;
+    2 112.907211303711 E               &lt;NA&gt; 158.960372924805 E
+    3               &lt;NA&gt; 54.7538909912109 S               &lt;NA&gt;
+</p>
 
-# load                                                                    
-datatext &lt;- 'Treat, Before, After1, After2
-0,  2.833213344,    1.609437912,    2.48490665
-0,  1.791759469,    2.197224577,    2.079441542
-0,  3.044522438,    2.708050201,    3.135494216
-0,  2.772588722,    1.791759469,    2.197224577
-0,  1.098612289,    1.609437912,    2.63905733
-1,  2.944438979,    0.693147181,    1.791759469
-1,  2.564949357,    0.693147181,    1.791759469
-1,  2.564949357,    1.609437912,    1.609437912
-1,  0.693147181,    1.098612289,    1.098612289
-1,  1.609437912,    0,      1.098612289'
-analyte &lt;- read.csv(textConnection(datatext))
+</div>
 
-# check
-analyte
+</div>
 
-# do
-## from a work dir with a subdir for data
-write.csv(analyte, "data/mulgara.csv", row.names = F)
-reml_boilerplate(
-  data_set = analyte
-  ,
-  created_by = "Ivan Hanigan &lt;ivanhanigan@gmail.com&gt;"
-  ,
-  data_dir = "data"
-  ,
-  titl = "mulgara"
-  ,
-  desc = "Experimental data: effect of cover reduction on mulgara Dasycercus cristicauda"
-  )
-</code></pre>
-
-<p></p>
+<div id="outline-container-1-12" class="outline-4">
+<h4 id="sec-1-12"><span class="section-number-4">1.12</span> Save the metadata</h4>
+<div class="outline-text-4" id="text-1-12">
 
 
 <ul>
-<li>Now open morpho and under file > import browse to this  data directory and import.</li>
-<li>Got several warnings, about unable to display data, and an older version that could be updated</li>
+<li>the metadata is now ready to save to my .morpho catalogue
+</li>
+<li>without importing any data
+</li>
 </ul>
 
 
-<h1>Results</h1>
-
+<p>
+<img src="/images/morphoimg2.png" alt="morphoimg2.png">
+</p>
 <ul>
-<li>Result does not display  in morpho</li>
+<li>this appears as a new XML
+</li>
 </ul>
 
 
-<p><img src="/images/mulgara-morpho-import.png" alt="mulgara-morpho-import.png" /></p>
-
-<h1>Discussion</h1>
-
+<p>
+<img src="/images/morphoimg3.png" alt="morphoimg3.png">
+</p>
 <ul>
-<li>There is something different about the way the EML R package writes the data and what Morpho 1.8 is expecting.</li>
+<li>which looks like this
+</li>
 </ul>
 
 
-<h1>Conclusions</h1>
+<p>
+<img src="/images/morphoimg4.png" alt="morphoimg4.png">
+</p>
+</div>
 
-<ul>
-<li>Further research is required.</li>
-</ul>
+</div>
 
+<div id="outline-container-1-13" class="outline-4">
+<h4 id="sec-1-13"><span class="section-number-4">1.13</span> Additional Metadata</h4>
+<div class="outline-text-4" id="text-1-13">
+
+
+<p>
+As this is metadata only about the dataset, it is innapropriate to refer to related publications etc in these elements.  Luckily EML has the additionalMetadata and additionalLinks fields.  Just open the XML and paste the following in the bottom.
+</p>
+<p>
+    &lt;additionalMetadata&gt;
+      &lt;metadata&gt;
+        &lt;additionalLinks&gt;
+          &lt;url name="Hanigan, IC, Butler, CD, Kokic, PN, Hutchinson, MF. Suicide and Drought in New South Wales, Australia, 1970-2007. Proceedings of the National Academy of Science USA 2012, vol. 109 no. 35 13950-13955, doi: 10.1073/pnas.1112965109"&gt;<a href="http://dx.doi.org/10.1073/pnas.1112965109">http://dx.doi.org/10.1073/pnas.1112965109</a>&lt;/url&gt;
+        &lt;/additionalLinks&gt;
+      &lt;/metadata&gt;
+    &lt;/additionalMetadata&gt;
+</p>
+<p>
+You can see this if you then open it up again in morpho and then under the documentation menu go to Add/Edit Documentation.
+</p>
+<p>
+<img src="/images/morphoimg5.png" alt="morphoimg5.png">
+</p></div>
+</div>
+</div>
+
+
+<p></div></p>
+
+<p></body>
+</html></p>
 
       <div class="clear"></div>
     </div>
@@ -321,12 +813,12 @@ reml_boilerplate(
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/#disqus_thread'>Comments</a>
+      <a href='/2014/04/using-morpho-for-cataloguing-personal-research-data/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Tue Jan 21 00:00:00 +1100 2014">21 Jan 2014</abbr>
+        <abbr class="published" title="Sat Apr 19 00:00:00 +1000 2014">19 Apr 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -335,37 +827,311 @@ reml_boilerplate(
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2014/01/github-gh-pages-and-disqus-commentsdatasharing/" title="Github, gh-pages and disqus comments" rel="bookmark">Github, gh-pages and disqus comments</a>
+      <a href="/2014/04/cataloguing-personal-research-data-with-morpho-and-a-custom-database/" title="Cataloguing Personal Research Data with Morpho And A Custom Database" rel="bookmark">Cataloguing Personal Research Data with Morpho And A Custom Database</a>
     </h1>
     <div class="entry-content full-content">
-      <p>A while ago I posted about <a href="http://ivanhanigan.github.io/2013/11/sharing-and-extending-research-protocols/">sharing-and-extending-research-protocols</a>.</p>
+      <h4>Introduction</h4>
 
-<p>I've started a new experiment for hosting a discussion around issues, suggesting new issues, agreeing on solutions, toward an agreement on methods that could become a protocol:
-<a href="http://ivanhanigan.github.com/datasharing">http://ivanhanigan.github.com/datasharing</a>.</p>
+<p>The collection of scientific data is undertaken at an individual level
+by everybody in their own way. The layout of data collections that I
+have seen is incredibly varied; spread across multiple files and folders which can
+be difficult to navigate or search through. In some cases
+these collections are incomprehensible to all but the individual themselves. Given
+that a lot of projects are collaborative in nature and require
+extensive sharing, it is important that scientists maintain their
+data collection by some form of system that allows easy data extraction and
+use in other projects. Therefore, the maintenance of a personal catalogue of datasets is an
+important activity for scientists.</p>
 
-<p>I forked the material from the original author Jeff Leek <a href="https://github.com/jtleek/datasharing/network">https://github.com/jtleek/datasharing/network</a>.</p>
+<p>By cataloguing I mean that a file or database is kept that stores all the
+information about the names of the datasets (and any other files the
+data may be spread across), where the datasets are located, any
+references (papers) that were developed from it and finally
+important information regarding the conditions it
+was formed under.</p>
 
-<p>The goal of my experiment is something along the lines of the Prometheus Wiki <a href="http://prometheuswiki.publish.csiro.au">http://prometheuswiki.publish.csiro.au</a>​ which is a site for sharing research protocols. That idea is to give people a place to post research protocols since everyone develops them and then mentions them in papers but they rarely make it online in a usable format.</p>
+<p>While this may seem laborious, it keeps track of all the data that one
+has collected over time and gives one a reference system to find a
+dataset of interest when sharing with collaborators. Datasets can be
+saved in any filing system the scientist chooses, but with the help of
+their personal data catalogue they will always know the status of
+their data collection.</p>
 
-<p>But I was talking with an user of that and he complained it lacked a kind of "dynamic collaboration with a front-end markup system in place that was integrated with a good website-type backend".  This is what the github site might be able to do.</p>
+<h4>Cataloguing Personal Research Data with Morpho</h4>
 
-<p>I discussed with a colleague and he seemed to be receptive to experimenting with this, so long as it was not more cumbersome than:</p>
+<p><a href="https://knb.ecoinformatics.org/knb/docs/intro.html">Metacat</a> is an
+online repository for data and metadata. It is a great resource for
+the publication of data, but not very useful for an individual
+scientist to use on their personal computer.  However
+<a href="https://knb.ecoinformatics.org/#tools/morpho">Morpho</a> the Metadata
+Editor used by Metacat may be used locally by a researcher to
+catalogue their collection (and ultimately this will make publishing
+elements of the collection easier.)  Morpho uses the Ecological
+Metadata Language (EML) to author metadata with a graphical user
+interface wizard.</p>
+
+<h4>How Morpho Works</h4>
+
+<p>When you install Morpho it creates a directory where you can run the
+program from, and another hidden directory called ".morpho" for it's
+database of all your metadata (and optionally any data you import to
+it).  Below is an image of mine, with a couple of test records I
+played around with (the XMLs/HTMLs) and a dataset I imported (the text
+file).</p>
 
 <ul>
-<li>shooting off an email with a list of points or</li>
-<li>catching me in the tea room and saying "by the way - missing values should never be -9999"</li>
-<li>and then these being copied into a master document we all share.</li>
+<li>~/.morpho/profiles/hanigan/data/hanigan/</li>
 </ul>
 
 
-<p>The system I'm using in the proposed experiment uses the hi-tech tools gh-pages with disqus comments.  This let's:</p>
+<p><img src="/images/morphodir1.png" alt="morphodir1" /></p>
+
+<p>Every time a modification is made to the metadata a new XML is saved here, with the major number being the ID of the package and incremented minor number to reflect the change.</p>
+
+<h3>Adding a dataset from my collection</h3>
+
+<p>I have already got a good amount of metadata I generated when I published <a href="http://dx.doi.org/10.4225/13/50BBFD7E6727A">the drought data</a></p>
+
+<h4>the drought dataset:</h4>
+
+<pre><code>Hanigan, Ivan (2012): Monthly drought data for Australia 1890-2008
+using the Hutchinson Drought Index. Australian National University Data Commons.
+DOI: 10.4225/13/50BBFD7E6727A. 
+</code></pre>
+
+<p></p>
+
+
+<h3>Step One: define the project that I will keep locally</h3>
 
 <ul>
-<li>casual users chip in their two cents worth quickly via the  comments,</li>
-<li>users can vote up or vote down other peoples comments,</li>
-<li>track the discussion via their emails (if they choose that option),</li>
-<li>but those wanting  deeper involvement can fork and edit the pages and then submit pull  requests to the lead author.</li>
-<li>Github's wiki and issues tracking functionality also could be used for serious development.</li>
+<li>This is the Github repo https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS</li>
+<li>I store this locally at ~/data/DROUGHT-BOM-GRIDS</li>
+</ul>
+
+
+<h3>Contextual Metadata</h3>
+
+<h4>Abstract</h4>
+
+<p>I originally wrote the abstract as the description for a RIF-CS metadata object to publish for the ANU library.</p>
+
+<p>I got the following instructions from a Librarian: The "informative abstract" method.</p>
+
+<ul>
+<li>The abstract should be a descriptive of the data, not the research.</li>
+<li>Briefly outline the relevant project or study and describe the contents of the data package.</li>
+<li>Include geographic location, the primary objectives of the study, what data was collected (species or phenomena), the year range the data was collected in, and collection frequency if applicable.</li>
+<li>Describe methodology techniques or approaches only to the degree necessary for comprehension – don’t go into any detail.</li>
+<li>Cite references and/or links to any publications that are related to the data package.</li>
+<li>Single paragraph</li>
+<li>200-250 words</li>
+<li>Use active voice and past tense.</li>
+<li>Use short complete sentences.</li>
+<li>Express terms in both their abbreviated and spelled out form for search retrieval purposes.</li>
+</ul>
+
+
+<h4>Australian FOR codes</h4>
+
+<p>ANZSRC-FOR Codes: Australian and New Zealand Standard Research Classification – Fields of Research codes allow R&amp;D activity to be categorised according to the methodology used in the R&amp;D, rather than the activity of the unit performing the R&amp;D or the purpose of the R&amp;D.<br/>
+http://www.abs.gov.au/Ausstats/abs@.nsf/Latestproducts/4AE1B46AE2048A28CA25741800044242?opendocument</p>
+
+<h4>GCMD Keywords</h4>
+
+<p>Olsen, L.M., G. Major, K. Shein, J. Scialdone, S. Ritz, T. Stevens, M. Morahan, A. Aleman, R. Vogel, S. Leicester, H. Weir, M. Meaux, S. Grebas, C.Solomon, M. Holland, T. Northcutt, R. A. Restrepo, R. Bilodeau, 2013. NASA/Global Change Master Directory (GCMD) Earth Science Keywords. Version 8.0.0.0.0
+http://gcmd.nasa.gov/learn/keyword_list.html</p>
+
+<h4>Geographic coverage</h4>
+
+<pre><code># I developed the following function to take a spatial object and convert it to the bounding box
+&gt; require(devtools)
+&gt; install_github("disentangle", "ivanhanigan")
+&gt; require(disentangle)
+&gt; morpho_bounding_box(d)
+                  X1                 X2                 X3
+1               &lt;NA&gt; 10.1356954574585 S               &lt;NA&gt;
+2 112.907211303711 E               &lt;NA&gt; 158.960372924805 E
+3               &lt;NA&gt; 54.7538909912109 S               &lt;NA&gt;
+</code></pre>
+
+<h4>Save the metadata</h4>
+
+<ul>
+<li>the metadata is now ready to save to my .morpho catalogue</li>
+<li>without importing any data</li>
+</ul>
+
+
+<p><img src="/images/morphoimg2.png" alt="morphoimg2.png" /></p>
+
+<ul>
+<li>this appears as a new XML</li>
+</ul>
+
+
+<p><img src="/images/morphoimg3.png" alt="morphoimg3.png" /></p>
+
+<ul>
+<li>which looks like this</li>
+</ul>
+
+
+<p><img src="/images/morphoimg4.png" alt="morphoimg4.png" /></p>
+
+<h3>Additional Metadata</h3>
+
+<p>As this is metadata only about the dataset, it is innapropriate to refer to related publications etc in these elements.  Luckily EML has the additionalMetadata and additionalLinks fields.  Just open the XML and paste the following in the bottom.</p>
+
+<pre><code>&lt;additionalMetadata&gt;
+  &lt;metadata&gt;
+    &lt;additionalLinks&gt;
+      &lt;url name="Hanigan, IC, Butler, CD, Kokic, PN, Hutchinson, MF. Suicide and Drought in New South Wales, Australia, 1970-2007. Proceedings of the National Academy of Science USA 2012, vol. 109 no. 35 13950-13955, doi: 10.1073/pnas.1112965109"&gt;http://dx.doi.org/10.1073/pnas.1112965109&lt;/url&gt;
+    &lt;/additionalLinks&gt;
+  &lt;/metadata&gt;
+&lt;/additionalMetadata&gt;
+</code></pre>
+
+<p>You can see this if you then open it up again in morpho and then under the documentation menu go to Add/Edit Documentation.</p>
+
+<p><img src="/images/morphoimg5.png" alt="morphoimg5.png" /></p>
+
+<h3>Additional Metadata regarding the Data Location and Backups</h3>
+
+<p>These data are quite large and also geospatial, so I store these
+on a PostGIS server at the ANU library. The original data are stored
+on a PostGIS server at NCEPH and the code I used to compute the
+indices is on github.  So all I want to do with Morpho is document the
+data, not import it.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/04/cataloguing-personal-research-data-with-morpho-and-a-custom-database/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Apr 13 00:00:00 +1000 2014">13 Apr 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I have been using <a href="http://projecttemplate.net/">John Myles Whites ProjectTemplate R package</a> for ages</li>
+<li>I really like the ease with which I can get up and running a new project</li>
+<li>and the ease with which I can pick up an old project and start adding new work</li>
+</ul>
+
+
+<h4>Quote from John's first post</h4>
+
+<pre><code>My inspiration for this approach comes from the rails command from
+Ruby on Rails, which initializes a new Rails project with the proper
+skeletal structure automatically. Also taken from Rails is
+ProjectTemplate’s approach of preferring convention over
+configuration: the automatic data and library loading as well as the
+automatic testing work out of the box because assumptions are made
+about the directory structure and naming conventions that will be used
+</code></pre>
+
+<p></p>
+
+
+<p><a href="http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/">http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/</a></p>
+
+<ul>
+<li>I dont know anything about RoR but this philosophy works really well for my R programming too</li>
+</ul>
+
+
+<h4>R Code</h4>
+
+<pre><code>if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
+setwd("~/projects")
+create.project("my-project")
+setwd('my-project')
+dir()
+##  [1] "cache"       "config"      "data"        "diagnostics" "doc"        
+##  [6] "graphs"      "lib"         "logs"        "munge"       "profiling"  
+## [11] "README"      "reports"     "src"         "tests"       "TODO"   
+##### these are very sensible default directories to create a modular
+##### analysis workflow.  See the project homepage for descriptions
+
+# now all you need to do whenever you start a new day 
+load.project()
+# and your workspace will be recreated and any new data automagically analysed in
+# the manner you want
+</code></pre>
+
+<p></p>
+
+
+<h4>Project Administration</h4>
+
+<ul>
+<li>I;ve found that these directories do not work so well for the administration of my projects and so I put together a different set of automatic defaults</li>
+<li>Ive based it on the <a href="http://ivanhanigan.github.io/2013/12/research-protocol-for-manitoba-centre-for-health-policy/">University of Manitoba Centre for Health Policy</a>- along with some other sources I can recall
+
+<h4>The full set</h4>
+
+<p>  # A.Background      <br/>
+  # B.Proposals
+  # C.Approvals
+  # D.Budget  <br/>
+  # E.Datasets<br/>
+  # F.Analysis<br/>
+  # G.Literature      <br/>
+  # H.Communication           <br/>
+  # I.Correspondance  <br/>
+  # J.Meetings<br/>
+  # K.Completion      <br/>
+  # ContactDetails.txt<br/>
+  # README.md
+  # TODO.txt</p></li>
+</ul>
+
+
+<p></p>
+
+
+<h4>R Code: my subset</h4>
+
+<pre><code>AdminTemplate &lt;- function(rootdir = getwd()){
+  setwd(rootdir)
+  dir.create(file.path(rootdir,'01_planning'))
+  dir.create(file.path(rootdir,'01_planning','proposal'))
+  dir.create(file.path(rootdir,'01_planning','scheduling'))
+  dir.create(file.path(rootdir,'02_budget'))
+  dir.create(file.path(rootdir,'03_communication'))
+  dir.create(file.path(rootdir,'04_reporting_and_meetings'))
+  file.create(file.path(rootdir,'contact_details.txt'))
+  file.create(file.path(rootdir,'README.md'))
+  }
+</code></pre>
+
+<p></p>
+
+
+<h4>Conclusion</h4>
+
+<ul>
+<li>hopefully by formalising some of these into my workflow I will find my projects easier to navigate through</li>
+<li>and pick up or put down as needed</li>
 </ul>
 
 
@@ -373,79 +1139,18 @@ reml_boilerplate(
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
-      
-      <a href="/categories/datasharing" title="datasharing" rel="category tag">datasharing</a>
       
       <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2014/01/github-gh-pages-and-disqus-commentsdatasharing/#disqus_thread'>Comments</a>
+      <a href='/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Tue Jan 14 00:00:00 +1100 2014">14 Jan 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>A colleague sent me the cwt_data_subm_template_2013.xls today</li>
-<li>LTER is The U.S. Long-Term Ecological Research (LTER) network</li>
-<li>I made the following notes, this is not intended to be a nasty critique</li>
-<li>The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches</li>
-</ul>
-
-
-<h4>Critique</h4>
-
-<ul>
-<li>opened first on windows, saw comments on cells with instructions</li>
-<li>opened next on linux with libreOffice and comments are gone</li>
-<li>opened at the last tab (split in two for no reason?)</li>
-<li>noticed recommended name "GCE site" = Site, otherwise "permanent plot" =      Plot?</li>
-<li><a href="http://nsmn1.uh.edu/steve/research/gce/gce.htm">GCE = Georgia Coastal Ecosystems LTER program</a></li>
-<li>flip to first tab, point 4 suggests there is some export functionality I cannot see (a VBA script?)</li>
-<li>cell 11 a    NOTE: When submitting updated metadata or re-using templates please highlight fields with modified contents in yellow</li>
-<li>and use glitter pen???</li>
-<li>personnell tab OK</li>
-<li>instrumentation, variable measured is free text. ok but for eg "max temp", "temperature maxima", "maximum temperature (c)" "maximum temperature in 24 hours after 9am local time in degrees" etc</li>
-<li>too wide, last column was off my wide screen! noticed wasted real estate in column A</li>
-<li>tabular data "–  Paste or enter your data values into the 'Values' section (white cells), starting with the indicated cell"</li>
-<li>this is an invitation for clerical error!
-–  Fill in missing values in the table with NaN (not a number), including text fields, and do not skip columns</li>
-<li>but what about missing values imbued with other meanings (NA = not observed, censored etc)?</li>
-<li>ask users to format digit rounding in Excel?? oh no</li>
-<li>old excel users may still be restricted to 65,536 rows by 256 columns.</li>
-<li>non tabular sheet is ok</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/cwt-lter-data-submission-template-critique/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Jan 07 00:00:00 +1100 2014">07 Jan 2014</abbr>
+        <abbr class="published" title="Sat Mar 29 00:00:00 +1100 2014">29 Mar 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -476,8 +1181,9 @@ reml_boilerplate(
           <div id="carrington-about" class="widget">
             <div class="about">
               <h2 class="widget-title">About</h2>
-              <p>My name is Ivan Hanigan.  I am a data manager and part-time student at the Australian National University.</p>
+              <p>I am a data manager and data analyst at the Australian National University.</p>
               <a class="more" href="/about.html">more →</a>
+
             </div>
           </div>
           <!--
@@ -502,147 +1208,25 @@ reml_boilerplate(
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/drought">drought (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
-                
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
-                
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
-                
-                <li><a href="/categories/science">science (2)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (5)</a></li>
-                
-                <li><a href="/categories/supersite">supersite (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
-                <li><a href="/categories/workflow">workflow (4)</a></li>
+                <li><a href="/categories/spatial">spatial (6)</a></li>
                 
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
+                <li><a href="/categories/research methods">research methods (42)</a></li>
                 
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (15)</a></li>
+                <li><a href="/categories/overview">overview (7)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/GIS">GIS (1)</a></li>
-                
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
-                
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (26)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
-                <li><a href="/categories/datasharing">datasharing (1)</a></li>
-                
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (18)</a></li>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
               </ul>
             </div>
@@ -653,203 +1237,23 @@ reml_boilerplate(
               <ul>
                 
                 <li>
-                  <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
+                  <a href="/2014/04/using-morpho-for-cataloguing-personal-research-data/" title="Using Morpho for Cataloguing Personal Research Data" rel="bookmark">Using Morpho for Cataloguing Personal Research Data</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
+                  <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
+                  <a href="/2014/04/using-morpho-for-cataloguing-personal-research-data/" title="Using Morpho for Cataloguing Personal Research Data" rel="bookmark">Using Morpho for Cataloguing Personal Research Data</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/github-gh-pages-and-disqus-commentsdatasharing/" title="Github, gh-pages and disqus comments" rel="bookmark">Github, gh-pages and disqus comments</a>
+                  <a href="/2014/04/cataloguing-personal-research-data-with-morpho-and-a-custom-database/" title="Cataloguing Personal Research Data with Morpho And A Custom Database" rel="bookmark">Cataloguing Personal Research Data with Morpho And A Custom Database</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/01/tumbarumba-supersite-dem/" title="tumbarumba-supersite-dem" rel="bookmark">tumbarumba-supersite-dem</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/extend-Rs-data-frame-class-with-metadata/" title="extend-Rs-data-frame-class-with-metadata" rel="bookmark">extend-Rs-data-frame-class-with-metadata</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/a-few-best-practices-for-statistical-programming/" title="a-few-best-practices-for-statistical-programming" rel="bookmark">a-few-best-practices-for-statistical-programming</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/" title="add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot" rel="bookmark">add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/animation-illustrating-catastrophic-regime-shifts/" title="Animation Illustrating Catastrophic Regime Shifts" rel="bookmark">Animation Illustrating Catastrophic Regime Shifts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/marco-fahmi-farewell-from-asn-ltern-data-portal-team/" title="Marco Fahmi Farewell From ASN-LTERN Data Portal Team" rel="bookmark">Marco Fahmi Farewell From ASN-LTERN Data Portal Team</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/animations-using-R/" title="animations-using-R" rel="bookmark">animations-using-R</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/links-to-useful-data-munging-posts/" title="links-to-useful-data-munging-posts" rel="bookmark">links-to-useful-data-munging-posts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode/" title="open-access-journal-templates-for-latex-with-emacs-orgmode" rel="bookmark">open-access-journal-templates-for-latex-with-emacs-orgmode</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/auto-download-bureau-meteorology-diurnal-data/" title="auto-download-bureau-meteorology-diurnal-data" rel="bookmark">auto-download-bureau-meteorology-diurnal-data</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/the-history-of-ons/" title="the-history-of-ons" rel="bookmark">the-history-of-ons</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/" title="non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms" rel="bookmark">non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-for-manitoba-centre-for-health-policy/" title="research-protocol-for-manitoba-centre-for-health-policy" rel="bookmark">research-protocol-for-manitoba-centre-for-health-policy</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/spatially-structured-time-series-with-nmmaps/" title="spatially-structured-time-series-with-nmmaps" rel="bookmark">spatially-structured-time-series-with-nmmaps</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/morpho-and-rfigshare/" title="morpho-and-rfigshare" rel="bookmark">morpho-and-rfigshare</a>
+                  <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
                 </li>
                 
               </ul>

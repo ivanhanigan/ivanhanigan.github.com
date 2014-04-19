@@ -54,53 +54,6 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/09/introduction-to-ons-theory-and-practice/" title="introduction-to-ons-theory-and-practice" rel="bookmark">introduction-to-ons-theory-and-practice</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>The reasons why ONS is so appealing to me can be broken into two parts.  The first is about the problems which it solves, the second is about the benefits it might bring.</p>
-
-<h4>The Problems</h4>
-
-<ul>
-<li>Identifying errors (either from miscalculations or from methodological mistakes)</li>
-<li>Uncovering fraud</li>
-</ul>
-
-
-<h4>The Benefits</h4>
-
-<ul>
-<li>Sharing interests and skills</li>
-<li>Quickly finding out about new discoveries and failures</li>
-</ul>
-
-
-<p>These benefits come from the enhanced potential for theoretical discussions and sharing ideas.  This is especially valuable around difficult theories, unknown issues or esoteric theories that are known only to a specialist in a field.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/introduction-to-ons-theory-and-practice/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Mon Sep 23 00:00:00 +1000 2013">23 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
       <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
     </h1>
     <div class="entry-content full-content">
@@ -332,6 +285,190 @@ as it is recorded".</p>
   </div>
   <div class="rule"><hr/></div>
 
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/07/worflow-flowcharts/" title="Worflow flowcharts" rel="bookmark">Worflow flowcharts</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h2>What is the issue</h2>
+
+<p>Most people seem to collect multiple datasets together in a single spot that can be split into 2 or more separate data packages.  I think this is a natural set up from an analysts perspective, where the results of multiple steps accumulate as 'stepping stones' toward the file they end up analysing.</p>
+
+<p>I was first taught GIS by Isabelle Balzer at Ecowise Environmental Services in Canberra.  She showed me the method of keeping a table (sticky-taped to the desk!) of all the files and transformations that were going on. This was a method that didn't allow any multitasking!  I call this the 'Balzerian Method' (I am sure others used it before Isabelle, but I think Balzerian is a great word).</p>
+
+<p>I think the data wharehouse at my work is an example, and probably we'll find the key challenge for big data will be for analysts to disentangle their own filing systems.</p>
+
+<p>In my experience the way people store research data is often one (or a couple, or all) of these three types:</p>
+
+<ul>
+<li>a database with heaps of tables and views</li>
+<li>a directory (and sub-directories) with heaps of files</li>
+<li>a spreadsheet workbook with heaps of sheets (and links to other workbooks)</li>
+</ul>
+
+
+<p>I am developing a tool based on the open source graphviz softawre. The tool I am developing addresses the challenge of graphing the links between these sequential steps.</p>
+
+<h4>Code:introducing newnode</h4>
+
+<pre><code># NB this only works easily on linux
+require(devtools)
+install_github("disentangle", "ivanhanigan")
+require(disentangle)
+# the core of the tool is Rgraphviz, I just built a wrapper function
+# to add newnodes to a graph of nodes
+# always start with (newgraph = T) because the newnode function ADDS
+# nodes to a graph, unless told otherwise, and fails if no 'nodes'
+# object exists
+nodes  &lt;- newnode(name="NAME",inputs="INPUT",outputs="OUTPUT", newgraph = T)
+</code></pre>
+
+<p><img src="/images/newnode1.png" alt="images/newnode1.png" /></p>
+
+<h4>Code:adding nodes</h4>
+
+<pre><code># now we can add nodes, and we can pass multiple inputs or outputs
+nodes  &lt;- newnode(name="OUTPUT",inputs=c("NAME","ANOTHER THING"))
+# outputs are optional
+</code></pre>
+
+<p><img src="/images/newnode2.png" alt="images/newnode2.png" /></p>
+
+<p>It can be used in two or three ways.</p>
+
+<h2>Example one, the composite view:</h2>
+
+<p>So if there is a Balzerian filelist table available, convert it to a spreadsheet.  This is als similar to a labbook from Chemistry but follows a very rigid structure: NAME,        INPUTS,           OUTPUTS,         DESCRIPTION.  The first method I'll show will take one of these tables and map out the steps in the workflow.</p>
+
+<h4>Code: Composite Worflow Files List</h4>
+
+<pre><code>#    so if there is a Balzerian filelist table available,
+# either make a spreadsheet with names, inputs and outputs 
+# fileslist &lt;- read.csv("exampleFilesList.csv", stringsAsFactors = F)
+# or 
+filesList &lt;- read.csv(textConnection(
+'NAME,        INPUTS,           OUTPUTS,         DESCRIPTION
+FileA,        TableXYZ,         Input1,          Transformed variable
+FileB,        TableABC,         Input2,          Collapsed dimensions
+analysisFile, "Input1,Input2",  analysisResults, Merged inputs and analysed
+'), stringsAsFactors = F, strip.white = T)
+filesList
+
+for(i in 1:nrow(filesList))
+{
+  nodes &lt;- newnode(name = filesList[i,"NAME"],
+                   inputs = strsplit(filesList$INPUTS, ",")[[i]],
+                   outputs = strsplit(filesList$OUTPUTS, ",")[[i]],
+                   newgraph = (i == 1)
+  )
+}
+</code></pre>
+
+<h2>shows this result</h2>
+
+<p><img src="/images/fileRelationships.png" alt="fileRelationships.png" /></p>
+
+<h2>Example two, tracking the steps while analysing data:</h2>
+
+<p>Structure a script into sections and document each section before evaluating the code to execute the step.  This works well with orgmode/ESS, Sweave or knitr style workflows.
+For example:</p>
+
+<h4>Code: Ad Hoc Files Lists Flowcharts</h4>
+
+<pre><code>#### step one ####
+nodes &lt;- newnode(name="FileA", inputs="TableXYZ", outputs="Input1",
+                 newgraph =T) # this is required to tell newnode to
+                              # start a new graph, rather than add to
+                              # the nodes
+FileA  &lt;- read.table("TableXYZ.txt")
+Input1 &lt;- log(FileA$columnZ)
+
+#### step two ####
+nodes &lt;- newnode(name="FileB", inputs="TableABC", outputs="Input2")
+FileB  &lt;- read.table("TableABC.txt")
+Input2 &lt;- ddply(FileB, "id", summarise,
+                duration = max(year) - min(year),
+                nteams = length(unique(team)))
+
+#### step three ####
+nodes &lt;- newnode(name="analysisFile", inputs=c("Input1","Input2"),
+                 outputs="analysisResults")
+analysisFile  &lt;- merge(Input1, Input2, by="id")
+analysisResults  &lt;- lm(y ~ duration + nteams, data = analysisFile)
+</code></pre>
+
+<h2>Example three: visualising relationships</h2>
+
+<p>It is not aimed at visualising the linked structure of a tree or semi-lattice but can be used in such a way but changing the nodename and inputs concept to parent/child relationships.</p>
+
+<p>As an example I'll describe how a list of database tables might be displayed as a tree. I am a great fan of Josh Reich due to his <a href="http://stackoverflow.com/a/1434424">LCFD workflow</a>, and I also like his work on the <a href="https://www.simple.com/">Simple Bank</a> so when I stumbled on this <a href="http://blog.i2pi.com/post/52812976752/joshs-postgresql-database-conventions">blog post</a> in which he says:</p>
+
+<p>"Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won’t usually need your flowchart; it’ll be obvious."</p>
+
+<p>I was switched on and I started thinking about how the graphVis tool could be used to describe a list of tables and views from a database.</p>
+
+<p>Say that two groups studied the same file TableXYZ with different inputs.  One of these groups wrote a seminal paper in the field, while their rivals wrote an inferior paper with a different result.  Imagine now a subsequent group who gathered the data from the previous work into the following database tables and conducted a replication study, with a new sensitivity analysis to explain why the original two papers produced different results.</p>
+
+<p>Let's assume this database has all the data from all the groups in it and we want to get a pictorial view so we can disentangle which files belong to which study.  First get the following list of tables as INPUTS, grouping them by 'NAME' will give the tree structure and showing their results as OUTPUTS allows the subsequent replication study to use them as inputs and assume the position at the bottom of the flowchart.</p>
+
+<h4>Code: database tables and different studies</h4>
+
+<pre><code>filesList &lt;- read.csv(textConnection(
+'NAME                 ,             INPUTS         , OUTPUTS
+The Seminal Study     ,              FileA         , 
+The Seminal Study     ,              FileB         , 
+The Seminal Study     ,       analysisFile         , 
+The Seminal Study     ,           TableXYZ         , 
+The Seminal Study     ,           TableABC         , 
+The Seminal Study     ,      Input1,Input2         ,
+The Seminal Study     ,             Input1         , 
+The Seminal Study     ,             Input2         , 
+The Seminal Study     ,      The Seminal Study     , analysisResults 
+The Inferior Rivals   ,                FileC       , 
+The Inferior Rivals   ,        analysisFileX       , 
+The Inferior Rivals   ,             TableXYZ       , 
+The Inferior Rivals   ,               InputX       , 
+The Inferior Rivals   ,    The Inferior Rivals     , analysisResultsX       
+The Replication Study ,    "Input1,Input2,TableXYZ",  analysisResultsR     
+The Replication Study ,    "Input1,InputX,TableXYZ",  sensitivityResult 
+'), stringsAsFactors = F, strip.white = T)
+
+for(i in 1:nrow(filesList))
+{
+  nodes &lt;- newnode(name = filesList[i,"NAME"],
+                   inputs = strsplit(filesList$INPUTS, ",")[[i]],
+                   outputs = strsplit(filesList$OUTPUTS, ",")[[i]],
+                   newgraph = (i == 1)
+  )
+}
+</code></pre>
+
+<h2>the result</h2>
+
+<p><img src="/images/filesRelationships2.png" alt="filesRelationships2.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/07/worflow-flowcharts/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Jul 31 00:00:00 +1000 2013">31 Jul 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
 
 <div class="pagination">
   <span class="previous">
@@ -387,25 +524,25 @@ as it is recorded".</p>
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (6)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (17)</a></li>
                 
                 <li><a href="/categories/research methods">research methods (42)</a></li>
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (18)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (6)</a></li>
                 
               </ul>
             </div>
@@ -424,15 +561,15 @@ as it is recorded".</p>
                 </li>
                 
                 <li>
-                  <a href="/2014/04/using-morpho-for-cataloguing-personal-research-data/" title="Using Morpho for Cataloguing Personal Research Data" rel="bookmark">Using Morpho for Cataloguing Personal Research Data</a>
-                </li>
-                
-                <li>
                   <a href="/2014/04/cataloguing-personal-research-data-with-morpho-and-a-custom-database/" title="Cataloguing Personal Research Data with Morpho And A Custom Database" rel="bookmark">Cataloguing Personal Research Data with Morpho And A Custom Database</a>
                 </li>
                 
                 <li>
                   <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
                 </li>
                 
               </ul>
