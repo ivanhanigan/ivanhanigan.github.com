@@ -526,6 +526,125 @@ You can see this if you then open it up again in morpho and then under the docum
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/04/a-workaround-for-inserting-species-names-to-morpho/" title="A Workaround For Inserting Species Names To Morpho" rel="bookmark">A Workaround For Inserting Species Names To Morpho</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Morpho is a pretty minimal editor for EML really.  It gives you a set
+of generically useful data entry forms but sometimes a specific task
+is better achieved through edits made directly to the XML document.
+An example of this is inserting a large number of species names to the
+taxonomic coverage module. The form to include these requires
+individual data entry for each species.</p>
+
+<p><img src="/images/morpho-taxo-smll.png" alt="morpho-taxo.png" /></p>
+
+<p>Which looks like this when published</p>
+
+<p><img src="/images/morpho-taxo2.1.png" alt="morpho-taxo2.png" /></p>
+
+<p>Go to the morpho catalogue (found at ~/.morpho/profiles/hanigan/data/hanigan/) and take a look at how the XML is constructed.</p>
+
+<h4>XML Code:</h4>
+
+<pre><code>&lt;taxonomicCoverage&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Genus&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Dasycercus&lt;/taxonRankValue&gt;
+    &lt;taxonomicClassification&gt;
+      &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+      &lt;taxonRankValue&gt;cristicauda&lt;/taxonRankValue&gt;
+      &lt;commonName&gt;Mulgara&lt;/commonName&gt;
+    &lt;/taxonomicClassification&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Genus&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Homo&lt;/taxonRankValue&gt;
+      &lt;taxonomicClassification&gt;
+      &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+      &lt;taxonRankValue&gt;sapiens&lt;/taxonRankValue&gt;
+      &lt;commonName&gt;Modern Human&lt;/commonName&gt;
+    &lt;/taxonomicClassification&gt;
+  &lt;/taxonomicClassification&gt;
+&lt;/taxonomicCoverage&gt;
+</code></pre>
+
+<p></p>
+
+
+<h4>SO how to insert a large number of these</h4>
+
+<p>One could use the taxon import feature to import the details from a
+file if there is a large list. Morpho’s taxon import feature does not
+correctly import more than one column of taxon data so if you have
+Genus and Species to enter you will actually need to combine Genus and
+Species into a binomial Species rank in one column (beware that if the data are sourced from a datafile that uses the underscore to seperate the words then these will not be correctly imported).</p>
+
+<p>Once you have formated your input list, then import this
+as a new data table and go to the taxonomic coverage form under the
+documentation menu.  Click on the option to "import taxon information
+from data table" and select the appropriate column, selecting
+'species' for the class.  This will populate the taxonomicCoverage module in the EML.  You can now remove that data table from the package to be tidy.</p>
+
+<p>This is what it looks like if you combine genus and species in the single column.</p>
+
+<p><img src="/images/morpho-taxo3.png" alt="morpho-taxo3.png" /></p>
+
+<p>And here is the XML</p>
+
+<h4>XML Code:</h4>
+
+<pre><code>&lt;taxonomicCoverage scope="document"&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abelmoschus moschatus&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abrus pector&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abrus precatorius&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+</code></pre>
+
+<p></p>
+
+
+<h4>Morpho has problems subsequently editing a very long list</h4>
+
+<p>We found that if a very large amount of taxonomic information is entered into Morpho
+we had issues modifying it. When you click on Documentation >
+Taxonomic Coverage to try and go in and edit nothing will
+happen. Morpho crashes when trying to open the Taxonomic Coverage
+because the list is long enough to cause “Out of Memory” error with
+the default configuration of Java heap space. It is a Morpho bug. The
+workaround is to edit the XML file manually.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/04/a-workaround-for-inserting-species-names-to-morpho/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Apr 20 00:00:00 +1000 2014">20 Apr 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
     </h1>
     <div class="entry-content full-content">
@@ -915,200 +1034,6 @@ load.project()
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Studies of extreme weather events such as drought require long term climate data</li>
-<li>these are available at continental scale derived from</li>
-<li>observations from a network of weather stations that are interpolated to a surface</li>
-<li>I have been working on techniques with R and online resources (the Australian Water Availabilty Project AWAP) to make working with these long term climatology datasets easier.</li>
-<li>The package is in development at <a href="https://github.com/swish-climate-impact-assessment/awaptools">https://github.com/swish-climate-impact-assessment/awaptools</a></li>
-</ul>
-
-
-<h2>Case Study</h2>
-
-<ul>
-<li>aim is need to look at seasonal rainfall means.</li>
-<li>first thing is to download the data (I'm also working on a Rstudio server to host these data, as a Virtual Lab).</li>
-<li>data = multiple years of monthly rainfall data in a raster grid format.</li>
-<li>aim = combine rainfall in a seasonal basis in one grid</li>
-<li>(i.e. M-J-J-A-S-O 1900, 1901 etc.) calculate mean of each cell.</li>
-<li>assumption1 = filenames have year, month embedded so they will be sorted in order when listed</li>
-<li>assumption2 = all months are available, from 1:12 for all years in</li>
-<li>study period</li>
-<li>notes:</li>
-<li>this requires the files are listed in the right order by name, and all months are present. might be better to use grep on the file name and strsplit/substr to extract the month identifier more precisely?</li>
-</ul>
-
-
-<h3>Results</h3>
-
-<p><img src="/images/season_hot.png" alt="alttext" /></p>
-
-<h3>I'm looking for collaboration on this!</h3>
-
-<ul>
-<li>I've been in contact with:</li>
-<li><a href="https://github.com/RationShop/rain_r/wiki/The-Rain-Project">https://github.com/RationShop/rain_r/wiki/The-Rain-Project</a></li>
-<li>I apologise to windoze users but feel a bit like <a href="http://librestats.com/2014/02/24/how-to-make-a-bad-password-with-r/">this guy</a> when recomending how to install:</li>
-</ul>
-
-
-<h4>quote:</h4>
-
-<pre><code>probably the easiest way to do this is to use
-Hadley's devtools package.  Assuming you have devtools and my package's
-dependencies.  If you're using Linux or the BSD's, this should just
-work.  Welcome to the good life, player.  I think this will work out
-of the box on a Mac.  I have no idea if this will work on Windows; how
-you strange people get anything done amazes me.  At the least,
-Im guessing you have to install Rtools first.  
-You could also just source all the R scripts like 
-some kind of barbarian
-</code></pre>
-
-<p></p>
-
-
-<h4>R Code:</h4>
-
-<pre><code># depends
-require(swishdbtools)
-if(!require(raster)) install.packages("raster", dependencies = T); require(raster)
-if(!require(rgdal)) install.packages("rgdal", dependencies = T); require(rgdal)
-
-# on linux can install direct, on windoze you configure Rtools
-require(devtools)
-install_github("awaptools", "swish-climate-impact-assessment")
-require(awaptools)
-
-homedir &lt;- "~/data/AWAP_GRIDS/data"
-outdir &lt;- "~/data/AWAP_GRIDS/data-seasonal-vignette"
-
-# first make sure there are no left over files from previous runs
-#oldfiles &lt;- list.files(pattern = '.tif', full.names=T) 
-#for(oldfile in oldfiles)
-#{
-#  print(oldfile)
-#  file.remove(oldfile)
-#}
-################################################
-setwd(homedir)
-
-# local customisations
-workdir  &lt;- homedir
-setwd(workdir)
-# don't change this
-years &lt;- c(1900:2014)
-lengthYears &lt;- length(years)
-# change this
-startdate &lt;- "2013-01-01"
-enddate &lt;- "2014-01-31"
-# do
-load_monthly(start_date = startdate, end_date = enddate)
-
-# do
-filelist &lt;- dir(pattern = "grid.Z$")
-for(fname in filelist)
-{
-  #fname &lt;- filelist[1]
-  unzip_monthly(fname, aggregation_factor = 1)
-  fin &lt;- gsub(".grid.Z", ".grid", fname)
-  fout &lt;- gsub(".grid.Z", ".tif", fname)
-  r &lt;- raster(fin)
-  writeRaster(r, fout, format="GTiff",  overwrite = TRUE)
-  file.remove(fin)
-}
-
-cfiles &lt;- list.files(pattern = '.tif', full.names=T) 
-# loop thru
-# NEED TO SET THE FILESOFSEASEON_I counter EACH TIME YOU start
-
-
-for(season in c("hot", "cool"))
-{
-  # season &lt;- "hot" # for labelling
-  if(season == "cool")
-  {
-    filesOfSeason_i &lt;- c(5,6,7,8,9,10)  
-    endat &lt;- lengthYears
-  } else {
-    filesOfSeason_i &lt;- c(11,12,13,14,15,16) 
-    endat &lt;- lengthYears - 1
-  }
-
-  for (year in 1:endat){ 
-    ## setup for checking month 
-    # year  &lt;- 1 #endat
-
-
-    ## checking
-    print(cat("####################\n\n"))
-    print(cfiles[filesOfSeason_i])
-
-    b &lt;- brick(stack(cfiles[filesOfSeason_i])) 
-    ## calculate mean 
-    m &lt;- mean(b) 
-    ## checking 
-    # image(m) 
-    writeRaster(m, file.path(outdir,sprintf("season_%s_%s.tif", season, year)), drivername="GTiff")
-    filesOfSeason_i &lt;- filesOfSeason_i + 12
-  } 
-}
-
-##### now we will overall average
-setwd(outdir)
-for(season in c("cool", "hot"))
-{
-  cfiles &lt;- list.files(pattern = season, full.names=T)   
-  print(cfiles)
-  b &lt;- brick(stack(cfiles)) 
-  ## calculate mean 
-  m &lt;- mean(b) 
-  ## checking 
-  # image(m) 
-  writeRaster(m, file.path(outdir,sprintf("season_%s.tif", season)), drivername="GTiff")
-}
-
-# qc
-cool &lt;- raster("season_cool.tif")
-hot &lt;- raster("season_hot.tif")
-par(mfrow = c(2,1))
-image(cool)
-image(hot)
-
-# just summer rainfall
-png("season_hot.png")
-image(hot)
-dev.off()
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/02/long-term-climatology-contextual-data-for-ecological-research/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Feb 28 00:00:00 +1100 2014">28 Feb 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1160,25 +1085,25 @@ dev.off()
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (17)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (42)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (18)</a></li>
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (6)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (42)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (6)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
               </ul>
             </div>
@@ -1193,6 +1118,10 @@ dev.off()
                 </li>
                 
                 <li>
+                  <a href="/2014/04/a-workaround-for-inserting-species-names-to-morpho/" title="A Workaround For Inserting Species Names To Morpho" rel="bookmark">A Workaround For Inserting Species Names To Morpho</a>
+                </li>
+                
+                <li>
                   <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
                 </li>
                 
@@ -1202,10 +1131,6 @@ dev.off()
                 
                 <li>
                   <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
                 </li>
                 
               </ul>

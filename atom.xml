@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2014-04-19T22:56:50+10:00</updated>
+ <updated>2014-04-20T12:00:33+10:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -461,6 +461,105 @@ You can see this if you then open it up again in morpho and then under the docum
 
 &lt;p&gt;&lt;/body&gt;
 &lt;/html&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>A Workaround For Inserting Species Names To Morpho</title>
+   <link href="http://schamberlain.github.com/2014/04/a-workaround-for-inserting-species-names-to-morpho/"/>
+   <updated>2014-04-20T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2014/04/a-workaround-for-inserting-species-names-to-morpho</id>
+   <content type="html">&lt;p&gt;Morpho is a pretty minimal editor for EML really.  It gives you a set
+of generically useful data entry forms but sometimes a specific task
+is better achieved through edits made directly to the XML document.
+An example of this is inserting a large number of species names to the
+taxonomic coverage module. The form to include these requires
+individual data entry for each species.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-taxo-smll.png&quot; alt=&quot;morpho-taxo.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Which looks like this when published&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-taxo2.1.png&quot; alt=&quot;morpho-taxo2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Go to the morpho catalogue (found at ~/.morpho/profiles/hanigan/data/hanigan/) and take a look at how the XML is constructed.&lt;/p&gt;
+
+&lt;h4&gt;XML Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;taxonomicCoverage&amp;gt;
+  &amp;lt;taxonomicClassification&amp;gt;
+    &amp;lt;taxonRankName&amp;gt;Genus&amp;lt;/taxonRankName&amp;gt;
+    &amp;lt;taxonRankValue&amp;gt;Dasycercus&amp;lt;/taxonRankValue&amp;gt;
+    &amp;lt;taxonomicClassification&amp;gt;
+      &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
+      &amp;lt;taxonRankValue&amp;gt;cristicauda&amp;lt;/taxonRankValue&amp;gt;
+      &amp;lt;commonName&amp;gt;Mulgara&amp;lt;/commonName&amp;gt;
+    &amp;lt;/taxonomicClassification&amp;gt;
+  &amp;lt;/taxonomicClassification&amp;gt;
+  &amp;lt;taxonomicClassification&amp;gt;
+    &amp;lt;taxonRankName&amp;gt;Genus&amp;lt;/taxonRankName&amp;gt;
+    &amp;lt;taxonRankValue&amp;gt;Homo&amp;lt;/taxonRankValue&amp;gt;
+      &amp;lt;taxonomicClassification&amp;gt;
+      &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
+      &amp;lt;taxonRankValue&amp;gt;sapiens&amp;lt;/taxonRankValue&amp;gt;
+      &amp;lt;commonName&amp;gt;Modern Human&amp;lt;/commonName&amp;gt;
+    &amp;lt;/taxonomicClassification&amp;gt;
+  &amp;lt;/taxonomicClassification&amp;gt;
+&amp;lt;/taxonomicCoverage&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;SO how to insert a large number of these&lt;/h4&gt;
+
+&lt;p&gt;One could use the taxon import feature to import the details from a
+file if there is a large list. Morpho’s taxon import feature does not
+correctly import more than one column of taxon data so if you have
+Genus and Species to enter you will actually need to combine Genus and
+Species into a binomial Species rank in one column (beware that if the data are sourced from a datafile that uses the underscore to seperate the words then these will not be correctly imported).&lt;/p&gt;
+
+&lt;p&gt;Once you have formated your input list, then import this
+as a new data table and go to the taxonomic coverage form under the
+documentation menu.  Click on the option to &quot;import taxon information
+from data table&quot; and select the appropriate column, selecting
+'species' for the class.  This will populate the taxonomicCoverage module in the EML.  You can now remove that data table from the package to be tidy.&lt;/p&gt;
+
+&lt;p&gt;This is what it looks like if you combine genus and species in the single column.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-taxo3.png&quot; alt=&quot;morpho-taxo3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And here is the XML&lt;/p&gt;
+
+&lt;h4&gt;XML Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;taxonomicCoverage scope=&quot;document&quot;&amp;gt;
+  &amp;lt;taxonomicClassification&amp;gt;
+    &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
+    &amp;lt;taxonRankValue&amp;gt;Abelmoschus moschatus&amp;lt;/taxonRankValue&amp;gt;
+  &amp;lt;/taxonomicClassification&amp;gt;
+  &amp;lt;taxonomicClassification&amp;gt;
+    &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
+    &amp;lt;taxonRankValue&amp;gt;Abrus pector&amp;lt;/taxonRankValue&amp;gt;
+  &amp;lt;/taxonomicClassification&amp;gt;
+  &amp;lt;taxonomicClassification&amp;gt;
+    &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
+    &amp;lt;taxonRankValue&amp;gt;Abrus precatorius&amp;lt;/taxonRankValue&amp;gt;
+  &amp;lt;/taxonomicClassification&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;Morpho has problems subsequently editing a very long list&lt;/h4&gt;
+
+&lt;p&gt;We found that if a very large amount of taxonomic information is entered into Morpho
+we had issues modifying it. When you click on Documentation &gt;
+Taxonomic Coverage to try and go in and edit nothing will
+happen. Morpho crashes when trying to open the Taxonomic Coverage
+because the list is long enough to cause “Out of Memory” error with
+the default configuration of Java heap space. It is a Morpho bug. The
+workaround is to edit the XML file manually.&lt;/p&gt;
 </content>
  </entry>
  
@@ -5529,164 +5628,6 @@ dbSendQuery(ch, sql)
 
 
 &lt;p&gt;THANKS Sarunya!&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>if-disease-incidence-varies-with-age-control-for-it</title>
-   <link href="http://schamberlain.github.com/2013/10/if-disease-incidence-varies-with-age-control-for-it/"/>
-   <updated>2013-10-31T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/10/if-disease-incidence-varies-with-age-control-for-it</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;today I was in a meeting where the discussion turned to maps of crude incidence rates, age-standardised rates and regression models controlling for age&lt;/li&gt;
-&lt;li&gt;If disease incidence does not vary with age then there is not much point in controlling for this,&lt;/li&gt;
-&lt;li&gt;apart from the work done in exploratory data analysis to ascertain whether or not this is the case&lt;/li&gt;
-&lt;li&gt;I proposed that if you've done all the work on age-specific rates needed to test if incidence varies with age, then you might as well present age adjusted rates seeing as you've already done the work anyway&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;An example&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The project is highly confidential due to the nature of the data&lt;/li&gt;
-&lt;li&gt;We;ll call the study location South Kingsland to protect the identity&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# get spatial data
-require(swishdbtools) # github package, under
-                      # swish-climate-impact-assessment
-
-Tab1 &amp;lt;- read.csv(&quot;data/dataset.csv&quot;, sep= &quot;,&quot;, header = TRUE, stringsAsFactor = F)
-Tab1 &amp;lt;- as.data.frame(table(Tab1$SLA))
-nrow(Tab1)
-write.csv(Tab1, &quot;data/SLA.csv&quot;, row.names = F)
-load2postgres(&quot;data/SLA.csv&quot;, schema=&quot;ivan_hanigan&quot;, tablename=&quot;sla&quot;, ip = &quot;brawn.anu.edu.au&quot;,
-              db = &quot;gislibrary&quot;, pguser = &quot;ivan_hanigan&quot;, printcopy = F)
-
-
-ch  &amp;lt;- connect2postgres2(&quot;gislibrary&quot;)
-sql_subset(ch, &quot;ivan_hanigan.sla&quot;, eval = T, limit = 10)
-
-
-sql_subset(ch, &quot;abs_sla.qldsla01&quot;, select =  &quot;sla_name, st_y(st_centroid(geom))&quot;, eval = T, limit = 10)
-dbSendQuery(ch,
-  &quot;select sla_name, geom
-  into southkingsland
-  from abs_sla.qldsla01 t1
-  join
-  sla t2
-  on t1.sla_name = t2.var1;
-  alter table southkingsland add column gid serial primary key;
-  &quot;)
-# these are missing from spatial data
-## 42                      West End                          &amp;lt;NA&amp;gt;
-## 43                OVERSEAS-OTHER                          &amp;lt;NA&amp;gt;
-## 44                  Yarrabah (S)                          &amp;lt;NA&amp;gt;
-## 45     Rowes Bay-Belgian gardens                          &amp;lt;NA&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h3&gt;visualise with QGIS&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/southkingsland.png&quot; alt=&quot;southkingsland.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# func
-require(plyr)
-
-# load
-Tab2 &amp;lt;- read.csv(&quot;data/dataset.csv&quot;, sep= &quot;,&quot;, header = TRUE, stringsAsFactor = F)
-names(Tab2)
-# [1] &quot;SLA&quot;       &quot;agegrp&quot;    &quot;Sex&quot;       &quot;district&quot;  &quot;dm&quot;        &quot;ninf&quot;     
-# [7] &quot;popSLA&quot;    &quot;Month&quot;     &quot;Year&quot;      &quot;groupyear&quot;
-test_sla  &amp;lt;- names(table(Tab2$SLA)[1])
-subset(Tab2, SLA == test_sla &amp;amp; Year == 2001 &amp;amp; agegrp == 1 &amp;amp; Sex == &quot;MALE&quot;)
-subset(Tab2, SLA == test_sla &amp;amp; Year == 2001 &amp;amp; agegrp == 1 &amp;amp; Sex == &quot;FEMALE&quot;)
-
-# clean
-summary(Tab2)
-## remove any SLA with NA populations
-Tab2 &amp;lt;- Tab2[which(!is.na(Tab2$popSLA)),]     
-
-# do
-## first total cases by annualised pop
-analyte  &amp;lt;- ddply(Tab2, c(&quot;SLA&quot;, &quot;Year&quot;, &quot;agegrp&quot;, &quot;Sex&quot;), summarise,
-                  ninf=sum(ninf),
-                  popSLA=mean(popSLA)
-                  )
-#str(analyte)
-
-#subset(analyte, SLA == test_sla)
-subset(analyte, SLA == test_sla &amp;amp; Year == 2001 &amp;amp; agegrp == 1)
-
-## now annual totals for study region
-analyte2  &amp;lt;- ddply(analyte, c(&quot;Year&quot;, &quot;agegrp&quot;), summarise,
-                  ninf=sum(ninf),
-                  popSLA=sum(popSLA)
-                  )
-str(analyte2)
-
-qc &amp;lt;- subset(analyte2,  Year == 2001)
-qc
-sum(qc$popSLA)
-
-## now totals
-qc  &amp;lt;- ddply(analyte2, c(&quot;Year&quot;), summarise,
-             ninf=sum(ninf),
-             popSLA=sum(popSLA)
-             )
-qc
-sum(qc$ninf)
-mean(qc$popSLA)
-
-## totals by age
-subset(analyte2,  agegrp == 1)
-analyte3  &amp;lt;- ddply(analyte2, c(&quot;agegrp&quot;), summarise,
-                  ninf=sum(ninf),
-                  popSLA=mean(popSLA)
-                  )
-analyte3
-sum(analyte3$popSLA)
-analyte3$asr  &amp;lt;- (analyte3$ninf / analyte3$popSLA) * 1000
-analyte3
-
-png(&quot;graphs/south-kingsland-age-specific-rates.png&quot;) 
-mp &amp;lt;- barplot(analyte3$asr, names.arg = analyte3$agegrp)
-box()
-dev.off()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h3&gt;Plot Age Specific Rates&lt;/h3&gt;
-
-&lt;p&gt;Great so with that bit of work we should have an idea of the variation of incidence by age&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/south-kingsland-age-specific-rates.png&quot; alt=&quot;south-kingsland-age-specific-rates.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1&gt;Results and Discussion&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;It looks like the incidence does vary with age&lt;/li&gt;
-&lt;li&gt;TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)&lt;/li&gt;
-&lt;li&gt;TODO make graphs by city, by sex&lt;/li&gt;
-&lt;li&gt;age-standardised rates probably need different age categories, only 4 or 5?&lt;/li&gt;
-&lt;li&gt;worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Clean up database!&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;dbSendQuery(ch, &quot;drop table sla&quot;)
-dbSendQuery(ch, &quot;drop table southkingsland&quot;)
-&lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
  
