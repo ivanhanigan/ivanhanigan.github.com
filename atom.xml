@@ -4,13 +4,51 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2014-04-20T12:00:33+10:00</updated>
+ <updated>2014-04-21T19:34:22+10:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>linking-eml-packages-by-umbrella-project-info</title>
+   <link href="http://schamberlain.github.com/2014/04/linking-eml-packages-by-umbrella-project-info/"/>
+   <updated>2014-04-21T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2014/04/linking-eml-packages-by-umbrella-project-info</id>
+   <content type="html">&lt;p&gt;In Eml the optional &lt;project&gt; module provides an overall description of the larger-scale project or research context with which that dataset is associated. For the examples in our work the &lt;project&gt; will most often be an LTER (Longterm Ecological Research Network) site that directed the research.
+Accordingly, the &lt;title&gt; here consists of the name of the LTER site. The &lt;personnel&gt; group contains the same elements as &lt;creator&gt; and &lt;contact&gt;, with the addition of a mandatory &lt;role&gt; element, and it is used to identify the lead PI and/or information manager on the site. Other optional elements in the &lt;project&gt; module include &lt;abstract&gt;, &lt;funding&gt;, &lt;studyAreaDescription&gt;, and &lt;designDescription&gt;, each of which can be used to provide a richer textual description of the LTER site responsible for the research project being documented.
+If used, the &lt;abstract&gt; includes basic information about the LTER site, such as its general history and administration, while &lt;studyAreaDescription&gt; is more of a physical description of the area where the site is located. This description may also include the &lt;coverage&gt; module, which is fully discussed on page XX of this handbook, or the &lt;citation&gt; module, covered on page XX. The &lt;funding&gt; tag is textual and self-explanatory, but &lt;designDescription&gt; is best used for a description of the site’s database information and availability.&lt;/p&gt;
+
+&lt;p&gt;Morpho doesn't give all these options so you need to go to the EML file found in the &quot;~/.morpho/...&quot; directory and edit this with a text editor
+I think the order of the tags here might make a difference so I always put thye &lt;abstract&gt; tag after the &lt;/personnel&gt; tag.  I also think you might need this &lt;para&gt; tag:&lt;/p&gt;
+
+&lt;h4&gt;Code:linking-eml-packages-by-umbrella-project-inf&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;abstract&amp;gt; 
+  &amp;lt;para&amp;gt;Prof McMichael set up this group to develop new methods of researching Environmental (especially Climate Change) and Health
+  &amp;lt;/para&amp;gt;
+&amp;lt;/abstract&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an &lt;additionalLink&gt; node at the bottom of the EML:&lt;/p&gt;
+
+&lt;h4&gt;Code:linking-eml-packages-by-umbrella-project-info&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;additionalMetadata&amp;gt;
+  &amp;lt;metadata&amp;gt;
+    &amp;lt;additionalLinks&amp;gt;
+      &amp;lt;url name=&quot;The name of the homepage&quot;&amp;gt;http://...&amp;lt;/url&amp;gt;
+    &amp;lt;/additionalLinks&amp;gt;
+  &amp;lt;/metadata&amp;gt;
+&amp;lt;/additionalMetadata&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Using Morpho for Cataloguing Personal Research Data</title>
@@ -5574,60 +5612,6 @@ dbSendQuery(ch, sql)
 
 &lt;pre&gt;&lt;code&gt;dbSendQuery(ch, sprintf(&quot;drop table %s&quot;, temp_table))
 &lt;/code&gt;&lt;/pre&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</title>
-   <link href="http://schamberlain.github.com/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/"/>
-   <updated>2013-10-31T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;Yesterday I met with Sarunya Sujaritpong a PhD student working with &lt;a href=&quot;http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/&quot;&gt;spatially structured time-series models as described previously&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern&lt;/li&gt;
-&lt;li&gt;The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk&lt;/li&gt;
-&lt;li&gt;The beta coefficient itself shouldn't be affected.&lt;/li&gt;
-&lt;li&gt;So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are &lt;a href=&quot;http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360&quot;&gt;starting to include this in their models&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series&lt;/li&gt;
-&lt;li&gt;I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens&lt;/li&gt;
-&lt;li&gt;So I asked Sarunya for a discussion about her research&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Sarunya's model is essentially like this&lt;/h3&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;fit &amp;lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
-       ns(temp, df) + ns(humidity, df) +
-       ns(time, df = 7*numYears) +
-       SLA * ns(time, df = 2),
-       data = analyte, family = poisson
-       )
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;SLA is Statistical Local Area (now called SA2, like a suburb)&lt;/li&gt;
-&lt;li&gt;Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city&lt;/li&gt;
-&lt;li&gt;turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION&lt;/li&gt;
-&lt;li&gt;therefore this study avoids the issue by it's intentional design to compare betas not se&lt;/li&gt;
-&lt;li&gt;Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.&lt;/li&gt;
-&lt;li&gt;this is fascinating in itself, but a separate issue for another post&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results&lt;/li&gt;
-&lt;li&gt;if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;THANKS Sarunya!&lt;/p&gt;
 </content>
  </entry>
  

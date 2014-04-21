@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - sharing-and-extending-research-protocols</title>
+    <title>Ivan Hanigan - linking-eml-packages-by-umbrella-project-info</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
+    <a href="/2014/04/linking-eml-packages-by-umbrella-project-info/" title="linking-eml-packages-by-umbrella-project-info" rel="bookmark">linking-eml-packages-by-umbrella-project-info</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,124 +55,36 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <ul>
-<li>Last week I started a new discussion about sharing and extending research protocols.</li>
-</ul>
+    <p>In Eml the optional <project> module provides an overall description of the larger-scale project or research context with which that dataset is associated. For the examples in our work the <project> will most often be an LTER (Longterm Ecological Research Network) site that directed the research.
+Accordingly, the <title> here consists of the name of the LTER site. The <personnel> group contains the same elements as <creator> and <contact>, with the addition of a mandatory <role> element, and it is used to identify the lead PI and/or information manager on the site. Other optional elements in the <project> module include <abstract>, <funding>, <studyAreaDescription>, and <designDescription>, each of which can be used to provide a richer textual description of the LTER site responsible for the research project being documented.
+If used, the <abstract> includes basic information about the LTER site, such as its general history and administration, while <studyAreaDescription> is more of a physical description of the area where the site is located. This description may also include the <coverage> module, which is fully discussed on page XX of this handbook, or the <citation> module, covered on page XX. The <funding> tag is textual and self-explanatory, but <designDescription> is best used for a description of the site’s database information and availability.</p>
 
+<p>Morpho doesn't give all these options so you need to go to the EML file found in the "~/.morpho/..." directory and edit this with a text editor
+I think the order of the tags here might make a difference so I always put thye <abstract> tag after the </personnel> tag.  I also think you might need this <para> tag:</p>
 
-<h4>My Colleague sent me a link to the <a href="http://prometheuswiki.publish.csiro.au/tiki-custom_home.php">Prometheus Wiki</a>​</h4>
+<h4>Code:linking-eml-packages-by-umbrella-project-inf</h4>
 
-<pre><code>a site for sharing research protocols. The idea is to give people
-a place to post research protocols since everyone develops them
-and then mentions them in papers but they rarely make it online in
-a usable format. We see this as a big bottleneck in the rate of
-knowledge discovery. Since users will always want to change and
-adapt a given protocol for changing applications or new technology
-or just to improve it. This sort of thing is done with open source
-all the time (i.e. git) but how you'd do it with an online
-protocol based out of a wiki is unknown. The current version of
-the website is not very flexible and doesn't really enable the
-sort of dynamic collaboration that I envision would make this a
-really useful tool. Git seems like an obvious conceptual starting
-point but there'd need to be a front end markup system in place
-that was integrated with that git-type backend. Since you've
-mentioned git a few times and the open science project, I thought
-you might find this interesting to think about. any suggestions or
-inspirations would be welcomed
+<pre><code>&lt;abstract&gt; 
+  &lt;para&gt;Prof McMichael set up this group to develop new methods of researching Environmental (especially Climate Change) and Health
+  &lt;/para&gt;
+&lt;/abstract&gt;
 </code></pre>
 
 <p></p>
 
 
-<h4>My past experience</h4>
+<p>So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an <additionalLink> node at the bottom of the EML:</p>
 
-<ul>
-<li>I have previously tried to use a wiki for the development of new sections in an existing study protocol on estimating the effects of bushfire smoke air pollution and human health.</li>
-<li>We combined elements of two major air pollution/health study protocols (one from Europe, one from America) with local considerations and decisions made within our team.</li>
-<li>On reflection all this was mostly useful for me, to a lesser extent the other programmer and I don't think the project manager or statistician ever even looked at any of this.</li>
-</ul>
+<h4>Code:linking-eml-packages-by-umbrella-project-info</h4>
 
-
-<h4>Jeff Leek's current approach using GitHub</h4>
-
-<p>I have been keeping an eye on the work by Jeff Leek on putting protocols onto Github and inviting collaboration to edit and extend them <a href="http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/">as he says</a>:</p>
-
-<pre><code>I put it on Github because I'm still not 100% sure I got it
-right... I would welcome feedback/pull requests on how we can
-improve the policy to make it better
+<pre><code>&lt;additionalMetadata&gt;
+  &lt;metadata&gt;
+    &lt;additionalLinks&gt;
+      &lt;url name="The name of the homepage"&gt;http://...&lt;/url&gt;
+    &lt;/additionalLinks&gt;
+  &lt;/metadata&gt;
+&lt;/additionalMetadata&gt;
 </code></pre>
-
-<p></p>
-
-
-<h4>Leek Group policies and protocols on github so far</h4>
-
-<ul>
-<li><a href="https://github.com/jtleek/rpackages">https://github.com/jtleek/rpackages</a> accompanied by <a href="http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/">this post</a></li>
-<li><a href="https://github.com/jtleek/reviews">https://github.com/jtleek/reviews</a> accompanied by <a href="http://simplystatistics.org/2013/10/23/the-leek-group-guide-to-reviewing-scientific-papers/">this post</a></li>
-<li><a href="https://github.com/jtleek/datasharing">https://github.com/jtleek/datasharing</a> accompanied by <a href="http://simplystatistics.org/2013/11/14/the-leek-group-guide-to-sharing-data-with-a-statistician-to-speed-collaboration/">this post</a></li>
-</ul>
-
-
-<h4>I forked "datasharing" for my own. Renamed: "How to share data to avoid misunderstanding"</h4>
-
-<ul>
-<li>I liked the datasharing policy so much <a href="http://ivanhanigan.github.io/datasharing/">I forked it for my own collaborations</a>.</li>
-<li>I initially just made a minor recommendation to one of the lines in the original using the great Github feature that if you edit a repo you don't have access to, it forks the repo and creates a feature branch behind the scenes. After you submit the changes (which is a commit) it puts you right into the pull request form.</li>
-<li>Therefore it can all be done on the GitHub site. I submitted <a href="https://github.com/jtleek/datasharing/pull/11">the pull request without leaving my web browser</a>.</li>
-<li>But then I thought I would have done things a bit differently.  In particular I'd like a webpage with a table of contents, and a nicer looking landing page.</li>
-<li>so I cloned my fork of the repo, then created a new branch called gh-pages, then copied the original to a new file called index.org, added some Emacs Orgmode HTML export magic and then "C-c C-e h" and WHAMM-O I've got my own version for extending with at <a href="http://ivanhanigan.github.io/datasharing/">http://ivanhanigan.github.io/datasharing/</a>.</li>
-</ul>
-
-
-<h4>The code version:</h4>
-
-<pre><code>git clone git@github.com:ivanhanigan/datasharing.git ~/tools/datasharing
-cd ~/tools/datasharing
-git checkout -b gh-pages
-mv README.md index.org
-touch README.md
-# edits to index.org, "C-c C-e h" and WHAMM-O
-git add index.org index.html README.md
-git push origin gh-pages
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>In this way I think people can share and collaborate easily <a href="http://yihui.name/en/2013/06/fix-typo-in-documentation/">(if they know git)</a></li>
-<li>as well as easily take work started by someone else and extend it for their own work.</li>
-<li>I wonder a little bit about how much of my extensions I should offer back to Jeff Leek as the original author.</li>
-<li>I guess he can always track what I do to it via the link back to his original shown in <a href="https://github.com/jtleek/datasharing/network">https://github.com/jtleek/datasharing/network</a></li>
-</ul>
-
-
-<h4>PS Jeff Leek uses github a lot!</h4>
-
-<p>As he says in <a href="http://simplystatistics.org/2013/11/21/future-of-statistics-take-home-messages-futureofstats/">this post from the future-of-statistics unconference</a>:</p>
-
-<pre><code>You can read it on Github here (https://github.com/jtleek/futureofstats).
-I put it on Github for two reasons:
-
-- I agree with Hadley's statement that the future of statistics is on Github.
-- I summarized them based on my interpretation and would love
-  collaboration on the document. If you want to add your new
-  thoughts/summaries, add a new section with your bullet pointed
-  ideas and send me a pull request!
-</code></pre>
-
-<p></p>
-
-
-<h4>Conclusions</h4>
-
-<ul>
-<li>Jeff Leek is on to something really interesting with these github policies and protocols</li>
-<li>I find the look of his plain markdown README.md pages a bit un-inspiring</li>
-<li>but then I spend too much of my time tweaking my html by far (while Jeff is getting on with the real work of publishing papers)</li>
-</ul>
-
 
     <div class="clear"></div>
   </div>
@@ -187,12 +99,12 @@ I put it on Github for two reasons:
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+    <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Wed Nov 27 00:00:00 +1100 2013">27 Nov 2013</abbr>
+      <abbr class="published" title="Mon Apr 21 00:00:00 +1000 2014">21 Apr 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -206,7 +118,7 @@ I put it on Github for two reasons:
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/11/sharing-and-extending-research-protocols/";
+    var disqus_url = "http://ivanhanigan.github.com/2014/04/linking-eml-packages-by-umbrella-project-info/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

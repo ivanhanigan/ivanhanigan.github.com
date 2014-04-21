@@ -6,6 +6,43 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>linking-eml-packages-by-umbrella-project-info</title>
+				<description>&lt;p&gt;In Eml the optional &lt;project&gt; module provides an overall description of the larger-scale project or research context with which that dataset is associated. For the examples in our work the &lt;project&gt; will most often be an LTER (Longterm Ecological Research Network) site that directed the research.
+Accordingly, the &lt;title&gt; here consists of the name of the LTER site. The &lt;personnel&gt; group contains the same elements as &lt;creator&gt; and &lt;contact&gt;, with the addition of a mandatory &lt;role&gt; element, and it is used to identify the lead PI and/or information manager on the site. Other optional elements in the &lt;project&gt; module include &lt;abstract&gt;, &lt;funding&gt;, &lt;studyAreaDescription&gt;, and &lt;designDescription&gt;, each of which can be used to provide a richer textual description of the LTER site responsible for the research project being documented.
+If used, the &lt;abstract&gt; includes basic information about the LTER site, such as its general history and administration, while &lt;studyAreaDescription&gt; is more of a physical description of the area where the site is located. This description may also include the &lt;coverage&gt; module, which is fully discussed on page XX of this handbook, or the &lt;citation&gt; module, covered on page XX. The &lt;funding&gt; tag is textual and self-explanatory, but &lt;designDescription&gt; is best used for a description of the site’s database information and availability.&lt;/p&gt;
+
+&lt;p&gt;Morpho doesn't give all these options so you need to go to the EML file found in the &quot;~/.morpho/...&quot; directory and edit this with a text editor
+I think the order of the tags here might make a difference so I always put thye &lt;abstract&gt; tag after the &lt;/personnel&gt; tag.  I also think you might need this &lt;para&gt; tag:&lt;/p&gt;
+
+&lt;h4&gt;Code:linking-eml-packages-by-umbrella-project-inf&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;abstract&amp;gt; 
+  &amp;lt;para&amp;gt;Prof McMichael set up this group to develop new methods of researching Environmental (especially Climate Change) and Health
+  &amp;lt;/para&amp;gt;
+&amp;lt;/abstract&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an &lt;additionalLink&gt; node at the bottom of the EML:&lt;/p&gt;
+
+&lt;h4&gt;Code:linking-eml-packages-by-umbrella-project-info&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;additionalMetadata&amp;gt;
+  &amp;lt;metadata&amp;gt;
+    &amp;lt;additionalLinks&amp;gt;
+      &amp;lt;url name=&quot;The name of the homepage&quot;&amp;gt;http://...&amp;lt;/url&amp;gt;
+    &amp;lt;/additionalLinks&amp;gt;
+  &amp;lt;/metadata&amp;gt;
+&amp;lt;/additionalMetadata&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+				<published>Mon Apr 21 00:00:00 +1000 2014</published>
+				<link>http://schamberlain.github.com/2014/04/linking-eml-packages-by-umbrella-project-info/</link>
+			</item>
+		
+			<item>
 				<title>Using Morpho for Cataloguing Personal Research Data</title>
 				<description>&lt;div id=&quot;table-of-contents&quot;&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
@@ -1302,30 +1339,6 @@ The rules to achieve a geography amenable to statistical comparisons are:&lt;/p&
 </description>
 				<published>Tue Feb 18 00:00:00 +1100 2014</published>
 				<link>http://schamberlain.github.com/2014/02/aggregation-of-statistical-local-areas/</link>
-			</item>
-		
-			<item>
-				<title>Template Reproducible Research with R TEX and Sweave</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;Last year I wrote to a Professor to let them know some numbers that quantified their effect estimate (computed be exponentiating their beta coefficient) described in their results section was inconsistent with the numbers in their table (the raw coefficients).&lt;/li&gt;
-&lt;li&gt;Happily the recalculation showed that they had underestimated the effect size and their conclusions were not wrong, but erroneously conservative.&lt;/li&gt;
-&lt;li&gt;Previously I would use Sweave documents to keep track of all my calculations, but I was still copy-and-pasting the key numbers into the text.&lt;/li&gt;
-&lt;li&gt;I've become more interested now in using Inline R Outputs (called Sexpr - S expressions)&lt;/li&gt;
-&lt;li&gt;This is also the first time I've created a report using the Palatino font, on the advice of a new colleague of mine.&lt;/li&gt;
-&lt;li&gt;I popped up a &lt;a href=&quot;https://github.com/ivanhanigan/DataDocumentation&quot;&gt;Github repo with a Sweave template for Reproducible Reports with a few notes I made&lt;/a&gt;.  Which looks like&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/sexpr.png&quot; alt=&quot;/images/sexpr.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.pdf&quot;&gt;PDF output is here&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.Rnw&quot;&gt;Sweave file is here&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Wed Feb 12 00:00:00 +1100 2014</published>
-				<link>http://schamberlain.github.com/2014/02/template-reproducible-research-with-r-tex-and-sweave/</link>
 			</item>
 		
 	</channel>
