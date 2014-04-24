@@ -4,13 +4,153 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2014-04-23T16:26:56+10:00</updated>
+ <updated>2014-04-24T20:43:03+10:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Using Reml To Input Large Number Of Column Descriptions</title>
+   <link href="http://schamberlain.github.com/2014/04/using-reml-to-input-large-number-of-column-descriptions/"/>
+   <updated>2014-04-24T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2014/04/using-reml-to-input-large-number-of-column-descriptions</id>
+   <content type="html">&lt;p&gt;We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting &quot;save for later&quot; but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.&lt;/p&gt;
+
+&lt;p&gt;So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.&lt;/p&gt;
+
+&lt;p&gt;First thing I tried was the constructed Column Definitions and Unit Definitions example from &lt;a href=&quot;https://github.com/ropensci/EML&quot;&gt;the README&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#require(devtools)
+#install_github(&quot;EML&quot;, &quot;ROpenSci&quot;)
+require(EML)
+
+# The example from orig doco
+dat = data.set(river = c(&quot;SAC&quot;,  &quot;SAC&quot;,   &quot;AM&quot;),
+               spp   = c(&quot;king&quot;,  &quot;king&quot;, &quot;ccho&quot;),
+               stg   = c(&quot;smolt&quot;, &quot;parr&quot;, &quot;smolt&quot;),
+               ct    = c(293L,    410L,    210L),
+               col.defs = c(&quot;River site used for collection&quot;,
+                            &quot;Species common name&quot;,
+                            &quot;Life Stage&quot;,
+                            &quot;count of live fish in traps&quot;),
+               unit.defs = list(c(SAC = &quot;The Sacramento River&quot;,
+                                  AM = &quot;The American River&quot;),
+                                c(king = &quot;King Salmon&quot;,
+                                  ccho = &quot;Coho Salmon&quot;),
+                                c(parr = &quot;third life stage&quot;,
+                                  smolt = &quot;fourth life stage&quot;),
+                                &quot;number&quot;))
+str(dat)
+eml_config(creator=&quot;Carl Boettiger &amp;lt;cboettig@gmail.com&amp;gt;&quot;)
+eml_write(dat, file = &quot;inst/doc/EML_example.xml&quot;)
+# now you can import this to morpho and have a look
+# note that for morpho 1.8 it wants to change the EML version from 2.1.1 to 2.1.0
+# and it can't show the data yet
+# so what we need to do is write this as a file to the morpho database
+# save and close, note which number it assigned
+dat &amp;lt;- data.frame(dat)
+morpho_db  &amp;lt;- &quot;~/.morpho/profiles/hanigan/data/hanigan/&quot;
+maxid  &amp;lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &amp;lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.&lt;/p&gt;
+
+&lt;h4&gt;EML Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+&amp;lt;/dataFormat&amp;gt;
+&amp;lt;distribution scope=&quot;document&quot;&amp;gt; &amp;lt;online&amp;gt; &amp;lt;url function=&quot;download&quot;&amp;gt;ecogrid://knb/hanigan.22.1&amp;lt;/url&amp;gt;
+&amp;lt;/online&amp;gt;
+&amp;lt;access authSystem=&quot;knb&quot; order=&quot;denyFirst&quot;&amp;gt;&amp;lt;allow&amp;gt;&amp;lt;principal&amp;gt;uid=datalibrarian,o=unaffiliated,dc=ecoinformatics,dc=org&amp;lt;/principal&amp;gt;
+&amp;lt;permission&amp;gt;all&amp;lt;/permission&amp;gt;
+&amp;lt;/allow&amp;gt;
+&amp;lt;allow&amp;gt;&amp;lt;principal&amp;gt;uid=hanigan,o=unaffiliated,dc=ecoinformatics,dc=org&amp;lt;/principal&amp;gt;
+&amp;lt;permission&amp;gt;read&amp;lt;/permission&amp;gt;
+&amp;lt;/allow&amp;gt;
+&amp;lt;/access&amp;gt;
+&amp;lt;/distribution&amp;gt;
+&amp;lt;/physical&amp;gt;
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Which seems to have worked when we open it up again:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-wide1.png&quot; alt=&quot;moprho-wide1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So now let;s try a large nuber of variables:&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# add lots of cols
+for(i in 5:100){
+  dat[,i] &amp;lt;-  sample(rnorm(100,1,2), 3)
+}
+str(dat)
+##  $ V95  : num  1.5708 -0.0936 2.2324
+##  $ V96  : num  1.79 5.4 1.62
+##  $ V97  : num  -1.141 0.653 5.365
+##  $ V98  : num  1.738 -1.046 -0.135
+##  $ V99  : num  3.6 -0.738 -1.877
+##   [list output truncated]
+               unit.defs = list(c(SAC = &quot;The Sacramento River&quot;,
+                                  AM = &quot;The American River&quot;),
+                                c(king = &quot;King Salmon&quot;,
+                                  ccho = &quot;Coho Salmon&quot;),
+                                c(parr = &quot;third life stage&quot;,
+                                  smolt = &quot;fourth life stage&quot;))
+unit.defs[[3]]
+for(i in 4:100){
+unit.defs[[i]] &amp;lt;- &quot;number&quot;
+}
+unit.defs
+dat = data.set(dat,
+               col.defs = c(&quot;River site used for collection&quot;,
+                            &quot;Species common name&quot;,
+                            &quot;Life Stage&quot;,
+                            &quot;count of live fish in traps&quot;,
+c(rep(&quot;count stuff&quot;, 95))
+                 ),
+unit.defs = unit.defs
+
+  )
+str(dat)
+
+eml_config(creator=&quot;Ivan Charles Hanigan &amp;lt;ivan.hanigan@gmail.com&amp;gt;&quot;)
+eml_write(dat, file = &quot;inst/doc/EML_example_wide.xml&quot;)
+# import to morpho, save and close
+dat &amp;lt;- data.frame(dat)
+morpho_db  &amp;lt;- &quot;~/.morpho/profiles/hanigan/data/hanigan/&quot;
+maxid  &amp;lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &amp;lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+# now add this into the EML morpho has created (25.2 in my case)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Which now seems to have attached the variable defintions and dataTable adequately.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-wide2.png&quot; alt=&quot;morpho-wide2.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>linking-eml-packages-by-umbrella-project-info</title>
@@ -5449,60 +5589,6 @@ dbSendQuery(ch, sql)
 
 &lt;pre&gt;&lt;code&gt;dbSendQuery(ch, sprintf(&quot;drop table %s&quot;, temp_table))
 &lt;/code&gt;&lt;/pre&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</title>
-   <link href="http://schamberlain.github.com/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/"/>
-   <updated>2013-10-31T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;Yesterday I met with Sarunya Sujaritpong a PhD student working with &lt;a href=&quot;http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/&quot;&gt;spatially structured time-series models as described previously&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern&lt;/li&gt;
-&lt;li&gt;The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk&lt;/li&gt;
-&lt;li&gt;The beta coefficient itself shouldn't be affected.&lt;/li&gt;
-&lt;li&gt;So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are &lt;a href=&quot;http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360&quot;&gt;starting to include this in their models&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series&lt;/li&gt;
-&lt;li&gt;I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens&lt;/li&gt;
-&lt;li&gt;So I asked Sarunya for a discussion about her research&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Sarunya's model is essentially like this&lt;/h3&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;fit &amp;lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
-       ns(temp, df) + ns(humidity, df) +
-       ns(time, df = 7*numYears) +
-       SLA * ns(time, df = 2),
-       data = analyte, family = poisson
-       )
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;SLA is Statistical Local Area (now called SA2, like a suburb)&lt;/li&gt;
-&lt;li&gt;Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city&lt;/li&gt;
-&lt;li&gt;turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION&lt;/li&gt;
-&lt;li&gt;therefore this study avoids the issue by it's intentional design to compare betas not se&lt;/li&gt;
-&lt;li&gt;Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.&lt;/li&gt;
-&lt;li&gt;this is fascinating in itself, but a separate issue for another post&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results&lt;/li&gt;
-&lt;li&gt;if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;THANKS Sarunya!&lt;/p&gt;
 </content>
  </entry>
  

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - reml-and-rfigshare-part-2</title>
+    <title>Ivan Hanigan - Using Reml To Input Large Number Of Column Descriptions</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/10/reml-and-rfigshare-part-2/" title="reml-and-rfigshare-part-2" rel="bookmark">reml-and-rfigshare-part-2</a>
+    <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions/" title="Using Reml To Input Large Number Of Column Descriptions" rel="bookmark">Using Reml To Input Large Number Of Column Descriptions</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,64 +55,138 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>In the last post I explored the functionality of reml.
-This time I will try to send data to figshare.</p>
+    <p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting "save for later" but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.</p>
 
-<ul>
-<li>First follow <a href="https://github.com/ropensci/rfigshare">These Instructions</a> to get rfigshare set up.  In particular store your figshare credentials in ~/.Rprofile</li>
-</ul>
+<p>So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.</p>
 
+<p>First thing I tried was the constructed Column Definitions and Unit Definitions example from <a href="https://github.com/ropensci/EML">the README</a></p>
 
-<h4>Code:reml-and-rfigshare-part-2</h4>
+<h4>R Code:</h4>
 
-<pre><code># func
-require(devtools)
-install_github("reml", "ropensci")
-require(reml)
-install_github("rfigshare", "ropensci")
-require(rfigshare)
-install_github("disentangle", "ivanhanigan")
-require(disentangle)
-# load
-fpath &lt;- system.file(file.path("extdata","civst_gend_sector_eml.xml"), package = "disentangle")
-setwd(dirname(fpath))
-obj &lt;- eml_read(fpath)
-# clean
-obj
-# do
+<pre><code>#require(devtools)
+#install_github("EML", "ROpenSci")
+require(EML)
 
-## STEP 1: find one of the preset categories
-# available. We can ask the API for
-# a list of all the categories:
-list &lt;- fs_category_list()
-list[grep("Survey", list)]
-
-## STEP 2: PUBLISH TO FIGSHARE
-id &lt;- eml_publish(fname,
-                  description="Example EML
-                    A fictional dataset",
-                  categories = "Survey results",
-                  tags = "EML",
-                  destination="figshare"
-                  )
-# there are several warnings
-# but go to figshare and it has sent the metadata and data OK
-
-# make public using either the figshare web interface, the
-# rfigshare package (using fs_make_public(id)) or just by adding
-# the argument visibility = TRUE to the above eml_publish
-fs_make_public(id)
+# The example from orig doco
+dat = data.set(river = c("SAC",  "SAC",   "AM"),
+               spp   = c("king",  "king", "ccho"),
+               stg   = c("smolt", "parr", "smolt"),
+               ct    = c(293L,    410L,    210L),
+               col.defs = c("River site used for collection",
+                            "Species common name",
+                            "Life Stage",
+                            "count of live fish in traps"),
+               unit.defs = list(c(SAC = "The Sacramento River",
+                                  AM = "The American River"),
+                                c(king = "King Salmon",
+                                  ccho = "Coho Salmon"),
+                                c(parr = "third life stage",
+                                  smolt = "fourth life stage"),
+                                "number"))
+str(dat)
+eml_config(creator="Carl Boettiger &lt;cboettig@gmail.com&gt;")
+eml_write(dat, file = "inst/doc/EML_example.xml")
+# now you can import this to morpho and have a look
+# note that for morpho 1.8 it wants to change the EML version from 2.1.1 to 2.1.0
+# and it can't show the data yet
+# so what we need to do is write this as a file to the morpho database
+# save and close, note which number it assigned
+dat &lt;- data.frame(dat)
+morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
+maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
 </code></pre>
 
 <p></p>
 
 
-<h1>Now these data are on figshare</h1>
+<p>So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.</p>
 
-<p>Now I have published the data they are visible and have a DOI</p>
+<h4>EML Code:</h4>
 
-<iframe src="http://wl.figshare.com/articles/820158/embed?show_title=1" width="568" height="157" frameborder="0"></iframe>
+<pre><code>...
+&lt;/dataFormat&gt;
+&lt;distribution scope="document"&gt; &lt;online&gt; &lt;url function="download"&gt;ecogrid://knb/hanigan.22.1&lt;/url&gt;
+&lt;/online&gt;
+&lt;access authSystem="knb" order="denyFirst"&gt;&lt;allow&gt;&lt;principal&gt;uid=datalibrarian,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
+&lt;permission&gt;all&lt;/permission&gt;
+&lt;/allow&gt;
+&lt;allow&gt;&lt;principal&gt;uid=hanigan,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
+&lt;permission&gt;read&lt;/permission&gt;
+&lt;/allow&gt;
+&lt;/access&gt;
+&lt;/distribution&gt;
+&lt;/physical&gt;
+...
+</code></pre>
 
+<p></p>
+
+
+<p>Which seems to have worked when we open it up again:</p>
+
+<p><img src="/images/morpho-wide1.png" alt="moprho-wide1.png" /></p>
+
+<p>So now let;s try a large nuber of variables:</p>
+
+<h4>R Code:</h4>
+
+<pre><code># add lots of cols
+for(i in 5:100){
+  dat[,i] &lt;-  sample(rnorm(100,1,2), 3)
+}
+str(dat)
+##  $ V95  : num  1.5708 -0.0936 2.2324
+##  $ V96  : num  1.79 5.4 1.62
+##  $ V97  : num  -1.141 0.653 5.365
+##  $ V98  : num  1.738 -1.046 -0.135
+##  $ V99  : num  3.6 -0.738 -1.877
+##   [list output truncated]
+               unit.defs = list(c(SAC = "The Sacramento River",
+                                  AM = "The American River"),
+                                c(king = "King Salmon",
+                                  ccho = "Coho Salmon"),
+                                c(parr = "third life stage",
+                                  smolt = "fourth life stage"))
+unit.defs[[3]]
+for(i in 4:100){
+unit.defs[[i]] &lt;- "number"
+}
+unit.defs
+dat = data.set(dat,
+               col.defs = c("River site used for collection",
+                            "Species common name",
+                            "Life Stage",
+                            "count of live fish in traps",
+c(rep("count stuff", 95))
+                 ),
+unit.defs = unit.defs
+
+  )
+str(dat)
+
+eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
+eml_write(dat, file = "inst/doc/EML_example_wide.xml")
+# import to morpho, save and close
+dat &lt;- data.frame(dat)
+morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
+maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+# now add this into the EML morpho has created (25.2 in my case)
+</code></pre>
+
+<p></p>
+
+
+<p>Which now seems to have attached the variable defintions and dataTable adequately.</p>
+
+<p><img src="/images/morpho-wide2.png" alt="morpho-wide2.png" /></p>
 
     <div class="clear"></div>
   </div>
@@ -132,7 +206,7 @@ fs_make_public(id)
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Sat Oct 12 00:00:00 +1100 2013">12 Oct 2013</abbr>
+      <abbr class="published" title="Thu Apr 24 00:00:00 +1000 2014">24 Apr 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -146,7 +220,7 @@ fs_make_public(id)
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/10/reml-and-rfigshare-part-2/";
+    var disqus_url = "http://ivanhanigan.github.com/2014/04/using-reml-to-input-large-number-of-column-descriptions/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

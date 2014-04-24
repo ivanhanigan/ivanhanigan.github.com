@@ -4,13 +4,153 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2014-04-23T16:26:56+10:00</updated>
+ <updated>2014-04-24T20:43:03+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Using Reml To Input Large Number Of Column Descriptions</title>
+   <link href="http://ivanhanigan.github.com/2014/04/using-reml-to-input-large-number-of-column-descriptions/"/>
+   <updated>2014-04-24T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2014/04/using-reml-to-input-large-number-of-column-descriptions</id>
+   <content type="html">&lt;p&gt;We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting &quot;save for later&quot; but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.&lt;/p&gt;
+
+&lt;p&gt;So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.&lt;/p&gt;
+
+&lt;p&gt;First thing I tried was the constructed Column Definitions and Unit Definitions example from &lt;a href=&quot;https://github.com/ropensci/EML&quot;&gt;the README&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#require(devtools)
+#install_github(&quot;EML&quot;, &quot;ROpenSci&quot;)
+require(EML)
+
+# The example from orig doco
+dat = data.set(river = c(&quot;SAC&quot;,  &quot;SAC&quot;,   &quot;AM&quot;),
+               spp   = c(&quot;king&quot;,  &quot;king&quot;, &quot;ccho&quot;),
+               stg   = c(&quot;smolt&quot;, &quot;parr&quot;, &quot;smolt&quot;),
+               ct    = c(293L,    410L,    210L),
+               col.defs = c(&quot;River site used for collection&quot;,
+                            &quot;Species common name&quot;,
+                            &quot;Life Stage&quot;,
+                            &quot;count of live fish in traps&quot;),
+               unit.defs = list(c(SAC = &quot;The Sacramento River&quot;,
+                                  AM = &quot;The American River&quot;),
+                                c(king = &quot;King Salmon&quot;,
+                                  ccho = &quot;Coho Salmon&quot;),
+                                c(parr = &quot;third life stage&quot;,
+                                  smolt = &quot;fourth life stage&quot;),
+                                &quot;number&quot;))
+str(dat)
+eml_config(creator=&quot;Carl Boettiger &amp;lt;cboettig@gmail.com&amp;gt;&quot;)
+eml_write(dat, file = &quot;inst/doc/EML_example.xml&quot;)
+# now you can import this to morpho and have a look
+# note that for morpho 1.8 it wants to change the EML version from 2.1.1 to 2.1.0
+# and it can't show the data yet
+# so what we need to do is write this as a file to the morpho database
+# save and close, note which number it assigned
+dat &amp;lt;- data.frame(dat)
+morpho_db  &amp;lt;- &quot;~/.morpho/profiles/hanigan/data/hanigan/&quot;
+maxid  &amp;lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &amp;lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.&lt;/p&gt;
+
+&lt;h4&gt;EML Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+&amp;lt;/dataFormat&amp;gt;
+&amp;lt;distribution scope=&quot;document&quot;&amp;gt; &amp;lt;online&amp;gt; &amp;lt;url function=&quot;download&quot;&amp;gt;ecogrid://knb/hanigan.22.1&amp;lt;/url&amp;gt;
+&amp;lt;/online&amp;gt;
+&amp;lt;access authSystem=&quot;knb&quot; order=&quot;denyFirst&quot;&amp;gt;&amp;lt;allow&amp;gt;&amp;lt;principal&amp;gt;uid=datalibrarian,o=unaffiliated,dc=ecoinformatics,dc=org&amp;lt;/principal&amp;gt;
+&amp;lt;permission&amp;gt;all&amp;lt;/permission&amp;gt;
+&amp;lt;/allow&amp;gt;
+&amp;lt;allow&amp;gt;&amp;lt;principal&amp;gt;uid=hanigan,o=unaffiliated,dc=ecoinformatics,dc=org&amp;lt;/principal&amp;gt;
+&amp;lt;permission&amp;gt;read&amp;lt;/permission&amp;gt;
+&amp;lt;/allow&amp;gt;
+&amp;lt;/access&amp;gt;
+&amp;lt;/distribution&amp;gt;
+&amp;lt;/physical&amp;gt;
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Which seems to have worked when we open it up again:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-wide1.png&quot; alt=&quot;moprho-wide1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So now let;s try a large nuber of variables:&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# add lots of cols
+for(i in 5:100){
+  dat[,i] &amp;lt;-  sample(rnorm(100,1,2), 3)
+}
+str(dat)
+##  $ V95  : num  1.5708 -0.0936 2.2324
+##  $ V96  : num  1.79 5.4 1.62
+##  $ V97  : num  -1.141 0.653 5.365
+##  $ V98  : num  1.738 -1.046 -0.135
+##  $ V99  : num  3.6 -0.738 -1.877
+##   [list output truncated]
+               unit.defs = list(c(SAC = &quot;The Sacramento River&quot;,
+                                  AM = &quot;The American River&quot;),
+                                c(king = &quot;King Salmon&quot;,
+                                  ccho = &quot;Coho Salmon&quot;),
+                                c(parr = &quot;third life stage&quot;,
+                                  smolt = &quot;fourth life stage&quot;))
+unit.defs[[3]]
+for(i in 4:100){
+unit.defs[[i]] &amp;lt;- &quot;number&quot;
+}
+unit.defs
+dat = data.set(dat,
+               col.defs = c(&quot;River site used for collection&quot;,
+                            &quot;Species common name&quot;,
+                            &quot;Life Stage&quot;,
+                            &quot;count of live fish in traps&quot;,
+c(rep(&quot;count stuff&quot;, 95))
+                 ),
+unit.defs = unit.defs
+
+  )
+str(dat)
+
+eml_config(creator=&quot;Ivan Charles Hanigan &amp;lt;ivan.hanigan@gmail.com&amp;gt;&quot;)
+eml_write(dat, file = &quot;inst/doc/EML_example_wide.xml&quot;)
+# import to morpho, save and close
+dat &amp;lt;- data.frame(dat)
+morpho_db  &amp;lt;- &quot;~/.morpho/profiles/hanigan/data/hanigan/&quot;
+maxid  &amp;lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &amp;lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+# now add this into the EML morpho has created (25.2 in my case)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Which now seems to have attached the variable defintions and dataTable adequately.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-wide2.png&quot; alt=&quot;morpho-wide2.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>linking-eml-packages-by-umbrella-project-info</title>
