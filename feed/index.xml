@@ -4,13 +4,84 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2014-04-24T20:43:03+10:00</updated>
+ <updated>2014-04-25T10:29:13+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</title>
+   <link href="http://ivanhanigan.github.com/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/"/>
+   <updated>2014-04-25T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs</id>
+   <content type="html">&lt;p&gt;I realised that the work I did yesterday had an error in it.  I'd
+created a list of unit.defs with one less than I needed.  So the
+variable V100 was given the definition of NA!  I can fix this by open
+that package in Morpho and go to the column and select it, then under
+the Data menu, choose Edit Column Documentation.  There we can change
+all the definitions.  Now I start thinking about changing the type
+from count to ArealDensity, numberPerMeterSquared.  To change all
+these new variables I don't want to go thru the GUI 95 times!  Change
+the first one and then look at the EML&lt;/p&gt;
+
+&lt;h4&gt;EML Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;attribute id=&quot;1398382425052&quot;&amp;gt;
+  &amp;lt;attributeName&amp;gt;V99&amp;lt;/attributeName&amp;gt;
+  &amp;lt;attributeDefinition&amp;gt;count stuff&amp;lt;/attributeDefinition&amp;gt;
+  &amp;lt;measurementScale&amp;gt;
+    &amp;lt;ratio&amp;gt;
+      &amp;lt;unit&amp;gt;&amp;lt;standardUnit&amp;gt;number&amp;lt;/standardUnit&amp;gt;&amp;lt;/unit&amp;gt;
+      &amp;lt;numericDomain&amp;gt;&amp;lt;numberType&amp;gt;real&amp;lt;/numberType&amp;gt;&amp;lt;/numericDomain&amp;gt;
+    &amp;lt;/ratio&amp;gt;
+  &amp;lt;/measurementScale&amp;gt;
+&amp;lt;/attribute&amp;gt;
+&amp;lt;attribute id=&quot;1398382385863&quot;&amp;gt;
+  &amp;lt;attributeName&amp;gt;V100&amp;lt;/attributeName&amp;gt;
+  &amp;lt;attributeDefinition&amp;gt;A random variable&amp;lt;/attributeDefinition&amp;gt;
+  &amp;lt;measurementScale&amp;gt;
+    &amp;lt;ratio&amp;gt;
+      &amp;lt;unit&amp;gt;&amp;lt;standardUnit&amp;gt;numberPerMeterSquared&amp;lt;/standardUnit&amp;gt;&amp;lt;/unit&amp;gt;
+      &amp;lt;numericDomain&amp;gt;&amp;lt;numberType&amp;gt;real&amp;lt;/numberType&amp;gt;&amp;lt;/numericDomain&amp;gt;
+    &amp;lt;/ratio&amp;gt;
+  &amp;lt;/measurementScale&amp;gt;
+&amp;lt;/attribute&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So this looks like I can do a find and replace in Emacs so go to the
+&quot;~/.morpho&quot; database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;standardUnit&amp;gt;number&amp;lt;
+to
+&amp;lt;standardUnit&amp;gt;numberPerMeterSquared&amp;lt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-wide3.png&quot; alt=&quot;morpho-wide3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho and a code editor can be used in conjunction to edit EML quite well&lt;/li&gt;
+&lt;li&gt;I suspect edits to the EML directly with a code editor are pretty dangerous&lt;/li&gt;
+&lt;li&gt;For eg if you do the wrong change then that EML will likely not be valid and Morpho will complain.&lt;/li&gt;
+&lt;li&gt;But the advantage of quickly modifying things like 100 variables unit definitions rather than opening every one in the GUI seems to be a worthwhile risk to me.&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Using Reml To Input Large Number Of Column Descriptions</title>
@@ -107,32 +178,36 @@ str(dat)
 ##  $ V98  : num  1.738 -1.046 -0.135
 ##  $ V99  : num  3.6 -0.738 -1.877
 ##   [list output truncated]
-               unit.defs = list(c(SAC = &quot;The Sacramento River&quot;,
-                                  AM = &quot;The American River&quot;),
-                                c(king = &quot;King Salmon&quot;,
-                                  ccho = &quot;Coho Salmon&quot;),
-                                c(parr = &quot;third life stage&quot;,
-                                  smolt = &quot;fourth life stage&quot;))
+
+# firstly I make a liset of the unit definitions for the example
+unit.defs &amp;lt;- list(c(SAC = &quot;The Sacramento River&quot;,
+                   AM = &quot;The American River&quot;),
+                 c(king = &quot;King Salmon&quot;,
+                   ccho = &quot;Coho Salmon&quot;),
+                 c(parr = &quot;third life stage&quot;,
+                   smolt = &quot;fourth life stage&quot;))
+# then I add to it the definition for the constructed variables
 unit.defs[[3]]
 for(i in 4:100){
-unit.defs[[i]] &amp;lt;- &quot;number&quot;
+  unit.defs[[i]] &amp;lt;- &quot;number&quot;
 }
 unit.defs
-dat = data.set(dat,
+
+# and this can be passed to the data.set constructor
+dat &amp;lt;- data.set(dat,
                col.defs = c(&quot;River site used for collection&quot;,
                             &quot;Species common name&quot;,
                             &quot;Life Stage&quot;,
                             &quot;count of live fish in traps&quot;,
-c(rep(&quot;count stuff&quot;, 95))
-                 ),
-unit.defs = unit.defs
-
-  )
+                           c(rep(&quot;count stuff&quot;, 95))),
+                unit.defs = unit.defs
+                )
 str(dat)
 
 eml_config(creator=&quot;Ivan Charles Hanigan &amp;lt;ivan.hanigan@gmail.com&amp;gt;&quot;)
 eml_write(dat, file = &quot;inst/doc/EML_example_wide.xml&quot;)
 # import to morpho, save and close
+# create the dataset for morphos database
 dat &amp;lt;- data.frame(dat)
 morpho_db  &amp;lt;- &quot;~/.morpho/profiles/hanigan/data/hanigan/&quot;
 maxid  &amp;lt;-  1+max(as.numeric(dir(morpho_db)))

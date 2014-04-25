@@ -6,6 +6,76 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</title>
+				<description>&lt;p&gt;I realised that the work I did yesterday had an error in it.  I'd
+created a list of unit.defs with one less than I needed.  So the
+variable V100 was given the definition of NA!  I can fix this by open
+that package in Morpho and go to the column and select it, then under
+the Data menu, choose Edit Column Documentation.  There we can change
+all the definitions.  Now I start thinking about changing the type
+from count to ArealDensity, numberPerMeterSquared.  To change all
+these new variables I don't want to go thru the GUI 95 times!  Change
+the first one and then look at the EML&lt;/p&gt;
+
+&lt;h4&gt;EML Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;attribute id=&quot;1398382425052&quot;&amp;gt;
+  &amp;lt;attributeName&amp;gt;V99&amp;lt;/attributeName&amp;gt;
+  &amp;lt;attributeDefinition&amp;gt;count stuff&amp;lt;/attributeDefinition&amp;gt;
+  &amp;lt;measurementScale&amp;gt;
+    &amp;lt;ratio&amp;gt;
+      &amp;lt;unit&amp;gt;&amp;lt;standardUnit&amp;gt;number&amp;lt;/standardUnit&amp;gt;&amp;lt;/unit&amp;gt;
+      &amp;lt;numericDomain&amp;gt;&amp;lt;numberType&amp;gt;real&amp;lt;/numberType&amp;gt;&amp;lt;/numericDomain&amp;gt;
+    &amp;lt;/ratio&amp;gt;
+  &amp;lt;/measurementScale&amp;gt;
+&amp;lt;/attribute&amp;gt;
+&amp;lt;attribute id=&quot;1398382385863&quot;&amp;gt;
+  &amp;lt;attributeName&amp;gt;V100&amp;lt;/attributeName&amp;gt;
+  &amp;lt;attributeDefinition&amp;gt;A random variable&amp;lt;/attributeDefinition&amp;gt;
+  &amp;lt;measurementScale&amp;gt;
+    &amp;lt;ratio&amp;gt;
+      &amp;lt;unit&amp;gt;&amp;lt;standardUnit&amp;gt;numberPerMeterSquared&amp;lt;/standardUnit&amp;gt;&amp;lt;/unit&amp;gt;
+      &amp;lt;numericDomain&amp;gt;&amp;lt;numberType&amp;gt;real&amp;lt;/numberType&amp;gt;&amp;lt;/numericDomain&amp;gt;
+    &amp;lt;/ratio&amp;gt;
+  &amp;lt;/measurementScale&amp;gt;
+&amp;lt;/attribute&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So this looks like I can do a find and replace in Emacs so go to the
+&quot;~/.morpho&quot; database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;standardUnit&amp;gt;number&amp;lt;
+to
+&amp;lt;standardUnit&amp;gt;numberPerMeterSquared&amp;lt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-wide3.png&quot; alt=&quot;morpho-wide3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho and a code editor can be used in conjunction to edit EML quite well&lt;/li&gt;
+&lt;li&gt;I suspect edits to the EML directly with a code editor are pretty dangerous&lt;/li&gt;
+&lt;li&gt;For eg if you do the wrong change then that EML will likely not be valid and Morpho will complain.&lt;/li&gt;
+&lt;li&gt;But the advantage of quickly modifying things like 100 variables unit definitions rather than opening every one in the GUI seems to be a worthwhile risk to me.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Fri Apr 25 00:00:00 +1000 2014</published>
+				<link>http://schamberlain.github.com/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/</link>
+			</item>
+		
+			<item>
 				<title>Using Reml To Input Large Number Of Column Descriptions</title>
 				<description>&lt;p&gt;We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting &quot;save for later&quot; but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.&lt;/p&gt;
 
@@ -97,32 +167,36 @@ str(dat)
 ##  $ V98  : num  1.738 -1.046 -0.135
 ##  $ V99  : num  3.6 -0.738 -1.877
 ##   [list output truncated]
-               unit.defs = list(c(SAC = &quot;The Sacramento River&quot;,
-                                  AM = &quot;The American River&quot;),
-                                c(king = &quot;King Salmon&quot;,
-                                  ccho = &quot;Coho Salmon&quot;),
-                                c(parr = &quot;third life stage&quot;,
-                                  smolt = &quot;fourth life stage&quot;))
+
+# firstly I make a liset of the unit definitions for the example
+unit.defs &amp;lt;- list(c(SAC = &quot;The Sacramento River&quot;,
+                   AM = &quot;The American River&quot;),
+                 c(king = &quot;King Salmon&quot;,
+                   ccho = &quot;Coho Salmon&quot;),
+                 c(parr = &quot;third life stage&quot;,
+                   smolt = &quot;fourth life stage&quot;))
+# then I add to it the definition for the constructed variables
 unit.defs[[3]]
 for(i in 4:100){
-unit.defs[[i]] &amp;lt;- &quot;number&quot;
+  unit.defs[[i]] &amp;lt;- &quot;number&quot;
 }
 unit.defs
-dat = data.set(dat,
+
+# and this can be passed to the data.set constructor
+dat &amp;lt;- data.set(dat,
                col.defs = c(&quot;River site used for collection&quot;,
                             &quot;Species common name&quot;,
                             &quot;Life Stage&quot;,
                             &quot;count of live fish in traps&quot;,
-c(rep(&quot;count stuff&quot;, 95))
-                 ),
-unit.defs = unit.defs
-
-  )
+                           c(rep(&quot;count stuff&quot;, 95))),
+                unit.defs = unit.defs
+                )
 str(dat)
 
 eml_config(creator=&quot;Ivan Charles Hanigan &amp;lt;ivan.hanigan@gmail.com&amp;gt;&quot;)
 eml_write(dat, file = &quot;inst/doc/EML_example_wide.xml&quot;)
 # import to morpho, save and close
+# create the dataset for morphos database
 dat &amp;lt;- data.frame(dat)
 morpho_db  &amp;lt;- &quot;~/.morpho/profiles/hanigan/data/hanigan/&quot;
 maxid  &amp;lt;-  1+max(as.numeric(dir(morpho_db)))
@@ -1196,126 +1270,6 @@ as.yearmon(&quot;Apr-2012&quot;)
 </description>
 				<published>Sat Feb 22 00:00:00 +1100 2014</published>
 				<link>http://schamberlain.github.com/2014/02/gantting-like-a-hacker/</link>
-			</item>
-		
-			<item>
-				<title>Aggregation Of Statistical Local Areas</title>
-				<description>&lt;h2&gt;Reproducibility&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;A subset of the data and code used for this blog post is available at &lt;a href=&quot;https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s&quot;&gt;https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Some parts of the data I used are not available due to shared Intellectual Property&lt;/li&gt;
-&lt;li&gt;The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics&lt;/li&gt;
-&lt;li&gt;The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;The Aim is to aggregate Statistical Local Areas (SLAs, recently relabelled SA2) Australian Standard Geographical Classification (ASGC, recently relabelled ASGS) to achieve a greater level of privacy protection.
-The rules to achieve a geography amenable to statistical comparisons are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;similar populations (around 20,000 to 30,000)&lt;/li&gt;
-&lt;li&gt;homogenous Index of Relative Socioeconomic Disadvantage&lt;/li&gt;
-&lt;li&gt;nested within the next level up in the ASGC/ASGS&lt;/li&gt;
-&lt;li&gt;so that SSD (recently relabelled SA3) are not split.&lt;/li&gt;
-&lt;li&gt;the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments&lt;/li&gt;
-&lt;li&gt;This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Results&lt;/h2&gt;
-
-&lt;h3&gt;Data Prep&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The data were prepared as spatial files&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/aggregation-of-sa2s.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Assess proposed split in Belconnen&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the proposed split in belconnen looks good&lt;/li&gt;
-&lt;li&gt;This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score&lt;/li&gt;
-&lt;li&gt;Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham&lt;/li&gt;
-&lt;li&gt;Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/belco-split.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Assess the outliers&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;this can be done by identifying their component CCD SEIFA within new groups&lt;/li&gt;
-&lt;li&gt;the seifa of CCD in outliers are compared to the others within their new groups&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/seifa-by-newgroups1.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;zoom in on croweded areas&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/seifa-by-newgroups1-2.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;!-- html table generated in R 3.0.2 by xtable 1.7-1 package --&gt;
-
-
-&lt;!-- Tue Feb 18 22:03:04 2014 --&gt;
-
-
-&lt;TABLE border=1&gt;
-&lt;TR&gt; &lt;TH&gt;  &lt;/TH&gt; &lt;TH&gt; sa2_name.x &lt;/TH&gt; &lt;TH&gt; new_sa2_group &lt;/TH&gt; &lt;TH&gt; notes &lt;/TH&gt;  &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 12 &lt;/TD&gt; &lt;TD&gt; Bruce &lt;/TD&gt; &lt;TD&gt; Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 14 &lt;/TD&gt; &lt;TD&gt; Campbell &lt;/TD&gt; &lt;TD&gt; Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 20 &lt;/TD&gt; &lt;TD&gt; Civic &lt;/TD&gt; &lt;TD&gt; Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 31 &lt;/TD&gt; &lt;TD&gt; Fadden &lt;/TD&gt; &lt;TD&gt; Fadden/ Gowrie (ACT)/ Macarthur/ Monash &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 32 &lt;/TD&gt; &lt;TD&gt; Farrer &lt;/TD&gt; &lt;TD&gt; Farrer/ Isaacs/ Mawson/ Pearce/ Torrens &lt;/TD&gt; &lt;TD&gt; higher than neighbours bar one ccd &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 37 &lt;/TD&gt; &lt;TD&gt; Forrest &lt;/TD&gt; &lt;TD&gt; Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 60 &lt;/TD&gt; &lt;TD&gt; Isaacs &lt;/TD&gt; &lt;TD&gt; Farrer/ Isaacs/ Mawson/ Pearce/ Torrens &lt;/TD&gt; &lt;TD&gt; higher than neighbours bar one ccd &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 64 &lt;/TD&gt; &lt;TD&gt; Kingston - Barton &lt;/TD&gt; &lt;TD&gt; Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 71 &lt;/TD&gt; &lt;TD&gt; Macarthur &lt;/TD&gt; &lt;TD&gt; Fadden/ Gowrie (ACT)/ Macarthur/ Monash &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 73 &lt;/TD&gt; &lt;TD&gt; Macquarie &lt;/TD&gt; &lt;TD&gt; Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 87 &lt;/TD&gt; &lt;TD&gt; O'Malley &lt;/TD&gt; &lt;TD&gt; Chifley/ Lyons (ACT)/ O'Malley/ Phillip &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 89 &lt;/TD&gt; &lt;TD&gt; Page &lt;/TD&gt; &lt;TD&gt; Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 98 &lt;/TD&gt; &lt;TD&gt; Scullin &lt;/TD&gt; &lt;TD&gt; Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-   &lt;/TABLE&gt;
-
-
-&lt;h3&gt;Investigating areas: eg the Kingston - Barton area&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;we can zoom in on some of these areas&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/kingston-barton.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Conclusions&lt;/h2&gt;
-
-&lt;p&gt;Basically, the problem comes from public housing policies in Canberra which distorts the effect of the housing market and land values in segregating rich from poor. Essentially, there are highly advantaged suburbs with pockets of disadvantaged public housing.&lt;/p&gt;
-
-&lt;p&gt;Other 'problematic' features re this are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;proximity to ornamental lakes&lt;/li&gt;
-&lt;li&gt;proximity to urban green space&lt;/li&gt;
-&lt;li&gt;proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement -- but different to 'distance from urban centre'&lt;/li&gt;
-&lt;li&gt;elevation, especially with a view.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Potentially the issue is going to be that this can't be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.&lt;/p&gt;
-</description>
-				<published>Tue Feb 18 00:00:00 +1100 2014</published>
-				<link>http://schamberlain.github.com/2014/02/aggregation-of-statistical-local-areas/</link>
 			</item>
 		
 	</channel>

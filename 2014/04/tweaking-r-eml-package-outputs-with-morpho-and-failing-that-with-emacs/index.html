@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - linking-eml-packages-by-umbrella-project-info</title>
+    <title>Ivan Hanigan - Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2014/04/linking-eml-packages-by-umbrella-project-info/" title="linking-eml-packages-by-umbrella-project-info" rel="bookmark">linking-eml-packages-by-umbrella-project-info</a>
+    <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,54 +55,69 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>In Eml the optional "project" module provides an overall description
-of the larger-scale project or research context with which that
-dataset is associated. For the examples in our work the "project" will
-most often be an LTER (Longterm Ecological Research Network) site that
-directed the research.  Accordingly, the "title" here consists of the
-name of the LTER site. The "personnel" group contains the same
-elements as "creator" and "contact", with the addition of a mandatory
-"role" element, and it is used to identify the lead PI and/or
-information manager on the site. Other optional elements in the
-"project" module include "abstract", "funding",
-"studyAreaDescription", and "designDescription", each of which can be
-used to provide a richer textual description of the LTER site
-responsible for the research project being documented.  If used, the
-"abstract" includes basic information about the LTER site, such as its
-general history and administration, while "studyAreaDescription" is
-more of a physical description of the area where the site is
-located. This description may also include the "coverage" module,
-which is fully discussed on page XX of this handbook, or the
-"citation" module, covered on page XX. The "funding" tag is textual
-and self-explanatory, but "designDescription" is best used for a
-description of the site’s database information and availability.</p>
+    <p>I realised that the work I did yesterday had an error in it.  I'd
+created a list of unit.defs with one less than I needed.  So the
+variable V100 was given the definition of NA!  I can fix this by open
+that package in Morpho and go to the column and select it, then under
+the Data menu, choose Edit Column Documentation.  There we can change
+all the definitions.  Now I start thinking about changing the type
+from count to ArealDensity, numberPerMeterSquared.  To change all
+these new variables I don't want to go thru the GUI 95 times!  Change
+the first one and then look at the EML</p>
 
-<p>Morpho doesn't give all these options so you need to go to the EML file found in the "~/.morpho/..." directory and edit this with a text editor
-I think the order of the tags here might make a difference so I always put thye "abstract" tag after the "/personnel" tag.  I also think you might need this "para" tag:</p>
+<h4>EML Code:</h4>
 
-<h4>Code:linking-eml-packages-by-umbrella-project-inf</h4>
-
-<pre><code>&lt;abstract&gt; 
-  &lt;para&gt;Prof McMichael set up this group to develop new methods of researching Environmental (especially Climate Change) and Health
-  &lt;/para&gt;
-&lt;/abstract&gt;
+<pre><code>&lt;attribute id="1398382425052"&gt;
+  &lt;attributeName&gt;V99&lt;/attributeName&gt;
+  &lt;attributeDefinition&gt;count stuff&lt;/attributeDefinition&gt;
+  &lt;measurementScale&gt;
+    &lt;ratio&gt;
+      &lt;unit&gt;&lt;standardUnit&gt;number&lt;/standardUnit&gt;&lt;/unit&gt;
+      &lt;numericDomain&gt;&lt;numberType&gt;real&lt;/numberType&gt;&lt;/numericDomain&gt;
+    &lt;/ratio&gt;
+  &lt;/measurementScale&gt;
+&lt;/attribute&gt;
+&lt;attribute id="1398382385863"&gt;
+  &lt;attributeName&gt;V100&lt;/attributeName&gt;
+  &lt;attributeDefinition&gt;A random variable&lt;/attributeDefinition&gt;
+  &lt;measurementScale&gt;
+    &lt;ratio&gt;
+      &lt;unit&gt;&lt;standardUnit&gt;numberPerMeterSquared&lt;/standardUnit&gt;&lt;/unit&gt;
+      &lt;numericDomain&gt;&lt;numberType&gt;real&lt;/numberType&gt;&lt;/numericDomain&gt;
+    &lt;/ratio&gt;
+  &lt;/measurementScale&gt;
+&lt;/attribute&gt;
 </code></pre>
 
 <p></p>
 
 
-<p>So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an "additionalLinks" node at the bottom of the EML:</p>
+<p>So this looks like I can do a find and replace in Emacs so go to the
+"~/.morpho" database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.</p>
 
-<h4>Code:linking-eml-packages-by-umbrella-project-info</h4>
+<h4>Code:</h4>
 
-<pre><code>&lt;additionalMetadata&gt;
-  &lt;metadata&gt;
-    &lt;additionalLinks&gt;
-      &lt;url name="The name of the homepage"&gt;http://...&lt;/url&gt;
-    &lt;/additionalLinks&gt;
-  &lt;/metadata&gt;
-&lt;/additionalMetadata&gt;
+<pre><code>&lt;standardUnit&gt;number&lt;
+to
+&lt;standardUnit&gt;numberPerMeterSquared&lt;
 </code></pre>
+
+<p></p>
+
+
+<p>Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.</p>
+
+<p><img src="/images/morpho-wide3.png" alt="morpho-wide3.png" /></p>
+
+<h2>Conclusions</h2>
+
+<ul>
+<li>Morpho and a code editor can be used in conjunction to edit EML quite well</li>
+<li>I suspect edits to the EML directly with a code editor are pretty dangerous</li>
+<li>For eg if you do the wrong change then that EML will likely not be valid and Morpho will complain.</li>
+<li>But the advantage of quickly modifying things like 100 variables unit definitions rather than opening every one in the GUI seems to be a worthwhile risk to me.</li>
+</ul>
+
 
     <div class="clear"></div>
   </div>
@@ -122,7 +137,7 @@ I think the order of the tags here might make a difference so I always put thye 
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Mon Apr 21 00:00:00 +1000 2014">21 Apr 2014</abbr>
+      <abbr class="published" title="Fri Apr 25 00:00:00 +1000 2014">25 Apr 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -136,7 +151,7 @@ I think the order of the tags here might make a difference so I always put thye 
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2014/04/linking-eml-packages-by-umbrella-project-info/";
+    var disqus_url = "http://ivanhanigan.github.com/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

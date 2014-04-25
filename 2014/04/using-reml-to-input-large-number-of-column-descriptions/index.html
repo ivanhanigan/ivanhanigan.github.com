@@ -145,32 +145,36 @@ str(dat)
 ##  $ V98  : num  1.738 -1.046 -0.135
 ##  $ V99  : num  3.6 -0.738 -1.877
 ##   [list output truncated]
-               unit.defs = list(c(SAC = "The Sacramento River",
-                                  AM = "The American River"),
-                                c(king = "King Salmon",
-                                  ccho = "Coho Salmon"),
-                                c(parr = "third life stage",
-                                  smolt = "fourth life stage"))
+
+# firstly I make a liset of the unit definitions for the example
+unit.defs &lt;- list(c(SAC = "The Sacramento River",
+                   AM = "The American River"),
+                 c(king = "King Salmon",
+                   ccho = "Coho Salmon"),
+                 c(parr = "third life stage",
+                   smolt = "fourth life stage"))
+# then I add to it the definition for the constructed variables
 unit.defs[[3]]
 for(i in 4:100){
-unit.defs[[i]] &lt;- "number"
+  unit.defs[[i]] &lt;- "number"
 }
 unit.defs
-dat = data.set(dat,
+
+# and this can be passed to the data.set constructor
+dat &lt;- data.set(dat,
                col.defs = c("River site used for collection",
                             "Species common name",
                             "Life Stage",
                             "count of live fish in traps",
-c(rep("count stuff", 95))
-                 ),
-unit.defs = unit.defs
-
-  )
+                           c(rep("count stuff", 95))),
+                unit.defs = unit.defs
+                )
 str(dat)
 
 eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
 eml_write(dat, file = "inst/doc/EML_example_wide.xml")
 # import to morpho, save and close
+# create the dataset for morphos database
 dat &lt;- data.frame(dat)
 morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
 maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
@@ -270,23 +274,23 @@ write.csv(dat, filename, row.names =F, quote=F)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
-                <li><a href="/categories/Data Documentation">Data Documentation (19)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (6)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (42)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (20)</a></li>
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (6)</a></li>
+                
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                <li><a href="/categories/research methods">research methods (42)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
@@ -297,6 +301,10 @@ write.csv(dat, filename, row.names =F, quote=F)
             <div class="widget">
               <h2 class="widget-title">Recent Posts</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
+                </li>
                 
                 <li>
                   <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions/" title="Using Reml To Input Large Number Of Column Descriptions" rel="bookmark">Using Reml To Input Large Number Of Column Descriptions</a>
@@ -312,10 +320,6 @@ write.csv(dat, filename, row.names =F, quote=F)
                 
                 <li>
                   <a href="/2014/04/a-workaround-for-inserting-species-names-to-morpho/" title="A Workaround For Inserting Species Names To Morpho" rel="bookmark">A Workaround For Inserting Species Names To Morpho</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
                 </li>
                 
               </ul>
