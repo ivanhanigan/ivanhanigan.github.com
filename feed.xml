@@ -6,6 +6,129 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>workaround-for-installing-morpho-on-a-windows-network</title>
+				<description>&lt;h3&gt;Introduction&lt;/h3&gt;
+
+&lt;p&gt;Morpho is an open source piece of software designed to host all kinds of ecological data.  It is used to describe data collections. We publish to Metacat using Morpho.  For technical reasons, we have our own server running an older version of the Metacat software so have to run an old version of Morpho (v1.8).&lt;/p&gt;
+
+&lt;h3&gt;Installation and configuration&lt;/h3&gt;
+
+&lt;p&gt;TERN specific instructions are replicated across:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&quot;&gt;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.ltern.org.au/index.php/data/guides-and-tutorial&quot;&gt;http://www.ltern.org.au/index.php/data/guides-and-tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Morpho issue on Windows in our network environment&lt;/h3&gt;
+
+&lt;p&gt;The ANU Fenner School came across this issue. Our local IT department have discovered with Morpho (v1.8) Installation on Windows in our network environment, Morpho installs a hidden directory called &quot;.morpho&quot; and this is written to a PATH next to the User Desktop. This is actually on a network share with a very small quota.&lt;/p&gt;
+
+&lt;p&gt;Therefore as Morpho writes data there it can easily exceed the quota causing the software to stop working.  All users of Morpho on such a network should check for the location of the &quot;.morpho&quot; directory and if it is located with such a restricted quota then alternative arrangements need to be made.&lt;/p&gt;
+
+&lt;p&gt;At the ANU Fenner School we opted to set up local user accounts (the &quot;.morpho&quot; file is then on the C drive) and this user is accessible from the main User's account.  The Morpho files are therefore stored on the C drive which is of course a danger for hard disk failure and data loss.&lt;/p&gt;
+
+&lt;p&gt;We feel that as long as the draft packages are saved to the networked Metacat (with the maximum access restrictions in force for draft work) then if the local hard disk dies then the draft data package is not lost but can be accessed again from a new Morpho install and the Metacat server.&lt;/p&gt;
+
+&lt;p&gt;Issues remain about the long term solution to this problem but this will work in the short-term.&lt;/p&gt;
+
+&lt;p&gt;We think you can also create a junction (symlink) so that .morpho/ can point to a different location (perhaps another network storage with bigger capacity and automated backup).&lt;/p&gt;
+</description>
+				<published>Tue Apr 29 00:00:00 +1000 2014</published>
+				<link>http://schamberlain.github.com/2014/04/workaround-for-installing-morpho-on-a-windows-network/</link>
+			</item>
+		
+			<item>
+				<title>using-r-eml-to-input-large-numbers-of-variables-part-2</title>
+				<description>&lt;p&gt;In my &lt;a href=&quot;/2014/04/using-reml-to-input-large-number-of-column-descriptions&quot;&gt;previous post&lt;/a&gt; I showed a workaround to input large number of variabels than Morpho could handle.  I have found out an interesting thing about the R EML package data.set approach.  The unit.defs depends on the type of the column in the data frame (R knows if you try to trick it).  Rather than describe all the levels of the factor vars, I wanted to just have simple descriptions for numeric or character type columns.  If numeric it should be number and if character it can be the name of the column.  Because I am just trying to sidestep the issue with morpho failing to input the 200 plus variables I just need to create a dataframe with either number or character (not factor).&lt;/p&gt;
+
+&lt;p&gt;For an example:&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(EML)
+fname &amp;lt;- dir(&quot;myData&quot;, full.names=T, pattern = 'csv')
+fname
+fname  &amp;lt;- &quot;myData/paper_data.csv&quot;  
+dat  &amp;lt;- read.csv(fname, stringsAsFactor=F)
+# the variable names include special characters such as % and [ so need to do some extra work
+names_dat  &amp;lt;- read.csv(fname, nrow=1, header=F, stringsAsFactor=F)
+names(dat) &amp;lt;- names_dat
+head(dat)
+nrow(dat)
+# the first 46 variables are nominal, thereafter they are all numeric
+str(dat[,1:46])
+str(dat[,47:49])
+# but these numerics are character for some reason
+table(dat[ , 47])
+# it is because the raw data had * instead of NA...  I could use na.strings when I call read.table above, or deal with it here
+# I'll just convert them to numerics now
+dat1 &amp;lt;- dat[,1:46]
+dat2 &amp;lt;- dat[,47:ncol(dat)]
+dat2[dat2 == &quot;*&quot;] &amp;lt;- NA
+for(i in 1:ncol(dat2)){
+  dat2[,i]  &amp;lt;- as.numeric(dat2[ , i])
+}
+str(dat2)
+# good that has set them up properly, also make sure all the text are character type
+for(i in 1:ncol(dat1)){
+  dat1[,i]  &amp;lt;- as.character(dat1[ , i])
+}
+# recombine
+dat &amp;lt;- cbind(dat1,dat2)
+str(dat)
+# then I add to it the definition for the constructed variables
+unit_defs &amp;lt;- list()
+for(i in 1:46){
+    unit_defs[[i]] &amp;lt;- names(dat[i])
+}
+for(i in 47:ncol(dat)){
+    unit_defs[[i]] &amp;lt;- &quot;number&quot;
+}
+unit_defs[1:20]
+col_defs &amp;lt;- names(dat)
+col_defs
+#names(dat)
+dat &amp;lt;- data.set(dat,
+               col.defs = col_defs,
+               unit.defs = unit_defs
+               )
+str(dat)
+
+eml_config(creator=&quot;Ivan Charles Hanigan &amp;lt;ivan.hanigan@gmail.com&amp;gt;&quot;)
+dir()
+oldwd &amp;lt;- getwd()
+setwd(&quot;myData&quot;)
+eml_write(dat, file = &quot;test_eml.xml&quot;, title = &quot;test_eml&quot;)
+setwd(oldwd)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h3&gt;Use Morpho to tidy up the Results&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The result can be imported to Morpho and then edited from there&lt;/li&gt;
+&lt;li&gt;or you can use a code editor like emacs or notepad++ to do bulk find-and-replace operations to fix up issues&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Conclusions&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho failed with 200 plus variables&lt;/li&gt;
+&lt;li&gt;the R EML package succeeded to write the file&lt;/li&gt;
+&lt;li&gt;I needed to pay careful attention to the type of the variables in the data.frame before running the R EML functions&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Tue Apr 29 00:00:00 +1000 2014</published>
+				<link>http://schamberlain.github.com/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/</link>
+			</item>
+		
+			<item>
 				<title>Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</title>
 				<description>&lt;p&gt;I realised that the work I did yesterday had an error in it.  I'd
 created a list of unit.defs with one less than I needed.  So the
@@ -1141,135 +1264,6 @@ dev.off()
 </description>
 				<published>Fri Feb 28 00:00:00 +1100 2014</published>
 				<link>http://schamberlain.github.com/2014/02/long-term-climatology-contextual-data-for-ecological-research/</link>
-			</item>
-		
-			<item>
-				<title>yearmon-class-and-interoperability-with-excel-and-access</title>
-				<description>&lt;h4&gt;Toward a standard and unambiguous format for sharing Year-Month data&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I am working in a new job where we are recieving data from a lot of different groups&lt;/li&gt;
-&lt;li&gt;we aim to review these datasets and then publish them for a wide audience of potential users&lt;/li&gt;
-&lt;li&gt;therefore usability and interoperability is a key concern&lt;/li&gt;
-&lt;li&gt;we recieved some data with Month and Year as Apr.12&lt;/li&gt;
-&lt;li&gt;I know this is easy to convert to a date/time class with in R but wondered what a better format would be to recommend for our datasets to use to maximise utility downstream (especially for non R users)&lt;/li&gt;
-&lt;li&gt;Apr.12 is assumed to be text in excel so need something else&lt;/li&gt;
-&lt;li&gt;Apr-12 is assumed to be the twelfth of April this year (ie 12/4/2014)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;In R the solution might be to use the zoo package&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(zoo)
-as.yearmon(&quot;Apr.12&quot;, &quot;%b.%y&quot;)
-# [1] &quot;Apr 2012&quot;
-
-# other options abound
-as.yearmon(&quot;apr12&quot;, &quot;%b%y&quot;)
-
-# the default is YYYY-MM or similar
-as.yearmon(&quot;2012-04&quot;)
-as.yearmon(&quot;2012-4&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;So I went looking at how Excel and Access deal with this&lt;/li&gt;
-&lt;li&gt;found that the best appeard to be MMM-YYYY in terms of how these software assume the data should look&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;as.yearmon(&quot;Apr-2012&quot;, &quot;%b-%Y&quot;)
-
-# but will need to specify format because otherwise fails
-as.yearmon(&quot;Apr-2012&quot;)
-# NA
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;Conclusion&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I recommend the MMM-YYYY option&lt;/li&gt;
-&lt;li&gt;it is pretty good that in Excel it is assumed 1/04/2012&lt;/li&gt;
-&lt;li&gt;and if MS access is set to date/time and format = mmm-yyyy is ok for data entry (but not importing)&lt;/li&gt;
-&lt;li&gt;to import this use a shorttext type, then post-import, change to date/time with mmm-yyyy (the . failed)&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Thu Feb 27 00:00:00 +1100 2014</published>
-				<link>http://schamberlain.github.com/2014/02/yearmon-class-and-interoperability-with-excel-and-access/</link>
-			</item>
-		
-			<item>
-				<title>gantting-like-a-hacker</title>
-				<description>&lt;h3&gt;Background&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html&quot;&gt;&quot;Blogging like a Hacker&quot;&lt;/a&gt; has become a paradigm for programmers who want to link their code to their blogs.&lt;/li&gt;
-&lt;li&gt;I've followed this paradigm for a while to support my scientific projects, enhancing their transparency and reproducibility.&lt;/li&gt;
-&lt;li&gt;I've started a new project where I need to also manage project management and planning (following &lt;a href=&quot;http://medepi.com/2012/02/05/project-mgmt/&quot;&gt;Tomas Aragon's tutorial&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;I propose that the same methods I use in scientific programming and blogging like a hacker can be used in &quot;Gantting like a Hacker&quot;&lt;/li&gt;
-&lt;li&gt;The title for this post is also influenced by the poste over at &lt;a href=&quot;http://blog.geekmanager.co.uk/2007/05/02/using-the-best-plan-format/&quot;&gt;Geek | Manager&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;That post says taht &quot;Premature Gannting&quot; is the act of making a &quot;huge Gantt chart (often in MS Project).&quot;&lt;/li&gt;
-&lt;li&gt;Gannting like a Hacker is doing this in a scripted environment, without relying on closed-source proprietry software such as the Windoze options.&lt;/li&gt;
-&lt;li&gt;The community of bloggers (mostly geeks) who are following a style of blogging that originated with the invention of Jekyll, &lt;a href=&quot;http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html&quot;&gt;unveiled in this post by Tom Preston-Werner&lt;/a&gt;; GitHub’s co-founder (aka mojombo).&lt;/li&gt;
-&lt;li&gt;This experiment uses Taskjuggler and Emacs Orgmode&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Materials and Methods&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Use Ubuntu 12.04 Long Term Support (LTS)&lt;/li&gt;
-&lt;li&gt;with Ruby&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:install task juggler&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;gem install taskjuggler
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h3&gt;Gantt charts with Emacs Orgmode&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I'm using an Emacs tool to use TaskJuggler to handle the task scheduling and creation of Gantt chart suitable for &lt;a href=&quot;http://orgmode.org/worg/org-tutorials/org-taskjuggler.html&quot;&gt;a Pointy-haired Boss&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;I hated using the Orgmode script to compile the parts of the Gantt chart so I wrote &lt;a href=&quot;https://raw.github.com/ivanhanigan/disentangle/gh-pages/gantt-tj3/gantt-tj3-build.R&quot;&gt;this R script&lt;/a&gt; to convert a spreadsheet into an Orgmode script&lt;/li&gt;
-&lt;li&gt;the spreadsheet is organised in a fairly simple way shown below.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/gantt-chart-sheet.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Results&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;and executing my script will convert this into a Emacs orgmode file that will export to a taskjuggler file (use C-c C-e j) and viola!&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/gantt-chart.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This simplifies the Orgmode taskjuggler creation&lt;/li&gt;
-&lt;li&gt;A drawback is that it has to go through the Emacs export function.&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Sat Feb 22 00:00:00 +1100 2014</published>
-				<link>http://schamberlain.github.com/2014/02/gantting-like-a-hacker/</link>
 			</item>
 		
 	</channel>

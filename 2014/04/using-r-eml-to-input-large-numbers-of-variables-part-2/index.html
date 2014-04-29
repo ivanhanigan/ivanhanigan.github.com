@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - long-term-climatology-contextual-data-for-ecological-research</title>
+    <title>Ivan Hanigan - using-r-eml-to-input-large-numbers-of-variables-part-2</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
+    <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,172 +55,88 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <ul>
-<li>Studies of extreme weather events such as drought require long term climate data</li>
-<li>these are available at continental scale derived from</li>
-<li>observations from a network of weather stations that are interpolated to a surface</li>
-<li>I have been working on techniques with R and online resources (the Australian Water Availabilty Project AWAP) to make working with these long term climatology datasets easier.</li>
-<li>The package is in development at <a href="https://github.com/swish-climate-impact-assessment/awaptools">https://github.com/swish-climate-impact-assessment/awaptools</a></li>
-</ul>
+    <p>In my <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions">previous post</a> I showed a workaround to input large number of variabels than Morpho could handle.  I have found out an interesting thing about the R EML package data.set approach.  The unit.defs depends on the type of the column in the data frame (R knows if you try to trick it).  Rather than describe all the levels of the factor vars, I wanted to just have simple descriptions for numeric or character type columns.  If numeric it should be number and if character it can be the name of the column.  Because I am just trying to sidestep the issue with morpho failing to input the 200 plus variables I just need to create a dataframe with either number or character (not factor).</p>
 
+<p>For an example:</p>
 
-<h2>Case Study</h2>
+<h4>R Code:</h4>
 
-<ul>
-<li>aim is need to look at seasonal rainfall means.</li>
-<li>first thing is to download the data (I'm also working on a Rstudio server to host these data, as a Virtual Lab).</li>
-<li>data = multiple years of monthly rainfall data in a raster grid format.</li>
-<li>aim = combine rainfall in a seasonal basis in one grid</li>
-<li>(i.e. M-J-J-A-S-O 1900, 1901 etc.) calculate mean of each cell.</li>
-<li>assumption1 = filenames have year, month embedded so they will be sorted in order when listed</li>
-<li>assumption2 = all months are available, from 1:12 for all years in</li>
-<li>study period</li>
-<li>notes:</li>
-<li>this requires the files are listed in the right order by name, and all months are present. might be better to use grep on the file name and strsplit/substr to extract the month identifier more precisely?</li>
-</ul>
+<pre><code>require(EML)
+fname &lt;- dir("myData", full.names=T, pattern = 'csv')
+fname
+fname  &lt;- "myData/paper_data.csv"  
+dat  &lt;- read.csv(fname, stringsAsFactor=F)
+# the variable names include special characters such as % and [ so need to do some extra work
+names_dat  &lt;- read.csv(fname, nrow=1, header=F, stringsAsFactor=F)
+names(dat) &lt;- names_dat
+head(dat)
+nrow(dat)
+# the first 46 variables are nominal, thereafter they are all numeric
+str(dat[,1:46])
+str(dat[,47:49])
+# but these numerics are character for some reason
+table(dat[ , 47])
+# it is because the raw data had * instead of NA...  I could use na.strings when I call read.table above, or deal with it here
+# I'll just convert them to numerics now
+dat1 &lt;- dat[,1:46]
+dat2 &lt;- dat[,47:ncol(dat)]
+dat2[dat2 == "*"] &lt;- NA
+for(i in 1:ncol(dat2)){
+  dat2[,i]  &lt;- as.numeric(dat2[ , i])
+}
+str(dat2)
+# good that has set them up properly, also make sure all the text are character type
+for(i in 1:ncol(dat1)){
+  dat1[,i]  &lt;- as.character(dat1[ , i])
+}
+# recombine
+dat &lt;- cbind(dat1,dat2)
+str(dat)
+# then I add to it the definition for the constructed variables
+unit_defs &lt;- list()
+for(i in 1:46){
+    unit_defs[[i]] &lt;- names(dat[i])
+}
+for(i in 47:ncol(dat)){
+    unit_defs[[i]] &lt;- "number"
+}
+unit_defs[1:20]
+col_defs &lt;- names(dat)
+col_defs
+#names(dat)
+dat &lt;- data.set(dat,
+               col.defs = col_defs,
+               unit.defs = unit_defs
+               )
+str(dat)
 
-
-<h3>Results</h3>
-
-<p><img src="/images/season_hot.png" alt="alttext" /></p>
-
-<h3>I'm looking for collaboration on this!</h3>
-
-<ul>
-<li>I've been in contact with:</li>
-<li><a href="https://github.com/RationShop/rain_r/wiki/The-Rain-Project">https://github.com/RationShop/rain_r/wiki/The-Rain-Project</a></li>
-<li>I apologise to windoze users but feel a bit like <a href="http://librestats.com/2014/02/24/how-to-make-a-bad-password-with-r/">this guy</a> when recomending how to install:</li>
-</ul>
-
-
-<h4>quote:</h4>
-
-<pre><code>probably the easiest way to do this is to use
-Hadley's devtools package.  Assuming you have devtools and my package's
-dependencies.  If you're using Linux or the BSD's, this should just
-work.  Welcome to the good life, player.  I think this will work out
-of the box on a Mac.  I have no idea if this will work on Windows; how
-you strange people get anything done amazes me.  At the least,
-Im guessing you have to install Rtools first.  
-You could also just source all the R scripts like 
-some kind of barbarian
+eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
+dir()
+oldwd &lt;- getwd()
+setwd("myData")
+eml_write(dat, file = "test_eml.xml", title = "test_eml")
+setwd(oldwd)
 </code></pre>
 
 <p></p>
 
 
-<h4>R Code:</h4>
+<h3>Use Morpho to tidy up the Results</h3>
 
-<pre><code># depends
-require(swishdbtools)
-if(!require(raster)) install.packages("raster", dependencies = T); require(raster)
-if(!require(rgdal)) install.packages("rgdal", dependencies = T); require(rgdal)
-
-# on linux can install direct, on windoze you configure Rtools
-require(devtools)
-install_github("awaptools", "swish-climate-impact-assessment")
-require(awaptools)
-
-homedir &lt;- "~/data/AWAP_GRIDS/data"
-outdir &lt;- "~/data/AWAP_GRIDS/data-seasonal-vignette"
-
-# first make sure there are no left over files from previous runs
-#oldfiles &lt;- list.files(pattern = '.tif', full.names=T) 
-#for(oldfile in oldfiles)
-#{
-#  print(oldfile)
-#  file.remove(oldfile)
-#}
-################################################
-setwd(homedir)
-
-# local customisations
-workdir  &lt;- homedir
-setwd(workdir)
-# don't change this
-years &lt;- c(1900:2014)
-lengthYears &lt;- length(years)
-# change this
-startdate &lt;- "2013-01-01"
-enddate &lt;- "2014-01-31"
-# do
-load_monthly(start_date = startdate, end_date = enddate)
-
-# do
-filelist &lt;- dir(pattern = "grid.Z$")
-for(fname in filelist)
-{
-  #fname &lt;- filelist[1]
-  unzip_monthly(fname, aggregation_factor = 1)
-  fin &lt;- gsub(".grid.Z", ".grid", fname)
-  fout &lt;- gsub(".grid.Z", ".tif", fname)
-  r &lt;- raster(fin)
-  writeRaster(r, fout, format="GTiff",  overwrite = TRUE)
-  file.remove(fin)
-}
-
-cfiles &lt;- list.files(pattern = '.tif', full.names=T) 
-# loop thru
-# NEED TO SET THE FILESOFSEASEON_I counter EACH TIME YOU start
+<ul>
+<li>The result can be imported to Morpho and then edited from there</li>
+<li>or you can use a code editor like emacs or notepad++ to do bulk find-and-replace operations to fix up issues</li>
+</ul>
 
 
-for(season in c("hot", "cool"))
-{
-  # season &lt;- "hot" # for labelling
-  if(season == "cool")
-  {
-    filesOfSeason_i &lt;- c(5,6,7,8,9,10)  
-    endat &lt;- lengthYears
-  } else {
-    filesOfSeason_i &lt;- c(11,12,13,14,15,16) 
-    endat &lt;- lengthYears - 1
-  }
+<h3>Conclusions</h3>
 
-  for (year in 1:endat){ 
-    ## setup for checking month 
-    # year  &lt;- 1 #endat
+<ul>
+<li>Morpho failed with 200 plus variables</li>
+<li>the R EML package succeeded to write the file</li>
+<li>I needed to pay careful attention to the type of the variables in the data.frame before running the R EML functions</li>
+</ul>
 
-
-    ## checking
-    print(cat("####################\n\n"))
-    print(cfiles[filesOfSeason_i])
-
-    b &lt;- brick(stack(cfiles[filesOfSeason_i])) 
-    ## calculate mean 
-    m &lt;- mean(b) 
-    ## checking 
-    # image(m) 
-    writeRaster(m, file.path(outdir,sprintf("season_%s_%s.tif", season, year)), drivername="GTiff")
-    filesOfSeason_i &lt;- filesOfSeason_i + 12
-  } 
-}
-
-##### now we will overall average
-setwd(outdir)
-for(season in c("cool", "hot"))
-{
-  cfiles &lt;- list.files(pattern = season, full.names=T)   
-  print(cfiles)
-  b &lt;- brick(stack(cfiles)) 
-  ## calculate mean 
-  m &lt;- mean(b) 
-  ## checking 
-  # image(m) 
-  writeRaster(m, file.path(outdir,sprintf("season_%s.tif", season)), drivername="GTiff")
-}
-
-# qc
-cool &lt;- raster("season_cool.tif")
-hot &lt;- raster("season_hot.tif")
-par(mfrow = c(2,1))
-image(cool)
-image(hot)
-
-# just summer rainfall
-png("season_hot.png")
-image(hot)
-dev.off()
-</code></pre>
 
     <div class="clear"></div>
   </div>
@@ -235,12 +151,12 @@ dev.off()
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+    <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Fri Feb 28 00:00:00 +1100 2014">28 Feb 2014</abbr>
+      <abbr class="published" title="Tue Apr 29 00:00:00 +1000 2014">29 Apr 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -254,7 +170,7 @@ dev.off()
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2014/02/long-term-climatology-contextual-data-for-ecological-research/";
+    var disqus_url = "http://ivanhanigan.github.com/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

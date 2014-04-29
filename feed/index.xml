@@ -4,13 +4,138 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2014-04-25T11:14:54+10:00</updated>
+ <updated>2014-04-29T21:05:21+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
    <email>mail@ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>workaround-for-installing-morpho-on-a-windows-network</title>
+   <link href="http://ivanhanigan.github.com/2014/04/workaround-for-installing-morpho-on-a-windows-network/"/>
+   <updated>2014-04-29T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2014/04/workaround-for-installing-morpho-on-a-windows-network</id>
+   <content type="html">&lt;h3&gt;Introduction&lt;/h3&gt;
+
+&lt;p&gt;Morpho is an open source piece of software designed to host all kinds of ecological data.  It is used to describe data collections. We publish to Metacat using Morpho.  For technical reasons, we have our own server running an older version of the Metacat software so have to run an old version of Morpho (v1.8).&lt;/p&gt;
+
+&lt;h3&gt;Installation and configuration&lt;/h3&gt;
+
+&lt;p&gt;TERN specific instructions are replicated across:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&quot;&gt;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.ltern.org.au/index.php/data/guides-and-tutorial&quot;&gt;http://www.ltern.org.au/index.php/data/guides-and-tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Morpho issue on Windows in our network environment&lt;/h3&gt;
+
+&lt;p&gt;The ANU Fenner School came across this issue. Our local IT department have discovered with Morpho (v1.8) Installation on Windows in our network environment, Morpho installs a hidden directory called &quot;.morpho&quot; and this is written to a PATH next to the User Desktop. This is actually on a network share with a very small quota.&lt;/p&gt;
+
+&lt;p&gt;Therefore as Morpho writes data there it can easily exceed the quota causing the software to stop working.  All users of Morpho on such a network should check for the location of the &quot;.morpho&quot; directory and if it is located with such a restricted quota then alternative arrangements need to be made.&lt;/p&gt;
+
+&lt;p&gt;At the ANU Fenner School we opted to set up local user accounts (the &quot;.morpho&quot; file is then on the C drive) and this user is accessible from the main User's account.  The Morpho files are therefore stored on the C drive which is of course a danger for hard disk failure and data loss.&lt;/p&gt;
+
+&lt;p&gt;We feel that as long as the draft packages are saved to the networked Metacat (with the maximum access restrictions in force for draft work) then if the local hard disk dies then the draft data package is not lost but can be accessed again from a new Morpho install and the Metacat server.&lt;/p&gt;
+
+&lt;p&gt;Issues remain about the long term solution to this problem but this will work in the short-term.&lt;/p&gt;
+
+&lt;p&gt;We think you can also create a junction (symlink) so that .morpho/ can point to a different location (perhaps another network storage with bigger capacity and automated backup).&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>using-r-eml-to-input-large-numbers-of-variables-part-2</title>
+   <link href="http://ivanhanigan.github.com/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/"/>
+   <updated>2014-04-29T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2</id>
+   <content type="html">&lt;p&gt;In my &lt;a href=&quot;/2014/04/using-reml-to-input-large-number-of-column-descriptions&quot;&gt;previous post&lt;/a&gt; I showed a workaround to input large number of variabels than Morpho could handle.  I have found out an interesting thing about the R EML package data.set approach.  The unit.defs depends on the type of the column in the data frame (R knows if you try to trick it).  Rather than describe all the levels of the factor vars, I wanted to just have simple descriptions for numeric or character type columns.  If numeric it should be number and if character it can be the name of the column.  Because I am just trying to sidestep the issue with morpho failing to input the 200 plus variables I just need to create a dataframe with either number or character (not factor).&lt;/p&gt;
+
+&lt;p&gt;For an example:&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(EML)
+fname &amp;lt;- dir(&quot;myData&quot;, full.names=T, pattern = 'csv')
+fname
+fname  &amp;lt;- &quot;myData/paper_data.csv&quot;  
+dat  &amp;lt;- read.csv(fname, stringsAsFactor=F)
+# the variable names include special characters such as % and [ so need to do some extra work
+names_dat  &amp;lt;- read.csv(fname, nrow=1, header=F, stringsAsFactor=F)
+names(dat) &amp;lt;- names_dat
+head(dat)
+nrow(dat)
+# the first 46 variables are nominal, thereafter they are all numeric
+str(dat[,1:46])
+str(dat[,47:49])
+# but these numerics are character for some reason
+table(dat[ , 47])
+# it is because the raw data had * instead of NA...  I could use na.strings when I call read.table above, or deal with it here
+# I'll just convert them to numerics now
+dat1 &amp;lt;- dat[,1:46]
+dat2 &amp;lt;- dat[,47:ncol(dat)]
+dat2[dat2 == &quot;*&quot;] &amp;lt;- NA
+for(i in 1:ncol(dat2)){
+  dat2[,i]  &amp;lt;- as.numeric(dat2[ , i])
+}
+str(dat2)
+# good that has set them up properly, also make sure all the text are character type
+for(i in 1:ncol(dat1)){
+  dat1[,i]  &amp;lt;- as.character(dat1[ , i])
+}
+# recombine
+dat &amp;lt;- cbind(dat1,dat2)
+str(dat)
+# then I add to it the definition for the constructed variables
+unit_defs &amp;lt;- list()
+for(i in 1:46){
+    unit_defs[[i]] &amp;lt;- names(dat[i])
+}
+for(i in 47:ncol(dat)){
+    unit_defs[[i]] &amp;lt;- &quot;number&quot;
+}
+unit_defs[1:20]
+col_defs &amp;lt;- names(dat)
+col_defs
+#names(dat)
+dat &amp;lt;- data.set(dat,
+               col.defs = col_defs,
+               unit.defs = unit_defs
+               )
+str(dat)
+
+eml_config(creator=&quot;Ivan Charles Hanigan &amp;lt;ivan.hanigan@gmail.com&amp;gt;&quot;)
+dir()
+oldwd &amp;lt;- getwd()
+setwd(&quot;myData&quot;)
+eml_write(dat, file = &quot;test_eml.xml&quot;, title = &quot;test_eml&quot;)
+setwd(oldwd)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h3&gt;Use Morpho to tidy up the Results&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The result can be imported to Morpho and then edited from there&lt;/li&gt;
+&lt;li&gt;or you can use a code editor like emacs or notepad++ to do bulk find-and-replace operations to fix up issues&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Conclusions&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Morpho failed with 200 plus variables&lt;/li&gt;
+&lt;li&gt;the R EML package succeeded to write the file&lt;/li&gt;
+&lt;li&gt;I needed to pay careful attention to the type of the variables in the data.frame before running the R EML functions&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</title>

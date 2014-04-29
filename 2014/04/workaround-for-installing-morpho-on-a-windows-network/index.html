@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - long-term-climatology-contextual-data-for-ecological-research</title>
+    <title>Ivan Hanigan - workaround-for-installing-morpho-on-a-windows-network</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
+    <a href="/2014/04/workaround-for-installing-morpho-on-a-windows-network/" title="workaround-for-installing-morpho-on-a-windows-network" rel="bookmark">workaround-for-installing-morpho-on-a-windows-network</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,172 +55,33 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <ul>
-<li>Studies of extreme weather events such as drought require long term climate data</li>
-<li>these are available at continental scale derived from</li>
-<li>observations from a network of weather stations that are interpolated to a surface</li>
-<li>I have been working on techniques with R and online resources (the Australian Water Availabilty Project AWAP) to make working with these long term climatology datasets easier.</li>
-<li>The package is in development at <a href="https://github.com/swish-climate-impact-assessment/awaptools">https://github.com/swish-climate-impact-assessment/awaptools</a></li>
-</ul>
+    <h3>Introduction</h3>
 
+<p>Morpho is an open source piece of software designed to host all kinds of ecological data.  It is used to describe data collections. We publish to Metacat using Morpho.  For technical reasons, we have our own server running an older version of the Metacat software so have to run an old version of Morpho (v1.8).</p>
 
-<h2>Case Study</h2>
+<h3>Installation and configuration</h3>
+
+<p>TERN specific instructions are replicated across:</p>
 
 <ul>
-<li>aim is need to look at seasonal rainfall means.</li>
-<li>first thing is to download the data (I'm also working on a Rstudio server to host these data, as a Virtual Lab).</li>
-<li>data = multiple years of monthly rainfall data in a raster grid format.</li>
-<li>aim = combine rainfall in a seasonal basis in one grid</li>
-<li>(i.e. M-J-J-A-S-O 1900, 1901 etc.) calculate mean of each cell.</li>
-<li>assumption1 = filenames have year, month embedded so they will be sorted in order when listed</li>
-<li>assumption2 = all months are available, from 1:12 for all years in</li>
-<li>study period</li>
-<li>notes:</li>
-<li>this requires the files are listed in the right order by name, and all months are present. might be better to use grep on the file name and strsplit/substr to extract the month identifier more precisely?</li>
+<li><a href="http://www.tern-supersites.net.au/index.php/data/repository-tutorial">http://www.tern-supersites.net.au/index.php/data/repository-tutorial</a></li>
+<li><a href="http://www.ltern.org.au/index.php/data/guides-and-tutorial">http://www.ltern.org.au/index.php/data/guides-and-tutorial</a></li>
 </ul>
 
 
-<h3>Results</h3>
+<h3>Morpho issue on Windows in our network environment</h3>
 
-<p><img src="/images/season_hot.png" alt="alttext" /></p>
+<p>The ANU Fenner School came across this issue. Our local IT department have discovered with Morpho (v1.8) Installation on Windows in our network environment, Morpho installs a hidden directory called ".morpho" and this is written to a PATH next to the User Desktop. This is actually on a network share with a very small quota.</p>
 
-<h3>I'm looking for collaboration on this!</h3>
+<p>Therefore as Morpho writes data there it can easily exceed the quota causing the software to stop working.  All users of Morpho on such a network should check for the location of the ".morpho" directory and if it is located with such a restricted quota then alternative arrangements need to be made.</p>
 
-<ul>
-<li>I've been in contact with:</li>
-<li><a href="https://github.com/RationShop/rain_r/wiki/The-Rain-Project">https://github.com/RationShop/rain_r/wiki/The-Rain-Project</a></li>
-<li>I apologise to windoze users but feel a bit like <a href="http://librestats.com/2014/02/24/how-to-make-a-bad-password-with-r/">this guy</a> when recomending how to install:</li>
-</ul>
+<p>At the ANU Fenner School we opted to set up local user accounts (the ".morpho" file is then on the C drive) and this user is accessible from the main User's account.  The Morpho files are therefore stored on the C drive which is of course a danger for hard disk failure and data loss.</p>
 
+<p>We feel that as long as the draft packages are saved to the networked Metacat (with the maximum access restrictions in force for draft work) then if the local hard disk dies then the draft data package is not lost but can be accessed again from a new Morpho install and the Metacat server.</p>
 
-<h4>quote:</h4>
+<p>Issues remain about the long term solution to this problem but this will work in the short-term.</p>
 
-<pre><code>probably the easiest way to do this is to use
-Hadley's devtools package.  Assuming you have devtools and my package's
-dependencies.  If you're using Linux or the BSD's, this should just
-work.  Welcome to the good life, player.  I think this will work out
-of the box on a Mac.  I have no idea if this will work on Windows; how
-you strange people get anything done amazes me.  At the least,
-Im guessing you have to install Rtools first.  
-You could also just source all the R scripts like 
-some kind of barbarian
-</code></pre>
-
-<p></p>
-
-
-<h4>R Code:</h4>
-
-<pre><code># depends
-require(swishdbtools)
-if(!require(raster)) install.packages("raster", dependencies = T); require(raster)
-if(!require(rgdal)) install.packages("rgdal", dependencies = T); require(rgdal)
-
-# on linux can install direct, on windoze you configure Rtools
-require(devtools)
-install_github("awaptools", "swish-climate-impact-assessment")
-require(awaptools)
-
-homedir &lt;- "~/data/AWAP_GRIDS/data"
-outdir &lt;- "~/data/AWAP_GRIDS/data-seasonal-vignette"
-
-# first make sure there are no left over files from previous runs
-#oldfiles &lt;- list.files(pattern = '.tif', full.names=T) 
-#for(oldfile in oldfiles)
-#{
-#  print(oldfile)
-#  file.remove(oldfile)
-#}
-################################################
-setwd(homedir)
-
-# local customisations
-workdir  &lt;- homedir
-setwd(workdir)
-# don't change this
-years &lt;- c(1900:2014)
-lengthYears &lt;- length(years)
-# change this
-startdate &lt;- "2013-01-01"
-enddate &lt;- "2014-01-31"
-# do
-load_monthly(start_date = startdate, end_date = enddate)
-
-# do
-filelist &lt;- dir(pattern = "grid.Z$")
-for(fname in filelist)
-{
-  #fname &lt;- filelist[1]
-  unzip_monthly(fname, aggregation_factor = 1)
-  fin &lt;- gsub(".grid.Z", ".grid", fname)
-  fout &lt;- gsub(".grid.Z", ".tif", fname)
-  r &lt;- raster(fin)
-  writeRaster(r, fout, format="GTiff",  overwrite = TRUE)
-  file.remove(fin)
-}
-
-cfiles &lt;- list.files(pattern = '.tif', full.names=T) 
-# loop thru
-# NEED TO SET THE FILESOFSEASEON_I counter EACH TIME YOU start
-
-
-for(season in c("hot", "cool"))
-{
-  # season &lt;- "hot" # for labelling
-  if(season == "cool")
-  {
-    filesOfSeason_i &lt;- c(5,6,7,8,9,10)  
-    endat &lt;- lengthYears
-  } else {
-    filesOfSeason_i &lt;- c(11,12,13,14,15,16) 
-    endat &lt;- lengthYears - 1
-  }
-
-  for (year in 1:endat){ 
-    ## setup for checking month 
-    # year  &lt;- 1 #endat
-
-
-    ## checking
-    print(cat("####################\n\n"))
-    print(cfiles[filesOfSeason_i])
-
-    b &lt;- brick(stack(cfiles[filesOfSeason_i])) 
-    ## calculate mean 
-    m &lt;- mean(b) 
-    ## checking 
-    # image(m) 
-    writeRaster(m, file.path(outdir,sprintf("season_%s_%s.tif", season, year)), drivername="GTiff")
-    filesOfSeason_i &lt;- filesOfSeason_i + 12
-  } 
-}
-
-##### now we will overall average
-setwd(outdir)
-for(season in c("cool", "hot"))
-{
-  cfiles &lt;- list.files(pattern = season, full.names=T)   
-  print(cfiles)
-  b &lt;- brick(stack(cfiles)) 
-  ## calculate mean 
-  m &lt;- mean(b) 
-  ## checking 
-  # image(m) 
-  writeRaster(m, file.path(outdir,sprintf("season_%s.tif", season)), drivername="GTiff")
-}
-
-# qc
-cool &lt;- raster("season_cool.tif")
-hot &lt;- raster("season_hot.tif")
-par(mfrow = c(2,1))
-image(cool)
-image(hot)
-
-# just summer rainfall
-png("season_hot.png")
-image(hot)
-dev.off()
-</code></pre>
+<p>We think you can also create a junction (symlink) so that .morpho/ can point to a different location (perhaps another network storage with bigger capacity and automated backup).</p>
 
     <div class="clear"></div>
   </div>
@@ -235,12 +96,12 @@ dev.off()
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+    <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Fri Feb 28 00:00:00 +1100 2014">28 Feb 2014</abbr>
+      <abbr class="published" title="Tue Apr 29 00:00:00 +1000 2014">29 Apr 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -254,7 +115,7 @@ dev.off()
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2014/02/long-term-climatology-contextual-data-for-ecological-research/";
+    var disqus_url = "http://ivanhanigan.github.com/2014/04/workaround-for-installing-morpho-on-a-windows-network/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
