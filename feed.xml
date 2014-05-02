@@ -6,6 +6,86 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>morpho-has-an-issue-with-zero-length-strings-as-missing-data</title>
+				<description>&lt;p&gt;We encountered a strange issue Morpho 1.8 has when ingesting a CSV with zero length strings as missing data.  An example of what this looks like is given below in the mulgara example dataset I;ve shown before.  I have added some rows with missing data as zero length strings (these are the &quot;,,&quot; after the fictional value Treat = 0.5).&lt;/p&gt;
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;datatext &amp;lt;- 'Treat, Before, After1, After2
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+0,  2.833213344,    1.609437912,    2.48490665
+0,  1.791759469,    2.197224577,    2.079441542
+0,  3.044522438,    2.708050201,    3.135494216
+0,  2.772588722,    1.791759469,    2.197224577
+0,  1.098612289,    1.609437912,    2.63905733
+1,  2.944438979,    0.693147181,    1.791759469
+1,  2.564949357,    0.693147181,    1.791759469
+1,  2.564949357,    1.609437912,    1.609437912
+1,  0.693147181,    1.098612289,    1.098612289
+1,  1.609437912,    0,      1.098612289'
+analyte &amp;lt;- read.csv(textConnection(datatext))
+write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names = F, na= &quot;&quot;, quote=F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Unfortunately for this blog entry, the example above doesn;t exhibit the problem!&lt;/li&gt;
+&lt;li&gt;you can see what happens by selecting the &quot;treat consecutive delimiters as as one&quot; option&lt;/li&gt;
+&lt;li&gt;showing that the data from the 3rd and 4th cols shifts to the right&lt;/li&gt;
+&lt;li&gt;this is what happened to us but we were not able to modify this behaviour by changing that option!&lt;/li&gt;
+&lt;li&gt;The problem only occurred when we had a file big file (200+ columns)&lt;/li&gt;
+&lt;li&gt;the problem occured at col 23, shown in the image below&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na3.png&quot; alt=&quot;morpho-bug-empty-na3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;this column is ftyp[12] which has 62 rows of missing and then some text codes.&lt;/li&gt;
+&lt;li&gt;the next 24th column is  aerial[10] and it is this one that is then read incorrectly by morpho.  The importer makes the error of reading blanks for the first few rows and then *, even though in reality it is * and then date 1/06/2006 (shown in the image below)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na2.1.png&quot; alt=&quot;morpho-bug-empty-na2.1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;and finally col 25 fire[13] now appears as * and the date 1/06/2006 but it should be a different number of *s and the date 2/04/2007 further down&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na2.png&quot; alt=&quot;morpho-bug-empty-na2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Workaround&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;to deal with this in this case we replaced all zero length strings as &quot;NA&quot;&lt;/li&gt;
+&lt;li&gt;this is probably a good idea in most cases, except when NA is not an appropriate value and so in those cases we replaced with the word &quot;blank&quot;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Conclusions&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This issue is probably rare and might be fixed in the newer version of Morpho&lt;/li&gt;
+&lt;li&gt;We don;t use new morpho because we are still using the old metacat&lt;/li&gt;
+&lt;li&gt;I thought it worth reporting here&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Fri May 02 00:00:00 +1000 2014</published>
+				<link>http://schamberlain.github.com/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/</link>
+			</item>
+		
+			<item>
 				<title>workaround-for-installing-morpho-on-a-windows-network</title>
 				<description>&lt;h3&gt;Introduction&lt;/h3&gt;
 
@@ -1091,179 +1171,6 @@ load.project()
 </description>
 				<published>Sat Mar 29 00:00:00 +1100 2014</published>
 				<link>http://schamberlain.github.com/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/</link>
-			</item>
-		
-			<item>
-				<title>long-term-climatology-contextual-data-for-ecological-research</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;Studies of extreme weather events such as drought require long term climate data&lt;/li&gt;
-&lt;li&gt;these are available at continental scale derived from&lt;/li&gt;
-&lt;li&gt;observations from a network of weather stations that are interpolated to a surface&lt;/li&gt;
-&lt;li&gt;I have been working on techniques with R and online resources (the Australian Water Availabilty Project AWAP) to make working with these long term climatology datasets easier.&lt;/li&gt;
-&lt;li&gt;The package is in development at &lt;a href=&quot;https://github.com/swish-climate-impact-assessment/awaptools&quot;&gt;https://github.com/swish-climate-impact-assessment/awaptools&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Case Study&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;aim is need to look at seasonal rainfall means.&lt;/li&gt;
-&lt;li&gt;first thing is to download the data (I'm also working on a Rstudio server to host these data, as a Virtual Lab).&lt;/li&gt;
-&lt;li&gt;data = multiple years of monthly rainfall data in a raster grid format.&lt;/li&gt;
-&lt;li&gt;aim = combine rainfall in a seasonal basis in one grid&lt;/li&gt;
-&lt;li&gt;(i.e. M-J-J-A-S-O 1900, 1901 etc.) calculate mean of each cell.&lt;/li&gt;
-&lt;li&gt;assumption1 = filenames have year, month embedded so they will be sorted in order when listed&lt;/li&gt;
-&lt;li&gt;assumption2 = all months are available, from 1:12 for all years in&lt;/li&gt;
-&lt;li&gt;study period&lt;/li&gt;
-&lt;li&gt;notes:&lt;/li&gt;
-&lt;li&gt;this requires the files are listed in the right order by name, and all months are present. might be better to use grep on the file name and strsplit/substr to extract the month identifier more precisely?&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Results&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/season_hot.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;I'm looking for collaboration on this!&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I've been in contact with:&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/RationShop/rain_r/wiki/The-Rain-Project&quot;&gt;https://github.com/RationShop/rain_r/wiki/The-Rain-Project&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I apologise to windoze users but feel a bit like &lt;a href=&quot;http://librestats.com/2014/02/24/how-to-make-a-bad-password-with-r/&quot;&gt;this guy&lt;/a&gt; when recomending how to install:&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;quote:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;probably the easiest way to do this is to use
-Hadley's devtools package.  Assuming you have devtools and my package's
-dependencies.  If you're using Linux or the BSD's, this should just
-work.  Welcome to the good life, player.  I think this will work out
-of the box on a Mac.  I have no idea if this will work on Windows; how
-you strange people get anything done amazes me.  At the least,
-Im guessing you have to install Rtools first.  
-You could also just source all the R scripts like 
-some kind of barbarian
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# depends
-require(swishdbtools)
-if(!require(raster)) install.packages(&quot;raster&quot;, dependencies = T); require(raster)
-if(!require(rgdal)) install.packages(&quot;rgdal&quot;, dependencies = T); require(rgdal)
-
-# on linux can install direct, on windoze you configure Rtools
-require(devtools)
-install_github(&quot;awaptools&quot;, &quot;swish-climate-impact-assessment&quot;)
-require(awaptools)
-
-homedir &amp;lt;- &quot;~/data/AWAP_GRIDS/data&quot;
-outdir &amp;lt;- &quot;~/data/AWAP_GRIDS/data-seasonal-vignette&quot;
-
-# first make sure there are no left over files from previous runs
-#oldfiles &amp;lt;- list.files(pattern = '.tif', full.names=T) 
-#for(oldfile in oldfiles)
-#{
-#  print(oldfile)
-#  file.remove(oldfile)
-#}
-################################################
-setwd(homedir)
-
-# local customisations
-workdir  &amp;lt;- homedir
-setwd(workdir)
-# don't change this
-years &amp;lt;- c(1900:2014)
-lengthYears &amp;lt;- length(years)
-# change this
-startdate &amp;lt;- &quot;2013-01-01&quot;
-enddate &amp;lt;- &quot;2014-01-31&quot;
-# do
-load_monthly(start_date = startdate, end_date = enddate)
-
-# do
-filelist &amp;lt;- dir(pattern = &quot;grid.Z$&quot;)
-for(fname in filelist)
-{
-  #fname &amp;lt;- filelist[1]
-  unzip_monthly(fname, aggregation_factor = 1)
-  fin &amp;lt;- gsub(&quot;.grid.Z&quot;, &quot;.grid&quot;, fname)
-  fout &amp;lt;- gsub(&quot;.grid.Z&quot;, &quot;.tif&quot;, fname)
-  r &amp;lt;- raster(fin)
-  writeRaster(r, fout, format=&quot;GTiff&quot;,  overwrite = TRUE)
-  file.remove(fin)
-}
-
-cfiles &amp;lt;- list.files(pattern = '.tif', full.names=T) 
-# loop thru
-# NEED TO SET THE FILESOFSEASEON_I counter EACH TIME YOU start
-
-
-for(season in c(&quot;hot&quot;, &quot;cool&quot;))
-{
-  # season &amp;lt;- &quot;hot&quot; # for labelling
-  if(season == &quot;cool&quot;)
-  {
-    filesOfSeason_i &amp;lt;- c(5,6,7,8,9,10)  
-    endat &amp;lt;- lengthYears
-  } else {
-    filesOfSeason_i &amp;lt;- c(11,12,13,14,15,16) 
-    endat &amp;lt;- lengthYears - 1
-  }
-
-  for (year in 1:endat){ 
-    ## setup for checking month 
-    # year  &amp;lt;- 1 #endat
-
-
-    ## checking
-    print(cat(&quot;####################\n\n&quot;))
-    print(cfiles[filesOfSeason_i])
-
-    b &amp;lt;- brick(stack(cfiles[filesOfSeason_i])) 
-    ## calculate mean 
-    m &amp;lt;- mean(b) 
-    ## checking 
-    # image(m) 
-    writeRaster(m, file.path(outdir,sprintf(&quot;season_%s_%s.tif&quot;, season, year)), drivername=&quot;GTiff&quot;)
-    filesOfSeason_i &amp;lt;- filesOfSeason_i + 12
-  } 
-}
-
-##### now we will overall average
-setwd(outdir)
-for(season in c(&quot;cool&quot;, &quot;hot&quot;))
-{
-  cfiles &amp;lt;- list.files(pattern = season, full.names=T)   
-  print(cfiles)
-  b &amp;lt;- brick(stack(cfiles)) 
-  ## calculate mean 
-  m &amp;lt;- mean(b) 
-  ## checking 
-  # image(m) 
-  writeRaster(m, file.path(outdir,sprintf(&quot;season_%s.tif&quot;, season)), drivername=&quot;GTiff&quot;)
-}
-
-# qc
-cool &amp;lt;- raster(&quot;season_cool.tif&quot;)
-hot &amp;lt;- raster(&quot;season_hot.tif&quot;)
-par(mfrow = c(2,1))
-image(cool)
-image(hot)
-
-# just summer rainfall
-png(&quot;season_hot.png&quot;)
-image(hot)
-dev.off()
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>Fri Feb 28 00:00:00 +1100 2014</published>
-				<link>http://schamberlain.github.com/2014/02/long-term-climatology-contextual-data-for-ecological-research/</link>
 			</item>
 		
 	</channel>
