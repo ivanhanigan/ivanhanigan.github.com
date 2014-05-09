@@ -54,6 +54,7 @@
 
   <div class="full">
     <h1 class="entry-title">
+<<<<<<< HEAD
       <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions/" title="Using Reml To Input Large Number Of Column Descriptions" rel="bookmark">Using Reml To Input Large Number Of Column Descriptions</a>
     </h1>
     <div class="entry-content full-content">
@@ -334,31 +335,7 @@ write.csv(dat, filename, row.names =F, quote=F)
 <p>Which now seems to have attached the variable defintions and dataTable adequately.</p>
 
 <p><img src="/images/morpho-wide2.png" alt="morpho-wide2.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/04/using-reml-to-input-large-number-of-column-descriptions/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Apr 24 00:00:00 +1000 2014">24 Apr 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
+=======
       <a href="/2014/04/linking-eml-packages-by-umbrella-project-info/" title="linking-eml-packages-by-umbrella-project-info" rel="bookmark">linking-eml-packages-by-umbrella-project-info</a>
     </h1>
     <div class="entry-content full-content">
@@ -410,23 +387,36 @@ I think the order of the tags here might make a difference so I always put thye 
   &lt;/metadata&gt;
 &lt;/additionalMetadata&gt;
 </code></pre>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
+<<<<<<< HEAD
       <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+=======
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       
     </p>
     <!--
 	<p class="comments-link">
+<<<<<<< HEAD
+      <a href='/2014/04/using-reml-to-input-large-number-of-column-descriptions/#disqus_thread'>Comments</a>
+=======
       <a href='/2014/04/linking-eml-packages-by-umbrella-project-info/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
+<<<<<<< HEAD
+        <abbr class="published" title="Thu Apr 24 00:00:00 +1000 2014">24 Apr 2014</abbr>
+=======
         <abbr class="published" title="Mon Apr 21 00:00:00 +1000 2014">21 Apr 2014</abbr>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       </span>
     </p>
     <div class="clear"></div>
@@ -435,6 +425,50 @@ I think the order of the tags here might make a difference so I always put thye 
 
   <div class="full">
     <h1 class="entry-title">
+<<<<<<< HEAD
+      <a href="/2014/04/linking-eml-packages-by-umbrella-project-info/" title="linking-eml-packages-by-umbrella-project-info" rel="bookmark">linking-eml-packages-by-umbrella-project-info</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In Eml the optional "project" module provides an overall description
+of the larger-scale project or research context with which that
+dataset is associated. For the examples in our work the "project" will
+most often be an LTER (Longterm Ecological Research Network) site that
+directed the research.  Accordingly, the "title" here consists of the
+name of the LTER site. The "personnel" group contains the same
+elements as "creator" and "contact", with the addition of a mandatory
+"role" element, and it is used to identify the lead PI and/or
+information manager on the site. Other optional elements in the
+"project" module include "abstract", "funding",
+"studyAreaDescription", and "designDescription", each of which can be
+used to provide a richer textual description of the LTER site
+responsible for the research project being documented.  If used, the
+"abstract" includes basic information about the LTER site, such as its
+general history and administration, while "studyAreaDescription" is
+more of a physical description of the area where the site is
+located. This description may also include the "coverage" module,
+which is fully discussed on page XX of this handbook, or the
+"citation" module, covered on page XX. The "funding" tag is textual
+and self-explanatory, but "designDescription" is best used for a
+description of the site’s database information and availability.</p>
+
+<p>Morpho doesn't give all these options so you need to go to the EML file found in the "~/.morpho/..." directory and edit this with a text editor
+I think the order of the tags here might make a difference so I always put thye "abstract" tag after the "/personnel" tag.  I also think you might need this "para" tag:</p>
+
+<h4>Code:linking-eml-packages-by-umbrella-project-inf</h4>
+
+<pre><code>&lt;abstract&gt; 
+  &lt;para&gt;Prof McMichael set up this group to develop new methods of researching Environmental (especially Climate Change) and Health
+  &lt;/para&gt;
+&lt;/abstract&gt;
+</code></pre>
+
+<p></p>
+
+
+<p>So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an "additionalLinks" node at the bottom of the EML:</p>
+
+<h4>Code:linking-eml-packages-by-umbrella-project-info</h4>
+=======
       <a href="/2014/04/using-morpho-for-cataloguing-personal-research-data/" title="Using Morpho for Cataloguing Personal Research Data" rel="bookmark">Using Morpho for Cataloguing Personal Research Data</a>
     </h1>
     <div class="entry-content full-content">
@@ -843,7 +877,595 @@ I got the following instructions from a Librarian: The "informative abstract" me
 <li>which looks like this
 </li>
 </ul>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
+<pre><code>&lt;additionalMetadata&gt;
+  &lt;metadata&gt;
+    &lt;additionalLinks&gt;
+      &lt;url name="The name of the homepage"&gt;http://...&lt;/url&gt;
+    &lt;/additionalLinks&gt;
+  &lt;/metadata&gt;
+&lt;/additionalMetadata&gt;
+</code></pre>
+
+<p>
+<img src="/images/morphoimg4.png" alt="morphoimg4.png">
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-13" class="outline-4">
+<h4 id="sec-1-13"><span class="section-number-4">1.13</span> Additional Metadata</h4>
+<div class="outline-text-4" id="text-1-13">
+
+
+<p>
+As this is metadata only about the dataset, it is innapropriate to refer to related publications etc in these elements.  Luckily EML has the additionalMetadata and additionalLinks fields.  Just open the XML and paste the following in the bottom.
+</p>
+<p>
+    &lt;additionalMetadata&gt;
+      &lt;metadata&gt;
+        &lt;additionalLinks&gt;
+          &lt;url name="Hanigan, IC, Butler, CD, Kokic, PN, Hutchinson, MF. Suicide and Drought in New South Wales, Australia, 1970-2007. Proceedings of the National Academy of Science USA 2012, vol. 109 no. 35 13950-13955, doi: 10.1073/pnas.1112965109"&gt;<a href="http://dx.doi.org/10.1073/pnas.1112965109">http://dx.doi.org/10.1073/pnas.1112965109</a>&lt;/url&gt;
+        &lt;/additionalLinks&gt;
+      &lt;/metadata&gt;
+    &lt;/additionalMetadata&gt;
+</p>
+<p>
+You can see this if you then open it up again in morpho and then under the documentation menu go to Add/Edit Documentation.
+</p>
+<p>
+<img src="/images/morphoimg5.png" alt="morphoimg5.png">
+</p></div>
+</div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+<<<<<<< HEAD
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+=======
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+      
+    </p>
+    <!--
+	<p class="comments-link">
+<<<<<<< HEAD
+      <a href='/2014/04/linking-eml-packages-by-umbrella-project-info/#disqus_thread'>Comments</a>
+=======
+      <a href='/2014/04/using-morpho-for-cataloguing-personal-research-data/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+<<<<<<< HEAD
+        <abbr class="published" title="Mon Apr 21 00:00:00 +1000 2014">21 Apr 2014</abbr>
+=======
+        <abbr class="published" title="Sun Apr 20 00:00:00 +1000 2014">20 Apr 2014</abbr>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+<<<<<<< HEAD
+      <a href="/2014/04/using-morpho-for-cataloguing-personal-research-data/" title="Using Morpho for Cataloguing Personal Research Data" rel="bookmark">Using Morpho for Cataloguing Personal Research Data</a>
+    </h1>
+    <div class="entry-content full-content">
+      <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 2014-04-20-using-morpho-orgmode</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Introduction</a></li>
+<li><a href="#sec-1-2">1.2 Cataloguing Personal Research Data with Morpho</a></li>
+<li><a href="#sec-1-3">1.3 How Morpho Works</a></li>
+<li><a href="#sec-1-4">1.4 Adding a dataset from my collection</a></li>
+<li><a href="#sec-1-5">1.5 the drought dataset:</a></li>
+<li><a href="#sec-1-6">1.6 Step One: define the project that I will keep locally</a></li>
+<li><a href="#sec-1-7">1.7 Contextual Metadata</a></li>
+<li><a href="#sec-1-8">1.8 Abstract</a></li>
+<li><a href="#sec-1-9">1.9 Australian FOR codes</a></li>
+<li><a href="#sec-1-10">1.10 GCMD Keywords</a></li>
+<li><a href="#sec-1-11">1.11 Geographic coverage</a></li>
+<li><a href="#sec-1-12">1.12 Save the metadata</a></li>
+<li><a href="#sec-1-13">1.13 Additional Metadata</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+=======
+      <a href="/2014/04/a-workaround-for-inserting-species-names-to-morpho/" title="A Workaround For Inserting Species Names To Morpho" rel="bookmark">A Workaround For Inserting Species Names To Morpho</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Morpho is a pretty minimal editor for EML really.  It gives you a set
+of generically useful data entry forms but sometimes a specific task
+is better achieved through edits made directly to the XML document.
+An example of this is inserting a large number of species names to the
+taxonomic coverage module. The form to include these requires
+individual data entry for each species.</p>
+
+<p><img src="/images/morpho-taxo-smll.png" alt="morpho-taxo.png" /></p>
+
+<p>Which looks like this when published</p>
+
+<p><img src="/images/morpho-taxo2.1.png" alt="morpho-taxo2.png" /></p>
+
+<p>Go to the morpho catalogue (found at ~/.morpho/profiles/hanigan/data/hanigan/) and take a look at how the XML is constructed.</p>
+
+<h4>XML Code:</h4>
+
+<pre><code>&lt;taxonomicCoverage&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Genus&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Dasycercus&lt;/taxonRankValue&gt;
+    &lt;taxonomicClassification&gt;
+      &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+      &lt;taxonRankValue&gt;cristicauda&lt;/taxonRankValue&gt;
+      &lt;commonName&gt;Mulgara&lt;/commonName&gt;
+    &lt;/taxonomicClassification&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Genus&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Homo&lt;/taxonRankValue&gt;
+      &lt;taxonomicClassification&gt;
+      &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+      &lt;taxonRankValue&gt;sapiens&lt;/taxonRankValue&gt;
+      &lt;commonName&gt;Modern Human&lt;/commonName&gt;
+    &lt;/taxonomicClassification&gt;
+  &lt;/taxonomicClassification&gt;
+&lt;/taxonomicCoverage&gt;
+</code></pre>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<p></p>
+
+
+<<<<<<< HEAD
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> 2014-04-20-using-morpho-orgmode</h3>
+<div class="outline-text-3" id="text-1">
+  
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2014-04-19T22:38+1000"/>
+<meta name="author" content="Ivan Hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+        border: 1pt solid #AEBDCC;
+        background-color: #F3F5F7;
+        padding: 5pt;
+        font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+  
+  
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span>Introduction</h4>
+<div class="outline-text-4" id="text-1-1">
+
+
+<p>
+The collection of scientific data is undertaken at an individual level
+by everybody in their own way. The layout of data collections that I
+have seen is incredibly varied; spread across multiple files and folders which can
+be difficult to navigate or search through. In some cases
+these collections are incomprehensible to all but the individual themselves. Given
+that a lot of projects are collaborative in nature and require
+extensive sharing, it is important that scientists maintain their
+data collection by some form of system that allows easy data extraction and
+use in other projects. Therefore, the maintenance of a personal catalogue of datasets is an
+important activity for scientists.
+</p>
+<p>
+By cataloguing I mean that a file or database is kept that stores all the
+information about the names of the datasets (and any other files the
+data may be spread across), where the datasets are located, any
+references (papers) that were developed from it and finally
+important information regarding the conditions it
+was formed under.
+</p>
+<p>
+While this may seem laborious, it keeps track of all the data that one
+has collected over time and gives one a reference system to find a
+dataset of interest when sharing with collaborators. Datasets can be
+saved in any filing system the scientist chooses, but with the help of
+their personal data catalogue they will always know the status of
+their data collection.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Cataloguing Personal Research Data with Morpho</h4>
+<div class="outline-text-4" id="text-1-2">
+
+
+<p>
+[Metacat](<a href="https://knb.ecoinformatics.org/knb/docs/intro.html">https://knb.ecoinformatics.org/knb/docs/intro.html</a>) is an
+online repository for data and metadata. It is a great resource for
+the publication of data, but not very useful for an individual
+scientist to use on their personal computer.  However
+[Morpho](<a href="https://knb.ecoinformatics.org/#tools/morpho">https://knb.ecoinformatics.org/#tools/morpho</a>) the Metadata
+Editor used by Metacat may be used locally by a researcher to
+catalogue their collection (and ultimately this will make publishing
+elements of the collection easier.)  Morpho uses the Ecological
+Metadata Language (EML) to author metadata with a graphical user
+interface wizard.
+</p>
+<p>
+I am using morpho 1.8 due to my group using older metacat server.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-4">
+<h4 id="sec-1-3"><span class="section-number-4">1.3</span> How Morpho Works</h4>
+<div class="outline-text-4" id="text-1-3">
+
+
+<p>
+When you install Morpho it creates a directory where you can run the
+program from, and another hidden directory called ".morpho" for it's
+database of all your metadata (and optionally any data you import to
+it).  Below is an image of mine, with a couple of test records I
+played around with (the XMLs/HTMLs) and a dataset I imported (the text
+file).
+</p>
+<ul>
+<li>~/.morpho/profiles/hanigan/data/hanigan/
+</li>
+</ul>
+
+<p>
+<img src="/images/morphodir1.png" alt="morphodir1.png">
+</p>
+<p>  
+Every time a modification is made to the metadata a new XML is saved here, with the major number being the ID of the package and incremented minor number to reflect the change.
+</p>
+<p>
+The GUI is tedious.
+</p>
+
+</div>
+
+</div>
+=======
+<h4>SO how to insert a large number of these</h4>
+
+<p>One could use the taxon import feature to import the details from a
+file if there is a large list. Morpho’s taxon import feature does not
+correctly import more than one column of taxon data so if you have
+Genus and Species to enter you will actually need to combine Genus and
+Species into a binomial Species rank in one column (beware that if the data are sourced from a datafile that uses the underscore to seperate the words then these will not be correctly imported).</p>
+
+<p>Once you have formated your input list, then import this
+as a new data table and go to the taxonomic coverage form under the
+documentation menu.  Click on the option to "import taxon information
+from data table" and select the appropriate column, selecting
+'species' for the class.  This will populate the taxonomicCoverage module in the EML.  You can now remove that data table from the package to be tidy.</p>
+
+<p>This is what it looks like if you combine genus and species in the single column.</p>
+
+<p><img src="/images/morpho-taxo3.png" alt="morpho-taxo3.png" /></p>
+
+<p>And here is the XML</p>
+
+<h4>XML Code:</h4>
+
+<pre><code>&lt;taxonomicCoverage scope="document"&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abelmoschus moschatus&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abrus pector&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abrus precatorius&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+</code></pre>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<div id="outline-container-1-4" class="outline-4">
+<h4 id="sec-1-4"><span class="section-number-4">1.4</span> Adding a dataset from my collection</h4>
+<div class="outline-text-4" id="text-1-4">
+
+
+<p>
+I have already got a good amount of metadata I generated when I published [the drought data](<a href="http://dx.doi.org/10.4225/13/50BBFD7E6727A">http://dx.doi.org/10.4225/13/50BBFD7E6727A</a>)
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-4">
+<h4 id="sec-1-5"><span class="section-number-4">1.5</span> the drought dataset:</h4>
+<div class="outline-text-4" id="text-1-5">
+
+<p>    Hanigan, Ivan (2012): Monthly drought data for Australia 1890-2008
+    using the Hutchinson Drought Index. Australian National University Data Commons.
+    DOI: 10.4225/13/50BBFD7E6727A. 
+</p>
+<p>
+&lt;p&gt;&lt;/p&gt;
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-6" class="outline-4">
+<h4 id="sec-1-6"><span class="section-number-4">1.6</span> Step One: define the project that I will keep locally</h4>
+<div class="outline-text-4" id="text-1-6">
+
+
+<<<<<<< HEAD
+<ul>
+<li>This is the Github repo <a href="https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS">https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS</a>
+</li>
+<li>I store this locally at ~/data/DROUGHT-BOM-GRIDS
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-7" class="outline-4">
+<h4 id="sec-1-7"><span class="section-number-4">1.7</span> Contextual Metadata</h4>
+<div class="outline-text-4" id="text-1-7">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-8" class="outline-4">
+<h4 id="sec-1-8"><span class="section-number-4">1.8</span> Abstract</h4>
+<div class="outline-text-4" id="text-1-8">
+
+
+<p>
+I originally wrote the abstract as the description for a RIF-CS metadata object to publish for the ANU library.
+</p>
+<p>
+I got the following instructions from a Librarian: The "informative abstract" method.
+</p>
+<ul>
+<li>The abstract should be a descriptive of the data, not the research.
+</li>
+<li>Briefly outline the relevant project or study and describe the contents of the data package. 
+</li>
+<li>Include geographic location, the primary objectives of the study, what data was collected (species or phenomena), the year range the data was collected in, and collection frequency if applicable.
+</li>
+<li>Describe methodology techniques or approaches only to the degree necessary for comprehension – don’t go into any detail.
+</li>
+<li>Cite references and/or links to any publications that are related to the data package.
+</li>
+<li>Single paragraph
+</li>
+<li>200-250 words
+</li>
+<li>Use active voice and past tense.
+</li>
+<li>Use short complete sentences.
+</li>
+<li>Express terms in both their abbreviated and spelled out form for search retrieval purposes.
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-9" class="outline-4">
+<h4 id="sec-1-9"><span class="section-number-4">1.9</span> Australian FOR codes</h4>
+<div class="outline-text-4" id="text-1-9">
+
+<p>ANZSRC-FOR Codes: Australian and New Zealand Standard Research Classification – Fields of Research codes allow R&amp;D activity to be categorised according to the methodology used in the R&amp;D, rather than the activity of the unit performing the R&amp;D or the purpose of the R&amp;D.  
+<a href="http://www.abs.gov.au/Ausstats/abs@.nsf/Latestproducts/4AE1B46AE2048A28CA25741800044242?opendocument">http://www.abs.gov.au/Ausstats/abs@.nsf/Latestproducts/4AE1B46AE2048A28CA25741800044242?opendocument</a>
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-10" class="outline-4">
+<h4 id="sec-1-10"><span class="section-number-4">1.10</span> GCMD Keywords</h4>
+<div class="outline-text-4" id="text-1-10">
+
+<p>Olsen, L.M., G. Major, K. Shein, J. Scialdone, S. Ritz, T. Stevens, M. Morahan, A. Aleman, R. Vogel, S. Leicester, H. Weir, M. Meaux, S. Grebas, C.Solomon, M. Holland, T. Northcutt, R. A. Restrepo, R. Bilodeau, 2013. NASA/Global Change Master Directory (GCMD) Earth Science Keywords. Version 8.0.0.0.0 
+<a href="http://gcmd.nasa.gov/learn/keyword_list.html">http://gcmd.nasa.gov/learn/keyword_list.html</a>
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-11" class="outline-4">
+<h4 id="sec-1-11"><span class="section-number-4">1.11</span> Geographic coverage</h4>
+<div class="outline-text-4" id="text-1-11">
+
+<p>    &gt; require(devtools)
+    &gt; install<sub>github</sub>("disentangle", "ivanhanigan")
+    &gt; require(disentangle)
+    &gt; morpho<sub>bounding</sub><sub>box</sub>(d)
+                      X1                 X2                 X3
+    1               &lt;NA&gt; 10.1356954574585 S               &lt;NA&gt;
+    2 112.907211303711 E               &lt;NA&gt; 158.960372924805 E
+    3               &lt;NA&gt; 54.7538909912109 S               &lt;NA&gt;
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-12" class="outline-4">
+<h4 id="sec-1-12"><span class="section-number-4">1.12</span> Save the metadata</h4>
+<div class="outline-text-4" id="text-1-12">
+
+
+<ul>
+<li>the metadata is now ready to save to my .morpho catalogue
+</li>
+<li>without importing any data
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morphoimg2.png" alt="morphoimg2.png">
+</p>
+<ul>
+<li>this appears as a new XML
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morphoimg3.png" alt="morphoimg3.png">
+</p>
+<ul>
+<li>which looks like this
+</li>
+</ul>
+=======
+<h4>Morpho has problems subsequently editing a very long list</h4>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<p>We found that if a very large amount of taxonomic information is entered into Morpho
+we had issues modifying it. When you click on Documentation >
+Taxonomic Coverage to try and go in and edit nothing will
+happen. Morpho crashes when trying to open the Taxonomic Coverage
+because the list is long enough to cause “Out of Memory” error with
+the default configuration of Java heap space. It is a Morpho bug. The
+workaround is to edit the XML file manually.</p>
 
 <p>
 <img src="/images/morphoimg4.png" alt="morphoimg4.png">
@@ -893,7 +1515,11 @@ You can see this if you then open it up again in morpho and then under the docum
     </p>
     <!--
 	<p class="comments-link">
+<<<<<<< HEAD
       <a href='/2014/04/using-morpho-for-cataloguing-personal-research-data/#disqus_thread'>Comments</a>
+=======
+      <a href='/2014/04/a-workaround-for-inserting-species-names-to-morpho/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
@@ -907,6 +1533,7 @@ You can see this if you then open it up again in morpho and then under the docum
 
   <div class="full">
     <h1 class="entry-title">
+<<<<<<< HEAD
       <a href="/2014/04/a-workaround-for-inserting-species-names-to-morpho/" title="A Workaround For Inserting Species Names To Morpho" rel="bookmark">A Workaround For Inserting Species Names To Morpho</a>
     </h1>
     <div class="entry-content full-content">
@@ -967,65 +1594,7 @@ from data table" and select the appropriate column, selecting
 'species' for the class.  This will populate the taxonomicCoverage module in the EML.  You can now remove that data table from the package to be tidy.</p>
 
 <p>This is what it looks like if you combine genus and species in the single column.</p>
-
-<p><img src="/images/morpho-taxo3.png" alt="morpho-taxo3.png" /></p>
-
-<p>And here is the XML</p>
-
-<h4>XML Code:</h4>
-
-<pre><code>&lt;taxonomicCoverage scope="document"&gt;
-  &lt;taxonomicClassification&gt;
-    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
-    &lt;taxonRankValue&gt;Abelmoschus moschatus&lt;/taxonRankValue&gt;
-  &lt;/taxonomicClassification&gt;
-  &lt;taxonomicClassification&gt;
-    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
-    &lt;taxonRankValue&gt;Abrus pector&lt;/taxonRankValue&gt;
-  &lt;/taxonomicClassification&gt;
-  &lt;taxonomicClassification&gt;
-    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
-    &lt;taxonRankValue&gt;Abrus precatorius&lt;/taxonRankValue&gt;
-  &lt;/taxonomicClassification&gt;
-</code></pre>
-
-<p></p>
-
-
-<h4>Morpho has problems subsequently editing a very long list</h4>
-
-<p>We found that if a very large amount of taxonomic information is entered into Morpho
-we had issues modifying it. When you click on Documentation >
-Taxonomic Coverage to try and go in and edit nothing will
-happen. Morpho crashes when trying to open the Taxonomic Coverage
-because the list is long enough to cause “Out of Memory” error with
-the default configuration of Java heap space. It is a Morpho bug. The
-workaround is to edit the XML file manually.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/04/a-workaround-for-inserting-species-names-to-morpho/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Sun Apr 20 00:00:00 +1000 2014">20 Apr 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
+=======
       <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
     </h1>
     <div class="entry-content full-content">
@@ -1051,6 +1620,220 @@ workaround is to edit the XML file manually.</p>
 <li><a href="http://ivanhanigan.github.io/categories/spatial/">spatial</a>: technical details about how to use spatial tools</li>
 <li><a href="http://ivanhanigan.github.io/categories/spatial%20dependence/">spatial dependence</a>: theoretical details about spatial statistics</li>
 </ul>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<p><img src="/images/morpho-taxo3.png" alt="morpho-taxo3.png" /></p>
+
+<<<<<<< HEAD
+<p>And here is the XML</p>
+
+<h4>XML Code:</h4>
+
+<pre><code>&lt;taxonomicCoverage scope="document"&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abelmoschus moschatus&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abrus pector&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abrus precatorius&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+</code></pre>
+
+<p></p>
+=======
+<h4>What is Open Notebook Science?  And Why am I doing it?</h4>
+
+<p>In <a href="http://www.infotoday.com/it/sep10/Poynder.shtml">2005 Jean-Claude Bradley launched a web-based initiative called UsefulChem</a> and named his new technique Open Notebook Science (ONS).  He described it as a way of doing science in which you make all your research freely available to the public in real time. The proposed benefits include greater impact on the public good and enhanced ability to connect with like-minded collaborators. Proposed risks of ONS practice include being scooped by competitors or falling foul of Journal rules regarding prior publication and licencing of Intellectual Property. To mitigate the proposed risks the concept of ONS was broadened to allow research to be made public after a delay.</p>
+
+<p>In 2010 <a href="http://carlboettiger.info/2012/09/28/Welcome-to-my-lab-notebook.html">Carl Boettiger</a> initiated an experiment "to see if any of the purported benefits or supposed risks were well-founded."  After three years of his experiment Boettiger reported that his "evidence suggests that the practice of open notebook science can faciliate both the performance and dissemination of research while remaining compatible and even synergistic with academic publishing."</p>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<p>This promising result has inspired me to follow these practices in my own part-time PhD and my full-time work as Data Manager at a University (to the extent I am allowed to by the rules of the University and the willingness of my boss to share our results).</p>
+
+<h4>Morpho has problems subsequently editing a very long list</h4>
+
+<p>We found that if a very large amount of taxonomic information is entered into Morpho
+we had issues modifying it. When you click on Documentation >
+Taxonomic Coverage to try and go in and edit nothing will
+happen. Morpho crashes when trying to open the Taxonomic Coverage
+because the list is long enough to cause “Out of Memory” error with
+the default configuration of Java heap space. It is a Morpho bug. The
+workaround is to edit the XML file manually.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+<<<<<<< HEAD
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+=======
+      <a href="/categories/overview" title="overview" rel="category tag">overview</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+      
+    </p>
+    <!--
+	<p class="comments-link">
+<<<<<<< HEAD
+      <a href='/2014/04/a-workaround-for-inserting-species-names-to-morpho/#disqus_thread'>Comments</a>
+=======
+      <a href='/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+<<<<<<< HEAD
+        <abbr class="published" title="Sun Apr 20 00:00:00 +1000 2014">20 Apr 2014</abbr>
+=======
+        <abbr class="published" title="Sat Apr 19 00:00:00 +1000 2014">19 Apr 2014</abbr>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+<<<<<<< HEAD
+      <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I just revised the content of the <a href="/research.html">"About My Notebook"</a> page and thought it was also relevant to post as an entry.</p>
+
+<h4>Welcome to my Open Notebook</h4>
+
+<p>This is the public face of my Open Notebook, in which I keep all the details of the data, code and documents related to my research.  This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a> and aligns with the principles of the Open Notebook Science (ONS) movement.  The private side of my Open Notebook (the closed bit) is private either because it includes unpublished work that I wish to keep embargoed until after publication, or because it is all the gory, messy details of the day-to-day business of writing and rewriting code and prose to analyse data and make sense of the data I am analysing.  These elements of the notebook do not look like standalone journal entries and I store my personal archive either hosted by <a href="https://github.com/ivanhanigan/">GitHub</a> for the public parts (thanks to their superior integration with Jekyll websites thanks to gh-pages for each repository) or <a href="https://bitbucket.org/ivanhanigan/">BitBucket</a> for the private bits (thanks to bitbucket's free unlimited private repositories).</p>
+=======
+      <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I have been using <a href="http://projecttemplate.net/">John Myles Whites ProjectTemplate R package</a> for ages</li>
+<li>I really like the ease with which I can get up and running a new project</li>
+<li>and the ease with which I can pick up an old project and start adding new work</li>
+</ul>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<h4>Categories</h4>
+
+<<<<<<< HEAD
+<p>The different categories can be thought of as seperate lab notebooks. My projects are connected by being placed into one of these categories.</p>
+
+<ul>
+<li><a href="http://ivanhanigan.github.io/categories/cloud%20building/">cloud building</a>: the experiments I am conducting in building Virtual Labs in the cloud</li>
+<li><a href="http://ivanhanigan.github.io/categories/Data%20Documentation/">Data Documentation</a>: how metadata tools interact with data analysis tools</li>
+<li><a href="http://ivanhanigan.github.io/categories/disentangle%20things/">disentangle things</a>: conceptual and methodological insights regarding complexity</li>
+<li><a href="http://ivanhanigan.github.io/categories/e-collaboration/">e-collaboration</a>: my interactions with other scientists online</li>
+<li><a href="http://ivanhanigan.github.io/categories/ecosocial%20tipping%20points/">ecosocial tipping points</a>: a major branch of my research</li>
+<li><a href="http://ivanhanigan.github.io/categories/extreme%20weather%20events/">extreme weather events</a>: another major branch of my research</li>
+<li><a href="http://ivanhanigan.github.io/categories/overview/">overview</a>: high level information about why I am doing this stuff</li>
+<li><a href="http://ivanhanigan.github.io/categories/research%20methods/">research methods</a>: low level information about how I am doing this stuff</li>
+<li><a href="http://ivanhanigan.github.io/categories/spatial/">spatial</a>: technical details about how to use spatial tools</li>
+<li><a href="http://ivanhanigan.github.io/categories/spatial%20dependence/">spatial dependence</a>: theoretical details about spatial statistics</li>
+=======
+<h4>Quote from John's first post</h4>
+
+<pre><code>My inspiration for this approach comes from the rails command from
+Ruby on Rails, which initializes a new Rails project with the proper
+skeletal structure automatically. Also taken from Rails is
+ProjectTemplate’s approach of preferring convention over
+configuration: the automatic data and library loading as well as the
+automatic testing work out of the box because assumptions are made
+about the directory structure and naming conventions that will be used
+</code></pre>
+
+<p></p>
+
+
+<p><a href="http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/">http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/</a></p>
+
+<ul>
+<li>I dont know anything about RoR but this philosophy works really well for my R programming too</li>
+</ul>
+
+
+<h4>R Code</h4>
+
+<pre><code>if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
+setwd("~/projects")
+create.project("my-project")
+setwd('my-project')
+dir()
+##  [1] "cache"       "config"      "data"        "diagnostics" "doc"        
+##  [6] "graphs"      "lib"         "logs"        "munge"       "profiling"  
+## [11] "README"      "reports"     "src"         "tests"       "TODO"   
+##### these are very sensible default directories to create a modular
+##### analysis workflow.  See the project homepage for descriptions
+
+# now all you need to do whenever you start a new day 
+load.project()
+# and your workspace will be recreated and any new data automagically analysed in
+# the manner you want
+</code></pre>
+
+<p></p>
+
+
+<h4>Project Administration</h4>
+
+<ul>
+<li>I;ve found that these directories do not work so well for the administration of my projects and so I put together a different set of automatic defaults</li>
+<li>Ive based it on the <a href="http://ivanhanigan.github.io/2013/12/research-protocol-for-manitoba-centre-for-health-policy/">University of Manitoba Centre for Health Policy</a>- along with some other sources I can recall
+
+<h4>The full set</h4>
+
+<p>  # A.Background      <br/>
+  # B.Proposals
+  # C.Approvals
+  # D.Budget  <br/>
+  # E.Datasets<br/>
+  # F.Analysis<br/>
+  # G.Literature      <br/>
+  # H.Communication           <br/>
+  # I.Correspondance  <br/>
+  # J.Meetings<br/>
+  # K.Completion      <br/>
+  # ContactDetails.txt<br/>
+  # README.md
+  # TODO.txt</p></li>
+</ul>
+
+
+<p></p>
+
+
+<h4>R Code: my subset</h4>
+
+<pre><code>AdminTemplate &lt;- function(rootdir = getwd()){
+  setwd(rootdir)
+  dir.create(file.path(rootdir,'01_planning'))
+  dir.create(file.path(rootdir,'01_planning','proposal'))
+  dir.create(file.path(rootdir,'01_planning','scheduling'))
+  dir.create(file.path(rootdir,'02_budget'))
+  dir.create(file.path(rootdir,'03_communication'))
+  dir.create(file.path(rootdir,'04_reporting_and_meetings'))
+  file.create(file.path(rootdir,'contact_details.txt'))
+  file.create(file.path(rootdir,'README.md'))
+  }
+</code></pre>
+
+<p></p>
+
+
+<h4>Conclusion</h4>
+
+<ul>
+<li>hopefully by formalising some of these into my workflow I will find my projects easier to navigate through</li>
+<li>and pick up or put down as needed</li>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+</ul>
 
 
 <h4>What is Open Notebook Science?  And Why am I doing it?</h4>
@@ -1066,17 +1849,29 @@ workaround is to edit the XML file manually.</p>
     <p class="alt-font tight">
       Posted in&nbsp;
       
+<<<<<<< HEAD
       <a href="/categories/overview" title="overview" rel="category tag">overview</a>
+=======
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       
     </p>
     <!--
 	<p class="comments-link">
+<<<<<<< HEAD
       <a href='/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/#disqus_thread'>Comments</a>
+=======
+      <a href='/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
+<<<<<<< HEAD
         <abbr class="published" title="Sat Apr 19 00:00:00 +1000 2014">19 Apr 2014</abbr>
+=======
+        <abbr class="published" title="Sat Mar 29 00:00:00 +1100 2014">29 Mar 2014</abbr>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       </span>
     </p>
     <div class="clear"></div>
@@ -1111,7 +1906,11 @@ workaround is to edit the XML file manually.</p>
           <div id="carrington-about" class="widget">
             <div class="about">
               <h2 class="widget-title">About</h2>
+<<<<<<< HEAD
               <p>I am a PhD Student at the Australian National University.</p>
+=======
+              <p>I am a data manager and data analyst at the Australian National University.</p>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
               <a class="more" href="/about.html">more →</a>
 
             </div>
@@ -1138,6 +1937,7 @@ workaround is to edit the XML file manually.</p>
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
+<<<<<<< HEAD
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
@@ -1157,16 +1957,40 @@ workaround is to edit the XML file manually.</p>
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
                 <li><a href="/categories/research methods">research methods (42)</a></li>
+=======
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (42)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (24)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (6)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/overview">overview (7)</a></li>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
                 
                 <li>
+<<<<<<< HEAD
                   <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
                 </li>
                 
                 <li>
+=======
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
                   <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
                 </li>
                 
@@ -1182,13 +2006,24 @@ workaround is to edit the XML file manually.</p>
                   <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
                 </li>
                 
+<<<<<<< HEAD
+=======
+                <li>
+                  <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions/" title="Using Reml To Input Large Number Of Column Descriptions" rel="bookmark">Using Reml To Input Large Number Of Column Descriptions</a>
+                </li>
+                
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/tag/morpho">morpho (7)</a></li>
+=======
+                <li><a href="/tag/morpho">morpho (5)</a></li>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
                 
                 <li><a href="/tag/bugs">bugs (1)</a></li>
                 
@@ -1203,7 +2038,11 @@ workaround is to edit the XML file manually.</p>
           <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
+<<<<<<< HEAD
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
+=======
+          <!--       <li><a href="/tag/morpho">morpho (5)</a></li> -->
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
           <!--        -->
           <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->

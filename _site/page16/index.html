@@ -21,12 +21,12 @@
         <p id="blog-description"></p>
         <div id="navigation">
           <ul class="nav clearfix">
-            <li class="first-child"><a href="/research.html">Open Notebook</a></li>
-            <li> <a href="/blog.html">Blog</a></li>
-            <li><a href="/projects.html">Software</a></li>
-            <li><a href="/about.html">About</a></li>
-            <li><a href="/publications.html">Publications</a></li>
-            <li><a href="/cv.html">CV</a></li>
+            <li class="first-child"><a href="/research.html">About My Notebook</a></li>
+            <li> <a href="/blog.html">Entries</a></li> 
+            <!-- <li><a href="/projects.html">Software</a></li>-->
+            <li><a href="/about.html">About Me</a></li>
+            <li><a href="/publications.html">My Publications</a></li>
+            <li><a href="/cv.html">My CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
             <!--<li><a href="/donors.html">Donors</a></li>-->
           </ul>
@@ -38,7 +38,7 @@
         <div id="content">
           <h2>Welcome to my Open Notebook</h2>
 
-<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a> for documenting progress on my projects.</p>
+<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a>. Find out more <a href="/research.html">Here</a>.</p>
 
 <p>  <img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
 
@@ -54,15 +54,108 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/04/reflections-bob-haining/" title="Reflections on Spatial Regression Class with Prof Bob Haining" rel="bookmark">Reflections on Spatial Regression Class with Prof Bob Haining</a>
+      <a href="/2013/07/animated-maps/" title="animated-maps" rel="bookmark">animated-maps</a>
     </h1>
     <div class="entry-content full-content">
-      <p><head>
-<title>Reflections on a class with Prof Bob Haining</title>
-<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
-<meta name="title" content="Reflections on a class with Prof Bob Haining"/>
+      <h1>Animated maps to allow exploration of alternate levels of 'jitter'</h1>
+
+<p>In a <a href="http://www.ncbi.nlm.nih.gov/pubmed/22672028">previous project</a> we published a map of point locations that had been 'jittered', ie adding random noise to the latitude and longitude.  We did this by testing out a few maps and deciding on one that we thought protected privacy adequately whilst not destroying the spatial pattern we wished to display (evocatively).</p>
+
+<p><img src="/jitter/Figure%202_FINAL.jpg" alt="Figure 2_FINAL.jpg" /></p>
+
+<p>I always wondered about a way to interactively do this and I think the animation package might do the trick, with the ability to step thru levels of jittering with the pause, fwd and back buttons.</p>
+
+<p><a href="/jitter/index.html">Clink here for the same data shown in a new animation</a>.</p>
+
+<h1>Reference</h1>
+
+<p>Vally, H., Peel, M., Dowse, G. K., Cameron, S., Codde, J. P., Hanigan, I., &amp; Lindsay, M. D. a. (2012). Geographic Information Systems used to describe the link between the risk of Ross River virus infection and proximity to the Leschenault estuary, WA. Australian and New Zealand Journal of Public Health, 36(3), 229–235. doi:10.1111/j.1753-6405.2012.00869.x</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/07/animated-maps/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Tue Jul 30 00:00:00 +1000 2013">30 Jul 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/06/spatio-temporal-animations/" title="spatio-temporal-animations" rel="bookmark">spatio-temporal-animations</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h2>Space time animations are cool</h2>
+
+<p>This is a graphic I made a few years ago of temperature in Sydney.  It is a GAM with smoothing splines on longitude, latitude and time (t):</p>
+
+<pre><code>require(mgcv)
+fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)  
+</code></pre>
+
+<p><img src="/button/spacetimegamSydney3hrTemp.gif" alt="spacetimegamSydney3hrTemp.gif" /></p>
+
+<p><a href="/button/index.html">Clink here for an example of where I think this kind of animation should go now</a>.</p>
+
+<p>The addition of stop/play/fwd/reverse buttons adds potential for exploratory insights.</p>
+
+<p>The secret to getting the play/pause/next buttons is to insert graphing code between:</p>
+
+<pre><code>saveHTML(..., outdir = getwd())
+</code></pre>
+
+<p>Unfortunately the rest of the code that accompanies the graphic above is too specific to my workflow that it is not reproducible.  That was back before (during the time that) I became obsessed with the prospect of <a href="http://swish-climate-impact-assessment.github.io/">creating reproducible data analysis workflows</a>.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/06/spatio-temporal-animations/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Jun 06 00:00:00 +1000 2013">06 Jun 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/05/data-dredging/" title="Complex Model Selection (or Data Dredging)" rel="bookmark">Complex Model Selection (or Data Dredging)</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head></p>
+
+<!--<title>data dredging</title>-->
+
+
+<p><meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="data dredging"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-04-05"/>
+<meta name="generated" content="2013-05-09 "/>
 <meta name="author" content="ivan hanigan"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/></p>
@@ -70,6 +163,30 @@
 
 
 <script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
 <!--/*--><![CDATA[/*><!--*/
  function CodeHighlightOn(elem, id)
  {
@@ -94,6 +211,56 @@
 
 
 <script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
 <!--/*--><![CDATA[/*><!--*/
     MathJax.Hub.Config({
         // Only one of the two following lines, depending on user settings
@@ -147,185 +314,170 @@
 
 
 <div id="content">
-<!-- <h1 class="title">Reflections on a class with Prof Bob Haining</h1> -->
+<h1 class="title">Toward Automated Model Selection</h1>
 
-
-<!-- <div id="table-of-contents"> -->
-<!-- <h2>Table of Contents</h2> -->
-<!-- <div id="text-table-of-contents"> -->
-<!-- <ul> -->
-<!-- <li><a href="#sec-1">1 Introduction</a></li> -->
-<!-- <li><a href="#sec-2">2 The Spatial Error Model</a></li> -->
-<!-- <li><a href="#sec-3">3 The Spatial Lag Model</a></li> -->
-<!-- <li><a href="#sec-4">4 Spatially Lagged Independent Variable(s)</a></li> -->
-<!-- <li><a href="#sec-5">5 Discussion</a> -->
-<!-- <ul> -->
-<!-- <li><a href="#sec-5-1">5.1 How to decide which model to fit?</a></li> -->
-<!-- </ul> -->
-<!-- </li> -->
-<!-- <li><a href="#sec-6">6 Conclusion</a></li> -->
-<!-- </ul> -->
-<!-- </div> -->
-<!-- </div> -->
-
+<!--
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Data Dredging</a></li>
+<li><a href="#sec-2">2 Compulsory inclusions</a></li>
+<li><a href="#sec-3">3 AIC vs BIC vs LRTests</a></li>
+</ul>
+</div>
+</div>
+-->
 <div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<!--<h2 id="sec-1"><span class="section-number-2">1</span> Data Dredging</h2>-->
 <div class="outline-text-2" id="text-1">
 
-<p>I recently attended a class on spatial regression with Prof Bob
-Haining.  He described the issue of spatially correlated errors and
-the problems this poses in spatial regression.
+<p><a href="http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did-environmental-factors-influencing-the-velocity-of-blueton">The Bluetongue paper</a> we've been discussing at the <a href="http://gis-forum.github.io/study.html">ANU GIS forum</a>  correctly points out that with the "the large number of candidate variables &hellip; a huge number of models could be considered."
 </p>
 <p>
-The key issue is that spatial data often violates the assumption in
-regression models that the errors are independent. 
+They go on to say that:
 </p>
 <p>
-A simple regression model applied to spatial data based on ZONES:
+"Thus, for practical reasons, we &hellip; isolate independently for each of  three thematic sets of variables (host-, meteorological- and landscape-related covariates) a combination of variables best fitting the data."
+</p>
+<p>
+I don't really get this.  Why not fit the huge number of models (RAM and disk speed permitting) and let AIC or BIC  sift out any combinations that perform well?  For example in a simple instance with four explanatory variables and no interactions the rich model would be:
 </p>
 
 
-\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + e_{i}\)
+\(Y_{i} = \beta_{0} + \beta_{1} X_{1} + \beta_{2} X_{2} + \beta_{3} X_{3} + \beta_{4} X_{4}\)
 
 <p>
-But with spatial data it is likely that the errors are spatially
-correlated.  This is likely to mean the point estimate of beta 1 is OK
-but the Standard Error is wrong.
+Lu, Sonya and I are working on a function to do all the possible combos (interaction terms are possible to include too).  So far we have this code and a link to an old <a href="https://stat.ethz.ch/pipermail/r-help/2007-January/124023.html">Hadley Wickham quote</a>.
+That's from 2007, and still haven't herd about any tool developed that really does this. 
 </p>
 <p>
-This might be due to the scale of the study units, which may not
-capture the variation of exposure and outcome adequately. Or there
-might be unmeasured explanatory variables that have not been accounted
-for.
+So far we have this code:
 </p>
+
+
+
+<pre class="src src-R"><span style="color: #268bd2;">combos</span>  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #859900; font-weight: bold;">function</span>(yvar, xvars, compulsory = <span style="color: #b58900;">NA</span>)
+  {
+    formlas <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #b58900;">NULL</span>
+    <span style="color: #859900; font-weight: bold;">for</span>(j <span style="color: #859900; font-weight: bold;">in</span> length(xvars):1)
+      {
+        combns <span style="color: #268bd2; font-weight: bold;">&lt;-</span> combn(xvars, j)
+        <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(combns))
+          {
+            terms2include <span style="color: #268bd2; font-weight: bold;">&lt;-</span> combns[,i]
+            <span style="color: #859900; font-weight: bold;">if</span>(!is.na(compulsory[1]))
+              {
+                terms2include  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(terms2include, compulsory)
+              }
+            formla <span style="color: #268bd2; font-weight: bold;">&lt;-</span> reformulate(terms2include,                                  
+                                  response = yvar
+                                  )
+            formlas <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(formlas,formla)     
+          }
+      }
+    <span style="color: #859900; font-weight: bold;">return</span>(formlas)
+  }
+</pre>
+
+
 <p>
-I am mostly concerned with EXPLANATORY modelling in which a particular
-exposure of interest is to be assessed.  Examples include a weather
-variable (temperature), an air pollutant (PM10) or some measure of
-socio-economic deprivation in an area (SEIFA scores in Australian
-census data).  In these models I tend to include a number of
-'nuisance' parameters to control for confounding; or interaction terms
-to account for effect modification.  In this type of model the
-performance of the model over-all is not that important, I just want
-to control for the most important confounders so that my estimate of
-the exposure of interest is as rigorous as possible.
+The resulting list of candidate models are:
 </p>
-<p>
-Therefore the problem that spatially correlated errors pose for these models is
-slightly different to that which affects models aimed at PREDICTION: I
-am not concerned so much with the model's fit to the data, rather the
-confidence around the point-estimate of the parameter for the exposure
-of interest.
-</p>
-<p>
-Simplistically I took away the following messages:
-</p>
+
+
+
+<pre class="src src-R">formlas <span style="color: #268bd2; font-weight: bold;">&lt;-</span> combos(yvar = <span style="color: #2aa198;">"deaths"</span>,
+                  xvars = c(<span style="color: #2aa198;">"x1"</span>, <span style="color: #2aa198;">"x2"</span>, <span style="color: #2aa198;">"x3"</span>, <span style="color: #2aa198;">"x4"</span>)
+                  )
+paste(formlas)
+
+</pre>
+
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">deaths ~ x1 + x2 + x3 + x4</td></tr>
+<tr><td class="left">deaths ~ x1 + x2 + x3</td></tr>
+<tr><td class="left">deaths ~ x1 + x2 + x4</td></tr>
+<tr><td class="left">deaths ~ x1 + x3 + x4</td></tr>
+<tr><td class="left">deaths ~ x2 + x3 + x4</td></tr>
+<tr><td class="left">deaths ~ x1 + x2</td></tr>
+<tr><td class="left">deaths ~ x1 + x3</td></tr>
+<tr><td class="left">deaths ~ x1 + x4</td></tr>
+<tr><td class="left">deaths ~ x2 + x3</td></tr>
+<tr><td class="left">deaths ~ x2 + x4</td></tr>
+<tr><td class="left">deaths ~ x3 + x4</td></tr>
+<tr><td class="left">deaths ~ x1</td></tr>
+<tr><td class="left">deaths ~ x2</td></tr>
+<tr><td class="left">deaths ~ x3</td></tr>
+<tr><td class="left">deaths ~ x4</td></tr>
+</tbody>
+</table>
+
+
+
 </div>
 
 </div>
 
 <div id="outline-container-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> The Spatial Error Model</h2>
+<h2 id="sec-2"><span class="section-number-2">2</span> Compulsory inclusions</h2>
 <div class="outline-text-2" id="text-2">
 
-<p>So we could model allowing for correlated errors:
+<p>In some instances you may want to include a variable in all models so the compulsory option can be used.  For example in spatio-temporal models we could include a term for zone and time while assessing the mix of explanatory variables:
 </p>
 
 
-\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \eta_{i}\)
 
-<p>
-Where:
-</p>
-<p>
-\(\eta_{i}\) = Spatially autocorrelated errors.
-</p>
+<pre class="src src-R">formlas <span style="color: #268bd2; font-weight: bold;">&lt;-</span> combos(yvar = <span style="color: #2aa198;">"deaths"</span>,
+                  xvars = c(<span style="color: #2aa198;">"x1"</span>, <span style="color: #2aa198;">"x2"</span>, <span style="color: #2aa198;">"x3"</span>, <span style="color: #2aa198;">"x4"</span>),
+                  compulsory = c(<span style="color: #2aa198;">"zone"</span>, <span style="color: #2aa198;">"ns(time, df = 3)"</span>)
+                  )
+paste(formlas)
+
+</pre>
+
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">deaths ~ x1 + x2 + x3 + x4 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x1 + x2 + x3 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x1 + x2 + x4 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x1 + x3 + x4 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x2 + x3 + x4 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x1 + x2 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x1 + x3 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x1 + x4 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x2 + x3 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x2 + x4 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x3 + x4 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x1 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x2 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x3 + zone + ns(time, df = 3)</td></tr>
+<tr><td class="left">deaths ~ x4 + zone + ns(time, df = 3)</td></tr>
+</tbody>
+</table>
+
+
+
+
 </div>
 
 </div>
 
 <div id="outline-container-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> The Spatial Lag Model</h2>
+<h2 id="sec-3"><span class="section-number-2">3</span> AIC vs BIC vs LRTests</h2>
 <div class="outline-text-2" id="text-3">
 
-<p>Or we could include a term for the neighbours, thus absorbing the correlated errors:
-</p>
-
-
-\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \rho(Neighbours Y_{ij}) + e_{i}\)
-
-<p>
-Where:
-</p>
-<p>
-\(\rho_(Neighbours Y_{ij})\) = is an additional explanatory variable which is the value of the dependent variable in neighbouring areas. 
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> Spatially Lagged Independent Variable(s)</h2>
-<div class="outline-text-2" id="text-4">
-
-<p>This is almost a variation of the spatial lag model, except that we
-include a term for the exposure variable in the neighbours, and
-therefore 'smooth' the effect of the exposure from what was observed
-in any area to make it relevant to it's neighbours as well:
-</p>
-
-
-\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \beta_{2L} X_{2ij} + e_{i}\)
-
-<p>
-Where:
-</p>
-<p>
-\(\beta_{2L} X_{2ij}\) = is the independent variable X2 that is spatially lagged.
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> Discussion</h2>
-<div class="outline-text-2" id="text-5">
-
-
-</div>
-
-<div id="outline-container-5-1" class="outline-3">
-<h3 id="sec-5-1"><span class="section-number-3">5.1</span> How to decide which model to fit?</h3>
-<div class="outline-text-3" id="text-5-1">
-
-<p>So the burning question is how to choose between the various spatial
-models? Prof Haining had some suggestions, but he noted that sometimes
-two could be equally appropriate.  He suggested that the spatial lag
-model makes the strong assumption that there is a relationship between
-the outcome in a neighbouring area with the index zone.  This suggests
-some kind of contagion or dispersion effect.  He was not keen to fit
-this model in circumstances where the causal mechanism did not support
-such a relationship, suggesting the spatially weighted error model was
-more suited, but that "in practice they often give the same result".
-</p>
-<p>
-In my situation where I am not concerned with the actual
-autocorrelation but with tightening up the standard error on my
-exposure of interest, I think I might plead forgiveness and try
-fitting the spatial lag model as it seems easier.
-</p>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> Conclusion</h2>
-<div class="outline-text-2" id="text-6">
-
-<p>Stay tuned.
-</p>
-</div>
+<p>Well now we get into a sort of philosophical debate on how to rank all these models.  That'll have to wait for another day.
+</p></div>
 </div>
 </div>
 
@@ -343,12 +495,12 @@ fitting the spatial lag model as it seems easier.
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/04/reflections-bob-haining/#disqus_thread'>Comments</a>
+      <a href='/2013/05/data-dredging/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Fri Apr 05 00:00:00 +1100 2013">05 Apr 2013</abbr>
+        <abbr class="published" title="Thu May 09 00:00:00 +1000 2013">09 May 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -357,174 +509,34 @@ fitting the spatial lag model as it seems easier.
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2012/09/software-ism/" title="software-ism" rel="bookmark">software-ism</a>
+      <a href="/2013/04/pioz-et-al-2012-model-selection/" title="Pioz et al 2012 model selection" rel="bookmark">Pioz et al 2012 model selection</a>
     </h1>
     <div class="entry-content full-content">
-      <p>I am a huge fan of the R language for statistics and graphics.</p>
+      <p>In the <a href="http://gis-forum.github.io/study.html">GIS forum SPDEP study group</a> we've been discussing the Bluetongue paper <a href="http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did-environmental-factors-influencing-the-velocity-of-blueton">http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did</a></p>
 
-<p>I sometimes hear people say they don't like R but then admit that they have never tried to use it, or if they have it was close to ten years ago (and a lot has changed).</p>
+<p>I'd like to know more about the the Lagrange Multiplier tests and Francis
+raised the <a href="http://ivanhanigan.github.io/2013/04/reflections-bob-haining/#comment-864167749">seminal Anselin 1988 paper for that</a></p>
 
-<p>In recent discussions at work I got the impression some people have got a bit predjudiced against R and other software that they don't actually use, primarily because of the added difficulty of software that requires a bit of programming.</p>
+<p>But in this post I just wanted to summarise their model selection procedure in a flow diagram</p>
 
-<p>I think that multi-disciplinary work will inevitably mean we find a mix of software in use, and they'll all have strengths and weaknesses.  A major strength of R is that one can weave together a report that includes the data, code, graphs and interpretations for an analysis, rather than copy-and-pasting these elements together as is required with other software toolboxes.</p>
-
-<p>For example a simple analysis in Rstudio using the 'R Markdown document' is below.</p>
-
-<p>You can load and explore data in the document by placing 'Code Chunks' in the document, then when you click the <strong>Knit HTML</strong> button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-
-<hr />
-
-<pre><code>summary(cars)
-</code></pre>
-
-<hr />
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> speed </th>
-<th> dist </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Min.   : 4.0 </td>
-<td> Min.   :  2.00  </td>
-</tr>
-<tr>
-<td></td>
-<td> 1st Qu.:12.0 </td>
-<td> 1st Qu.: 26.00  </td>
-</tr>
-<tr>
-<td></td>
-<td> Median :15.0 </td>
-<td> Median : 36.00  </td>
-</tr>
-<tr>
-<td></td>
-<td> Mean   :15.4 </td>
-<td> Mean   : 42.98  </td>
-</tr>
-<tr>
-<td></td>
-<td> 3rd Qu.:19.0 </td>
-<td> 3rd Qu.: 56.00  </td>
-</tr>
-<tr>
-<td></td>
-<td> Max.   :25.0 </td>
-<td> Max.   :120.00  </td>
-</tr>
-</tbody>
-</table>
-
-
-<hr />
-
-<p>You can also embed plots, for example:</p>
-
-<hr />
-
-<pre><code>plot(cars)
-</code></pre>
-
-<hr />
-
-<p><img src="/images/unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2" /></p>
-
-<h2>I hope we can work toward a kind of 'tower of babel'.</h2>
-
-<p>name: software-ism
-layout: post
-title: software-ism
-date: 2012-09-15
-categories:</p>
-
-<h2>- software</h2>
-
-<p>I am a huge fan of the R language for statistics and graphics.</p>
-
-<p>I sometimes hear people say they don't like R but then admit that they have never tried to use it, or if they have it was close to ten years ago (and a lot has changed).</p>
-
-<p>In recent discussions at work I got the impression some people have got a bit predjudiced against R and other software that they don't actually use, primarily because of the added difficulty of software that requires a bit of programming.</p>
-
-<p>I think that multi-disciplinary work will inevitably mean we find a mix of software in use, and they'll all have strengths and weaknesses.  A major strength of R is that one can weave together a report that includes the data, code, graphs and interpretations for an analysis, rather than copy-and-pasting these elements together as is required with other software toolboxes.</p>
-
-<p>For example a simple analysis in Rstudio using the 'R Markdown document' is below.</p>
-
-<p>You can load and explore data in the document by placing 'Code Chunks' in the document, then when you click the <strong>Knit HTML</strong> button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-
-<hr />
-
-<pre><code>summary(cars)
-</code></pre>
-
-<hr />
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> speed </th>
-<th> dist </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Min.   : 4.0 </td>
-<td> Min.   :  2.00  </td>
-</tr>
-<tr>
-<td></td>
-<td> 1st Qu.:12.0 </td>
-<td> 1st Qu.: 26.00  </td>
-</tr>
-<tr>
-<td></td>
-<td> Median :15.0 </td>
-<td> Median : 36.00  </td>
-</tr>
-<tr>
-<td></td>
-<td> Mean   :15.4 </td>
-<td> Mean   : 42.98  </td>
-</tr>
-<tr>
-<td></td>
-<td> 3rd Qu.:19.0 </td>
-<td> 3rd Qu.: 56.00  </td>
-</tr>
-<tr>
-<td></td>
-<td> Max.   :25.0 </td>
-<td> Max.   :120.00  </td>
-</tr>
-</tbody>
-</table>
-
-
-<hr />
+<p><img src="/images/pioz_modelling.png" alt="pioz_modelling.png" /></p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/workflow" title="workflow" rel="category tag">workflow</a>
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2012/09/software-ism/#disqus_thread'>Comments</a>
+      <a href='/2013/04/pioz-et-al-2012-model-selection/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Sat Sep 15 00:00:00 +1000 2012">15 Sep 2012</abbr>
+        <abbr class="published" title="Thu Apr 18 00:00:00 +1000 2013">18 Apr 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -533,155 +545,76 @@ categories:</p>
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2012/07/the-ecological-fallacy-is-itself-a-fallacy/" title="The Ecological Fallacy is Itself a Fallacy" rel="bookmark">The Ecological Fallacy is Itself a Fallacy</a>
+      <a href="/2013/04/suicide-and-drought-evidence-from-literature/" title="Suicide And Drought Evidence From Literature" rel="bookmark">Suicide And Drought Evidence From Literature</a>
     </h1>
     <div class="entry-content full-content">
-      <h2>The Ecological Fallacy</h2>
+      <p>This essay evolved as I was asked to write something for the <a href="http://www.hmndp.org/">High-level Meeting on National Drought Policy (HMNDP)</a> in Geneva with <a href="http://www.hmndp.org/presentations/12.03-HMNDP-Parallel5-Howden.pdf">Mark Howden, Steven Crimp and Bryson Bates</a>.  It is a summary of material Colin Butler and I wrote for our paper with Phil Kokic and Mike Hutchinson <a href="http://www.pnas.org/cgi/content/abstract/1112965109v1">on Suicide and Drought published in PNAS last year</a>.</p>
 
-<p>The term 'Ecological fallacy' is used in Epidemiology and some other disciplines (such as Sociology) to refer to <a href="http://www.springer.com/medicine/book/978-1-4419-1004-2" title="Marc Gellman, J. Rick Turner. Encyclopedia of Behavioral Medicine Springer, 2012.">improperly inferring a causal association (or lack of association) at an individual-level based on a group-level relationship</a>. This use of the word ecological is at odds with the alternative use of the word in the discipline of Ecology.  <a href="http://cup.columbia.edu/book/978-0-231-06919-9/toward-a-unified-ecology" title="Timothy F. H. Allen, Thomas W. Hoekstra. Toward a unified ecology. Columbia University Press, 1993.">Ecological methods from Ecology are inherently multi-scaled</a> and address precisely the issue of this cross-scale inferential fallacy.</p>
+<h1>Suicide and Drought</h1>
 
-<p>I argue that a broader understanding of ecological methods by non-Ecologists would be a start towards better understanding between the disciplines.  The inclusion of real ecological methods in the other disciplines will also assist research to better understand the causes and effects of climate and climate change which are important gaps in knowledge needed to enable mitigation and adaptation of our society to future climate change.</p>
+<h2>By Ivan Hanigan and Colin Butler</h2>
 
-<h2>Sociology</h2>
+<p>There has been substantial public interest within Australia in recent decades of the putative relationship between drought and rural mental health, including suicide. The topic has frequently been raised by the media, by rural politicians and by mental health support groups [1]. There have also been recent media reports in India indicating substantial concerns about drought and rural suicide in that country, including [2] from May 2012.</p>
 
-<p>To clear up this confusion it is necessary to go back to the source of the use of the term 'ecological' by the urban sociologist Amos Hawley who used the term 'human ecology' in the 1950s to build on the theoretical traditions of <a href="http://books.google.com.au/books?id=PCBWr5UySs8C&amp;dq=Meade%20and%20Earickson%202000%20medical%20geography&amp;source=gbs_book_other_versions" title="Melinda S. Meade, Robert J. Earickson Medical Geography. Guilford Press 2005.">Robert Parke and E. W. Burgess at the University of Chicago in the 1920s on the structure and development of cities</a>. His influence in the Social Sciences led directly to the development a tradition of social human ecology, one largely without a bio-physical environment.  The usage of 'ecological' to mean multivariate studies of complex systems stems from the sociological tradition.</p>
+<p>The number of studies that have examined the relationship between suicide and drought is limited. However, many papers explore links between suicide and climate variables other than drought (such as temperature) and there are two major reviews papers available of the literature on climatic influences on suicide [3, 4]. Some climatic variables related to dryness have been studied for example Preti (1998) [5] found higher suicide rates in drier towns in Italy. But we make the point that very few studies have investigated the "dryer than average conditions" that is drought specifically.</p>
 
-<h2>Ecology</h2>
+<p>There are several mechanisms through which unusually low rainfall, especially if exacerbated by increased soil dryness due to higher temperatures may increase the suicide rate. First, droughts increase the financial stress on farmers and farming communities (even if partially compensated by drought relief welfare payments). Such difficulty may occur in conjunction with other economic stresses, such as rising interest rates, falling commodity prices, or an unfavourable foreign exchange rate.
+In the broader economic system, reduced rainfall can depress economic activity in rural towns. In some regions the entire economy may be affected. Rural downturns can accelerate migration to metropolitan areas; weakening and stressing social support systems and lessening social interaction. In some cases rural depopulation may pass a tipping point, leading to an ongoing loss of critical services, such as hospitals, schools and doctors.
+Second, there can be a great psychological toll following environmental degradation [6] and this may be acute during droughts linked with decisions and actions to sell or kill starving animals or to destroy orchards and vineyards, which in some cases were painstakingly accumulated over generations. Such loss, and even the apprehension of loss, undoubtedly places a burden on the mental health of farmers and their families. This mourning may not be confined to farmers but extend to other sections of the community likely to be impoverished by long-term environmental degradation. The experience of seeing suffering wild plants and animals, or parched urban parks and gardens, and contemplation of their loss is likely to be extremely painful for some individuals.</p>
 
-<p>The term 'ecology' used in the Ecology discipline <a href="http://en.wikipedia.org/wiki/Ecology" title="Wikipedia">dates back to the 1870s</a>, coined by German zoologist Ernst Haeckel (1834-1919) as Oekologie from Greek 'oikos' for house, dwelling place, habitation and 'logia' study of, then at the turn of the century the term became spelt 'oecology', which grew into 'ecology' in the early part of the 1900s.</p>
+<h1>Evidence from literature</h1>
 
-<h2>Epidemiology</h2>
+<p>As mentioned the number of studies that have examined the relationship between suicide and drought is limited. One analysis of annual suicide rates in NSW found an association between suicide and year-to-year decline in annual rainfall between 1964 and 2001 [7]. In that study a decrease of 300mm of rain was associated with an increase in suicide rate of about 8% above the mean annual rate.
+Another study of NSW, for the period 1901-1998, found an association between suicide and drought. That study focused on the association of conservative government and suicide [8]. The authors argued conservative government programmes (or perceived prospects under a government) might influence suicide directly, or that a correlated increase in anomie (decreased inclusiveness of society) and lowering social capital enhances risk of suicide in vulnerable individuals. The authors controlled for drought (among other things), and found that drought years were associated with an increased suicide risk of about 7% for men and 15% for women, across the whole population.
+A third study [9] found no association between drought and suicide in Victoria but was based on only 7 years data (2001-2007) and did not stratify the population of the state into regions which may introduce bias in the exposure estimates of drought affected people.</p>
 
-<p>In epidemiology the term 'ecological study' is used to refer to studies where observations are taken at the level of a group (such as a country, school, or hospital) rather than at the individual <a href="http://www.springer.com/medicine/book/978-1-4419-1004-2" title="Marc Gellman, J. Rick Turner. Encyclopedia of Behavioral Medicine Springer, 2012.">(such as patient) level</a>.  It is well known though that when risk factors and outcomes are measured at an aggregate level, the relationship between the group-level variables may be different than the relationship between variables <a href="http://en.wikipedia.org/wiki/Modifiable_areal_unit_problem" title="Openshaw, S. (1984). The Modifiable Areal Unit Problem. Norwich: Geo Books. ISBN 0-86094-134-5.">measured at the individual level</a>. An often cited example used to illustrate the issue involved a 19th century study which found higher suicide rates within Prussian provinces that had <a href="http://books.google.com.au/books?hl=en&amp;lr=&amp;id=v23YleX1UskC&amp;oi=fnd&amp;pg=PA9&amp;dq=durkheim&amp;ots=sXTEH3naVk&amp;sig=ycS5kkxwSUA_gA84ts3iXrYNStI#v=onepage&amp;q&amp;f=false" title="Durkheim, E. (1951). Suicide: A study in sociology (Spaulding &amp; Simpson, trans.). Glencoe, IL: Free Press.(Original Work Published 1897).">higher proportions of Protestant residents</a>. The conclusion that Protestant individuals (rather than Catholic individuals) were more likely to commit suicide <a href="http://www.ncbi.nlm.nih.gov/pubmed/7137430" title="Morgenstern, H. (1982). Uses of ecologic analysis in epidemiologic research. American Journal of Public Health, 72(12)">cannot be inferred based on the observed association among the provinces</a>. One possible scenario is that Catholic residents within the largely Protestant provinces had the high suicide rates, resulting in a positive association between percent Protestant and suicide rate <a href="http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full" title="Robinson, W.S. (1950). Ecological Correlations and the Behavior of Individuals. American Sociological Review (American Sociological Review, Vol. 15, No. 3) 15 (3): 351???357.">8</a>. Extrapolation of aggregate results to individuals is a mistake in logic <a href="http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full" title="Robinson, W. S. (2009). Ecological correlations and the behavior of individuals. International Journal of Epidemiology, 38(2)">9</a> which can lead to a potentially misleading conclusion <a href="http://ije.oxfordjournals.org/content/early/2011/05/24/ije.dyr081.full" title="Grotenhuis, Manfred, Rob Eisinga, and SV Subramanian. Robinson's Ecological Correlations and the Behavior of Individuals: methodological corrections. International journal of epidemiology 40, no. 4 2011: 1123-5.">10</a>.</p>
+<p>In contrast a longer running study did find an association using 38 years of data (1970-2007) to explore potential drought effects, especially on farmers and farm workers [10]. The drought exposures were calculated from climatic data for 11 subregions of New South Wales, and stratified by rural/urban region, age and sex. A strong association was observed in rural males aged 10-49. Surprisingly the suicide risk decreased in rural females aged over 30.</p>
 
-<p>Because of this limitation 'ecologic studies' are often scorned in epidemiology as inferior and only useful for exploratory or hypothesis-generating studies rather than as confirmatory.  I argue to the contrary that there is the potential for a revolution in our ability to understand causal influences operating at multiple scales of space and time if we were to conduct truly 'ecological studies'.</p>
+<p>This study provides clear evidence to support the hypothesis that male farmers, farm workers and farming families are at risk of depression and suicide due to droughts. The resulting statistical model estimated that around 9 % of rural suicides in males aged 30-49 were due to drought over the entire study period. This estimate is an average over the course of the 38 years of the study, as the majority of years are not droughts - the percentage is much greater than 9 % in the actual drought years, since these are episodic and confined to a distinct minority of years.
+The statistical model also controlled for other well-known trends in suicide data, including that times of unusually high maximum temperatures increased suicide risk, that there was a increased risk in spring and early summer, and that there was a marked drop in suicide rates over the last decade.</p>
 
-<h2>Quantitative Geography</h2>
+<h1>Discussion</h1>
 
-<p>There is also a closely related concept that should be noted.  That of the Modifiable Areal Unit Problem <a href="http://en.wikipedia.org/wiki/Modifiable_areal_unit_problem" title="Openshaw, S. (1984). The Modifiable Areal Unit Problem. Norwich: Geo Books. ISBN 0-86094-134-5.">(MAUP)</a> as discussed in quantitative geography.  There is a large amount of geographical literature on the MAUP.  In this problem domain areal units (also called zones, regions, areas or polygons) inherently pose three problems to a researcher attempting to infer causal associations: scale, zonal and temporal:</p>
+<p>These studies from Australia offer some lessons for policy makers. The results identify a suite of contributing factors that influence suicide drawn from the environmental, social and political context of life in Australia, which drought is a part of. In particular these results help isolate the most critical times of risk, so that the best use of resources might be made. This includes provision of counselling services to target vulnerable people and get them help, both during droughts, at times with hotter than average maximum temperatures and during the dangerous spring period.
+Other policy implications from this finding support broadening investment in research into gender specific drought effects rather than purely climate and economic focused research into drought impacts.</p>
+
+<h1>References</h1>
 
 <ul>
-<li>Scale; this issues is evident in the example above where phenomena investigated using data viewed at one scale may appear quite different (even opposite) using data aggregated at a different scale.</li>
-<li>Zonal; the zonal problem appears where phenomena investigated using data viewed using two sets of differing areas at a single scale can differ.</li>
-<li>Temporal; a third problem arises when analyzing data on modifiable areas when people keep modifying them by redrawing the boundaries over time.</li>
+<li><p>[1]   Australian Broadcasting Commision (ABC) News. Drought lifts suicide rates: Kennett, 2006.  http://www.abc.net.au/news/2006-10-13/drought-lifts-suicide-rates-kennett/1285734</p></li>
+<li><p>[2]   P Sarathi Biswas. Alcohol, drought lead to farmer’s suicide. Daily News and Analysis, 2012. http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976</p></li>
+<li><p>[3] PG Dixon and AJ Kalkstein. Climate-suicide relationships: A research
+problem in need of geographic methods and cross-disciplinary perspectives.
+Geography Compass , 3(6):1{14, 2009.</p></li>
+<li><p>[4] E A Deisenhammer. Weather and suicide: the present state of knowledge
+on the association of meteorological factors with suicidal behaviour. Acta
+Psychiatrica Scandinavica , 108(6):402{409, 2003.</p></li>
+<li><p>[5] Antonio Preti. The infleuence of clima te on suicidal behaviour in Italy.
+Psychiatry Res , 78(1-2):9{19, 1998.</p></li>
+<li><p>[6]   PC Speldewinde, A Cook, P Davies, and P Weinstein. A relationship between environmental degradation and mental health in rural Western Australia. Health and Place, 15, 2009.</p></li>
+<li><p>[7]   N Nicholls, CD Butler, and IC Hanigan. Inter-annual rainfall variations and suicide in New South Wales, Australia, 1964-2001. International Journal of Biometeorology, 50(3), 2006.</p></li>
+<li><p>[8]   A Page, S Morrell, and R Taylor. Suicide and political regime in New South Wales and Australia during the 20th century. Journal of Epidemiology and Community Health, 56, 2002.</p></li>
+<li><p>[9]   Robyn Guiney. Farming suicides during the Victorian drought: 2001-2007. The Australian Journal of Rural Health, 20(1):11–5, February 2012.</p></li>
+<li><p>[10]  I. C. Hanigan, C. D. Butler, P. N. Kokic, and M. F. Hutchinson. Suicide and drought in New South Wales, Australia, 1970-2007. Proceedings of the National Academy of Sciences, pages 1112965109–, August 2012.</p></li>
 </ul>
 
 
-<h2>In Conclusion</h2>
-
-<p>The term 'Ecological Fallacy' is itself a fallacy and non-Ecologists should be made aware of the existence of alternative ecologic methods from Ecology.  This would be a start towards better understanding between the disciplines and enhance our abilities to mitigate and adapt to climate change.</p>
-
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/ecology" title="ecology" rel="category tag">ecology</a>
-      
-      <a href="/categories/epidemiology" title="epidemiology" rel="category tag">epidemiology</a>
+      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2012/07/the-ecological-fallacy-is-itself-a-fallacy/#disqus_thread'>Comments</a>
+      <a href='/2013/04/suicide-and-drought-evidence-from-literature/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Mon Jul 09 00:00:00 +1000 2012">09 Jul 2012</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2012/06/centenial-scale-rainfall-in-southeastern-australia/" title="Centennial Scale Rainfall in Southeastern Australia" rel="bookmark">Centennial Scale Rainfall in Southeastern Australia</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>Droughts are extreme rainfall events on centennial scale</h2>
-
-<p>In the <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex" title="Hutchinson Drought Index project">Hutchinson Drought Index project</a> we used the longest period of rainfall data available because the drought index is based on the ranking of each six-month average of the distribution in the entire record of observations. A period as long as this is required to calculate extreme rainfall deficits.  The original Hutchinson paper used a period 1920-1988 due to availability.  Another consideration is the longer term characteristics of the rainfall epoch you are considering.</p>
-
-<p>For example, in recent decades in Southeastern Australia annual total rainfal does not represent the longer term context very well.  Shown in the image below is the result of an exploratory data analysis using rainfall data from the Murray Darling Basin (the 'bread basket' of Australian agriculture).  I use the Classification And Regression Tree tool in the 'rpart' package to determine the optimal groupings.  I've dropped the last two years of the sequence because when I first ran this analysis two years ago I got the result shown, but thankfully the last two years have given us very good rainfalls.  This shows the difference between short-term and long-term rainfall patterns.</p>
-
-<p>Regardless of this data 'massaging', in the analysis presented the annual trend over the first half of the twentieth century was lower than the recent fifty years, by about 60 millimeters on average. The 1930-1946 period was particularly dry, as has been the 1998-2008 period.</p>
-
-<p><img src="/images/mdb_rain19002009.jpg" alt="plot of seaust rainfall" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/drought" title="drought" rel="category tag">drought</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2012/06/centenial-scale-rainfall-in-southeastern-australia/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Jun 05 00:00:00 +1000 2012">05 Jun 2012</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2012/05/how-to-explain-my-current-research/" title="How to explain my current research interests?" rel="bookmark">How to explain my current research interests?</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>I'm having trouble explaining my current research interests.</h2>
-
-<p>I'm currently working on suicide and drought, heart disease and woodsmoke, violent deaths and heatwaves and a theoretical text on methods for rates, standardisation or adjustment in regression models.</p>
-
-<p>Why? It's complicated, but...</p>
-
-<p>I have been working on a range of interrelated projects for the last few years that have revolved around the influence of climate on human health and wellbeing.<br/>
-That might sound clear enough on first glance, but when we got stuck in to it we found we struggled to find very many health outcomes with really potent causal influences of climatic variables from the literature.</p>
-
-<h2>HUMAN HEALTH AND CLIMATE CHANGE IN OCEANIA: A RISK ASSESSMENT 2002 </h2>
-
-<p>This all started with my involvement with the report <a href="http://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;ved=0CCYQFjAA&amp;url=http%3A%2F%2Fwww.health.gov.au%2Finternet%2Fmain%2Fpublishing.nsf%2Fcontent%2F2D4037B384BC05F6CA256F1900042840%2F%24File%2Fenv_climate.pdf&amp;ei=OhOhT8jeIuiviQfy6fHgBA&amp;usg=AFQjCNH123UycdMu__7_cnN3BcqBu7_YYg&amp;sig2=PUesyxJP74acSneaziy5PA" title="DHA CC HIA 2002">1</a> by Tony McMichael and Rosalie Woodruff.  I was a research assistant and got my first taste of integrating data across population, health and environmental domains.</p>
-
-<p>We did a great job, but after we'd completed that work, Colin and I reflected on how difficult it was to find those 'low haning fruit' that might be most easily analysted in this new direction of environmental epidemioligy.  We then met Neville Nicholls from the BoM and found out that there was a strong suspicion of the increased risk of suicide during droughts amongst the meteorologists (to the point they were anxious about reporting unfavourable forecasting seasonal rainfall estimates based on the SOI and El Nino weather patterns).  We ended up publishing a simple paper about that topic <a href="http://www.mendeley.com/research/interannual-rainfall-variations-suicide-new-south-wales-australia-1964/" title="Nicholls et al 2005">2</a></p>
-
-<p>Other health outcomes suggested themselves over the course of the following few years:</p>
-
-<ul>
-<li>will be bullet points</li>
-<li>includes Ross River Virus in WA</li>
-<li>heart disease and woodsmoke</li>
-<li>violent deaths and heatwaves</li>
-<li>a theoretical text on methods for rates, standardisation or adjustment in regression models</li>
-</ul>
-
-
-<p>So I am struggling to get a succint statement that reflects the current focus of my research interests.
-Luckily my core reasearch interest is simpler: better understanding the dynamics of the many systems involved in human ecology.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/me" title="me" rel="category tag">me</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2012/05/how-to-explain-my-current-research/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Wed May 02 00:00:00 +1000 2012">02 May 2012</abbr>
+        <abbr class="published" title="Wed Apr 17 00:00:00 +1000 2013">17 Apr 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -716,8 +649,9 @@ Luckily my core reasearch interest is simpler: better understanding the dynamics
           <div id="carrington-about" class="widget">
             <div class="about">
               <h2 class="widget-title">About</h2>
-              <p>My name is Ivan Hanigan.  I am a data manager and part-time student at the Australian National University.</p>
+              <p>I am a data manager and data analyst at the Australian National University.</p>
               <a class="more" href="/about.html">more →</a>
+
             </div>
           </div>
           <!--
@@ -742,147 +676,25 @@ Luckily my core reasearch interest is simpler: better understanding the dynamics
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/drought">drought (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
-                
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
-                
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
-                
-                <li><a href="/categories/science">science (2)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (5)</a></li>
-                
-                <li><a href="/categories/supersite">supersite (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
-                
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
-                <li><a href="/categories/workflow">workflow (4)</a></li>
-                
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (15)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (17)</a></li>
                 
-                <li><a href="/categories/surveys">surveys (1)</a></li>
+                <li><a href="/categories/research methods">research methods (42)</a></li>
                 
-                <li><a href="/categories/GIS">GIS (1)</a></li>
+                <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/data science">data science (1)</a></li>
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
-                
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (26)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
-                <li><a href="/categories/datasharing">datasharing (1)</a></li>
-                
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (6)</a></li>
                 
               </ul>
             </div>
@@ -893,203 +705,23 @@ Luckily my core reasearch interest is simpler: better understanding the dynamics
               <ul>
                 
                 <li>
-                  <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
+                  <a href="/2014/04/using-morpho-for-cataloguing-personal-research-data/" title="Using Morpho for Cataloguing Personal Research Data" rel="bookmark">Using Morpho for Cataloguing Personal Research Data</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
+                  <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
+                  <a href="/2014/04/cataloguing-personal-research-data-with-morpho-and-a-custom-database/" title="Cataloguing Personal Research Data with Morpho And A Custom Database" rel="bookmark">Cataloguing Personal Research Data with Morpho And A Custom Database</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/github-gh-pages-and-disqus-commentsdatasharing/" title="Github, gh-pages and disqus comments" rel="bookmark">Github, gh-pages and disqus comments</a>
+                  <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/01/tumbarumba-supersite-dem/" title="tumbarumba-supersite-dem" rel="bookmark">tumbarumba-supersite-dem</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/extend-Rs-data-frame-class-with-metadata/" title="extend-Rs-data-frame-class-with-metadata" rel="bookmark">extend-Rs-data-frame-class-with-metadata</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/a-few-best-practices-for-statistical-programming/" title="a-few-best-practices-for-statistical-programming" rel="bookmark">a-few-best-practices-for-statistical-programming</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/" title="add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot" rel="bookmark">add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/animation-illustrating-catastrophic-regime-shifts/" title="Animation Illustrating Catastrophic Regime Shifts" rel="bookmark">Animation Illustrating Catastrophic Regime Shifts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/marco-fahmi-farewell-from-asn-ltern-data-portal-team/" title="Marco Fahmi Farewell From ASN-LTERN Data Portal Team" rel="bookmark">Marco Fahmi Farewell From ASN-LTERN Data Portal Team</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/animations-using-R/" title="animations-using-R" rel="bookmark">animations-using-R</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/links-to-useful-data-munging-posts/" title="links-to-useful-data-munging-posts" rel="bookmark">links-to-useful-data-munging-posts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode/" title="open-access-journal-templates-for-latex-with-emacs-orgmode" rel="bookmark">open-access-journal-templates-for-latex-with-emacs-orgmode</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/auto-download-bureau-meteorology-diurnal-data/" title="auto-download-bureau-meteorology-diurnal-data" rel="bookmark">auto-download-bureau-meteorology-diurnal-data</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/the-history-of-ons/" title="the-history-of-ons" rel="bookmark">the-history-of-ons</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/" title="non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms" rel="bookmark">non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-for-manitoba-centre-for-health-policy/" title="research-protocol-for-manitoba-centre-for-health-policy" rel="bookmark">research-protocol-for-manitoba-centre-for-health-policy</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/spatially-structured-time-series-with-nmmaps/" title="spatially-structured-time-series-with-nmmaps" rel="bookmark">spatially-structured-time-series-with-nmmaps</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/morpho-and-rfigshare/" title="morpho-and-rfigshare" rel="bookmark">morpho-and-rfigshare</a>
+                  <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
                 </li>
                 
               </ul>

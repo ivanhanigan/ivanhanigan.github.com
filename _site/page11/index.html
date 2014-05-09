@@ -21,12 +21,12 @@
         <p id="blog-description"></p>
         <div id="navigation">
           <ul class="nav clearfix">
-            <li class="first-child"><a href="/research.html">Open Notebook</a></li>
-            <li> <a href="/blog.html">Blog</a></li>
-            <li><a href="/projects.html">Software</a></li>
-            <li><a href="/about.html">About</a></li>
-            <li><a href="/publications.html">Publications</a></li>
-            <li><a href="/cv.html">CV</a></li>
+            <li class="first-child"><a href="/research.html">About My Notebook</a></li>
+            <li> <a href="/blog.html">Entries</a></li> 
+            <!-- <li><a href="/projects.html">Software</a></li>-->
+            <li><a href="/about.html">About Me</a></li>
+            <li><a href="/publications.html">My Publications</a></li>
+            <li><a href="/cv.html">My CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
             <!--<li><a href="/donors.html">Donors</a></li>-->
           </ul>
@@ -38,7 +38,7 @@
         <div id="content">
           <h2>Welcome to my Open Notebook</h2>
 
-<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a> for documenting progress on my projects.</p>
+<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a>. Find out more <a href="/research.html">Here</a>.</p>
 
 <p>  <img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
 
@@ -54,101 +54,406 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
+      <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
     </h1>
     <div class="entry-content full-content">
-      <p>In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.</p>
+      <p><body></p>
 
-<h1>What does it do?</h1>
+<div id="preamble">
 
-<p>The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.</p>
-
-<p>Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.</p>
-
-<h1>Create the metadata.txt</h1>
-
-<p>You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.</p>
-
-<p>change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.</p>
-
-<p>Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.</p>
-
-<p>You can look int the "Keys.txt" file that contains the full list of values that can be specified in this metadata.txt file.</p>
-
-<h4>Code:</h4>
-
-<pre><code>setwd("~/tools/dcupload")
-sink("metadata.txt")
-cat("
-# This file, referred to as a collection parameter file, consists of
-# data in key=value pairs. This data is sent to the ANU Data Commons
-# to create a collection, establish relations with other records,
-# and/or upload files to those collections.
-
-# The metadata section consists of metadata for use in creation (not
-# for modification) of record metadata in ANU Data Commons. The
-# following fields are required for the creation of a record. The file
-# Keys.txt contains the full list of values that can be specified in
-# this file. Based on this information below, a collection record of
-# type databaset with the title "Test Collection 6/05/2013" will be
-# created owned by Meteorology and Health group.
-[metadata]
-type = Collection
-subType = dataset
-ownerGroup = 5
-# 6 on production, 5 on dev
-name = Civil Status, Gender and Activity Sector
-briefDesc = An example, fictional dataset for Decision Tree Models
-citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
-email = ivan.hanigan@anu.edu.au
-anzforSubject = 1601
-
-# The relations section allows you to specify the relation this record
-# has with other records in the system.  Currently relations with NLA
-# identifiers is not supported.
-[relations]
-isOutputOf = anudc:123
-
-# This section contains a line of the form 'pid = anudc:123' once a
-# record has been created so executing the uploader script with the
-# same collection parameter file doesnt create a new record with the
-# same metadata.
-[pid]
-")
-sink()
-
-# run the dcload
-system("python3 dcuploader.py -c metadata.txt")
-</code></pre>
-
-<p></p>
+</div>
 
 
-<h1>What happened?</h1>
+
+
+<div id="content">
+<h1 class="title">Disentangle Things</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Background</a></li>
+<li><a href="#sec-1-2">1.2 Speed and Rigour</a></li>
+<li><a href="#sec-1-3">1.3 Analysts can often trade-off completeness of documentation for speed</a></li>
+<li><a href="#sec-1-4">1.4 Librarians produce gold plated documentation and can take longer to produce this</a></li>
+<li><a href="#sec-1-5">1.5 An example</a></li>
+<li><a href="#sec-1-6">1.6 Embracing Inaccuracy and Incompleteness</a></li>
+<li><a href="#sec-1-7">1.7 Aim</a></li>
+<li><a href="#sec-1-8">1.8 Step 1: load a simple example dataset</a></li>
+<li><a href="#sec-1-9">1.9 Step 2 create a function to deliver the minimal metadata object</a></li>
+<li><a href="#sec-1-10">1.10 reml<sub>boilerplate</sub>-code</a></li>
+<li><a href="#sec-1-11">1.11 reml<sub>boilerplate</sub>-test-code</a></li>
+<li><a href="#sec-1-12">1.12 Results: This loads into Morpho with some errors</a></li>
+<li><a href="#sec-1-13">1.13 Conclusions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</h3>
+<div class="outline-text-3" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Background</h4>
+<div class="outline-text-4" id="text-1-1">
+
 
 <ul>
-<li>Looking in the metadata.txt file it now has a pid like "pid = test:3527"</li>
-<li>And we have created a new record in our account on the DataCommons server.</li>
+<li>The Morpho/Metacat system is great for a data repository
+</li>
+<li>Morpho also claims to be suitable for Ecologists to document their data
+</li>
+<li>But in my experience it leaves a little to be desired in ease of use for both purposes
+</li>
+<li>Specifically the speed that documentation can be entered into Morpho is slow
+</li>
+<li>This post is a first attempt to create some boilerplate code to quickly generate EML metadata using REML.
+</li>
 </ul>
 
 
-<h1>go to the website</h1>
+</div>
 
-<p>Now go to <a href="https://dc7-dev2.anu.edu.au:8443/DataCommons/">the dev site</a> and you can continue editing the record manually in the browser.</p>
+</div>
 
-<p>Or if we have ironed out the wrinkles you could go straight to the production server at <a href="https://datacommons.anu.edu.au:8443/DataCommons">This Link</a></p>
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Speed and Rigour</h4>
+<div class="outline-text-4" id="text-1-2">
 
-<h1>Uploading the data</h1>
-
-<p>The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.</p>
-
-<h1>Notes</h1>
-
+<p>As I noted in a previous post, there are [two types of data documentation workflow](<a href="http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/">http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/</a>).  
+</p>
 <ul>
-<li><p>After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.</p></li>
-<li><p>Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.</p></li>
+<li>GUI
+</li>
+<li>Programatic
+</li>
 </ul>
 
+
+<p>  
+I also think there are two types of users with different motivations and constraints:
+</p>
+<ul>
+<li>1) Data Analysts
+</li>
+<li>2) Data Librarians
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-4">
+<h4 id="sec-1-3"><span class="section-number-4">1.3</span> Analysts can often trade-off completeness of documentation for speed</h4>
+<div class="outline-text-4" id="text-1-3">
+
+<p>In my view the Analysts group of users need a tool that will very rapidly document their data and workflow steps and can live with a bit less rigour in the quality of documentation.  Obviously this is not ideal but seems an inevitable trade-off needed to enable analysts to keep up the momentum of the data processing and modelling without getting distracted by tedious (and potentially unnecessary) data documentation tasks.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-4">
+<h4 id="sec-1-4"><span class="section-number-4">1.4</span> Librarians produce gold plated documentation and can take longer to produce this</h4>
+<div class="outline-text-4" id="text-1-4">
+
+<p>On the other hand the role of the Librarian group is to produce documentation to the best level possible (given time and resource constraints) the datasets and methodologies that lead to the creation of the datasets.  For that group Rigour will take precedence and there will be a trade-off in terms of the amount of time needed to produce the documentation.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-4">
+<h4 id="sec-1-5"><span class="section-number-4">1.5</span> An example</h4>
+<div class="outline-text-4" id="text-1-5">
+
+<p>As an example of the two different groups, an analyst working with weather data in Australia may want to specify that their variable "temperature" is the average of the daily maxima and minima, but might not need to specify that the observations were taken inside a Stevenson Screen, or even if they are in Celsius, Farenhiet or Kelvin.  They will be very keen to start the analysis to identify any associations between weather variables and the response variable they are investigating.   The data librarian on the other hand will be more likely to need to include this information so that the users of the temperature data do not mis-interpret it.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-6" class="outline-4">
+<h4 id="sec-1-6"><span class="section-number-4">1.6</span> Embracing Inaccuracy and Incompleteness</h4>
+<div class="outline-text-4" id="text-1-6">
+
+
+<ul>
+<li>I've been talking about this for a while got referred to this document by Ben Davies at the ANUSF
+</li>
+</ul>
+
+<p>[http://thedailywtf.com/Articles/Documentation-Done-Right.aspx](<a href="http://thedailywtf.com/Articles/Documentation-Done-Right.aspx">http://thedailywtf.com/Articles/Documentation-Done-Right.aspx</a>)
+</p><ul>
+<li>It has this bit:
+</li>
+</ul>
+
+
+
+
+<pre class="src src-R">  
+   
+Embracing Inaccuracy and Incompleteness 
+    
+The immediate answer to what&#8217;s the right way to do documentation is
+clear: produce the least amount of documentation needed to facilitate
+the most understanding, and be very explicit about which documentation
+is to be maintained and which is to be archived (i.e., read-only and
+left to rot).
+</pre>
+
+
+<ul>
+<li>Roughly speaking, a full EML document produced by Morpho is a bit like a whole bunch of cruft that isnt needed and gets in the way (and is more confusing)
+</li>
+<li>Whereas a minimal version Im thinking of covers almost all the generic entries providing the "minimum amount of stuff to make it work right".
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-7" class="outline-4">
+<h4 id="sec-1-7"><span class="section-number-4">1.7</span> Aim</h4>
+<div class="outline-text-4" id="text-1-7">
+
+
+<ul>
+<li>This experiment aims to speed up the creation of a minimal "skeleton" of metadata to a level that both the groups above can be comfortable with AS A FIRST STEP.
+</li>
+<li>It is assumed that additional steps will then need to be taken to complete the documentation, but the automation of the first part of the process should shave off enough time to suit the purposes of both groups
+</li>
+<li>It is an imperative that the quick-start creation of the metadata does not end up costing the documentor more time later on down the track if they need to go back to many of the elements for additional editing.
+</li>
+</ul>
+
+
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-8" class="outline-4">
+<h4 id="sec-1-8"><span class="section-number-4">1.8</span> Step 1: load a simple example dataset</h4>
+<div class="outline-text-4" id="text-1-8">
+
+<p>I've been using a [fictitious dataset from a Statistics Methodology paper by Ritschard 2006](<a href="http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/">http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/</a>).  It will do as a first cut but when it comes to actually test this out it would be good to have something that would take a bit longer (so that the frustrations of using Morpho become very apparent).
+</p>
+
+
+
+<pre class="src src-R">  <span style="color: #586e75;">#### </span><span style="color: #586e75;">R Code:</span>
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">func</span>
+      <span style="color: #268bd2; font-weight: bold;">require</span>(devtools)
+      install_github(<span style="color: #2aa198;">"disentangle"</span>, <span style="color: #2aa198;">"ivanhanigan"</span>)
+      <span style="color: #268bd2; font-weight: bold;">require</span>(disentangle)
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">load</span>
+      fpath <span style="color: #268bd2; font-weight: bold;">&lt;-</span> system.file(
+          file.path(<span style="color: #2aa198;">"extdata"</span>, <span style="color: #2aa198;">"civst_gend_sector_full.csv"</span>),
+          package = <span style="color: #2aa198;">"disentangle"</span>
+          )
+      data_set <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(fpath)
+      summary(data_set)
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">store it in the current project workspace</span>
+      write.csv(data_set, <span style="color: #2aa198;">"data/civst_gend_sector_full.csv"</span>, row.names = F)
+      
+
+
+
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| divorced/widowed: 33 | female:132 | primary  :116 | Min.   : 128.9 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| married         :120 | male  :141 | secondary: 99 | 1st Qu.: 768.3 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| single          :120 | nil        | tertiary : 58 | Median : 922.8 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | Mean   : 908.4 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | 3rd Qu.:1079.1 |</span>
+<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | Max.   :1479.4 |</span>
+
+</pre>
+
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-9" class="outline-4">
+<h4 id="sec-1-9"><span class="section-number-4">1.9</span> Step 2 create a function to deliver the minimal metadata object</h4>
+<div class="outline-text-4" id="text-1-9">
+
+<ul>
+<li>the package REML will create a EML metadata document quite easily
+</li>
+<li>I will assume that a lot of the data elements are self explanatory and take column names and factor levels as the descriptions
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-10" class="outline-4">
+<h4 id="sec-1-10"><span class="section-number-4">1.10</span> reml<sub>boilerplate</sub>-code</h4>
+<div class="outline-text-4" id="text-1-10">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">################################################################</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">name:reml_boilerplate</span>
+ 
+<span style="color: #586e75;"># </span><span style="color: #586e75;">func</span>
+<span style="color: #859900; font-weight: bold;">if</span>(!<span style="color: #268bd2; font-weight: bold;">require</span>(reml)) {
+  <span style="color: #268bd2; font-weight: bold;">require</span>(devtools)
+  install_github(<span style="color: #2aa198;">"reml"</span>, <span style="color: #2aa198;">"ropensci"</span>)
+  } 
+<span style="color: #268bd2; font-weight: bold;">require</span>(reml)
+
+<span style="color: #268bd2;">reml_boilerplate</span> <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #859900; font-weight: bold;">function</span>(data_set, created_by = <span style="color: #2aa198;">"Ivan Hanigan &lt;<a href="mailto:ivanhanigan&#64;gmail.com">ivanhanigan&#64;gmail.com</a>&gt;"</span>, data_dir = getwd(), titl = <span style="color: #b58900;">NA</span>, desc = <span style="color: #2aa198;">""</span>)
+{
+
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">essential</span>
+  <span style="color: #859900; font-weight: bold;">if</span>(is.na(titl)) <span style="color: #859900; font-weight: bold;">stop</span>(print(<span style="color: #2aa198;">"must specify title"</span>))
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">we can get the col names easily</span>
+  col_defs <span style="color: #268bd2; font-weight: bold;">&lt;-</span> names(data_set)
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">next create a list from the data</span>
+  unit_defs <span style="color: #268bd2; font-weight: bold;">&lt;-</span> list()
+  <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(data_set))
+    {
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">i = 4</span>
+      <span style="color: #859900; font-weight: bold;">if</span>(is.numeric(data_set[,i])){
+        unit_defs[[i]] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #2aa198;">"numeric"</span>
+      } <span style="color: #859900; font-weight: bold;">else</span> {
+        unit_defs[[i]] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> names(table(data_set[,i]))          
+      }
+    }
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">unit_defs</span>
+  
+  ds <span style="color: #268bd2; font-weight: bold;">&lt;-</span> data.set(data_set,
+                 col.defs = col_defs,
+                 unit.defs = unit_defs
+                 )
+  <span style="color: #586e75;">#</span><span style="color: #586e75;">str(ds)</span>
+
+  metadata  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> metadata(ds)
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">needs names</span>
+  <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(data_set))
+    {
+      <span style="color: #586e75;"># </span><span style="color: #586e75;">i = 4</span>
+      <span style="color: #859900; font-weight: bold;">if</span>(is.numeric(data_set[,i])){
+        names(metadata[[i]][[3]]) <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #2aa198;">"number"</span>
+      } <span style="color: #859900; font-weight: bold;">else</span> {
+        names(metadata[[i]][[3]]) <span style="color: #268bd2; font-weight: bold;">&lt;-</span> metadata[[i]][[3]]
+      }
+    }
+  <span style="color: #586e75;"># </span><span style="color: #586e75;">metadata</span>
+  oldwd <span style="color: #268bd2; font-weight: bold;">&lt;-</span> getwd()
+  setwd(data_dir)
+  eml_write(data_set, metadata,
+            title = titl,  
+            description = desc,
+            creator = created_by
+            )
+  setwd(oldwd)
+  sprintf(<span style="color: #2aa198;">"your metadata has been created in the '%s' directory"</span>, data_dir)
+  }
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-11" class="outline-4">
+<h4 id="sec-1-11"><span class="section-number-4">1.11</span> reml<sub>boilerplate</sub>-test-code</h4>
+<div class="outline-text-4" id="text-1-11">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">################################################################</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">name:reml_boilerplate-test</span>
+
+analyte <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #2aa198;">"data/civst_gend_sector_full.csv"</span>)
+reml_boilerplate(
+  data_set = analyte,
+  created_by = <span style="color: #2aa198;">"Ivan Hanigan &lt;<a href="mailto:ivanhanigan&#64;gmail.com">ivanhanigan&#64;gmail.com</a>&gt;"</span>,
+  data_dir = <span style="color: #2aa198;">"data"</span>,
+  titl = <span style="color: #2aa198;">"civst_gend_sector_full"</span>,
+  desc = <span style="color: #2aa198;">"An example, fictional dataset"</span>
+  )
+
+dir(<span style="color: #2aa198;">"data"</span>)
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-12" class="outline-4">
+<h4 id="sec-1-12"><span class="section-number-4">1.12</span> Results: This loads into Morpho with some errors</h4>
+<div class="outline-text-4" id="text-1-12">
+
+<ul>
+<li>Notably unable to import the data file
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morpho-reml-boilerplate.png" alt = "morpho-reml-boilerplate.png">
+</p>
+<ul>
+<li>Also "the saved document is not valid for some reason"
+</li>
+</ul>
+
+
+<p>
+<img src="/images/morpho-reml-boilerplate2.png" alt = "morpho-reml-boilerplate2.png">
+</p></div>
+
+</div>
+
+<div id="outline-container-1-13" class="outline-4">
+<h4 id="sec-1-13"><span class="section-number-4">1.13</span> Conclusions</h4>
+<div class="outline-text-4" id="text-1-13">
+
+<ul>
+<li>This needs testing
+</li>
+<li>A real deal breaker is if the EML is not valid 
+</li>
+<li>In some cases not having the data table included will be a deal breaker (ie KNB repositories designed for downloading complete data packs
+</li>
+<li>A definite failure would be that even if it is quicker to get started if it takes a long time and is difficult to fix up it might increase the risk of misunderstandings.
+</li>
+</ul>
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
 
       <div class="clear"></div>
     </div>
@@ -160,12 +465,12 @@ system("python3 dcuploader.py -c metadata.txt")
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/10/dc-uploader-and-ANU-DataCommons/#disqus_thread'>Comments</a>
+      <a href='/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Sun Oct 13 00:00:00 +1100 2013">13 Oct 2013</abbr>
+        <abbr class="published" title="Tue Oct 29 00:00:00 +1100 2013">29 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -174,220 +479,81 @@ system("python3 dcuploader.py -c metadata.txt")
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/10/reml-and-rfigshare-part-2/" title="reml-and-rfigshare-part-2" rel="bookmark">reml-and-rfigshare-part-2</a>
+      <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
     </h1>
     <div class="entry-content full-content">
-      <p>In the last post I explored the functionality of reml.
-This time I will try to send data to figshare.</p>
+      <p>I got this question today from a Drought researcher:</p>
+
+<h4>Question:</h4>
+
+<pre><code>There a table with 62 years * 12 months of rain data in mm. We
+calculated the cumulative distribution using ecdf: empirical
+cumulative distribution function. So the table looks like this:
+Year Jan Feb Mach (…) each cell contains the cum dist.
+
+We also got the number of months per year with less than X mm of
+rain. But he needs to know how many months are between the
+drought months, regardless the year. So, I thought that
+converting the data into a ts was going to facilitate the task,
+but it doesn’t, because now I don’t’ have columns and rows any
+longer.
+
+How do I handle a ts object to do for example an ifelse?
+</code></pre>
+
+<p></p>
+
+
+<p>I answered:</p>
+
+<p>This looks a lot like the Hutchinson Drought Index which I've coded up here</p>
 
 <ul>
-<li>First follow <a href="https://github.com/ropensci/rfigshare">These Instructions</a> to get rfigshare set up.  In particular store your figshare credentials in ~/.Rprofile</li>
+<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
+<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
+<li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
 </ul>
 
 
-<h4>Code:reml-and-rfigshare-part-2</h4>
+<p>This is the key bit for counting consecutive months below a threshold</p>
 
-<pre><code># func
-require(devtools)
-install_github("reml", "ropensci")
-require(reml)
-install_github("rfigshare", "ropensci")
-require(rfigshare)
-install_github("disentangle", "ivanhanigan")
-require(disentangle)
-# load
-fpath &lt;- system.file(file.path("extdata","civst_gend_sector_eml.xml"), package = "disentangle")
-setwd(dirname(fpath))
-obj &lt;- eml_read(fpath)
-# clean
-obj
-# do
+<h4>R Code:</h4>
 
-## STEP 1: find one of the preset categories
-# available. We can ask the API for
-# a list of all the categories:
-list &lt;- fs_category_list()
-list[grep("Survey", list)]
-
-## STEP 2: PUBLISH TO FIGSHARE
-id &lt;- eml_publish(fname,
-                  description="Example EML
-                    A fictional dataset",
-                  categories = "Survey results",
-                  tags = "EML",
-                  destination="figshare"
-                  )
-# there are several warnings
-# but go to figshare and it has sent the metadata and data OK
-
-# make public using either the figshare web interface, the
-# rfigshare package (using fs_make_public(id)) or just by adding
-# the argument visibility = TRUE to the above eml_publish
-fs_make_public(id)
-</code></pre>
-
-<p></p>
-
-
-<h1>Now these data are on figshare</h1>
-
-<p>Now I have published the data they are visible and have a DOI</p>
-
-<iframe src="http://wl.figshare.com/articles/820158/embed?show_title=1" width="568" height="157" frameborder="0"></iframe>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/reml-and-rfigshare-part-2/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Sat Oct 12 00:00:00 +1100 2013">12 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/data-documentation-case-study-reml-and-rfigshare/" title="data-documentation-case-study-reml-and-rfigshare" rel="bookmark">data-documentation-case-study-reml-and-rfigshare</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h4>Case Study: reml-and-rfigshare</h4>
-
-<p>First we will look at the work of the ROpenSci team and the reml
-package.  In the vignette they show how to publish data to figshare
-using rfigshare package.  <a href="http://figshare.com/">figshare</a> is a site
-where scientists can share datasets/figures/code. The goals are to
-encourage researchers to share negative results and make reproducible
-research efforts user-friendly. It also uses a tagging system for
-scientific research discovery. They give you unlimited public space
-and 1GB of private space.</p>
-
-<p>Start by getting the reml package.</p>
-
-<h4>Code:</h4>
-
-<pre><code># func
-require(devtools)
-install_github("reml", "ropensci")
-require(reml)
-?eml_write
-</code></pre>
-
-<p></p>
-
-
-<p>This is the Top-level API function for writing eml.  Help page is a bit sparse.  See <a href="https://github.com/ropensci/reml">This Link</a> for more.  For eg "for convenience, dat could simply be a data.frame and reml will launch it's metadata wizard to assist in constructing the metadata based on the data.frame provided. While this may be helpful starting out, regular users will find it faster to define the columns and units directly in the format above."</p>
-
-<p>Now load up the test data for classification trees I described in <a href="/2013/10/test-data-for-classification-trees/">This Post</a></p>
-
-<h4>Code:</h4>
-
-<pre><code>install_github("disentangle", "ivanhanigan") # for the data
-                                             # described in prev post
-
-# load
-fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"),
-                     package = "disentangle"
-                     )
-civst_gend_sector &lt;- read.csv(fpath)
-
-# clean
-str(civst_gend_sector)
-
-# do
-eml_write(civst_gend_sector,
-          creator = "Ivan Hanigan &lt;ivanhanigan@gmail.com&gt;")
-
-
-
-
-
-# Starts up the wizard, a section is shown below.  The wizard
-# prompts in the console and the user writes the answer.
-
-# Enter description for column 'civil_status':
-#  marriage status
-# column civil_status appears to contain categorical data.
-#  
-# Categories are divorced/widowed, married, single
-#  Please define each of the categories at the prompt
-# define 'divorced/widowed':
-# was once married
-# define 'married':
-# still married
-# define 'single':
-# never married
-
-# TODO I don't really know what activity_sector is.  I assumed
-# school because Categories are primary, secondary, tertiary.
-
-# this created "metadata.xml" and "metadata.csv"
-file.remove(c("metadata.xml","metadata.csv"))
+<pre><code>x&lt;-data$index&lt;=-1
+xx &lt;- (cumsum(!x) + 1) * x
+x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
+data$count&lt;-x2
 </code></pre>
 
 <p></p>
 
 
 <p>
-This was a very minimal data documentation effort.  A bit more detail would be better.  Because I would now need to re-write all that in the wizard I will take the advice of the help file that "regular users will find it faster to define the columns and units directly in the format"</p>
+I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
+and looked in wonder at the structure and am amazed it works.</p>
 
-<h4>Code:</h4>
+<p>I also really like the cumulative summing version a lot</p>
 
-<pre><code>ds &lt;- data.set(civst_gend_sector,
-               col.defs = c("Marriage status", "sex", "education", "counts"),
-               unit.defs = list(c("was once married","still married","never married"),
-                   c("women", "men"),
-                   c("primary school","secondary school","tertiary school"),
-                   c("persons"))
-               )
-ds
-# this prints the dataset and the metadata
-# now run the EML function
-eml_write(ds, 
-          title = "civst_gend_sector",  
-          description = "An example, fictional dataset for Decision Tree Models",
-          creator = "Ivan Hanigan &lt;ivanhanigan@gmail.com&gt;",
-          file = "inst/extdata/civst_gend_sector_eml.xml"
-          )
-# this created the xml and csv with out asking anything
-# but returned a
-## Warning message:
-## In `[&lt;-.data.frame`(`*tmp*`, , value = list(civil_status = c(2L,  :
-##   Setting class(x) to NULL;   result will no longer be an S4 object
+<h4>R Code:</h4>
 
-# TODO investigate this?
-
-# now we can access the local EML
-obj &lt;- eml_read("inst/extdata/civst_gend_sector_eml.xml")
-obj 
-str(dataTable(obj))
-# returns an error
-## Error in plyr::compact(lapply(slotNames(from), function(s) if (!isEmpty(slot(from,  (from attribute.R#300) : 
-##   subscript out of bounds
+<pre><code>data$sums&lt;-as.numeric(0)
+y &lt;- ifelse(data$index &gt;= -1, 0, data$index)
+f &lt;- data$index &lt; -1
+f &lt;- (cumsum(!f) + 1) * f
+z &lt;- unsplit(lapply(split(y,f),cumsum),f)
+data$sums &lt;- z
 </code></pre>
 
 <p></p>
 
 
-<h1>Conclusions</h1>
-
-<p>So this looks like a useful tool.  Next steps are to:</p>
+<p>
+Several things I'd like to change.</p>
 
 <ul>
-<li>look at sending these data to figshare</li>
-<li>describe a really really REALLY simple workflow (3 lines? create metadata, eml_write, push to figshare)</li>
+<li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
+<li>I'd like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
+<li>I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
 </ul>
 
 
@@ -396,17 +562,17 @@ str(dataTable(obj))
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/10/data-documentation-case-study-reml-and-rfigshare/#disqus_thread'>Comments</a>
+      <a href='/2013/10/counting-number-of-consecutive-months-in-drought/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Sat Oct 12 00:00:00 +1100 2013">12 Oct 2013</abbr>
+        <abbr class="published" title="Tue Oct 29 00:00:00 +1100 2013">29 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -415,68 +581,15 @@ str(dataTable(obj))
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
+      <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
     </h1>
     <div class="entry-content full-content">
-      <p>This post introduces a new series of blog posts in which I want to experiment with a few tools for data documentation, which I'll present as Case Studies.  This series of posts will be pitched to an audience mixture of data librarians and data analysts.</p>
-
-<p>Data documentation occurs in a spectrum from simple notes through to elaborate systems.  I've been working on a conceptual framework about how the actual process can be done in two distinct ways:</p>
-
-<ul>
-<li>Graphical User Interface (GUI) solutions</li>
-<li>Programmatic (Scripted/Automagic) solutions</li>
-</ul>
-
-
-<p>I think the GUI tools are in general pretty user friendly and useful
-for simple projects with only a small number of datasets, but have a
-major drawback for the challenge of heterogeneous data integration.  I
-think the problem is expressed nicely <a href="http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html">In This Post By Carl Boettiger</a>  in reference to Morpho:</p>
-
-<ul>
-<li>"looks like a rather useful if tedious tool for generating EML
-files. Unfortunately, without the ability to script inputs or
-automatically detect existing data structures, we are forced through
-the rather arduous process of adding all metadata annotation each
-time...."</li>
-<li>"...A package could also provide utilities to generate EML from R objects, leveraging the metadata implicit in R objects that is not present in a CSV (in which there is no built-in notion of whether  a column is numeric or character string, what missing value characters it uses, or really if it is consistent at all. Avoiding manual specification of these things makes the metadata annotation less tedious as well."</li>
-</ul>
-
-
-<h1>Centralised Repository, Distributed Users</h1>
-
-<p>A key aspect of current approaches is the existence of a centralised data management system.  All the examples I consider include at least a metadata catalogue and some also include a data repository.  An additional feature sometimes exists for managing users permissions.</p>
-
-<p>The relationship between users and centralised services is a really complicated space, but essentially consists of the ability for users to create the documentation and push it (perhaps along with the data) to the metadata catalogue  and/or repository.  So given these assumptions I propose the following types of arrangement:</p>
-
-<ul>
-<li>user sends metadata to metadata catalogue</li>
-<li>user sends metadata and data to metadata catalogue and data repository</li>
-<li>user sends metadata and data and permissions information to metadata catalogue and data repository and permissions system.</li>
-</ul>
-
-
-<p>The Case Studies I've identified that I want to explore are listed below, names follow the format 'client tool'-and-'data repository or metadata catalogue'-and-optionally-'permissions system':</p>
-
-<h4>Programmatic solutions</h4>
-
-<ul>
-<li>reml-and-rfigshare</li>
-<li>reml-and-knb (when/if this becomes available)</li>
-<li>make_ddixml-and-ddiindex-and-orapus</li>
-<li>r2ddi-ddiindex</li>
-<li>dc-uploader-and-ANU-DataCommons</li>
-<li>dc-uploader-and-RDA</li>
-</ul>
-
-
-<h4>Graphical User Interface solutions</h4>
-
-<ul>
-<li>morpho-and-knb-metacat</li>
-<li>nesstar-publisher-and-nesstar-and-whatever-Steve-calls-the-ADA-permissions-system</li>
-<li>xmet-and-Australian-Spatial-Data-Directory</li>
-<li>sdmx-editor-and-sdmx-registry</li>
+      <ul>
+<li>Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors</li>
+<li>We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement</li>
+<li>I've hacked together some very very ugly code to construct the lagged variable</li>
+<li><a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3">http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3</a></li>
+<li>There may be errors, it's been a long day, but I won't have a chance to check back on this till next week so I thought I'd put it out there as is.</li>
 </ul>
 
 
@@ -485,17 +598,17 @@ time...."</li>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/10/two-main-types-of-data-documentation-workflow/#disqus_thread'>Comments</a>
+      <a href='/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Fri Oct 11 00:00:00 +1100 2013">11 Oct 2013</abbr>
+        <abbr class="published" title="Mon Oct 28 00:00:00 +1100 2013">28 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -504,163 +617,436 @@ time...."</li>
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/" title="wickhams-tidy-tools-only-get-you-90-pct-the-way" rel="bookmark">wickhams-tidy-tools-only-get-you-90-pct-the-way</a>
+      <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
     </h1>
     <div class="entry-content full-content">
-      <h4>Hadley Wickham's tidy tools</h4>
+      <p><body></p>
 
-<p>In this video at 8 mins 50 seconds he says "these four tools do 90% of the job"</p>
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">AWAP GRIDS </h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Introduction and Methods</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Authors</a></li>
+<li><a href="#sec-1-2">1.2 Background</a></li>
+<li><a href="#sec-1-3">1.3 Material and Methods</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 R-code-for-extraction</a></li>
+<li><a href="#sec-3">3 Results</a></li>
+<li><a href="#sec-4">4 R-code-for-comparison</a></li>
+<li><a href="#sec-5">5 Discussion</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> Introduction and Methods</h3>
+<div class="outline-text-3" id="text-1">
+
+
+<p>
+This is a work in progress.  It is a stub of an article I want to put together which shows how to use several online data repositories together as a showcase of the [Scientific Workflow and Integration Software for Health (SWISH) Climate Impact Assessments](<a href="https://github.com/swish-climate-impact-assessment">https://github.com/swish-climate-impact-assessment</a>) project.
+</p>
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Authors</h4>
+<div class="outline-text-4" id="text-1-1">
 
 <ul>
-<li>subset,</li>
-<li>transform,</li>
-<li>summarise, and</li>
-<li>arrange</li>
-<li>TODO I noticed <a href="http://www.rstudio.com/training/curriculum/data-manipulation.html">at the website for an Rstudio  course</a> transform has been replaced by mutate as one of the "four basic verbs of data manipulation".</li>
+<li>Ivan Hanigan and [Markus Nolf](<a href="http://www.thinkoholic.com">http://www.thinkoholic.com</a>)
+</li>
 </ul>
 
 
-<iframe src="//player.vimeo.com/video/33727555" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+</div>
 
+</div>
 
-<p> <p><a href="http://vimeo.com/33727555">Tidy Data</a> from <a href="http://vimeo.com/user2150538">Drew Conway</a> on <a href="https://vimeo.com">Vimeo</a>.</p></p>
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Background</h4>
+<div class="outline-text-4" id="text-1-2">
 
-<p>So I thought what's the other 10?  Here's a few contenders for my work:</p>
 
 <ul>
-<li>merge</li>
-<li>reshape::cast and reshape::melt</li>
-<li>unlist</li>
-<li>t() transpose</li>
-<li>sprintf or paste</li>
+<li>Markus Nolf offers this use case of the [SWISH EWEDB](<a href="http://swish-climate-impact-assessment.github.io/">http://swish-climate-impact-assessment.github.io/</a>)
+</li>
+<li>Markus is pulling together his  Daintree Rainforest Observatory (DRO) data into a manuscript for publication, and was looking for climate data from 2012 as well as long-term. 
+</li>
+<li>More specifically, the annual precipitation and mean annual temperature for both 2012 and the 30-year mean.
+</li>
+<li>The Australian Bureau of Meteorology has a nice rainfall dataset available at <a href="http://www.bom.gov.au/climate/data/">http://www.bom.gov.au/climate/data/</a> ("Cape Trib Store" weather station), but it seems like the temperature records are patchy.
+</li>
+<li>So it is advised to use the data the DRO collects its self
+</li>
+<li>You need to apply through the [ASN SuperSite data portal](<a href="http://www.tern-supersites.net.au/knb/">http://www.tern-supersites.net.au/knb/</a>) for access to the daily data for the DRO.
+</li>
+<li>Note the use of the DRO met data will need to be properly cited as it is harder to keep
+</li>
+</ul>
+
+<p>an AWS station running in the tropics for years than it is to collect most other data. 
+The citation information is provided when you make a request to access the data.
+</p><ul>
+<li>The long term mean used by most DRO researchers is from the BOM station as we only have a short record from the station itself.  The offset is around 1000mm.
+</li>
+<li>However what we want is mean annual temperatures but the BOM website seems to focus more on mean minimum and maximum temperatures.
+</li>
 </ul>
 
 
-<p></p>
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-4">
+<h4 id="sec-1-3"><span class="section-number-4">1.3</span> Material and Methods</h4>
+<div class="outline-text-4" id="text-1-3">
 
 
-<h4>R-subset</h4>
+<ul>
+<li id="sec-1-3-1">Baseline Climate Data 2012, Far North Queensland Rainforest Supersite, Cape Tribulation Node<br/>
 
-<pre><code># Filter rows by criteria
-subset(airquality, Temp &gt; 90, select = c(Ozone, Temp))
+<ul>
+<li>We can use the data portal too see [the data file in question](<a href="http://www.tern-supersites.net.au/knb/metacat/lloyd.238.13/html">http://www.tern-supersites.net.au/knb/metacat/lloyd.238.13/html</a>)
+</li>
+<li>Application for access is via email
+</li>
+</ul>
 
-## NB This is a convenience function intended for use interactively.  For
-## programming it is better to use the standard subsetting functions like
-## ‘[’, and in particular the non-standard evaluation of argument
-## ‘subset’ can have unanticipated consequences.
 
-with(airquality,
-     airquality[Temp &gt; 90, c("Ozone", "Temp")]
-     )
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2">Extract mean annual temperatures at the BOM website<br/>
 
-# OR
+<ul>
+<li>SWISH uses BoM data a fair bit and aims to streamline access to BoM data for extreme weather event analysis (which require long term average climatology to provide the baseline that extremes are measured against).
+</li>
+<li>WRT to temperature most daily averages from BoM are calculated as average of maximum<sub>temperature</sub><sub>in</sub><sub>24</sub><sub>hours</sub><sub>after</sub><sub>9am</sub><sub>local</sub><sub>time</sub><sub>in</sub><sub>degrees</sub> and minimum<sub>temperature</sub><sub>in</sub><sub>24</sub><sub>hours</sub><sub>before</sub><sub>9am</sub><sub>local</sub><sub>time</sub><sub>in</sub><sub>degree</sub> (only couple of hundred AWS provide hourly data to get the proper mean of 24 obs).
+</li>
+<li>The Bureau of Meteorology has generated a range of gridded meteorological datasets for Australia as a contribution to the Australian Water Availability Project (AWAP). These include daily max and min temperature which you could use to generate daily averages, then calculate your long term averages from those?  
+</li>
+<li><a href="http://www.bom.gov.au/jsp/awap/">http://www.bom.gov.au/jsp/awap/</a>
+</li>
+<li>Documentation is at <a href="http://www.bom.gov.au/amm/docs/2009/jones.pdf">http://www.bom.gov.au/amm/docs/2009/jones.pdf</a>
+</li>
+</ul>
 
-airquality[airquality$Temp &gt; 90,  c("Ozone", "Temp")]
-</code></pre>
 
-<h4>R-transform</h4>
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-3">A workflow to download and process the public BoM weather grids.<br/>
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> R-depends</h3>
+<div class="outline-text-3" id="text-1">
 
-<pre><code># New columns that are functions of other columns       
-df &lt;- transform(airquality,
-                new = -Ozone,
-                Temp2 = (Temp-32)/1.8
-                )
-head(df)
-</code></pre>
 
-<h4>R-mutate</h4>
 
-<pre><code>require(plyr)
-# same thing as transform
-df &lt;- mutate(airquality, new = -Ozone, Temp = (Temp - 32) / 1.8)    
-# Things transform can't do
-df &lt;- mutate(airquality, Temp = (Temp - 32) / 1.8, OzT = Ozone / Temp)
 
-# mutate is rather faster than transform
-system.time(transform(baseball, avg_ab = ab / g))
-system.time(mutate(baseball, avg_ab = ab / g))
-</code></pre>
+<pre class="src src-R"><span style="color: #7f9f7f;"># </span><span style="color: #7f9f7f;">depends</span>
+install.packages(c(<span style="color: #cc9393;">'raster'</span>, <span style="color: #cc9393;">'rgdal'</span>, <span style="color: #cc9393;">'plyr'</span>, <span style="color: #cc9393;">'RODBC'</span>, <span style="color: #cc9393;">'RCurl'</span>, <span style="color: #cc9393;">'XML'</span>, <span style="color: #cc9393;">'ggmap'</span>, <span style="color: #cc9393;">'maptools'</span>, <span style="color: #cc9393;">'spdep'</span>))
 
-<h4>R-summarise</h4>
+</pre>
 
-<pre><code># New data.frame where columns are functions of existing columns
-require(plyr)    
-df &lt;- ddply(.data = airquality,
-            .variables = "Month",
-            .fun = summarise,
-            tmax = max(Temp),
-            tav = mean(Temp),
-            ndays = length(unique(Day))
-            )
-head(df)
-</code></pre>
+</div>
+</div>
 
-<h4>Passing variables to ddply for summary</h4>
+<ul>
+<li>This workflow uses the open source R software with some of our custom written packages:
+</li>
+</ul>
 
-<pre><code># Notice how the name of the variable Temp doesn't need quotes?
-# this means that you need to hard code the names
-# But if you want to pass variables to this inside a function we need a
-# different approach.
 
-summarise_df  &lt;- function(x, by, var1, var2, var3)
-  {
-    data_out &lt;- ddply(x,
-                      by,
-                      function(df) return(
-                        c(
-                          tmax = max(df[,var1]),
-                          tav = mean(df[,var2]),
-                          ndays = length(unique(df[,var3]))
-                          )
-                        )
-                      )
-    return(data_out)
-  }
 
-df2 &lt;- summarise_df(x = airquality, by = "Month",
-                   var1 = "Temp", var2 = "Temp", var3 = "Day"
-                   )
+</li>
+</ul>
+</div>
+</div>
 
-head(df2)
-all.equal(df,df2)
-# TRUE
-</code></pre>
+</div>
 
-<h4>Another alternative, if we want to pass the dataset as string too</h4>
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2"><span class="section-number-3">2</span> R-code-for-extraction</h3>
+<div class="outline-text-3" id="text-2">
 
-<pre><code>summarise_df2  &lt;- function(x, by, var1, var2, var3)
-  {
-    data_out &lt;- eval(
-      parse(
-        text =
-        sprintf(
-          "ddply(.data = %s,
-            .variables = '%s',
-            .fun = summarise,
-            tmax = max(%s),
-            tav = mean(%s),
-            ndays = length(unique(%s))
-            )", x, by, var1, var2, var3
-          )
-        )
-      )
-    return(data_out)
-  }
 
-df3 &lt;- summarise_df2(x = "airquality", by = "Month",
-                     var1 = "Temp", var2 = "Temp", var3 = "Day"
-                     )
-head(df3)
-all.equal(df, df3)
-# TRUE
-</code></pre>
 
-<h4>R-arrange</h4>
 
-<pre><code># Re-order the rows of a data.frame
-df &lt;- arrange(airquality, Temp, Ozone)
-head(df)
-</code></pre>
+<pre class="src src-R"><span style="color: #93a1a1;">################################################################</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">name:r-code</span>
+
+
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">aim daily weather for any point location from online BoM weather grids</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">depends on some github packages</span>
+<span style="color: #268bd2; font-weight: bold;">require</span>(awaptools)
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">http://swish-climate-impact-assessment.github.io/tools/awaptools/awaptools-downloads.html</span>
+<span style="color: #268bd2; font-weight: bold;">require</span>(swishdbtools)
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">http://swish-climate-impact-assessment.github.io/tools/swishdbtools/swishdbtools-downloads.html</span>
+<span style="color: #268bd2; font-weight: bold;">require</span>(gisviz)
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">http://ivanhanigan.github.io/gisviz/</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">and this from CRAN</span>
+<span style="color: #859900; font-weight: bold;">if</span>(!<span style="color: #268bd2; font-weight: bold;">require</span>(raster)) install.packages(<span style="color: #2aa198;">'raster'</span>); <span style="color: #268bd2; font-weight: bold;">require</span>(raster)
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">get weather data, beware that each grid is a couple of megabytes</span>
+vars <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(<span style="color: #2aa198;">"maxave"</span>,<span style="color: #2aa198;">"minave"</span>,<span style="color: #2aa198;">"totals"</span>,<span style="color: #2aa198;">"vprph09"</span>,<span style="color: #2aa198;">"vprph15"</span>) <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">,"solarave") </span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">solar only available after 1990</span>
+<span style="color: #859900; font-weight: bold;">for</span>(measure <span style="color: #859900; font-weight: bold;">in</span> vars)
+{
+  <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">measure &lt;- vars[1]</span>
+  get_awap_data(start = <span style="color: #2aa198;">'1960-01-01'</span>,end = <span style="color: #2aa198;">'1960-01-02'</span>, measure)
+}
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">get location</span>
+locn <span style="color: #268bd2; font-weight: bold;">&lt;-</span> geocode(<span style="color: #2aa198;">"daintree rainforest"</span>)
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">this uses google maps API, better check this</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">lon       lat</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">1 145.4185 -16.17003</span>
+<span style="color: #93a1a1;">## </span><span style="color: #93a1a1;">Treat data frame as spatial points</span>
+epsg <span style="color: #268bd2; font-weight: bold;">&lt;-</span> make_EPSG()
+shp <span style="color: #268bd2; font-weight: bold;">&lt;-</span> SpatialPointsDataFrame(cbind(locn$lon,locn$lat),locn,
+                              proj4string=CRS(epsg$prj4[epsg$code %<span style="color: #859900; font-weight: bold;">in</span>% <span style="color: #2aa198;">'4283'</span>]))
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">now loop over grids and extract met data</span>
+cfiles <span style="color: #268bd2; font-weight: bold;">&lt;-</span>  dir(pattern=<span style="color: #2aa198;">"grid$"</span>)
+
+<span style="color: #859900; font-weight: bold;">for</span> (i <span style="color: #859900; font-weight: bold;">in</span> seq_len(length(cfiles))) {
+  <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">i &lt;- 1 ## for stepping thru</span>
+  gridname <span style="color: #268bd2; font-weight: bold;">&lt;-</span> cfiles[[i]]
+  r <span style="color: #268bd2; font-weight: bold;">&lt;-</span> raster(gridname)
+  <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">image(r) # plot to look at</span>
+  e <span style="color: #268bd2; font-weight: bold;">&lt;-</span> extract(r, shp, df=T)
+  <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">str(e) ## print for debugging</span>
+  e1 <span style="color: #268bd2; font-weight: bold;">&lt;-</span> shp
+  e1@data$values <span style="color: #268bd2; font-weight: bold;">&lt;-</span> e[,2]
+  e1@data$gridname <span style="color: #268bd2; font-weight: bold;">&lt;-</span> gridname
+  <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">write to to target file</span>
+  write.table(e1@data,<span style="color: #2aa198;">"output.csv"</span>,
+    col.names = i == 1, append = i&gt;1 , sep = <span style="color: #2aa198;">","</span>, row.names = <span style="color: #b58900;">FALSE</span>)
+}
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">further work is required to format the column with the gridname to get out the date and weather paramaters.</span>
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3"><span class="section-number-3">3</span> Results</h3>
+<div class="outline-text-3" id="text-3">
+
+<ul>
+<li id="sec-3-1">Results<br/>
+
+<ul>
+<li>Markus reports:
+</li>
+<li>"The R-script worked great once i had set a working directory that did not include spaces. (It may have been a different problem that got solved by changing the wd, but the important thing is it's running now.)"
+</li>
+<li>Markus downloaded 70+ GB of gridded weather data from the BoM website to his local computer
+</li>
+<li>Also note there is another set of gridded data available from the BOM, which contains pre-computed longterm mean temps, [ready to be extracted with the script](<a href="http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;period=#maps">http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;period=#maps</a>)
+</li>
+<li>"Using this file, I only needed to get the 2012 temp grids for a comparison of 2012 vs. 30-year data. I'm going to run the extraction of 1961-1990 data, just to be sure."
+</li>
+<li>"When we finished analysis of the long-term temperature from daily means found:
+</li>
+<li>While the official, pre-computed long-term mean (i.e. 30-year grid file, analysed with your script) was 22.29 °C for the DRO coordinates (145.4494, -16.1041), the new value from daily means (i.e. daily minave and maxave averaged) is 24.91 °C.
+</li>
+<li>We're not sure what causes this discrepancy, but thought we'd note that there is one.
+</li>
+<li>For the manuscript, we ended up using the means obtained via BOM's method* to compare 1961-1990 values to 2012, both computed with the above script.
+</li>
+<li>(* average of daily min/max temperature for each year, then averaged across the entire 30 year period)
+</li>
+</ul>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-3-2">Dataset discrepancy<br/>
+
+<ul>
+<li>Following up on the interesting a difference between the two BoM datasets. 
+</li>
+<li>One thing that might cause this might be if you are calculating the average of the annual averages ie sum(annavs)/30 or the average of all the daily averages as sum(dailyavs)/(30 * 365 or 366)?  the variance will differ by these methods.
+</li>
+<li>looks like the 30 year dataset is the former:
+</li>
+<li>"Average annual temperatures (maximum, minimum or mean) are calculated by adding daily temperature values each year, dividing by the number of days in that year to get an average for that particular year. The average values for each year in a specified period (1961 to 1990) are added together and the final value is calculated by dividing by the number of years in the period (30 years in this case)."
+</li>
+</ul>
+
+<p>[metadata](<a href="http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;period=#maps">http://reg.bom.gov.au/jsp/ncc/climate_averages/temperature/index.jsp?maptype=6&amp;period=#maps</a>)
+</p><ul>
+<li>Markus followed the BOM calculation method, and just compared it with two other approaches.
+</li>
+<li>average of all 21914 values
+</li>
+<li>average of yearly sum(min and max values per year)/(ndays*2)
+</li>
+<li>average of yearly sum(daily average)/ndays)
+</li>
+<li>where ndays = number of days per year.
+</li>
+<li>Differences between these methods show only in the 6th decimal place, far from 2.62 degrees.
+</li>
+</ul>
+
+
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4"><span class="section-number-3">4</span> R-code-for-comparison</h3>
+<div class="outline-text-3" id="text-4">
+
+
+
+
+<pre class="src src-R"><span style="color: #93a1a1;">################################################################</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">This is Markus' comparison script </span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">also see the formatted table csv, as well as the SWISH script's raw output csv</span>
+
+setwd(<span style="color: #2aa198;">"E:\\markus\\ph.d\\aus-daintree\\data-analysis\\climate"</span>)
+climate <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #2aa198;">"minmaxave-30year-daily.csv"</span>, sep=<span style="color: #2aa198;">","</span>, dec=<span style="color: #2aa198;">"."</span>)
+
+climate$year <span style="color: #268bd2; font-weight: bold;">&lt;-</span> substr(climate$file,1,4)
+climate$dailymean <span style="color: #268bd2; font-weight: bold;">&lt;-</span> (climate$maxave+climate$minave)/2
+head(climate)
+
+
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">total average across all days and values</span>
+annmean <span style="color: #268bd2; font-weight: bold;">&lt;-</span> mean(c(climate$maxave,climate$minave))
+annmean
+
+
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">daily means averaged by year, then total average</span>
+annmean1 <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(1,2)
+<span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:30) {
+        annmean1[i] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> mean(climate[climate$year==(i+1960),]$dailymean)
+        <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">print(annmean1[i])</span>
+}
+annmean1
+mean(annmean1)
+
+
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">mean of all values per year, then total average</span>
+annmean2 <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(1,2)
+<span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:30) {
+        tmpdata <span style="color: #268bd2; font-weight: bold;">&lt;-</span> climate[climate$year==(i+1960),]
+        annmean2[i] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> (sum(tmpdata$maxave) + sum(tmpdata$minave))/(length(tmpdata$maxave)+length(tmpdata$minave))
+        <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">print(annmean2[i])</span>
+}
+annmean2; mean(annmean2)
+
+
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">differences</span>
+annmean - mean(annmean1)
+annmean - mean(annmean2)
+mean(annmean1) - mean(annmean2)
+
+
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-3">
+<h3 id="sec-5"><span class="section-number-3">5</span> Discussion</h3>
+<div class="outline-text-3" id="text-5">
+
+
+<ul>
+<li>Principal findings: Very convenient automated extraction of location-based time series data for the precise period that is requested.
+</li>
+<li>Weaknesses (whole method, not your script): very long download time for daily grids (~11.000 grids = huge dataset, took several days in my case). Yearly grids would be beneficial (and I believe most others are also looking mainly for data on a yearly (or larger) scale).
+</li>
+</ul>
+
+
+<ul>
+<li id="sec-5-1">Conclusion<br/>
+
+<ul>
+<li>Take home message: Seems like a perfect case of "double-check the data using one and the same method".
+</li>
+</ul>
+
+
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/extract-weather-data-from-awap-grids/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sat Oct 26 00:00:00 +1100 2013">26 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This post is just a short note about something I'm thinking of calling "documentation-driven development".
+It is based on the concept of <a href="http://en.wikipedia.org/wiki/Test-driven_development">"test-driven development"</a>, and more recently:</p>
+
+<ul>
+<li><a href="http://lamages.blogspot.in/2013/04/test-driven-analysis.html">"test-driven analysis"</a></li>
+<li>or even <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">"Evidence-based Data Analysis"</a>).</li>
+<li>It is also a kind of a critique on the paradigm suggested by the BCCVL statement on <a href="http://bccvl.org.au/blog/2013/08/20/just-in-time-metadata/">"Just-In-Time metadata"</a>.</li>
+</ul>
+
+
+<p>Anyway, it is a small thing but hopefully big things will grow.</p>
 
       <div class="clear"></div>
     </div>
@@ -669,15 +1055,17 @@ head(df)
       
       <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
       
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/#disqus_thread'>Comments</a>
+      <a href='/2013/10/document-first-ask-questions-later/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Thu Oct 10 00:00:00 +1100 2013">10 Oct 2013</abbr>
+        <abbr class="published" title="Fri Oct 25 00:00:00 +1100 2013">25 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -712,8 +1100,9 @@ head(df)
           <div id="carrington-about" class="widget">
             <div class="about">
               <h2 class="widget-title">About</h2>
-              <p>My name is Ivan Hanigan.  I am a data manager and part-time student at the Australian National University.</p>
+              <p>I am a data manager and data analyst at the Australian National University.</p>
               <a class="more" href="/about.html">more →</a>
+
             </div>
           </div>
           <!--
@@ -738,147 +1127,25 @@ head(df)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (2)</a></li>
-                
-                <li><a href="/categories/drought">drought (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
-                
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
-                
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
-                
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
-                
-                <li><a href="/categories/science">science (2)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (5)</a></li>
-                
-                <li><a href="/categories/supersite">supersite (1)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
-                
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
-                <li><a href="/categories/workflow">workflow (4)</a></li>
-                
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (1)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (15)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (17)</a></li>
                 
-                <li><a href="/categories/surveys">surveys (1)</a></li>
+                <li><a href="/categories/research methods">research methods (42)</a></li>
                 
-                <li><a href="/categories/GIS">GIS (1)</a></li>
+                <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/data science">data science (1)</a></li>
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
-                
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
-                
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (26)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (3)</a></li>
-                
-                <li><a href="/categories/datasharing">datasharing (1)</a></li>
-                
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (6)</a></li>
                 
               </ul>
             </div>
@@ -889,203 +1156,23 @@ head(df)
               <ul>
                 
                 <li>
-                  <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
+                  <a href="/2014/04/using-morpho-for-cataloguing-personal-research-data/" title="Using Morpho for Cataloguing Personal Research Data" rel="bookmark">Using Morpho for Cataloguing Personal Research Data</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
+                  <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
+                  <a href="/2014/04/cataloguing-personal-research-data-with-morpho-and-a-custom-database/" title="Cataloguing Personal Research Data with Morpho And A Custom Database" rel="bookmark">Cataloguing Personal Research Data with Morpho And A Custom Database</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/github-gh-pages-and-disqus-commentsdatasharing/" title="Github, gh-pages and disqus comments" rel="bookmark">Github, gh-pages and disqus comments</a>
+                  <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/01/tumbarumba-supersite-dem/" title="tumbarumba-supersite-dem" rel="bookmark">tumbarumba-supersite-dem</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/extend-Rs-data-frame-class-with-metadata/" title="extend-Rs-data-frame-class-with-metadata" rel="bookmark">extend-Rs-data-frame-class-with-metadata</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/a-few-best-practices-for-statistical-programming/" title="a-few-best-practices-for-statistical-programming" rel="bookmark">a-few-best-practices-for-statistical-programming</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/" title="add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot" rel="bookmark">add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/animation-illustrating-catastrophic-regime-shifts/" title="Animation Illustrating Catastrophic Regime Shifts" rel="bookmark">Animation Illustrating Catastrophic Regime Shifts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/marco-fahmi-farewell-from-asn-ltern-data-portal-team/" title="Marco Fahmi Farewell From ASN-LTERN Data Portal Team" rel="bookmark">Marco Fahmi Farewell From ASN-LTERN Data Portal Team</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/animations-using-R/" title="animations-using-R" rel="bookmark">animations-using-R</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/links-to-useful-data-munging-posts/" title="links-to-useful-data-munging-posts" rel="bookmark">links-to-useful-data-munging-posts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode/" title="open-access-journal-templates-for-latex-with-emacs-orgmode" rel="bookmark">open-access-journal-templates-for-latex-with-emacs-orgmode</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/auto-download-bureau-meteorology-diurnal-data/" title="auto-download-bureau-meteorology-diurnal-data" rel="bookmark">auto-download-bureau-meteorology-diurnal-data</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/the-history-of-ons/" title="the-history-of-ons" rel="bookmark">the-history-of-ons</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/" title="non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms" rel="bookmark">non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-for-manitoba-centre-for-health-policy/" title="research-protocol-for-manitoba-centre-for-health-policy" rel="bookmark">research-protocol-for-manitoba-centre-for-health-policy</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/spatially-structured-time-series-with-nmmaps/" title="spatially-structured-time-series-with-nmmaps" rel="bookmark">spatially-structured-time-series-with-nmmaps</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/morpho-and-rfigshare/" title="morpho-and-rfigshare" rel="bookmark">morpho-and-rfigshare</a>
+                  <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
                 </li>
                 
               </ul>

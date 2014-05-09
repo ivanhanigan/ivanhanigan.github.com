@@ -54,6 +54,7 @@
 
   <div class="full">
     <h1 class="entry-title">
+<<<<<<< HEAD
       <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
     </h1>
     <div class="entry-content full-content">
@@ -108,6 +109,82 @@
 <li>QC: Maximum Expected:</li>
 <li>QC: Maximum Valid:</li>
 <li>QC: Custom:</li>
+=======
+      <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>We encountered a strange issue Morpho 1.8 has when ingesting a CSV with zero length strings as missing data.  An example of what this looks like is given below in the mulgara example dataset I;ve shown before.  I have added some rows with missing data as zero length strings (these are the ",," after the fictional value Treat = 0.5).</p>
+
+<h4>R Code:</h4>
+
+<pre><code>datatext &lt;- 'Treat, Before, After1, After2
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+0,  2.833213344,    1.609437912,    2.48490665
+0,  1.791759469,    2.197224577,    2.079441542
+0,  3.044522438,    2.708050201,    3.135494216
+0,  2.772588722,    1.791759469,    2.197224577
+0,  1.098612289,    1.609437912,    2.63905733
+1,  2.944438979,    0.693147181,    1.791759469
+1,  2.564949357,    0.693147181,    1.791759469
+1,  2.564949357,    1.609437912,    1.609437912
+1,  0.693147181,    1.098612289,    1.098612289
+1,  1.609437912,    0,      1.098612289'
+analyte &lt;- read.csv(textConnection(datatext))
+write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= "", quote=F)
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>Unfortunately for this blog entry, the example above doesn;t exhibit the problem!</li>
+<li>you can see what happens by selecting the "treat consecutive delimiters as as one" option</li>
+<li>showing that the data from the 3rd and 4th cols shifts to the right</li>
+<li>this is what happened to us but we were not able to modify this behaviour by changing that option!</li>
+<li>The problem only occurred when we had a file big file (200+ columns)</li>
+<li>the problem occured at col 23, shown in the image below</li>
+</ul>
+
+
+<p><img src="/images/morpho-bug-empty-na3.png" alt="morpho-bug-empty-na3.png" /></p>
+
+<ul>
+<li>this column is ftyp[12] which has 62 rows of missing and then some text codes.</li>
+<li>the next 24th column is  aerial[10] and it is this one that is then read incorrectly by morpho.  The importer makes the error of reading blanks for the first few rows and then *, even though in reality it is * and then date 1/06/2006 (shown in the image below)</li>
+</ul>
+
+
+<p><img src="/images/morpho-bug-empty-na2.1.png" alt="morpho-bug-empty-na2.1.png" /></p>
+
+<ul>
+<li>and finally col 25 fire[13] now appears as * and the date 1/06/2006 but it should be a different number of *s and the date 2/04/2007 further down</li>
+</ul>
+
+
+<p><img src="/images/morpho-bug-empty-na2.png" alt="morpho-bug-empty-na2.png" /></p>
+
+<h3>Workaround</h3>
+
+<ul>
+<li>to deal with this in this case we replaced all zero length strings as "NA"</li>
+<li>this is probably a good idea in most cases, except when NA is not an appropriate value and so in those cases we replaced with the word "blank"</li>
+</ul>
+
+
+<h3>Conclusions</h3>
+
+<ul>
+<li>This issue is probably rare and might be fixed in the newer version of Morpho</li>
+<li>We don;t use new morpho because we are still using the old metacat</li>
+<li>I thought it worth reporting here</li>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 </ul>
 
 
@@ -124,17 +201,29 @@
     <p class="alt-font tight">
       Posted in&nbsp;
       
+<<<<<<< HEAD
       <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+=======
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       
     </p>
     <!--
 	<p class="comments-link">
+<<<<<<< HEAD
       <a href='/2014/05/cwt-lter-data-submission-template-critique/#disqus_thread'>Comments</a>
+=======
+      <a href='/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
+<<<<<<< HEAD
         <abbr class="published" title="Fri May 09 00:00:00 +1000 2014">09 May 2014</abbr>
+=======
+        <abbr class="published" title="Fri May 02 00:00:00 +1000 2014">02 May 2014</abbr>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       </span>
     </p>
     <div class="clear"></div>
@@ -143,6 +232,7 @@
 
   <div class="full">
     <h1 class="entry-title">
+<<<<<<< HEAD
       <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
     </h1>
     <div class="entry-content full-content">
@@ -219,31 +309,7 @@ write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= ""
 <li>I thought it worth reporting here</li>
 </ul>
 
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri May 02 00:00:00 +1000 2014">02 May 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
+=======
       <a href="/2014/04/workaround-for-installing-morpho-on-a-windows-network/" title="workaround-for-installing-morpho-on-a-windows-network" rel="bookmark">workaround-for-installing-morpho-on-a-windows-network</a>
     </h1>
     <div class="entry-content full-content">
@@ -274,23 +340,36 @@ write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= ""
 <p>Issues remain about the long term solution to this problem but this will work in the short-term.</p>
 
 <p>We think you can also create a junction (symlink) so that .morpho/ can point to a different location (perhaps another network storage with bigger capacity and automated backup).</p>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
+<<<<<<< HEAD
       <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+=======
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       
     </p>
     <!--
 	<p class="comments-link">
+<<<<<<< HEAD
+      <a href='/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/#disqus_thread'>Comments</a>
+=======
       <a href='/2014/04/workaround-for-installing-morpho-on-a-windows-network/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
+<<<<<<< HEAD
+        <abbr class="published" title="Fri May 02 00:00:00 +1000 2014">02 May 2014</abbr>
+=======
         <abbr class="published" title="Tue Apr 29 00:00:00 +1000 2014">29 Apr 2014</abbr>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       </span>
     </p>
     <div class="clear"></div>
@@ -299,6 +378,16 @@ write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= ""
 
   <div class="full">
     <h1 class="entry-title">
+<<<<<<< HEAD
+      <a href="/2014/04/workaround-for-installing-morpho-on-a-windows-network/" title="workaround-for-installing-morpho-on-a-windows-network" rel="bookmark">workaround-for-installing-morpho-on-a-windows-network</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h3>Introduction</h3>
+
+<p>Morpho is an open source piece of software designed to host all kinds of ecological data.  It is used to describe data collections. We publish to Metacat using Morpho.  For technical reasons, we have our own server running an older version of the Metacat software so have to run an old version of Morpho (v1.8).</p>
+
+<h3>Installation and configuration</h3>
+=======
       <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
     </h1>
     <div class="entry-content full-content">
@@ -366,11 +455,31 @@ setwd(oldwd)
 </code></pre>
 
 <p></p>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
+<p>TERN specific instructions are replicated across:</p>
 
 <h3>Use Morpho to tidy up the Results</h3>
 
 <ul>
+<<<<<<< HEAD
+<li><a href="http://www.tern-supersites.net.au/index.php/data/repository-tutorial">http://www.tern-supersites.net.au/index.php/data/repository-tutorial</a></li>
+<li><a href="http://www.ltern.org.au/index.php/data/guides-and-tutorial">http://www.ltern.org.au/index.php/data/guides-and-tutorial</a></li>
+</ul>
+
+
+<h3>Morpho issue on Windows in our network environment</h3>
+
+<p>The ANU Fenner School came across this issue. Our local IT department have discovered with Morpho (v1.8) Installation on Windows in our network environment, Morpho installs a hidden directory called ".morpho" and this is written to a PATH next to the User Desktop. This is actually on a network share with a very small quota.</p>
+
+<p>Therefore as Morpho writes data there it can easily exceed the quota causing the software to stop working.  All users of Morpho on such a network should check for the location of the ".morpho" directory and if it is located with such a restricted quota then alternative arrangements need to be made.</p>
+
+<p>At the ANU Fenner School we opted to set up local user accounts (the ".morpho" file is then on the C drive) and this user is accessible from the main User's account.  The Morpho files are therefore stored on the C drive which is of course a danger for hard disk failure and data loss.</p>
+
+<p>We feel that as long as the draft packages are saved to the networked Metacat (with the maximum access restrictions in force for draft work) then if the local hard disk dies then the draft data package is not lost but can be accessed again from a new Morpho install and the Metacat server.</p>
+
+<p>Issues remain about the long term solution to this problem but this will work in the short-term.</p>
+=======
 <li>The result can be imported to Morpho and then edited from there</li>
 <li>or you can use a code editor like emacs or notepad++ to do bulk find-and-replace operations to fix up issues</li>
 </ul>
@@ -383,19 +492,29 @@ setwd(oldwd)
 <li>the R EML package succeeded to write the file</li>
 <li>I needed to pay careful attention to the type of the variables in the data.frame before running the R EML functions</li>
 </ul>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
+<p>We think you can also create a junction (symlink) so that .morpho/ can point to a different location (perhaps another network storage with bigger capacity and automated backup).</p>
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
+<<<<<<< HEAD
       <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+=======
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       
     </p>
     <!--
 	<p class="comments-link">
+<<<<<<< HEAD
+      <a href='/2014/04/workaround-for-installing-morpho-on-a-windows-network/#disqus_thread'>Comments</a>
+=======
       <a href='/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
@@ -409,6 +528,195 @@ setwd(oldwd)
 
   <div class="full">
     <h1 class="entry-title">
+<<<<<<< HEAD
+      <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In my <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions">previous post</a> I showed a workaround to input large number of variabels than Morpho could handle.  I have found out an interesting thing about the R EML package data.set approach.  The unit.defs depends on the type of the column in the data frame (R knows if you try to trick it).  Rather than describe all the levels of the factor vars, I wanted to just have simple descriptions for numeric or character type columns.  If numeric it should be number and if character it can be the name of the column.  Because I am just trying to sidestep the issue with morpho failing to input the 200 plus variables I just need to create a dataframe with either number or character (not factor).</p>
+
+<p>For an example:</p>
+
+<h4>R Code:</h4>
+
+<pre><code>require(EML)
+fname &lt;- dir("myData", full.names=T, pattern = 'csv')
+fname
+fname  &lt;- "myData/paper_data.csv"  
+dat  &lt;- read.csv(fname, stringsAsFactor=F)
+# the variable names include special characters such as % and [ so need to do some extra work
+names_dat  &lt;- read.csv(fname, nrow=1, header=F, stringsAsFactor=F)
+names(dat) &lt;- names_dat
+head(dat)
+nrow(dat)
+# the first 46 variables are nominal, thereafter they are all numeric
+str(dat[,1:46])
+str(dat[,47:49])
+# but these numerics are character for some reason
+table(dat[ , 47])
+# it is because the raw data had * instead of NA...  I could use na.strings when I call read.table above, or deal with it here
+# I'll just convert them to numerics now
+dat1 &lt;- dat[,1:46]
+dat2 &lt;- dat[,47:ncol(dat)]
+dat2[dat2 == "*"] &lt;- NA
+for(i in 1:ncol(dat2)){
+  dat2[,i]  &lt;- as.numeric(dat2[ , i])
+}
+str(dat2)
+# good that has set them up properly, also make sure all the text are character type
+for(i in 1:ncol(dat1)){
+  dat1[,i]  &lt;- as.character(dat1[ , i])
+}
+# recombine
+dat &lt;- cbind(dat1,dat2)
+str(dat)
+# then I add to it the definition for the constructed variables
+unit_defs &lt;- list()
+for(i in 1:46){
+    unit_defs[[i]] &lt;- names(dat[i])
+}
+for(i in 47:ncol(dat)){
+    unit_defs[[i]] &lt;- "number"
+}
+unit_defs[1:20]
+col_defs &lt;- names(dat)
+col_defs
+#names(dat)
+dat &lt;- data.set(dat,
+               col.defs = col_defs,
+               unit.defs = unit_defs
+               )
+str(dat)
+
+eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
+dir()
+oldwd &lt;- getwd()
+setwd("myData")
+eml_write(dat, file = "test_eml.xml", title = "test_eml")
+setwd(oldwd)
+=======
+      <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I realised that the work I did yesterday had an error in it.  I'd
+created a list of unit.defs with one less than I needed.  So the
+variable V100 was given the definition of NA!  I can fix this by open
+that package in Morpho and go to the column and select it, then under
+the Data menu, choose Edit Column Documentation.  There we can change
+all the definitions.  Now I start thinking about changing the type
+from count to ArealDensity, numberPerMeterSquared.  To change all
+these new variables I don't want to go thru the GUI 95 times!  Change
+the first one and then look at the EML</p>
+
+<h4>EML Code:</h4>
+
+<pre><code>&lt;attribute id="1398382425052"&gt;
+  &lt;attributeName&gt;V99&lt;/attributeName&gt;
+  &lt;attributeDefinition&gt;count stuff&lt;/attributeDefinition&gt;
+  &lt;measurementScale&gt;
+    &lt;ratio&gt;
+      &lt;unit&gt;&lt;standardUnit&gt;number&lt;/standardUnit&gt;&lt;/unit&gt;
+      &lt;numericDomain&gt;&lt;numberType&gt;real&lt;/numberType&gt;&lt;/numericDomain&gt;
+    &lt;/ratio&gt;
+  &lt;/measurementScale&gt;
+&lt;/attribute&gt;
+&lt;attribute id="1398382385863"&gt;
+  &lt;attributeName&gt;V100&lt;/attributeName&gt;
+  &lt;attributeDefinition&gt;A random variable&lt;/attributeDefinition&gt;
+  &lt;measurementScale&gt;
+    &lt;ratio&gt;
+      &lt;unit&gt;&lt;standardUnit&gt;numberPerMeterSquared&lt;/standardUnit&gt;&lt;/unit&gt;
+      &lt;numericDomain&gt;&lt;numberType&gt;real&lt;/numberType&gt;&lt;/numericDomain&gt;
+    &lt;/ratio&gt;
+  &lt;/measurementScale&gt;
+&lt;/attribute&gt;
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+</code></pre>
+
+<p></p>
+
+
+<<<<<<< HEAD
+<h3>Use Morpho to tidy up the Results</h3>
+
+<ul>
+<li>The result can be imported to Morpho and then edited from there</li>
+<li>or you can use a code editor like emacs or notepad++ to do bulk find-and-replace operations to fix up issues</li>
+</ul>
+=======
+<p>So this looks like I can do a find and replace in Emacs so go to the
+"~/.morpho" database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.</p>
+
+<h4>Code:</h4>
+
+<pre><code>&lt;standardUnit&gt;number&lt;
+to
+&lt;standardUnit&gt;numberPerMeterSquared&lt;
+</code></pre>
+
+<p></p>
+
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<p>Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.</p>
+
+<<<<<<< HEAD
+<h3>Conclusions</h3>
+
+<ul>
+<li>Morpho failed with 200 plus variables</li>
+<li>the R EML package succeeded to write the file</li>
+<li>I needed to pay careful attention to the type of the variables in the data.frame before running the R EML functions</li>
+=======
+<p><img src="/images/morpho-wide3.png" alt="morpho-wide3.png" /></p>
+
+<h2>Conclusions</h2>
+
+<ul>
+<li>Morpho and a code editor can be used in conjunction to edit EML quite well</li>
+<li>I suspect edits to the EML directly with a code editor are pretty dangerous</li>
+<li>For eg if you do the wrong change then that EML will likely not be valid and Morpho will complain.</li>
+<li>But the advantage of quickly modifying things like 100 variables unit definitions rather than opening every one in the GUI seems to be a worthwhile risk to me.</li>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+<<<<<<< HEAD
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+=======
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+      
+    </p>
+    <!--
+	<p class="comments-link">
+<<<<<<< HEAD
+      <a href='/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/#disqus_thread'>Comments</a>
+=======
+      <a href='/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+<<<<<<< HEAD
+        <abbr class="published" title="Tue Apr 29 00:00:00 +1000 2014">29 Apr 2014</abbr>
+=======
+        <abbr class="published" title="Fri Apr 25 00:00:00 +1000 2014">25 Apr 2014</abbr>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+<<<<<<< HEAD
       <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
     </h1>
     <div class="entry-content full-content">
@@ -447,51 +755,206 @@ the first one and then look at the EML</p>
 </code></pre>
 
 <p></p>
+=======
+      <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions/" title="Using Reml To Input Large Number Of Column Descriptions" rel="bookmark">Using Reml To Input Large Number Of Column Descriptions</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting "save for later" but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.</p>
 
+<p>So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.</p>
 
+<p>First thing I tried was the constructed Column Definitions and Unit Definitions example from <a href="https://github.com/ropensci/EML">the README</a></p>
+
+<h4>R Code:</h4>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<pre><code>#require(devtools)
+#install_github("EML", "ROpenSci")
+require(EML)
+
+# The example from orig doco
+dat = data.set(river = c("SAC",  "SAC",   "AM"),
+               spp   = c("king",  "king", "ccho"),
+               stg   = c("smolt", "parr", "smolt"),
+               ct    = c(293L,    410L,    210L),
+               col.defs = c("River site used for collection",
+                            "Species common name",
+                            "Life Stage",
+                            "count of live fish in traps"),
+               unit.defs = list(c(SAC = "The Sacramento River",
+                                  AM = "The American River"),
+                                c(king = "King Salmon",
+                                  ccho = "Coho Salmon"),
+                                c(parr = "third life stage",
+                                  smolt = "fourth life stage"),
+                                "number"))
+str(dat)
+eml_config(creator="Carl Boettiger &lt;cboettig@gmail.com&gt;")
+eml_write(dat, file = "inst/doc/EML_example.xml")
+# now you can import this to morpho and have a look
+# note that for morpho 1.8 it wants to change the EML version from 2.1.1 to 2.1.0
+# and it can't show the data yet
+# so what we need to do is write this as a file to the morpho database
+# save and close, note which number it assigned
+dat &lt;- data.frame(dat)
+morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
+maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+</code></pre>
+
+<<<<<<< HEAD
 <p>So this looks like I can do a find and replace in Emacs so go to the
 "~/.morpho" database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.</p>
+=======
+<p></p>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 <h4>Code:</h4>
 
+<<<<<<< HEAD
 <pre><code>&lt;standardUnit&gt;number&lt;
 to
 &lt;standardUnit&gt;numberPerMeterSquared&lt;
+=======
+<p>So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.</p>
+
+<h4>EML Code:</h4>
+
+<pre><code>...
+&lt;/dataFormat&gt;
+&lt;distribution scope="document"&gt; &lt;online&gt; &lt;url function="download"&gt;ecogrid://knb/hanigan.22.1&lt;/url&gt;
+&lt;/online&gt;
+&lt;access authSystem="knb" order="denyFirst"&gt;&lt;allow&gt;&lt;principal&gt;uid=datalibrarian,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
+&lt;permission&gt;all&lt;/permission&gt;
+&lt;/allow&gt;
+&lt;allow&gt;&lt;principal&gt;uid=hanigan,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
+&lt;permission&gt;read&lt;/permission&gt;
+&lt;/allow&gt;
+&lt;/access&gt;
+&lt;/distribution&gt;
+&lt;/physical&gt;
+...
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 </code></pre>
 
 <p></p>
 
 
+<<<<<<< HEAD
 <p>Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.</p>
 
 <p><img src="/images/morpho-wide3.png" alt="morpho-wide3.png" /></p>
+=======
+<p>Which seems to have worked when we open it up again:</p>
 
-<h2>Conclusions</h2>
+<p><img src="/images/morpho-wide1.png" alt="moprho-wide1.png" /></p>
 
+<p>So now let;s try a large nuber of variables:</p>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<h4>R Code:</h4>
+
+<<<<<<< HEAD
 <ul>
 <li>Morpho and a code editor can be used in conjunction to edit EML quite well</li>
 <li>I suspect edits to the EML directly with a code editor are pretty dangerous</li>
 <li>For eg if you do the wrong change then that EML will likely not be valid and Morpho will complain.</li>
 <li>But the advantage of quickly modifying things like 100 variables unit definitions rather than opening every one in the GUI seems to be a worthwhile risk to me.</li>
 </ul>
+=======
+<pre><code># add lots of cols
+for(i in 5:100){
+  dat[,i] &lt;-  sample(rnorm(100,1,2), 3)
+}
+str(dat)
+##  $ V95  : num  1.5708 -0.0936 2.2324
+##  $ V96  : num  1.79 5.4 1.62
+##  $ V97  : num  -1.141 0.653 5.365
+##  $ V98  : num  1.738 -1.046 -0.135
+##  $ V99  : num  3.6 -0.738 -1.877
+##   [list output truncated]
 
+# firstly I make a liset of the unit definitions for the example
+unit.defs &lt;- list(c(SAC = "The Sacramento River",
+                   AM = "The American River"),
+                 c(king = "King Salmon",
+                   ccho = "Coho Salmon"),
+                 c(parr = "third life stage",
+                   smolt = "fourth life stage"))
+# then I add to it the definition for the constructed variables
+unit.defs[[3]]
+for(i in 4:100){
+  unit.defs[[i]] &lt;- "number"
+}
+unit.defs
 
+# and this can be passed to the data.set constructor
+dat &lt;- data.set(dat,
+               col.defs = c("River site used for collection",
+                            "Species common name",
+                            "Life Stage",
+                            "count of live fish in traps",
+                           c(rep("count stuff", 95))),
+                unit.defs = unit.defs
+                )
+str(dat)
+
+eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
+eml_write(dat, file = "inst/doc/EML_example_wide.xml")
+# import to morpho, save and close
+# create the dataset for morphos database
+dat &lt;- data.frame(dat)
+morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
+maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+# now add this into the EML morpho has created (25.2 in my case)
+</code></pre>
+
+<p></p>
+
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+
+<p>Which now seems to have attached the variable defintions and dataTable adequately.</p>
+
+<<<<<<< HEAD
+=======
+<p><img src="/images/morpho-wide2.png" alt="morpho-wide2.png" /></p>
+
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
+<<<<<<< HEAD
       <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+=======
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       
     </p>
     <!--
 	<p class="comments-link">
+<<<<<<< HEAD
       <a href='/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/#disqus_thread'>Comments</a>
+=======
+      <a href='/2014/04/using-reml-to-input-large-number-of-column-descriptions/#disqus_thread'>Comments</a>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
+<<<<<<< HEAD
         <abbr class="published" title="Fri Apr 25 00:00:00 +1000 2014">25 Apr 2014</abbr>
+=======
+        <abbr class="published" title="Thu Apr 24 00:00:00 +1000 2014">24 Apr 2014</abbr>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       </span>
     </p>
     <div class="clear"></div>
@@ -522,7 +985,11 @@ to
           <div id="carrington-about" class="widget">
             <div class="about">
               <h2 class="widget-title">About</h2>
+<<<<<<< HEAD
               <p>I am a PhD Student at the Australian National University.</p>
+=======
+              <p>I am a data manager and data analyst at the Australian National University.</p>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
               <a class="more" href="/about.html">more →</a>
 
             </div>
@@ -549,6 +1016,7 @@ to
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
+<<<<<<< HEAD
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
@@ -568,16 +1036,40 @@ to
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
                 <li><a href="/categories/research methods">research methods (42)</a></li>
+=======
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (42)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (24)</a></li>
+                
+                <li><a href="/categories/spatial">spatial (6)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/overview">overview (7)</a></li>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
                 
                 <li>
+<<<<<<< HEAD
                   <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
                 </li>
                 
                 <li>
+=======
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
                   <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
                 </li>
                 
@@ -593,13 +1085,24 @@ to
                   <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
                 </li>
                 
+<<<<<<< HEAD
+=======
+                <li>
+                  <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions/" title="Using Reml To Input Large Number Of Column Descriptions" rel="bookmark">Using Reml To Input Large Number Of Column Descriptions</a>
+                </li>
+                
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
+<<<<<<< HEAD
                 <li><a href="/tag/morpho">morpho (7)</a></li>
+=======
+                <li><a href="/tag/morpho">morpho (5)</a></li>
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
                 
                 <li><a href="/tag/bugs">bugs (1)</a></li>
                 
@@ -614,7 +1117,11 @@ to
           <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
+<<<<<<< HEAD
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
+=======
+          <!--       <li><a href="/tag/morpho">morpho (5)</a></li> -->
+>>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
           <!--        -->
           <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
