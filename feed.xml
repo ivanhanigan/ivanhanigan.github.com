@@ -6,7 +6,6 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
-<<<<<<< HEAD
 				<title>cwt-lter-data-submission-template-critique</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;I recently reviewed a tool for collecting metadata about Long Term Ecological Resarch (LTER) data&lt;/li&gt;
@@ -16,14 +15,8 @@
 &lt;li&gt;I made the following notes, this is not intended to be a nasty critique&lt;/li&gt;
 &lt;li&gt;The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches&lt;/li&gt;
 &lt;/ul&gt;
-=======
-				<title>morpho-has-an-issue-with-zero-length-strings-as-missing-data</title>
-				<description>&lt;p&gt;We encountered a strange issue Morpho 1.8 has when ingesting a CSV with zero length strings as missing data.  An example of what this looks like is given below in the mulgara example dataset I;ve shown before.  I have added some rows with missing data as zero length strings (these are the &quot;,,&quot; after the fictional value Treat = 0.5).&lt;/p&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
-&lt;h4&gt;R Code:&lt;/h4&gt;
 
-<<<<<<< HEAD
 &lt;h4&gt;Critique&lt;/h4&gt;
 
 &lt;ul&gt;
@@ -108,29 +101,6 @@ a,,-9999,9999
 analyte &amp;lt;- read.csv(textConnection(datatext))
 write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names = F, na= &quot;&quot;, quote=F)
 &lt;/code&gt;&lt;/pre&gt;
-=======
-&lt;pre&gt;&lt;code&gt;datatext &amp;lt;- 'Treat, Before, After1, After2
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-0,  2.833213344,    1.609437912,    2.48490665
-0,  1.791759469,    2.197224577,    2.079441542
-0,  3.044522438,    2.708050201,    3.135494216
-0,  2.772588722,    1.791759469,    2.197224577
-0,  1.098612289,    1.609437912,    2.63905733
-1,  2.944438979,    0.693147181,    1.791759469
-1,  2.564949357,    0.693147181,    1.791759469
-1,  2.564949357,    1.609437912,    1.609437912
-1,  0.693147181,    1.098612289,    1.098612289
-1,  1.609437912,    0,      1.098612289'
-analyte &amp;lt;- read.csv(textConnection(datatext))
-write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names = F, na= &quot;&quot;, quote=F)
-&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
@@ -163,7 +133,6 @@ write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names =
 &lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na2.png&quot; alt=&quot;morpho-bug-empty-na2.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h3&gt;Workaround&lt;/h3&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;ul&gt;
 &lt;li&gt;to deal with this in this case we replaced all zero length strings as &quot;NA&quot;&lt;/li&gt;
@@ -171,16 +140,6 @@ write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names =
 &lt;/ul&gt;
 
 
-<<<<<<< HEAD
-&lt;ul&gt;
-&lt;li&gt;Unfortunately for this blog entry, the example above doesn;t exhibit the problem!&lt;/li&gt;
-&lt;li&gt;you can see what happens by selecting the &quot;treat consecutive delimiters as as one&quot; option&lt;/li&gt;
-&lt;li&gt;showing that the data from the 3rd and 4th cols shifts to the right&lt;/li&gt;
-&lt;li&gt;this is what happened to us but we were not able to modify this behaviour by changing that option!&lt;/li&gt;
-&lt;li&gt;The problem only occurred when we had a file big file (200+ columns)&lt;/li&gt;
-&lt;li&gt;the problem occured at col 23, shown in the image below&lt;/li&gt;
-&lt;/ul&gt;
-=======
 &lt;h3&gt;Conclusions&lt;/h3&gt;
 
 &lt;ul&gt;
@@ -199,25 +158,9 @@ write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names =
 				<description>&lt;h3&gt;Introduction&lt;/h3&gt;
 
 &lt;p&gt;Morpho is an open source piece of software designed to host all kinds of ecological data.  It is used to describe data collections. We publish to Metacat using Morpho.  For technical reasons, we have our own server running an older version of the Metacat software so have to run an old version of Morpho (v1.8).&lt;/p&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;h3&gt;Installation and configuration&lt;/h3&gt;
 
-<<<<<<< HEAD
-&lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na3.png&quot; alt=&quot;morpho-bug-empty-na3.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;this column is ftyp[12] which has 62 rows of missing and then some text codes.&lt;/li&gt;
-&lt;li&gt;the next 24th column is  aerial[10] and it is this one that is then read incorrectly by morpho.  The importer makes the error of reading blanks for the first few rows and then *, even though in reality it is * and then date 1/06/2006 (shown in the image below)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na2.1.png&quot; alt=&quot;morpho-bug-empty-na2.1.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;and finally col 25 fire[13] now appears as * and the date 1/06/2006 but it should be a different number of *s and the date 2/04/2007 further down&lt;/li&gt;
-&lt;/ul&gt;
-=======
 &lt;p&gt;TERN specific instructions are replicated across:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -233,58 +176,9 @@ write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names =
 &lt;p&gt;Therefore as Morpho writes data there it can easily exceed the quota causing the software to stop working.  All users of Morpho on such a network should check for the location of the &quot;.morpho&quot; directory and if it is located with such a restricted quota then alternative arrangements need to be made.&lt;/p&gt;
 
 &lt;p&gt;At the ANU Fenner School we opted to set up local user accounts (the &quot;.morpho&quot; file is then on the C drive) and this user is accessible from the main User's account.  The Morpho files are therefore stored on the C drive which is of course a danger for hard disk failure and data loss.&lt;/p&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;p&gt;We feel that as long as the draft packages are saved to the networked Metacat (with the maximum access restrictions in force for draft work) then if the local hard disk dies then the draft data package is not lost but can be accessed again from a new Morpho install and the Metacat server.&lt;/p&gt;
 
-<<<<<<< HEAD
-&lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na2.png&quot; alt=&quot;morpho-bug-empty-na2.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Workaround&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;to deal with this in this case we replaced all zero length strings as &quot;NA&quot;&lt;/li&gt;
-&lt;li&gt;this is probably a good idea in most cases, except when NA is not an appropriate value and so in those cases we replaced with the word &quot;blank&quot;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This issue is probably rare and might be fixed in the newer version of Morpho&lt;/li&gt;
-&lt;li&gt;We don;t use new morpho because we are still using the old metacat&lt;/li&gt;
-&lt;li&gt;I thought it worth reporting here&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Fri May 02 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/</link>
-			</item>
-		
-			<item>
-				<title>workaround-for-installing-morpho-on-a-windows-network</title>
-				<description>&lt;h3&gt;Introduction&lt;/h3&gt;
-
-&lt;p&gt;Morpho is an open source piece of software designed to host all kinds of ecological data.  It is used to describe data collections. We publish to Metacat using Morpho.  For technical reasons, we have our own server running an older version of the Metacat software so have to run an old version of Morpho (v1.8).&lt;/p&gt;
-
-&lt;h3&gt;Installation and configuration&lt;/h3&gt;
-
-&lt;p&gt;TERN specific instructions are replicated across:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&quot;&gt;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.ltern.org.au/index.php/data/guides-and-tutorial&quot;&gt;http://www.ltern.org.au/index.php/data/guides-and-tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Morpho issue on Windows in our network environment&lt;/h3&gt;
-
-&lt;p&gt;The ANU Fenner School came across this issue. Our local IT department have discovered with Morpho (v1.8) Installation on Windows in our network environment, Morpho installs a hidden directory called &quot;.morpho&quot; and this is written to a PATH next to the User Desktop. This is actually on a network share with a very small quota.&lt;/p&gt;
-
-&lt;p&gt;Therefore as Morpho writes data there it can easily exceed the quota causing the software to stop working.  All users of Morpho on such a network should check for the location of the &quot;.morpho&quot; directory and if it is located with such a restricted quota then alternative arrangements need to be made.&lt;/p&gt;
-
-&lt;p&gt;At the ANU Fenner School we opted to set up local user accounts (the &quot;.morpho&quot; file is then on the C drive) and this user is accessible from the main User's account.  The Morpho files are therefore stored on the C drive which is of course a danger for hard disk failure and data loss.&lt;/p&gt;
-=======
 &lt;p&gt;Issues remain about the long term solution to this problem but this will work in the short-term.&lt;/p&gt;
 
 &lt;p&gt;We think you can also create a junction (symlink) so that .morpho/ can point to a different location (perhaps another network storage with bigger capacity and automated backup).&lt;/p&gt;
@@ -417,83 +311,10 @@ the first one and then look at the EML&lt;/p&gt;
   &amp;lt;/measurementScale&amp;gt;
 &amp;lt;/attribute&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
-&lt;p&gt;We feel that as long as the draft packages are saved to the networked Metacat (with the maximum access restrictions in force for draft work) then if the local hard disk dies then the draft data package is not lost but can be accessed again from a new Morpho install and the Metacat server.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
-&lt;p&gt;Issues remain about the long term solution to this problem but this will work in the short-term.&lt;/p&gt;
 
-<<<<<<< HEAD
-&lt;p&gt;We think you can also create a junction (symlink) so that .morpho/ can point to a different location (perhaps another network storage with bigger capacity and automated backup).&lt;/p&gt;
-</description>
-				<published>Tue Apr 29 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/workaround-for-installing-morpho-on-a-windows-network/</link>
-			</item>
-		
-			<item>
-				<title>using-r-eml-to-input-large-numbers-of-variables-part-2</title>
-				<description>&lt;p&gt;In my &lt;a href=&quot;/2014/04/using-reml-to-input-large-number-of-column-descriptions&quot;&gt;previous post&lt;/a&gt; I showed a workaround to input large number of variabels than Morpho could handle.  I have found out an interesting thing about the R EML package data.set approach.  The unit.defs depends on the type of the column in the data frame (R knows if you try to trick it).  Rather than describe all the levels of the factor vars, I wanted to just have simple descriptions for numeric or character type columns.  If numeric it should be number and if character it can be the name of the column.  Because I am just trying to sidestep the issue with morpho failing to input the 200 plus variables I just need to create a dataframe with either number or character (not factor).&lt;/p&gt;
-
-&lt;p&gt;For an example:&lt;/p&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(EML)
-fname &amp;lt;- dir(&quot;myData&quot;, full.names=T, pattern = 'csv')
-fname
-fname  &amp;lt;- &quot;myData/paper_data.csv&quot;  
-dat  &amp;lt;- read.csv(fname, stringsAsFactor=F)
-# the variable names include special characters such as % and [ so need to do some extra work
-names_dat  &amp;lt;- read.csv(fname, nrow=1, header=F, stringsAsFactor=F)
-names(dat) &amp;lt;- names_dat
-head(dat)
-nrow(dat)
-# the first 46 variables are nominal, thereafter they are all numeric
-str(dat[,1:46])
-str(dat[,47:49])
-# but these numerics are character for some reason
-table(dat[ , 47])
-# it is because the raw data had * instead of NA...  I could use na.strings when I call read.table above, or deal with it here
-# I'll just convert them to numerics now
-dat1 &amp;lt;- dat[,1:46]
-dat2 &amp;lt;- dat[,47:ncol(dat)]
-dat2[dat2 == &quot;*&quot;] &amp;lt;- NA
-for(i in 1:ncol(dat2)){
-  dat2[,i]  &amp;lt;- as.numeric(dat2[ , i])
-}
-str(dat2)
-# good that has set them up properly, also make sure all the text are character type
-for(i in 1:ncol(dat1)){
-  dat1[,i]  &amp;lt;- as.character(dat1[ , i])
-}
-# recombine
-dat &amp;lt;- cbind(dat1,dat2)
-str(dat)
-# then I add to it the definition for the constructed variables
-unit_defs &amp;lt;- list()
-for(i in 1:46){
-    unit_defs[[i]] &amp;lt;- names(dat[i])
-}
-for(i in 47:ncol(dat)){
-    unit_defs[[i]] &amp;lt;- &quot;number&quot;
-}
-unit_defs[1:20]
-col_defs &amp;lt;- names(dat)
-col_defs
-#names(dat)
-dat &amp;lt;- data.set(dat,
-               col.defs = col_defs,
-               unit.defs = unit_defs
-               )
-str(dat)
-
-eml_config(creator=&quot;Ivan Charles Hanigan &amp;lt;ivan.hanigan@gmail.com&amp;gt;&quot;)
-dir()
-oldwd &amp;lt;- getwd()
-setwd(&quot;myData&quot;)
-eml_write(dat, file = &quot;test_eml.xml&quot;, title = &quot;test_eml&quot;)
-setwd(oldwd)
-=======
 &lt;p&gt;So this looks like I can do a find and replace in Emacs so go to the
 &quot;~/.morpho&quot; database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.&lt;/p&gt;
 
@@ -502,69 +323,11 @@ setwd(oldwd)
 &lt;pre&gt;&lt;code&gt;&amp;lt;standardUnit&amp;gt;number&amp;lt;
 to
 &amp;lt;standardUnit&amp;gt;numberPerMeterSquared&amp;lt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-<<<<<<< HEAD
-&lt;h3&gt;Use Morpho to tidy up the Results&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The result can be imported to Morpho and then edited from there&lt;/li&gt;
-&lt;li&gt;or you can use a code editor like emacs or notepad++ to do bulk find-and-replace operations to fix up issues&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Morpho failed with 200 plus variables&lt;/li&gt;
-&lt;li&gt;the R EML package succeeded to write the file&lt;/li&gt;
-&lt;li&gt;I needed to pay careful attention to the type of the variables in the data.frame before running the R EML functions&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Tue Apr 29 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/</link>
-			</item>
-		
-			<item>
-				<title>Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</title>
-				<description>&lt;p&gt;I realised that the work I did yesterday had an error in it.  I'd
-created a list of unit.defs with one less than I needed.  So the
-variable V100 was given the definition of NA!  I can fix this by open
-that package in Morpho and go to the column and select it, then under
-the Data menu, choose Edit Column Documentation.  There we can change
-all the definitions.  Now I start thinking about changing the type
-from count to ArealDensity, numberPerMeterSquared.  To change all
-these new variables I don't want to go thru the GUI 95 times!  Change
-the first one and then look at the EML&lt;/p&gt;
-
-&lt;h4&gt;EML Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;attribute id=&quot;1398382425052&quot;&amp;gt;
-  &amp;lt;attributeName&amp;gt;V99&amp;lt;/attributeName&amp;gt;
-  &amp;lt;attributeDefinition&amp;gt;count stuff&amp;lt;/attributeDefinition&amp;gt;
-  &amp;lt;measurementScale&amp;gt;
-    &amp;lt;ratio&amp;gt;
-      &amp;lt;unit&amp;gt;&amp;lt;standardUnit&amp;gt;number&amp;lt;/standardUnit&amp;gt;&amp;lt;/unit&amp;gt;
-      &amp;lt;numericDomain&amp;gt;&amp;lt;numberType&amp;gt;real&amp;lt;/numberType&amp;gt;&amp;lt;/numericDomain&amp;gt;
-    &amp;lt;/ratio&amp;gt;
-  &amp;lt;/measurementScale&amp;gt;
-&amp;lt;/attribute&amp;gt;
-&amp;lt;attribute id=&quot;1398382385863&quot;&amp;gt;
-  &amp;lt;attributeName&amp;gt;V100&amp;lt;/attributeName&amp;gt;
-  &amp;lt;attributeDefinition&amp;gt;A random variable&amp;lt;/attributeDefinition&amp;gt;
-  &amp;lt;measurementScale&amp;gt;
-    &amp;lt;ratio&amp;gt;
-      &amp;lt;unit&amp;gt;&amp;lt;standardUnit&amp;gt;numberPerMeterSquared&amp;lt;/standardUnit&amp;gt;&amp;lt;/unit&amp;gt;
-      &amp;lt;numericDomain&amp;gt;&amp;lt;numberType&amp;gt;real&amp;lt;/numberType&amp;gt;&amp;lt;/numericDomain&amp;gt;
-    &amp;lt;/ratio&amp;gt;
-  &amp;lt;/measurementScale&amp;gt;
-&amp;lt;/attribute&amp;gt;
-=======
 &lt;p&gt;Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/morpho-wide3.png&quot; alt=&quot;morpho-wide3.png&quot; /&gt;&lt;/p&gt;
@@ -651,39 +414,11 @@ write.csv(dat, filename, row.names =F, quote=F)
 &amp;lt;/distribution&amp;gt;
 &amp;lt;/physical&amp;gt;
 ...
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-<<<<<<< HEAD
-&lt;p&gt;So this looks like I can do a find and replace in Emacs so go to the
-&quot;~/.morpho&quot; database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;standardUnit&amp;gt;number&amp;lt;
-to
-&amp;lt;standardUnit&amp;gt;numberPerMeterSquared&amp;lt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-wide3.png&quot; alt=&quot;morpho-wide3.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Conclusions&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Morpho and a code editor can be used in conjunction to edit EML quite well&lt;/li&gt;
-&lt;li&gt;I suspect edits to the EML directly with a code editor are pretty dangerous&lt;/li&gt;
-&lt;li&gt;For eg if you do the wrong change then that EML will likely not be valid and Morpho will complain.&lt;/li&gt;
-&lt;li&gt;But the advantage of quickly modifying things like 100 variables unit definitions rather than opening every one in the GUI seems to be a worthwhile risk to me.&lt;/li&gt;
-&lt;/ul&gt;
-=======
 &lt;p&gt;Which seems to have worked when we open it up again:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/morpho-wide1.png&quot; alt=&quot;moprho-wide1.png&quot; /&gt;&lt;/p&gt;
@@ -743,463 +478,6 @@ write.csv(dat, filename, row.names =F, quote=F)
 # now add this into the EML morpho has created (25.2 in my case)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Which now seems to have attached the variable defintions and dataTable adequately.&lt;/p&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-wide2.png&quot; alt=&quot;morpho-wide2.png&quot; /&gt;&lt;/p&gt;
-</description>
-<<<<<<< HEAD
-				<published>Fri Apr 25 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/</link>
-			</item>
-		
-			<item>
-				<title>Using Reml To Input Large Number Of Column Descriptions</title>
-				<description>&lt;p&gt;We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting &quot;save for later&quot; but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.&lt;/p&gt;
-
-&lt;p&gt;So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.&lt;/p&gt;
-=======
-				<published>Thu Apr 24 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/using-reml-to-input-large-number-of-column-descriptions/</link>
-			</item>
-		
-			<item>
-				<title>linking-eml-packages-by-umbrella-project-info</title>
-				<description>&lt;p&gt;In Eml the optional &quot;project&quot; module provides an overall description
-of the larger-scale project or research context with which that
-dataset is associated. For the examples in our work the &quot;project&quot; will
-most often be an LTER (Longterm Ecological Research Network) site that
-directed the research.  Accordingly, the &quot;title&quot; here consists of the
-name of the LTER site. The &quot;personnel&quot; group contains the same
-elements as &quot;creator&quot; and &quot;contact&quot;, with the addition of a mandatory
-&quot;role&quot; element, and it is used to identify the lead PI and/or
-information manager on the site. Other optional elements in the
-&quot;project&quot; module include &quot;abstract&quot;, &quot;funding&quot;,
-&quot;studyAreaDescription&quot;, and &quot;designDescription&quot;, each of which can be
-used to provide a richer textual description of the LTER site
-responsible for the research project being documented.  If used, the
-&quot;abstract&quot; includes basic information about the LTER site, such as its
-general history and administration, while &quot;studyAreaDescription&quot; is
-more of a physical description of the area where the site is
-located. This description may also include the &quot;coverage&quot; module,
-which is fully discussed on page XX of this handbook, or the
-&quot;citation&quot; module, covered on page XX. The &quot;funding&quot; tag is textual
-and self-explanatory, but &quot;designDescription&quot; is best used for a
-description of the site’s database information and availability.&lt;/p&gt;
-
-&lt;p&gt;Morpho doesn't give all these options so you need to go to the EML file found in the &quot;~/.morpho/...&quot; directory and edit this with a text editor
-I think the order of the tags here might make a difference so I always put thye &quot;abstract&quot; tag after the &quot;/personnel&quot; tag.  I also think you might need this &quot;para&quot; tag:&lt;/p&gt;
-
-&lt;h4&gt;Code:linking-eml-packages-by-umbrella-project-inf&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;abstract&amp;gt; 
-  &amp;lt;para&amp;gt;Prof McMichael set up this group to develop new methods of researching Environmental (especially Climate Change) and Health
-  &amp;lt;/para&amp;gt;
-&amp;lt;/abstract&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
-
-&lt;p&gt;First thing I tried was the constructed Column Definitions and Unit Definitions example from &lt;a href=&quot;https://github.com/ropensci/EML&quot;&gt;the README&lt;/a&gt;&lt;/p&gt;
-
-<<<<<<< HEAD
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;#require(devtools)
-#install_github(&quot;EML&quot;, &quot;ROpenSci&quot;)
-require(EML)
-
-# The example from orig doco
-dat = data.set(river = c(&quot;SAC&quot;,  &quot;SAC&quot;,   &quot;AM&quot;),
-               spp   = c(&quot;king&quot;,  &quot;king&quot;, &quot;ccho&quot;),
-               stg   = c(&quot;smolt&quot;, &quot;parr&quot;, &quot;smolt&quot;),
-               ct    = c(293L,    410L,    210L),
-               col.defs = c(&quot;River site used for collection&quot;,
-                            &quot;Species common name&quot;,
-                            &quot;Life Stage&quot;,
-                            &quot;count of live fish in traps&quot;),
-               unit.defs = list(c(SAC = &quot;The Sacramento River&quot;,
-                                  AM = &quot;The American River&quot;),
-                                c(king = &quot;King Salmon&quot;,
-                                  ccho = &quot;Coho Salmon&quot;),
-                                c(parr = &quot;third life stage&quot;,
-                                  smolt = &quot;fourth life stage&quot;),
-                                &quot;number&quot;))
-str(dat)
-eml_config(creator=&quot;Carl Boettiger &amp;lt;cboettig@gmail.com&amp;gt;&quot;)
-eml_write(dat, file = &quot;inst/doc/EML_example.xml&quot;)
-# now you can import this to morpho and have a look
-# note that for morpho 1.8 it wants to change the EML version from 2.1.1 to 2.1.0
-# and it can't show the data yet
-# so what we need to do is write this as a file to the morpho database
-# save and close, note which number it assigned
-dat &amp;lt;- data.frame(dat)
-morpho_db  &amp;lt;- &quot;~/.morpho/profiles/hanigan/data/hanigan/&quot;
-maxid  &amp;lt;-  1+max(as.numeric(dir(morpho_db)))
-filename &amp;lt;- file.path(morpho_db,maxid)
-# what is the number?
-filename
-write.csv(dat, filename, row.names =F, quote=F)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.&lt;/p&gt;
-
-&lt;h4&gt;EML Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;...
-&amp;lt;/dataFormat&amp;gt;
-&amp;lt;distribution scope=&quot;document&quot;&amp;gt; &amp;lt;online&amp;gt; &amp;lt;url function=&quot;download&quot;&amp;gt;ecogrid://knb/hanigan.22.1&amp;lt;/url&amp;gt;
-&amp;lt;/online&amp;gt;
-&amp;lt;access authSystem=&quot;knb&quot; order=&quot;denyFirst&quot;&amp;gt;&amp;lt;allow&amp;gt;&amp;lt;principal&amp;gt;uid=datalibrarian,o=unaffiliated,dc=ecoinformatics,dc=org&amp;lt;/principal&amp;gt;
-&amp;lt;permission&amp;gt;all&amp;lt;/permission&amp;gt;
-&amp;lt;/allow&amp;gt;
-&amp;lt;allow&amp;gt;&amp;lt;principal&amp;gt;uid=hanigan,o=unaffiliated,dc=ecoinformatics,dc=org&amp;lt;/principal&amp;gt;
-&amp;lt;permission&amp;gt;read&amp;lt;/permission&amp;gt;
-&amp;lt;/allow&amp;gt;
-&amp;lt;/access&amp;gt;
-&amp;lt;/distribution&amp;gt;
-&amp;lt;/physical&amp;gt;
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Which seems to have worked when we open it up again:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-wide1.png&quot; alt=&quot;moprho-wide1.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So now let;s try a large nuber of variables:&lt;/p&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-=======
-&lt;p&gt;So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an &quot;additionalLinks&quot; node at the bottom of the EML:&lt;/p&gt;
-
-&lt;h4&gt;Code:linking-eml-packages-by-umbrella-project-info&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;additionalMetadata&amp;gt;
-  &amp;lt;metadata&amp;gt;
-    &amp;lt;additionalLinks&amp;gt;
-      &amp;lt;url name=&quot;The name of the homepage&quot;&amp;gt;http://...&amp;lt;/url&amp;gt;
-    &amp;lt;/additionalLinks&amp;gt;
-  &amp;lt;/metadata&amp;gt;
-&amp;lt;/additionalMetadata&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>Mon Apr 21 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/linking-eml-packages-by-umbrella-project-info/</link>
-			</item>
-		
-			<item>
-				<title>Using Morpho for Cataloguing Personal Research Data</title>
-				<description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 2014-04-20-using-morpho-orgmode&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1 Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2 Cataloguing Personal Research Data with Morpho&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3 How Morpho Works&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4 Adding a dataset from my collection&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5 the drought dataset:&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6 Step One: define the project that I will keep locally&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-7&quot;&gt;1.7 Contextual Metadata&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-8&quot;&gt;1.8 Abstract&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-9&quot;&gt;1.9 Australian FOR codes&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-10&quot;&gt;1.10 GCMD Keywords&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-11&quot;&gt;1.11 Geographic coverage&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-12&quot;&gt;1.12 Save the metadata&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-13&quot;&gt;1.13 Additional Metadata&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-
-
-&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1&lt;/span&gt; 2014-04-20-using-morpho-orgmode&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1&quot;&gt;
-  
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
-               &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot; xml:lang=&quot;en&quot;&gt;
-&lt;head&gt;
-&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;/&gt;
-&lt;meta name=&quot;generator&quot; content=&quot;Org-mode&quot;/&gt;
-&lt;meta name=&quot;generated&quot; content=&quot;2014-04-19T22:38+1000&quot;/&gt;
-&lt;meta name=&quot;author&quot; content=&quot;Ivan Hanigan&quot;/&gt;
-&lt;meta name=&quot;description&quot; content=&quot;&quot;/&gt;
-&lt;meta name=&quot;keywords&quot; content=&quot;&quot;/&gt;
-&lt;style type=&quot;text/css&quot;&gt;
- &lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
-  html { font-family: Times, serif; font-size: 12pt; }
-  .title  { text-align: center; }
-  .todo   { color: red; }
-  .done   { color: green; }
-  .tag    { background-color: #add8e6; font-weight:normal }
-  .target { }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
-  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
-  .center {margin-left:auto; margin-right:auto; text-align:center;}
-  p.verse { margin-left: 3% }
-  pre {
-        border: 1pt solid #AEBDCC;
-        background-color: #F3F5F7;
-        padding: 5pt;
-        font-family: courier, monospace;
-        font-size: 90%;
-        overflow:auto;
-  }
-  table { border-collapse: collapse; }
-  td, th { vertical-align: top;  }
-  th.right  { text-align:center;  }
-  th.left   { text-align:center;   }
-  th.center { text-align:center; }
-  td.right  { text-align:right;  }
-  td.left   { text-align:left;   }
-  td.center { text-align:center; }
-  dt { font-weight: bold; }
-  div.figure { padding: 0.5em; }
-  div.figure p { text-align: center; }
-  div.inlinetask {
-    padding:10px;
-    border:2px solid gray;
-    margin:10px;
-    background: #ffffcc;
-  }
-  textarea { overflow-x: auto; }
-  .linenr { font-size:smaller }
-  .code-highlighted {background-color:#ffff00;}
-  .org-info-js_info-navigation { border-style:none; }
-  #org-info-js_console-label { font-size:10px; font-weight:bold;
-                               white-space:nowrap; }
-  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
-                                 font-weight:bold; }
-  /*]]&gt;*/--&gt;
-&lt;/style&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-&lt;!--/*--&gt;&lt;![CDATA[/*&gt;&lt;!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = &quot;code-highlighted&quot;;
-     elem.className   = &quot;code-highlighted&quot;;
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]&gt;*///--&gt;
-&lt;/script&gt;
-
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;div id=&quot;preamble&quot;&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;content&quot;&gt;
-  
-  
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1&lt;/span&gt;Introduction&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1&quot;&gt;
-
-
-&lt;p&gt;
-The collection of scientific data is undertaken at an individual level
-by everybody in their own way. The layout of data collections that I
-have seen is incredibly varied; spread across multiple files and folders which can
-be difficult to navigate or search through. In some cases
-these collections are incomprehensible to all but the individual themselves. Given
-that a lot of projects are collaborative in nature and require
-extensive sharing, it is important that scientists maintain their
-data collection by some form of system that allows easy data extraction and
-use in other projects. Therefore, the maintenance of a personal catalogue of datasets is an
-important activity for scientists.
-&lt;/p&gt;
-&lt;p&gt;
-By cataloguing I mean that a file or database is kept that stores all the
-information about the names of the datasets (and any other files the
-data may be spread across), where the datasets are located, any
-references (papers) that were developed from it and finally
-important information regarding the conditions it
-was formed under.
-&lt;/p&gt;
-&lt;p&gt;
-While this may seem laborious, it keeps track of all the data that one
-has collected over time and gives one a reference system to find a
-dataset of interest when sharing with collaborators. Datasets can be
-saved in any filing system the scientist chooses, but with the help of
-their personal data catalogue they will always know the status of
-their data collection.
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2&lt;/span&gt; Cataloguing Personal Research Data with Morpho&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2&quot;&gt;
-
-
-&lt;p&gt;
-[Metacat](&lt;a href=&quot;https://knb.ecoinformatics.org/knb/docs/intro.html&quot;&gt;https://knb.ecoinformatics.org/knb/docs/intro.html&lt;/a&gt;) is an
-online repository for data and metadata. It is a great resource for
-the publication of data, but not very useful for an individual
-scientist to use on their personal computer.  However
-[Morpho](&lt;a href=&quot;https://knb.ecoinformatics.org/#tools/morpho&quot;&gt;https://knb.ecoinformatics.org/#tools/morpho&lt;/a&gt;) the Metadata
-Editor used by Metacat may be used locally by a researcher to
-catalogue their collection (and ultimately this will make publishing
-elements of the collection easier.)  Morpho uses the Ecological
-Metadata Language (EML) to author metadata with a graphical user
-interface wizard.
-&lt;/p&gt;
-&lt;p&gt;
-I am using morpho 1.8 due to my group using older metacat server.
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3&lt;/span&gt; How Morpho Works&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3&quot;&gt;
-
-
-&lt;p&gt;
-When you install Morpho it creates a directory where you can run the
-program from, and another hidden directory called &quot;.morpho&quot; for it's
-database of all your metadata (and optionally any data you import to
-it).  Below is an image of mine, with a couple of test records I
-played around with (the XMLs/HTMLs) and a dataset I imported (the text
-file).
-&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;~/.morpho/profiles/hanigan/data/hanigan/
-&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;
-&lt;img src=&quot;/images/morphodir1.png&quot; alt=&quot;morphodir1.png&quot;&gt;
-&lt;/p&gt;
-&lt;p&gt;  
-Every time a modification is made to the metadata a new XML is saved here, with the major number being the ID of the package and incremented minor number to reflect the change.
-&lt;/p&gt;
-&lt;p&gt;
-The GUI is tedious.
-&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-4&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4&lt;/span&gt; Adding a dataset from my collection&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4&quot;&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
-
-&lt;pre&gt;&lt;code&gt;# add lots of cols
-for(i in 5:100){
-  dat[,i] &amp;lt;-  sample(rnorm(100,1,2), 3)
-}
-str(dat)
-##  $ V95  : num  1.5708 -0.0936 2.2324
-##  $ V96  : num  1.79 5.4 1.62
-##  $ V97  : num  -1.141 0.653 5.365
-##  $ V98  : num  1.738 -1.046 -0.135
-##  $ V99  : num  3.6 -0.738 -1.877
-##   [list output truncated]
-
-# firstly I make a liset of the unit definitions for the example
-unit.defs &amp;lt;- list(c(SAC = &quot;The Sacramento River&quot;,
-                   AM = &quot;The American River&quot;),
-                 c(king = &quot;King Salmon&quot;,
-                   ccho = &quot;Coho Salmon&quot;),
-                 c(parr = &quot;third life stage&quot;,
-                   smolt = &quot;fourth life stage&quot;))
-# then I add to it the definition for the constructed variables
-unit.defs[[3]]
-for(i in 4:100){
-  unit.defs[[i]] &amp;lt;- &quot;number&quot;
-}
-unit.defs
-
-# and this can be passed to the data.set constructor
-dat &amp;lt;- data.set(dat,
-               col.defs = c(&quot;River site used for collection&quot;,
-                            &quot;Species common name&quot;,
-                            &quot;Life Stage&quot;,
-                            &quot;count of live fish in traps&quot;,
-                           c(rep(&quot;count stuff&quot;, 95))),
-                unit.defs = unit.defs
-                )
-str(dat)
-
-eml_config(creator=&quot;Ivan Charles Hanigan &amp;lt;ivan.hanigan@gmail.com&amp;gt;&quot;)
-eml_write(dat, file = &quot;inst/doc/EML_example_wide.xml&quot;)
-# import to morpho, save and close
-# create the dataset for morphos database
-dat &amp;lt;- data.frame(dat)
-morpho_db  &amp;lt;- &quot;~/.morpho/profiles/hanigan/data/hanigan/&quot;
-maxid  &amp;lt;-  1+max(as.numeric(dir(morpho_db)))
-filename &amp;lt;- file.path(morpho_db,maxid)
-# what is the number?
-filename
-write.csv(dat, filename, row.names =F, quote=F)
-# now add this into the EML morpho has created (25.2 in my case)
-&lt;/code&gt;&lt;/pre&gt;
-
-<<<<<<< HEAD
 &lt;p&gt;&lt;/p&gt;
 
 
@@ -1214,45 +492,9 @@ date: 2014-04-24
 categories:&lt;/p&gt;
 
 &lt;h2&gt;- Data Documentation&lt;/h2&gt;
-=======
-&lt;p&gt;
-I have already got a good amount of metadata I generated when I published [the drought data](&lt;a href=&quot;http://dx.doi.org/10.4225/13/50BBFD7E6727A&quot;&gt;http://dx.doi.org/10.4225/13/50BBFD7E6727A&lt;/a&gt;)
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-5&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5&lt;/span&gt; the drought dataset:&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-5&quot;&gt;
-
-&lt;p&gt;    Hanigan, Ivan (2012): Monthly drought data for Australia 1890-2008
-    using the Hutchinson Drought Index. Australian National University Data Commons.
-    DOI: 10.4225/13/50BBFD7E6727A. 
-&lt;/p&gt;
-&lt;p&gt;
-&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-6&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6&lt;/span&gt; Step One: define the project that I will keep locally&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6&quot;&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;This is the Github repo &lt;a href=&quot;https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS&quot;&gt;https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;I store this locally at ~/data/DROUGHT-BOM-GRIDS
-&lt;/li&gt;
-&lt;/ul&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;p&gt;We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting &quot;save for later&quot; but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.&lt;/p&gt;
 
-<<<<<<< HEAD
 &lt;p&gt;So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.&lt;/p&gt;
 
 &lt;p&gt;First thing I tried was the constructed Column Definitions and Unit Definitions example from &lt;a href=&quot;https://github.com/ropensci/EML&quot;&gt;the README&lt;/a&gt;&lt;/p&gt;
@@ -1321,58 +563,9 @@ write.csv(dat, filename, row.names =F, quote=F)
 
 &lt;p&gt;&lt;/p&gt;
 
-=======
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-7&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-7&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.7&lt;/span&gt; Contextual Metadata&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-7&quot;&gt;
-
-
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-8&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-8&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8&lt;/span&gt; Abstract&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8&quot;&gt;
-
-
-&lt;p&gt;
-I originally wrote the abstract as the description for a RIF-CS metadata object to publish for the ANU library.
-&lt;/p&gt;
-&lt;p&gt;
-I got the following instructions from a Librarian: The &quot;informative abstract&quot; method.
-&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The abstract should be a descriptive of the data, not the research.
-&lt;/li&gt;
-&lt;li&gt;Briefly outline the relevant project or study and describe the contents of the data package. 
-&lt;/li&gt;
-&lt;li&gt;Include geographic location, the primary objectives of the study, what data was collected (species or phenomena), the year range the data was collected in, and collection frequency if applicable.
-&lt;/li&gt;
-&lt;li&gt;Describe methodology techniques or approaches only to the degree necessary for comprehension – don’t go into any detail.
-&lt;/li&gt;
-&lt;li&gt;Cite references and/or links to any publications that are related to the data package.
-&lt;/li&gt;
-&lt;li&gt;Single paragraph
-&lt;/li&gt;
-&lt;li&gt;200-250 words
-&lt;/li&gt;
-&lt;li&gt;Use active voice and past tense.
-&lt;/li&gt;
-&lt;li&gt;Use short complete sentences.
-&lt;/li&gt;
-&lt;li&gt;Express terms in both their abbreviated and spelled out form for search retrieval purposes.
-&lt;/li&gt;
-&lt;/ul&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;p&gt;Which seems to have worked when we open it up again:&lt;/p&gt;
 
-<<<<<<< HEAD
 &lt;p&gt;&lt;img src=&quot;/images/morpho-wide1.png&quot; alt=&quot;moprho-wide1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;So now let;s try a large nuber of variables:&lt;/p&gt;
@@ -1764,173 +957,11 @@ I have already got a good amount of metadata I generated when I published [the d
 &lt;/div&gt;
 
 &lt;/div&gt;
-=======
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-9&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-9&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.9&lt;/span&gt; Australian FOR codes&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-9&quot;&gt;
-
-&lt;p&gt;ANZSRC-FOR Codes: Australian and New Zealand Standard Research Classification – Fields of Research codes allow R&amp;amp;D activity to be categorised according to the methodology used in the R&amp;amp;D, rather than the activity of the unit performing the R&amp;amp;D or the purpose of the R&amp;amp;D.  
-&lt;a href=&quot;http://www.abs.gov.au/Ausstats/abs@.nsf/Latestproducts/4AE1B46AE2048A28CA25741800044242?opendocument&quot;&gt;http://www.abs.gov.au/Ausstats/abs@.nsf/Latestproducts/4AE1B46AE2048A28CA25741800044242?opendocument&lt;/a&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-10&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-10&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.10&lt;/span&gt; GCMD Keywords&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-10&quot;&gt;
-
-&lt;p&gt;Olsen, L.M., G. Major, K. Shein, J. Scialdone, S. Ritz, T. Stevens, M. Morahan, A. Aleman, R. Vogel, S. Leicester, H. Weir, M. Meaux, S. Grebas, C.Solomon, M. Holland, T. Northcutt, R. A. Restrepo, R. Bilodeau, 2013. NASA/Global Change Master Directory (GCMD) Earth Science Keywords. Version 8.0.0.0.0 
-&lt;a href=&quot;http://gcmd.nasa.gov/learn/keyword_list.html&quot;&gt;http://gcmd.nasa.gov/learn/keyword_list.html&lt;/a&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-11&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-11&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.11&lt;/span&gt; Geographic coverage&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-11&quot;&gt;
-
-&lt;p&gt;    &amp;gt; require(devtools)
-    &amp;gt; install&lt;sub&gt;github&lt;/sub&gt;(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
-    &amp;gt; require(disentangle)
-    &amp;gt; morpho&lt;sub&gt;bounding&lt;/sub&gt;&lt;sub&gt;box&lt;/sub&gt;(d)
-                      X1                 X2                 X3
-    1               &amp;lt;NA&amp;gt; 10.1356954574585 S               &amp;lt;NA&amp;gt;
-    2 112.907211303711 E               &amp;lt;NA&amp;gt; 158.960372924805 E
-    3               &amp;lt;NA&amp;gt; 54.7538909912109 S               &amp;lt;NA&amp;gt;
-&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-12&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-12&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.12&lt;/span&gt; Save the metadata&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-12&quot;&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;the metadata is now ready to save to my .morpho catalogue
-&lt;/li&gt;
-&lt;li&gt;without importing any data
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;
-&lt;img src=&quot;/images/morphoimg2.png&quot; alt=&quot;morphoimg2.png&quot;&gt;
-&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;this appears as a new XML
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;
-&lt;img src=&quot;/images/morphoimg3.png&quot; alt=&quot;morphoimg3.png&quot;&gt;
-&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;which looks like this
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;
-&lt;img src=&quot;/images/morphoimg4.png&quot; alt=&quot;morphoimg4.png&quot;&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-1-13&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-13&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.13&lt;/span&gt; Additional Metadata&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-13&quot;&gt;
-
-
-&lt;p&gt;
-As this is metadata only about the dataset, it is innapropriate to refer to related publications etc in these elements.  Luckily EML has the additionalMetadata and additionalLinks fields.  Just open the XML and paste the following in the bottom.
-&lt;/p&gt;
-&lt;p&gt;
-    &amp;lt;additionalMetadata&amp;gt;
-      &amp;lt;metadata&amp;gt;
-        &amp;lt;additionalLinks&amp;gt;
-          &amp;lt;url name=&quot;Hanigan, IC, Butler, CD, Kokic, PN, Hutchinson, MF. Suicide and Drought in New South Wales, Australia, 1970-2007. Proceedings of the National Academy of Science USA 2012, vol. 109 no. 35 13950-13955, doi: 10.1073/pnas.1112965109&quot;&amp;gt;&lt;a href=&quot;http://dx.doi.org/10.1073/pnas.1112965109&quot;&gt;http://dx.doi.org/10.1073/pnas.1112965109&lt;/a&gt;&amp;lt;/url&amp;gt;
-        &amp;lt;/additionalLinks&amp;gt;
-      &amp;lt;/metadata&amp;gt;
-    &amp;lt;/additionalMetadata&amp;gt;
-&lt;/p&gt;
-&lt;p&gt;
-You can see this if you then open it up again in morpho and then under the documentation menu go to Add/Edit Documentation.
-&lt;/p&gt;
-&lt;p&gt;
-&lt;img src=&quot;/images/morphoimg5.png&quot; alt=&quot;morphoimg5.png&quot;&gt;
-&lt;/p&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;p&gt;&lt;/body&gt;
-&lt;/html&gt;&lt;/p&gt;
-</description>
-				<published>Sun Apr 20 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/using-morpho-for-cataloguing-personal-research-data/</link>
-			</item>
-		
-			<item>
-				<title>A Workaround For Inserting Species Names To Morpho</title>
-				<description>&lt;p&gt;Morpho is a pretty minimal editor for EML really.  It gives you a set
-of generically useful data entry forms but sometimes a specific task
-is better achieved through edits made directly to the XML document.
-An example of this is inserting a large number of species names to the
-taxonomic coverage module. The form to include these requires
-individual data entry for each species.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-taxo-smll.png&quot; alt=&quot;morpho-taxo.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Which looks like this when published&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-taxo2.1.png&quot; alt=&quot;morpho-taxo2.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Go to the morpho catalogue (found at ~/.morpho/profiles/hanigan/data/hanigan/) and take a look at how the XML is constructed.&lt;/p&gt;
-
-&lt;h4&gt;XML Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;taxonomicCoverage&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Genus&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Dasycercus&amp;lt;/taxonRankValue&amp;gt;
-    &amp;lt;taxonomicClassification&amp;gt;
-      &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-      &amp;lt;taxonRankValue&amp;gt;cristicauda&amp;lt;/taxonRankValue&amp;gt;
-      &amp;lt;commonName&amp;gt;Mulgara&amp;lt;/commonName&amp;gt;
-    &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Genus&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Homo&amp;lt;/taxonRankValue&amp;gt;
-      &amp;lt;taxonomicClassification&amp;gt;
-      &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-      &amp;lt;taxonRankValue&amp;gt;sapiens&amp;lt;/taxonRankValue&amp;gt;
-      &amp;lt;commonName&amp;gt;Modern Human&amp;lt;/commonName&amp;gt;
-    &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-&amp;lt;/taxonomicCoverage&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;div id=&quot;outline-container-1-6&quot; class=&quot;outline-4&quot;&gt;
 &lt;h4 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6&lt;/span&gt; Step One: define the project that I will keep locally&lt;/h4&gt;
 &lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6&quot;&gt;
 
-<<<<<<< HEAD
 
 &lt;ul&gt;
 &lt;li&gt;This is the Github repo &lt;a href=&quot;https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS&quot;&gt;https://github.com/swish-climate-impact-assessment/DROUGHT-BOM-GRIDS&lt;/a&gt;
@@ -1938,23 +969,8 @@ individual data entry for each species.&lt;/p&gt;
 &lt;li&gt;I store this locally at ~/data/DROUGHT-BOM-GRIDS
 &lt;/li&gt;
 &lt;/ul&gt;
-=======
-&lt;h4&gt;SO how to insert a large number of these&lt;/h4&gt;
 
-&lt;p&gt;One could use the taxon import feature to import the details from a
-file if there is a large list. Morpho’s taxon import feature does not
-correctly import more than one column of taxon data so if you have
-Genus and Species to enter you will actually need to combine Genus and
-Species into a binomial Species rank in one column (beware that if the data are sourced from a datafile that uses the underscore to seperate the words then these will not be correctly imported).&lt;/p&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
-&lt;p&gt;Once you have formated your input list, then import this
-as a new data table and go to the taxonomic coverage form under the
-documentation menu.  Click on the option to &quot;import taxon information
-from data table&quot; and select the appropriate column, selecting
-'species' for the class.  This will populate the taxonomicCoverage module in the EML.  You can now remove that data table from the package to be tidy.&lt;/p&gt;
-
-<<<<<<< HEAD
 &lt;/div&gt;
 
 &lt;/div&gt;
@@ -1962,15 +978,8 @@ from data table&quot; and select the appropriate column, selecting
 &lt;div id=&quot;outline-container-1-7&quot; class=&quot;outline-4&quot;&gt;
 &lt;h4 id=&quot;sec-1-7&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.7&lt;/span&gt; Contextual Metadata&lt;/h4&gt;
 &lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-7&quot;&gt;
-=======
-&lt;p&gt;This is what it looks like if you combine genus and species in the single column.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/morpho-taxo3.png&quot; alt=&quot;morpho-taxo3.png&quot; /&gt;&lt;/p&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
-&lt;p&gt;And here is the XML&lt;/p&gt;
-
-<<<<<<< HEAD
 &lt;/div&gt;
 
 &lt;/div&gt;
@@ -2008,28 +1017,8 @@ I got the following instructions from a Librarian: The &quot;informative abstrac
 &lt;li&gt;Express terms in both their abbreviated and spelled out form for search retrieval purposes.
 &lt;/li&gt;
 &lt;/ul&gt;
-=======
-&lt;h4&gt;XML Code:&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;&amp;lt;taxonomicCoverage scope=&quot;document&quot;&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Abelmoschus moschatus&amp;lt;/taxonRankValue&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Abrus pector&amp;lt;/taxonRankValue&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Abrus precatorius&amp;lt;/taxonRankValue&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
-&lt;p&gt;&lt;/p&gt;
-
-<<<<<<< HEAD
 &lt;/div&gt;
 
 &lt;/div&gt;
@@ -2053,51 +1042,9 @@ I got the following instructions from a Librarian: The &quot;informative abstrac
 &lt;a href=&quot;http://gcmd.nasa.gov/learn/keyword_list.html&quot;&gt;http://gcmd.nasa.gov/learn/keyword_list.html&lt;/a&gt;
 &lt;/p&gt;
 &lt;/div&gt;
-=======
-
-&lt;h4&gt;Morpho has problems subsequently editing a very long list&lt;/h4&gt;
-
-&lt;p&gt;We found that if a very large amount of taxonomic information is entered into Morpho
-we had issues modifying it. When you click on Documentation &gt;
-Taxonomic Coverage to try and go in and edit nothing will
-happen. Morpho crashes when trying to open the Taxonomic Coverage
-because the list is long enough to cause “Out of Memory” error with
-the default configuration of Java heap space. It is a Morpho bug. The
-workaround is to edit the XML file manually.&lt;/p&gt;
-</description>
-				<published>Sun Apr 20 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/a-workaround-for-inserting-species-names-to-morpho/</link>
-			</item>
-		
-			<item>
-				<title>What is this Open Notebook? And Why Am I Doing It?</title>
-				<description>&lt;p&gt;I just revised the content of the &lt;a href=&quot;/research.html&quot;&gt;&quot;About My Notebook&quot;&lt;/a&gt; page and thought it was also relevant to post as an entry.&lt;/p&gt;
-
-&lt;h4&gt;Welcome to my Open Notebook&lt;/h4&gt;
-
-&lt;p&gt;This is the public face of my Open Notebook, in which I keep all the details of the data, code and documents related to my research.  This is an Open Notebook with &lt;a href=&quot;http://onsclaims.wikispaces.com/&quot;&gt;Selected Content - Delayed&lt;/a&gt; and aligns with the principles of the Open Notebook Science (ONS) movement.  The private side of my Open Notebook (the closed bit) is private either because it includes unpublished work that I wish to keep embargoed until after publication, or because it is all the gory, messy details of the day-to-day business of writing and rewriting code and prose to analyse data and make sense of the data I am analysing.  These elements of the notebook do not look like standalone journal entries and I store my personal archive either hosted by &lt;a href=&quot;https://github.com/ivanhanigan/&quot;&gt;GitHub&lt;/a&gt; for the public parts (thanks to their superior integration with Jekyll websites thanks to gh-pages for each repository) or &lt;a href=&quot;https://bitbucket.org/ivanhanigan/&quot;&gt;BitBucket&lt;/a&gt; for the private bits (thanks to bitbucket's free unlimited private repositories).&lt;/p&gt;
-
-&lt;h4&gt;Categories&lt;/h4&gt;
-
-&lt;p&gt;The different categories can be thought of as seperate lab notebooks. My projects are connected by being placed into one of these categories.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/cloud%20building/&quot;&gt;cloud building&lt;/a&gt;: the experiments I am conducting in building Virtual Labs in the cloud&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/Data%20Documentation/&quot;&gt;Data Documentation&lt;/a&gt;: how metadata tools interact with data analysis tools&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/disentangle%20things/&quot;&gt;disentangle things&lt;/a&gt;: conceptual and methodological insights regarding complexity&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/e-collaboration/&quot;&gt;e-collaboration&lt;/a&gt;: my interactions with other scientists online&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/ecosocial%20tipping%20points/&quot;&gt;ecosocial tipping points&lt;/a&gt;: a major branch of my research&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/extreme%20weather%20events/&quot;&gt;extreme weather events&lt;/a&gt;: another major branch of my research&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/overview/&quot;&gt;overview&lt;/a&gt;: high level information about why I am doing this stuff&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/research%20methods/&quot;&gt;research methods&lt;/a&gt;: low level information about how I am doing this stuff&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/spatial/&quot;&gt;spatial&lt;/a&gt;: technical details about how to use spatial tools&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/spatial%20dependence/&quot;&gt;spatial dependence&lt;/a&gt;: theoretical details about spatial statistics&lt;/li&gt;
-&lt;/ul&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;/div&gt;
 
-<<<<<<< HEAD
 &lt;div id=&quot;outline-container-1-11&quot; class=&quot;outline-4&quot;&gt;
 &lt;h4 id=&quot;sec-1-11&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.11&lt;/span&gt; Geographic coverage&lt;/h4&gt;
 &lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-11&quot;&gt;
@@ -2111,31 +1058,9 @@ workaround is to edit the XML file manually.&lt;/p&gt;
     2 112.907211303711 E               &amp;lt;NA&amp;gt; 158.960372924805 E
     3               &amp;lt;NA&amp;gt; 54.7538909912109 S               &amp;lt;NA&amp;gt;
 &lt;/p&gt;
-=======
-&lt;h4&gt;What is Open Notebook Science?  And Why am I doing it?&lt;/h4&gt;
-
-&lt;p&gt;In &lt;a href=&quot;http://www.infotoday.com/it/sep10/Poynder.shtml&quot;&gt;2005 Jean-Claude Bradley launched a web-based initiative called UsefulChem&lt;/a&gt; and named his new technique Open Notebook Science (ONS).  He described it as a way of doing science in which you make all your research freely available to the public in real time. The proposed benefits include greater impact on the public good and enhanced ability to connect with like-minded collaborators. Proposed risks of ONS practice include being scooped by competitors or falling foul of Journal rules regarding prior publication and licencing of Intellectual Property. To mitigate the proposed risks the concept of ONS was broadened to allow research to be made public after a delay.&lt;/p&gt;
-
-&lt;p&gt;In 2010 &lt;a href=&quot;http://carlboettiger.info/2012/09/28/Welcome-to-my-lab-notebook.html&quot;&gt;Carl Boettiger&lt;/a&gt; initiated an experiment &quot;to see if any of the purported benefits or supposed risks were well-founded.&quot;  After three years of his experiment Boettiger reported that his &quot;evidence suggests that the practice of open notebook science can faciliate both the performance and dissemination of research while remaining compatible and even synergistic with academic publishing.&quot;&lt;/p&gt;
-
-&lt;p&gt;This promising result has inspired me to follow these practices in my own part-time PhD and my full-time work as Data Manager at a University (to the extent I am allowed to by the rules of the University and the willingness of my boss to share our results).&lt;/p&gt;
-</description>
-				<published>Sat Apr 19 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/</link>
-			</item>
-		
-			<item>
-				<title>Project Templates That Initialize A New Project With A Skeleton Automatically</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;I have been using &lt;a href=&quot;http://projecttemplate.net/&quot;&gt;John Myles Whites ProjectTemplate R package&lt;/a&gt; for ages&lt;/li&gt;
-&lt;li&gt;I really like the ease with which I can get up and running a new project&lt;/li&gt;
-&lt;li&gt;and the ease with which I can pick up an old project and start adding new work&lt;/li&gt;
-&lt;/ul&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;/div&gt;
 
-<<<<<<< HEAD
 &lt;/div&gt;
 
 &lt;div id=&quot;outline-container-1-12&quot; class=&quot;outline-4&quot;&gt;
@@ -2159,29 +1084,11 @@ workaround is to edit the XML file manually.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 
-=======
-&lt;h4&gt;Quote from John's first post&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;My inspiration for this approach comes from the rails command from
-Ruby on Rails, which initializes a new Rails project with the proper
-skeletal structure automatically. Also taken from Rails is
-ProjectTemplate’s approach of preferring convention over
-configuration: the automatic data and library loading as well as the
-automatic testing work out of the box because assumptions are made
-about the directory structure and naming conventions that will be used
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;a href=&quot;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&quot;&gt;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&lt;/a&gt;&lt;/p&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;p&gt;
 &lt;img src=&quot;/images/morphoimg3.png&quot; alt=&quot;morphoimg3.png&quot;&gt;
 &lt;/p&gt;
 &lt;ul&gt;
-<<<<<<< HEAD
 &lt;li&gt;which looks like this
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2288,61 +1195,9 @@ from data table&quot; and select the appropriate column, selecting
 'species' for the class.  This will populate the taxonomicCoverage module in the EML.  You can now remove that data table from the package to be tidy.&lt;/p&gt;
 
 &lt;p&gt;This is what it looks like if you combine genus and species in the single column.&lt;/p&gt;
-=======
-&lt;li&gt;I dont know anything about RoR but this philosophy works really well for my R programming too&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
-setwd(&quot;~/projects&quot;)
-create.project(&quot;my-project&quot;)
-setwd('my-project')
-dir()
-##  [1] &quot;cache&quot;       &quot;config&quot;      &quot;data&quot;        &quot;diagnostics&quot; &quot;doc&quot;        
-##  [6] &quot;graphs&quot;      &quot;lib&quot;         &quot;logs&quot;        &quot;munge&quot;       &quot;profiling&quot;  
-## [11] &quot;README&quot;      &quot;reports&quot;     &quot;src&quot;         &quot;tests&quot;       &quot;TODO&quot;   
-##### these are very sensible default directories to create a modular
-##### analysis workflow.  See the project homepage for descriptions
-
-# now all you need to do whenever you start a new day 
-load.project()
-# and your workspace will be recreated and any new data automagically analysed in
-# the manner you want
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;Project Administration&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I;ve found that these directories do not work so well for the administration of my projects and so I put together a different set of automatic defaults&lt;/li&gt;
-&lt;li&gt;Ive based it on the &lt;a href=&quot;http://ivanhanigan.github.io/2013/12/research-protocol-for-manitoba-centre-for-health-policy/&quot;&gt;University of Manitoba Centre for Health Policy&lt;/a&gt;- along with some other sources I can recall
-
-&lt;h4&gt;The full set&lt;/h4&gt;
-
-&lt;p&gt;  # A.Background      &lt;br/&gt;
-  # B.Proposals
-  # C.Approvals
-  # D.Budget  &lt;br/&gt;
-  # E.Datasets&lt;br/&gt;
-  # F.Analysis&lt;br/&gt;
-  # G.Literature      &lt;br/&gt;
-  # H.Communication           &lt;br/&gt;
-  # I.Correspondance  &lt;br/&gt;
-  # J.Meetings&lt;br/&gt;
-  # K.Completion      &lt;br/&gt;
-  # ContactDetails.txt&lt;br/&gt;
-  # README.md
-  # TODO.txt&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 &lt;p&gt;&lt;img src=&quot;/images/morpho-taxo3.png&quot; alt=&quot;morpho-taxo3.png&quot; /&gt;&lt;/p&gt;
 
-<<<<<<< HEAD
 &lt;p&gt;And here is the XML&lt;/p&gt;
 
 &lt;h4&gt;XML Code:&lt;/h4&gt;
@@ -2402,34 +1257,6 @@ workaround is to edit the XML file manually.&lt;/p&gt;
 &lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/research%20methods/&quot;&gt;research methods&lt;/a&gt;: low level information about how I am doing this stuff&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/spatial/&quot;&gt;spatial&lt;/a&gt;: technical details about how to use spatial tools&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/categories/spatial%20dependence/&quot;&gt;spatial dependence&lt;/a&gt;: theoretical details about spatial statistics&lt;/li&gt;
-=======
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;R Code: my subset&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;AdminTemplate &amp;lt;- function(rootdir = getwd()){
-  setwd(rootdir)
-  dir.create(file.path(rootdir,'01_planning'))
-  dir.create(file.path(rootdir,'01_planning','proposal'))
-  dir.create(file.path(rootdir,'01_planning','scheduling'))
-  dir.create(file.path(rootdir,'02_budget'))
-  dir.create(file.path(rootdir,'03_communication'))
-  dir.create(file.path(rootdir,'04_reporting_and_meetings'))
-  file.create(file.path(rootdir,'contact_details.txt'))
-  file.create(file.path(rootdir,'README.md'))
-  }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;Conclusion&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;hopefully by formalising some of these into my workflow I will find my projects easier to navigate through&lt;/li&gt;
-&lt;li&gt;and pick up or put down as needed&lt;/li&gt;
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 &lt;/ul&gt;
 
 
@@ -2441,13 +1268,8 @@ workaround is to edit the XML file manually.&lt;/p&gt;
 
 &lt;p&gt;This promising result has inspired me to follow these practices in my own part-time PhD and my full-time work as Data Manager at a University (to the extent I am allowed to by the rules of the University and the willingness of my boss to share our results).&lt;/p&gt;
 </description>
-<<<<<<< HEAD
 				<published>Sat Apr 19 00:00:00 +1000 2014</published>
 				<link>http://schamberlain.github.com/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/</link>
-=======
-				<published>Sat Mar 29 00:00:00 +1100 2014</published>
-				<link>http://schamberlain.github.com/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/</link>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 			</item>
 		
 	</channel>

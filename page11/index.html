@@ -54,7 +54,6 @@
 
   <div class="full">
     <h1 class="entry-title">
-<<<<<<< HEAD
       <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
     </h1>
     <div class="entry-content full-content">
@@ -69,185 +68,6 @@
 <p>I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.  You can get my ipython notebook file for this here: <a href="/data/olive.ipynb">olive.ipynb</a>, but first run the following R code snippet to get the replication dataset 'olive.csv' into your home directory.</p>
 
 <h4>R Code: get the olive oil dataset</h4>
-=======
-      <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>R is generally very good for handling many different data types but</p>
-
-<h3>R has problems with survey data</h3>
-
-<p>This post is a stub about what packages Ive found with methods allowing to handle efficiently survey data: handle variable labels, values labels, and retrieve information about missing values</p>
-
-<h4>Base R:</h4>
-
-<pre><code>## Not run:
-require(foreign)
-analyte  &lt;- read.spss(filename, to.data.frame=T) 
-varslist &lt;- as.data.frame(attributes(analyte)$variable.labels)
-# this gives a pretty useful thing to use
-</code></pre>
-
-<p></p>
-
-
-<p>While I was digging around in <a href="http://mephisto.unige.ch/traminer">TraMineR</a> I found this link to Dataset, Emmanuel Rousseaux's package for handling, documenting and describing data sets of survey data.</p>
-
-<h4>Code:Dataset, a package for handling-survey-data-with-r</h4>
-
-<pre><code>if(!require(Dataset)) install.packages("Dataset", repos="http://R-Forge.R-project.org");
-require(Dataset)
-data(dds)
-str(dds)
-# cool
-description(dds$sexe)
-# excellent!
-</code></pre>
-
-<p></p>
-
-
-<h3>Conclusions</h3>
-
-<p>I'm sure there are plenty of other approaches.  I'll add them as I find them'</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/handling-survey-data-with-r/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h3>Background</h3>
-
-<p>This is an example of using github for a Reproducible Research Report (RRR) using a casestudy of the  Hutchinson Drought Index.  The project is available under GNU licence at <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a>.</p>
-
-<h3>Aims</h3>
-
-<p>This example will clone the repository from github and run the replication codes using the replication datasets.</p>
-
-<h3>Materials and Methods</h3>
-
-<ul>
-<li>assumes you are connected to the internet</li>
-<li>assumes you have git, a github account and ssh key set up</li>
-<li>assumes you have R and GDAL configured</li>
-<li>assumes BoM and ABS have kept their data in the locations I specified to download from</li>
-</ul>
-
-
-<h3>Hutchinsons Drought Index</h3>
-
-<p>The Hutchinson Drought Index (or Drought Severity Index) is a climatic drought index
-that was designed to reflect agricultural droughts using only rainfall data.</p>
-
-<p>The index was invented by Professor Mike Hutchinson at the ANU in 1992 (1) and
-this project includes R codes written to describe the calculations
-and also to download data (2,3) to play with.</p>
-
-<h3>Results</h3>
-
-<h4>Replication Codes to run in the terminal</h4>
-
-<pre><code>git clone git@github.com:ivanhanigan/HutchinsonDroughtIndex.git ~/data/HutchinsonDroughtIndex
-R
-setwd("~/data/HutchinsonDroughtIndex")
-source("HutchinsonDroughtIndex_go.r")
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>WARNING this downloads 5.4MB from BoM and 19.9MB from ABS</li>
-<li>This runs the codes and produces graphs</li>
-<li>an alternative workflow would be to run the sweave file in the reports directory but I dont like that method as much and have set all the evaluation commands to false.</li>
-<li>it will run now that we have the graphs though, to create a report:</li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code>setwd("reports")
-Sweave("HutchinsonDroughtIndex_transformations_doc.Rnw")
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>which creates a tex file that can create <a href="/pdfs/HutchinsonDroughtIndex_transformations_doc.pdf">this pdf</a></li>
-<li>but the simplest example I gave above will compute the index and create the graphs (one is shown below)</li>
-</ul>
-
-
-<p><img src="/images/CentralWestDrought8283.png" alt="CentralWestDrought8283.png" /></p>
-
-<h3>So what actually happened?</h3>
-
-<ul>
-<li>This project adheres to the <a href="http://stackoverflow.com/a/1434424">Reichian LCFD model of writing R code</a></li>
-<li>In this the code is bundled into modules Func (tools), Load, Do, Clean (check).  These live in the src directory (following teh White ProjectTemplate model - well almost, He would put tools/func into lib)</li>
-<li>then a main.r (or go.r) script calls these modules</li>
-</ul>
-
-
-<h4>go.r</h4>
-
-<pre><code> source('src/HutchinsonDroughtIndex_tools.r')
- source('src/HutchinsonDroughtIndex_load.r')
- source('src/HutchinsonDroughtIndex_do.r')
- source('src/HutchinsonDroughtIndex_check.r')
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li><p>The really interesting bit is <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">a tool written for this project</a> that is called from within tools.r</p>
-
-<p>   source('src/HutchinsonDroughtIndex_tools_droughtIndex.r')</p></li>
-</ul>
-
-
-<p></p>
-
-
-<ul>
-<li>A keen reader would look in that script to find out exactly what the function does</li>
-<li>A keen author would push that function to an R package (a super keen bean would publish this on CRAN)</li>
-</ul>
-
-
-<h3>Discussion</h3>
-
-<h4>Strengths:</h4>
-
-<ul>
-<li>full codes are provided to reproduce the data access, manipulation and analysis</li>
-<li>the gory details are hidden from the casual user</li>
-</ul>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 <pre><code>install.packages("pgmm")
 require(pgmm)
@@ -259,7 +79,6 @@ write.csv(olive, "olive.csv", row.names = F)
 write.csv(olive, "~/olive.csv", row.names = F)
 </code></pre>
 
-<<<<<<< HEAD
 <p></p>
 
 
@@ -313,18 +132,9 @@ for ax in axes.flatten(): # Starts a loop to go through our plot and render each
 
 <p></p>
 
-=======
-<h4>Weaknesses:</h4>
-
-<ul>
-<li>the important details are hidden from the technical user</li>
-<li>the script depends on a bunch of things that might not be true</li>
-</ul>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 <p><img src="/images/acid.png" alt="acid.png" /></p>
 
-<<<<<<< HEAD
 <h3>Conclusions</h3>
 
 <ul>
@@ -336,56 +146,17 @@ for ax in axes.flatten(): # Starts a loop to go through our plot and render each
 </ul>
 
 
-=======
-<h4>Conclusions</h4>
-
-<ul>
-<li>This is an example of a self-contained RRR</li>
-</ul>
-
-
-<h3>References</h3>
-
-<ol>
-<li><p>Smith, D. I, Hutchinson, M. F, &amp; McArthur, R. J. (1992) Climatic and
-Agricultural Drought: Payments and Policy. (Centre for Resource and Environmental
-Studies, Australian National University, Canberra, Australia).<br/>
-http://fennerschool-research.anu.edu.au/spatio-temporal/publications/cres_paper1992.pdf</p></li>
-<li><p>Bureau of Meteorology High Quality Monthly precipitation data
-downloaded on 2012-01-09
-from ftp://ftp.bom.gov.au/anon/home/ncc/www/change/HQmonthlyR/HQ_monthly_prcp_txt.tar</p></li>
-<li><p>Australian Bureau of Statistics Statistical Divisions 2006
-downloaded on 2012-01-09
-from http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.0022006?OpenDocument</p></li>
-</ol>
-
-
-<h3>Acknowledgements</h3>
-
-<p>Financial support was provided by Professor Tony McMichael's
-"Australia Fellowship" from the the National Health and Medical Research Council, via the
-National Centre for Epidemiology and Population Health, Australian National University.</p>
-
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-<<<<<<< HEAD
       <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-=======
-      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       
     </p>
     <!--
 	<p class="comments-link">
-<<<<<<< HEAD
       <a href='/2013/11/librarians-and-python/#disqus_thread'>Comments</a>
-=======
-      <a href='/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/#disqus_thread'>Comments</a>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
@@ -399,7 +170,6 @@ National Centre for Epidemiology and Population Health, Australian National Univ
 
   <div class="full">
     <h1 class="entry-title">
-<<<<<<< HEAD
       <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
     </h1>
     <div class="entry-content full-content">
@@ -506,34 +276,8 @@ source("HutchinsonDroughtIndex_go.r")
 </code></pre>
 
 <p></p>
-=======
-      <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h3>Guest post by Luciana Porfirio with code contributions by Francis Markham</h3>
-
-<ul>
-<li>Recently I encountered a student doing an analysis who was doing everything in excel, and I couldn't contain my mouth and say R would be better... but it isn't a simple task. So any here are some tips.</li>
-<li>There is a table with 62 years * 12 months of rain data in mm. We calculated the cumulative distribution using ecdf: empirical cumulative distribution function. So the table looks like this: Year Jan Feb Mach (...) each cell contains the cum dist.</li>
-<li>We also got the number of months per year with less than X mm of rain. But he needs to know how many months  are between the drought months, regardless the year. So, I thought that converting the data into a ts was going to facilitate the task, but it doesn't, because now I don't' have columns and rows any longer.</li>
-<li>But I struggled to handle a ts object to do for example an ifelse.</li>
-<li>Luckily there are many many tricks about R, and with the code below we solved all his problems (and many months of work in excel).</li>
-<li><a href="/data/raj_rain_data.csv">Get the example data here</a></li>
-<li>This is how it looks like:</li>
-</ul>
 
 
-<h4>R Code:</h4>
-
-<pre><code>###############################################
-require(reshape2)
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
-
-###############################################
-#read csv file with rain BoM data
-dat = read.csv('raj_rain_data.csv')
-
-<<<<<<< HEAD
 <ul>
 <li>WARNING this downloads 5.4MB from BoM and 19.9MB from ABS</li>
 <li>This runs the codes and produces graphs</li>
@@ -547,25 +291,10 @@ dat = read.csv('raj_rain_data.csv')
 <pre><code>setwd("reports")
 Sweave("HutchinsonDroughtIndex_transformations_doc.Rnw")
 </code></pre>
-=======
-fn &lt;- apply(dat[,2:13], 2, ecdf) # equivalent to Excel's percentrank function, only for cols 2 to 13 but you need to apply the function to each month
 
-#this fun does all the months at once
-fn2 = data.frame(t(do.call("rbind", sapply(1:12, FUN = function(i) fn[[i]](dat[,i+1]), simplify = FALSE))))
-colnames(fn2) = colnames(dat[,2:13])
-fn2$year = dat$Year
+<p></p>
 
-#if the value is lower than 0.4, retrieves a 1, otherwise 0
-fn2$drought = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &lt; 0.4)==TRUE, 1,0))
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
-#if the value is lower than 0.1, retrieves a 1, otherwise 0
-fn2$extreme = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &lt; 0.1)==TRUE, 1,0))
-
-str(fn2)
-names(fn2)
-
-<<<<<<< HEAD
 <ul>
 <li>which creates a tex file that can create <a href="/pdfs/HutchinsonDroughtIndex_transformations_doc.pdf">this pdf</a></li>
 <li>but the simplest example I gave above will compute the index and create the graphs (one is shown below)</li>
@@ -657,40 +386,6 @@ from http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.0022006?OpenD
 "Australia Fellowship" from the the National Health and Medical Research Council, via the
 National Centre for Epidemiology and Population Health, Australian National University.</p>
 
-=======
-#ts didn't work - Francis suggested to melt the data.frame # Melt
-#fn2 to tall data set
-fn2.tall &lt;- melt(fn2, id.vars="year")
-
-# Get the year-month into date format
-fn2.tall$date &lt;- with(fn2.tall,
-                             as.Date(paste("1", variable, year), "%d %b %Y"))
-
-# Convert dates into months since 0 BC/AD (arbitrary, but doesn't
-# matter)
-#I'm not using the month.idx with Ivan's solution (remove)
-fn2.tall$mnth.idx &lt;- sapply(fn2.tall$date, function(x){
-  12*as.integer(format(x, "%Y")) + (as.integer(format(x, "%m")) - 1)
-})
-
-# Sort by date
-fn2.tall &lt;- fn2.tall[order(fn2.tall$date),]
-
-
-#Ivan's solution
-
-x&lt;-fn2.tall$value&lt;0.4
-xx &lt;- (cumsum(!x) + 1) * x
-x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
-fn2.tall$count&lt;-x2
-
-#counts the number of cases of drought
-as.data.frame(table(fn2.tall$count))
-###############################################
-###############################################
-</code></pre>
-
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
@@ -701,20 +396,12 @@ as.data.frame(table(fn2.tall$count))
     </p>
     <!--
 	<p class="comments-link">
-<<<<<<< HEAD
       <a href='/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/#disqus_thread'>Comments</a>
-=======
-      <a href='/2013/11/climatic-drought-guestpost-by-luciana-porfirio/#disqus_thread'>Comments</a>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-<<<<<<< HEAD
         <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
-=======
-        <abbr class="published" title="Fri Nov 01 00:00:00 +1100 2013">01 Nov 2013</abbr>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       </span>
     </p>
     <div class="clear"></div>
@@ -723,7 +410,6 @@ as.data.frame(table(fn2.tall$count))
 
   <div class="full">
     <h1 class="entry-title">
-<<<<<<< HEAD
       <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
     </h1>
     <div class="entry-content full-content">
@@ -744,57 +430,11 @@ as.data.frame(table(fn2.tall$count))
 
 <pre><code>###############################################
 require(reshape2)
-=======
-      <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>This is a quick post on Quantum GIS for spatial data visualisation</li>
-<li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
-<li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
-<li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
-</ul>
-
-
-<h4>R Code: use postgis to create area-concordance</h4>
-
-<pre><code>require(devtools)
-install_github("gisviz", "ivanhanigan")
-require(gisviz)
-require(swishdbtools)
-ch &lt;- connect2postgres2("gislibrary")
-# make a temporary tablename, to avoid clobbering
-temp_table &lt;- swish_temptable("gislibrary")
-temp_table &lt;- paste("public", temp_table$table, sep = ".")
-temp_table
-# this is going to be public.foo11c7673416ea
-
-sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
-   source_zones_code = 'sla_id', target_table = "abs_sla.nswsla01",
-   target_zones_code = "sla_code",
-   into = temp_table, tolerance = 0.01,
-   subset_target_table = "cast(sla_code as text) like '105%'", 
-   eval = F) 
-cat(sql)
-dbSendQuery(ch, sql)
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
-<li>and add the layer to the map</li>
-<li>Style it how you like, I also added NSWSLA1991 over the top</li>
-<li>go into the "new print composer"</li>
-</ul>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
 ###############################################
 #read csv file with rain BoM data
 dat = read.csv('raj_rain_data.csv')
 
-<<<<<<< HEAD
 fn &lt;- apply(dat[,2:13], 2, ecdf) # equivalent to Excel's percentrank function, only for cols 2 to 13 but you need to apply the function to each month
 
 #this fun does all the months at once
@@ -841,26 +481,6 @@ fn2.tall$count&lt;-x2
 as.data.frame(table(fn2.tall$count))
 ###############################################
 ###############################################
-=======
-<p><img src="/images/qgis-new-print-composer.png" alt="qgis-new-print-composer.png" /></p>
-
-<p><img src="/images/qgis-add-new-map.png" alt="qgis-add-new-map.png" /></p>
-
-<h3>Results</h3>
-
-<ul>
-<li>hit the export to image and viola</li>
-</ul>
-
-
-<p><img src="/images/qgis-export-image.png" alt="qgis-export-image.png" /></p>
-
-<h3>Don't forget to clean up the database!</h3>
-
-<h4>R Code:</h4>
-
-<pre><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 </code></pre>
 
       <div class="clear"></div>
@@ -868,29 +488,17 @@ as.data.frame(table(fn2.tall$count))
     <p class="alt-font tight">
       Posted in&nbsp;
       
-<<<<<<< HEAD
       <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
-=======
-      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       
     </p>
     <!--
 	<p class="comments-link">
-<<<<<<< HEAD
       <a href='/2013/11/climatic-drought-guestpost-by-luciana-porfirio/#disqus_thread'>Comments</a>
-=======
-      <a href='/2013/10/quantum-gis-visualisations/#disqus_thread'>Comments</a>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-<<<<<<< HEAD
         <abbr class="published" title="Fri Nov 01 00:00:00 +1100 2013">01 Nov 2013</abbr>
-=======
-        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       </span>
     </p>
     <div class="clear"></div>
@@ -899,7 +507,6 @@ as.data.frame(table(fn2.tall$count))
 
   <div class="full">
     <h1 class="entry-title">
-<<<<<<< HEAD
       <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
     </h1>
     <div class="entry-content full-content">
@@ -934,40 +541,10 @@ cat(sql)
 dbSendQuery(ch, sql)
 </code></pre>
 
-=======
-      <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
-<li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
-<li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
-<li>The beta coefficient itself shouldn't be affected.</li>
-<li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
-<li>To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
-<li>I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
-<li>So I asked Sarunya for a discussion about her research</li>
-</ul>
-
-
-<h3>Sarunya's model is essentially like this</h3>
-
-<h4>R Code:</h4>
-
-<pre><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
-       ns(temp, df) + ns(humidity, df) +
-       ns(time, df = 7*numYears) +
-       SLA * ns(time, df = 2),
-       data = analyte, family = poisson
-       )
-</code></pre>
-
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 <p></p>
 
 
 <ul>
-<<<<<<< HEAD
 <li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
 <li>and add the layer to the map</li>
 <li>Style it how you like, I also added NSWSLA1991 over the top</li>
@@ -994,46 +571,18 @@ dbSendQuery(ch, sql)
 
 <pre><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
 </code></pre>
-=======
-<li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
-<li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
-<li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
-<li>therefore this study avoids the issue by it's intentional design to compare betas not se</li>
-<li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
-<li>this is fascinating in itself, but a separate issue for another post</li>
-</ul>
-
-
-<h3>Conclusions</h3>
-
-<ul>
-<li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
-<li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
-</ul>
-
-
-<p>THANKS Sarunya!</p>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
 
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-<<<<<<< HEAD
       <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
-=======
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
       
     </p>
     <!--
 	<p class="comments-link">
-<<<<<<< HEAD
       <a href='/2013/10/quantum-gis-visualisations/#disqus_thread'>Comments</a>
-=======
-      <a href='/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/#disqus_thread'>Comments</a>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
     </p>
 	-->
     <p class="by-line">
@@ -1073,11 +622,7 @@ dbSendQuery(ch, sql)
           <div id="carrington-about" class="widget">
             <div class="about">
               <h2 class="widget-title">About</h2>
-<<<<<<< HEAD
               <p>I am a PhD Student at the Australian National University.</p>
-=======
-              <p>I am a data manager and data analyst at the Australian National University.</p>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
               <a class="more" href="/about.html">more →</a>
 
             </div>
@@ -1104,60 +649,35 @@ dbSendQuery(ch, sql)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-<<<<<<< HEAD
-                <li><a href="/categories/spatial">spatial (6)</a></li>
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
                 <li><a href="/categories/data documentation">data documentation (25)</a></li>
                 
-                <li><a href="/categories/overview">overview (7)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
-                
-                <li><a href="/categories/cloud building">cloud building (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (42)</a></li>
-=======
-                <li><a href="/categories/cloud building">cloud building (2)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (42)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (24)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (6)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
-                
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
                 <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
+                
+                <li><a href="/categories/spatial">spatial (6)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (42)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
                 
                 <li>
-<<<<<<< HEAD
                   <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
                 </li>
                 
                 <li>
-=======
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
                   <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
                 </li>
                 
@@ -1173,26 +693,15 @@ dbSendQuery(ch, sql)
                   <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
                 </li>
                 
-<<<<<<< HEAD
-=======
-                <li>
-                  <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions/" title="Using Reml To Input Large Number Of Column Descriptions" rel="bookmark">Using Reml To Input Large Number Of Column Descriptions</a>
-                </li>
-                
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
+                <li><a href="/tag/bugs">bugs (1)</a></li>
+                
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
-<<<<<<< HEAD
                 <li><a href="/tag/morpho">morpho (7)</a></li>
-=======
-                <li><a href="/tag/morpho">morpho (5)</a></li>
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
-                
-                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -1203,15 +712,11 @@ dbSendQuery(ch, sql)
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
+          <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
-<<<<<<< HEAD
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
-=======
-          <!--       <li><a href="/tag/morpho">morpho (5)</a></li> -->
->>>>>>> 08a5bb32cb6119bbf5f18a75e1a6d9f46307d601
-          <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->
