@@ -21,12 +21,12 @@
         <p id="blog-description"></p>
         <div id="navigation">
           <ul class="nav clearfix">
-            <li class="first-child"><a href="/research.html">Open Notebook</a></li>
-            <li> <a href="/blog.html">Blog</a></li>
-            <li><a href="/projects.html">Software</a></li>
-            <li><a href="/about.html">About</a></li>
-            <li><a href="/publications.html">Publications</a></li>
-            <li><a href="/cv.html">CV</a></li>
+            <li class="first-child"><a href="/research.html">About My Notebook</a></li>
+            <li> <a href="/blog.html">Entries</a></li> 
+            <!-- <li><a href="/projects.html">Software</a></li>-->
+            <li><a href="/about.html">About Me</a></li>
+            <li><a href="/publications.html">My Publications</a></li>
+            <li><a href="/cv.html">My CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
             <!--<li><a href="/donors.html">Donors</a></li>-->
           </ul>
@@ -38,7 +38,7 @@
         <div id="content">
           <h2>Welcome to my Open Notebook</h2>
 
-<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a> for documenting progress on my projects.</p>
+<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a>. Find out more <a href="/research.html">Here</a>.</p>
 
 <p>  <img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
 
@@ -54,758 +54,434 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
+      <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
     </h1>
     <div class="entry-content full-content">
-      <ul>
-<li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
-<li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
-<li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
-<li>The beta coefficient itself shouldn't be affected.</li>
-<li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
-<li>To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
-<li>I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
-<li>So I asked Sarunya for a discussion about her research</li>
+      <p>I've been trying to build pumilio bioacoustics server on a Aust Nectar Research Cloud VM, but hit various roadblocks.</p>
+
+<ul>
+<li>built with NeCTAR Ubuntu 12.04.2 (Precise)</li>
+<li>these issues (especially the apt-get install r-cran-mysql etc ) might not occure with later Ubuntu?</li>
+<li>test NeCTAR Ubuntu 12.10 (Quantal) or</li>
+<li>NeCTAR Ubuntu 13.04 (Raring) ??</li>
+<li>TODO FIX issues with python audio lab</li>
+<li>TODO swapfile</li>
+<li>TODO Mount the larger storage</li>
+<li>TODO add swapfile</li>
+<li>TODO fix R install etc</li>
 </ul>
 
 
-<h3>Sarunya's model is essentially like this</h3>
+<p>The Github code (in the gh-pages branch) and published as <a href="http://ivanhanigan.github.io/pumilio-bushfm/">a report at this link</a>.  The Source Code is available to Clone or Fork at <a href="https://github.com/ivanhanigan/pumilio-bushfm">This Github Repo</a> and is at a stage that most of the installation and configuration is documented to a point where a test sound file has successfully been uploaded.</p>
 
-<h4>R Code:</h4>
+<h4>HELP WANTED</h4>
 
-<pre><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
-       ns(temp, df) + ns(humidity, df) +
-       ns(time, df = 7*numYears) +
-       SLA * ns(time, df = 2),
-       data = analyte, family = poisson
-       )
+<ul>
+<li>Any researcher at an Australia university could follow the instructions on their own Nectar Cloud VM.</li>
+<li>If anybody out there is interested in bioacoustics, R, Linux or web data archives please help</li>
+</ul>
+
+
+<h4>Background to pumilio, bushfm and this project</h4>
+
+<p><img src="/images/birdcombined.png" alt="birdcombined.png" /></p>
+
+<ul>
+<li>The <a href="pumilio%20project">http://pumilio.sourceforge.net/</a> is by Luis J. Villanueva-Rivera and Bryan C. Pijanowski. (2012. Pumilio: A Web-Based Management System for Ecological Recordings. Bulletin of the Ecological Society of America 93: 71-81. doi: 10.1890/0012-9623-93.1.71)</li>
+<li>The <a href="Bush-fm%20project">http://www.bush.fm/</a> aims to provide the research community with a portal to national scale acoustic sensor data repositories, and a suite of tools to perform analysis and reporting on these data.</li>
+</ul>
+
+
+<p>(Images from http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000M4)</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/cloud building" title="cloud building" rel="category tag">cloud building</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/nectar-cloud-pumilio-build-got-bogged-down/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Mon Nov 18 00:00:00 +1100 2013">18 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Here is a really useful R snippet from  <a href="http://stackoverflow.com/a/6364905">http://stackoverflow.com/a/6364905</a> with a minor modification to allow differnt splits</p>
+
+<h4>Code:r-upcase-string</h4>
+
+<pre><code>x &lt;- c("The", "quick", "Brown", "fox/lazy dog")
+
+simpleCap &lt;- function(x, tosplit = " ") {
+  s &lt;- strsplit(x, tosplit)[[1]]
+  paste(toupper(substring(s, 1,1)), substring(s, 2),
+      sep="", collapse=tosplit)
+}
+sapply(x, simpleCap)
+sapply(x, simpleCap, tosplit = "/")
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/really-useful-r-upcase-string/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Nov 17 00:00:00 +1100 2013">17 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook</h1>
+
+<h4>Aims:</h4>
+
+<p>It was suggested I could document the pumilio test build as an OpenNotebook.
+I imagined that I could link this blog to github repo and doco hosted on gh-pages.</p>
+
+<h4>Methods:</h4>
+
+<ul>
+<li>For ie the emacs html output now goes to <a href="http://ivanhanigan.github.io/pumilio-bushfm/">http://ivanhanigan.github.io/pumilio-bushfm/</a></li>
+<li>then collaborators can clone/fork <a href="https://github.com/ivanhanigan/pumilio-bushfm">https://github.com/ivanhanigan/pumilio-bushfm</a></li>
+<li>and comment/complain at <a href="https://github.com/ivanhanigan/pumilio-bushfm/wiki">https://github.com/ivanhanigan/pumilio-bushfm/wiki</a></li>
+</ul>
+
+
+<h4>Results:</h4>
+
+<ul>
+<li>I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud</li>
+<li>Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).</li>
+<li>then when I tried to upload a big sound file it broke :-(</li>
+<li>I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code>sudo nano /etc/mysql/my.cnf
 </code></pre>
 
 <p></p>
 
 
+<h4>BUT</h4>
+
 <ul>
-<li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
-<li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
-<li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
-<li>therefore this study avoids the issue by it's intentional design to compare betas not se</li>
-<li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
-<li>this is fascinating in itself, but a separate issue for another post</li>
+<li>it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...</li>
+<li>so I think I can <a href="http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition">just remount /var</a> onto the larger /mnt secondary disk.</li>
 </ul>
 
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/cloud building" title="cloud building" rel="category tag">cloud building</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/pumilio-bushfm-test-dev-prod/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Fri Nov 15 00:00:00 +1100 2013">15 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h4>Introduction</h4>
+
+<p>I was grateful to recieve the <a href="http://students.anu.edu.au/scholarships/gc/cur/dom/bhati.php">Bhati Family Travel Grant</a> which allowed me to travel to Chennai, India in October to meet with experts on Drought and Suicide there.  I wanted to go to India to help me with my work on <a href="http://www.pnas.org/content/109/35/13950">Farmer Suicide in Australia</a> primarily because I'd read about the excellent researchers there and also the large magnitude of the problem with farmer suicide and drought (it is in the news media quite regularly).</p>
+
+<!-- Secondarily, I wanted to come back because I'd visited in 2005 for 3 weeks and was overwhelmed by the experience, possibly we tried to do to much and also we were mostly on the busy tourist track.  I wanted to see if a more local approach might give me a better experience of India.
+-->
+
+
+<p>I arrived on 2nd October and the airport and streets were pretty quiet.  I think because this is a public holiday in honour of Gandhi.</p>
+
+<p>I had previously arranged to meet</p>
+
+<ul>
+<li>Dr L Vijayakumar founder of <a href="http://snehaindia.org/">Society for Natal Effects on Health - SNEHA</a> and</li>
+<li>Dr A Nambi+, Director of the Climate Change Program and Dr R Rukmani, Director of the Food Security Program at <a href="http://www.mssrf.org/">M S Swaminathan Research Foundation - MSSRF</a>.</li>
+</ul>
+
+
+<p>This is my re-written notes of both meetings.</p>
+
+<h4>First Meeting: 3rd October, Dr Lakshmi Vijayakumar</h4>
+
+<p>Dr Lakshmi Vijayakumar is a WHO expert, a practicing psychiatrist and founder of the SNEHA suicide prevention organisation.</p>
+
+<p><img src="/images/sneha-ad.jpg" alt="sneha-ad.jpg" /></p>
+
+<p>When I contacted her to ask for a meeting she invited me to come to the headquarters of SNEHA in R A Puram, south central Chennai. The Autorickshaw driver took a couple of wrong turns but we got there OK after asking directions.  I also met Jyothi the SNEHA Director and several volunteers who work at the centre and befriend people who visit or phone with suicidal problems.</p>
+
+<p><img src="/images/sneha-cropped.jpg" alt="sneha-cropped.jpg" /></p>
+
+<!-- We met at 12 noon and we also had Dosai for lunch. -->
+
+
+<!-- With us were Jyothi, Sumitra and a volunteer whose name I did not write down -->
+
+
+<p>I had asked to visit because I've been following her research on farmer suicide prevention measures.  I suggested that my research on Drought-specific causality might benefit from insights that Dr Vijayakumar could give me, and thankfully she agreed to give me her time. I was very pleased she mentioned that she found my research "interesting and important" which is great because that is just the way I feel about HER research.</p>
+
+<p>I reflected on my way to the meeting what I want to get out of this lesson and I felt that it was really important to get feedback on some of the directions I want to pursue in terms of a unified theoretical framework across environmental and social causes of suicide (generalised across diverse social situations like the differences between Australian and Indian Farmers).</p>
+
+<p>I also felt it was important that I might just sit and listen to any advice Dr Vijayakumar felt like giving me, so I asked what she thought were the most important priorities for farmer suicide research in India.
+I have been reflecting on the influence of Dr Vijayakumar's words had on me when I heard them on a Radio report by Australian Journalist Michael Condon <a href="www.google.com">Ref</a> when he came to India in 2009.</p>
+
+<!-- TODO expand this. -->
+
+
+<h4>My Secret Agenda</h4>
+
+<p>I brought along a secret agenda which was to get an opinion of my preconceived thoughts about the topic.  Particularly the approach to a generalised framework of the work of my PhD supervisors Colin, Phil and Rohan for disentangling environmental from social impacts on health.  Especially this framework is for understanding tipping points in the farmer suicide system.  My second secret agenda was that if the framework I presented was thought OK, then what were the best next steps (plan for the future), in terms of communication in suicide prevention fields, actions in policy arenas and etc.</p>
+
+<p>First: I presented the general framework.  The essence of this is the "Five Capitals":
+- Financial
+- Social
+- Physical
+- Natural
+- Human</p>
+
+<p>Phil and Rohan have developed approaches aimed at Rural Livelihoods and Adaptive Capacity of Farmers.  Colin had extended this even to the concept of Human Carrying Capacity.  I think this framework especially useful for tipping points because the causes of such catastrophes are undoubtedly numerous, interacting and dynamic.</p>
+
+<p>So what did Lakshmi think?  She started by saying that it made good sense, that the main focus of suicide prevention work was focused on the biological, psychological and social domains.  But there are so many other factors.  Drought was clearly one.</p>
+
+<p>She got out a map of the recent suicide rates and showed me a region of elevated risk north-west of Tamil Nadu, south of Chatinargarth, and north of Kerala.  60 percent of India's farmer suicides are in these states.  Why are these 3 states high but TN is not?  All are semi-arid.</p>
+
+<!-- TODO check this -->
+
+
+<p>All have similar societies, cultures, climates, agriculture, etc.  We tried fitting these to the five capitals framework.</p>
+
+<!--
+#### What do you think?
+Dr Lakshmi said that this kind of thing did help to develop policy "definitely".
+I asked how much extra help this gave if we knew that pesticides, alcohol and gun control were so important.  She replied that those were medium term policy solutions but long-term policies needed to look at social dynamics, farming and a whole lot of things like status change (owning land used to be a status symbol but now is a burden).
+
+#### What are the priorities?
+What secondary (surrogate) priorities emerge around the main points?  If I bring questions to the lesson are they answered by the presenter?  If not why?
+
+- Synthesis:
+My new understanding of the topic.
+
+- TODO Mind map of the pathway to completed suicide.
+-->
+
+
+<p></p>
+
+<!-- <ul> -->
+
+
+<!-- <li><a href="#sec-1">1 dev-table</a></li> -->
+
+
+<!-- </ul> -->
+
+
+<!-- </div> -->
+
+
+<!-- </div> -->
+
+
+
+
+<p><div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> dev-table</h3>
+<div class="outline-text-3" id="text-1"></p>
+
+<p><table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">Capital</th><th scope="col" class="left">Semi-arid suicide hotspot</th><th scope="col" class="left">Tamil Nadu</th></tr>
+</thead>
+<tbody>
+<tr><td class="left">Financial</td><td class="left">move from rice/millet/polyculture</td><td class="left">remained polyculture</td></tr>
+<tr><td class="left"></td><td class="left">into cashcrops, cotton, chilli</td><td class="left"></td></tr>
+<tr><td class="left"></td><td class="left">with more pesticide, decreased access</td><td class="left"></td></tr>
+<tr><td class="left"></td><td class="left">to local money lender and more reliance</td><td class="left"></td></tr>
+<tr><td class="left"></td><td class="left">on international corporations</td><td class="left">retained local lending,</td></tr>
+<tr><td class="left"></td><td class="left"></td><td class="left">more responsive to seasonal</td></tr>
+<tr><td class="left"></td><td class="left"></td><td class="left">conditions</td></tr>
+</tbody>
+</table></p>
+
+<p></div>
+<!-- </div> -->
+<!-- </div> -->
+<!-- + Unfortunately Dr Nambi was out of action with a back injury but I was very lucky to have made an alternative contact in Dr R Rukmani, Director of the Food Security Program at MSSRF who had also researched Farmer Suicides.
+--></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/india-p1-sneha-suicide-prevention-chennai-india/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Fri Nov 15 00:00:00 +1100 2013">15 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>The extent to which scientists write metadata is probably lower than it ought to be</li>
+<li>The level of metadata written during science projects is probably described generally as 'bare-minimum' and "the minimum needed for one-self to come back to and understand what one did"</li>
+<li>It sometimes seems that even the bare minimum for one-self is not being kept very often</li>
+<li>I argue that the reasons for less-than-adequate metadata can be understood by looking at</li>
+<li>1) the culture of the scienctists displinary background via training</li>
+<li>2) the tools available and</li>
+<li>3) institutional  requirements to produce metadata (both about data or access to data)</li>
+<li>In my ongoing <a href="http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/">series of blog posts I am exploring the tools available</a>.</li>
+<li>In this post I just wanted to start the discussion about discipline culture and institutional requirements.</li>
+</ul>
+
+
+<h3>Discipline Culture</h3>
+
+<ul>
+<li>I trained in Geography in the age of GIS and this community uses metadata a lot</li>
+<li>Due to the prevalance of the digital map (collection of layers) which is a derivative data output</li>
+<li>Need to know the source of all the layers</li>
+<li>first law of GIS is "garbage in, garbage out"</li>
+<li>I was trained in the ANSLIC standard from the start</li>
+<li>ArcGIS has a tool called ArcCatalog which makes metadata easy to create and view</li>
+</ul>
+
+
+<h3>Institutional Requirements</h3>
+
+<ul>
+<li>The ARC and NHMRC say they are going to require more metadata (and even data deposit)</li>
+<li>Restrictions on data access make it necessary to describe at least the metadata around provision agreements, licence, allowable access</li>
+<li>A supporting management level who value the metadata as research output (alongside a peer reviewed paper metadata pales in comparison)</li>
+<li>My old boss used to say "Work Not Published Is Work Not Done".</li>
+</ul>
+
+
+<h3>This reminds me of Approaches and Barriers to Reproducible Research</h3>
+
+<ul>
+<li>In 2011 BiostatMatt (Matt Shotwell) published <a href="http://biostatmatt.com/uploads/shotwell-interface-2011.pdf">a survey of biostatisticians</a>
+VUMC Dept. of Biostatistics to assess:</li>
+<li>the prevalence of fully scripted data analyses</li>
+<li>the prevalence of literate programming practices</li>
+</ul>
+
+
+<p>To assess the perceived barriers to reproducible research the also asked:</p>
+
+<pre><code>What The biggest obstacle to always reproducibly scripting your work?
+</code></pre>
+
+<p></p>
+
+
+<pre><code>| Barrier                                                  | Staff | Faculty |
+|----------------------------------------------------------+-------+---------|
+| No signifcant obstacles.                                 |     8 |      10 |
+| I havent learned how.                                    |     0 |       0 |
+| It takes more time.                                      |     7 |       7 |
+| It makes collaboration difficult (eg. file compatibility)|     4 |       2 |
+| The software I use doesnt facilitate reproducibility.    |     0 |       0 |
+| Its not always necessary for my work to be reproducible. |     2 |       0 |
+| Other                                                    |     2 |       1 |
+|----------------------------------------------------------+-------+---------|
+</code></pre>
+
+<h3>So what about the Approaches and Barriers to Me Writing Metadata?</h3>
+
+<p>With a sample size of one I asked myself these questions:</p>
+
+<pre><code>| Q                                                  | A                                                                    |
+|----------------------------------------------------+----------------------------------------------------------------------|
+| Do I fully document data (to a metadata standard?) | Occasionally, using DDI for high value raw inputs and final products |
+| Do I employ data documentation practices           | I use a tool I created to write minimal metadata occasionally        |
+| What are the main barriers?                        | takes more time, The software doesnt facilitate, not always necessary|
+</code></pre>
 
 <h3>Conclusions</h3>
 
 <ul>
-<li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
-<li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
-</ul>
-
-
-<p>THANKS Sarunya!</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>today I was in a meeting where the discussion turned to maps of crude incidence rates, age-standardised rates and regression models controlling for age</li>
-<li>If disease incidence does not vary with age then there is not much point in controlling for this,</li>
-<li>apart from the work done in exploratory data analysis to ascertain whether or not this is the case</li>
-<li>I proposed that if you've done all the work on age-specific rates needed to test if incidence varies with age, then you might as well present age adjusted rates seeing as you've already done the work anyway</li>
-</ul>
-
-
-<h3>An example</h3>
+<li>The tools need to help write metadata
 
 <ul>
-<li>The project is highly confidential due to the nature of the data</li>
-<li>We;ll call the study location South Kingsland to protect the identity</li>
+<li>the Institution needs to require metadata</li>
+</ul>
+</li>
+<li></li>
 </ul>
 
 
-<h4>R Code:</h4>
-
-<pre><code># get spatial data
-require(swishdbtools) # github package, under
-                      # swish-climate-impact-assessment
-
-Tab1 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
-Tab1 &lt;- as.data.frame(table(Tab1$SLA))
-nrow(Tab1)
-write.csv(Tab1, "data/SLA.csv", row.names = F)
-load2postgres("data/SLA.csv", schema="ivan_hanigan", tablename="sla", ip = "brawn.anu.edu.au",
-              db = "gislibrary", pguser = "ivan_hanigan", printcopy = F)
-
-
-ch  &lt;- connect2postgres2("gislibrary")
-sql_subset(ch, "ivan_hanigan.sla", eval = T, limit = 10)
-
-
-sql_subset(ch, "abs_sla.qldsla01", select =  "sla_name, st_y(st_centroid(geom))", eval = T, limit = 10)
-dbSendQuery(ch,
-  "select sla_name, geom
-  into southkingsland
-  from abs_sla.qldsla01 t1
-  join
-  sla t2
-  on t1.sla_name = t2.var1;
-  alter table southkingsland add column gid serial primary key;
-  ")
-# these are missing from spatial data
-## 42                      West End                          &lt;NA&gt;
-## 43                OVERSEAS-OTHER                          &lt;NA&gt;
-## 44                  Yarrabah (S)                          &lt;NA&gt;
-## 45     Rowes Bay-Belgian gardens                          &lt;NA&gt;
-</code></pre>
-
-<p></p>
-
-
-<h3>visualise with QGIS</h3>
-
-<p><img src="/images/southkingsland.png" alt="southkingsland.png" /></p>
-
-<h4>R Code:</h4>
-
-<pre><code># func
-require(plyr)
-
-# load
-Tab2 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
-names(Tab2)
-# [1] "SLA"       "agegrp"    "Sex"       "district"  "dm"        "ninf"     
-# [7] "popSLA"    "Month"     "Year"      "groupyear"
-test_sla  &lt;- names(table(Tab2$SLA)[1])
-subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "MALE")
-subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "FEMALE")
-
-# clean
-summary(Tab2)
-## remove any SLA with NA populations
-Tab2 &lt;- Tab2[which(!is.na(Tab2$popSLA)),]     
-
-# do
-## first total cases by annualised pop
-analyte  &lt;- ddply(Tab2, c("SLA", "Year", "agegrp", "Sex"), summarise,
-                  ninf=sum(ninf),
-                  popSLA=mean(popSLA)
-                  )
-#str(analyte)
-
-#subset(analyte, SLA == test_sla)
-subset(analyte, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1)
-
-## now annual totals for study region
-analyte2  &lt;- ddply(analyte, c("Year", "agegrp"), summarise,
-                  ninf=sum(ninf),
-                  popSLA=sum(popSLA)
-                  )
-str(analyte2)
-
-qc &lt;- subset(analyte2,  Year == 2001)
-qc
-sum(qc$popSLA)
-
-## now totals
-qc  &lt;- ddply(analyte2, c("Year"), summarise,
-             ninf=sum(ninf),
-             popSLA=sum(popSLA)
-             )
-qc
-sum(qc$ninf)
-mean(qc$popSLA)
-
-## totals by age
-subset(analyte2,  agegrp == 1)
-analyte3  &lt;- ddply(analyte2, c("agegrp"), summarise,
-                  ninf=sum(ninf),
-                  popSLA=mean(popSLA)
-                  )
-analyte3
-sum(analyte3$popSLA)
-analyte3$asr  &lt;- (analyte3$ninf / analyte3$popSLA) * 1000
-analyte3
-
-png("graphs/south-kingsland-age-specific-rates.png") 
-mp &lt;- barplot(analyte3$asr, names.arg = analyte3$agegrp)
-box()
-dev.off()
-</code></pre>
-
-<p></p>
-
-
-<h3>Plot Age Specific Rates</h3>
-
-<p>Great so with that bit of work we should have an idea of the variation of incidence by age</p>
-
-<p><img src="/images/south-kingsland-age-specific-rates.png" alt="south-kingsland-age-specific-rates.png" /></p>
-
-<h1>Results and Discussion</h1>
+<h3>References</h3>
 
 <ul>
-<li>It looks like the incidence does vary with age</li>
-<li>TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)</li>
-<li>TODO make graphs by city, by sex</li>
-<li>age-standardised rates probably need different age categories, only 4 or 5?</li>
-<li>worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)</li>
-</ul>
-
-
-<h4>Clean up database!</h4>
-
-<pre><code>dbSendQuery(ch, "drop table sla")
-dbSendQuery(ch, "drop table southkingsland")
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/rates theory" title="rates theory" rel="category tag">rates theory</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/if-disease-incidence-varies-with-age-control-for-it/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Oct 31 00:00:00 +1100 2013">31 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p><body></p>
-
-<div id="preamble">
-
-</div>
-
-
-
-
-<div id="content">
-<h1 class="title">Disentangle Things</h1>
-
-
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
-<ul>
-<li><a href="#sec-1-1">1.1 Background</a></li>
-<li><a href="#sec-1-2">1.2 Speed and Rigour</a></li>
-<li><a href="#sec-1-3">1.3 Analysts can often trade-off completeness of documentation for speed</a></li>
-<li><a href="#sec-1-4">1.4 Librarians produce gold plated documentation and can take longer to produce this</a></li>
-<li><a href="#sec-1-5">1.5 An example</a></li>
-<li><a href="#sec-1-6">1.6 Embracing Inaccuracy and Incompleteness</a></li>
-<li><a href="#sec-1-7">1.7 Aim</a></li>
-<li><a href="#sec-1-8">1.8 Step 1: load a simple example dataset</a></li>
-<li><a href="#sec-1-9">1.9 Step 2 create a function to deliver the minimal metadata object</a></li>
-<li><a href="#sec-1-10">1.10 reml<sub>boilerplate</sub>-code</a></li>
-<li><a href="#sec-1-11">1.11 reml<sub>boilerplate</sub>-test-code</a></li>
-<li><a href="#sec-1-12">1.12 Results: This loads into Morpho with some errors</a></li>
-<li><a href="#sec-1-13">1.13 Conclusions</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="section-number-3">1</span> morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</h3>
-<div class="outline-text-3" id="text-1">
-
-
-</div>
-
-<div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Background</h4>
-<div class="outline-text-4" id="text-1-1">
-
-
-<ul>
-<li>The Morpho/Metacat system is great for a data repository
-</li>
-<li>Morpho also claims to be suitable for Ecologists to document their data
-</li>
-<li>But in my experience it leaves a little to be desired in ease of use for both purposes
-</li>
-<li>Specifically the speed that documentation can be entered into Morpho is slow
-</li>
-<li>This post is a first attempt to create some boilerplate code to quickly generate EML metadata using REML.
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-1-2" class="outline-4">
-<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Speed and Rigour</h4>
-<div class="outline-text-4" id="text-1-2">
-
-<p>As I noted in a previous post, there are [two types of data documentation workflow](<a href="http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/">http://ivanhanigan.github.io/2013/10/two-main-types-of-data-documentation-workflow/</a>).  
-</p>
-<ul>
-<li>GUI
-</li>
-<li>Programatic
-</li>
-</ul>
-
-
-<p>  
-I also think there are two types of users with different motivations and constraints:
-</p>
-<ul>
-<li>1) Data Analysts
-</li>
-<li>2) Data Librarians
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-1-3" class="outline-4">
-<h4 id="sec-1-3"><span class="section-number-4">1.3</span> Analysts can often trade-off completeness of documentation for speed</h4>
-<div class="outline-text-4" id="text-1-3">
-
-<p>In my view the Analysts group of users need a tool that will very rapidly document their data and workflow steps and can live with a bit less rigour in the quality of documentation.  Obviously this is not ideal but seems an inevitable trade-off needed to enable analysts to keep up the momentum of the data processing and modelling without getting distracted by tedious (and potentially unnecessary) data documentation tasks.
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-4" class="outline-4">
-<h4 id="sec-1-4"><span class="section-number-4">1.4</span> Librarians produce gold plated documentation and can take longer to produce this</h4>
-<div class="outline-text-4" id="text-1-4">
-
-<p>On the other hand the role of the Librarian group is to produce documentation to the best level possible (given time and resource constraints) the datasets and methodologies that lead to the creation of the datasets.  For that group Rigour will take precedence and there will be a trade-off in terms of the amount of time needed to produce the documentation.
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-5" class="outline-4">
-<h4 id="sec-1-5"><span class="section-number-4">1.5</span> An example</h4>
-<div class="outline-text-4" id="text-1-5">
-
-<p>As an example of the two different groups, an analyst working with weather data in Australia may want to specify that their variable "temperature" is the average of the daily maxima and minima, but might not need to specify that the observations were taken inside a Stevenson Screen, or even if they are in Celsius, Farenhiet or Kelvin.  They will be very keen to start the analysis to identify any associations between weather variables and the response variable they are investigating.   The data librarian on the other hand will be more likely to need to include this information so that the users of the temperature data do not mis-interpret it.
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-1-6" class="outline-4">
-<h4 id="sec-1-6"><span class="section-number-4">1.6</span> Embracing Inaccuracy and Incompleteness</h4>
-<div class="outline-text-4" id="text-1-6">
-
-
-<ul>
-<li>I've been talking about this for a while got referred to this document by Ben Davies at the ANUSF
-</li>
-</ul>
-
-<p>[http://thedailywtf.com/Articles/Documentation-Done-Right.aspx](<a href="http://thedailywtf.com/Articles/Documentation-Done-Right.aspx">http://thedailywtf.com/Articles/Documentation-Done-Right.aspx</a>)
-</p><ul>
-<li>It has this bit:
-</li>
-</ul>
-
-
-
-
-<pre class="src src-R">  
-   
-Embracing Inaccuracy and Incompleteness 
-    
-The immediate answer to what&#8217;s the right way to do documentation is
-clear: produce the least amount of documentation needed to facilitate
-the most understanding, and be very explicit about which documentation
-is to be maintained and which is to be archived (i.e., read-only and
-left to rot).
-</pre>
-
-
-<ul>
-<li>Roughly speaking, a full EML document produced by Morpho is a bit like a whole bunch of cruft that isnt needed and gets in the way (and is more confusing)
-</li>
-<li>Whereas a minimal version Im thinking of covers almost all the generic entries providing the "minimum amount of stuff to make it work right".
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-1-7" class="outline-4">
-<h4 id="sec-1-7"><span class="section-number-4">1.7</span> Aim</h4>
-<div class="outline-text-4" id="text-1-7">
-
-
-<ul>
-<li>This experiment aims to speed up the creation of a minimal "skeleton" of metadata to a level that both the groups above can be comfortable with AS A FIRST STEP.
-</li>
-<li>It is assumed that additional steps will then need to be taken to complete the documentation, but the automation of the first part of the process should shave off enough time to suit the purposes of both groups
-</li>
-<li>It is an imperative that the quick-start creation of the metadata does not end up costing the documentor more time later on down the track if they need to go back to many of the elements for additional editing.
-</li>
-</ul>
-
-
-
-
-
-</div>
-
-</div>
-
-<div id="outline-container-1-8" class="outline-4">
-<h4 id="sec-1-8"><span class="section-number-4">1.8</span> Step 1: load a simple example dataset</h4>
-<div class="outline-text-4" id="text-1-8">
-
-<p>I've been using a [fictitious dataset from a Statistics Methodology paper by Ritschard 2006](<a href="http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/">http://ivanhanigan.github.io/2013/10/test-data-for-classification-trees/</a>).  It will do as a first cut but when it comes to actually test this out it would be good to have something that would take a bit longer (so that the frustrations of using Morpho become very apparent).
-</p>
-
-
-
-<pre class="src src-R">  <span style="color: #586e75;">#### </span><span style="color: #586e75;">R Code:</span>
-      <span style="color: #586e75;"># </span><span style="color: #586e75;">func</span>
-      <span style="color: #268bd2; font-weight: bold;">require</span>(devtools)
-      install_github(<span style="color: #2aa198;">"disentangle"</span>, <span style="color: #2aa198;">"ivanhanigan"</span>)
-      <span style="color: #268bd2; font-weight: bold;">require</span>(disentangle)
-      <span style="color: #586e75;"># </span><span style="color: #586e75;">load</span>
-      fpath <span style="color: #268bd2; font-weight: bold;">&lt;-</span> system.file(
-          file.path(<span style="color: #2aa198;">"extdata"</span>, <span style="color: #2aa198;">"civst_gend_sector_full.csv"</span>),
-          package = <span style="color: #2aa198;">"disentangle"</span>
-          )
-      data_set <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(fpath)
-      summary(data_set)
-      <span style="color: #586e75;"># </span><span style="color: #586e75;">store it in the current project workspace</span>
-      write.csv(data_set, <span style="color: #2aa198;">"data/civst_gend_sector_full.csv"</span>, row.names = F)
-      
-
-
-
-<span style="color: #586e75;">## </span><span style="color: #586e75;">| divorced/widowed: 33 | female:132 | primary  :116 | Min.   : 128.9 |</span>
-<span style="color: #586e75;">## </span><span style="color: #586e75;">| married         :120 | male  :141 | secondary: 99 | 1st Qu.: 768.3 |</span>
-<span style="color: #586e75;">## </span><span style="color: #586e75;">| single          :120 | nil        | tertiary : 58 | Median : 922.8 |</span>
-<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | Mean   : 908.4 |</span>
-<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | 3rd Qu.:1079.1 |</span>
-<span style="color: #586e75;">## </span><span style="color: #586e75;">| nil                  | nil        | nil           | Max.   :1479.4 |</span>
-
-</pre>
-
-
-
-
-</div>
-
-</div>
-
-<div id="outline-container-1-9" class="outline-4">
-<h4 id="sec-1-9"><span class="section-number-4">1.9</span> Step 2 create a function to deliver the minimal metadata object</h4>
-<div class="outline-text-4" id="text-1-9">
-
-<ul>
-<li>the package REML will create a EML metadata document quite easily
-</li>
-<li>I will assume that a lot of the data elements are self explanatory and take column names and factor levels as the descriptions
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-1-10" class="outline-4">
-<h4 id="sec-1-10"><span class="section-number-4">1.10</span> reml<sub>boilerplate</sub>-code</h4>
-<div class="outline-text-4" id="text-1-10">
-
-
-
-
-<pre class="src src-R"><span style="color: #586e75;">################################################################</span>
-<span style="color: #586e75;"># </span><span style="color: #586e75;">name:reml_boilerplate</span>
- 
-<span style="color: #586e75;"># </span><span style="color: #586e75;">func</span>
-<span style="color: #859900; font-weight: bold;">if</span>(!<span style="color: #268bd2; font-weight: bold;">require</span>(reml)) {
-  <span style="color: #268bd2; font-weight: bold;">require</span>(devtools)
-  install_github(<span style="color: #2aa198;">"reml"</span>, <span style="color: #2aa198;">"ropensci"</span>)
-  } 
-<span style="color: #268bd2; font-weight: bold;">require</span>(reml)
-
-<span style="color: #268bd2;">reml_boilerplate</span> <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #859900; font-weight: bold;">function</span>(data_set, created_by = <span style="color: #2aa198;">"Ivan Hanigan &lt;<a href="mailto:ivanhanigan&#64;gmail.com">ivanhanigan&#64;gmail.com</a>&gt;"</span>, data_dir = getwd(), titl = <span style="color: #b58900;">NA</span>, desc = <span style="color: #2aa198;">""</span>)
-{
-
-  <span style="color: #586e75;"># </span><span style="color: #586e75;">essential</span>
-  <span style="color: #859900; font-weight: bold;">if</span>(is.na(titl)) <span style="color: #859900; font-weight: bold;">stop</span>(print(<span style="color: #2aa198;">"must specify title"</span>))
-  <span style="color: #586e75;"># </span><span style="color: #586e75;">we can get the col names easily</span>
-  col_defs <span style="color: #268bd2; font-weight: bold;">&lt;-</span> names(data_set)
-  <span style="color: #586e75;"># </span><span style="color: #586e75;">next create a list from the data</span>
-  unit_defs <span style="color: #268bd2; font-weight: bold;">&lt;-</span> list()
-  <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(data_set))
-    {
-      <span style="color: #586e75;"># </span><span style="color: #586e75;">i = 4</span>
-      <span style="color: #859900; font-weight: bold;">if</span>(is.numeric(data_set[,i])){
-        unit_defs[[i]] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #2aa198;">"numeric"</span>
-      } <span style="color: #859900; font-weight: bold;">else</span> {
-        unit_defs[[i]] <span style="color: #268bd2; font-weight: bold;">&lt;-</span> names(table(data_set[,i]))          
-      }
-    }
-  <span style="color: #586e75;"># </span><span style="color: #586e75;">unit_defs</span>
-  
-  ds <span style="color: #268bd2; font-weight: bold;">&lt;-</span> data.set(data_set,
-                 col.defs = col_defs,
-                 unit.defs = unit_defs
-                 )
-  <span style="color: #586e75;">#</span><span style="color: #586e75;">str(ds)</span>
-
-  metadata  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> metadata(ds)
-  <span style="color: #586e75;"># </span><span style="color: #586e75;">needs names</span>
-  <span style="color: #859900; font-weight: bold;">for</span>(i <span style="color: #859900; font-weight: bold;">in</span> 1:ncol(data_set))
-    {
-      <span style="color: #586e75;"># </span><span style="color: #586e75;">i = 4</span>
-      <span style="color: #859900; font-weight: bold;">if</span>(is.numeric(data_set[,i])){
-        names(metadata[[i]][[3]]) <span style="color: #268bd2; font-weight: bold;">&lt;-</span> <span style="color: #2aa198;">"number"</span>
-      } <span style="color: #859900; font-weight: bold;">else</span> {
-        names(metadata[[i]][[3]]) <span style="color: #268bd2; font-weight: bold;">&lt;-</span> metadata[[i]][[3]]
-      }
-    }
-  <span style="color: #586e75;"># </span><span style="color: #586e75;">metadata</span>
-  oldwd <span style="color: #268bd2; font-weight: bold;">&lt;-</span> getwd()
-  setwd(data_dir)
-  eml_write(data_set, metadata,
-            title = titl,  
-            description = desc,
-            creator = created_by
-            )
-  setwd(oldwd)
-  sprintf(<span style="color: #2aa198;">"your metadata has been created in the '%s' directory"</span>, data_dir)
-  }
-</pre>
-
-</div>
-
-</div>
-
-<div id="outline-container-1-11" class="outline-4">
-<h4 id="sec-1-11"><span class="section-number-4">1.11</span> reml<sub>boilerplate</sub>-test-code</h4>
-<div class="outline-text-4" id="text-1-11">
-
-
-
-
-<pre class="src src-R"><span style="color: #586e75;">################################################################</span>
-<span style="color: #586e75;"># </span><span style="color: #586e75;">name:reml_boilerplate-test</span>
-
-analyte <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #2aa198;">"data/civst_gend_sector_full.csv"</span>)
-reml_boilerplate(
-  data_set = analyte,
-  created_by = <span style="color: #2aa198;">"Ivan Hanigan &lt;<a href="mailto:ivanhanigan&#64;gmail.com">ivanhanigan&#64;gmail.com</a>&gt;"</span>,
-  data_dir = <span style="color: #2aa198;">"data"</span>,
-  titl = <span style="color: #2aa198;">"civst_gend_sector_full"</span>,
-  desc = <span style="color: #2aa198;">"An example, fictional dataset"</span>
-  )
-
-dir(<span style="color: #2aa198;">"data"</span>)
-</pre>
-
-</div>
-
-</div>
-
-<div id="outline-container-1-12" class="outline-4">
-<h4 id="sec-1-12"><span class="section-number-4">1.12</span> Results: This loads into Morpho with some errors</h4>
-<div class="outline-text-4" id="text-1-12">
-
-<ul>
-<li>Notably unable to import the data file
-</li>
-</ul>
-
-
-<p>
-<img src="/images/morpho-reml-boilerplate.png" alt = "morpho-reml-boilerplate.png">
-</p>
-<ul>
-<li>Also "the saved document is not valid for some reason"
-</li>
-</ul>
-
-
-<p>
-<img src="/images/morpho-reml-boilerplate2.png" alt = "morpho-reml-boilerplate2.png">
-</p></div>
-
-</div>
-
-<div id="outline-container-1-13" class="outline-4">
-<h4 id="sec-1-13"><span class="section-number-4">1.13</span> Conclusions</h4>
-<div class="outline-text-4" id="text-1-13">
-
-<ul>
-<li>This needs testing
-</li>
-<li>A real deal breaker is if the EML is not valid 
-</li>
-<li>In some cases not having the data table included will be a deal breaker (ie KNB repositories designed for downloading complete data packs
-</li>
-<li>A definite failure would be that even if it is quicker to get started if it takes a long time and is difficult to fix up it might increase the risk of misunderstandings.
-</li>
-</ul>
-
-
-</div>
-</div>
-</div>
-</div>
-
-
-<p></body>
-</html></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Oct 29 00:00:00 +1100 2013">29 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I got this question today from a Drought researcher:</p>
-
-<h4>Question:</h4>
-
-<pre><code>There a table with 62 years * 12 months of rain data in mm. We
-calculated the cumulative distribution using ecdf: empirical
-cumulative distribution function. So the table looks like this:
-Year Jan Feb Mach (…) each cell contains the cum dist.
-
-We also got the number of months per year with less than X mm of
-rain. But he needs to know how many months are between the
-drought months, regardless the year. So, I thought that
-converting the data into a ts was going to facilitate the task,
-but it doesn’t, because now I don’t’ have columns and rows any
-longer.
-
-How do I handle a ts object to do for example an ifelse?
-</code></pre>
-
-<p></p>
-
-
-<p>I answered:</p>
-
-<p>This looks a lot like the Hutchinson Drought Index which I've coded up here</p>
-
-<ul>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
-<li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
-</ul>
-
-
-<p>This is the key bit for counting consecutive months below a threshold</p>
-
-<h4>R Code:</h4>
-
-<pre><code>x&lt;-data$index&lt;=-1
-xx &lt;- (cumsum(!x) + 1) * x
-x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
-data$count&lt;-x2
-</code></pre>
-
-<p></p>
-
-
-<p>
-I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
-and looked in wonder at the structure and am amazed it works.</p>
-
-<p>I also really like the cumulative summing version a lot</p>
-
-<h4>R Code:</h4>
-
-<pre><code>data$sums&lt;-as.numeric(0)
-y &lt;- ifelse(data$index &gt;= -1, 0, data$index)
-f &lt;- data$index &lt; -1
-f &lt;- (cumsum(!f) + 1) * f
-z &lt;- unsplit(lapply(split(y,f),cumsum),f)
-data$sums &lt;- z
-</code></pre>
-
-<p></p>
-
-
-<p>
-Several things I'd like to change.</p>
-
-<ul>
-<li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
-<li>I'd like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
-<li>I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
+<li>Shotwell, M.S. and Alvarez, J.M. 2011. Approaches and Barriers to Reproducible Practices in Biostatistics.
+http://biostatmatt.com/uploads/shotwell-interface-2011.pdf</li>
 </ul>
 
 
@@ -814,53 +490,17 @@ Several things I'd like to change.</p>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/climatic and agricultural drought" title="climatic and agricultural drought" rel="category tag">climatic and agricultural drought</a>
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
       
     </p>
     <!--
 	<p class="comments-link">
-      <a href='/2013/10/counting-number-of-consecutive-months-in-drought/#disqus_thread'>Comments</a>
+      <a href='/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/#disqus_thread'>Comments</a>
     </p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Tue Oct 29 00:00:00 +1100 2013">29 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors</li>
-<li>We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement</li>
-<li>I've hacked together some very very ugly code to construct the lagged variable</li>
-<li><a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3">http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3</a></li>
-<li>There may be errors, it's been a long day, but I won't have a chance to check back on this till next week so I thought I'd put it out there as is.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Mon Oct 28 00:00:00 +1100 2013">28 Oct 2013</abbr>
+        <abbr class="published" title="Wed Nov 06 00:00:00 +1100 2013">06 Nov 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -895,8 +535,9 @@ Several things I'd like to change.</p>
           <div id="carrington-about" class="widget">
             <div class="about">
               <h2 class="widget-title">About</h2>
-              <p>My name is Ivan Hanigan.  I am a data manager and part-time student at the Australian National University.</p>
+              <p>I am a PhD Student at the Australian National University.</p>
               <a class="more" href="/about.html">more →</a>
+
             </div>
           </div>
           <!--
@@ -921,359 +562,78 @@ Several things I'd like to change.</p>
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/Energymark">Energymark (1)</a></li>
+                <li><a href="/categories/spatial">spatial (6)</a></li>
                 
-                <li><a href="/categories/data science">data science (1)</a></li>
-                
-                <li><a href="/categories/outlines">outlines (1)</a></li>
-                
-                <li><a href="/categories/projectTemplate">projectTemplate (1)</a></li>
-                
-                <li><a href="/categories/SurveyTools">SurveyTools (1)</a></li>
-                
-                <li><a href="/categories/Disentangle">Disentangle (1)</a></li>
-                
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
-                
-                <li><a href="/categories/Modelling">Modelling (1)</a></li>
-                
-                <li><a href="/categories/Drought and Suicide">Drought and Suicide (1)</a></li>
-                
-                <li><a href="/categories/wordpress">wordpress (1)</a></li>
-                
-                <li><a href="/categories/reproducibility">reproducibility (2)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (29)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
-                
-                <li><a href="/categories/Spatial Dependence">Spatial Dependence (1)</a></li>
-                
-                <li><a href="/categories/replication">replication (1)</a></li>
-                
-                <li><a href="/categories/jekyll">jekyll (2)</a></li>
-                
-                <li><a href="/categories/rates theory">rates theory (1)</a></li>
-                
-                <li><a href="/categories/ecology">ecology (1)</a></li>
-                
-                <li><a href="/categories/systems">systems (1)</a></li>
-                
-                <li><a href="/categories/python">python (2)</a></li>
-                
-                <li><a href="/categories/visualisation">visualisation (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (3)</a></li>
-                
-                <li><a href="/categories/notebook">notebook (1)</a></li>
-                
-                <li><a href="/categories/statistical models">statistical models (1)</a></li>
-                
-                <li><a href="/categories/thoughts">thoughts (3)</a></li>
-                
-                <li><a href="/categories/organising">organising (2)</a></li>
-                
-                <li><a href="/categories/Suicide">Suicide (1)</a></li>
-                
-                <li><a href="/categories/India Overview">India Overview (1)</a></li>
-                
-                <li><a href="/categories/workflow">workflow (4)</a></li>
-                
-                <li><a href="/categories/ons">ons (2)</a></li>
-                
-                <li><a href="/categories/climate change">climate change (1)</a></li>
-                
-                <li><a href="/categories/make">make (1)</a></li>
-                
-                <li><a href="/categories/R/Sweave">R/Sweave (1)</a></li>
-                
-                <li><a href="/categories/tools">tools (1)</a></li>
-                
-                <li><a href="/categories/supersite">supersite (1)</a></li>
-                
-                <li><a href="/categories/drought">drought (1)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
-                <li><a href="/categories/Data Documentation">Data Documentation (15)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
-                <li><a href="/categories/RanalyticFlow">RanalyticFlow (1)</a></li>
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
-                <li><a href="/categories/orgmode">orgmode (1)</a></li>
+                <li><a href="/categories/data documentation">data documentation (25)</a></li>
                 
-                <li><a href="/categories/links">links (1)</a></li>
-                
-                <li><a href="/categories/GIS">GIS (1)</a></li>
-                
-                <li><a href="/categories/open notebook">open notebook (1)</a></li>
-                
-                <li><a href="/categories/surveys">surveys (1)</a></li>
-                
-                <li><a href="/categories/excess heat indices">excess heat indices (1)</a></li>
-                
-                <li><a href="/categories/Tree-Based Methods">Tree-Based Methods (1)</a></li>
-                
-                <li><a href="/categories/packages">packages (1)</a></li>
-                
-                <li><a href="/categories/Drought">Drought (2)</a></li>
-                
-                <li><a href="/categories/pumilio-bushfm">pumilio-bushfm (3)</a></li>
-                
-                <li><a href="/categories/tumba-lidar">tumba-lidar (1)</a></li>
-                
-                <li><a href="/categories/blogger">blogger (1)</a></li>
-                
-                <li><a href="/categories/blogging">blogging (1)</a></li>
-                
-                <li><a href="/categories/epidemiology">epidemiology (1)</a></li>
+                <li><a href="/categories/overview">overview (7)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/overview">overview (5)</a></li>
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
-                
-                <li><a href="/categories/opinion">opinion (1)</a></li>
-                
-                <li><a href="/categories/versions">versions (1)</a></li>
-                
-                <li><a href="/categories/animation">animation (1)</a></li>
-                
-                <li><a href="/categories/spatial">spatial (3)</a></li>
-                
-                <li><a href="/categories/kepler">kepler (1)</a></li>
-                
-                <li><a href="/categories/datasharing">datasharing (1)</a></li>
-                
-                <li><a href="/categories/graphviz">graphviz (1)</a></li>
-                
-                <li><a href="/categories/disentangle causality">disentangle causality (1)</a></li>
-                
-                <li><a href="/categories/concordance">concordance (1)</a></li>
-                
-                <li><a href="/categories/me">me (3)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (4)</a></li>
-                
-                <li><a href="/categories/science">science (2)</a></li>
-                
-                <li><a href="/categories/gisviz">gisviz (1)</a></li>
+                <li><a href="/categories/research methods">research methods (42)</a></li>
                 
               </ul>
-            </div>
-          </div>
-          <div id="secondary-sidebar">
-            <div class="widget">
-              <h2 class="widget-title">Recent Posts</h2>
+              <h2 class="widget-title">Recent Entries</h2>
               <ul>
                 
                 <li>
-                  <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
+                  <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
+                  <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/02/yearmon-class-and-interoperability-with-excel-and-access/" title="yearmon-class-and-interoperability-with-excel-and-access" rel="bookmark">yearmon-class-and-interoperability-with-excel-and-access</a>
+                  <a href="/2014/04/workaround-for-installing-morpho-on-a-windows-network/" title="workaround-for-installing-morpho-on-a-windows-network" rel="bookmark">workaround-for-installing-morpho-on-a-windows-network</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/02/gantting-like-a-hacker/" title="gantting-like-a-hacker" rel="bookmark">gantting-like-a-hacker</a>
+                  <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
                 </li>
                 
                 <li>
-                  <a href="/2014/02/aggregation-of-statistical-local-areas/" title="Aggregation Of Statistical Local Areas" rel="bookmark">Aggregation Of Statistical Local Areas</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/01/github-gh-pages-and-disqus-commentsdatasharing/" title="Github, gh-pages and disqus comments" rel="bookmark">Github, gh-pages and disqus comments</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/01/tumbarumba-supersite-dem/" title="tumbarumba-supersite-dem" rel="bookmark">tumbarumba-supersite-dem</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/extend-Rs-data-frame-class-with-metadata/" title="extend-Rs-data-frame-class-with-metadata" rel="bookmark">extend-Rs-data-frame-class-with-metadata</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/a-few-best-practices-for-statistical-programming/" title="a-few-best-practices-for-statistical-programming" rel="bookmark">a-few-best-practices-for-statistical-programming</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/" title="add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot" rel="bookmark">add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/animation-illustrating-catastrophic-regime-shifts/" title="Animation Illustrating Catastrophic Regime Shifts" rel="bookmark">Animation Illustrating Catastrophic Regime Shifts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/marco-fahmi-farewell-from-asn-ltern-data-portal-team/" title="Marco Fahmi Farewell From ASN-LTERN Data Portal Team" rel="bookmark">Marco Fahmi Farewell From ASN-LTERN Data Portal Team</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/animations-using-R/" title="animations-using-R" rel="bookmark">animations-using-R</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/links-to-useful-data-munging-posts/" title="links-to-useful-data-munging-posts" rel="bookmark">links-to-useful-data-munging-posts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode/" title="open-access-journal-templates-for-latex-with-emacs-orgmode" rel="bookmark">open-access-journal-templates-for-latex-with-emacs-orgmode</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/auto-download-bureau-meteorology-diurnal-data/" title="auto-download-bureau-meteorology-diurnal-data" rel="bookmark">auto-download-bureau-meteorology-diurnal-data</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/the-history-of-ons/" title="the-history-of-ons" rel="bookmark">the-history-of-ons</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms/" title="non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms" rel="bookmark">non-linear-relationships-vs-non-linear-models-vis-a-vis-curvi-linear-terms</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/research-protocol-for-manitoba-centre-for-health-policy/" title="research-protocol-for-manitoba-centre-for-health-policy" rel="bookmark">research-protocol-for-manitoba-centre-for-health-policy</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/graphviz-automagic-flowcharts/" title="graphviz-automagic-flowcharts" rel="bookmark">graphviz-automagic-flowcharts</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/12/gantt-charts-for-health-professionals/" title="Gantt Charts For Health Professionals" rel="bookmark">Gantt Charts For Health Professionals</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/guest-post-by-marco-fahmi-why-morpho/" title="guest-post-by-marco-fahmi-why-morpho" rel="bookmark">guest-post-by-marco-fahmi-why-morpho</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/git-can-be-simple-or-very-complicated/" title="git-can-be-simple-or-very-complicated" rel="bookmark">git-can-be-simple-or-very-complicated</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/what-do-scientists-who-write-metadata-use-to-do-it-and-why/" title="What Do Scientists Who Write Metadata Use To Do It? And Why?" rel="bookmark">What Do Scientists Who Write Metadata Use To Do It? And Why?</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
-                </li>
-                
-                <li>
-                  <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
+                  <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
                 </li>
                 
               </ul>
+              <h2 class="widget-title">Entries grouped by Tags</h2>
+              <ul>
+                
+                <li><a href="/tag/R-eml">R-eml (3)</a></li>
+                
+                <li><a href="/tag/morpho">morpho (7)</a></li>
+                
+                <li><a href="/tag/bugs">bugs (1)</a></li>
+                
               <div class="clear"></div>
+              </ul>
             </div>
+          </div>
+          <!-- <div id="secondary-sidebar"> -->
+          <!--   <div class="widget"> -->
+          <!--     <h2 class="widget-title">Tags</h2> -->
+          <!--     <ul> -->
+          <!--        -->
+          <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
+          <!--        -->
+          <!--     <div class="clear"></div> -->
+          <!--     </ul> -->
+          <!--   </div> -->
             <!--
             <div class="widget">
               <h2 class="widget-title">Archives</h2>
