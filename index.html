@@ -23,9 +23,11 @@
           <ul class="nav clearfix">
             <li class="first-child"><a href="/research.html">About My Notebook</a></li>
             <li> <a href="/blog.html">Entries</a></li> 
-            <!-- <li><a href="/projects.html">Software</a></li>-->
+
             <li><a href="/about.html">About Me</a></li>
-            <li><a href="/publications.html">My Publications</a></li>
+            <li><a href="/publications.html">Journal Publications</a></li>
+            <li><a href="/projects.html">Software</a></li>
+            <li><a href="/projects.html">Data</a></li>
             <li><a href="/cv.html">My CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
             <!--<li><a href="/donors.html">Donors</a></li>-->
@@ -51,6 +53,41 @@
 </div>
 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=SChamberlain"></script>
 <!-- AddThis Button END -->
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>In 2011 we published a paper on "Creating an integrated historical record of extreme particulate air pollution events in australian cities from 1994 to 2007".</li>
+<li>I used a PostGIS/PostgreSQL server to host the database and MS Access clients for data entry by my co-author's at their own institutions (thousands of kms away)</li>
+<li>This worked great but recently I realised that updating to windows 64 bit has broken the ODBC connection</li>
+<li>to fix it I followed the instructions <a href="http://www.youlikeprogramming.com/2011/09/postgresql-and-odbc-in-64-bit-windows/">here</a></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/05/ms-access-to-postgresql-in-64-bit-windows/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sat May 10 00:00:00 +1000 2014">10 May 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
 
   <div class="full">
     <h1 class="entry-title">
@@ -124,7 +161,7 @@
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
@@ -225,7 +262,7 @@ write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= ""
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
@@ -280,7 +317,7 @@ write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= ""
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
@@ -390,7 +427,7 @@ setwd(oldwd)
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
@@ -401,97 +438,6 @@ setwd(oldwd)
     <p class="by-line">
       <span class="date full-date">
         <abbr class="published" title="Tue Apr 29 00:00:00 +1000 2014">29 Apr 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I realised that the work I did yesterday had an error in it.  I'd
-created a list of unit.defs with one less than I needed.  So the
-variable V100 was given the definition of NA!  I can fix this by open
-that package in Morpho and go to the column and select it, then under
-the Data menu, choose Edit Column Documentation.  There we can change
-all the definitions.  Now I start thinking about changing the type
-from count to ArealDensity, numberPerMeterSquared.  To change all
-these new variables I don't want to go thru the GUI 95 times!  Change
-the first one and then look at the EML</p>
-
-<h4>EML Code:</h4>
-
-<pre><code>&lt;attribute id="1398382425052"&gt;
-  &lt;attributeName&gt;V99&lt;/attributeName&gt;
-  &lt;attributeDefinition&gt;count stuff&lt;/attributeDefinition&gt;
-  &lt;measurementScale&gt;
-    &lt;ratio&gt;
-      &lt;unit&gt;&lt;standardUnit&gt;number&lt;/standardUnit&gt;&lt;/unit&gt;
-      &lt;numericDomain&gt;&lt;numberType&gt;real&lt;/numberType&gt;&lt;/numericDomain&gt;
-    &lt;/ratio&gt;
-  &lt;/measurementScale&gt;
-&lt;/attribute&gt;
-&lt;attribute id="1398382385863"&gt;
-  &lt;attributeName&gt;V100&lt;/attributeName&gt;
-  &lt;attributeDefinition&gt;A random variable&lt;/attributeDefinition&gt;
-  &lt;measurementScale&gt;
-    &lt;ratio&gt;
-      &lt;unit&gt;&lt;standardUnit&gt;numberPerMeterSquared&lt;/standardUnit&gt;&lt;/unit&gt;
-      &lt;numericDomain&gt;&lt;numberType&gt;real&lt;/numberType&gt;&lt;/numericDomain&gt;
-    &lt;/ratio&gt;
-  &lt;/measurementScale&gt;
-&lt;/attribute&gt;
-</code></pre>
-
-<p></p>
-
-
-<p>So this looks like I can do a find and replace in Emacs so go to the
-"~/.morpho" database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.</p>
-
-<h4>Code:</h4>
-
-<pre><code>&lt;standardUnit&gt;number&lt;
-to
-&lt;standardUnit&gt;numberPerMeterSquared&lt;
-</code></pre>
-
-<p></p>
-
-
-<p>Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.</p>
-
-<p><img src="/images/morpho-wide3.png" alt="morpho-wide3.png" /></p>
-
-<h2>Conclusions</h2>
-
-<ul>
-<li>Morpho and a code editor can be used in conjunction to edit EML quite well</li>
-<li>I suspect edits to the EML directly with a code editor are pretty dangerous</li>
-<li>For eg if you do the wrong change then that EML will likely not be valid and Morpho will complain.</li>
-<li>But the advantage of quickly modifying things like 100 variables unit definitions rather than opening every one in the GUI seems to be a worthwhile risk to me.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Apr 25 00:00:00 +1000 2014">25 Apr 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -549,29 +495,33 @@ to
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/data documentation">data documentation (25)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (25)</a></li>
                 
-                <li><a href="/categories/research methods">research methods (42)</a></li>
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (6)</a></li>
-                
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                <li><a href="/categories/spatial">spatial (6)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (43)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
+                </li>
                 
                 <li>
                   <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
@@ -589,19 +539,15 @@ to
                   <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
                 </li>
                 
-                <li>
-                  <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
+                <li><a href="/tag/bugs">bugs (1)</a></li>
+                
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
                 <li><a href="/tag/morpho">morpho (7)</a></li>
-                
-                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -612,11 +558,11 @@ to
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
+          <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
-          <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

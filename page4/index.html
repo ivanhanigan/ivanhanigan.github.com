@@ -23,9 +23,11 @@
           <ul class="nav clearfix">
             <li class="first-child"><a href="/research.html">About My Notebook</a></li>
             <li> <a href="/blog.html">Entries</a></li> 
-            <!-- <li><a href="/projects.html">Software</a></li>-->
+
             <li><a href="/about.html">About Me</a></li>
-            <li><a href="/publications.html">My Publications</a></li>
+            <li><a href="/publications.html">Journal Publications</a></li>
+            <li><a href="/projects.html">Software</a></li>
+            <li><a href="/projects.html">Data</a></li>
             <li><a href="/cv.html">My CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
             <!--<li><a href="/donors.html">Donors</a></li>-->
@@ -51,6 +53,147 @@
 </div>
 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=SChamberlain"></script>
 <!-- AddThis Button END -->
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2014/02/aggregation-of-statistical-local-areas/" title="Aggregation Of Statistical Local Areas" rel="bookmark">Aggregation Of Statistical Local Areas</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h2>Reproducibility</h2>
+
+<ul>
+<li>A subset of the data and code used for this blog post is available at <a href="https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s">https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s</a></li>
+<li>Some parts of the data I used are not available due to shared Intellectual Property</li>
+<li>The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics</li>
+<li>The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.</li>
+</ul>
+
+
+<h2>Introduction</h2>
+
+<p>The Aim is to aggregate Statistical Local Areas (SLAs, recently relabelled SA2) Australian Standard Geographical Classification (ASGC, recently relabelled ASGS) to achieve a greater level of privacy protection.
+The rules to achieve a geography amenable to statistical comparisons are:</p>
+
+<ul>
+<li>similar populations (around 20,000 to 30,000)</li>
+<li>homogenous Index of Relative Socioeconomic Disadvantage</li>
+<li>nested within the next level up in the ASGC/ASGS</li>
+<li>so that SSD (recently relabelled SA3) are not split.</li>
+<li>the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments</li>
+<li>This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.</li>
+</ul>
+
+
+<h2>Results</h2>
+
+<h3>Data Prep</h3>
+
+<ul>
+<li>The data were prepared as spatial files</li>
+</ul>
+
+
+<p><img src="/images/aggregation-of-sa2s.png" alt="alttext" /></p>
+
+<h3>Assess proposed split in Belconnen</h3>
+
+<ul>
+<li>the proposed split in belconnen looks good</li>
+<li>This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score</li>
+<li>Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham</li>
+<li>Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence</li>
+</ul>
+
+
+<p><img src="/images/belco-split.png" alt="alttext" /></p>
+
+<h3>Assess the outliers</h3>
+
+<ul>
+<li>this can be done by identifying their component CCD SEIFA within new groups</li>
+<li>the seifa of CCD in outliers are compared to the others within their new groups</li>
+</ul>
+
+
+<p><img src="/images/seifa-by-newgroups1.png" alt="alttext" /></p>
+
+<ul>
+<li>zoom in on croweded areas</li>
+</ul>
+
+
+<p><img src="/images/seifa-by-newgroups1-2.png" alt="alttext" /></p>
+
+<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
+
+
+<!-- Tue Feb 18 22:03:04 2014 -->
+
+
+<TABLE border=1>
+<TR> <TH>  </TH> <TH> sa2_name.x </TH> <TH> new_sa2_group </TH> <TH> notes </TH>  </TR>
+  <TR> <TD align="right"> 12 </TD> <TD> Bruce </TD> <TD> Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 14 </TD> <TD> Campbell </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 20 </TD> <TD> Civic </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 31 </TD> <TD> Fadden </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 32 </TD> <TD> Farrer </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
+  <TR> <TD align="right"> 37 </TD> <TD> Forrest </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 60 </TD> <TD> Isaacs </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
+  <TR> <TD align="right"> 64 </TD> <TD> Kingston - Barton </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 71 </TD> <TD> Macarthur </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 73 </TD> <TD> Macquarie </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 87 </TD> <TD> O'Malley </TD> <TD> Chifley/ Lyons (ACT)/ O'Malley/ Phillip </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 89 </TD> <TD> Page </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 98 </TD> <TD> Scullin </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
+   </TABLE>
+
+
+<h3>Investigating areas: eg the Kingston - Barton area</h3>
+
+<ul>
+<li>we can zoom in on some of these areas</li>
+</ul>
+
+
+<p><img src="/images/kingston-barton.png" alt="alttext" /></p>
+
+<h2>Conclusions</h2>
+
+<p>Basically, the problem comes from public housing policies in Canberra which distorts the effect of the housing market and land values in segregating rich from poor. Essentially, there are highly advantaged suburbs with pockets of disadvantaged public housing.</p>
+
+<p>Other 'problematic' features re this are:</p>
+
+<ul>
+<li>proximity to ornamental lakes</li>
+<li>proximity to urban green space</li>
+<li>proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement -- but different to 'distance from urban centre'</li>
+<li>elevation, especially with a view.</li>
+</ul>
+
+
+<p>Potentially the issue is going to be that this can't be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/aggregation-of-statistical-local-areas/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Tue Feb 18 00:00:00 +1100 2014">18 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
 
   <div class="full">
     <h1 class="entry-title">
@@ -316,7 +459,7 @@ reml_boilerplate(
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
@@ -391,80 +534,6 @@ reml_boilerplate(
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>A colleague sent me the cwt_data_subm_template_2013.xls today</li>
-<li>You can download a copy here <a href="coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls">coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls</a></li>
-<li>LTER is The U.S. Long-Term Ecological Research (LTER) network</li>
-<li>I made the following notes, this is not intended to be a nasty critique</li>
-<li>The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches</li>
-</ul>
-
-
-<h4>Critique</h4>
-
-<ul>
-<li>opened first on windows, saw comments on cells with instructions</li>
-<li>opened next on linux with libreOffice and comments are gone</li>
-<li>opened at the last tab (split in two for no reason?)</li>
-<li>noticed recommended name "GCE site" = Site, otherwise "permanent plot" =      Plot?</li>
-<li><a href="http://nsmn1.uh.edu/steve/research/gce/gce.htm">GCE = Georgia Coastal Ecosystems LTER program</a></li>
-<li>flip to first tab, point 4 suggests there is some export functionality I cannot see (a VBA script?)</li>
-<li>cell 11 a    NOTE: When submitting updated metadata or re-using templates please highlight fields with modified contents in yellow</li>
-<li>and use glitter pen???</li>
-<li>personnell tab OK</li>
-<li>instrumentation, variable measured is free text. ok but for eg "max temp", "temperature maxima", "maximum temperature (c)" "maximum temperature in 24 hours after 9am local time in degrees" etc</li>
-<li>too wide, last column was off my wide screen! noticed wasted real estate in column A</li>
-<li>tabular data "–  Paste or enter your data values into the 'Values' section (white cells), starting with the indicated cell"</li>
-<li>this is an invitation for clerical error! Too many "copy-and-paste" actions will inevtably introduce errors</li>
-<li>I do like the extra metadata Column Name:
--- Description:
--- Units:
--- Data type:
--- Variable type:
--- Number type:
--- Precision:
--- Code values:
--- Calculations:
--- QC: Minimum Valid:
--- QC: Minimum Expected:
--- QC: Maximum Expected:
--- QC: Maximum Valid:
--- QC: Custom:
-–  Fill in missing values in the table with NaN (not a number), including text fields, and do not skip columns</li>
-<li>but what about missing values imbued with other meanings (NA = not observed, censored etc)?</li>
-<li>ask users to format digit rounding in Excel?? oh no</li>
-<li>old excel users may still be restricted to 65,536 rows by 256 columns.</li>
-<li>non tabular sheet is ok</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/cwt-lter-data-submission-template-critique/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Jan 07 00:00:00 +1100 2014">07 Jan 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -520,29 +589,33 @@ reml_boilerplate(
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/data documentation">data documentation (25)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (25)</a></li>
                 
-                <li><a href="/categories/research methods">research methods (42)</a></li>
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (6)</a></li>
-                
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                <li><a href="/categories/spatial">spatial (6)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (43)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
+                </li>
                 
                 <li>
                   <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
@@ -560,19 +633,15 @@ reml_boilerplate(
                   <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
                 </li>
                 
-                <li>
-                  <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
+                <li><a href="/tag/bugs">bugs (1)</a></li>
+                
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
                 <li><a href="/tag/morpho">morpho (7)</a></li>
-                
-                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -583,11 +652,11 @@ reml_boilerplate(
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
+          <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
-          <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->
