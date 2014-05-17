@@ -62,6 +62,28 @@
 <li>I used a PostGIS/PostgreSQL server to host the database and MS Access clients for data entry by my co-author's at their own institutions (thousands of kms away)</li>
 <li>This worked great but recently I realised that updating to windows 64 bit has broken the ODBC connection</li>
 <li>to fix it I followed the instructions <a href="http://www.youlikeprogramming.com/2011/09/postgresql-and-odbc-in-64-bit-windows/">here</a></li>
+<li>You need to install both the 32 and 64 bit executables</li>
+<li>Assuming you use the 32 bit windows office suite (recommended) then use the command below to open the ODBC connections tool and add a DSN for your postgres database</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code>Go to Start -&gt; Run (or Press Windows+R keys) and enter 
+%WINDIR%\SysWOW64\odbcad32.exe
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>On either the User DSN (DSNs available for only that user) or System DSN (DSNs available to every user) tab, click the Add button.
+Scroll down the list and find the PostgreSQL ODBC Driver.</li>
+<li>You may select ANSI or UNICODE (For future support I personally prefer UNICODE), and click Finish.</li>
+<li>Data Source refers to the programmable name of the DSN Entry. Stick to lower-case letters and underscores. Ex: psql_server</li>
+<li>Specify the Database, Server, User Name and Password to your PostgreSQL server.</li>
+<li>Click the Test button to ensure everything has been specified correctly.</li>
+<li>Click the Save button to create the DSN.</li>
 </ul>
 
 
@@ -147,21 +169,21 @@
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
-                <li><a href="/categories/cloud building">cloud building (2)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (25)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                <li><a href="/categories/spatial">spatial (6)</a></li>
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (6)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (26)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
@@ -170,6 +192,10 @@
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/05/using-additional-header-rows-for-metadata/" title="using-additional-header-rows-for-metadata" rel="bookmark">using-additional-header-rows-for-metadata</a>
+                </li>
                 
                 <li>
                   <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
@@ -185,10 +211,6 @@
                 
                 <li>
                   <a href="/2014/04/workaround-for-installing-morpho-on-a-windows-network/" title="workaround-for-installing-morpho-on-a-windows-network" rel="bookmark">workaround-for-installing-morpho-on-a-windows-network</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
                 </li>
                 
               </ul>

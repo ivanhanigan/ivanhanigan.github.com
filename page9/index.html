@@ -56,6 +56,152 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/sharing-and-extending-research-protocols/" title="sharing-and-extending-research-protocols" rel="bookmark">sharing-and-extending-research-protocols</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Last week I started a new discussion about sharing and extending research protocols.</li>
+</ul>
+
+
+<h4>My Colleague sent me a link to the <a href="http://prometheuswiki.publish.csiro.au/tiki-custom_home.php">Prometheus Wiki</a>​</h4>
+
+<pre><code>a site for sharing research protocols. The idea is to give people
+a place to post research protocols since everyone develops them
+and then mentions them in papers but they rarely make it online in
+a usable format. We see this as a big bottleneck in the rate of
+knowledge discovery. Since users will always want to change and
+adapt a given protocol for changing applications or new technology
+or just to improve it. This sort of thing is done with open source
+all the time (i.e. git) but how you'd do it with an online
+protocol based out of a wiki is unknown. The current version of
+the website is not very flexible and doesn't really enable the
+sort of dynamic collaboration that I envision would make this a
+really useful tool. Git seems like an obvious conceptual starting
+point but there'd need to be a front end markup system in place
+that was integrated with that git-type backend. Since you've
+mentioned git a few times and the open science project, I thought
+you might find this interesting to think about. any suggestions or
+inspirations would be welcomed
+</code></pre>
+
+<p></p>
+
+
+<h4>My past experience</h4>
+
+<ul>
+<li>I have previously tried to use a wiki for the development of new sections in an existing study protocol on estimating the effects of bushfire smoke air pollution and human health.</li>
+<li>We combined elements of two major air pollution/health study protocols (one from Europe, one from America) with local considerations and decisions made within our team.</li>
+<li>On reflection all this was mostly useful for me, to a lesser extent the other programmer and I don't think the project manager or statistician ever even looked at any of this.</li>
+</ul>
+
+
+<h4>Jeff Leek's current approach using GitHub</h4>
+
+<p>I have been keeping an eye on the work by Jeff Leek on putting protocols onto Github and inviting collaboration to edit and extend them <a href="http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/">as he says</a>:</p>
+
+<pre><code>I put it on Github because I'm still not 100% sure I got it
+right... I would welcome feedback/pull requests on how we can
+improve the policy to make it better
+</code></pre>
+
+<p></p>
+
+
+<h4>Leek Group policies and protocols on github so far</h4>
+
+<ul>
+<li><a href="https://github.com/jtleek/rpackages">https://github.com/jtleek/rpackages</a> accompanied by <a href="http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/">this post</a></li>
+<li><a href="https://github.com/jtleek/reviews">https://github.com/jtleek/reviews</a> accompanied by <a href="http://simplystatistics.org/2013/10/23/the-leek-group-guide-to-reviewing-scientific-papers/">this post</a></li>
+<li><a href="https://github.com/jtleek/datasharing">https://github.com/jtleek/datasharing</a> accompanied by <a href="http://simplystatistics.org/2013/11/14/the-leek-group-guide-to-sharing-data-with-a-statistician-to-speed-collaboration/">this post</a></li>
+</ul>
+
+
+<h4>I forked "datasharing" for my own. Renamed: "How to share data to avoid misunderstanding"</h4>
+
+<ul>
+<li>I liked the datasharing policy so much <a href="http://ivanhanigan.github.io/datasharing/">I forked it for my own collaborations</a>.</li>
+<li>I initially just made a minor recommendation to one of the lines in the original using the great Github feature that if you edit a repo you don't have access to, it forks the repo and creates a feature branch behind the scenes. After you submit the changes (which is a commit) it puts you right into the pull request form.</li>
+<li>Therefore it can all be done on the GitHub site. I submitted <a href="https://github.com/jtleek/datasharing/pull/11">the pull request without leaving my web browser</a>.</li>
+<li>But then I thought I would have done things a bit differently.  In particular I'd like a webpage with a table of contents, and a nicer looking landing page.</li>
+<li>so I cloned my fork of the repo, then created a new branch called gh-pages, then copied the original to a new file called index.org, added some Emacs Orgmode HTML export magic and then "C-c C-e h" and WHAMM-O I've got my own version for extending with at <a href="http://ivanhanigan.github.io/datasharing/">http://ivanhanigan.github.io/datasharing/</a>.</li>
+</ul>
+
+
+<h4>The code version:</h4>
+
+<pre><code>git clone git@github.com:ivanhanigan/datasharing.git ~/tools/datasharing
+cd ~/tools/datasharing
+git checkout -b gh-pages
+mv README.md index.org
+touch README.md
+# edits to index.org, "C-c C-e h" and WHAMM-O
+git add index.org index.html README.md
+git push origin gh-pages
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>In this way I think people can share and collaborate easily <a href="http://yihui.name/en/2013/06/fix-typo-in-documentation/">(if they know git)</a></li>
+<li>as well as easily take work started by someone else and extend it for their own work.</li>
+<li>I wonder a little bit about how much of my extensions I should offer back to Jeff Leek as the original author.</li>
+<li>I guess he can always track what I do to it via the link back to his original shown in <a href="https://github.com/jtleek/datasharing/network">https://github.com/jtleek/datasharing/network</a></li>
+</ul>
+
+
+<h4>PS Jeff Leek uses github a lot!</h4>
+
+<p>As he says in <a href="http://simplystatistics.org/2013/11/21/future-of-statistics-take-home-messages-futureofstats/">this post from the future-of-statistics unconference</a>:</p>
+
+<pre><code>You can read it on Github here (https://github.com/jtleek/futureofstats).
+I put it on Github for two reasons:
+
+- I agree with Hadley's statement that the future of statistics is on Github.
+- I summarized them based on my interpretation and would love
+  collaboration on the document. If you want to add your new
+  thoughts/summaries, add a new section with your bullet pointed
+  ideas and send me a pull request!
+</code></pre>
+
+<p></p>
+
+
+<h4>Conclusions</h4>
+
+<ul>
+<li>Jeff Leek is on to something really interesting with these github policies and protocols</li>
+<li>I find the look of his plain markdown README.md pages a bit un-inspiring</li>
+<li>but then I spend too much of my time tweaking my html by far (while Jeff is getting on with the real work of publishing papers)</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/sharing-and-extending-research-protocols/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Nov 27 00:00:00 +1100 2013">27 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
     </h1>
     <div class="entry-content full-content">
@@ -448,382 +594,6 @@ git push origin master
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/sync-endnote-and-mendeley-using-r-xml/" title="sync-endnote-and-mendeley-references-using-r-xml" rel="bookmark">sync-endnote-and-mendeley-references-using-r-xml</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h4>Background</h4>
-
-<ul>
-<li>I use Mendeley (despite them being bought out by Elsevier, who used to sell guns)</li>
-<li>My Colleagues use EndNote</li>
-<li>Need to sync, they find Endnote better for their workflow</li>
-<li>I tried to export my Mendeley as XML and import to Endnote, but found many duplicates that took time to rectify</li>
-<li>(and the risk is there that the RefNo they used in the Doc will be the duplicate that I removed)</li>
-</ul>
-
-
-<h4>Aims</h4>
-
-<ul>
-<li>test if R and the XML package can help find refs in Endnote that aren't in Mendeley</li>
-<li>If so can I write those into an Mendeley import for seamless integrations</li>
-<li>and what about going from Mendeley to Endnote?</li>
-</ul>
-
-
-<h4>Methods</h4>
-
-<ul>
-<li>The R XML package seems an obvious place to start</li>
-<li>before writing a function, just step thru the process</li>
-</ul>
-
-
-<h4>Step 1: export XML from Mendeley and Endnote</h4>
-
-<ul>
-<li>In Mendeley Just select the refs in the list and then from the file menu</li>
-<li>In Endnote it is also under File menu</li>
-</ul>
-
-
-<h4>Step 2: R Code:</h4>
-
-<pre><code># func
-# might need sudo apt-get install r-cran-xml?
-require(XML)
-
-# load
-dir()
-[1] "EndnoteCollection.xml"
-    "MendeleyCollection.Data"
-[3] "MendeleyCollection.xml" 
-
-d1 &lt;- xmlTreeParse("EndnoteCollection.xml", useInternal=T)
-
-# clean
-str(d1)
-# ooooh xml schmexemhel voodoo?
-
-# do
-top &lt;- xmlRoot(d1)
-str(top)
-names(top)
-# top [[1]] # prints the whole thing
-top [[1]][[1]]
-top [[1]][[2]]
-# prints a record (1 or 2)
-
-# just messing around
-length(top[[1]])
-top [[1]][[120]]
-names(top [[1]][[120]])
-names(top [[1]][[120]][["contributors"]])
-names(top [[1]][[120]][["contributors"]][["authors"]])
-top [[1]][[120]][["contributors"]][["authors"]][[2]]
-
-i &lt;- 110
-top [[1]][[i]]
-as.matrix(names(top [[1]][[i]]))
-</code></pre>
-
-<h4>OK so XML as a list.</h4>
-
-<ul>
-<li>I think if I do a merge of two author-date-title dataframes I can easily find the diffs</li>
-</ul>
-
-
-<h4>TRY a square wheel</h4>
-
-<h4>R Code:</h4>
-
-<pre><code>endnote_mendeley_df &lt;- function(input_xml,
-                                nrow_to_try = 1000){
-  d1 &lt;- xmlTreeParse(input_xml, useInternal=T)
-  top &lt;- xmlRoot(d1)
-
-  output &lt;- matrix(ncol = 4, nrow = 0)
-  for(i in 1:nrow_to_try)
-  {
-  # i = 1000
-    if(is.na(xmlValue(top [[1]][[i]]))) break
-    if(
-      !is.na(xmlValue(top [[1]][[i]][["contributors"]][["authors"]][[2]]))
-      )
-    {
-      author &lt;- paste(xmlValue(top [[1]][[i]][["contributors"]][["authors"]][[1]]), "et al", " ")
-    } else {
-      author &lt;- xmlValue(top [[1]][[i]][["contributors"]][["authors"]][[1]])
-    }
-    year &lt;- xmlValue(top [[1]][[i]][["dates"]][["year"]])
-    title &lt;- xmlValue(top [[1]][[i]][["titles"]][[1]])
-    endnoteref &lt;- xmlValue(top [[1]][[i]][["rec-number"]])
-    output &lt;- rbind(output, c(author, year, title, endnoteref))
-
-  }
-  output &lt;- as.data.frame(output)
-  return(output)
-}
-</code></pre>
-
-<h4>R Test:</h4>
-
-<pre><code>output &lt;- endnote_mendeley_df(
-  input_xml = "EndnoteCollection.xml"
-  ,
-  nrow_to_try = 10
-  )
-
-nrow(output)
-write.csv(output, "EndnoteCollection.csv", row.names = F)
-output  &lt;- read.csv("EndnoteCollection.csv", stringsAsFactors = F)
-str(output)
-output[,1:2]
-</code></pre>
-
-<h4>R Do-read:</h4>
-
-<pre><code>endnote &lt;- endnote_mendeley_df(
-  input_xml = "EndnoteCollection.xml"
-  )
-nrow(endnote)
-mendeley &lt;- endnote_mendeley_df(
-  input_xml = "MendeleyCollection.xml"
-  )
-nrow(mendeley)
-</code></pre>
-
-<h4>R Do-concatenate and lowercase</h4>
-
-<pre><code># TODO this is a really terrible way to do this.
-# FIXME find out how to compare the two better
-require(stringr)
-mendeley2 &lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
-mendeley2 &lt;- gsub(" ", "", mendeley2)
-mendeley2 &lt;- gsub(",", "", mendeley2)
-mendeley2 &lt;- tolower(mendeley2)
-mendeley2[1:5]
-mendeley$mendeley2 &lt;- mendeley2
-
-# now do this again from endnote
-endnote2 &lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
-endnote2 &lt;- gsub(" ", "", endnote2)
-endnote2 &lt;- gsub(",", "", endnote2)
-endnote2 &lt;- tolower(endnote2)
-endnote2[1:5]
-endnote$endnote2 &lt;- endnote2
-</code></pre>
-
-<h4>R Do-merge:</h4>
-
-<pre><code>endnote_not_in_mendeley &lt;- merge(endnote,
-                                 mendeley,
-                                 by.x = "endnote2",
-                                 by.y = "mendeley2",
-                                 all.x = T)
-str(endnote_not_in_mendeley)
-nrow(endnote_not_in_mendeley)
-head(endnote_not_in_mendeley)
-endnote_not_in_mendeley &lt;- endnote_not_in_mendeley[
-                                                   is.na(endnote_not_in_mendeley$V1.y),
-                                                   ]
-nrow(endnote_not_in_mendeley)
-# 66 refs in endnote are not in mendeley
-write.csv(endnote_not_in_mendeley,
-      "endnote_not_in_mendeley.csv", row.names = F)
-</code></pre>
-
-<h4>Open this as spreadsheet and cross check</h4>
-
-<ul>
-<li>make a new column for comments</li>
-<li>check off which ones were in AllDocuments and not in the Mendeley group</li>
-<li>this diff was because of when I imported the Endnote XML but had not assigned these to the mendeley group</li>
-<li>once have cleaned up the mendeley group export again and then check which are in mendeley but not in endnote</li>
-</ul>
-
-
-<h4>First here is a note</h4>
-
-<ul>
-<li>about a way to speed up the checks, excluding false positives using fuzzy matching</li>
-<li>my method relies on the author, date and title to be written the same in both ie initials then surname or visa verca</li>
-<li>But this is not always true</li>
-<li>I previously used levenshtein string matching to identify strings that are close but not identical</li>
-<li><a href="http://wiki.r-project.org/rwiki/doku.php?id=tips:data-strings:levenshtein">Try this link</a></li>
-<li><a href="http://rwiki.sciviews.org/doku.php?id=tips:data-strings:levenshtein">OR this link</a></li>
-<li>TODO I will share this code as a GitHub Gist later!</li>
-</ul>
-
-
-<h4>R Code: possibility to speed up Checks</h4>
-
-<pre><code>tmp1 &lt;- mendeley[grep("Walker", mendeley$V1),"mendeley2"]
-tmp2 &lt;- endnote[grep("Walker", endnote$V1),"endnote2"]
-
-# these differ slightly
-# B. Walker et al vs Walker, Brian et al
-source("~/Dropbox/tools/levenshtein.r")
-levenshtein(
-    tmp1
-    ,
-    tmp2
-    )
-# gives 92percent match
-</code></pre>
-
-<h4>R Code: Find mendeley refs without endnote</h4>
-
-<pre><code>  endnote &lt;- endnote_mendeley_df(
-    input_xml = "EndnoteCollection.xml"
-    )
-  nrow(endnote)
-  mendeley &lt;- endnote_mendeley_df(
-    input_xml = "MendeleyCollection2.xml"
-    )
-  nrow(mendeley)
-</code></pre>
-
-<h4>R Code: Do-concatenate and lowercase</h4>
-
-<pre><code>require(stringr)
-mendeley2 &lt;- str_c(mendeley$V1, mendeley$V2, mendeley$V3)
-mendeley2 &lt;- gsub(" ", "", mendeley2)
-mendeley2 &lt;- gsub(",", "", mendeley2)
-mendeley2 &lt;- tolower(mendeley2)
-mendeley2[1:5]
-mendeley$mendeley2 &lt;- mendeley2
-
-# now do this again from endnote
-endnote2 &lt;- str_c(endnote$V1, endnote$V2, endnote$V3)
-endnote2 &lt;- gsub(" ", "", endnote2)
-endnote2 &lt;- gsub(",", "", endnote2)
-endnote2 &lt;- tolower(endnote2)
-endnote2[1:5]
-endnote$endnote2 &lt;- endnote2
-</code></pre>
-
-<h4>R Do-merge:</h4>
-
-<pre><code>mendeley_not_in_endnote &lt;- merge(mendeley,
-                                 endnote,
-                                 by.y = "endnote2",
-                                 by.x = "mendeley2",
-                                 all.x = T)
-str(mendeley_not_in_endnote)
-nrow(mendeley_not_in_endnote)
-head(mendeley_not_in_endnote)
-mendeley_not_in_endnote &lt;- mendeley_not_in_endnote[
-                                                      is.na(mendeley_not_in_endnote$V1.y),
-                                                      ]
-nrow(mendeley_not_in_endnote)
-# 92 refs in endnote are not in mendeley
-write.csv(mendeley_not_in_endnote,
-      "mendeley_not_in_endnote.csv", row.names = F)
-</code></pre>
-
-<h4>Not all these 92 will be true</h4>
-
-<ul>
-<li>so let;s try the string matching</li>
-</ul>
-
-
-<h4>R Code:</h4>
-
-<pre><code>source("~/Dropbox/tools/levenshtein.r")
-pcnt_threshold &lt;- 0.6
-out_list &lt;- matrix(ncol = 3, nrow = 0)
-#out_list &lt;- read.csv("mendeley_not_in_endnote_fz_match.csv", stringsAsFactors = F)
-for(i in 36:nrow(mendeley_not_in_endnote))
-    {
-        print(i)
-#        i = 2
-tmp1 &lt;- mendeley_not_in_endnote[i,1]
-    for(j in 1:nrow(endnote))
-        {
-    #        j = 2
-    if(exists("out")) rm(out)
-    tmp2 &lt;- endnote$endnote2[j]
-    pcnt &lt;- levenshtein(
-            tmp1
-            ,
-            tmp2
-            )
-    #pcnt
-    if(pcnt &gt;= pcnt_threshold) out &lt;- tmp2
-    if(exists("out"))
-        out_list &lt;- rbind(out_list, c(tmp1, tmp2, pcnt))
-    if(exists("out")) break
-        }
-
-    }
-out_list
-write.csv(out_list, "mendeley_not_in_endnote_fz_match.csv", row.names = F)
-</code></pre>
-
-<h4>R Code: Do-concatenate and lowercase</h4>
-
-<pre><code>require(stringr)
-out_list &lt;- read.csv("mendeley_not_in_endnote_fz_match.csv", stringsAsFactors = F)
-mendeley2 &lt;- read.csv("mendeley_not_in_endnote.csv", stringsAsFactors=F)
-mendeley2[1,]
-out_list[1,]
-mendeley2 &lt;- merge(mendeley_not_in_endnote, out_list,
-                   by.x = "mendeley2",
-                   by.y = "V1", all.x = T)
-mendeley2[2,]
-mendeley2 &lt;- mendeley2[is.na(mendeley2$V3),]
-nrow(mendeley2)
-# 48 records
-write.csv(mendeley2, "mendeley_not_in_endnote_best_estimate.csv", row.names=F)
-</code></pre>
-
-<h4>Results</h4>
-
-<ul>
-<li>I found that XML package in R can work with the Endnote and Mendeley export Files</li>
-<li>I think I made a lot of bad decisions about the way I went about  doing this!</li>
-<li>It seemed quite difficult to get the XML stuff to make sense to me</li>
-<li>I;ve heard that python has better libraries for working with XML</li>
-<li>the levenshtein string matching code proved useful again.  I should get out of the habit of looping and start using lapply etc to speed this up.</li>
-</ul>
-
-
-<h4>Conclusions</h4>
-
-<ul>
-<li>This was an interesting if frustrating experiment</li>
-<li>The minor issues with importing from mendeley/endnote and deduplicating using their own tools was probably not worth writing all this half-baked R code.</li>
-<li>But I did learn more about working with XML in R (and realised this is probably not one of R's Strengths -- or mine for that matter!)</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/sync-endnote-and-mendeley-using-r-xml/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Wed Nov 20 00:00:00 +1100 2013">20 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -879,21 +649,21 @@ write.csv(mendeley2, "mendeley_not_in_endnote_best_estimate.csv", row.names=F)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
-                <li><a href="/categories/cloud building">cloud building (2)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (25)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                <li><a href="/categories/spatial">spatial (6)</a></li>
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (6)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (26)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
@@ -902,6 +672,10 @@ write.csv(mendeley2, "mendeley_not_in_endnote_best_estimate.csv", row.names=F)
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/05/using-additional-header-rows-for-metadata/" title="using-additional-header-rows-for-metadata" rel="bookmark">using-additional-header-rows-for-metadata</a>
+                </li>
                 
                 <li>
                   <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
@@ -917,10 +691,6 @@ write.csv(mendeley2, "mendeley_not_in_endnote_best_estimate.csv", row.names=F)
                 
                 <li>
                   <a href="/2014/04/workaround-for-installing-morpho-on-a-windows-network/" title="workaround-for-installing-morpho-on-a-windows-network" rel="bookmark">workaround-for-installing-morpho-on-a-windows-network</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
                 </li>
                 
               </ul>
