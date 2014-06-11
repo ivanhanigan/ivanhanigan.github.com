@@ -54,6 +54,514 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Studies of extreme weather events such as drought require long term climate data</li>
+<li>these are available at continental scale derived from</li>
+<li>observations from a network of weather stations that are interpolated to a surface</li>
+<li>I have been working on techniques with R and online resources (the Australian Water Availabilty Project AWAP) to make working with these long term climatology datasets easier.</li>
+<li>The package is in development at <a href="https://github.com/swish-climate-impact-assessment/awaptools">https://github.com/swish-climate-impact-assessment/awaptools</a></li>
+</ul>
+
+
+<h2>Case Study</h2>
+
+<ul>
+<li>aim is need to look at seasonal rainfall means.</li>
+<li>first thing is to download the data (I'm also working on a Rstudio server to host these data, as a Virtual Lab).</li>
+<li>data = multiple years of monthly rainfall data in a raster grid format.</li>
+<li>aim = combine rainfall in a seasonal basis in one grid</li>
+<li>(i.e. M-J-J-A-S-O 1900, 1901 etc.) calculate mean of each cell.</li>
+<li>assumption1 = filenames have year, month embedded so they will be sorted in order when listed</li>
+<li>assumption2 = all months are available, from 1:12 for all years in</li>
+<li>study period</li>
+<li>notes:</li>
+<li>this requires the files are listed in the right order by name, and all months are present. might be better to use grep on the file name and strsplit/substr to extract the month identifier more precisely?</li>
+</ul>
+
+
+<h3>Results</h3>
+
+<p><img src="/images/season_hot.png" alt="alttext" /></p>
+
+<h3>I'm looking for collaboration on this!</h3>
+
+<ul>
+<li>I've been in contact with:</li>
+<li><a href="https://github.com/RationShop/rain_r/wiki/The-Rain-Project">https://github.com/RationShop/rain_r/wiki/The-Rain-Project</a></li>
+<li>I apologise to windoze users but feel a bit like <a href="http://librestats.com/2014/02/24/how-to-make-a-bad-password-with-r/">this guy</a> when recomending how to install:</li>
+</ul>
+
+
+<h4>quote:</h4>
+
+<pre><code>probably the easiest way to do this is to use
+Hadley's devtools package.  Assuming you have devtools and my package's
+dependencies.  If you're using Linux or the BSD's, this should just
+work.  Welcome to the good life, player.  I think this will work out
+of the box on a Mac.  I have no idea if this will work on Windows; how
+you strange people get anything done amazes me.  At the least,
+Im guessing you have to install Rtools first.  
+You could also just source all the R scripts like 
+some kind of barbarian
+</code></pre>
+
+<p></p>
+
+
+<h4>R Code:</h4>
+
+<pre><code># depends
+require(swishdbtools)
+if(!require(raster)) install.packages("raster", dependencies = T); require(raster)
+if(!require(rgdal)) install.packages("rgdal", dependencies = T); require(rgdal)
+
+# on linux can install direct, on windoze you configure Rtools
+require(devtools)
+install_github("awaptools", "swish-climate-impact-assessment")
+require(awaptools)
+
+homedir &lt;- "~/data/AWAP_GRIDS/data"
+outdir &lt;- "~/data/AWAP_GRIDS/data-seasonal-vignette"
+
+# first make sure there are no left over files from previous runs
+#oldfiles &lt;- list.files(pattern = '.tif', full.names=T) 
+#for(oldfile in oldfiles)
+#{
+#  print(oldfile)
+#  file.remove(oldfile)
+#}
+################################################
+setwd(homedir)
+
+# local customisations
+workdir  &lt;- homedir
+setwd(workdir)
+# don't change this
+years &lt;- c(1900:2014)
+lengthYears &lt;- length(years)
+# change this
+startdate &lt;- "2013-01-01"
+enddate &lt;- "2014-01-31"
+# do
+load_monthly(start_date = startdate, end_date = enddate)
+
+# do
+filelist &lt;- dir(pattern = "grid.Z$")
+for(fname in filelist)
+{
+  #fname &lt;- filelist[1]
+  unzip_monthly(fname, aggregation_factor = 1)
+  fin &lt;- gsub(".grid.Z", ".grid", fname)
+  fout &lt;- gsub(".grid.Z", ".tif", fname)
+  r &lt;- raster(fin)
+  writeRaster(r, fout, format="GTiff",  overwrite = TRUE)
+  file.remove(fin)
+}
+
+cfiles &lt;- list.files(pattern = '.tif', full.names=T) 
+# loop thru
+# NEED TO SET THE FILESOFSEASEON_I counter EACH TIME YOU start
+
+
+for(season in c("hot", "cool"))
+{
+  # season &lt;- "hot" # for labelling
+  if(season == "cool")
+  {
+    filesOfSeason_i &lt;- c(5,6,7,8,9,10)  
+    endat &lt;- lengthYears
+  } else {
+    filesOfSeason_i &lt;- c(11,12,13,14,15,16) 
+    endat &lt;- lengthYears - 1
+  }
+
+  for (year in 1:endat){ 
+    ## setup for checking month 
+    # year  &lt;- 1 #endat
+
+
+    ## checking
+    print(cat("####################\n\n"))
+    print(cfiles[filesOfSeason_i])
+
+    b &lt;- brick(stack(cfiles[filesOfSeason_i])) 
+    ## calculate mean 
+    m &lt;- mean(b) 
+    ## checking 
+    # image(m) 
+    writeRaster(m, file.path(outdir,sprintf("season_%s_%s.tif", season, year)), drivername="GTiff")
+    filesOfSeason_i &lt;- filesOfSeason_i + 12
+  } 
+}
+
+##### now we will overall average
+setwd(outdir)
+for(season in c("cool", "hot"))
+{
+  cfiles &lt;- list.files(pattern = season, full.names=T)   
+  print(cfiles)
+  b &lt;- brick(stack(cfiles)) 
+  ## calculate mean 
+  m &lt;- mean(b) 
+  ## checking 
+  # image(m) 
+  writeRaster(m, file.path(outdir,sprintf("season_%s.tif", season)), drivername="GTiff")
+}
+
+# qc
+cool &lt;- raster("season_cool.tif")
+hot &lt;- raster("season_hot.tif")
+par(mfrow = c(2,1))
+image(cool)
+image(hot)
+
+# just summer rainfall
+png("season_hot.png")
+image(hot)
+dev.off()
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/long-term-climatology-contextual-data-for-ecological-research/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Fri Feb 28 00:00:00 +1100 2014">28 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2014/02/yearmon-class-and-interoperability-with-excel-and-access/" title="yearmon-class-and-interoperability-with-excel-and-access" rel="bookmark">yearmon-class-and-interoperability-with-excel-and-access</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h4>Toward a standard and unambiguous format for sharing Year-Month data</h4>
+
+<ul>
+<li>I am working in a new job where we are recieving data from a lot of different groups</li>
+<li>we aim to review these datasets and then publish them for a wide audience of potential users</li>
+<li>therefore usability and interoperability is a key concern</li>
+<li>we recieved some data with Month and Year as Apr.12</li>
+<li>I know this is easy to convert to a date/time class with in R but wondered what a better format would be to recommend for our datasets to use to maximise utility downstream (especially for non R users)</li>
+<li>Apr.12 is assumed to be text in excel so need something else</li>
+<li>Apr-12 is assumed to be the twelfth of April this year (ie 12/4/2014)</li>
+</ul>
+
+
+<h4>In R the solution might be to use the zoo package</h4>
+
+<pre><code>require(zoo)
+as.yearmon("Apr.12", "%b.%y")
+# [1] "Apr 2012"
+
+# other options abound
+as.yearmon("apr12", "%b%y")
+
+# the default is YYYY-MM or similar
+as.yearmon("2012-04")
+as.yearmon("2012-4")
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>So I went looking at how Excel and Access deal with this</li>
+<li>found that the best appeard to be MMM-YYYY in terms of how these software assume the data should look</li>
+</ul>
+
+
+<h4>R Code:</h4>
+
+<pre><code>as.yearmon("Apr-2012", "%b-%Y")
+
+# but will need to specify format because otherwise fails
+as.yearmon("Apr-2012")
+# NA
+</code></pre>
+
+<p></p>
+
+
+<h4>Conclusion</h4>
+
+<ul>
+<li>I recommend the MMM-YYYY option</li>
+<li>it is pretty good that in Excel it is assumed 1/04/2012</li>
+<li>and if MS access is set to date/time and format = mmm-yyyy is ok for data entry (but not importing)</li>
+<li>to import this use a shorttext type, then post-import, change to date/time with mmm-yyyy (the . failed)</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/yearmon-class-and-interoperability-with-excel-and-access/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Feb 27 00:00:00 +1100 2014">27 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2014/02/gantting-like-a-hacker/" title="gantting-like-a-hacker" rel="bookmark">gantting-like-a-hacker</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h3>Background</h3>
+
+<ul>
+<li><a href="http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html">"Blogging like a Hacker"</a> has become a paradigm for programmers who want to link their code to their blogs.</li>
+<li>I've followed this paradigm for a while to support my scientific projects, enhancing their transparency and reproducibility.</li>
+<li>I've started a new project where I need to also manage project management and planning (following <a href="http://medepi.com/2012/02/05/project-mgmt/">Tomas Aragon's tutorial</a>)</li>
+<li>I propose that the same methods I use in scientific programming and blogging like a hacker can be used in "Gantting like a Hacker"</li>
+<li>The title for this post is also influenced by the poste over at <a href="http://blog.geekmanager.co.uk/2007/05/02/using-the-best-plan-format/">Geek | Manager</a>.</li>
+<li>That post says taht "Premature Gannting" is the act of making a "huge Gantt chart (often in MS Project)."</li>
+<li>Gannting like a Hacker is doing this in a scripted environment, without relying on closed-source proprietry software such as the Windoze options.</li>
+<li>The community of bloggers (mostly geeks) who are following a style of blogging that originated with the invention of Jekyll, <a href="http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html">unveiled in this post by Tom Preston-Werner</a>; GitHub’s co-founder (aka mojombo).</li>
+<li>This experiment uses Taskjuggler and Emacs Orgmode</li>
+</ul>
+
+
+<h3>Materials and Methods</h3>
+
+<ul>
+<li>Use Ubuntu 12.04 Long Term Support (LTS)</li>
+<li>with Ruby</li>
+</ul>
+
+
+<h4>Code:install task juggler</h4>
+
+<pre><code>gem install taskjuggler
+</code></pre>
+
+<p></p>
+
+
+<h3>Gantt charts with Emacs Orgmode</h3>
+
+<ul>
+<li>I'm using an Emacs tool to use TaskJuggler to handle the task scheduling and creation of Gantt chart suitable for <a href="http://orgmode.org/worg/org-tutorials/org-taskjuggler.html">a Pointy-haired Boss</a>.</li>
+<li>I hated using the Orgmode script to compile the parts of the Gantt chart so I wrote <a href="https://raw.github.com/ivanhanigan/disentangle/gh-pages/gantt-tj3/gantt-tj3-build.R">this R script</a> to convert a spreadsheet into an Orgmode script</li>
+<li>the spreadsheet is organised in a fairly simple way shown below.</li>
+</ul>
+
+
+<p><img src="/images/gantt-chart-sheet.png" alt="alttext" /></p>
+
+<h3>Results</h3>
+
+<ul>
+<li>and executing my script will convert this into a Emacs orgmode file that will export to a taskjuggler file (use C-c C-e j) and viola!</li>
+</ul>
+
+
+<p><img src="/images/gantt-chart.png" alt="alttext" /></p>
+
+<h3>Conclusions</h3>
+
+<ul>
+<li>This simplifies the Orgmode taskjuggler creation</li>
+<li>A drawback is that it has to go through the Emacs export function.</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/gantting-like-a-hacker/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sat Feb 22 00:00:00 +1100 2014">22 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2014/02/aggregation-of-statistical-local-areas/" title="Aggregation Of Statistical Local Areas" rel="bookmark">Aggregation Of Statistical Local Areas</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h2>Reproducibility</h2>
+
+<ul>
+<li>A subset of the data and code used for this blog post is available at <a href="https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s">https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s</a></li>
+<li>Some parts of the data I used are not available due to shared Intellectual Property</li>
+<li>The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics</li>
+<li>The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.</li>
+</ul>
+
+
+<h2>Introduction</h2>
+
+<p>The Aim is to aggregate Statistical Local Areas (SLAs, recently relabelled SA2) Australian Standard Geographical Classification (ASGC, recently relabelled ASGS) to achieve a greater level of privacy protection.
+The rules to achieve a geography amenable to statistical comparisons are:</p>
+
+<ul>
+<li>similar populations (around 20,000 to 30,000)</li>
+<li>homogenous Index of Relative Socioeconomic Disadvantage</li>
+<li>nested within the next level up in the ASGC/ASGS</li>
+<li>so that SSD (recently relabelled SA3) are not split.</li>
+<li>the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments</li>
+<li>This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.</li>
+</ul>
+
+
+<h2>Results</h2>
+
+<h3>Data Prep</h3>
+
+<ul>
+<li>The data were prepared as spatial files</li>
+</ul>
+
+
+<p><img src="/images/aggregation-of-sa2s.png" alt="alttext" /></p>
+
+<h3>Assess proposed split in Belconnen</h3>
+
+<ul>
+<li>the proposed split in belconnen looks good</li>
+<li>This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score</li>
+<li>Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham</li>
+<li>Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence</li>
+</ul>
+
+
+<p><img src="/images/belco-split.png" alt="alttext" /></p>
+
+<h3>Assess the outliers</h3>
+
+<ul>
+<li>this can be done by identifying their component CCD SEIFA within new groups</li>
+<li>the seifa of CCD in outliers are compared to the others within their new groups</li>
+</ul>
+
+
+<p><img src="/images/seifa-by-newgroups1.png" alt="alttext" /></p>
+
+<ul>
+<li>zoom in on croweded areas</li>
+</ul>
+
+
+<p><img src="/images/seifa-by-newgroups1-2.png" alt="alttext" /></p>
+
+<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
+
+
+<!-- Tue Feb 18 22:03:04 2014 -->
+
+
+<TABLE border=1>
+<TR> <TH>  </TH> <TH> sa2_name.x </TH> <TH> new_sa2_group </TH> <TH> notes </TH>  </TR>
+  <TR> <TD align="right"> 12 </TD> <TD> Bruce </TD> <TD> Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 14 </TD> <TD> Campbell </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 20 </TD> <TD> Civic </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 31 </TD> <TD> Fadden </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 32 </TD> <TD> Farrer </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
+  <TR> <TD align="right"> 37 </TD> <TD> Forrest </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 60 </TD> <TD> Isaacs </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
+  <TR> <TD align="right"> 64 </TD> <TD> Kingston - Barton </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 71 </TD> <TD> Macarthur </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 73 </TD> <TD> Macquarie </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 87 </TD> <TD> O'Malley </TD> <TD> Chifley/ Lyons (ACT)/ O'Malley/ Phillip </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 89 </TD> <TD> Page </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 98 </TD> <TD> Scullin </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
+   </TABLE>
+
+
+<h3>Investigating areas: eg the Kingston - Barton area</h3>
+
+<ul>
+<li>we can zoom in on some of these areas</li>
+</ul>
+
+
+<p><img src="/images/kingston-barton.png" alt="alttext" /></p>
+
+<h2>Conclusions</h2>
+
+<p>Basically, the problem comes from public housing policies in Canberra which distorts the effect of the housing market and land values in segregating rich from poor. Essentially, there are highly advantaged suburbs with pockets of disadvantaged public housing.</p>
+
+<p>Other 'problematic' features re this are:</p>
+
+<ul>
+<li>proximity to ornamental lakes</li>
+<li>proximity to urban green space</li>
+<li>proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement -- but different to 'distance from urban centre'</li>
+<li>elevation, especially with a view.</li>
+</ul>
+
+
+<p>Potentially the issue is going to be that this can't be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/aggregation-of-statistical-local-areas/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Tue Feb 18 00:00:00 +1100 2014">18 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
     </h1>
     <div class="entry-content full-content">
@@ -91,374 +599,6 @@
     <p class="by-line">
       <span class="date full-date">
         <abbr class="published" title="Wed Feb 12 00:00:00 +1100 2014">12 Feb 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>Yesterday I had the opportunity to review the Tree based modelling methods we are implementing in a study I'm working on at the moment.
-I based the discussion on <a href="http://www.tandfonline.com/doi/abs/10.1080/00330124.2012.724347">a paper from 2012</a>, along with <a href="/pdfs/TreeModelNotes.pdf">some notes I have made related to the use of these methods in our context</a>.
-I had an hour and a half with a couple of senior statisticians and a bunch of sociologists at the study group yesterday.</p>
-
-<h4>My main question for the group was:</h4>
-
-<ul>
-<li>What do you think of the proposition that these models are suitable for "studies that test hypotheses generated from multiple theories"?</li>
-</ul>
-
-
-<p>The statisticians where underwhelmed by the Cutts study, but thought the stats method was "neat" and one had not heard of tree models before (!).</p>
-
-<h4>Key outcomes of that session were:</h4>
-
-<ul>
-<li><p>First stage PCA</p>
-
-<ul>
-<li>Q: did they need to do the PCA first stage to either a) reduce the the large number of potentially collinear variables or b) to control for measurement error?</li>
-<li>A: No they didn't need the PCA.  The large number, collinearity and measurement efficacy are dealt with by the tree based methods (ie cross-validation on steroids, grouping primary and surrogate splits, etc).  Also the trees have an advantage with the large number of predictors in that they are non-parametric and able to automatically detect interactions whereas PCA is parametric and typically assumes linearity. (Note that I saw Steve afterward and he is still not convinced.  Maybe he will respond to this with some description of the reason why not?)</li>
-</ul>
-</li>
-<li><p>Rescaling the variables</p>
-
-<ul>
-<li>Q: Did they need to centre each variable on the grand sample mean so that the relative weight of each variable was even?</li>
-<li>A: No the tree models are not effected by this, and it reduced the interpret-ability of the decision tree graphic.  The PCA is effected, however, and maybe that is why they did it.</li>
-</ul>
-</li>
-<li><p>Multiple working hypotheses</p>
-
-<ul>
-<li>Q: What do you think of the Cutts et al proposition that these models are suitable for "studies that test hypotheses generated from multiple theories"?</li>
-<li>A: It is a promising approach.  Not clear from this study if it is successful but the proposition is plausible.  It has more of a chance than the General Linear Model approach which cannot (this point was made categorically by one of the statisticians).  It will be important to be very clear about what exactly each of the "Theories" are predicting, so that the explanatory power attributable to those variables from one "theory" can be compared with that of the other theories.  The ability to uncover complex interactions is very attractive (extrovert/introvert personality type interacting with group demographics etc) but it also increases the potential for spurious results (and 'chasing the noise') ergo the need to base inferences on what the theories predict, not just on what the data reveal.</li>
-</ul>
-</li>
-<li><p>In general we thought that authors had overdone the stats.  It showed what 'could' be done with trees and forests, but possibly not what 'should' be done.</p></li>
-<li><p>Is the A3 variable really missing from ctree output but dominant in the randomForest in Figure3?</p>
-
-<ul>
-<li>when another group I'm in reviewed it last year it was noted as odd that fig3 has A3 most important in randomforest but does not appear in ctree. At the time I thought this might be due to the cross validation like in the rpart or tree package, but it turns out that ctree does not do that....</li>
-<li>Mislabelling is a possibility as these graphics appear to be edited from the default produced by the 'party' package.</li>
-<li>However, it also reasonable that these results could be correct. ctree (and rpart, tree, etc.) use greedy algorithms, meaning that the best local split is used even if this is suboptimal globally.</li>
-<li>Basically there are algorithmic reasons that this might be a true difference between ctree and randomforest.  It might just have been the way the cookie crumbled for the ctree's best local split which may not have survived through the randomForest's  thousands of iterations.</li>
-<li>But on page 569 they do say "total knowledge is lowest among those whod do not think that they are empowered and are unaware of information sources" which implies to me that the top or left-most node might be mis-labelled I3 when it is actually A3.</li>
-<li>this would give the appropriate left most box plot (ie I3 &lt;= -0.22 &amp; A3 &lt;= -0.64 gives lowest total knowledge??)</li>
-<li>at the group yesterday people also generally suspected mislabelling, given the dominance of A3 in randomforest.</li>
-</ul>
-</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-      <a href="/categories/overview" title="overview" rel="category tag">overview</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Jan 23 00:00:00 +1100 2014">23 Jan 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Aim</h1>
-
-<ul>
-<li>The <a href="https://github.com/ropensci/EML">EML R package</a> uses the Ecological Metadata Language (EML) approach that allows archiving of very heterogeneous data without having to standardize everything into a narrow and pre-defined syntax.</li>
-<li>XML files in specificed schemas involve strict criteria and are thus best generated by software.</li>
-<li>Morpho is an application that provides another GUI based method of generating EML but is a rather tedious tool for generating EML files. Unfortunately, without the ability to script inputs or automatically detect existing data structures, we are forced through the rather arduous process of adding all metadata annotation each time.</li>
-<li>The aim of this experiment is to use the EML package to create some advanced metadata quickly and then finish this off with Morpho, using <a href="http://en.wikipedia.org/wiki/Boilerplate_code">"boilerplate code"</a> wherever possible.</li>
-<li>this builds on my previous post <a href="http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry">http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry</a></li>
-</ul>
-
-
-<h1>Background</h1>
-
-<ul>
-<li>I am basically very lazy when it comes to entering metadata and when I use the Morpho package for metadata data entry I get frustrated with having to step through ever SINGLE variable and use the drop down menus etc to describe them as essentially "number" or "text"</li>
-<li>A big reason I like Morpho is because Metacat is a great data portal and Kepler is a promising scientific workflow tool, and all three are produced by the same group so it would be great to get them working together...</li>
-<li>Morpho and Metacat are open source software designed to host all kinds of ecological data. More information about it can be found <a href="http://knb.ecoinformatics.org/index.jsp">here</a></li>
-<li>More info about the Metacat Data Portal System is <a href="https://knb.ecoinformatics.org/knb/docs/">here</a>.</li>
-<li>For technical reasons, I'm running an older version of the Morpho software because I'm working with an older version of the  Metacat portal software and so are also constrained to running the older Morpho version too (but will be upgrading soon).</li>
-<li>You might want to look at the background of the Ecological Metadata Language (EML) standard.  I like this page <a href="http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html">http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html</a> along with the references he cites at the bottom.</li>
-</ul>
-
-
-<h1>Material</h1>
-
-<ul>
-<li><p>To tie this experiment back to something that is actually useful for a scientist, I will use the field-based example data on the effects on mulgara of removing spinifex, from:</p>
-
-<p>  McCarthy, M. a., &amp; Masters, P. (2005). Profiting from prior
-  information in Bayesian analyses of ecological data. Journal of
-  Applied Ecology, 42(6),
-  1012–1019. doi:10.1111/j.1365-2664.2005.01101.x</p></li>
-<li><p>Brief description is:</p>
-
-<p>  an experimental manipulation of habitat was conducted by Masters,
-  Dickman &amp; Crowther (2003) in which vegetation cover of a site in
-  arid inland Australia was reduced and the response of the mammal
-  fauna monitored.</p></li>
-<li><p>you can find the data in the download file from <a href="http://www.nceas.ucsb.edu/~mccarthy/research.html">the "Code for analysing the mulgara experiment" from here</a></p></li>
-<li>I first checked that these data aren;t already on <a href="https://knb.ecoinformatics.org/m/">the KNB repository</a></li>
-<li>I searched for Marsupial, Australia, Mulgara and etc, finding no hits.</li>
-<li>We will assume that these data are not already published there.</li>
-</ul>
-
-
-<h1>Methods</h1>
-
-<ul>
-<li>Step one install the github version of EML and <a href="http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/#sec-1-9">a function I wrote for this a while back</a></li>
-<li>Note that I made a few changes since that post <a href="https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r">https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r</a></li>
-</ul>
-
-
-<h4>R Code:</h4>
-
-<pre><code># func
-library("devtools")
-install_github("EML", "ropensci")       
-library("EML")
-install_github("disentangle", "ivanhanigan")       
-library("disentangle")
-
-# load                                                                    
-datatext &lt;- 'Treat, Before, After1, After2
-0,  2.833213344,    1.609437912,    2.48490665
-0,  1.791759469,    2.197224577,    2.079441542
-0,  3.044522438,    2.708050201,    3.135494216
-0,  2.772588722,    1.791759469,    2.197224577
-0,  1.098612289,    1.609437912,    2.63905733
-1,  2.944438979,    0.693147181,    1.791759469
-1,  2.564949357,    0.693147181,    1.791759469
-1,  2.564949357,    1.609437912,    1.609437912
-1,  0.693147181,    1.098612289,    1.098612289
-1,  1.609437912,    0,      1.098612289'
-analyte &lt;- read.csv(textConnection(datatext))
-
-# check
-analyte
-
-# do
-## from a work dir with a subdir for data
-write.csv(analyte, "data/mulgara.csv", row.names = F)
-reml_boilerplate(
-  data_set = analyte
-  ,
-  created_by = "Ivan Hanigan &lt;ivanhanigan@gmail.com&gt;"
-  ,
-  data_dir = "data"
-  ,
-  titl = "mulgara"
-  ,
-  desc = "Experimental data: effect of cover reduction on mulgara Dasycercus cristicauda"
-  )
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>Now open morpho and under file > import browse to this  data directory and import.</li>
-<li>Got several warnings, about unable to display data, and an older version that could be updated</li>
-</ul>
-
-
-<h1>Results</h1>
-
-<ul>
-<li>Result does not display  in morpho</li>
-</ul>
-
-
-<p><img src="/images/mulgara-morpho-import.png" alt="mulgara-morpho-import.png" /></p>
-
-<h1>Discussion</h1>
-
-<ul>
-<li>There is something different about the way the EML R package writes the data and what Morpho 1.8 is expecting.</li>
-</ul>
-
-
-<h1>Conclusions</h1>
-
-<ul>
-<li>Further research is required.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Jan 21 00:00:00 +1100 2014">21 Jan 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/github-gh-pages-and-disqus-commentsdatasharing/" title="Github, gh-pages and disqus comments" rel="bookmark">Github, gh-pages and disqus comments</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>A while ago I posted about <a href="http://ivanhanigan.github.io/2013/11/sharing-and-extending-research-protocols/">sharing-and-extending-research-protocols</a>.</p>
-
-<p>I've started a new experiment for hosting a discussion around issues, suggesting new issues, agreeing on solutions, toward an agreement on methods that could become a protocol:
-<a href="http://ivanhanigan.github.com/datasharing">http://ivanhanigan.github.com/datasharing</a>.</p>
-
-<p>I forked the material from the original author Jeff Leek <a href="https://github.com/jtleek/datasharing/network">https://github.com/jtleek/datasharing/network</a>.</p>
-
-<p>The goal of my experiment is something along the lines of the Prometheus Wiki <a href="http://prometheuswiki.publish.csiro.au">http://prometheuswiki.publish.csiro.au</a>​ which is a site for sharing research protocols. That idea is to give people a place to post research protocols since everyone develops them and then mentions them in papers but they rarely make it online in a usable format.</p>
-
-<p>But I was talking with an user of that and he complained it lacked a kind of "dynamic collaboration with a front-end markup system in place that was integrated with a good website-type backend".  This is what the github site might be able to do.</p>
-
-<p>I discussed with a colleague and he seemed to be receptive to experimenting with this, so long as it was not more cumbersome than:</p>
-
-<ul>
-<li>shooting off an email with a list of points or</li>
-<li>catching me in the tea room and saying "by the way - missing values should never be -9999"</li>
-<li>and then these being copied into a master document we all share.</li>
-</ul>
-
-
-<p>The system I'm using in the proposed experiment uses the hi-tech tools gh-pages with disqus comments.  This let's:</p>
-
-<ul>
-<li>casual users chip in their two cents worth quickly via the  comments,</li>
-<li>users can vote up or vote down other peoples comments,</li>
-<li>track the discussion via their emails (if they choose that option),</li>
-<li>but those wanting  deeper involvement can fork and edit the pages and then submit pull  requests to the lead author.</li>
-<li>Github's wiki and issues tracking functionality also could be used for serious development.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/github-gh-pages-and-disqus-commentsdatasharing/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Jan 14 00:00:00 +1100 2014">14 Jan 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>A colleague sent me the cwt_data_subm_template_2013.xls today</li>
-<li>You can download a copy here <a href="coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls">coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls</a></li>
-<li>LTER is The U.S. Long-Term Ecological Research (LTER) network</li>
-<li>I made the following notes, this is not intended to be a nasty critique</li>
-<li>The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches</li>
-</ul>
-
-
-<h4>Critique</h4>
-
-<ul>
-<li>opened first on windows, saw comments on cells with instructions</li>
-<li>opened next on linux with libreOffice and comments are gone</li>
-<li>opened at the last tab (split in two for no reason?)</li>
-<li>noticed recommended name "GCE site" = Site, otherwise "permanent plot" =      Plot?</li>
-<li><a href="http://nsmn1.uh.edu/steve/research/gce/gce.htm">GCE = Georgia Coastal Ecosystems LTER program</a></li>
-<li>flip to first tab, point 4 suggests there is some export functionality I cannot see (a VBA script?)</li>
-<li>cell 11 a    NOTE: When submitting updated metadata or re-using templates please highlight fields with modified contents in yellow</li>
-<li>and use glitter pen???</li>
-<li>personnell tab OK</li>
-<li>instrumentation, variable measured is free text. ok but for eg "max temp", "temperature maxima", "maximum temperature (c)" "maximum temperature in 24 hours after 9am local time in degrees" etc</li>
-<li>too wide, last column was off my wide screen! noticed wasted real estate in column A</li>
-<li>tabular data "–  Paste or enter your data values into the 'Values' section (white cells), starting with the indicated cell"</li>
-<li>this is an invitation for clerical error! Too many "copy-and-paste" actions will inevtably introduce errors</li>
-<li>I do like the extra metadata Column Name:
--- Description:
--- Units:
--- Data type:
--- Variable type:
--- Number type:
--- Precision:
--- Code values:
--- Calculations:
--- QC: Minimum Valid:
--- QC: Minimum Expected:
--- QC: Maximum Expected:
--- QC: Maximum Valid:
--- QC: Custom:
-–  Fill in missing values in the table with NaN (not a number), including text fields, and do not skip columns</li>
-<li>but what about missing values imbued with other meanings (NA = not observed, censored etc)?</li>
-<li>ask users to format digit rounding in Excel?? oh no</li>
-<li>old excel users may still be restricted to 65,536 rows by 256 columns.</li>
-<li>non tabular sheet is ok</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/cwt-lter-data-submission-template-critique/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Tue Jan 07 00:00:00 +1100 2014">07 Jan 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -520,59 +660,61 @@ reml_boilerplate(
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/data documentation">data documentation (25)</a></li>
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (44)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (26)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (42)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                <li><a href="/categories/overview">overview (7)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
-                <li><a href="/categories/overview">overview (7)</a></li>
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
                 
                 <li>
+                  <a href="/2014/06/releasing-my-misc-r-package-disentangle-version-1/" title="releasing-my-misc-r-package-disentangle-version-1" rel="bookmark">releasing-my-misc-r-package-disentangle-version-1</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/05/using-additional-header-rows-for-metadata/" title="using-additional-header-rows-for-metadata" rel="bookmark">using-additional-header-rows-for-metadata</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/05/reproducible-research-reports-using-emacs-orgmode-export-to-knitr/" title="reproducible-research-reports-using-emacs-orgmode-export-to-knitr" rel="bookmark">reproducible-research-reports-using-emacs-orgmode-export-to-knitr</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
+                </li>
+                
+                <li>
                   <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/04/workaround-for-installing-morpho-on-a-windows-network/" title="workaround-for-installing-morpho-on-a-windows-network" rel="bookmark">workaround-for-installing-morpho-on-a-windows-network</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
                 </li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
-                <li><a href="/tag/R-eml">R-eml (3)</a></li>
+                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
                 <li><a href="/tag/morpho">morpho (7)</a></li>
                 
-                <li><a href="/tag/bugs">bugs (1)</a></li>
+                <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -583,11 +725,11 @@ reml_boilerplate(
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
-          <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
+          <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

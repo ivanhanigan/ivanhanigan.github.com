@@ -54,6 +54,1046 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/simple-example-using-nmmaps/" title="simple-example-using-nmmaps" rel="bookmark">simple-example-using-nmmaps</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I will use the NMMAPSlite datasets for a simple example of what I am trying to do.</p>
+
+<!-- begin_src R :session *R* :tangle NMMAPS-example/NMMAPS-example-code.r :exports none :eval no -->
+
+
+<h4>Code: get nmmaps data</h4>
+
+<pre><code># func
+if(!require(NMMAPSlite)) install.packages('NMMAPSlite');require(NMMAPSlite)
+require(mgcv)
+require(splines)
+
+######################################################
+# load  
+setwd('data')
+initDB('data/NMMAPS') # this requires that we connect to the web,
+                      # so lets get local copies
+setwd('..')
+cities &lt;- getMetaData('cities')
+head(cities)
+citieslist &lt;- cities$cityname
+# write out a few cities for access later
+for(city_i in citieslist[sample(1:nrow(cities), 9)])
+{
+ city &lt;- subset(cities, cityname == city_i)$city
+ data &lt;- readCity(city)
+ write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
+ row.names = F, sep = ',')
+}
+# these are all tiny, go some big ones
+for(city_i in c('New York', 'Los Angeles', 'Madison', 'Boston'))
+{
+ city &lt;- subset(cities, cityname == city_i)$city
+ data &lt;- readCity(city)
+ write.table(data, file.path('data', paste(city_i, '.csv',sep='')),
+ row.names = F, sep = ',')
+}
+
+######################################################
+# now we can use these locally
+dir("data")
+city &lt;- "Chicago"
+data &lt;- read.csv(sprintf("data/%s.csv", city), header=T)
+str(data)
+data$yy &lt;- substr(data$date,1,4)
+data$date &lt;- as.Date(data$date)
+######################################################
+# check
+par(mfrow=c(2,1), mar=c(4,4,3,1))
+with(subset(data[,c(1,15:25)], agecat == '75p'),
+  plot(date, tmax)
+ )
+with(subset(data[,c(1,4,15:25)], agecat == '75p'),
+        plot(date, cvd, type ='l', col = 'grey')
+        )
+with(subset(data[,c(1,4,15:25)], agecat == '75p'),
+        lines(lowess(date, cvd, f = 0.015))
+        )
+# I am worried about that outlier
+data$date[which(data$cvd &gt; 100)]
+# [1] "1995-07-15" "1995-07-16"
+
+######################################################
+# do standard NMMAPS timeseries poisson GAM model
+numYears&lt;-length(names(table(data$yy)))
+df &lt;- subset(data, agecat == '75p')
+df$time &lt;- as.numeric(df$date)
+fit &lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = poisson)
+# plot of response functions
+par(mfrow=c(2,2))
+plot(fit)
+dev.off()
+
+######################################################
+# some diagnostics
+summary(fit)
+# note the R-sq.(adj) =   0.21
+gam.check(fit)
+# note the lack of a leverage plot.  for that we need glm
+
+######################################################
+# do same model as glm
+fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
+# plot responses
+par(mfrow=c(2,2))
+termplot(fit2, se =T)
+dev.off()
+
+# plot prediction
+df$predictedCvd &lt;- predict(fit2, df, 'response')
+# baseline is given by the intercept
+fit3 &lt;- glm(cvd ~ 1, data = df, family = poisson)
+df$baseline &lt;-  predict(fit3, df, 'response')
+with(subset(df, date&gt;=as.Date('1995-01-01') &amp; date &lt;= as.Date('1995-07-31')),
+ plot(date, cvd, type ='l', col = 'grey')
+        )
+with(subset(df, date&gt;=as.Date('1995-01-01') &amp; date &lt;= as.Date('1995-07-31')),
+        lines(date,predictedCvd)
+        )
+with(subset(df, date&gt;=as.Date('1995-01-01') &amp; date &lt;= as.Date('1995-07-31')),
+ lines(date,baseline)
+        )
+######################################################
+# some diagnostics
+# need to load a function to calculate poisson adjusted R squared
+# original S code from
+# The formula for pseudo-R^2 is taken from G. S. Maddalla,
+# Limited-dependent and Qualitative Variables in Econometrics, Cambridge:Cambridge Univ. Press, 1983. page 40, equation 2.50.
+RsquaredGlm &lt;- function(o) {
+ n &lt;- length(o$residuals)
+ ll &lt;- logLik(o)[1]
+ ll_0 &lt;- logLik(update(o,~1))[1]
+ R2 &lt;- (1 - exp(((-2*ll) - (-2*ll_0))/n))/(1 - exp( - (-2*ll_0)/n))
+ names(R2) &lt;- 'pseudo.Rsquared'
+ R2
+ }
+RsquaredGlm(fit2)
+# 0.51
+# the difference is presumably due to the arguments about how to account for unexplainable variance in the poisson distribution?
+
+# significance of spline terms
+drop1(fit2, test='Chisq')
+# also note AIC. best model includes all of these terms
+# BIC can be computed instead (but still labelled AIC) using
+drop1(fit2, test='Chisq', k = log(nrow(data)))
+
+# diagnostic plots
+par(mfrow=c(2,2))
+plot(fit2)
+dev.off()
+# note high leverage plus residuals points are labelled
+# leverage doesn't seem to be too high though which is good
+# NB the numbers refer to the row.names attribute which still refer to the original dataset, not this subset
+df[row.names(df) %in% c(9354,9356),]$date
+# as suspected [1] "1995-07-15" "1995-07-16"
+
+######################################################
+# so lets re run without these obs
+df2 &lt;- df[!row.names(df) %in% c(9354,9356),]
+# to avoid duplicating code just re run fit2, replacing data=df with df2
+# tmax still significant but not so extreme
+# check diagnostic plots again
+par(mfrow=c(2,2))
+plot(fit2)
+dev.off()
+# looks like a well behaved model now.
+
+# if we were still worried about any high leverage values we could identify these with
+df3 &lt;- na.omit(df2[,c('cvd','pm10tmean','tmax','dptp','time')])
+df3$hatvalue &lt;- hatvalues(fit2)
+df3$res &lt;- residuals(fit2, 'pearson')
+with(df3, plot(hatvalue, res))
+# this is the same as the fourth default glm diagnostic plot, which they label x-axis as leverage
+summary(df3$hatvalue)
+# gives us an idea of the distribution of hat values
+# decide on a threshold and look at it
+hatThreshold &lt;- 0.1
+with(subset(df3, hatvalue &gt; hatThreshold), points(hatvalue, res, col = 'red', pch = 16))
+abline(0,0)
+segments(hatThreshold,-2,hatThreshold,15)
+dev.off()
+
+fit3 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = subset(df3, hatvalue &lt; hatThreshold), family = poisson)
+par(mfrow=c(2,2))
+termplot(fit3, se = T)
+# same same
+plot(fit3)
+# no better
+
+# or we could go nuts with a whole number of ways of estimating influence
+# check all influential observations
+infl &lt;- influence.measures(fit2)
+# which observations 'are' influential
+inflk &lt;- which(apply(infl$is.inf, 1, any))
+length(inflk)
+
+
+######################################################
+# now what about serial autocorrelation in the residuals?
+
+par(mfrow = c(2,1))
+with(df3, acf(res))
+with(df3, pacf(res))
+dev.off()
+
+
+
+######################################################
+# just check for overdispersion
+fit &lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = quasipoisson)
+summary(fit)
+# note the Scale est. = 1.1627
+# alternatively check the glm
+fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = quasipoisson)
+summary(fit2)
+# (Dispersion parameter for quasipoisson family taken to be 1.222640)
+# this is probably near enough to support a standard poisson model...
+
+# if we have overdispersion we can use QAIC (A quasi- mode does not have a likelihood and so does not have an AIC,  by definition)
+# we can use the poisson model and calculate the overdispersion
+fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
+1- pchisq(deviance(fit2), df.residual(fit2))
+
+# QAIC, c is the variance inflation factor, the ratio of the residual deviance of the global (most complicated) model to the residual degrees of freedom
+c=deviance(fit2)/df.residual(fit2)
+QAIC.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1)
+QAIC.1
+
+# Actually lets use QAICc which is more conservative about parameters,
+QAICc.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1) + 2*(length(coef(fit2)) + 1)*(length(coef(fit2)) + 1 + 1)/(nrow(na.omit(df[,c('cvd','pm10tmean','tmax','dptp','time')]))- (length(coef(fit2))+1)-1)
+QAICc.1
+
+
+######################################################
+# the following is old work, some may be interesting
+# such as the use of sinusoidal wave instead of smooth function of time
+
+
+# # sine wave
+# timevar &lt;- as.data.frame(names(table(df$date)))
+# index &lt;- 1:length(names(table(df$date)))
+# timevar$time2 &lt;- index / (length(index) / (length(index)/365.25))
+# names(timevar) &lt;- c('date','timevar')
+# timevar$date &lt;- as.Date(timevar$date)
+# df &lt;- merge(df,timevar)
+
+# fit &lt;- gam(cvd ~ s(tmax) + s(dptp) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
+# summary(fit)
+# par(mfrow=c(3,2))
+# plot(fit, all.terms = T)
+# dev.off()
+
+# # now just explore the season fit
+# fit &lt;- gam(cvd ~ sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
+# yhat &lt;- predict(fit)
+# head(yhat)
+
+# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(15,55)))
+# lines(df[,'date'],exp(yhat),col='red')
+
+
+# # drop1(fit, test= 'Chisq')
+
+# # drop1 only works in glm?
+# # fit with weather variables, use degrees of freedom estimated by gam
+# fit &lt;- glm(cvd ~ ns(tmax,8) + ns(dptp,2) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
+# drop1(fit, test= 'Chisq')
+# # use plot.glm for diagnostics
+# par(mfrow=c(2,2))
+# plot(fit)
+# par(mfrow=c(3,2))
+# termplot(fit, se=T)
+# dev.off()
+
+# # cyclic spline, overlay on prior sinusoidal
+# with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(0,55)))
+# lines(df[,'date'],exp(yhat),col='red')
+
+# df$daynum &lt;- as.numeric(format(df$date, "%j"))
+# df[360:370,c('date','daynum')]
+# fit &lt;- gam(cvd ~ s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
+# yhat2 &lt;- predict(fit)
+# head(yhat2)
+
+# lines(df[,'date'],exp(yhat2),col='blue')
+
+
+# par(mfrow=c(1,2))
+# plot(fit)
+
+
+# # fit weather with season
+# fit &lt;- gam(cvd ~ s(tmax) + s(dptp) +
+  # s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
+# par(mfrow=c(2,2))
+# plot(fit)
+
+# summary(fit)
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/simple-example-using-nmmaps/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Oct 10 00:00:00 +1100 2013">10 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/reviewing-lessons/" title="reviewing-lessons" rel="bookmark">reviewing-lessons</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h4>Introduction</h4>
+
+<p>This post is an attempt to put together a standard framework for reviewing lessons.  I've been to numerous workshops, master classes, tutorials and lectures and always take ad hoc notes that I generally re-write and re-organise afterwards.  I hope to develop a clearer methodology for reviewing what I learnt in each lesson.</p>
+
+<h4>Context</h4>
+
+<ul>
+<li><p>When:
+Either just the date and time or include more context like the broader event such as a conference, season, public holidays.</p></li>
+<li><p>Who:
+The presenter will give a bio at the start so make notes, especially to identify what disciplinary perspective they come from.</p></li>
+<li><p>Where:
+Includes the address, city, lecture theatre.  These are cues for memory.</p></li>
+<li><p>Why:
+Both why is the presenter here talking and also why am I hear listening.  It is important to critically reflect on what I want to get out of this lesson.</p></li>
+<li><p>What:
+What is this lesson all about?  This might start with a synopsis overview and will probably move on to a sequence of notes as the presenter's narrative unfolds, and my thoughts on the topic evolve.</p></li>
+</ul>
+
+
+<h4>Three Stages: Thesis, Antithesis, Synthesis</h4>
+
+<p>A guiding principle I use for writing the 'What' section is the three stages: thesis, antithesis, synthesis.  I am not a philosopher so I don't know the proper use of these concepts in that discipline, but for me they are useful to structure my notes as I go through the process of a lesson.  Here is how I think of these stages:</p>
+
+<ul>
+<li><p>Thesis:
+This is where I might pick out the key topics that are being presented, and write down my prior knowledge and preconceptions about the topic.</p></li>
+<li><p>Antithesis:
+What's the main message(s) of the presenter?  What are their priorities?  What secondary (surrogate) topics emerge around the main points?  If I bring questions to the lesson are they answered by the presenter?  If not why?</p></li>
+<li><p>Synthesis:
+My new understanding of the topic.</p></li>
+</ul>
+
+
+<h4>Other tools</h4>
+
+<p>Other things I use are:</p>
+
+<ul>
+<li>Mind maps: a central topic with a spiderweb of links extending out in a circle.</li>
+<li>TODO</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/reviewing-lessons/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sat Oct 05 00:00:00 +1000 2013">05 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/" title="spatially-structured-timeseries-vs-spatiotemporal-modelling" rel="bookmark">spatially-structured-timeseries-vs-spatiotemporal-modelling</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p><head>
+<title>Spatiotemporal Regression Modelling</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="Spatiotemporal Regression Modelling"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-09-26T10:18+1000"/>
+<meta name="author" content="Ivan Hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
+
+
+
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+
+
+<p></head>
+<body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">Spatiotemporal Regression Modelling</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Spatially Structured Timeseries Vs Spatiotemporal Modelling</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Spatially Structured Time Series</a></li>
+<li><a href="#sec-1-2">1.2 Spatiotemporal modelling</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> Spatially Structured Timeseries Vs Spatiotemporal Modelling</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>In my last post about <a href="http://ivanhanigan.github.io/2013/09/reflections-bob-haining-update">spatiotemporal regression modelling</a> I mentioned that I am mostly interested in "spatially structured time-series models" rather than spatial models at a single point in time. By this I mean that we have several neighbouring areal units observed over a period of time. In this framework the general methods of time series modelling are used to control for temporal autocorrelation. However this makes the methods of spatial error and spatial lag models tricky because the spatial autocorrelation needs to be assessed at many points in time.
+</p>
+<p>
+I want to expand more on this topic because I want to be clear that the organisation of the material I am aiming to bring to this notebook topic is not aimed at purely spatial regression models <a href="https://geodacenter.asu.edu/spatial-lag-and">(there is a lot of material and tools out there already for that)</a>.  I am trying with these notes to document my learning steps toward integrating spatial methods with time-series methods to allow me to practice (and understand) spatiotemporal regression modelling.
+</p>
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Spatially Structured Time Series</h4>
+<div class="outline-text-4" id="text-1-1">
+
+<p>In <a href="http://www.pnas.org/content/early/2012/08/08/1112965109.full.pdf+html">my most successful previous attempt to conduct a spatiotemporal analysis of Suicide and Droughts</a> I built on my knowledge of time-series regression models from single-city air pollution studies where the whole city is the unit of analysis and the temporal variation is modelled with controlling techniques for temporal autocorrelation.  These techniques are also valid for multi-city studies because it is pretty safe to assume the cities are all independent at each time point.  I structured my study by Eleven large zones (Census Statistical Divisions) of NSW and assumed each of these would vary over time independent of each other, and I fitted a zone-specific time trend and cycle. This is what I call "spatially structured time-series" modelling.  
+</p>
+<p>
+I justify using this model in this case because aggregating up to these very large regions will diminish the possibility of spatial autocorrelation and because Droughts vary over large spatial zones too, we will not suffer from exposure misclassificaiton bias.
+</p>
+<p>
+So this model is a simple time-series regression (with trend and seasonality) and an additional term for spatial Zone.
+</p>
+
+
+\begin{eqnarray*}
+        log({\color{red} O_{ijk}})  & = & s({\color{red}ExposureVariable})  + {\color{blue} OtherExplanators}  \\
+        & &   + AgeGroup_{i} + Sex_{j} \\
+        & &   + {\color{blue} SpatialZone_{k}}  \\
+        & &  + sin(Time \times 2 \times \pi) + cos(Time \times 2 \times \pi) \\
+        & &  + Trend \\
+        & &   + offset({\color{blue} log(Pop_{ijk})})\\
+\end{eqnarray*}
+
+<p>
+Where:<br/>
+</p>
+<ul>
+<li>\({\color{red}O_{ijk}}\) = Outcome (counts) by Age\(_{i}\), Sex\(_{j}\) and SpatialZone\(_{k}\) <br/>
+</li>
+<li>{\color{red}ExposureVariable} = Data with {\color{red}Restrictive Intellectual Property~(IP)} <br/>
+</li>
+<li>{\color{blue}OtherExplanators} = Other {\color{blue}Less Restricted}  Explanatory variables <br/>
+</li>
+<li>s( ) = penalized regression splines <br/>
+</li>
+<li>\({\color{blue} SpatialZone_{k}}\)  = {\color{blue} Less Restricted} data representing the \(SpatialZone_{k}\)  <br/>
+</li>
+<li>Trend = Longterm smooth trend(s) <br/>
+</li>
+<li>\({\color{blue}Pop_{ijk}}\) = interpolated Census populations, by time in each group<br/>
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> <span class="todo TODO">TODO</span> Spatiotemporal modelling</h4>
+<div class="outline-text-4" id="text-1-2">
+
+<p>In contrast to the above model for modelling exposures that have fine resolution spatial variation (such as air pollution) the exposure misclassification effect of aggregating up to very large spatial zones will conteract the benefits of avoiding spatially autocorrelated errors and this might be unacceptable for certain research questions.  Therefore it is important to move toward a spatiotemporal regression model that replaces the \(SpatialZone_{k}\) term with a more spatial error or spatial lag approach.
+</p></div>
+</div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Sep 26 00:00:00 +1000 2013">26 Sep 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/09/reflections-bob-haining-update/" title="reflections-bob-haining-update" rel="bookmark">reflections-bob-haining-update</a>
+    </h1>
+    <div class="entry-content full-content">
+      <!-- <?xml version="1.0" encoding="utf-8"?> -->
+
+
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" -->
+
+
+<!--                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> -->
+
+
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> -->
+
+
+<p><head></p>
+
+<!-- <title>spatiotemporal </title> -->
+
+
+<p><meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="spatiotemporal "/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-09-25T14:46+1000"/>
+<meta name="author" content="Ivan Hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
+
+
+
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+
+
+<p></head>
+<body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<!-- <h1 class="title">spatiotemporal </h1> -->
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Update on reflections from Bob Haining's Lecture</a>
+<ul>
+<li><a href="#sec-1-1">1.1 CART Tree analysis that addresses the (potential)spatial autocorrelation problem</a></li>
+<li><a href="#sec-1-2">1.2 Modeling with control for spatial autocorrelation</a></li>
+<li><a href="#sec-1-3">1.3 The Spatial Error Model</a></li>
+<li><a href="#sec-1-4">1.4 The Spatial Lag Model</a></li>
+<li><a href="#sec-1-5">1.5 Spatially Lagged Independent Variable(s)</a></li>
+<li><a href="#sec-1-6">1.6 Discussion</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> Update on reflections from Bob Haining's Lecture</h3>
+<div class="outline-text-3" id="text-1">
+
+<p><a href="http://ivanhanigan.github.io/2013/04/reflections-bob-haining/">Earlier this year</a> Prof Bob Haining from the Geography Department Cambridge visited and gave us a great lecture on spatial regression.
+</p>
+<p>
+This Tuesday at the <a href="http://gis-forum.github.io">GIS Forum</a> we were lucky to be joined by statistician Phil Kokic from CSIRO who had heard we'd be discussing spatial autocorrelation (Phil is my PhD supervisor). Here are some quick notes I made:
+</p>
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span> CART Tree analysis that addresses the (potential)spatial autocorrelation problem</h4>
+<div class="outline-text-4" id="text-1-1">
+
+<p>We started off the discussion with an assessment of the approach described in this post <a href="http://thebiobucket.blogspot.com.au/2012/03/classification-trees-allowing-for.html">Classification Trees and Spatial Autocorrelation</a>.
+</p>
+<p>
+I've been thinking more and more about decision trees/CART/random forest methods for selecting a subset of relevant variables (and interations) for use in GLM or GAM model construction.  In a perfect world I'd have data on the main predictor I wanted to model and enough data about all the relevant other predictors (especially confounding or modifying variables) to ensure I get a 'well behaved model'. But with all the data around and so many potentially plausible relationships one might choose to include we need a way to narrow down these to just include the most important covariates, confounders and interactions.  CART or some variation on it seems a good way to do this, but is prone to the potential problem of spatially correlated errors too.
+</p>
+<p>
+The idea from that blog post is:
+</p>
+<p>
+"compute the classification tree, calculate residuals and use it for a Mantel-test and Mantel correlograms.
+The Mantel correlograms test differrences in dissimilarities of
+the residuals across several spatial distances and thus enable you to detect lag-distances where possible spatial autocorrelation vanishes.
+&hellip;If encounter autocorrelation&hellip; try to use subsamples of the data avoiding resampling within the lag-distance.."
+</p>
+<p>
+I think the workflow would be to
+</p>
+<ul>
+<li>fit the classification tree (Question: best to use all the data or with a sample like using cross-validation)
+</li>
+<li>get the residuals and visually assess the lagged distances plot provided by the Mantel correlogram.  Decide on a threshold (Question: is there an objective way to do this?).
+</li>
+<li>Sample from the data and select out from this sample only data from pairs with distances greater than the threshold (have to keep one out of each close pair or else we'd only be getting data from the sparsely sampled parts of our study region).
+</li>
+</ul>
+
+
+<p>
+We all agreed this sounded OK, but only avoids the problem of spatial autocorrelation (and loses data).
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> Modeling with control for spatial autocorrelation</h4>
+<div class="outline-text-4" id="text-1-2">
+
+<p>So we all agreed we'd prefer if our model can control for spatial autocorrelation.  I confessed that I'd always found the GeoBUGS tutorial and other tutorials about Bayesian methods for this very difficult and would really like a "Simple" way to make the problem go away.  So first we briefly reviewed Prof Hainings 3 equations again:
+</p>
+<p>
+NOTE: THE FOLLOWING IDEAS WORK BEST FOR AREAL DATA.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-4">
+<h4 id="sec-1-3"><span class="section-number-4">1.3</span> The Spatial Error Model</h4>
+<div class="outline-text-4" id="text-1-3">
+
+
+
+
+\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + \eta_{i}\)
+
+<p>
+Where:
+</p>
+<p>
+\(\eta_{i}\) = Spatially autocorrelated errors.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-4">
+<h4 id="sec-1-4"><span class="section-number-4">1.4</span> The Spatial Lag Model</h4>
+<div class="outline-text-4" id="text-1-4">
+
+
+
+
+\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + \rho(Neighbours Y_{ij}) + e_{i}\)
+
+<p>
+Where:
+</p>
+<p>
+\(\rho_(Neighbours Y_{ij})\) = is an additional explanatory variable which is the value of the dependent variable in neighbouring areas. 
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-4">
+<h4 id="sec-1-5"><span class="section-number-4">1.5</span> Spatially Lagged Independent Variable(s)</h4>
+<div class="outline-text-4" id="text-1-5">
+
+
+
+
+\(Y_{i} = \beta_{0} + \beta_{1} X_{1i} + \beta_{2L} X_{2ij} + e_{i}\)
+
+<p>
+Where:
+</p>
+<p>
+\(\beta_{2L} X_{2ij}\) = is the independent variable X2 that is spatially lagged.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-6" class="outline-4">
+<h4 id="sec-1-6"><span class="section-number-4">1.6</span> Discussion</h4>
+<div class="outline-text-4" id="text-1-6">
+
+<ul>
+<li>Phil agreed with Bob that the spatial error model is the best, spatial lag model is OK and spatially lagged covariates not so great.
+</li>
+<li>For spatial error model fitting Phil suggested looking at R packages spBayes and spTimer.
+</li>
+<li>I pointed out that I am mostly interested in "spatially structured time-series models" rather than spatial models at a single point in time.  By this I mean that we have several neighbouring areal units observed over a period of time.  In this framework the general methods of time series modelling are used to control for temporal autocorrelation.  However this makes the methods of spatial error and spatial lag models tricky because the spatial autocorrelation needs to be assessed at many points in time.
+</li>
+<li>I asked that if spatial lag is OK (and it seems easier to fit into the time-series model framework) how can I check to know if it has done the trick?  If this were purely a spatial model we could check for spatial autocorrelation in the residuals just as they described in the CART blog above, but here we have many maps we could make (one every time point), and our spatial autocorrelation measure would surely vary a lot over time.  SO would a simple way just be to asses the effect on the Standard Error on beta1 (our primary interest) and if it is bigger but still significant we can be reassured that our result isn't affected? Or perhaps we should assess the beta on the lagged variable, for instance is a significant p-value on the lagged Beta an indication that it is capturing the unmeasured spatial associations represented by the neighbourhood variable?  
+</li>
+<li>If it hadn't done the trick Nerida pointed out this might be because the Neighbourhoods are actually not appropriately represented by the first order neighbours and therefore more neighbours could be included, like moving out several concentric circles to wider and wider neighbourhoods
+</li>
+<li>Nasser and Phil pointed out that the lagged variable (the outcome in the neighbours) includes an element of the exposure variables, and said that it would be difficult to 'unpack' what that part of the model meant.
+</li>
+<li>so it looks like there is no simple answer and spatial error model is still preferred.
+</li>
+</ul>
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/09/reflections-bob-haining-update/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Sep 25 00:00:00 +1000 2013">25 Sep 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/09/workflow-flowcharts-update/" title="workflow-flowcharts-update" rel="bookmark">workflow-flowcharts-update</a>
     </h1>
     <div class="entry-content full-content">
@@ -150,217 +1190,6 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/introduction-to-ons-theory-and-practice/" title="introduction-to-ons-theory-and-practice" rel="bookmark">introduction-to-ons-theory-and-practice</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>The reasons why ONS is so appealing to me can be broken into two parts.  The first is about the problems which it solves, the second is about the benefits it might bring.</p>
-
-<h4>The Problems</h4>
-
-<ul>
-<li>Identifying errors (either from miscalculations or from methodological mistakes)</li>
-<li>Uncovering fraud</li>
-</ul>
-
-
-<h4>The Benefits</h4>
-
-<ul>
-<li>Sharing interests and skills</li>
-<li>Quickly finding out about new discoveries and failures</li>
-</ul>
-
-
-<p>These benefits come from the enhanced potential for theoretical discussions and sharing ideas.  This is especially valuable around difficult theories, unknown issues or esoteric theories that are known only to a specialist in a field.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/introduction-to-ons-theory-and-practice/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Mon Sep 23 00:00:00 +1000 2013">23 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Using Orgmode and Jekyll for Open Notebook</h1>
-
-<p>Orgmode is a great notebook tool because it allows the coding, evaluation and documentation all in one.  I also want to use it to send the documentation to my blog as an Open Notebook.</p>
-
-<p>If starting again I'd look into this:</p>
-
-<ul>
-<li><a href="http://orgmode.org/worg/org-tutorials/org-jekyll.html">http://orgmode.org/worg/org-tutorials/org-jekyll.html</a></li>
-</ul>
-
-
-<p>But as it is I already put a lot of work into configuring a jekyll blog I cloned from Scott Chamberlain over at ROpenSci and I will just use orgmode to publish the posts related to each project, tagged as 'categories'.</p>
-
-<p>But here is a problem I just found out how to solve.  For a long time I thought that because github disabled ruby plugins that the automatic generate categories index pages was broken.  Luckily Charlie Park has written up the following solution and this seems to have worked for me today:</p>
-
-<ul>
-<li><a href="http://charliepark.org/tags-in-jekyll/">http://charliepark.org/tags-in-jekyll/</a></li>
-<li><a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a></li>
-</ul>
-
-
-<p>Cheers!</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/using-orgmode-and-jekyll-for-open-notebook/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Sun Sep 22 00:00:00 +1000 2013">22 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Ecology datasets</h1>
-
-<p>These are my notes from a meeting that Kathryn and I had with a group of Ecologists at the ANU (primarily Luciana Porforio and Nasreen Khan).  We asked them to discuss how they search for and use Ecology datasets, especially how to best package up the parts of an ecological field data collection (ie weather, vegetation, biodiversity, soils, topography etc).</p>
-
-<p>Lu started off the discussion by stating that the most important thing to acknowledge is that every ecologist will start off with a main research question and then search for data that will address their specific research question.  It is difficult to work from a 'top-down' perspective that hopes to pre-empt the range of possible questions.  Lu felt that it may therefore be best to just keep all the data together in the biggest bundle that is possible and the end user can pick it apart once downloaded.</p>
-
-<p>We explained that LTERN datasets can be quite expansive with many dimensions and it seemed preferable to at least untangle the main 'themes' for packaging up.</p>
-
-<p>Nasreen pointed out that there is always a protocol for how data are collected and this should give the data collection it's structure.  However I felt that ecology collections are so diverse they have been made (by necessity) very flexible and specific to the needs of the individual plot network.  Therefore generalisations across data collections are very hard to make (apart from easy things like "weather" or "aboveground dead biomass").</p>
-
-<h1>Toward a Unified Ecology</h1>
-
-<p>I always fall back on the text book "Toward a Unified Ecology: Timothy F. H. Allen, Thomas W. Hoekstra 1992".  I wondered if it can guide us?  On pages 42-53 they describe the following framework and use the image below (the letters in the middle disc correspond to the criteria ie O = Organism).  In this framework it is possible to summarise ANY ecological study as they ALWAYS incorporate these scale-independent criteria:</p>
-
-<ul>
-<li>Organism: genetic integrity, discrete body, autonomy from other organisms</li>
-<li>Population: relative similarity within the group</li>
-<li>Community: inter-species competition, interference, mutualism</li>
-<li>Ecosystem: biotic and abiotic interactions</li>
-<li>Landscape: spatial structure/contiguity</li>
-<li>Biome: characteristic physiognomy, disturbance and climate</li>
-</ul>
-
-
-<p>I thought that if these dimensions were identified in a data collection first then they might become the discrete packages by which each plot network publishes their collection?</p>
-
-<p><img src="/images/datadoco-layercake.png" alt="datadoco-layercake.png" /></p>
-
-<h1>Aekos</h1>
-
-<p>Over at <a href="http://www.aekos.org.au/why_aekos#diversity">AEKOS</a> they have a similar conceptual framework</p>
-
-<pre><code>Observations can range from that of individual organisms and
-interactions, through to populations, communities, ecosystems and
-across broad global landscapes.
-</code></pre>
-
-<h1>Conclusions</h1>
-
-<p>This is an open issue.  More discussions are needed internally for the Data Custodians.</p>
-
-<p>Lu also pointed out that the end users are the key stakeholders and perhaps more input from them (via surveys and workshops?) is needed?</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/toward-a-unified-ecology-dataset/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Sep 20 00:00:00 +1000 2013">20 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/ons/" title="Starting my Open Notebook Science Blog" rel="bookmark">Starting my Open Notebook Science Blog</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>Many examples are emerging of scientists who are transitioning to a
-much more open model of research.  This is in part externally driven
-by funding bodies (such as the Aussie Research Council asking for deposit of funded data and papers) and journals
-(<a href="http://www.nature.com/ng/journal/v45/n5/full/ng.2621.html">ie. Nature journals removing length restrictions on Methods sections.</a>). Also the increased value being placed on transparency of reproducible analysis to safeguard against error and fraud is becoming an internal driver within science communities.</p>
-
-<p><a href="http://en.wikipedia.org/wiki/Open_Notebook_Science">Open Notebook Science</a>
-(ONS) style is an extreme of transparent approaches to research.
-According to the wikipedia page it is the "practice of making the
-entire primary record of a research project publicly available online
-as it is recorded".</p>
-
-<p>That's pretty extreme!  In my view a lot of stuff in the research project should probably be archived quickly and left to rot.</p>
-
-<p>I like the range of options available.  I think I'll go for <a href="http://onsclaims.wikispaces.com/">SCD or "Seclected Content / Delayed"</a> and show their image below.  In this model a portion of the open notebook and associated supporting raw data are available after some delay. I'll try to use this blog for weekly updates on progress for each project, and provide links off my 'Open Notebook' and 'Software' Tabs.</p>
-
-<p><img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/ons/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Sep 13 00:00:00 +1000 2013">13 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -416,59 +1245,61 @@ as it is recorded".</p>
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/data documentation">data documentation (25)</a></li>
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (44)</a></li>
+                
+                <li><a href="/categories/data documentation">data documentation (26)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (42)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                <li><a href="/categories/overview">overview (7)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
-                <li><a href="/categories/overview">overview (7)</a></li>
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
                 
                 <li>
+                  <a href="/2014/06/releasing-my-misc-r-package-disentangle-version-1/" title="releasing-my-misc-r-package-disentangle-version-1" rel="bookmark">releasing-my-misc-r-package-disentangle-version-1</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/05/using-additional-header-rows-for-metadata/" title="using-additional-header-rows-for-metadata" rel="bookmark">using-additional-header-rows-for-metadata</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/05/reproducible-research-reports-using-emacs-orgmode-export-to-knitr/" title="reproducible-research-reports-using-emacs-orgmode-export-to-knitr" rel="bookmark">reproducible-research-reports-using-emacs-orgmode-export-to-knitr</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
+                </li>
+                
+                <li>
                   <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/04/workaround-for-installing-morpho-on-a-windows-network/" title="workaround-for-installing-morpho-on-a-windows-network" rel="bookmark">workaround-for-installing-morpho-on-a-windows-network</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
                 </li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
-                <li><a href="/tag/R-eml">R-eml (3)</a></li>
+                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
                 <li><a href="/tag/morpho">morpho (7)</a></li>
                 
-                <li><a href="/tag/bugs">bugs (1)</a></li>
+                <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -479,11 +1310,11 @@ as it is recorded".</p>
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
-          <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
+          <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->
