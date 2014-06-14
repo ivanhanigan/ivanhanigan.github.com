@@ -56,6 +56,311 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions/" title="Using Reml To Input Large Number Of Column Descriptions" rel="bookmark">Using Reml To Input Large Number Of Column Descriptions</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting "save for later" but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.</p>
+
+<p>So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.</p>
+
+<p>First thing I tried was the constructed Column Definitions and Unit Definitions example from <a href="https://github.com/ropensci/EML">the README</a></p>
+
+<h4>R Code:</h4>
+
+<pre><code>#require(devtools)
+#install_github("EML", "ROpenSci")
+require(EML)
+
+# The example from orig doco
+dat = data.set(river = c("SAC",  "SAC",   "AM"),
+               spp   = c("king",  "king", "ccho"),
+               stg   = c("smolt", "parr", "smolt"),
+               ct    = c(293L,    410L,    210L),
+               col.defs = c("River site used for collection",
+                            "Species common name",
+                            "Life Stage",
+                            "count of live fish in traps"),
+               unit.defs = list(c(SAC = "The Sacramento River",
+                                  AM = "The American River"),
+                                c(king = "King Salmon",
+                                  ccho = "Coho Salmon"),
+                                c(parr = "third life stage",
+                                  smolt = "fourth life stage"),
+                                "number"))
+str(dat)
+eml_config(creator="Carl Boettiger &lt;cboettig@gmail.com&gt;")
+eml_write(dat, file = "inst/doc/EML_example.xml")
+# now you can import this to morpho and have a look
+# note that for morpho 1.8 it wants to change the EML version from 2.1.1 to 2.1.0
+# and it can't show the data yet
+# so what we need to do is write this as a file to the morpho database
+# save and close, note which number it assigned
+dat &lt;- data.frame(dat)
+morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
+maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+</code></pre>
+
+<p></p>
+
+
+<p>So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.</p>
+
+<h4>EML Code:</h4>
+
+<pre><code>...
+&lt;/dataFormat&gt;
+&lt;distribution scope="document"&gt; &lt;online&gt; &lt;url function="download"&gt;ecogrid://knb/hanigan.22.1&lt;/url&gt;
+&lt;/online&gt;
+&lt;access authSystem="knb" order="denyFirst"&gt;&lt;allow&gt;&lt;principal&gt;uid=datalibrarian,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
+&lt;permission&gt;all&lt;/permission&gt;
+&lt;/allow&gt;
+&lt;allow&gt;&lt;principal&gt;uid=hanigan,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
+&lt;permission&gt;read&lt;/permission&gt;
+&lt;/allow&gt;
+&lt;/access&gt;
+&lt;/distribution&gt;
+&lt;/physical&gt;
+...
+</code></pre>
+
+<p></p>
+
+
+<p>Which seems to have worked when we open it up again:</p>
+
+<p><img src="/images/morpho-wide1.png" alt="moprho-wide1.png" /></p>
+
+<p>So now let;s try a large nuber of variables:</p>
+
+<h4>R Code:</h4>
+
+<pre><code># add lots of cols
+for(i in 5:100){
+  dat[,i] &lt;-  sample(rnorm(100,1,2), 3)
+}
+str(dat)
+##  $ V95  : num  1.5708 -0.0936 2.2324
+##  $ V96  : num  1.79 5.4 1.62
+##  $ V97  : num  -1.141 0.653 5.365
+##  $ V98  : num  1.738 -1.046 -0.135
+##  $ V99  : num  3.6 -0.738 -1.877
+##   [list output truncated]
+
+# firstly I make a liset of the unit definitions for the example
+unit.defs &lt;- list(c(SAC = "The Sacramento River",
+                   AM = "The American River"),
+                 c(king = "King Salmon",
+                   ccho = "Coho Salmon"),
+                 c(parr = "third life stage",
+                   smolt = "fourth life stage"))
+# then I add to it the definition for the constructed variables
+unit.defs[[3]]
+for(i in 4:100){
+  unit.defs[[i]] &lt;- "number"
+}
+unit.defs
+
+# and this can be passed to the data.set constructor
+dat &lt;- data.set(dat,
+               col.defs = c("River site used for collection",
+                            "Species common name",
+                            "Life Stage",
+                            "count of live fish in traps",
+                           c(rep("count stuff", 95))),
+                unit.defs = unit.defs
+                )
+str(dat)
+
+eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
+eml_write(dat, file = "inst/doc/EML_example_wide.xml")
+# import to morpho, save and close
+# create the dataset for morphos database
+dat &lt;- data.frame(dat)
+morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
+maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+# now add this into the EML morpho has created (25.2 in my case)
+</code></pre>
+
+<p></p>
+
+
+<p>Which now seems to have attached the variable defintions and dataTable adequately.</p>
+
+<h2><img src="/images/morpho-wide2.png" alt="morpho-wide2.png" /></h2>
+
+<p>name: using-reml-to-input-large-number-of-column-descriptions
+layout: post
+title: Using Reml To Input Large Number Of Column Descriptions
+date: 2014-04-24
+categories:</p>
+
+<h2>- Data Documentation</h2>
+
+<p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting "save for later" but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.</p>
+
+<p>So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.</p>
+
+<p>First thing I tried was the constructed Column Definitions and Unit Definitions example from <a href="https://github.com/ropensci/EML">the README</a></p>
+
+<h4>R Code:</h4>
+
+<pre><code>#require(devtools)
+#install_github("EML", "ROpenSci")
+require(EML)
+
+# The example from orig doco
+dat = data.set(river = c("SAC",  "SAC",   "AM"),
+               spp   = c("king",  "king", "ccho"),
+               stg   = c("smolt", "parr", "smolt"),
+               ct    = c(293L,    410L,    210L),
+               col.defs = c("River site used for collection",
+                            "Species common name",
+                            "Life Stage",
+                            "count of live fish in traps"),
+               unit.defs = list(c(SAC = "The Sacramento River",
+                                  AM = "The American River"),
+                                c(king = "King Salmon",
+                                  ccho = "Coho Salmon"),
+                                c(parr = "third life stage",
+                                  smolt = "fourth life stage"),
+                                "number"))
+str(dat)
+eml_config(creator="Carl Boettiger &lt;cboettig@gmail.com&gt;")
+eml_write(dat, file = "inst/doc/EML_example.xml")
+# now you can import this to morpho and have a look
+# note that for morpho 1.8 it wants to change the EML version from 2.1.1 to 2.1.0
+# and it can't show the data yet
+# so what we need to do is write this as a file to the morpho database
+# save and close, note which number it assigned
+dat &lt;- data.frame(dat)
+morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
+maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+</code></pre>
+
+<p></p>
+
+
+<p>So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.</p>
+
+<h4>EML Code:</h4>
+
+<pre><code>...
+&lt;/dataFormat&gt;
+&lt;distribution scope="document"&gt; &lt;online&gt; &lt;url function="download"&gt;ecogrid://knb/hanigan.22.1&lt;/url&gt;
+&lt;/online&gt;
+&lt;access authSystem="knb" order="denyFirst"&gt;&lt;allow&gt;&lt;principal&gt;uid=datalibrarian,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
+&lt;permission&gt;all&lt;/permission&gt;
+&lt;/allow&gt;
+&lt;allow&gt;&lt;principal&gt;uid=hanigan,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
+&lt;permission&gt;read&lt;/permission&gt;
+&lt;/allow&gt;
+&lt;/access&gt;
+&lt;/distribution&gt;
+&lt;/physical&gt;
+...
+</code></pre>
+
+<p></p>
+
+
+<p>Which seems to have worked when we open it up again:</p>
+
+<p><img src="/images/morpho-wide1.png" alt="moprho-wide1.png" /></p>
+
+<p>So now let;s try a large nuber of variables:</p>
+
+<h4>R Code:</h4>
+
+<pre><code># add lots of cols
+for(i in 5:100){
+  dat[,i] &lt;-  sample(rnorm(100,1,2), 3)
+}
+str(dat)
+##  $ V95  : num  1.5708 -0.0936 2.2324
+##  $ V96  : num  1.79 5.4 1.62
+##  $ V97  : num  -1.141 0.653 5.365
+##  $ V98  : num  1.738 -1.046 -0.135
+##  $ V99  : num  3.6 -0.738 -1.877
+##   [list output truncated]
+               unit.defs = list(c(SAC = "The Sacramento River",
+                                  AM = "The American River"),
+                                c(king = "King Salmon",
+                                  ccho = "Coho Salmon"),
+                                c(parr = "third life stage",
+                                  smolt = "fourth life stage"))
+unit.defs[[3]]
+for(i in 4:100){
+unit.defs[[i]] &lt;- "number"
+}
+unit.defs
+dat = data.set(dat,
+               col.defs = c("River site used for collection",
+                            "Species common name",
+                            "Life Stage",
+                            "count of live fish in traps",
+c(rep("count stuff", 95))
+                 ),
+unit.defs = unit.defs
+
+  )
+str(dat)
+
+eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
+eml_write(dat, file = "inst/doc/EML_example_wide.xml")
+# import to morpho, save and close
+dat &lt;- data.frame(dat)
+morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
+maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
+filename &lt;- file.path(morpho_db,maxid)
+# what is the number?
+filename
+write.csv(dat, filename, row.names =F, quote=F)
+# now add this into the EML morpho has created (25.2 in my case)
+</code></pre>
+
+<p></p>
+
+
+<p>Which now seems to have attached the variable defintions and dataTable adequately.</p>
+
+<p><img src="/images/morpho-wide2.png" alt="morpho-wide2.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/04/using-reml-to-input-large-number-of-column-descriptions/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Apr 24 00:00:00 +1000 2014">24 Apr 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/04/linking-eml-packages-by-umbrella-project-info/" title="linking-eml-packages-by-umbrella-project-info" rel="bookmark">linking-eml-packages-by-umbrella-project-info</a>
     </h1>
     <div class="entry-content full-content">
@@ -113,7 +418,7 @@ I think the order of the tags here might make a difference so I always put thye 
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
@@ -585,7 +890,7 @@ You can see this if you then open it up again in morpho and then under the docum
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
@@ -704,7 +1009,7 @@ workaround is to edit the XML file manually.</p>
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
       
     </p>
     <!--
@@ -780,137 +1085,6 @@ workaround is to edit the XML file manually.</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>I have been using <a href="http://projecttemplate.net/">John Myles Whites ProjectTemplate R package</a> for ages</li>
-<li>I really like the ease with which I can get up and running a new project</li>
-<li>and the ease with which I can pick up an old project and start adding new work</li>
-</ul>
-
-
-<h4>Quote from John's first post</h4>
-
-<pre><code>My inspiration for this approach comes from the rails command from
-Ruby on Rails, which initializes a new Rails project with the proper
-skeletal structure automatically. Also taken from Rails is
-ProjectTemplate’s approach of preferring convention over
-configuration: the automatic data and library loading as well as the
-automatic testing work out of the box because assumptions are made
-about the directory structure and naming conventions that will be used
-</code></pre>
-
-<p></p>
-
-
-<p><a href="http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/">http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/</a></p>
-
-<ul>
-<li>I dont know anything about RoR but this philosophy works really well for my R programming too</li>
-</ul>
-
-
-<h4>R Code</h4>
-
-<pre><code>if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
-setwd("~/projects")
-create.project("my-project")
-setwd('my-project')
-dir()
-##  [1] "cache"       "config"      "data"        "diagnostics" "doc"        
-##  [6] "graphs"      "lib"         "logs"        "munge"       "profiling"  
-## [11] "README"      "reports"     "src"         "tests"       "TODO"   
-##### these are very sensible default directories to create a modular
-##### analysis workflow.  See the project homepage for descriptions
-
-# now all you need to do whenever you start a new day 
-load.project()
-# and your workspace will be recreated and any new data automagically analysed in
-# the manner you want
-</code></pre>
-
-<p></p>
-
-
-<h4>Project Administration</h4>
-
-<ul>
-<li>I;ve found that these directories do not work so well for the administration of my projects and so I put together a different set of automatic defaults</li>
-<li>Ive based it on the <a href="http://ivanhanigan.github.io/2013/12/research-protocol-for-manitoba-centre-for-health-policy/">University of Manitoba Centre for Health Policy</a>- along with some other sources I can recall
-
-<h4>The full set</h4>
-
-<p>  # A.Background      <br/>
-  # B.Proposals
-  # C.Approvals
-  # D.Budget  <br/>
-  # E.Datasets<br/>
-  # F.Analysis<br/>
-  # G.Literature      <br/>
-  # H.Communication           <br/>
-  # I.Correspondance  <br/>
-  # J.Meetings<br/>
-  # K.Completion      <br/>
-  # ContactDetails.txt<br/>
-  # README.md
-  # TODO.txt</p></li>
-</ul>
-
-
-<p></p>
-
-
-<h4>R Code: my subset</h4>
-
-<pre><code>AdminTemplate &lt;- function(rootdir = getwd()){
-  setwd(rootdir)
-  dir.create(file.path(rootdir,'01_planning'))
-  dir.create(file.path(rootdir,'01_planning','proposal'))
-  dir.create(file.path(rootdir,'01_planning','scheduling'))
-  dir.create(file.path(rootdir,'02_budget'))
-  dir.create(file.path(rootdir,'03_communication'))
-  dir.create(file.path(rootdir,'04_reporting_and_meetings'))
-  file.create(file.path(rootdir,'contact_details.txt'))
-  file.create(file.path(rootdir,'README.md'))
-  }
-</code></pre>
-
-<p></p>
-
-
-<h4>Conclusion</h4>
-
-<ul>
-<li>hopefully by formalising some of these into my workflow I will find my projects easier to navigate through</li>
-<li>and pick up or put down as needed</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Sat Mar 29 00:00:00 +1100 2014">29 Mar 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -966,31 +1140,37 @@ load.project()
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/data documentation">data documentation (26)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
                 <li><a href="/categories/research methods">research methods (44)</a></li>
                 
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
+                
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (26)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/06/testing-aekos-data-portal/" title="Testing Aekos Data Portal" rel="bookmark">Testing Aekos Data Portal</a>
+                </li>
                 
                 <li>
                   <a href="/2014/06/releasing-my-misc-r-package-disentangle-version-1/" title="releasing-my-misc-r-package-disentangle-version-1" rel="bookmark">releasing-my-misc-r-package-disentangle-version-1</a>
@@ -1008,17 +1188,13 @@ load.project()
                   <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
                 </li>
                 
-                <li>
-                  <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
-                <li><a href="/tag/bugs">bugs (1)</a></li>
-                
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
+                
+                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
                 <li><a href="/tag/morpho">morpho (7)</a></li>
                 
@@ -1031,9 +1207,9 @@ load.project()
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
-          <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
           <!--        -->
