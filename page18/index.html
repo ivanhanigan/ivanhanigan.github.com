@@ -56,190 +56,6 @@
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2013/07/worflow-flowcharts/" title="Worflow flowcharts" rel="bookmark">Worflow flowcharts</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>What is the issue</h2>
-
-<p>Most people seem to collect multiple datasets together in a single spot that can be split into 2 or more separate data packages.  I think this is a natural set up from an analysts perspective, where the results of multiple steps accumulate as 'stepping stones' toward the file they end up analysing.</p>
-
-<p>I was first taught GIS by Isabelle Balzer at Ecowise Environmental Services in Canberra.  She showed me the method of keeping a table (sticky-taped to the desk!) of all the files and transformations that were going on. This was a method that didn't allow any multitasking!  I call this the 'Balzerian Method' (I am sure others used it before Isabelle, but I think Balzerian is a great word).</p>
-
-<p>I think the data wharehouse at my work is an example, and probably we'll find the key challenge for big data will be for analysts to disentangle their own filing systems.</p>
-
-<p>In my experience the way people store research data is often one (or a couple, or all) of these three types:</p>
-
-<ul>
-<li>a database with heaps of tables and views</li>
-<li>a directory (and sub-directories) with heaps of files</li>
-<li>a spreadsheet workbook with heaps of sheets (and links to other workbooks)</li>
-</ul>
-
-
-<p>I am developing a tool based on the open source graphviz softawre. The tool I am developing addresses the challenge of graphing the links between these sequential steps.</p>
-
-<h4>Code:introducing newnode</h4>
-
-<pre><code># NB this only works easily on linux
-require(devtools)
-install_github("disentangle", "ivanhanigan")
-require(disentangle)
-# the core of the tool is Rgraphviz, I just built a wrapper function
-# to add newnodes to a graph of nodes
-# always start with (newgraph = T) because the newnode function ADDS
-# nodes to a graph, unless told otherwise, and fails if no 'nodes'
-# object exists
-nodes  &lt;- newnode(name="NAME",inputs="INPUT",outputs="OUTPUT", newgraph = T)
-</code></pre>
-
-<p><img src="/images/newnode1.png" alt="images/newnode1.png" /></p>
-
-<h4>Code:adding nodes</h4>
-
-<pre><code># now we can add nodes, and we can pass multiple inputs or outputs
-nodes  &lt;- newnode(name="OUTPUT",inputs=c("NAME","ANOTHER THING"))
-# outputs are optional
-</code></pre>
-
-<p><img src="/images/newnode2.png" alt="images/newnode2.png" /></p>
-
-<p>It can be used in two or three ways.</p>
-
-<h2>Example one, the composite view:</h2>
-
-<p>So if there is a Balzerian filelist table available, convert it to a spreadsheet.  This is als similar to a labbook from Chemistry but follows a very rigid structure: NAME,        INPUTS,           OUTPUTS,         DESCRIPTION.  The first method I'll show will take one of these tables and map out the steps in the workflow.</p>
-
-<h4>Code: Composite Worflow Files List</h4>
-
-<pre><code>#    so if there is a Balzerian filelist table available,
-# either make a spreadsheet with names, inputs and outputs 
-# fileslist &lt;- read.csv("exampleFilesList.csv", stringsAsFactors = F)
-# or 
-filesList &lt;- read.csv(textConnection(
-'NAME,        INPUTS,           OUTPUTS,         DESCRIPTION
-FileA,        TableXYZ,         Input1,          Transformed variable
-FileB,        TableABC,         Input2,          Collapsed dimensions
-analysisFile, "Input1,Input2",  analysisResults, Merged inputs and analysed
-'), stringsAsFactors = F, strip.white = T)
-filesList
-
-for(i in 1:nrow(filesList))
-{
-  nodes &lt;- newnode(name = filesList[i,"NAME"],
-                   inputs = strsplit(filesList$INPUTS, ",")[[i]],
-                   outputs = strsplit(filesList$OUTPUTS, ",")[[i]],
-                   newgraph = (i == 1)
-  )
-}
-</code></pre>
-
-<h2>shows this result</h2>
-
-<p><img src="/images/fileRelationships.png" alt="fileRelationships.png" /></p>
-
-<h2>Example two, tracking the steps while analysing data:</h2>
-
-<p>Structure a script into sections and document each section before evaluating the code to execute the step.  This works well with orgmode/ESS, Sweave or knitr style workflows.
-For example:</p>
-
-<h4>Code: Ad Hoc Files Lists Flowcharts</h4>
-
-<pre><code>#### step one ####
-nodes &lt;- newnode(name="FileA", inputs="TableXYZ", outputs="Input1",
-                 newgraph =T) # this is required to tell newnode to
-                              # start a new graph, rather than add to
-                              # the nodes
-FileA  &lt;- read.table("TableXYZ.txt")
-Input1 &lt;- log(FileA$columnZ)
-
-#### step two ####
-nodes &lt;- newnode(name="FileB", inputs="TableABC", outputs="Input2")
-FileB  &lt;- read.table("TableABC.txt")
-Input2 &lt;- ddply(FileB, "id", summarise,
-                duration = max(year) - min(year),
-                nteams = length(unique(team)))
-
-#### step three ####
-nodes &lt;- newnode(name="analysisFile", inputs=c("Input1","Input2"),
-                 outputs="analysisResults")
-analysisFile  &lt;- merge(Input1, Input2, by="id")
-analysisResults  &lt;- lm(y ~ duration + nteams, data = analysisFile)
-</code></pre>
-
-<h2>Example three: visualising relationships</h2>
-
-<p>It is not aimed at visualising the linked structure of a tree or semi-lattice but can be used in such a way but changing the nodename and inputs concept to parent/child relationships.</p>
-
-<p>As an example I'll describe how a list of database tables might be displayed as a tree. I am a great fan of Josh Reich due to his <a href="http://stackoverflow.com/a/1434424">LCFD workflow</a>, and I also like his work on the <a href="https://www.simple.com/">Simple Bank</a> so when I stumbled on this <a href="http://blog.i2pi.com/post/52812976752/joshs-postgresql-database-conventions">blog post</a> in which he says:</p>
-
-<p>"Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won’t usually need your flowchart; it’ll be obvious."</p>
-
-<p>I was switched on and I started thinking about how the graphVis tool could be used to describe a list of tables and views from a database.</p>
-
-<p>Say that two groups studied the same file TableXYZ with different inputs.  One of these groups wrote a seminal paper in the field, while their rivals wrote an inferior paper with a different result.  Imagine now a subsequent group who gathered the data from the previous work into the following database tables and conducted a replication study, with a new sensitivity analysis to explain why the original two papers produced different results.</p>
-
-<p>Let's assume this database has all the data from all the groups in it and we want to get a pictorial view so we can disentangle which files belong to which study.  First get the following list of tables as INPUTS, grouping them by 'NAME' will give the tree structure and showing their results as OUTPUTS allows the subsequent replication study to use them as inputs and assume the position at the bottom of the flowchart.</p>
-
-<h4>Code: database tables and different studies</h4>
-
-<pre><code>filesList &lt;- read.csv(textConnection(
-'NAME                 ,             INPUTS         , OUTPUTS
-The Seminal Study     ,              FileA         , 
-The Seminal Study     ,              FileB         , 
-The Seminal Study     ,       analysisFile         , 
-The Seminal Study     ,           TableXYZ         , 
-The Seminal Study     ,           TableABC         , 
-The Seminal Study     ,      Input1,Input2         ,
-The Seminal Study     ,             Input1         , 
-The Seminal Study     ,             Input2         , 
-The Seminal Study     ,      The Seminal Study     , analysisResults 
-The Inferior Rivals   ,                FileC       , 
-The Inferior Rivals   ,        analysisFileX       , 
-The Inferior Rivals   ,             TableXYZ       , 
-The Inferior Rivals   ,               InputX       , 
-The Inferior Rivals   ,    The Inferior Rivals     , analysisResultsX       
-The Replication Study ,    "Input1,Input2,TableXYZ",  analysisResultsR     
-The Replication Study ,    "Input1,InputX,TableXYZ",  sensitivityResult 
-'), stringsAsFactors = F, strip.white = T)
-
-for(i in 1:nrow(filesList))
-{
-  nodes &lt;- newnode(name = filesList[i,"NAME"],
-                   inputs = strsplit(filesList$INPUTS, ",")[[i]],
-                   outputs = strsplit(filesList$OUTPUTS, ",")[[i]],
-                   newgraph = (i == 1)
-  )
-}
-</code></pre>
-
-<h2>the result</h2>
-
-<p><img src="/images/filesRelationships2.png" alt="filesRelationships2.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/07/worflow-flowcharts/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Wed Jul 31 00:00:00 +1000 2013">31 Jul 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
       <a href="/2013/07/animated-maps/" title="animated-maps" rel="bookmark">animated-maps</a>
     </h1>
     <div class="entry-content full-content">
@@ -729,6 +545,84 @@ raised the <a href="http://ivanhanigan.github.io/2013/04/reflections-bob-haining
   </div>
   <div class="rule"><hr/></div>
 
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/04/suicide-and-drought-evidence-from-literature/" title="Suicide And Drought Evidence From Literature" rel="bookmark">Suicide And Drought Evidence From Literature</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This essay evolved as I was asked to write something for the <a href="http://www.hmndp.org/">High-level Meeting on National Drought Policy (HMNDP)</a> in Geneva with <a href="http://www.hmndp.org/presentations/12.03-HMNDP-Parallel5-Howden.pdf">Mark Howden, Steven Crimp and Bryson Bates</a>.  It is a summary of material Colin Butler and I wrote for our paper with Phil Kokic and Mike Hutchinson <a href="http://www.pnas.org/cgi/content/abstract/1112965109v1">on Suicide and Drought published in PNAS last year</a>.</p>
+
+<h1>Suicide and Drought</h1>
+
+<h2>By Ivan Hanigan and Colin Butler</h2>
+
+<p>There has been substantial public interest within Australia in recent decades of the putative relationship between drought and rural mental health, including suicide. The topic has frequently been raised by the media, by rural politicians and by mental health support groups [1]. There have also been recent media reports in India indicating substantial concerns about drought and rural suicide in that country, including [2] from May 2012.</p>
+
+<p>The number of studies that have examined the relationship between suicide and drought is limited. However, many papers explore links between suicide and climate variables other than drought (such as temperature) and there are two major reviews papers available of the literature on climatic influences on suicide [3, 4]. Some climatic variables related to dryness have been studied for example Preti (1998) [5] found higher suicide rates in drier towns in Italy. But we make the point that very few studies have investigated the "dryer than average conditions" that is drought specifically.</p>
+
+<p>There are several mechanisms through which unusually low rainfall, especially if exacerbated by increased soil dryness due to higher temperatures may increase the suicide rate. First, droughts increase the financial stress on farmers and farming communities (even if partially compensated by drought relief welfare payments). Such difficulty may occur in conjunction with other economic stresses, such as rising interest rates, falling commodity prices, or an unfavourable foreign exchange rate.
+In the broader economic system, reduced rainfall can depress economic activity in rural towns. In some regions the entire economy may be affected. Rural downturns can accelerate migration to metropolitan areas; weakening and stressing social support systems and lessening social interaction. In some cases rural depopulation may pass a tipping point, leading to an ongoing loss of critical services, such as hospitals, schools and doctors.
+Second, there can be a great psychological toll following environmental degradation [6] and this may be acute during droughts linked with decisions and actions to sell or kill starving animals or to destroy orchards and vineyards, which in some cases were painstakingly accumulated over generations. Such loss, and even the apprehension of loss, undoubtedly places a burden on the mental health of farmers and their families. This mourning may not be confined to farmers but extend to other sections of the community likely to be impoverished by long-term environmental degradation. The experience of seeing suffering wild plants and animals, or parched urban parks and gardens, and contemplation of their loss is likely to be extremely painful for some individuals.</p>
+
+<h1>Evidence from literature</h1>
+
+<p>As mentioned the number of studies that have examined the relationship between suicide and drought is limited. One analysis of annual suicide rates in NSW found an association between suicide and year-to-year decline in annual rainfall between 1964 and 2001 [7]. In that study a decrease of 300mm of rain was associated with an increase in suicide rate of about 8% above the mean annual rate.
+Another study of NSW, for the period 1901-1998, found an association between suicide and drought. That study focused on the association of conservative government and suicide [8]. The authors argued conservative government programmes (or perceived prospects under a government) might influence suicide directly, or that a correlated increase in anomie (decreased inclusiveness of society) and lowering social capital enhances risk of suicide in vulnerable individuals. The authors controlled for drought (among other things), and found that drought years were associated with an increased suicide risk of about 7% for men and 15% for women, across the whole population.
+A third study [9] found no association between drought and suicide in Victoria but was based on only 7 years data (2001-2007) and did not stratify the population of the state into regions which may introduce bias in the exposure estimates of drought affected people.</p>
+
+<p>In contrast a longer running study did find an association using 38 years of data (1970-2007) to explore potential drought effects, especially on farmers and farm workers [10]. The drought exposures were calculated from climatic data for 11 subregions of New South Wales, and stratified by rural/urban region, age and sex. A strong association was observed in rural males aged 10-49. Surprisingly the suicide risk decreased in rural females aged over 30.</p>
+
+<p>This study provides clear evidence to support the hypothesis that male farmers, farm workers and farming families are at risk of depression and suicide due to droughts. The resulting statistical model estimated that around 9 % of rural suicides in males aged 30-49 were due to drought over the entire study period. This estimate is an average over the course of the 38 years of the study, as the majority of years are not droughts - the percentage is much greater than 9 % in the actual drought years, since these are episodic and confined to a distinct minority of years.
+The statistical model also controlled for other well-known trends in suicide data, including that times of unusually high maximum temperatures increased suicide risk, that there was a increased risk in spring and early summer, and that there was a marked drop in suicide rates over the last decade.</p>
+
+<h1>Discussion</h1>
+
+<p>These studies from Australia offer some lessons for policy makers. The results identify a suite of contributing factors that influence suicide drawn from the environmental, social and political context of life in Australia, which drought is a part of. In particular these results help isolate the most critical times of risk, so that the best use of resources might be made. This includes provision of counselling services to target vulnerable people and get them help, both during droughts, at times with hotter than average maximum temperatures and during the dangerous spring period.
+Other policy implications from this finding support broadening investment in research into gender specific drought effects rather than purely climate and economic focused research into drought impacts.</p>
+
+<h1>References</h1>
+
+<ul>
+<li><p>[1]   Australian Broadcasting Commision (ABC) News. Drought lifts suicide rates: Kennett, 2006.  http://www.abc.net.au/news/2006-10-13/drought-lifts-suicide-rates-kennett/1285734</p></li>
+<li><p>[2]   P Sarathi Biswas. Alcohol, drought lead to farmer’s suicide. Daily News and Analysis, 2012. http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976</p></li>
+<li><p>[3] PG Dixon and AJ Kalkstein. Climate-suicide relationships: A research
+problem in need of geographic methods and cross-disciplinary perspectives.
+Geography Compass , 3(6):1{14, 2009.</p></li>
+<li><p>[4] E A Deisenhammer. Weather and suicide: the present state of knowledge
+on the association of meteorological factors with suicidal behaviour. Acta
+Psychiatrica Scandinavica , 108(6):402{409, 2003.</p></li>
+<li><p>[5] Antonio Preti. The infleuence of clima te on suicidal behaviour in Italy.
+Psychiatry Res , 78(1-2):9{19, 1998.</p></li>
+<li><p>[6]   PC Speldewinde, A Cook, P Davies, and P Weinstein. A relationship between environmental degradation and mental health in rural Western Australia. Health and Place, 15, 2009.</p></li>
+<li><p>[7]   N Nicholls, CD Butler, and IC Hanigan. Inter-annual rainfall variations and suicide in New South Wales, Australia, 1964-2001. International Journal of Biometeorology, 50(3), 2006.</p></li>
+<li><p>[8]   A Page, S Morrell, and R Taylor. Suicide and political regime in New South Wales and Australia during the 20th century. Journal of Epidemiology and Community Health, 56, 2002.</p></li>
+<li><p>[9]   Robyn Guiney. Farming suicides during the Victorian drought: 2001-2007. The Australian Journal of Rural Health, 20(1):11–5, February 2012.</p></li>
+<li><p>[10]  I. C. Hanigan, C. D. Butler, P. N. Kokic, and M. F. Hutchinson. Suicide and drought in New South Wales, Australia, 1970-2007. Proceedings of the National Academy of Sciences, pages 1112965109–, August 2012.</p></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/04/suicide-and-drought-evidence-from-literature/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Wed Apr 17 00:00:00 +1000 2013">17 Apr 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
 
 <div class="pagination">
   <span class="previous">
@@ -784,40 +678,34 @@ raised the <a href="http://ivanhanigan.github.io/2013/04/reflections-bob-haining
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/overview">overview (7)</a></li>
-                
                 <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
                 
                 <li><a href="/categories/research methods">research methods (44)</a></li>
                 
-                <li><a href="/categories/Data Documentation">Data Documentation (26)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/overview">overview (7)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (26)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
                 
                 <li>
-                  <a href="/2014/06/using-additional-header-rows-for-metadata-corrupted/" title="using-additional-header-rows-for-metadata-corrupted" rel="bookmark">using-additional-header-rows-for-metadata-corrupted</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/06/testing-aekos-data-portal/" title="Testing Aekos Data Portal" rel="bookmark">Testing Aekos Data Portal</a>
+                  <a href="/2014/06/using-additional-header-rows-for-metadata-corrupted/" title="my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it" rel="bookmark">my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it</a>
                 </li>
                 
                 <li>
@@ -832,15 +720,19 @@ raised the <a href="http://ivanhanigan.github.io/2013/04/reflections-bob-haining
                   <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
                 </li>
                 
+                <li>
+                  <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
+                </li>
+                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
                 <li><a href="/tag/morpho">morpho (7)</a></li>
                 
-                <li><a href="/tag/bugs">bugs (1)</a></li>
-                
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
+                
+                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -853,9 +745,9 @@ raised the <a href="http://ivanhanigan.github.io/2013/04/reflections-bob-haining
           <!--        -->
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
-          <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->
