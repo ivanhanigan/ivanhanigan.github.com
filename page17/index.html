@@ -56,6 +56,288 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/" title="spatially-structured-timeseries-vs-spatiotemporal-modelling" rel="bookmark">spatially-structured-timeseries-vs-spatiotemporal-modelling</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p><head>
+<title>Spatiotemporal Regression Modelling</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="Spatiotemporal Regression Modelling"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-09-26T10:18+1000"/>
+<meta name="author" content="Ivan Hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
+
+
+
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+
+
+<p></head>
+<body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">Spatiotemporal Regression Modelling</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Spatially Structured Timeseries Vs Spatiotemporal Modelling</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Spatially Structured Time Series</a></li>
+<li><a href="#sec-1-2">1.2 Spatiotemporal modelling</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> Spatially Structured Timeseries Vs Spatiotemporal Modelling</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>In my last post about <a href="http://ivanhanigan.github.io/2013/09/reflections-bob-haining-update">spatiotemporal regression modelling</a> I mentioned that I am mostly interested in "spatially structured time-series models" rather than spatial models at a single point in time. By this I mean that we have several neighbouring areal units observed over a period of time. In this framework the general methods of time series modelling are used to control for temporal autocorrelation. However this makes the methods of spatial error and spatial lag models tricky because the spatial autocorrelation needs to be assessed at many points in time.
+</p>
+<p>
+I want to expand more on this topic because I want to be clear that the organisation of the material I am aiming to bring to this notebook topic is not aimed at purely spatial regression models <a href="https://geodacenter.asu.edu/spatial-lag-and">(there is a lot of material and tools out there already for that)</a>.  I am trying with these notes to document my learning steps toward integrating spatial methods with time-series methods to allow me to practice (and understand) spatiotemporal regression modelling.
+</p>
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Spatially Structured Time Series</h4>
+<div class="outline-text-4" id="text-1-1">
+
+<p>In <a href="http://www.pnas.org/content/early/2012/08/08/1112965109.full.pdf+html">my most successful previous attempt to conduct a spatiotemporal analysis of Suicide and Droughts</a> I built on my knowledge of time-series regression models from single-city air pollution studies where the whole city is the unit of analysis and the temporal variation is modelled with controlling techniques for temporal autocorrelation.  These techniques are also valid for multi-city studies because it is pretty safe to assume the cities are all independent at each time point.  I structured my study by Eleven large zones (Census Statistical Divisions) of NSW and assumed each of these would vary over time independent of each other, and I fitted a zone-specific time trend and cycle. This is what I call "spatially structured time-series" modelling.  
+</p>
+<p>
+I justify using this model in this case because aggregating up to these very large regions will diminish the possibility of spatial autocorrelation and because Droughts vary over large spatial zones too, we will not suffer from exposure misclassificaiton bias.
+</p>
+<p>
+So this model is a simple time-series regression (with trend and seasonality) and an additional term for spatial Zone.
+</p>
+
+
+\begin{eqnarray*}
+        log({\color{red} O_{ijk}})  & = & s({\color{red}ExposureVariable})  + {\color{blue} OtherExplanators}  \\
+        & &   + AgeGroup_{i} + Sex_{j} \\
+        & &   + {\color{blue} SpatialZone_{k}}  \\
+        & &  + sin(Time \times 2 \times \pi) + cos(Time \times 2 \times \pi) \\
+        & &  + Trend \\
+        & &   + offset({\color{blue} log(Pop_{ijk})})\\
+\end{eqnarray*}
+
+<p>
+Where:<br/>
+</p>
+<ul>
+<li>\({\color{red}O_{ijk}}\) = Outcome (counts) by Age\(_{i}\), Sex\(_{j}\) and SpatialZone\(_{k}\) <br/>
+</li>
+<li>{\color{red}ExposureVariable} = Data with {\color{red}Restrictive Intellectual Property~(IP)} <br/>
+</li>
+<li>{\color{blue}OtherExplanators} = Other {\color{blue}Less Restricted}  Explanatory variables <br/>
+</li>
+<li>s( ) = penalized regression splines <br/>
+</li>
+<li>\({\color{blue} SpatialZone_{k}}\)  = {\color{blue} Less Restricted} data representing the \(SpatialZone_{k}\)  <br/>
+</li>
+<li>Trend = Longterm smooth trend(s) <br/>
+</li>
+<li>\({\color{blue}Pop_{ijk}}\) = interpolated Census populations, by time in each group<br/>
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2"><span class="section-number-4">1.2</span> <span class="todo TODO">TODO</span> Spatiotemporal modelling</h4>
+<div class="outline-text-4" id="text-1-2">
+
+<p>In contrast to the above model for modelling exposures that have fine resolution spatial variation (such as air pollution) the exposure misclassification effect of aggregating up to very large spatial zones will conteract the benefits of avoiding spatially autocorrelated errors and this might be unacceptable for certain research questions.  Therefore it is important to move toward a spatiotemporal regression model that replaces the \(SpatialZone_{k}\) term with a more spatial error or spatial lag approach.
+</p></div>
+</div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Thu Sep 26 00:00:00 +1000 2013">26 Sep 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/09/reflections-bob-haining-update/" title="reflections-bob-haining-update" rel="bookmark">reflections-bob-haining-update</a>
     </h1>
     <div class="entry-content full-content">
@@ -629,76 +911,6 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Ecology datasets</h1>
-
-<p>These are my notes from a meeting that Kathryn and I had with a group of Ecologists at the ANU (primarily Luciana Porforio and Nasreen Khan).  We asked them to discuss how they search for and use Ecology datasets, especially how to best package up the parts of an ecological field data collection (ie weather, vegetation, biodiversity, soils, topography etc).</p>
-
-<p>Lu started off the discussion by stating that the most important thing to acknowledge is that every ecologist will start off with a main research question and then search for data that will address their specific research question.  It is difficult to work from a 'top-down' perspective that hopes to pre-empt the range of possible questions.  Lu felt that it may therefore be best to just keep all the data together in the biggest bundle that is possible and the end user can pick it apart once downloaded.</p>
-
-<p>We explained that LTERN datasets can be quite expansive with many dimensions and it seemed preferable to at least untangle the main 'themes' for packaging up.</p>
-
-<p>Nasreen pointed out that there is always a protocol for how data are collected and this should give the data collection it's structure.  However I felt that ecology collections are so diverse they have been made (by necessity) very flexible and specific to the needs of the individual plot network.  Therefore generalisations across data collections are very hard to make (apart from easy things like "weather" or "aboveground dead biomass").</p>
-
-<h1>Toward a Unified Ecology</h1>
-
-<p>I always fall back on the text book "Toward a Unified Ecology: Timothy F. H. Allen, Thomas W. Hoekstra 1992".  I wondered if it can guide us?  On pages 42-53 they describe the following framework and use the image below (the letters in the middle disc correspond to the criteria ie O = Organism).  In this framework it is possible to summarise ANY ecological study as they ALWAYS incorporate these scale-independent criteria:</p>
-
-<ul>
-<li>Organism: genetic integrity, discrete body, autonomy from other organisms</li>
-<li>Population: relative similarity within the group</li>
-<li>Community: inter-species competition, interference, mutualism</li>
-<li>Ecosystem: biotic and abiotic interactions</li>
-<li>Landscape: spatial structure/contiguity</li>
-<li>Biome: characteristic physiognomy, disturbance and climate</li>
-</ul>
-
-
-<p>I thought that if these dimensions were identified in a data collection first then they might become the discrete packages by which each plot network publishes their collection?</p>
-
-<p><img src="/images/datadoco-layercake.png" alt="datadoco-layercake.png" /></p>
-
-<h1>Aekos</h1>
-
-<p>Over at <a href="http://www.aekos.org.au/why_aekos#diversity">AEKOS</a> they have a similar conceptual framework</p>
-
-<pre><code>Observations can range from that of individual organisms and
-interactions, through to populations, communities, ecosystems and
-across broad global landscapes.
-</code></pre>
-
-<h1>Conclusions</h1>
-
-<p>This is an open issue.  More discussions are needed internally for the Data Custodians.</p>
-
-<p>Lu also pointed out that the end users are the key stakeholders and perhaps more input from them (via surveys and workshops?) is needed?</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/toward-a-unified-ecology-dataset/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Sep 20 00:00:00 +1000 2013">20 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -754,33 +966,35 @@ across broad global landscapes.
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
                 <li><a href="/categories/research methods">research methods (44)</a></li>
                 
+                <li><a href="/categories/overview">overview (7)</a></li>
+                
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (7)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (27)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (29)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/06/reflecting-on-aekos-data-portal-test/" title="reflecting-on-aekos-data-portal-test" rel="bookmark">reflecting-on-aekos-data-portal-test</a>
+                </li>
                 
                 <li>
                   <a href="/2014/06/my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it/" title="my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it" rel="bookmark">my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it</a>
@@ -798,19 +1012,15 @@ across broad global landscapes.
                   <a href="/2014/05/using-additional-header-rows-for-metadata/" title="using-additional-header-rows-for-metadata" rel="bookmark">using-additional-header-rows-for-metadata</a>
                 </li>
                 
-                <li>
-                  <a href="/2014/05/reproducible-research-reports-using-emacs-orgmode-export-to-knitr/" title="reproducible-research-reports-using-emacs-orgmode-export-to-knitr" rel="bookmark">reproducible-research-reports-using-emacs-orgmode-export-to-knitr</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
-                <li><a href="/tag/morpho">morpho (7)</a></li>
+                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
-                <li><a href="/tag/bugs">bugs (1)</a></li>
+                <li><a href="/tag/morpho">morpho (7)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -821,11 +1031,11 @@ across broad global landscapes.
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
-          <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
+          <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

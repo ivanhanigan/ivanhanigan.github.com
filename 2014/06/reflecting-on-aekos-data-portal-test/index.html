@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - cwt-lter-data-submission-template-critique</title>
+    <title>Ivan Hanigan - reflecting-on-aekos-data-portal-test</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -46,7 +46,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
+    <a href="/2014/06/reflecting-on-aekos-data-portal-test/" title="reflecting-on-aekos-data-portal-test" rel="bookmark">reflecting-on-aekos-data-portal-test</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -58,51 +58,40 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>A colleague sent me the cwt_data_subm_template_2013.xls today</li>
-<li>You can download a copy here <a href="coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls">coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls</a></li>
-<li>LTER is The U.S. Long-Term Ecological Research (LTER) network</li>
-<li>I made the following notes, this is not intended to be a nasty critique</li>
-<li>The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches</li>
+<li>In <a href="/2014/06/testing-aekos-data-portal">my last post on AEKOS Dta Portal</a> I reported my test of the Australian Terrestrial Ecosystem Research Network (TERN) AEKOS Data Portal system implemented by Uni Adelaide's Eco-informatics Facility.</li>
+<li>I've reflected a bit on this process and I want to jot down some notes</li>
 </ul>
 
 
-<h4>Critique</h4>
+<h3>Database restore scripts are complicated and inhibit access</h3>
 
 <ul>
-<li>opened first on windows, saw comments on cells with instructions</li>
-<li>opened next on linux with libreOffice and comments are gone</li>
-<li>opened at the last tab (split in two for no reason?)</li>
-<li>noticed recommended name "GCE site" = Site, otherwise "permanent plot" =      Plot?</li>
-<li><a href="http://nsmn1.uh.edu/steve/research/gce/gce.htm">GCE = Georgia Coastal Ecosystems LTER program</a></li>
-<li>flip to first tab, point 4 suggests there is some export functionality I cannot see (a VBA script?)</li>
-<li>cell 11 a    NOTE: When submitting updated metadata or re-using templates please highlight fields with modified contents in yellow</li>
-<li>and use glitter pen???</li>
-<li>personnell tab OK</li>
-<li>instrumentation, variable measured is free text. ok but for eg "max temp", "temperature maxima", "maximum temperature (c)" "maximum temperature in 24 hours after 9am local time in degrees" etc</li>
-<li>too wide, last column was off my wide screen! noticed wasted real estate in column A</li>
-<li>tabular data "–  Paste or enter your data values into the 'Values' section (white cells), starting with the indicated cell"</li>
-<li>this is an invitation for clerical error! Too many "copy-and-paste" actions will inevtably introduce errors</li>
-<li>I do like the extra metadata Column Name:
--- Description:
--- Units:
--- Data type:
--- Variable type:
--- Number type:
--- Precision:
--- Code values:
--- Calculations:
--- QC: Minimum Valid:
--- QC: Minimum Expected:
--- QC: Maximum Expected:
--- QC: Maximum Valid:
--- QC: Custom:
-–  Fill in missing values in the table with NaN (not a number), including text fields, and do not skip columns</li>
-<li>but what about missing values imbued with other meanings (NA = not observed, censored etc)?</li>
-<li>ask users to format digit rounding in Excel?? oh no</li>
-<li>old excel users may still be restricted to 65,536 rows by 256 columns.</li>
-<li>non tabular sheet is ok</li>
+<li>I'd re-iterate my conclusion that I really like how this model emphasises the use of databases for data management (and postgres or mysql are great options)</li>
+<li>but for a less-technically savvy person or for a casual browser just looking for some quick data to play with this is not easy enough</li>
+<li>for a good description of alternative approaches see <a href="http://flowingdata.com/2014/06/10/how-to-make-government-data-sites-better/">http://flowingdata.com/2014/06/10/how-to-make-government-data-sites-better/</a> which is a good set of requests for simple and efficient access to data via Government portals in the USA</li>
+<li>I spoke with Squid and Matt the developers and they described the new enhancement they are working on now to provide a simple flat file download so that will be great.</li>
 </ul>
 
+
+<h3>Linking Exploratory Data Analyses back to metadata and source data documentation</h3>
+
+<ul>
+<li>In my normal mode of operating I spend more time reviewing the metadata and source data documentation before exploring data (much like the workflow described at <a href="http://simplystatistics.org/2014/06/13/what-i-do-when-i-get-a-new-data-set-as-told-through-tweets/">http://simplystatistics.org/2014/06/13/what-i-do-when-i-get-a-new-data-set-as-told-through-tweets/</a>, especially see Step 1: Learn about the elephant)</li>
+<li>but this time I just wanted to get some data out and so went full steam ahead like a bull at a gate</li>
+<li>Once I had <a href="/2014/06/testing-aekos-data-portal/#toc_12">my map visualisation done</a> I decided to go back to the documentation to read up a bit more on why these locations were studied and other contextual metadata</li>
+<li>But when I look in the zip I downloaded I investigated the citation.pdf and the tabledefinitions.pdf but these don't really have much in it for me to link back to the source of the data and the documentation I need</li>
+<li>See the citation link h ref="http://www.portal.aekos.org.au/" target="_blank"</li>
+<li>so hunting around the portal again I search for the survey name "Department of Environment, Water and Natural Resources, South Australia - Dalhousie Survey (Scientific Expedition Group)
+Survey"</li>
+<li>and got 10 hits, chose number 1</li>
+<li>skim-read of overview and scope. seems the link out from the overview/abstract is the most useful to get an overview</li>
+<li>moved on to methods and I really like the way the segments collapse and expand as you read them, but didn't like how I had to keep navigating back and forward with the browser (like between Study Location Selection Method and Study Location Visit Method, each time I went back I had to scroll to bottom of page to get to list of sections)</li>
+<li>Finally I got to explore the observation diagram and methods diagram which I have not seen before.  These seem like a great way to show the information and let people browse through the concepts etc...</li>
+<li>But I think I still prefer an old school document with a table of contents and some kind of index.</li>
+</ul>
+
+
+<p><img src="/images/aekos_obs_diagram.png" alt="aekos_obs_diagram.png" /></p>
 
     <div class="clear"></div>
   </div>
@@ -122,7 +111,7 @@
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Tue Jan 07 00:00:00 +1100 2014">07 Jan 2014</abbr>
+      <abbr class="published" title="Sun Jun 15 00:00:00 +1000 2014">15 Jun 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -136,7 +125,7 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2014/01/cwt-lter-data-submission-template-critique/";
+    var disqus_url = "http://ivanhanigan.github.com/2014/06/reflecting-on-aekos-data-portal-test/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

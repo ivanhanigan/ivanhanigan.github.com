@@ -56,6 +56,125 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/04/a-workaround-for-inserting-species-names-to-morpho/" title="A Workaround For Inserting Species Names To Morpho" rel="bookmark">A Workaround For Inserting Species Names To Morpho</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Morpho is a pretty minimal editor for EML really.  It gives you a set
+of generically useful data entry forms but sometimes a specific task
+is better achieved through edits made directly to the XML document.
+An example of this is inserting a large number of species names to the
+taxonomic coverage module. The form to include these requires
+individual data entry for each species.</p>
+
+<p><img src="/images/morpho-taxo-smll.png" alt="morpho-taxo.png" /></p>
+
+<p>Which looks like this when published</p>
+
+<p><img src="/images/morpho-taxo2.1.png" alt="morpho-taxo2.png" /></p>
+
+<p>Go to the morpho catalogue (found at ~/.morpho/profiles/hanigan/data/hanigan/) and take a look at how the XML is constructed.</p>
+
+<h4>XML Code:</h4>
+
+<pre><code>&lt;taxonomicCoverage&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Genus&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Dasycercus&lt;/taxonRankValue&gt;
+    &lt;taxonomicClassification&gt;
+      &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+      &lt;taxonRankValue&gt;cristicauda&lt;/taxonRankValue&gt;
+      &lt;commonName&gt;Mulgara&lt;/commonName&gt;
+    &lt;/taxonomicClassification&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Genus&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Homo&lt;/taxonRankValue&gt;
+      &lt;taxonomicClassification&gt;
+      &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+      &lt;taxonRankValue&gt;sapiens&lt;/taxonRankValue&gt;
+      &lt;commonName&gt;Modern Human&lt;/commonName&gt;
+    &lt;/taxonomicClassification&gt;
+  &lt;/taxonomicClassification&gt;
+&lt;/taxonomicCoverage&gt;
+</code></pre>
+
+<p></p>
+
+
+<h4>SO how to insert a large number of these</h4>
+
+<p>One could use the taxon import feature to import the details from a
+file if there is a large list. Morpho’s taxon import feature does not
+correctly import more than one column of taxon data so if you have
+Genus and Species to enter you will actually need to combine Genus and
+Species into a binomial Species rank in one column (beware that if the data are sourced from a datafile that uses the underscore to seperate the words then these will not be correctly imported).</p>
+
+<p>Once you have formated your input list, then import this
+as a new data table and go to the taxonomic coverage form under the
+documentation menu.  Click on the option to "import taxon information
+from data table" and select the appropriate column, selecting
+'species' for the class.  This will populate the taxonomicCoverage module in the EML.  You can now remove that data table from the package to be tidy.</p>
+
+<p>This is what it looks like if you combine genus and species in the single column.</p>
+
+<p><img src="/images/morpho-taxo3.png" alt="morpho-taxo3.png" /></p>
+
+<p>And here is the XML</p>
+
+<h4>XML Code:</h4>
+
+<pre><code>&lt;taxonomicCoverage scope="document"&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abelmoschus moschatus&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abrus pector&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+  &lt;taxonomicClassification&gt;
+    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
+    &lt;taxonRankValue&gt;Abrus precatorius&lt;/taxonRankValue&gt;
+  &lt;/taxonomicClassification&gt;
+</code></pre>
+
+<p></p>
+
+
+<h4>Morpho has problems subsequently editing a very long list</h4>
+
+<p>We found that if a very large amount of taxonomic information is entered into Morpho
+we had issues modifying it. When you click on Documentation >
+Taxonomic Coverage to try and go in and edit nothing will
+happen. Morpho crashes when trying to open the Taxonomic Coverage
+because the list is long enough to cause “Out of Memory” error with
+the default configuration of Java heap space. It is a Morpho bug. The
+workaround is to edit the XML file manually.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/04/a-workaround-for-inserting-species-names-to-morpho/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Apr 20 00:00:00 +1000 2014">20 Apr 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/04/what-is-this-open-notebook-and-why-am-i-doing-it/" title="What is this Open Notebook? And Why Am I Doing It?" rel="bookmark">What is this Open Notebook? And Why Am I Doing It?</a>
     </h1>
     <div class="entry-content full-content">
@@ -525,92 +644,6 @@ as.yearmon("Apr-2012")
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/02/gantting-like-a-hacker/" title="gantting-like-a-hacker" rel="bookmark">gantting-like-a-hacker</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h3>Background</h3>
-
-<ul>
-<li><a href="http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html">"Blogging like a Hacker"</a> has become a paradigm for programmers who want to link their code to their blogs.</li>
-<li>I've followed this paradigm for a while to support my scientific projects, enhancing their transparency and reproducibility.</li>
-<li>I've started a new project where I need to also manage project management and planning (following <a href="http://medepi.com/2012/02/05/project-mgmt/">Tomas Aragon's tutorial</a>)</li>
-<li>I propose that the same methods I use in scientific programming and blogging like a hacker can be used in "Gantting like a Hacker"</li>
-<li>The title for this post is also influenced by the poste over at <a href="http://blog.geekmanager.co.uk/2007/05/02/using-the-best-plan-format/">Geek | Manager</a>.</li>
-<li>That post says taht "Premature Gannting" is the act of making a "huge Gantt chart (often in MS Project)."</li>
-<li>Gannting like a Hacker is doing this in a scripted environment, without relying on closed-source proprietry software such as the Windoze options.</li>
-<li>The community of bloggers (mostly geeks) who are following a style of blogging that originated with the invention of Jekyll, <a href="http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html">unveiled in this post by Tom Preston-Werner</a>; GitHub’s co-founder (aka mojombo).</li>
-<li>This experiment uses Taskjuggler and Emacs Orgmode</li>
-</ul>
-
-
-<h3>Materials and Methods</h3>
-
-<ul>
-<li>Use Ubuntu 12.04 Long Term Support (LTS)</li>
-<li>with Ruby</li>
-</ul>
-
-
-<h4>Code:install task juggler</h4>
-
-<pre><code>gem install taskjuggler
-</code></pre>
-
-<p></p>
-
-
-<h3>Gantt charts with Emacs Orgmode</h3>
-
-<ul>
-<li>I'm using an Emacs tool to use TaskJuggler to handle the task scheduling and creation of Gantt chart suitable for <a href="http://orgmode.org/worg/org-tutorials/org-taskjuggler.html">a Pointy-haired Boss</a>.</li>
-<li>I hated using the Orgmode script to compile the parts of the Gantt chart so I wrote <a href="https://raw.github.com/ivanhanigan/disentangle/gh-pages/gantt-tj3/gantt-tj3-build.R">this R script</a> to convert a spreadsheet into an Orgmode script</li>
-<li>the spreadsheet is organised in a fairly simple way shown below.</li>
-</ul>
-
-
-<p><img src="/images/gantt-chart-sheet.png" alt="alttext" /></p>
-
-<h3>Results</h3>
-
-<ul>
-<li>and executing my script will convert this into a Emacs orgmode file that will export to a taskjuggler file (use C-c C-e j) and viola!</li>
-</ul>
-
-
-<p><img src="/images/gantt-chart.png" alt="alttext" /></p>
-
-<h3>Conclusions</h3>
-
-<ul>
-<li>This simplifies the Orgmode taskjuggler creation</li>
-<li>A drawback is that it has to go through the Emacs export function.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/02/gantting-like-a-hacker/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Sat Feb 22 00:00:00 +1100 2014">22 Feb 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -666,33 +699,35 @@ as.yearmon("Apr-2012")
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/data documentation">data documentation (1)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
                 <li><a href="/categories/research methods">research methods (44)</a></li>
                 
+                <li><a href="/categories/overview">overview (7)</a></li>
+                
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
-                
-                <li><a href="/categories/overview">overview (7)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (27)</a></li>
-                
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (29)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/06/reflecting-on-aekos-data-portal-test/" title="reflecting-on-aekos-data-portal-test" rel="bookmark">reflecting-on-aekos-data-portal-test</a>
+                </li>
                 
                 <li>
                   <a href="/2014/06/my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it/" title="my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it" rel="bookmark">my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it</a>
@@ -710,19 +745,15 @@ as.yearmon("Apr-2012")
                   <a href="/2014/05/using-additional-header-rows-for-metadata/" title="using-additional-header-rows-for-metadata" rel="bookmark">using-additional-header-rows-for-metadata</a>
                 </li>
                 
-                <li>
-                  <a href="/2014/05/reproducible-research-reports-using-emacs-orgmode-export-to-knitr/" title="reproducible-research-reports-using-emacs-orgmode-export-to-knitr" rel="bookmark">reproducible-research-reports-using-emacs-orgmode-export-to-knitr</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
-                <li><a href="/tag/morpho">morpho (7)</a></li>
+                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
-                <li><a href="/tag/bugs">bugs (1)</a></li>
+                <li><a href="/tag/morpho">morpho (7)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -733,11 +764,11 @@ as.yearmon("Apr-2012")
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
-          <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
+          <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

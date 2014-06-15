@@ -6,6 +6,48 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>reflecting-on-aekos-data-portal-test</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;In &lt;a href=&quot;/2014/06/testing-aekos-data-portal&quot;&gt;my last post on AEKOS Dta Portal&lt;/a&gt; I reported my test of the Australian Terrestrial Ecosystem Research Network (TERN) AEKOS Data Portal system implemented by Uni Adelaide's Eco-informatics Facility.&lt;/li&gt;
+&lt;li&gt;I've reflected a bit on this process and I want to jot down some notes&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Database restore scripts are complicated and inhibit access&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I'd re-iterate my conclusion that I really like how this model emphasises the use of databases for data management (and postgres or mysql are great options)&lt;/li&gt;
+&lt;li&gt;but for a less-technically savvy person or for a casual browser just looking for some quick data to play with this is not easy enough&lt;/li&gt;
+&lt;li&gt;for a good description of alternative approaches see &lt;a href=&quot;http://flowingdata.com/2014/06/10/how-to-make-government-data-sites-better/&quot;&gt;http://flowingdata.com/2014/06/10/how-to-make-government-data-sites-better/&lt;/a&gt; which is a good set of requests for simple and efficient access to data via Government portals in the USA&lt;/li&gt;
+&lt;li&gt;I spoke with Squid and Matt the developers and they described the new enhancement they are working on now to provide a simple flat file download so that will be great.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Linking Exploratory Data Analyses back to metadata and source data documentation&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;In my normal mode of operating I spend more time reviewing the metadata and source data documentation before exploring data (much like the workflow described at &lt;a href=&quot;http://simplystatistics.org/2014/06/13/what-i-do-when-i-get-a-new-data-set-as-told-through-tweets/&quot;&gt;http://simplystatistics.org/2014/06/13/what-i-do-when-i-get-a-new-data-set-as-told-through-tweets/&lt;/a&gt;, especially see Step 1: Learn about the elephant)&lt;/li&gt;
+&lt;li&gt;but this time I just wanted to get some data out and so went full steam ahead like a bull at a gate&lt;/li&gt;
+&lt;li&gt;Once I had &lt;a href=&quot;/2014/06/testing-aekos-data-portal/#toc_12&quot;&gt;my map visualisation done&lt;/a&gt; I decided to go back to the documentation to read up a bit more on why these locations were studied and other contextual metadata&lt;/li&gt;
+&lt;li&gt;But when I look in the zip I downloaded I investigated the citation.pdf and the tabledefinitions.pdf but these don't really have much in it for me to link back to the source of the data and the documentation I need&lt;/li&gt;
+&lt;li&gt;See the citation link h ref=&quot;http://www.portal.aekos.org.au/&quot; target=&quot;_blank&quot;&lt;/li&gt;
+&lt;li&gt;so hunting around the portal again I search for the survey name &quot;Department of Environment, Water and Natural Resources, South Australia - Dalhousie Survey (Scientific Expedition Group)
+Survey&quot;&lt;/li&gt;
+&lt;li&gt;and got 10 hits, chose number 1&lt;/li&gt;
+&lt;li&gt;skim-read of overview and scope. seems the link out from the overview/abstract is the most useful to get an overview&lt;/li&gt;
+&lt;li&gt;moved on to methods and I really like the way the segments collapse and expand as you read them, but didn't like how I had to keep navigating back and forward with the browser (like between Study Location Selection Method and Study Location Visit Method, each time I went back I had to scroll to bottom of page to get to list of sections)&lt;/li&gt;
+&lt;li&gt;Finally I got to explore the observation diagram and methods diagram which I have not seen before.  These seem like a great way to show the information and let people browse through the concepts etc...&lt;/li&gt;
+&lt;li&gt;But I think I still prefer an old school document with a table of contents and some kind of index.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/aekos_obs_diagram.png&quot; alt=&quot;aekos_obs_diagram.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>Sun Jun 15 00:00:00 +1000 2014</published>
+				<link>http://schamberlain.github.com/2014/06/reflecting-on-aekos-data-portal-test/</link>
+			</item>
+		
+			<item>
 				<title>my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;I am not sure but I suspect &lt;a href=&quot;http://ivanhanigan.github.com/2014/05/using-additional-header-rows-for-metadata.html&quot;&gt;this post&lt;/a&gt; caused my feedburner xml to become too big and stop the updates to my feedly account&lt;/li&gt;
@@ -1407,95 +1449,6 @@ write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names =
 </description>
 				<published>Tue Apr 29 00:00:00 +1000 2014</published>
 				<link>http://schamberlain.github.com/2014/04/workaround-for-installing-morpho-on-a-windows-network/</link>
-			</item>
-		
-			<item>
-				<title>using-r-eml-to-input-large-numbers-of-variables-part-2</title>
-				<description>&lt;p&gt;In my &lt;a href=&quot;/2014/04/using-reml-to-input-large-number-of-column-descriptions&quot;&gt;previous post&lt;/a&gt; I showed a workaround to input large number of variabels than Morpho could handle.  I have found out an interesting thing about the R EML package data.set approach.  The unit.defs depends on the type of the column in the data frame (R knows if you try to trick it).  Rather than describe all the levels of the factor vars, I wanted to just have simple descriptions for numeric or character type columns.  If numeric it should be number and if character it can be the name of the column.  Because I am just trying to sidestep the issue with morpho failing to input the 200 plus variables I just need to create a dataframe with either number or character (not factor).&lt;/p&gt;
-
-&lt;p&gt;For an example:&lt;/p&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(EML)
-fname &amp;lt;- dir(&quot;myData&quot;, full.names=T, pattern = 'csv')
-fname
-fname  &amp;lt;- &quot;myData/paper_data.csv&quot;  
-dat  &amp;lt;- read.csv(fname, stringsAsFactor=F)
-# the variable names include special characters such as % and [ so need to do some extra work
-names_dat  &amp;lt;- read.csv(fname, nrow=1, header=F, stringsAsFactor=F)
-names(dat) &amp;lt;- names_dat
-head(dat)
-nrow(dat)
-# the first 46 variables are nominal, thereafter they are all numeric
-str(dat[,1:46])
-str(dat[,47:49])
-# but these numerics are character for some reason
-table(dat[ , 47])
-# it is because the raw data had * instead of NA...  I could use na.strings when I call read.table above, or deal with it here
-# I'll just convert them to numerics now
-dat1 &amp;lt;- dat[,1:46]
-dat2 &amp;lt;- dat[,47:ncol(dat)]
-dat2[dat2 == &quot;*&quot;] &amp;lt;- NA
-for(i in 1:ncol(dat2)){
-  dat2[,i]  &amp;lt;- as.numeric(dat2[ , i])
-}
-str(dat2)
-# good that has set them up properly, also make sure all the text are character type
-for(i in 1:ncol(dat1)){
-  dat1[,i]  &amp;lt;- as.character(dat1[ , i])
-}
-# recombine
-dat &amp;lt;- cbind(dat1,dat2)
-str(dat)
-# then I add to it the definition for the constructed variables
-unit_defs &amp;lt;- list()
-for(i in 1:46){
-    unit_defs[[i]] &amp;lt;- names(dat[i])
-}
-for(i in 47:ncol(dat)){
-    unit_defs[[i]] &amp;lt;- &quot;number&quot;
-}
-unit_defs[1:20]
-col_defs &amp;lt;- names(dat)
-col_defs
-#names(dat)
-dat &amp;lt;- data.set(dat,
-               col.defs = col_defs,
-               unit.defs = unit_defs
-               )
-str(dat)
-
-eml_config(creator=&quot;Ivan Charles Hanigan &amp;lt;ivan.hanigan@gmail.com&amp;gt;&quot;)
-dir()
-oldwd &amp;lt;- getwd()
-setwd(&quot;myData&quot;)
-eml_write(dat, file = &quot;test_eml.xml&quot;, title = &quot;test_eml&quot;)
-setwd(oldwd)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h3&gt;Use Morpho to tidy up the Results&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The result can be imported to Morpho and then edited from there&lt;/li&gt;
-&lt;li&gt;or you can use a code editor like emacs or notepad++ to do bulk find-and-replace operations to fix up issues&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Morpho failed with 200 plus variables&lt;/li&gt;
-&lt;li&gt;the R EML package succeeded to write the file&lt;/li&gt;
-&lt;li&gt;I needed to pay careful attention to the type of the variables in the data.frame before running the R EML functions&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Tue Apr 29 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/</link>
 			</item>
 		
 	</channel>
