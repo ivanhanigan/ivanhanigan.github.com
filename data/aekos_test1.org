@@ -5,170 +5,6 @@
 #+LaTeX_CLASS_OPTIONS: [a4paper]
 #+LATEX: \tableofcontents
 -----
-* COMMENT expose via github
-just copy the most mature version to 
-*** COMMENT mv-code
-#+name:mv
-#+begin_src sh :session *shell* :exports none :eval yes
-cp aekos_test1.org /home/ivan_hanigan/projects/ivanhanigan.github.com.raw/data/aekos_test1.org
-#+end_src
-
-#+RESULTS: mv
-
-* COMMENT go
-#+name:go
-#+begin_src R :session *R* :tangle no :exports none :eval yes
-  #### name:go####
-  
-  require(knitr)
-  require(markdown)
-  knit2html('aekos_test1.Rmd', options = c('toc', markdown::markdownHTMLOptions(TRUE)), stylesheet='custom.css')
- dbDisconnect(ch)
-#+end_src
-
-#+RESULTS: go
-: TRUE
-
-* custom.css-code
-#+name:custom.css
-#+begin_src text :tangle custom.css :exports none :eval no :padline no
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 12px;
-   margin: 8px;
-}
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
-}
-
-h1 { 
-   font-size:2.2em; 
-}
-
-h2 { 
-   font-size:1.8em; 
-}
-
-h3 { 
-   font-size:1.4em; 
-}
-
-h4 { 
-   font-size:1.0em; 
-}
-
-h5 { 
-   font-size:0.9em; 
-}
-
-h6 { 
-   font-size:0.8em; 
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre {   
-   margin-top: 0;
-   max-width: 95%;
-   border: 1px solid #ccc;
-   white-space: pre-wrap;
-}
-
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code.r, code.cpp {
-   background-color: #F8F8F8;
-}
-
-table {
-   max-width: 95%;
-   border: 1px solid #ccc;
-   width: 1000px;
-}
- 
-th {
-  background-color: #000000;
-  color: #ffffff;
-}
- 
-td {
-  background-color: #dcdcdc;
-}
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
-}
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
-}
-
-@media print {
-   * { 
-      background: transparent !important; 
-      color: black !important; 
-      filter:none !important; 
-      -ms-filter: none !important; 
-   }
-
-   body { 
-      font-size:12pt; 
-      max-width:100%; 
-   }
-       
-   a, a:visited { 
-      text-decoration: underline; 
-   }
-
-   hr { 
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote { 
-      padding-right: 1em; 
-      page-break-inside: avoid; 
-   }
-
-   tr, img { 
-      page-break-inside: avoid; 
-   }
-
-   img { 
-      max-width: 100% !important; 
-   }
-
-   @page :left { 
-      margin: 15mm 20mm 15mm 10mm; 
-   }
-     
-   @page :right { 
-      margin: 15mm 10mm 15mm 20mm; 
-   }
-
-   p, h2, h3 { 
-      orphans: 3; widows: 3; 
-   }
-
-   h2, h3 { 
-      page-break-after: avoid; 
-   }
-}
-
-#+end_src
 
 * intro
 #+begin_src R :session shell :tangle aekos_test1.Rmd :exports none :eval no :padline no
@@ -389,10 +225,6 @@ hr {
   pts  <- dbGetQuery(ch, paste("select * from ", tbl))
   # str(pts)
   # t(pts[1,])
-    dat <- dbGetQuery(ch,
-    "select *
-  
-    )
   
   pts <- dbGetQuery(ch,
   "select tb1._pk_id as id, namewithoutauthorship, x, y, tb4.name
@@ -439,7 +271,6 @@ hr {
   ![spatialpoint_species_counts.png](spatialpoint_species_counts.png)
   
 #+end_src
-
 * Conclusions
 *** COMMENT aekos_test1-code
 #+name:aekos_test1
@@ -449,5 +280,168 @@ hr {
 - I really like how this model emphasises the use of databases for data management (and postgres or mysql are great options)
 - I think the instructions for the load process are good but with typos makes it difficult
 - for a casual browser this is not so much fun
+
+#+end_src
+* COMMENT go
+#+name:go
+#+begin_src R :session *R* :tangle no :exports none :eval yes
+  #### name:go####
+  
+  require(knitr)
+  require(markdown)
+  knit2html('aekos_test1.Rmd', options = c('toc', markdown::markdownHTMLOptions(TRUE)), stylesheet='custom.css')
+ dbDisconnect(ch)
+#+end_src
+
+#+RESULTS: go
+: TRUE
+* COMMENT expose via github
+just copy the most mature version to 
+*** COMMENT mv-code
+#+name:mv
+#+begin_src sh :session *shell* :exports none :eval yes
+cp aekos_test1.org /home/ivan_hanigan/projects/ivanhanigan.github.com.raw/data/aekos_test1.org
+#+end_src
+
+#+RESULTS: mv
+
+* custom.css-code
+#+name:custom.css
+#+begin_src text :tangle custom.css :exports none :eval no :padline no
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {   
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table {
+   max-width: 95%;
+   border: 1px solid #ccc;
+   width: 1000px;
+}
+ 
+th {
+  background-color: #000000;
+  color: #ffffff;
+}
+ 
+td {
+  background-color: #dcdcdc;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
 
 #+end_src
