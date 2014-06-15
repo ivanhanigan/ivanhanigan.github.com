@@ -56,6 +56,152 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>In 2011 we published a paper on "Creating an integrated historical record of extreme particulate air pollution events in australian cities from 1994 to 2007".</li>
+<li>I used a PostGIS/PostgreSQL server to host the database and MS Access clients for data entry by my co-author's at their own institutions (thousands of kms away)</li>
+<li>This worked great but recently I realised that updating to windows 64 bit has broken the ODBC connection</li>
+<li>to fix it I followed the instructions <a href="http://www.youlikeprogramming.com/2011/09/postgresql-and-odbc-in-64-bit-windows/">here</a></li>
+<li>You need to install both the 32 and 64 bit executables</li>
+<li>Assuming you use the 32 bit windows office suite (recommended) then use the command below to open the ODBC connections tool and add a DSN for your postgres database</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code>Go to Start -&gt; Run (or Press Windows+R keys) and enter 
+%WINDIR%\SysWOW64\odbcad32.exe
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>On either the User DSN (DSNs available for only that user) or System DSN (DSNs available to every user) tab, click the Add button.
+Scroll down the list and find the PostgreSQL ODBC Driver.</li>
+<li>You may select ANSI or UNICODE (For future support I personally prefer UNICODE), and click Finish.</li>
+<li>Data Source refers to the programmable name of the DSN Entry. Stick to lower-case letters and underscores. Ex: psql_server</li>
+<li>Specify the Database, Server, User Name and Password to your PostgreSQL server.</li>
+<li>Click the Test button to ensure everything has been specified correctly.</li>
+<li>Click the Save button to create the DSN.</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/05/ms-access-to-postgresql-in-64-bit-windows/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sat May 10 00:00:00 +1000 2014">10 May 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I recently reviewed a tool for collecting metadata about Long Term Ecological Resarch (LTER) data</li>
+<li>it is just an Excel spreadsheet called cwt_data_subm_template_2013.xls</li>
+<li>You can download a copy here <a href="http://www.coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls">www.coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls</a></li>
+<li>LTER is The U.S. Long-Term Ecological Research (LTER) network</li>
+<li>I made the following notes, this is not intended to be a nasty critique</li>
+<li>The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches</li>
+</ul>
+
+
+<h4>Critique</h4>
+
+<ul>
+<li>opened first on windows, saw comments on cells with instructions</li>
+<li>opened next on linux with libreOffice and comments are gone</li>
+<li>opened at the last tab (split in two for no reason?)</li>
+<li>noticed recommended name "GCE site" = Site, otherwise "permanent plot" =      Plot?</li>
+<li><a href="http://nsmn1.uh.edu/steve/research/gce/gce.htm">GCE = Georgia Coastal Ecosystems LTER program</a></li>
+<li>flip to first tab, point 4 suggests there is some export functionality I cannot see (a VBA script?)</li>
+<li>cell 11 a    NOTE: When submitting updated metadata or re-using templates please highlight fields with modified contents in yellow</li>
+<li>and use glitter pen??? (See this great post <a href="http://practicaldatamanagement.wordpress.com/2013/12/16/excel-is-not-your-lab-notebook/">called excel-is-not-your-lab-notebook!</a></li>
+<li>personnell tab OK</li>
+<li>instrumentation, variable measured is free text. ok but for eg "max temp", "temperature maxima", "maximum temperature (c)" "maximum temperature in 24 hours after 9am local time in degrees" etc</li>
+<li>too wide, last column was off my wide screen! noticed wasted real estate in column A</li>
+</ul>
+
+
+<h4>Moving on to the  tabular data sheet</h4>
+
+<ul>
+<li>I don't like this "–  Paste or enter your data values into the 'Values' section (white cells), starting with the indicated cell"</li>
+<li>this is an invitation for clerical error! Too many "copy-and-paste" actions will inevtably introduce errors</li>
+</ul>
+
+
+<p>I do like the extra metadata Column Name:</p>
+
+<ul>
+<li>Description:</li>
+<li>Units:</li>
+<li>Data type:</li>
+<li>Variable type:</li>
+<li>Number type:</li>
+<li>Precision:</li>
+<li>Code values:</li>
+<li>Calculations:</li>
+<li>QC: Minimum Valid:</li>
+<li>QC: Minimum Expected:</li>
+<li>QC: Maximum Expected:</li>
+<li>QC: Maximum Valid:</li>
+<li>QC: Custom:</li>
+</ul>
+
+
+<h4>Other issues:</h4>
+
+<p>– Fill in missing values in the table with NaN (not a number), including text fields, and do not skip columns
+- but what about missing values imbued with other meanings (NA = not observed, censored etc)?
+- ask users to format digit rounding in Excel?? oh no
+- old excel users may still be restricted to 65,536 rows by 256 columns.
+- non tabular sheet is ok</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/05/cwt-lter-data-submission-template-critique/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Fri May 09 00:00:00 +1000 2014">09 May 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
     </h1>
     <div class="entry-content full-content">
@@ -320,402 +466,6 @@ setwd(oldwd)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I realised that the work I did yesterday had an error in it.  I'd
-created a list of unit.defs with one less than I needed.  So the
-variable V100 was given the definition of NA!  I can fix this by open
-that package in Morpho and go to the column and select it, then under
-the Data menu, choose Edit Column Documentation.  There we can change
-all the definitions.  Now I start thinking about changing the type
-from count to ArealDensity, numberPerMeterSquared.  To change all
-these new variables I don't want to go thru the GUI 95 times!  Change
-the first one and then look at the EML</p>
-
-<h4>EML Code:</h4>
-
-<pre><code>&lt;attribute id="1398382425052"&gt;
-  &lt;attributeName&gt;V99&lt;/attributeName&gt;
-  &lt;attributeDefinition&gt;count stuff&lt;/attributeDefinition&gt;
-  &lt;measurementScale&gt;
-    &lt;ratio&gt;
-      &lt;unit&gt;&lt;standardUnit&gt;number&lt;/standardUnit&gt;&lt;/unit&gt;
-      &lt;numericDomain&gt;&lt;numberType&gt;real&lt;/numberType&gt;&lt;/numericDomain&gt;
-    &lt;/ratio&gt;
-  &lt;/measurementScale&gt;
-&lt;/attribute&gt;
-&lt;attribute id="1398382385863"&gt;
-  &lt;attributeName&gt;V100&lt;/attributeName&gt;
-  &lt;attributeDefinition&gt;A random variable&lt;/attributeDefinition&gt;
-  &lt;measurementScale&gt;
-    &lt;ratio&gt;
-      &lt;unit&gt;&lt;standardUnit&gt;numberPerMeterSquared&lt;/standardUnit&gt;&lt;/unit&gt;
-      &lt;numericDomain&gt;&lt;numberType&gt;real&lt;/numberType&gt;&lt;/numericDomain&gt;
-    &lt;/ratio&gt;
-  &lt;/measurementScale&gt;
-&lt;/attribute&gt;
-</code></pre>
-
-<p></p>
-
-
-<p>So this looks like I can do a find and replace in Emacs so go to the
-"~/.morpho" database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.</p>
-
-<h4>Code:</h4>
-
-<pre><code>&lt;standardUnit&gt;number&lt;
-to
-&lt;standardUnit&gt;numberPerMeterSquared&lt;
-</code></pre>
-
-<p></p>
-
-
-<p>Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.</p>
-
-<p><img src="/images/morpho-wide3.png" alt="morpho-wide3.png" /></p>
-
-<h2>Conclusions</h2>
-
-<ul>
-<li>Morpho and a code editor can be used in conjunction to edit EML quite well</li>
-<li>I suspect edits to the EML directly with a code editor are pretty dangerous</li>
-<li>For eg if you do the wrong change then that EML will likely not be valid and Morpho will complain.</li>
-<li>But the advantage of quickly modifying things like 100 variables unit definitions rather than opening every one in the GUI seems to be a worthwhile risk to me.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Fri Apr 25 00:00:00 +1000 2014">25 Apr 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions/" title="Using Reml To Input Large Number Of Column Descriptions" rel="bookmark">Using Reml To Input Large Number Of Column Descriptions</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting "save for later" but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.</p>
-
-<p>So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.</p>
-
-<p>First thing I tried was the constructed Column Definitions and Unit Definitions example from <a href="https://github.com/ropensci/EML">the README</a></p>
-
-<h4>R Code:</h4>
-
-<pre><code>#require(devtools)
-#install_github("EML", "ROpenSci")
-require(EML)
-
-# The example from orig doco
-dat = data.set(river = c("SAC",  "SAC",   "AM"),
-               spp   = c("king",  "king", "ccho"),
-               stg   = c("smolt", "parr", "smolt"),
-               ct    = c(293L,    410L,    210L),
-               col.defs = c("River site used for collection",
-                            "Species common name",
-                            "Life Stage",
-                            "count of live fish in traps"),
-               unit.defs = list(c(SAC = "The Sacramento River",
-                                  AM = "The American River"),
-                                c(king = "King Salmon",
-                                  ccho = "Coho Salmon"),
-                                c(parr = "third life stage",
-                                  smolt = "fourth life stage"),
-                                "number"))
-str(dat)
-eml_config(creator="Carl Boettiger &lt;cboettig@gmail.com&gt;")
-eml_write(dat, file = "inst/doc/EML_example.xml")
-# now you can import this to morpho and have a look
-# note that for morpho 1.8 it wants to change the EML version from 2.1.1 to 2.1.0
-# and it can't show the data yet
-# so what we need to do is write this as a file to the morpho database
-# save and close, note which number it assigned
-dat &lt;- data.frame(dat)
-morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
-maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
-filename &lt;- file.path(morpho_db,maxid)
-# what is the number?
-filename
-write.csv(dat, filename, row.names =F, quote=F)
-</code></pre>
-
-<p></p>
-
-
-<p>So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.</p>
-
-<h4>EML Code:</h4>
-
-<pre><code>...
-&lt;/dataFormat&gt;
-&lt;distribution scope="document"&gt; &lt;online&gt; &lt;url function="download"&gt;ecogrid://knb/hanigan.22.1&lt;/url&gt;
-&lt;/online&gt;
-&lt;access authSystem="knb" order="denyFirst"&gt;&lt;allow&gt;&lt;principal&gt;uid=datalibrarian,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
-&lt;permission&gt;all&lt;/permission&gt;
-&lt;/allow&gt;
-&lt;allow&gt;&lt;principal&gt;uid=hanigan,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
-&lt;permission&gt;read&lt;/permission&gt;
-&lt;/allow&gt;
-&lt;/access&gt;
-&lt;/distribution&gt;
-&lt;/physical&gt;
-...
-</code></pre>
-
-<p></p>
-
-
-<p>Which seems to have worked when we open it up again:</p>
-
-<p><img src="/images/morpho-wide1.png" alt="moprho-wide1.png" /></p>
-
-<p>So now let;s try a large nuber of variables:</p>
-
-<h4>R Code:</h4>
-
-<pre><code># add lots of cols
-for(i in 5:100){
-  dat[,i] &lt;-  sample(rnorm(100,1,2), 3)
-}
-str(dat)
-##  $ V95  : num  1.5708 -0.0936 2.2324
-##  $ V96  : num  1.79 5.4 1.62
-##  $ V97  : num  -1.141 0.653 5.365
-##  $ V98  : num  1.738 -1.046 -0.135
-##  $ V99  : num  3.6 -0.738 -1.877
-##   [list output truncated]
-
-# firstly I make a liset of the unit definitions for the example
-unit.defs &lt;- list(c(SAC = "The Sacramento River",
-                   AM = "The American River"),
-                 c(king = "King Salmon",
-                   ccho = "Coho Salmon"),
-                 c(parr = "third life stage",
-                   smolt = "fourth life stage"))
-# then I add to it the definition for the constructed variables
-unit.defs[[3]]
-for(i in 4:100){
-  unit.defs[[i]] &lt;- "number"
-}
-unit.defs
-
-# and this can be passed to the data.set constructor
-dat &lt;- data.set(dat,
-               col.defs = c("River site used for collection",
-                            "Species common name",
-                            "Life Stage",
-                            "count of live fish in traps",
-                           c(rep("count stuff", 95))),
-                unit.defs = unit.defs
-                )
-str(dat)
-
-eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
-eml_write(dat, file = "inst/doc/EML_example_wide.xml")
-# import to morpho, save and close
-# create the dataset for morphos database
-dat &lt;- data.frame(dat)
-morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
-maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
-filename &lt;- file.path(morpho_db,maxid)
-# what is the number?
-filename
-write.csv(dat, filename, row.names =F, quote=F)
-# now add this into the EML morpho has created (25.2 in my case)
-</code></pre>
-
-<p></p>
-
-
-<p>Which now seems to have attached the variable defintions and dataTable adequately.</p>
-
-<h2><img src="/images/morpho-wide2.png" alt="morpho-wide2.png" /></h2>
-
-<p>name: using-reml-to-input-large-number-of-column-descriptions
-layout: post
-title: Using Reml To Input Large Number Of Column Descriptions
-date: 2014-04-24
-categories:</p>
-
-<h2>- Data Documentation</h2>
-
-<p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting "save for later" but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.</p>
-
-<p>So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.</p>
-
-<p>First thing I tried was the constructed Column Definitions and Unit Definitions example from <a href="https://github.com/ropensci/EML">the README</a></p>
-
-<h4>R Code:</h4>
-
-<pre><code>#require(devtools)
-#install_github("EML", "ROpenSci")
-require(EML)
-
-# The example from orig doco
-dat = data.set(river = c("SAC",  "SAC",   "AM"),
-               spp   = c("king",  "king", "ccho"),
-               stg   = c("smolt", "parr", "smolt"),
-               ct    = c(293L,    410L,    210L),
-               col.defs = c("River site used for collection",
-                            "Species common name",
-                            "Life Stage",
-                            "count of live fish in traps"),
-               unit.defs = list(c(SAC = "The Sacramento River",
-                                  AM = "The American River"),
-                                c(king = "King Salmon",
-                                  ccho = "Coho Salmon"),
-                                c(parr = "third life stage",
-                                  smolt = "fourth life stage"),
-                                "number"))
-str(dat)
-eml_config(creator="Carl Boettiger &lt;cboettig@gmail.com&gt;")
-eml_write(dat, file = "inst/doc/EML_example.xml")
-# now you can import this to morpho and have a look
-# note that for morpho 1.8 it wants to change the EML version from 2.1.1 to 2.1.0
-# and it can't show the data yet
-# so what we need to do is write this as a file to the morpho database
-# save and close, note which number it assigned
-dat &lt;- data.frame(dat)
-morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
-maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
-filename &lt;- file.path(morpho_db,maxid)
-# what is the number?
-filename
-write.csv(dat, filename, row.names =F, quote=F)
-</code></pre>
-
-<p></p>
-
-
-<p>So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.</p>
-
-<h4>EML Code:</h4>
-
-<pre><code>...
-&lt;/dataFormat&gt;
-&lt;distribution scope="document"&gt; &lt;online&gt; &lt;url function="download"&gt;ecogrid://knb/hanigan.22.1&lt;/url&gt;
-&lt;/online&gt;
-&lt;access authSystem="knb" order="denyFirst"&gt;&lt;allow&gt;&lt;principal&gt;uid=datalibrarian,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
-&lt;permission&gt;all&lt;/permission&gt;
-&lt;/allow&gt;
-&lt;allow&gt;&lt;principal&gt;uid=hanigan,o=unaffiliated,dc=ecoinformatics,dc=org&lt;/principal&gt;
-&lt;permission&gt;read&lt;/permission&gt;
-&lt;/allow&gt;
-&lt;/access&gt;
-&lt;/distribution&gt;
-&lt;/physical&gt;
-...
-</code></pre>
-
-<p></p>
-
-
-<p>Which seems to have worked when we open it up again:</p>
-
-<p><img src="/images/morpho-wide1.png" alt="moprho-wide1.png" /></p>
-
-<p>So now let;s try a large nuber of variables:</p>
-
-<h4>R Code:</h4>
-
-<pre><code># add lots of cols
-for(i in 5:100){
-  dat[,i] &lt;-  sample(rnorm(100,1,2), 3)
-}
-str(dat)
-##  $ V95  : num  1.5708 -0.0936 2.2324
-##  $ V96  : num  1.79 5.4 1.62
-##  $ V97  : num  -1.141 0.653 5.365
-##  $ V98  : num  1.738 -1.046 -0.135
-##  $ V99  : num  3.6 -0.738 -1.877
-##   [list output truncated]
-               unit.defs = list(c(SAC = "The Sacramento River",
-                                  AM = "The American River"),
-                                c(king = "King Salmon",
-                                  ccho = "Coho Salmon"),
-                                c(parr = "third life stage",
-                                  smolt = "fourth life stage"))
-unit.defs[[3]]
-for(i in 4:100){
-unit.defs[[i]] &lt;- "number"
-}
-unit.defs
-dat = data.set(dat,
-               col.defs = c("River site used for collection",
-                            "Species common name",
-                            "Life Stage",
-                            "count of live fish in traps",
-c(rep("count stuff", 95))
-                 ),
-unit.defs = unit.defs
-
-  )
-str(dat)
-
-eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
-eml_write(dat, file = "inst/doc/EML_example_wide.xml")
-# import to morpho, save and close
-dat &lt;- data.frame(dat)
-morpho_db  &lt;- "~/.morpho/profiles/hanigan/data/hanigan/"
-maxid  &lt;-  1+max(as.numeric(dir(morpho_db)))
-filename &lt;- file.path(morpho_db,maxid)
-# what is the number?
-filename
-write.csv(dat, filename, row.names =F, quote=F)
-# now add this into the EML morpho has created (25.2 in my case)
-</code></pre>
-
-<p></p>
-
-
-<p>Which now seems to have attached the variable defintions and dataTable adequately.</p>
-
-<p><img src="/images/morpho-wide2.png" alt="morpho-wide2.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/04/using-reml-to-input-large-number-of-column-descriptions/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Apr 24 00:00:00 +1000 2014">24 Apr 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -771,27 +521,29 @@ write.csv(dat, filename, row.names =F, quote=F)
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
+                
+                <li><a href="/categories/overview">overview (7)</a></li>
+                
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (44)</a></li>
                 
                 <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
                 
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                
+                <li><a href="/categories/Data Documentation">Data Documentation (27)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
                 <li><a href="/categories/disentangle">disentangle (1)</a></li>
                 
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
-                
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
-                
-                <li><a href="/categories/overview">overview (7)</a></li>
-                
-                <li><a href="/categories/Data Documentation">Data Documentation (26)</a></li>
-                
-                <li><a href="/categories/research methods">research methods (44)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
@@ -802,19 +554,19 @@ write.csv(dat, filename, row.names =F, quote=F)
                 </li>
                 
                 <li>
+                  <a href="/2014/06/testing-aekos-data-portal/" title="Testing Aekos Data Portal" rel="bookmark">Testing Aekos Data Portal</a>
+                </li>
+                
+                <li>
                   <a href="/2014/06/releasing-my-misc-r-package-disentangle-version-1/" title="releasing-my-misc-r-package-disentangle-version-1" rel="bookmark">releasing-my-misc-r-package-disentangle-version-1</a>
                 </li>
                 
                 <li>
+                  <a href="/2014/05/using-additional-header-rows-for-metadata/" title="using-additional-header-rows-for-metadata" rel="bookmark">using-additional-header-rows-for-metadata</a>
+                </li>
+                
+                <li>
                   <a href="/2014/05/reproducible-research-reports-using-emacs-orgmode-export-to-knitr/" title="reproducible-research-reports-using-emacs-orgmode-export-to-knitr" rel="bookmark">reproducible-research-reports-using-emacs-orgmode-export-to-knitr</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/05/ms-access-to-postgresql-in-64-bit-windows/" title="ms-access-to-postgresql-in-64-bit-windows" rel="bookmark">ms-access-to-postgresql-in-64-bit-windows</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/05/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
                 </li>
                 
               </ul>
