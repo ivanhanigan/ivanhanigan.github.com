@@ -4,13 +4,112 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2014-06-15T11:27:36+10:00</updated>
+ <updated>2014-06-18T22:57:48+10:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>data-dictionary-function-needed-upgrade-to-my-misc-package</title>
+   <link href="http://schamberlain.github.com/2014/06/data-dictionary-function-needed-upgrade-to-my-misc-package/"/>
+   <updated>2014-06-18T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2014/06/data-dictionary-function-needed-upgrade-to-my-misc-package</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;Recently I got a lot of files with columns that are all missing.  I had to modify the 'data_dictionary' function to cope with these so have released version 1.1&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/disentangle/lib/disentangle_1.1.zip&quot;&gt;Windows Version is Downloadable Here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Linux and Mac users can just run this R code&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;In my 'disentangle' package of miscellaneous tools, the data_dictionary function is designed to produce descriptive summary statistics in a familiar way to the FREQUENCIES command for SPSS&lt;/li&gt;
+&lt;li&gt;I chose to emulate the SPSS output because I think it is a pretty decent summary statistics table, and there are loads of users who have already been introduced to this style of output&lt;/li&gt;
+&lt;li&gt;I wrote it because I had not got exactly what I wanted from the reporttools or stargazer packages which also have similar summary stats functions&lt;/li&gt;
+&lt;li&gt;I chose to call it data_dictionary because I think that the alternatives (like 'frequencise' or 'code_book' are not as immediately intuitive as to what you get)&lt;/li&gt;
+&lt;li&gt;the function I wrote returns a data.frame with the variable name, a simplified type (character, number or date)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:data-dictionary-function-needed-upgrade-to-my-misc-package&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# functions
+require(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+require(disentangle)
+require(xtable)
+
+# load
+fpath &amp;lt;- system.file(&quot;extdata/civst_gend_sector.csv&quot;, package = &quot;disentangle&quot;)
+fpath
+civst_gend_sector &amp;lt;- read.csv(fpath)
+civst_gend_sector$datevar &amp;lt;- as.Date(round(rnorm(nrow(civst_gend_sector), Sys.Date(),10)), origin = &quot;1970-01-01&quot;)
+civst_gend_sector$missing_blahblah_variable  &amp;lt;- NA
+
+# check
+str(civst_gend_sector)
+
+#do
+data_dict(civst_gend_sector, &quot;civil_status&quot;)
+data_dict(civst_gend_sector, &quot;datevar&quot;)
+data_dict(civst_gend_sector, &quot;number_of_cases&quot;)
+data_dict(civst_gend_sector, &quot;missing_blahblah_variable&quot;)
+
+dataDictionary &amp;lt;- data_dictionary(civst_gend_sector,
+                                  show_levels = -1)
+
+print(xtable(dataDictionary), type = &quot;html&quot;, include.rownames = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+
+
+&lt;!-- html table generated in R 3.1.0 by xtable 1.7-1 package --&gt;
+
+
+&lt;!-- Wed Jun 18 22:41:49 2014 --&gt;
+
+
+&lt;TABLE border=1&gt;
+&lt;TR&gt; &lt;TH&gt; Variable &lt;/TH&gt; &lt;TH&gt; Type &lt;/TH&gt; &lt;TH&gt; Attributes &lt;/TH&gt; &lt;TH&gt; Value &lt;/TH&gt; &lt;TH&gt; Count &lt;/TH&gt; &lt;TH&gt; Percent &lt;/TH&gt;  &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; civil_status &lt;/TD&gt; &lt;TD&gt; character &lt;/TD&gt; &lt;TD&gt; divorced/widowed &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; married &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; single &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; gender &lt;/TD&gt; &lt;TD&gt; character &lt;/TD&gt; &lt;TD&gt; female &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 9 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 50.00 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; male &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 9 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 50.00 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; activity_sector &lt;/TD&gt; &lt;TD&gt; character &lt;/TD&gt; &lt;TD&gt; primary &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; secondary &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; tertiary &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; number_of_cases &lt;/TD&gt; &lt;TD&gt; number &lt;/TD&gt; &lt;TD&gt; Min. &lt;/TD&gt; &lt;TD&gt; 0 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 1st Qu. &lt;/TD&gt; &lt;TD&gt; 5 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Median &lt;/TD&gt; &lt;TD&gt; 9 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Mean &lt;/TD&gt; &lt;TD&gt; 15.17 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 3rd Qu. &lt;/TD&gt; &lt;TD&gt; 17 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Max. &lt;/TD&gt; &lt;TD&gt; 50 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; datevar &lt;/TD&gt; &lt;TD&gt; date &lt;/TD&gt; &lt;TD&gt; Min. &lt;/TD&gt; &lt;TD&gt; 2014-05-26 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 1st Qu. &lt;/TD&gt; &lt;TD&gt; 2014-06-07 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Median &lt;/TD&gt; &lt;TD&gt; 2014-06-15 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Mean &lt;/TD&gt; &lt;TD&gt; 2014-06-14 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 3rd Qu. &lt;/TD&gt; &lt;TD&gt; 2014-06-18 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Max. &lt;/TD&gt; &lt;TD&gt; 2014-07-05 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; missing_blahblah_variable &lt;/TD&gt; &lt;TD&gt; missing &lt;/TD&gt; &lt;TD&gt; NA's &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 18 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 100.00 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;/TABLE&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>reflecting-on-aekos-data-portal-test</title>
@@ -6019,177 +6118,6 @@ sink()
 \bibliographystyle{apalike}
 \bibliography{/home/ivan_hanigan/references/library}
 &lt;/code&gt;&lt;/pre&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Setting Up A Workflow Script With Code Chunks</title>
-   <link href="http://schamberlain.github.com/2013/11/setting-up-a-workflow-with-code-chunks/"/>
-   <updated>2013-11-25T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/11/setting-up-a-workflow-with-code-chunks</id>
-   <content type="html">&lt;p&gt;This post describes some ideas and techniques I use to set up a &quot;workflow script&quot;.  I use this term to refer to the structured combination of code, data and narrative that make an executable Reproducible Research Report (RRR).&lt;/p&gt;
-
-&lt;p&gt;A lot of these ideas are inpsired by  a great paper by Kieran Healy called  &quot;Choosing Your Workflow Applications&quot; available at &lt;a href=&quot;https://github.com/kjhealy/workflow-paper&quot;&gt;https://github.com/kjhealy/workflow-paper&lt;/a&gt; to accompany &lt;a href=&quot;http://kieranhealyo.org/resources/emacs-starter-kit.html&quot;&gt;his Emacs Starter Kit&lt;/a&gt;. My shortened version of his main points are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;1 use a good code editor&lt;/li&gt;
-&lt;li&gt;2 analyse data with scripts&lt;/li&gt;
-&lt;li&gt;3 store your work simply and document it properly&lt;/li&gt;
-&lt;li&gt;4 use a version control system&lt;/li&gt;
-&lt;li&gt;5 Automate back ups&lt;/li&gt;
-&lt;li&gt;6 Avoid distracting gadgets&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Here's my current approach in each of these categories&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;1 use Emacs with Orgmode (and kjhealy's drop-in set of useful defaults)&lt;/li&gt;
-&lt;li&gt;2 Scripts that utilise the literate programming technique of mixing Code Chunks in with descriptive prose&lt;/li&gt;
-&lt;li&gt;3 John Myles White's ProjectTemplate R Package and Josh Riech's LCFD paradigm&lt;/li&gt;
-&lt;li&gt;4 git and GitHub for version control&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;5 Automated Backups and 6 Avoiding Gadgets are still somethings I find challenging&lt;/p&gt;
-
-&lt;h4&gt;1 Use a good code editor&lt;/h4&gt;
-
-&lt;p&gt;I like using Emacs with Orgmode.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I have previously tried a variety of code editors from Tinn-r, NppToR, Rstudio and Eclipse.&lt;/li&gt;
-&lt;li&gt;Emacs with Orgmode suits me the most because it has a great number of features especially the linkage with LaTeX or HTML export&lt;/li&gt;
-&lt;li&gt;A key reference to look at for reasons why Emacs is so good for scientific work is Eric Schulte et al &lt;a href=&quot;www.jstatsoft.org/v46/i03%E2%80%8E&quot;&gt;&quot;A Multi-Language Computing Environment for Literate Programming&quot;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Here is a &lt;a href=&quot;http://doc.norang.ca/org-mode.html&quot;&gt;link to a great orgmode description&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;(this guy spends a lot of time on tweaking his set up)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;2 Analyse data with Scripts (stitch together code chunks)&lt;/h4&gt;
-
-&lt;p&gt;I use Scripts but prefer to think of them as stitched together Code Chunks with prose into Compendia.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Compendia are documents that weave together Code and Prose into an executable report&lt;/li&gt;
-&lt;li&gt;The underlying philosophy is called Reproducible Research Reports&lt;/li&gt;
-&lt;li&gt;A very useful tool is a keyboard shortcut to quickly create a chunk for code&lt;/li&gt;
-&lt;li&gt;so you can be writing parts of the report like this: &quot;Blah Blah Blah as shown in Figure X and Table Y&quot;&lt;/li&gt;
-&lt;li&gt;then just hit the correct keys and WHAMM-O there is a new chunk ready for the code that creates Figure X and Table Y to be written.&lt;/li&gt;
-&lt;li&gt;Here is how I use Emacs to achieve this (the other editors I mentioned above also have the abiltiy to do this too).  The IPython Notebook does this stuff too but calls chunks &quot;cells&quot; for some reason.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Emacs Code: Put this into the ~/.emacs.d/init.el file&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;(define-skeleton chunk-skeleton
-  &quot;Info for a code chunk.&quot;
-  &quot;Title: &quot;
-  &quot;*** &quot; str &quot;-code\n&quot;
-  &quot;#+name:&quot; str &quot;\n&quot;
-  &quot;#+begin_src R :session *R* :tangle src/&quot; str &quot;.r :exports reports :eval no\n&quot;
-  &quot;#### name:&quot; str &quot; ####\n&quot;
-  &quot;\n&quot;
-  &quot;#+end_src\n&quot;
-)
-(global-set-key [?\C-x ?\C-\\] 'chunk-skeleton)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;Using the Emacs Shortcut&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;now whenever you type Control-x control-\ a new code chunk will appear&lt;/li&gt;
-&lt;li&gt;you'll be typing &quot;blah blah blah&quot; and think I need a figure or table, just hit it.&lt;/li&gt;
-&lt;li&gt;move into the empty section and add some code&lt;/li&gt;
-&lt;li&gt;you can hit C-c ' to enter a org-babel code execution session that will be able to send these line by line to an R session&lt;/li&gt;
-&lt;li&gt;or within the main org buffer if your eval flag is set to yes then you can run the entire chunk (and return tabular output to the doc) using C-c C-c&lt;/li&gt;
-&lt;li&gt;To export the code chunks and create the modular code scripts without the narrative prose use C-c C-v t&lt;/li&gt;
-&lt;li&gt;this is called &quot;tangling&quot; and the chunks will be written out to the file specified in the chunk header &quot;:tangle&quot; flag&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Compiling the resulting Compendium&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Emacs uses LaTeX or HTML to produce the Report&lt;/li&gt;
-&lt;li&gt;I find both of these outputs very pleasing&lt;/li&gt;
-&lt;li&gt;to compile to TEX use C-c C-e d&lt;/li&gt;
-&lt;li&gt;for HTML use C-c C-e h (FOR CODE HIGHLIGHTING INSTALL htmlize.el)&lt;/li&gt;
-&lt;li&gt;these commands will also evaluate all the chunks where &quot;:eval&quot; = yes to load the data and calculate the results fresh.&lt;/li&gt;
-&lt;li&gt;AWESOME!&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;3 Store your work simply and document it properly&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I use the &lt;a href=&quot;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&quot;&gt;ProjectTemplate R package&lt;/a&gt; to organise my code sections into modules&lt;/li&gt;
-&lt;li&gt;These modules are organised into the Reichian LCFD paradigm described first &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;on StackOverflow here&lt;/a&gt;, and encoded into &lt;a href=&quot;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&quot;&gt;the makeProject R package&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;documentation is within the main orgmode script&lt;/li&gt;
-&lt;li&gt;data documentation is a whole other universe that I will deal with in a separate post&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;4 use a version control system using git and github&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# once you have the project via R
-R
-require(ProjectTemplate)
-create.project(&quot;AwesomeProject&quot;, minimal = T)
-q()
-# use the shell to start a git repo
-cd AwesomeProject
-git init
-# and commit the TODO
-git add TODO
-git commit -m &quot;first commit&quot;
-# tada!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Emacs can now be used to manage the git repo using the C-x g command&lt;/li&gt;
-&lt;li&gt;Rstudio has a really nice GUI for doing this inside it;s Project management interface too.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Using Github or another Git Server&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;You can easily set up a Github repo for this now but it will be public&lt;/li&gt;
-&lt;li&gt;Alternatative is to set up your own private Git server.  I followed &lt;a href=&quot;http://blog.goosoftware.co.uk/2012/02/07/quick-git-server/&quot;&gt;these instructions to Running a Simple Git Server Using SSH&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Either way once you have set up your remote git repo you need to set the remote tracking&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Git Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;cd /path/to/local/git/repo
-git remote add origin git@github-or-other-server:myname/myproject.git
-git push origin master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;5 Automate back ups AND 6 Avoid distracting gadgets&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;OMG backups stress me out&lt;/li&gt;
-&lt;li&gt;ideally I would follow &lt;a href=&quot;http://www.jwz.org/blog/2007/09/psa-backups/&quot;&gt;this advice because &quot;when it comes to losing your data the universe tends toward maximum irony. Don't push it.&quot;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;But I don;t fully comply&lt;/li&gt;
-&lt;li&gt;Instead I generally use Dropbox for  basic project management admin stuff&lt;/li&gt;
-&lt;li&gt;I use github for code projects I am happy to share, I also pay for 10 private repos&lt;/li&gt;
-&lt;li&gt;I Set up a git server at my workplace for extra projects but this is on a test server that is not backed up, and I am not really happy about this&lt;/li&gt;
-&lt;li&gt;In terms of Distracting Gadgets, I think that with the current tempo of new innovations related to new software tools for this type of work I should keep trying new things but I have pretty much settled into a comfortable zone with the gadgets I described here.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Conclusions&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This is how I've worked for a couple of years&lt;/li&gt;
-&lt;li&gt;I find it very enjoyable, mostly productive but prone to the distractions of &quot;distractions by gadgets&quot;&lt;/li&gt;
-&lt;li&gt;The main thing I want to point out is the usage of Code Chunks in RRR scripts.&lt;/li&gt;
-&lt;li&gt;These things are awesome.&lt;/li&gt;
-&lt;/ul&gt;
-
 </content>
  </entry>
  

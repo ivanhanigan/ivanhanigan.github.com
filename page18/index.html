@@ -56,6 +56,56 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Using Orgmode and Jekyll for Open Notebook</h1>
+
+<p>Orgmode is a great notebook tool because it allows the coding, evaluation and documentation all in one.  I also want to use it to send the documentation to my blog as an Open Notebook.</p>
+
+<p>If starting again I'd look into this:</p>
+
+<ul>
+<li><a href="http://orgmode.org/worg/org-tutorials/org-jekyll.html">http://orgmode.org/worg/org-tutorials/org-jekyll.html</a></li>
+</ul>
+
+
+<p>But as it is I already put a lot of work into configuring a jekyll blog I cloned from Scott Chamberlain over at ROpenSci and I will just use orgmode to publish the posts related to each project, tagged as 'categories'.</p>
+
+<p>But here is a problem I just found out how to solve.  For a long time I thought that because github disabled ruby plugins that the automatic generate categories index pages was broken.  Luckily Charlie Park has written up the following solution and this seems to have worked for me today:</p>
+
+<ul>
+<li><a href="http://charliepark.org/tags-in-jekyll/">http://charliepark.org/tags-in-jekyll/</a></li>
+<li><a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a></li>
+</ul>
+
+
+<p>Cheers!</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/09/using-orgmode-and-jekyll-for-open-notebook/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="Sun Sep 22 00:00:00 +1000 2013">22 Sep 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
     </h1>
     <div class="entry-content full-content">
@@ -393,54 +443,6 @@ for(i in 1:nrow(filesList))
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/06/spatio-temporal-animations/" title="spatio-temporal-animations" rel="bookmark">spatio-temporal-animations</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>Space time animations are cool</h2>
-
-<p>This is a graphic I made a few years ago of temperature in Sydney.  It is a GAM with smoothing splines on longitude, latitude and time (t):</p>
-
-<pre><code>require(mgcv)
-fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)  
-</code></pre>
-
-<p><img src="/button/spacetimegamSydney3hrTemp.gif" alt="spacetimegamSydney3hrTemp.gif" /></p>
-
-<p><a href="/button/index.html">Clink here for an example of where I think this kind of animation should go now</a>.</p>
-
-<p>The addition of stop/play/fwd/reverse buttons adds potential for exploratory insights.</p>
-
-<p>The secret to getting the play/pause/next buttons is to insert graphing code between:</p>
-
-<pre><code>saveHTML(..., outdir = getwd())
-</code></pre>
-
-<p>Unfortunately the rest of the code that accompanies the graphic above is too specific to my workflow that it is not reproducible.  That was back before (during the time that) I became obsessed with the prospect of <a href="http://swish-climate-impact-assessment.github.io/">creating reproducible data analysis workflows</a>.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/06/spatio-temporal-animations/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Jun 06 00:00:00 +1000 2013">06 Jun 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -498,29 +500,33 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
-                
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
-                
-                <li><a href="/categories/cloud building">cloud building (2)</a></li>
-                
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/research methods">research methods (44)</a></li>
-                
-                <li><a href="/categories/disentangle">disentangle (1)</a></li>
-                
                 <li><a href="/categories/Data Documentation">Data Documentation (29)</a></li>
                 
+                <li><a href="/categories/cloud building">cloud building (2)</a></li>
+                
                 <li><a href="/categories/spatial">spatial (6)</a></li>
+                
+                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                
+                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                
+                <li><a href="/categories/research methods">research methods (44)</a></li>
+                
+                <li><a href="/categories/disentangle">disentangle (2)</a></li>
                 
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/06/data-dictionary-function-needed-upgrade-to-my-misc-package/" title="data-dictionary-function-needed-upgrade-to-my-misc-package" rel="bookmark">data-dictionary-function-needed-upgrade-to-my-misc-package</a>
+                </li>
                 
                 <li>
                   <a href="/2014/06/reflecting-on-aekos-data-portal-test/" title="reflecting-on-aekos-data-portal-test" rel="bookmark">reflecting-on-aekos-data-portal-test</a>
@@ -538,19 +544,15 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
                   <a href="/2014/06/releasing-my-misc-r-package-disentangle-version-1/" title="releasing-my-misc-r-package-disentangle-version-1" rel="bookmark">releasing-my-misc-r-package-disentangle-version-1</a>
                 </li>
                 
-                <li>
-                  <a href="/2014/05/using-additional-header-rows-for-metadata/" title="using-additional-header-rows-for-metadata" rel="bookmark">using-additional-header-rows-for-metadata</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
-                <li><a href="/tag/bugs">bugs (1)</a></li>
-                
                 <li><a href="/tag/morpho">morpho (7)</a></li>
                 
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
+                
+                <li><a href="/tag/bugs">bugs (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -561,11 +563,11 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
-          <!--        -->
           <!--       <li><a href="/tag/morpho">morpho (7)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2014-06-15T11:27:36+10:00</updated>
+ <updated>2014-06-18T22:57:48+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,45 +13,101 @@
 
  
  <entry>
-   <title>reflecting-on-aekos-data-portal-test</title>
-   <link href="http://ivanhanigan.github.com/2014/06/reflecting-on-aekos-data-portal-test/"/>
-   <updated>2014-06-15T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2014/06/reflecting-on-aekos-data-portal-test</id>
+   <title>data-dictionary-function-needed-upgrade-to-my-misc-package</title>
+   <link href="http://ivanhanigan.github.com/2014/06/data-dictionary-function-needed-upgrade-to-my-misc-package/"/>
+   <updated>2014-06-18T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2014/06/data-dictionary-function-needed-upgrade-to-my-misc-package</id>
    <content type="html">&lt;ul&gt;
-&lt;li&gt;In &lt;a href=&quot;/2014/06/testing-aekos-data-portal&quot;&gt;my last post on AEKOS Dta Portal&lt;/a&gt; I reported my test of the Australian Terrestrial Ecosystem Research Network (TERN) AEKOS Data Portal system implemented by Uni Adelaide's Eco-informatics Facility.&lt;/li&gt;
-&lt;li&gt;I've reflected a bit on this process and I want to jot down some notes&lt;/li&gt;
+&lt;li&gt;Recently I got a lot of files with columns that are all missing.  I had to modify the 'data_dictionary' function to cope with these so have released version 1.1&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/disentangle/lib/disentangle_1.1.zip&quot;&gt;Windows Version is Downloadable Here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Linux and Mac users can just run this R code&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h3&gt;Database restore scripts are complicated and inhibit access&lt;/h3&gt;
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
 
 &lt;ul&gt;
-&lt;li&gt;I'd re-iterate my conclusion that I really like how this model emphasises the use of databases for data management (and postgres or mysql are great options)&lt;/li&gt;
-&lt;li&gt;but for a less-technically savvy person or for a casual browser just looking for some quick data to play with this is not easy enough&lt;/li&gt;
-&lt;li&gt;for a good description of alternative approaches see &lt;a href=&quot;http://flowingdata.com/2014/06/10/how-to-make-government-data-sites-better/&quot;&gt;http://flowingdata.com/2014/06/10/how-to-make-government-data-sites-better/&lt;/a&gt; which is a good set of requests for simple and efficient access to data via Government portals in the USA&lt;/li&gt;
-&lt;li&gt;I spoke with Squid and Matt the developers and they described the new enhancement they are working on now to provide a simple flat file download so that will be great.&lt;/li&gt;
+&lt;li&gt;In my 'disentangle' package of miscellaneous tools, the data_dictionary function is designed to produce descriptive summary statistics in a familiar way to the FREQUENCIES command for SPSS&lt;/li&gt;
+&lt;li&gt;I chose to emulate the SPSS output because I think it is a pretty decent summary statistics table, and there are loads of users who have already been introduced to this style of output&lt;/li&gt;
+&lt;li&gt;I wrote it because I had not got exactly what I wanted from the reporttools or stargazer packages which also have similar summary stats functions&lt;/li&gt;
+&lt;li&gt;I chose to call it data_dictionary because I think that the alternatives (like 'frequencise' or 'code_book' are not as immediately intuitive as to what you get)&lt;/li&gt;
+&lt;li&gt;the function I wrote returns a data.frame with the variable name, a simplified type (character, number or date)&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h3&gt;Linking Exploratory Data Analyses back to metadata and source data documentation&lt;/h3&gt;
+&lt;h4&gt;Code:data-dictionary-function-needed-upgrade-to-my-misc-package&lt;/h4&gt;
 
-&lt;ul&gt;
-&lt;li&gt;In my normal mode of operating I spend more time reviewing the metadata and source data documentation before exploring data (much like the workflow described at &lt;a href=&quot;http://simplystatistics.org/2014/06/13/what-i-do-when-i-get-a-new-data-set-as-told-through-tweets/&quot;&gt;http://simplystatistics.org/2014/06/13/what-i-do-when-i-get-a-new-data-set-as-told-through-tweets/&lt;/a&gt;, especially see Step 1: Learn about the elephant)&lt;/li&gt;
-&lt;li&gt;but this time I just wanted to get some data out and so went full steam ahead like a bull at a gate&lt;/li&gt;
-&lt;li&gt;Once I had &lt;a href=&quot;/2014/06/testing-aekos-data-portal/#toc_12&quot;&gt;my map visualisation done&lt;/a&gt; I decided to go back to the documentation to read up a bit more on why these locations were studied and other contextual metadata&lt;/li&gt;
-&lt;li&gt;But when I look in the zip I downloaded I investigated the citation.pdf and the tabledefinitions.pdf but these don't really have much in it for me to link back to the source of the data and the documentation I need&lt;/li&gt;
-&lt;li&gt;See the citation link h ref=&quot;http://www.portal.aekos.org.au/&quot; target=&quot;_blank&quot;&lt;/li&gt;
-&lt;li&gt;so hunting around the portal again I search for the survey name &quot;Department of Environment, Water and Natural Resources, South Australia - Dalhousie Survey (Scientific Expedition Group)
-Survey&quot;&lt;/li&gt;
-&lt;li&gt;and got 10 hits, chose number 1&lt;/li&gt;
-&lt;li&gt;skim-read of overview and scope. seems the link out from the overview/abstract is the most useful to get an overview&lt;/li&gt;
-&lt;li&gt;moved on to methods and I really like the way the segments collapse and expand as you read them, but didn't like how I had to keep navigating back and forward with the browser (like between Study Location Selection Method and Study Location Visit Method, each time I went back I had to scroll to bottom of page to get to list of sections)&lt;/li&gt;
-&lt;li&gt;Finally I got to explore the observation diagram and methods diagram which I have not seen before.  These seem like a great way to show the information and let people browse through the concepts etc...&lt;/li&gt;
-&lt;li&gt;But I think I still prefer an old school document with a table of contents and some kind of index.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;# functions
+require(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+require(disentangle)
+require(xtable)
+
+# load
+fpath &amp;lt;- system.file(&quot;extdata/civst_gend_sector.csv&quot;, package = &quot;disentangle&quot;)
+fpath
+civst_gend_sector &amp;lt;- read.csv(fpath)
+civst_gend_sector$datevar &amp;lt;- as.Date(round(rnorm(nrow(civst_gend_sector), Sys.Date(),10)), origin = &quot;1970-01-01&quot;)
+civst_gend_sector$missing_blahblah_variable  &amp;lt;- NA
+
+# check
+str(civst_gend_sector)
+
+#do
+data_dict(civst_gend_sector, &quot;civil_status&quot;)
+data_dict(civst_gend_sector, &quot;datevar&quot;)
+data_dict(civst_gend_sector, &quot;number_of_cases&quot;)
+data_dict(civst_gend_sector, &quot;missing_blahblah_variable&quot;)
+
+dataDictionary &amp;lt;- data_dictionary(civst_gend_sector,
+                                  show_levels = -1)
+
+print(xtable(dataDictionary), type = &quot;html&quot;, include.rownames = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;&lt;img src=&quot;/images/aekos_obs_diagram.png&quot; alt=&quot;aekos_obs_diagram.png&quot; /&gt;&lt;/p&gt;
+
+
+&lt;!-- html table generated in R 3.1.0 by xtable 1.7-1 package --&gt;
+
+
+&lt;!-- Wed Jun 18 22:41:49 2014 --&gt;
+
+
+&lt;TABLE border=1&gt;
+&lt;TR&gt; &lt;TH&gt; Variable &lt;/TH&gt; &lt;TH&gt; Type &lt;/TH&gt; &lt;TH&gt; Attributes &lt;/TH&gt; &lt;TH&gt; Value &lt;/TH&gt; &lt;TH&gt; Count &lt;/TH&gt; &lt;TH&gt; Percent &lt;/TH&gt;  &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; civil_status &lt;/TD&gt; &lt;TD&gt; character &lt;/TD&gt; &lt;TD&gt; divorced/widowed &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; married &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; single &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; gender &lt;/TD&gt; &lt;TD&gt; character &lt;/TD&gt; &lt;TD&gt; female &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 9 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 50.00 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; male &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 9 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 50.00 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; activity_sector &lt;/TD&gt; &lt;TD&gt; character &lt;/TD&gt; &lt;TD&gt; primary &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; secondary &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; tertiary &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; number_of_cases &lt;/TD&gt; &lt;TD&gt; number &lt;/TD&gt; &lt;TD&gt; Min. &lt;/TD&gt; &lt;TD&gt; 0 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 1st Qu. &lt;/TD&gt; &lt;TD&gt; 5 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Median &lt;/TD&gt; &lt;TD&gt; 9 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Mean &lt;/TD&gt; &lt;TD&gt; 15.17 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 3rd Qu. &lt;/TD&gt; &lt;TD&gt; 17 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Max. &lt;/TD&gt; &lt;TD&gt; 50 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; datevar &lt;/TD&gt; &lt;TD&gt; date &lt;/TD&gt; &lt;TD&gt; Min. &lt;/TD&gt; &lt;TD&gt; 2014-05-26 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 1st Qu. &lt;/TD&gt; &lt;TD&gt; 2014-06-07 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Median &lt;/TD&gt; &lt;TD&gt; 2014-06-15 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Mean &lt;/TD&gt; &lt;TD&gt; 2014-06-14 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 3rd Qu. &lt;/TD&gt; &lt;TD&gt; 2014-06-18 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Max. &lt;/TD&gt; &lt;TD&gt; 2014-07-05 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; missing_blahblah_variable &lt;/TD&gt; &lt;TD&gt; missing &lt;/TD&gt; &lt;TD&gt; NA's &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 18 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 100.00 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;/TABLE&gt;
+
 </content>
  </entry>
  

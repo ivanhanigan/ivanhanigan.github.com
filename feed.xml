@@ -6,6 +6,104 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>data-dictionary-function-needed-upgrade-to-my-misc-package</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;Recently I got a lot of files with columns that are all missing.  I had to modify the 'data_dictionary' function to cope with these so have released version 1.1&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/disentangle/lib/disentangle_1.1.zip&quot;&gt;Windows Version is Downloadable Here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Linux and Mac users can just run this R code&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;In my 'disentangle' package of miscellaneous tools, the data_dictionary function is designed to produce descriptive summary statistics in a familiar way to the FREQUENCIES command for SPSS&lt;/li&gt;
+&lt;li&gt;I chose to emulate the SPSS output because I think it is a pretty decent summary statistics table, and there are loads of users who have already been introduced to this style of output&lt;/li&gt;
+&lt;li&gt;I wrote it because I had not got exactly what I wanted from the reporttools or stargazer packages which also have similar summary stats functions&lt;/li&gt;
+&lt;li&gt;I chose to call it data_dictionary because I think that the alternatives (like 'frequencise' or 'code_book' are not as immediately intuitive as to what you get)&lt;/li&gt;
+&lt;li&gt;the function I wrote returns a data.frame with the variable name, a simplified type (character, number or date)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:data-dictionary-function-needed-upgrade-to-my-misc-package&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# functions
+require(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+require(disentangle)
+require(xtable)
+
+# load
+fpath &amp;lt;- system.file(&quot;extdata/civst_gend_sector.csv&quot;, package = &quot;disentangle&quot;)
+fpath
+civst_gend_sector &amp;lt;- read.csv(fpath)
+civst_gend_sector$datevar &amp;lt;- as.Date(round(rnorm(nrow(civst_gend_sector), Sys.Date(),10)), origin = &quot;1970-01-01&quot;)
+civst_gend_sector$missing_blahblah_variable  &amp;lt;- NA
+
+# check
+str(civst_gend_sector)
+
+#do
+data_dict(civst_gend_sector, &quot;civil_status&quot;)
+data_dict(civst_gend_sector, &quot;datevar&quot;)
+data_dict(civst_gend_sector, &quot;number_of_cases&quot;)
+data_dict(civst_gend_sector, &quot;missing_blahblah_variable&quot;)
+
+dataDictionary &amp;lt;- data_dictionary(civst_gend_sector,
+                                  show_levels = -1)
+
+print(xtable(dataDictionary), type = &quot;html&quot;, include.rownames = F)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+
+
+&lt;!-- html table generated in R 3.1.0 by xtable 1.7-1 package --&gt;
+
+
+&lt;!-- Wed Jun 18 22:41:49 2014 --&gt;
+
+
+&lt;TABLE border=1&gt;
+&lt;TR&gt; &lt;TH&gt; Variable &lt;/TH&gt; &lt;TH&gt; Type &lt;/TH&gt; &lt;TH&gt; Attributes &lt;/TH&gt; &lt;TH&gt; Value &lt;/TH&gt; &lt;TH&gt; Count &lt;/TH&gt; &lt;TH&gt; Percent &lt;/TH&gt;  &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; civil_status &lt;/TD&gt; &lt;TD&gt; character &lt;/TD&gt; &lt;TD&gt; divorced/widowed &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; married &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; single &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; gender &lt;/TD&gt; &lt;TD&gt; character &lt;/TD&gt; &lt;TD&gt; female &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 9 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 50.00 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; male &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 9 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 50.00 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; activity_sector &lt;/TD&gt; &lt;TD&gt; character &lt;/TD&gt; &lt;TD&gt; primary &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; secondary &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; tertiary &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 6 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 33.33 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; number_of_cases &lt;/TD&gt; &lt;TD&gt; number &lt;/TD&gt; &lt;TD&gt; Min. &lt;/TD&gt; &lt;TD&gt; 0 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 1st Qu. &lt;/TD&gt; &lt;TD&gt; 5 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Median &lt;/TD&gt; &lt;TD&gt; 9 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Mean &lt;/TD&gt; &lt;TD&gt; 15.17 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 3rd Qu. &lt;/TD&gt; &lt;TD&gt; 17 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Max. &lt;/TD&gt; &lt;TD&gt; 50 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; datevar &lt;/TD&gt; &lt;TD&gt; date &lt;/TD&gt; &lt;TD&gt; Min. &lt;/TD&gt; &lt;TD&gt; 2014-05-26 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 1st Qu. &lt;/TD&gt; &lt;TD&gt; 2014-06-07 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Median &lt;/TD&gt; &lt;TD&gt; 2014-06-15 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Mean &lt;/TD&gt; &lt;TD&gt; 2014-06-14 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 3rd Qu. &lt;/TD&gt; &lt;TD&gt; 2014-06-18 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; Max. &lt;/TD&gt; &lt;TD&gt; 2014-07-05 &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt;  &lt;/TD&gt; &lt;/TR&gt;
+  &lt;TR&gt; &lt;TD&gt; missing_blahblah_variable &lt;/TD&gt; &lt;TD&gt; missing &lt;/TD&gt; &lt;TD&gt; NA's &lt;/TD&gt; &lt;TD&gt;  &lt;/TD&gt; &lt;TD&gt; 18 &lt;/TD&gt; &lt;TD align=&quot;right&quot;&gt; 100.00 &lt;/TD&gt; &lt;/TR&gt;
+  &lt;/TABLE&gt;
+
+</description>
+				<published>Wed Jun 18 00:00:00 +1000 2014</published>
+				<link>http://schamberlain.github.com/2014/06/data-dictionary-function-needed-upgrade-to-my-misc-package/</link>
+			</item>
+		
+			<item>
 				<title>reflecting-on-aekos-data-portal-test</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;In &lt;a href=&quot;/2014/06/testing-aekos-data-portal&quot;&gt;my last post on AEKOS Dta Portal&lt;/a&gt; I reported my test of the Australian Terrestrial Ecosystem Research Network (TERN) AEKOS Data Portal system implemented by Uni Adelaide's Eco-informatics Facility.&lt;/li&gt;
@@ -1415,40 +1513,6 @@ write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names =
 </description>
 				<published>Fri May 02 00:00:00 +1000 2014</published>
 				<link>http://schamberlain.github.com/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/</link>
-			</item>
-		
-			<item>
-				<title>workaround-for-installing-morpho-on-a-windows-network</title>
-				<description>&lt;h3&gt;Introduction&lt;/h3&gt;
-
-&lt;p&gt;Morpho is an open source piece of software designed to host all kinds of ecological data.  It is used to describe data collections. We publish to Metacat using Morpho.  For technical reasons, we have our own server running an older version of the Metacat software so have to run an old version of Morpho (v1.8).&lt;/p&gt;
-
-&lt;h3&gt;Installation and configuration&lt;/h3&gt;
-
-&lt;p&gt;TERN specific instructions are replicated across:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&quot;&gt;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.ltern.org.au/index.php/data/guides-and-tutorial&quot;&gt;http://www.ltern.org.au/index.php/data/guides-and-tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Morpho issue on Windows in our network environment&lt;/h3&gt;
-
-&lt;p&gt;The ANU Fenner School came across this issue. Our local IT department have discovered with Morpho (v1.8) Installation on Windows in our network environment, Morpho installs a hidden directory called &quot;.morpho&quot; and this is written to a PATH next to the User Desktop. This is actually on a network share with a very small quota.&lt;/p&gt;
-
-&lt;p&gt;Therefore as Morpho writes data there it can easily exceed the quota causing the software to stop working.  All users of Morpho on such a network should check for the location of the &quot;.morpho&quot; directory and if it is located with such a restricted quota then alternative arrangements need to be made.&lt;/p&gt;
-
-&lt;p&gt;At the ANU Fenner School we opted to set up local user accounts (the &quot;.morpho&quot; file is then on the C drive) and this user is accessible from the main User's account.  The Morpho files are therefore stored on the C drive which is of course a danger for hard disk failure and data loss.&lt;/p&gt;
-
-&lt;p&gt;We feel that as long as the draft packages are saved to the networked Metacat (with the maximum access restrictions in force for draft work) then if the local hard disk dies then the draft data package is not lost but can be accessed again from a new Morpho install and the Metacat server.&lt;/p&gt;
-
-&lt;p&gt;Issues remain about the long term solution to this problem but this will work in the short-term.&lt;/p&gt;
-
-&lt;p&gt;We think you can also create a junction (symlink) so that .morpho/ can point to a different location (perhaps another network storage with bigger capacity and automated backup).&lt;/p&gt;
-</description>
-				<published>Tue Apr 29 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/04/workaround-for-installing-morpho-on-a-windows-network/</link>
 			</item>
 		
 	</channel>
