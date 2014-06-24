@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - workflow-flowcharts-update</title>
+    <title>Ivan Hanigan - data-dictionary-function-needed-further-upgrades-to-my-misc-package</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -46,7 +46,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/09/workflow-flowcharts-update/" title="workflow-flowcharts-update" rel="bookmark">workflow-flowcharts-update</a>
+    <a href="/2014/06/data-dictionary-function-needed-further-upgrades-to-my-misc-package/" title="data-dictionary-function-needed-further-upgrades-to-my-misc-package" rel="bookmark">data-dictionary-function-needed-further-upgrades-to-my-misc-package</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -57,76 +57,20 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h1>Workflow flowcharts - Update</h1>
+    <ul>
+<li>I've been enjoying summarising datasets with my data_dictionary function</li>
+<li>There was a bug when a date variable had any missings.</li>
+<li>I have modified the function to cope with these so have released version 1.2</li>
+<li><a href="http://ivanhanigan.github.io/disentangle/lib/disentangle_1.2.zip">Windows Version is Downloadable Here</a></li>
+<li>Linux and Mac users can just run this R code</li>
+</ul>
 
-<p>A while back I posted about <a href="/2013/07/worflow-flowcharts/">my work with the Rgraphviz toolbox</a> toward a wrapper function that will allow me to track the connections between chunks of my code as I write it.
-This update includes notes from a discussion I had with Keith about this.</p>
 
-<h4>The basic use case is described by this code:</h4>
+<h4>R Code:</h4>
 
-<pre><code>require(disentangle)
-# Decide on the first step and create the starting node of the flowchart 
-nodes &lt;- newnode(name="NAME", inputs="INPUT", newgraph=T)
-# FirstStep.
-# Comment: do a bit of work
-NAME &lt;- myWorkFunction(INPUT)
-# Decide on next step
-nodes &lt;- newnode(name="OUTPUT", inputs=c("NAME","ANOTHER THING"))
-# Do the second step
-OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
+<pre><code>require(devtools)
+install_github("disentangle", "ivanhanigan")
 </code></pre>
-
-<p></p>
-
-
-<p><img src="/images/workflow-flowchart1.png" alt="workflow-flowchart1.png" /></p>
-
-<p>So as the scripted workflow develops, so does the flow chart. The alternative I described previously is to make a list of all the steps in a Balzerian Filelist Table.</p>
-
-<h4>Keith's comments:</h4>
-
-<p>Keith gave me some great comments on that post.  I'll just jot them down here for now but will have to come back and re-write parts of my function and the descriptive blog post to address these at another time.</p>
-
-<p>First section:</p>
-
-<ul>
-<li>I said that multiple datasets used in an analysis could be broken down into discrete data packages.  Keith asked if I thought they "should be".</li>
-<li>questioned whether the data warehouse at my work really is "Big Data"</li>
-<li>I need to cite the graphviz and Rgraphviz software better</li>
-<li>the function currently requires users to speciify newgraph = T to start, and fails to do anything if "nodes" object doesn't exist.  This is uneccessary.  should make it create "nodes" if doesn't exist. Then the newgraph argument is only needed to delete an old graph and start again.</li>
-<li>is it required that any of these actually be new?  if not then "newnode" seems a poor name for the function</li>
-</ul>
-
-
-<p>From section "Code:adding nodes":</p>
-
-<ul>
-<li>the line where output is the name is confusing.  Keith felt that output was not the name of the newnode (but it really is).</li>
-<li>the name of the nodes object is hardcoded to be "nodes".  therefore don't need to give it as an argument</li>
-<li>proposed better syntac: newnode(name= "ANOTHER THING", output = "OUTPUT") which I think will also work?</li>
-<li>wouldn't it be great if links could be labelled? maybe better to focus on links rather than nodes? this seems more logical because links are transitions and where the action is, not at the nodes.</li>
-<li>it might be helpful to review common actions to see what graph structures each implies.</li>
-<li>RE lab-book from Chemistry: most people would not be familiar with how lab-books are written.</li>
-<li>can newnode build circuits/cycles?  can it add links between existing nodes?</li>
-</ul>
-
-
-<p>Section after "shows this result"</p>
-
-<ul>
-<li>tablexyz -> FileA -> Input1 should be one step because fileA is not used again. ditto fileB.</li>
-<li>analysisResults is a different kind of thing. this is confusing.</li>
-<li>why do I have to type "nodes &lt;-" every time?  if it has to have this name It could be hidden</li>
-</ul>
-
-
-<p>Under example two, "Step three"</p>
-
-<ul>
-<li><p>huh? does input1 have "id"?</p></li>
-<li><p>"the result" graph is  a bit dense and hard to follow.  Perhaps simpler labels?  ie instead of FileA just "A"?</p></li>
-</ul>
-
 
     <div class="clear"></div>
   </div>
@@ -141,12 +85,12 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+    <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="Mon Sep 23 00:00:00 +1000 2013">23 Sep 2013</abbr>
+      <abbr class="published" title="Tue Jun 24 00:00:00 +1000 2014">24 Jun 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -160,7 +104,7 @@ OUTPUT &lt;- mySecondFunction(NAME, ANOTHER_THING)
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/09/workflow-flowcharts-update/";
+    var disqus_url = "http://ivanhanigan.github.com/2014/06/data-dictionary-function-needed-further-upgrades-to-my-misc-package/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
