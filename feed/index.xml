@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2014-08-10T09:10:52+10:00</updated>
+ <updated>2014-08-10T09:13:13+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -47,29 +47,54 @@
 &lt;li&gt;&lt;p&gt;First I needed devtools and this required RCurl linux package dependencies&lt;/p&gt;
 
 &lt;p&gt;  sudo apt-get install libcurl libcurl-devel libcurl4-gnutls-dev&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Now trying to install EML&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Now trying to install EML&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;  require(devtools)
-  install_github(&quot;EML&quot;, &quot;ropensci&quot;)&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;then XML Depends&lt;/p&gt;
 
-&lt;p&gt;  sudo apt-get install libcurl4-openssl-dev libxml2-dev
-  sudo apt-get install r-cran-xml&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;rJava can be difficult, I was really dreading this but eventually stackoverflow to the rescue!&lt;/p&gt;
+&lt;h4&gt;Code&lt;/h4&gt;
 
-&lt;p&gt;  sudo apt-get install openjdk-7-*
-  sudo apt-get install r-cran-rjava
-  update-java-alternatives -l
-  sudo update-java-alternatives -s java-1.7.0-openjdk-amd64
-  sudo R CMD javareconf
-  R
-  install.packages(&quot;rJava&quot;)
-  library(rJava)&lt;/p&gt;&lt;/li&gt;
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&quot;EML&quot;, &quot;ropensci&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;then XML Depends&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install libcurl4-openssl-dev libxml2-dev
+sudo apt-get install r-cran-xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;rJava can be difficult, I was really dreading this but eventually stackoverflow to the rescue!&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install openjdk-7-*
+sudo apt-get install r-cran-rjava
+update-java-alternatives -l
+sudo update-java-alternatives -s java-1.7.0-openjdk-amd64 
+sudo R CMD javareconf
+R
+install.packages(&quot;rJava&quot;)
+library(rJava)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;now complaining about ‘RHTMLForms’ and ‘RWordXML’&lt;/p&gt;
+
+&lt;h4&gt;Code&lt;/h4&gt;
 
 &lt;p&gt;  install_github(&quot;RHTMLForms&quot;, &quot;omegahat&quot;)
   install.packages(&quot;RWordXML&quot;, repos=&quot;http://www.omegahat.org/R&quot;, type=&quot;source&quot;)&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;on we go&lt;/p&gt;
+
+&lt;h4&gt;Code&lt;/h4&gt;
 
 &lt;p&gt;  install.packages(c(&quot;knitr&quot;, &quot;rfigshare&quot;, &quot;testthat&quot;, &quot;RCurl&quot;, &quot;dataone&quot;, &quot;rrdf&quot;))&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -78,7 +103,9 @@
 &lt;h2&gt;RGDAL&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Spatial toolbox&lt;/p&gt;
+&lt;li&gt;Spatial toolbox
+
+&lt;h4&gt;Code&lt;/h4&gt;
 
 &lt;p&gt;  sudo apt-get update
   sudo apt-get upgrade
@@ -179,6 +206,8 @@ exit
 
 
 &lt;h2&gt;make a spatial dataset&lt;/h2&gt;
+
+&lt;h4&gt;Code&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code&gt;require(devtools)
 install_github(&quot;swishdbtools&quot;, &quot;swish-climate-impact-assessment&quot;)
