@@ -6,6 +6,205 @@
 		<link>http://schamberlain.github.com</link>
 		
 			<item>
+				<title>r-eml-pgis-setting-up-the-software-stack</title>
+				<description>&lt;h2&gt;r-eml&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;this is the R package for authoring EML&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;pgis&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This is a spatial database&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;System Description&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ubuntu 12.04 LTS&lt;/li&gt;
+&lt;li&gt;Macpro Tower&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;EML is a useful beast&lt;/h2&gt;
+
+&lt;h3&gt;setting-up-the-software-stack&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;First I needed devtools and this required RCurl linux package dependencies&lt;/p&gt;
+
+&lt;p&gt;  sudo apt-get install libcurl libcurl-devel libcurl4-gnutls-dev&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now trying to install EML&lt;/p&gt;
+
+&lt;p&gt;  require(devtools)
+  install_github(&quot;EML&quot;, &quot;ropensci&quot;)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;then XML Depends&lt;/p&gt;
+
+&lt;p&gt;  sudo apt-get install libcurl4-openssl-dev libxml2-dev
+  sudo apt-get install r-cran-xml&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;rJava can be difficult, I was really dreading this but eventually stackoverflow to the rescue!&lt;/p&gt;
+
+&lt;p&gt;  sudo apt-get install openjdk-7-*
+  sudo apt-get install r-cran-rjava
+  update-java-alternatives -l
+  sudo update-java-alternatives -s java-1.7.0-openjdk-amd64
+  sudo R CMD javareconf
+  R
+  install.packages(&quot;rJava&quot;)
+  library(rJava)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;now complaining about ‘RHTMLForms’ and ‘RWordXML’&lt;/p&gt;
+
+&lt;p&gt;  install_github(&quot;RHTMLForms&quot;, &quot;omegahat&quot;)
+  install.packages(&quot;RWordXML&quot;, repos=&quot;http://www.omegahat.org/R&quot;, type=&quot;source&quot;)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;on we go&lt;/p&gt;
+
+&lt;p&gt;  install.packages(c(&quot;knitr&quot;, &quot;rfigshare&quot;, &quot;testthat&quot;, &quot;RCurl&quot;, &quot;dataone&quot;, &quot;rrdf&quot;))&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;RGDAL&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Spatial toolbox&lt;/p&gt;
+
+&lt;p&gt;  sudo apt-get update
+  sudo apt-get upgrade
+  sudo apt-get install libgdal1-dev libproj-dev
+  gdal-config --version
+  sudo R
+  install.packages(&quot;rgdal&quot;)&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;PostgreSQL 9.3&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;following comes from &lt;a href=&quot;http://technobytz.com/install-postgresql-9-3-ubuntu.html&quot;&gt;http://technobytz.com/install-postgresql-9-3-ubuntu.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get update
+sudo apt-get -y install python-software-properties
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo sh -c 'echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main&quot; &amp;gt;&amp;gt; /etc/apt/sources.list.d/postgresql.list'
+sudo apt-get update
+sudo apt-get install postgresql-9.3 pgadmin3
+sudo -u postgres psql
+create role user_name login password 'passwd';
+show hba_file ;
+#/etc/postgresql/9.3/main/pg_hba.conf
+\q
+sudo nano /etc/postgresql/9.3/main/pg_hba.conf
+# add users to listen for at the firewall
+sudo nano /etc/postgresql/9.3/main/postgresql.conf
+# listenaddresses = *
+sudo services postgresql restart
+sudo ufw allow from my.ip.address.0/24 to any port 5432
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;PostGIS 2.0&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;following comes from &lt;a href=&quot;http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html&quot;&gt;http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get update
+sudo apt-get install postgresql-9.3-postgis-2.1 -f
+sudo su
+su - postgres
+createdb postgis_ltern
+psql -d postgis_ltern -U postgres  
+CREATE EXTENSION postgis;  
+CREATE EXTENSION postgis_topology;  
+CREATE ROLE public_group;
+CREATE ROLE ivan_hanigan LOGIN PASSWORD 'password';
+GRANT public_group TO ivan_hanigan;
+grant usage on schema public to public_group;
+GRANT select ON ALL TABLES IN SCHEMA public TO public_group;
+grant execute on all functions in schema public to public_group;
+grant select on all sequences in schema public to public_group;
+grant select on table geometry_columns to public_group;
+grant select on table spatial_ref_sys to public_group;
+grant select on table geography_columns to public_group;
+grant select on table raster_columns to public_group;
+grant select on table raster_overviews to public_group;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;For transforming AGD 66 to GDA94&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A special transformations grid file is required to be added to the PROJ.4 files for reprojecting the Australian projections AGD66 to GDA94.&lt;/li&gt;
+&lt;li&gt;Thanks to &lt;a href=&quot;https://github.com/josephguillaume&quot;&gt;Joe Guillaume&lt;/a&gt; and &lt;a href=&quot;http://stackoverflow.com/users/103225/fmark&quot;&gt;Francis Markham&lt;/a&gt; for providing this solution.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code: transformations grid for Australian projections&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /usr/share/proj
+wget http://www.icsm.gov.au/gda/gdatm/national66.zip  
+unzip national66.zip
+mv &quot;A66 National (13.09.01).gsb&quot; aust_national_agd66_13.09.01.gsb
+su - postgres 
+psql -d mydb
+
+UPDATE spatial_ref_sys SET
+proj4text='+proj=longlat +ellps=aust_SA +nadgrids=aust_national_agd66_13.09.01.gsb +wktext'
+where srid=4202;
+\q
+exit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;make a spatial dataset&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&quot;swishdbtools&quot;, &quot;swish-climate-impact-assessment&quot;)
+require(swishdbtools)
+require(ggmap)
+
+ch  &amp;lt;- connect2postgres2(&quot;postgis_ltern&quot;)
+
+location_names &amp;lt;- c(&quot;linnaeus way acton canberra act&quot;, &quot;biology place acton canberra act&quot;)
+locations &amp;lt;- geocode(location_names)
+locations &amp;lt;- cbind(location_names, locations)
+
+dbWriteTable(ch, &quot;anu_gisforum_locations&quot;, locations, row.names = F)
+sql &amp;lt;- points2geom(&quot;public&quot;, &quot;anu_gisforum_locations&quot;, col_lat = &quot;lat&quot;, col_long = &quot;lon&quot;)
+cat(sql)
+dbSendQuery(ch,
+            sql
+            )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/gisforum_locations.png&quot; alt=&quot;images/gisforum_locations.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;TODO:&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;add EML for this using R&lt;/li&gt;
+&lt;li&gt;finesse with Morpho (requires further Java shennanigans)&lt;/li&gt;
+&lt;li&gt;publish something to KNB using R dataone package&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>Sat Jul 12 00:00:00 +1000 2014</published>
+				<link>http://schamberlain.github.com/2014/07/r-eml-pgis-setting-up-the-software-stack/</link>
+			</item>
+		
+			<item>
 				<title>data-dictionary-function-needed-further-upgrades-to-my-misc-package</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;I've been enjoying summarising datasets with my data_dictionary function&lt;/li&gt;
@@ -1725,42 +1924,6 @@ dev.off()
 </description>
 				<published>Sat May 17 00:00:00 +1000 2014</published>
 				<link>http://schamberlain.github.com/2014/05/reproducible-research-reports-using-emacs-orgmode-export-to-knitr/</link>
-			</item>
-		
-			<item>
-				<title>ms-access-to-postgresql-in-64-bit-windows</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;In 2011 we published a paper on &quot;Creating an integrated historical record of extreme particulate air pollution events in australian cities from 1994 to 2007&quot;.&lt;/li&gt;
-&lt;li&gt;I used a PostGIS/PostgreSQL server to host the database and MS Access clients for data entry by my co-author's at their own institutions (thousands of kms away)&lt;/li&gt;
-&lt;li&gt;This worked great but recently I realised that updating to windows 64 bit has broken the ODBC connection&lt;/li&gt;
-&lt;li&gt;to fix it I followed the instructions &lt;a href=&quot;http://www.youlikeprogramming.com/2011/09/postgresql-and-odbc-in-64-bit-windows/&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;You need to install both the 32 and 64 bit executables&lt;/li&gt;
-&lt;li&gt;Assuming you use the 32 bit windows office suite (recommended) then use the command below to open the ODBC connections tool and add a DSN for your postgres database&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Go to Start -&amp;gt; Run (or Press Windows+R keys) and enter 
-%WINDIR%\SysWOW64\odbcad32.exe
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;On either the User DSN (DSNs available for only that user) or System DSN (DSNs available to every user) tab, click the Add button.
-Scroll down the list and find the PostgreSQL ODBC Driver.&lt;/li&gt;
-&lt;li&gt;You may select ANSI or UNICODE (For future support I personally prefer UNICODE), and click Finish.&lt;/li&gt;
-&lt;li&gt;Data Source refers to the programmable name of the DSN Entry. Stick to lower-case letters and underscores. Ex: psql_server&lt;/li&gt;
-&lt;li&gt;Specify the Database, Server, User Name and Password to your PostgreSQL server.&lt;/li&gt;
-&lt;li&gt;Click the Test button to ensure everything has been specified correctly.&lt;/li&gt;
-&lt;li&gt;Click the Save button to create the DSN.&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>Sat May 10 00:00:00 +1000 2014</published>
-				<link>http://schamberlain.github.com/2014/05/ms-access-to-postgresql-in-64-bit-windows/</link>
 			</item>
 		
 	</channel>
