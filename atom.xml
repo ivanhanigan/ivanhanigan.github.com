@@ -4,13 +4,178 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2014-08-10T09:21:06+10:00</updated>
+ <updated>2014-08-21T06:43:39+10:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>hotwire-a-morpho-package-using-r-and-xml-editor</title>
+   <link href="http://schamberlain.github.com/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor/"/>
+   <updated>2014-08-21T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor</id>
+   <content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;at my workplace we have had a significant number of issues trying to use Morpho to publish ecological data&lt;/li&gt;
+&lt;li&gt;I have been interested in the R EML package as an alternative and got this advice from the authors&quot;&lt;/li&gt;
+&lt;li&gt;&quot;I'm really happy to see you combining these tools and making best use of each of their features (authoring for Morpho, automation for REML). We should think more about how to make this combination seamless.&quot; &lt;a href=&quot;https://github.com/ropensci/EML/issues/93&quot;&gt;https://github.com/ropensci/EML/issues/93&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;That dream still seems a long way off, but here is an attempt to circumvent some of our main issues which seem to do with using Morpho to do anything with data tables&lt;/li&gt;
+&lt;li&gt;(morpho seems fine when just dealing with the documentation parts of EML)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Create a Minimal Morpho EML&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I am going to use Morpho to create a new data package and just step thru all the steps,  add TBA to all the options&lt;/li&gt;
+&lt;li&gt;another option was to create this using the REML example&lt;/li&gt;
+&lt;li&gt;but then there is uncertainty if it will be accepted easily by Morpho when imported&lt;/li&gt;
+&lt;li&gt;seriously, just TBA and only for the required fields (these are in red)&lt;/li&gt;
+&lt;li&gt;take note of the docid number, and save locally&lt;/li&gt;
+&lt;li&gt;now we can import this as our template.  lets save it as a reference file&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;cp ~/.morpho/profiles/hanigan/data/hanigan/XX.1 ~/tools/morpho_template_eml.xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;this can now be imported in the File menu / import&lt;/li&gt;
+&lt;li&gt;this is the 'hotwired' starting point of our morpho packages&lt;/li&gt;
+&lt;li&gt;I want to do this for others too. so change morpho profile on your computer and import the xml&lt;/li&gt;
+&lt;li&gt;gives a new package with a new morpho generated docid number&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;generate the EML Skeleton using the R EML package&lt;/h1&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;library(EML)
+library(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+unit_defs &amp;lt;- reml_boilerplate(dat,titl = &quot;myFile&quot;)
+# you just got a quick and dirty unit_defs, these need to be made proper in morpho
+# we can get the col names easily
+col_defs &amp;lt;- names(dat)
+# then create a dataset with metadata
+ds &amp;lt;- data.set(dat,
+               col.defs = col_defs,
+               unit.defs = unit_defs
+               )
+# now write EML metadata file
+eml_config(creator=&quot;TBA &amp;lt;fakeaddress@gmail.com&amp;gt;&quot;)
+wd &amp;lt;- getwd()
+setwd(outdir)
+eml_write(ds,
+          file = gsub(&quot;.csv&quot;, &quot;_eml_skeleton.xml&quot;, outfile),
+          title = gsub(&quot;.csv&quot;, &quot;&quot;, outfile)
+          )
+tempfile &amp;lt;- dir(pattern=&quot;^data_table_&quot;)
+file.rename(tempfile, outfile)
+# rename the CSV file.
+setwd(wd)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;now attach the data&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;to avoid risk of morpho getting confused it is probably safe to let it start the new dataTable tags&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-hotwire-1.png&quot; alt=&quot;morpho-hotwire-1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;say it is a simple CSV&lt;/li&gt;
+&lt;li&gt;say TBA for all required fields, for attributes add one and say it is datetime (to be quick)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-hotwire-2.png&quot; alt=&quot;morpho-hotwire-2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;save, note the docid (41.2) and download file id (ecogrid://knb/datalibrarian2.42.1)&lt;/li&gt;
+&lt;li&gt;close&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;now replace the metadata info&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;use an XML editor to go to the eml skeleton we created in morpho and also to the one created in R&lt;/li&gt;
+&lt;li&gt;in the morpho generated XML find the attributeList tag within the dataTable group, mine looked like&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;attributeList&amp;gt;&amp;lt;attribute id=&quot;1408536821935&quot;&amp;gt;...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;and we now that the stuff we want to replace finishes with the closing tag &lt;/attributeList&gt;&lt;/li&gt;
+&lt;li&gt;I think the ID is irrelevant, except Morpho won't allow multiple of the same id number within an EML&lt;/li&gt;
+&lt;li&gt;find the same and replace in the REML generated bit&lt;/li&gt;
+&lt;li&gt;also do the &lt;dataFormat&gt;&lt;/dataFormat&gt; section&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;add another dataset&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;assuming you already ran reml_boilerplate for this new file&lt;/li&gt;
+&lt;li&gt;use morpho menus to add another datatabe&lt;/li&gt;
+&lt;li&gt;save and close morpho&lt;/li&gt;
+&lt;li&gt;open with XML editor and the REML EML Skeleton&lt;/li&gt;
+&lt;li&gt;transfer dataformat and attributelist stuff&lt;/li&gt;
+&lt;li&gt;go to documentation and add the title of the package, save locally&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;share it with colleagues&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;go to documentation menu &gt; access info and set to public = no&lt;/li&gt;
+&lt;li&gt;now go to their (windows?) machine and log in as the same morpho profile,&lt;/li&gt;
+&lt;li&gt;log in to the metacat and download the new package for work&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>morpho-doesnt-respect-quote-encapsulated-strings-in-csv</title>
+   <link href="http://schamberlain.github.com/2014/08/morpho-doesnt-respect-quote-encapsulated-strings-in-csv/"/>
+   <updated>2014-08-20T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2014/08/morpho-doesnt-respect-quote-encapsulated-strings-in-csv</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;We discovered this known morpho bug when we try to import a textual data to morpho&lt;/li&gt;
+&lt;li&gt;Even if you double check that you have selected the correct format for that data. For example, delimited or fixed width, and the correct delimiter.&lt;/li&gt;
+&lt;li&gt;see this bug report &lt;a href=&quot;https://projects.ecoinformatics.org/ecoinfo/issues/4636&quot;&gt;Bug #4636 Morpho should ignore commas inside double-quoted fields (CSV import)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;this unwanted Morpho behaviour is due to a comma in the cell and morpho doesn’t respect quote encapsulated strings with commas in them.&lt;/li&gt;
+&lt;li&gt;we do not think we can fix Morpho’s bug, and we cannot upgrade Morpho because of our Metacat version. We just need to find a workaround on that.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-quote-encapsulated.png&quot; alt=&quot;morpho-quote-encapsulated.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>r-eml-pgis-setting-up-the-software-stack</title>
@@ -6480,169 +6645,6 @@ Transformation
 &lt;ul&gt;
 &lt;li&gt;I've popped the script up as a &lt;a href=&quot;https://github.com/ivanhanigan/transformations&quot;&gt;Github repo&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;The example is in the &lt;a href=&quot;http://ivanhanigan.github.io/transformations/&quot;&gt;gh-pages branch&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</content>
- </entry>
- 
- <entry>
-   <title>Gantt Charts For Health Professionals</title>
-   <link href="http://schamberlain.github.com/2013/12/gantt-charts-for-health-professionals/"/>
-   <updated>2013-12-01T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/12/gantt-charts-for-health-professionals</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;Gantt Charts are a method used in Project Management to visualise the task list and progress with a calendar.&lt;/li&gt;
-&lt;li&gt;The title of this post comes from &lt;a href=&quot;http://berkeley.academia.edu/TomasAragon/Teaching/31679/Project_Management_for_Health_Professionals&quot;&gt;Dr Tomas Aragon's paper 'Project Management for Health Professionals'&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;There is also an accompanying &lt;a href=&quot;http://medepi.com/2012/02/05/project-mgmt/&quot;&gt;Tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Dr Aragon also has a couple of suggestions for software to use for creating Gantt Charts &lt;a href=&quot;http://medepi.com/2011/11/29/software-recs/&quot;&gt;on this page&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I haven't used those but here are some I have used&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Gantter&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This is an online tool, that can integrate with Google Drive &lt;a href=&quot;http://www.gantter.com/&quot;&gt;http://www.gantter.com/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;It also imports MS Project files&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Taskjuggler&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Emacs orgmode can be used with a Ruby package called Taskjuggler (tj3)&lt;/li&gt;
-&lt;li&gt;The command C-c C-e j will export a file such as this description ready for conversion &lt;a href=&quot;http://orgmode.org/worg/org-tutorials/org-taskjuggler.html&quot;&gt;http://orgmode.org/worg/org-tutorials/org-taskjuggler.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I also needed to include this suggested by d.tchin 29 Feb 2012,  &lt;a href=&quot;http://permalink.gmane.org/gmane.emacs.orgmode/52844&quot;&gt;http://permalink.gmane.org/gmane.emacs.orgmode/52844&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;an example I use for a template is in my &lt;a href=&quot;https://raw.github.com/ivanhanigan/disentangle/gh-pages/gantt-tj3/gantt-tj3.org&quot;&gt;disentangle Github repo&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;which produces &lt;a href=&quot;http://ivanhanigan.github.io/disentangle/gantt-tj3/Gantt%20Chart.html&quot;&gt;this output&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/gantt-tj3.png&quot; alt=&quot;gantt-tj3.png&quot; /&gt;&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>sharing-and-extending-research-protocols</title>
-   <link href="http://schamberlain.github.com/2013/11/sharing-and-extending-research-protocols/"/>
-   <updated>2013-11-27T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/11/sharing-and-extending-research-protocols</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;Last week I started a new discussion about sharing and extending research protocols.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;My Colleague sent me a link to the &lt;a href=&quot;http://prometheuswiki.publish.csiro.au/tiki-custom_home.php&quot;&gt;Prometheus Wiki&lt;/a&gt;​&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;a site for sharing research protocols. The idea is to give people
-a place to post research protocols since everyone develops them
-and then mentions them in papers but they rarely make it online in
-a usable format. We see this as a big bottleneck in the rate of
-knowledge discovery. Since users will always want to change and
-adapt a given protocol for changing applications or new technology
-or just to improve it. This sort of thing is done with open source
-all the time (i.e. git) but how you'd do it with an online
-protocol based out of a wiki is unknown. The current version of
-the website is not very flexible and doesn't really enable the
-sort of dynamic collaboration that I envision would make this a
-really useful tool. Git seems like an obvious conceptual starting
-point but there'd need to be a front end markup system in place
-that was integrated with that git-type backend. Since you've
-mentioned git a few times and the open science project, I thought
-you might find this interesting to think about. any suggestions or
-inspirations would be welcomed
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;My past experience&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I have previously tried to use a wiki for the development of new sections in an existing study protocol on estimating the effects of bushfire smoke air pollution and human health.&lt;/li&gt;
-&lt;li&gt;We combined elements of two major air pollution/health study protocols (one from Europe, one from America) with local considerations and decisions made within our team.&lt;/li&gt;
-&lt;li&gt;On reflection all this was mostly useful for me, to a lesser extent the other programmer and I don't think the project manager or statistician ever even looked at any of this.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Jeff Leek's current approach using GitHub&lt;/h4&gt;
-
-&lt;p&gt;I have been keeping an eye on the work by Jeff Leek on putting protocols onto Github and inviting collaboration to edit and extend them &lt;a href=&quot;http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/&quot;&gt;as he says&lt;/a&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;I put it on Github because I'm still not 100% sure I got it
-right... I would welcome feedback/pull requests on how we can
-improve the policy to make it better
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;Leek Group policies and protocols on github so far&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/jtleek/rpackages&quot;&gt;https://github.com/jtleek/rpackages&lt;/a&gt; accompanied by &lt;a href=&quot;http://simplystatistics.org/2013/10/07/the-leek-group-policy-for-developing-sustainable-r-packages/&quot;&gt;this post&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/jtleek/reviews&quot;&gt;https://github.com/jtleek/reviews&lt;/a&gt; accompanied by &lt;a href=&quot;http://simplystatistics.org/2013/10/23/the-leek-group-guide-to-reviewing-scientific-papers/&quot;&gt;this post&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/jtleek/datasharing&quot;&gt;https://github.com/jtleek/datasharing&lt;/a&gt; accompanied by &lt;a href=&quot;http://simplystatistics.org/2013/11/14/the-leek-group-guide-to-sharing-data-with-a-statistician-to-speed-collaboration/&quot;&gt;this post&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;I forked &quot;datasharing&quot; for my own. Renamed: &quot;How to share data to avoid misunderstanding&quot;&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I liked the datasharing policy so much &lt;a href=&quot;http://ivanhanigan.github.io/datasharing/&quot;&gt;I forked it for my own collaborations&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;I initially just made a minor recommendation to one of the lines in the original using the great Github feature that if you edit a repo you don't have access to, it forks the repo and creates a feature branch behind the scenes. After you submit the changes (which is a commit) it puts you right into the pull request form.&lt;/li&gt;
-&lt;li&gt;Therefore it can all be done on the GitHub site. I submitted &lt;a href=&quot;https://github.com/jtleek/datasharing/pull/11&quot;&gt;the pull request without leaving my web browser&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;But then I thought I would have done things a bit differently.  In particular I'd like a webpage with a table of contents, and a nicer looking landing page.&lt;/li&gt;
-&lt;li&gt;so I cloned my fork of the repo, then created a new branch called gh-pages, then copied the original to a new file called index.org, added some Emacs Orgmode HTML export magic and then &quot;C-c C-e h&quot; and WHAMM-O I've got my own version for extending with at &lt;a href=&quot;http://ivanhanigan.github.io/datasharing/&quot;&gt;http://ivanhanigan.github.io/datasharing/&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;The code version:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;git clone git@github.com:ivanhanigan/datasharing.git ~/tools/datasharing
-cd ~/tools/datasharing
-git checkout -b gh-pages
-mv README.md index.org
-touch README.md
-# edits to index.org, &quot;C-c C-e h&quot; and WHAMM-O
-git add index.org index.html README.md
-git push origin gh-pages
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;In this way I think people can share and collaborate easily &lt;a href=&quot;http://yihui.name/en/2013/06/fix-typo-in-documentation/&quot;&gt;(if they know git)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;as well as easily take work started by someone else and extend it for their own work.&lt;/li&gt;
-&lt;li&gt;I wonder a little bit about how much of my extensions I should offer back to Jeff Leek as the original author.&lt;/li&gt;
-&lt;li&gt;I guess he can always track what I do to it via the link back to his original shown in &lt;a href=&quot;https://github.com/jtleek/datasharing/network&quot;&gt;https://github.com/jtleek/datasharing/network&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;PS Jeff Leek uses github a lot!&lt;/h4&gt;
-
-&lt;p&gt;As he says in &lt;a href=&quot;http://simplystatistics.org/2013/11/21/future-of-statistics-take-home-messages-futureofstats/&quot;&gt;this post from the future-of-statistics unconference&lt;/a&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;You can read it on Github here (https://github.com/jtleek/futureofstats).
-I put it on Github for two reasons:
-
-- I agree with Hadley's statement that the future of statistics is on Github.
-- I summarized them based on my interpretation and would love
-  collaboration on the document. If you want to add your new
-  thoughts/summaries, add a new section with your bullet pointed
-  ideas and send me a pull request!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;Conclusions&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Jeff Leek is on to something really interesting with these github policies and protocols&lt;/li&gt;
-&lt;li&gt;I find the look of his plain markdown README.md pages a bit un-inspiring&lt;/li&gt;
-&lt;li&gt;but then I spend too much of my time tweaking my html by far (while Jeff is getting on with the real work of publishing papers)&lt;/li&gt;
 &lt;/ul&gt;
 
 </content>

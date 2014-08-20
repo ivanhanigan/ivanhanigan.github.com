@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2014-08-10T09:21:06+10:00</updated>
+ <updated>2014-08-21T06:43:39+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,272 +13,147 @@
 
  
  <entry>
-   <title>r-eml-pgis-setting-up-the-software-stack</title>
-   <link href="http://ivanhanigan.github.com/2014/07/r-eml-pgis-setting-up-the-software-stack/"/>
-   <updated>2014-07-12T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2014/07/r-eml-pgis-setting-up-the-software-stack</id>
-   <content type="html">&lt;h2&gt;r-eml&lt;/h2&gt;
+   <title>hotwire-a-morpho-package-using-r-and-xml-editor</title>
+   <link href="http://ivanhanigan.github.com/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor/"/>
+   <updated>2014-08-21T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor</id>
+   <content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;this is the R package for authoring EML&lt;/li&gt;
+&lt;li&gt;at my workplace we have had a significant number of issues trying to use Morpho to publish ecological data&lt;/li&gt;
+&lt;li&gt;I have been interested in the R EML package as an alternative and got this advice from the authors&quot;&lt;/li&gt;
+&lt;li&gt;&quot;I'm really happy to see you combining these tools and making best use of each of their features (authoring for Morpho, automation for REML). We should think more about how to make this combination seamless.&quot; &lt;a href=&quot;https://github.com/ropensci/EML/issues/93&quot;&gt;https://github.com/ropensci/EML/issues/93&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;That dream still seems a long way off, but here is an attempt to circumvent some of our main issues which seem to do with using Morpho to do anything with data tables&lt;/li&gt;
+&lt;li&gt;(morpho seems fine when just dealing with the documentation parts of EML)&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h2&gt;pgis&lt;/h2&gt;
+&lt;h1&gt;Create a Minimal Morpho EML&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;This is a spatial database&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;System Description&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Ubuntu 12.04 LTS&lt;/li&gt;
-&lt;li&gt;Macpro Tower&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;EML is a useful beast&lt;/h2&gt;
-
-&lt;h3&gt;setting-up-the-software-stack&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;First I needed devtools and this required RCurl linux package dependencies&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo apt-get install libcurl libcurl-devel libcurl4-gnutls-dev
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;Now trying to install EML&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(devtools)
-install_github(&quot;EML&quot;, &quot;ropensci&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;then XML Depends&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo apt-get install libcurl4-openssl-dev libxml2-dev
-sudo apt-get install r-cran-xml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;rJava can be difficult, I was really dreading this but eventually stackoverflow to the rescue!&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo apt-get install openjdk-7-*
-sudo apt-get install r-cran-rjava
-update-java-alternatives -l
-sudo update-java-alternatives -s java-1.7.0-openjdk-amd64 
-sudo R CMD javareconf
-R
-install.packages(&quot;rJava&quot;)
-library(rJava)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;now complaining about ‘RHTMLForms’ and ‘RWordXML’&lt;/li&gt;
+&lt;li&gt;I am going to use Morpho to create a new data package and just step thru all the steps,  add TBA to all the options&lt;/li&gt;
+&lt;li&gt;another option was to create this using the REML example&lt;/li&gt;
+&lt;li&gt;but then there is uncertainty if it will be accepted easily by Morpho when imported&lt;/li&gt;
+&lt;li&gt;seriously, just TBA and only for the required fields (these are in red)&lt;/li&gt;
+&lt;li&gt;take note of the docid number, and save locally&lt;/li&gt;
+&lt;li&gt;now we can import this as our template.  lets save it as a reference file&lt;/li&gt;
 &lt;/ul&gt;
 
 
 &lt;h4&gt;Code:&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;install_github(&quot;RHTMLForms&quot;, &quot;omegahat&quot;)
-install.packages(&quot;RWordXML&quot;, repos=&quot;http://www.omegahat.org/R&quot;, type=&quot;source&quot;)
+&lt;pre&gt;&lt;code&gt;cp ~/.morpho/profiles/hanigan/data/hanigan/XX.1 ~/tools/morpho_template_eml.xml
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
 &lt;ul&gt;
-&lt;li&gt;on we go&lt;/li&gt;
+&lt;li&gt;this can now be imported in the File menu / import&lt;/li&gt;
+&lt;li&gt;this is the 'hotwired' starting point of our morpho packages&lt;/li&gt;
+&lt;li&gt;I want to do this for others too. so change morpho profile on your computer and import the xml&lt;/li&gt;
+&lt;li&gt;gives a new package with a new morpho generated docid number&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;Code&lt;/h4&gt;
+&lt;h1&gt;generate the EML Skeleton using the R EML package&lt;/h1&gt;
 
-&lt;pre&gt;&lt;code&gt;install.packages(c(&quot;knitr&quot;, &quot;rfigshare&quot;, &quot;testthat&quot;, &quot;RCurl&quot;, &quot;dataone&quot;, &quot;rrdf&quot;))
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;library(EML)
+library(devtools)
+install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
+unit_defs &amp;lt;- reml_boilerplate(dat,titl = &quot;myFile&quot;)
+# you just got a quick and dirty unit_defs, these need to be made proper in morpho
+# we can get the col names easily
+col_defs &amp;lt;- names(dat)
+# then create a dataset with metadata
+ds &amp;lt;- data.set(dat,
+               col.defs = col_defs,
+               unit.defs = unit_defs
+               )
+# now write EML metadata file
+eml_config(creator=&quot;TBA &amp;lt;fakeaddress@gmail.com&amp;gt;&quot;)
+wd &amp;lt;- getwd()
+setwd(outdir)
+eml_write(ds,
+          file = gsub(&quot;.csv&quot;, &quot;_eml_skeleton.xml&quot;, outfile),
+          title = gsub(&quot;.csv&quot;, &quot;&quot;, outfile)
+          )
+tempfile &amp;lt;- dir(pattern=&quot;^data_table_&quot;)
+file.rename(tempfile, outfile)
+# rename the CSV file.
+setwd(wd)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;h2&gt;RGDAL&lt;/h2&gt;
+&lt;h1&gt;now attach the data&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Spatial toolbox&lt;/li&gt;
+&lt;li&gt;to avoid risk of morpho getting confused it is probably safe to let it start the new dataTable tags&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install libgdal1-dev libproj-dev
-gdal-config --version
-sudo R
-install.packages(&quot;rgdal&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;PostgreSQL 9.3&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/images/morpho-hotwire-1.png&quot; alt=&quot;morpho-hotwire-1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;following comes from &lt;a href=&quot;http://technobytz.com/install-postgresql-9-3-ubuntu.html&quot;&gt;http://technobytz.com/install-postgresql-9-3-ubuntu.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;say it is a simple CSV&lt;/li&gt;
+&lt;li&gt;say TBA for all required fields, for attributes add one and say it is datetime (to be quick)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-hotwire-2.png&quot; alt=&quot;morpho-hotwire-2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;save, note the docid (41.2) and download file id (ecogrid://knb/datalibrarian2.42.1)&lt;/li&gt;
+&lt;li&gt;close&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;now replace the metadata info&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;use an XML editor to go to the eml skeleton we created in morpho and also to the one created in R&lt;/li&gt;
+&lt;li&gt;in the morpho generated XML find the attributeList tag within the dataTable group, mine looked like&lt;/li&gt;
 &lt;/ul&gt;
 
 
 &lt;h4&gt;Code:&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo apt-get update
-sudo apt-get -y install python-software-properties
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo sh -c 'echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main&quot; &amp;gt;&amp;gt; /etc/apt/sources.list.d/postgresql.list'
-sudo apt-get update
-sudo apt-get install postgresql-9.3 pgadmin3
-sudo -u postgres psql
-create role user_name login password 'passwd';
-show hba_file ;
-#/etc/postgresql/9.3/main/pg_hba.conf
-\q
-sudo nano /etc/postgresql/9.3/main/pg_hba.conf
-# add users to listen for at the firewall
-sudo nano /etc/postgresql/9.3/main/postgresql.conf
-# listenaddresses = *
-sudo services postgresql restart
-sudo ufw allow from my.ip.address.0/24 to any port 5432
+&lt;pre&gt;&lt;code&gt;&amp;lt;attributeList&amp;gt;&amp;lt;attribute id=&quot;1408536821935&quot;&amp;gt;...
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;h2&gt;PostGIS 2.0&lt;/h2&gt;
-
 &lt;ul&gt;
-&lt;li&gt;following comes from &lt;a href=&quot;http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html&quot;&gt;http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;and we now that the stuff we want to replace finishes with the closing tag &lt;/attributeList&gt;&lt;/li&gt;
+&lt;li&gt;I think the ID is irrelevant, except Morpho won't allow multiple of the same id number within an EML&lt;/li&gt;
+&lt;li&gt;find the same and replace in the REML generated bit&lt;/li&gt;
+&lt;li&gt;also do the &lt;dataFormat&gt;&lt;/dataFormat&gt; section&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo apt-get update
-sudo apt-get install postgresql-9.3-postgis-2.1 -f
-sudo su
-su - postgres
-createdb postgis_ltern
-psql -d postgis_ltern -U postgres  
-CREATE EXTENSION postgis;  
-CREATE EXTENSION postgis_topology;  
-CREATE ROLE public_group;
-CREATE ROLE ivan_hanigan LOGIN PASSWORD 'password';
-GRANT public_group TO ivan_hanigan;
-grant usage on schema public to public_group;
-GRANT select ON ALL TABLES IN SCHEMA public TO public_group;
-grant execute on all functions in schema public to public_group;
-grant select on all sequences in schema public to public_group;
-grant select on table geometry_columns to public_group;
-grant select on table spatial_ref_sys to public_group;
-grant select on table geography_columns to public_group;
-grant select on table raster_columns to public_group;
-grant select on table raster_overviews to public_group;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;For transforming AGD 66 to GDA94&lt;/h2&gt;
+&lt;h1&gt;add another dataset&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;A special transformations grid file is required to be added to the PROJ.4 files for reprojecting the Australian projections AGD66 to GDA94.&lt;/li&gt;
-&lt;li&gt;Thanks to &lt;a href=&quot;https://github.com/josephguillaume&quot;&gt;Joe Guillaume&lt;/a&gt; and &lt;a href=&quot;http://stackoverflow.com/users/103225/fmark&quot;&gt;Francis Markham&lt;/a&gt; for providing this solution.&lt;/li&gt;
+&lt;li&gt;assuming you already ran reml_boilerplate for this new file&lt;/li&gt;
+&lt;li&gt;use morpho menus to add another datatabe&lt;/li&gt;
+&lt;li&gt;save and close morpho&lt;/li&gt;
+&lt;li&gt;open with XML editor and the REML EML Skeleton&lt;/li&gt;
+&lt;li&gt;transfer dataformat and attributelist stuff&lt;/li&gt;
+&lt;li&gt;go to documentation and add the title of the package, save locally&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;Code: transformations grid for Australian projections&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;cd /usr/share/proj
-wget http://www.icsm.gov.au/gda/gdatm/national66.zip  
-unzip national66.zip
-mv &quot;A66 National (13.09.01).gsb&quot; aust_national_agd66_13.09.01.gsb
-su - postgres 
-psql -d mydb
-
-UPDATE spatial_ref_sys SET
-proj4text='+proj=longlat +ellps=aust_SA +nadgrids=aust_national_agd66_13.09.01.gsb +wktext'
-where srid=4202;
-\q
-exit
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;make a spatial dataset&lt;/h2&gt;
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(devtools)
-install_github(&quot;swishdbtools&quot;, &quot;swish-climate-impact-assessment&quot;)
-require(swishdbtools)
-require(ggmap)
-
-ch  &amp;lt;- connect2postgres2(&quot;postgis_ltern&quot;)
-
-location_names &amp;lt;- c(&quot;linnaeus way acton canberra act&quot;, &quot;biology place acton canberra act&quot;)
-locations &amp;lt;- geocode(location_names)
-locations &amp;lt;- cbind(location_names, locations)
-
-dbWriteTable(ch, &quot;anu_gisforum_locations&quot;, locations, row.names = F)
-sql &amp;lt;- points2geom(&quot;public&quot;, &quot;anu_gisforum_locations&quot;, col_lat = &quot;lat&quot;, col_long = &quot;lon&quot;)
-cat(sql)
-dbSendQuery(ch,
-            sql
-            )
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;This can now be shown in Quantum GIS&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/gisforum_locations.png&quot; alt=&quot;images/gisforum_locations.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;TODO:&lt;/h3&gt;
+&lt;h1&gt;share it with colleagues&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;add EML for this using R&lt;/li&gt;
-&lt;li&gt;finesse with Morpho (requires further Java shennanigans)&lt;/li&gt;
-&lt;li&gt;publish something to KNB using R dataone package&lt;/li&gt;
+&lt;li&gt;go to documentation menu &gt; access info and set to public = no&lt;/li&gt;
+&lt;li&gt;now go to their (windows?) machine and log in as the same morpho profile,&lt;/li&gt;
+&lt;li&gt;log in to the metacat and download the new package for work&lt;/li&gt;
 &lt;/ul&gt;
 
 </content>
