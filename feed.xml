@@ -11,9 +11,10 @@
 
 &lt;ul&gt;
 &lt;li&gt;at my workplace we have had a significant number of issues trying to use Morpho to publish ecological data&lt;/li&gt;
-&lt;li&gt;I have been interested in the R EML package as an alternative and got this advice from the authors&quot;&lt;/li&gt;
+&lt;li&gt;I have been interested in the R EML package as an alternative and got this advice from the authors&lt;/li&gt;
 &lt;li&gt;&quot;I'm really happy to see you combining these tools and making best use of each of their features (authoring for Morpho, automation for REML). We should think more about how to make this combination seamless.&quot; &lt;a href=&quot;https://github.com/ropensci/EML/issues/93&quot;&gt;https://github.com/ropensci/EML/issues/93&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;That dream still seems a long way off, but here is an attempt to circumvent some of our main issues which seem to do with using Morpho to do anything with data tables&lt;/li&gt;
+&lt;li&gt;That dream still seems a long way off (and I suspect will see a re-write of morpho in R's &quot;shiny apps&quot; language)&lt;/li&gt;
+&lt;li&gt;but here is an attempt to circumvent some of our main issues which seem to do with using Morpho to do anything with data tables&lt;/li&gt;
 &lt;li&gt;(morpho seems fine when just dealing with the documentation parts of EML)&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -97,7 +98,9 @@ setwd(wd)
 &lt;p&gt;&lt;img src=&quot;/images/morpho-hotwire-2.png&quot; alt=&quot;morpho-hotwire-2.png&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;save, note the docid (41.2) and download file id (ecogrid://knb/datalibrarian2.42.1)&lt;/li&gt;
+&lt;li&gt;add the package title, with enough identification in the title to allow quick reference&lt;/li&gt;
+&lt;li&gt;SET THE ACCESS TO NOT PUBLIC BEFORE SAVING (this is to be safe so that the data is never saved open access - due to metacat allowing backward version browsing)&lt;/li&gt;
+&lt;li&gt;note the docid (41.2) and download file id (ecogrid://knb/datalibrarian2.42.1)&lt;/li&gt;
 &lt;li&gt;close&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -119,12 +122,22 @@ setwd(wd)
 
 
 &lt;ul&gt;
-&lt;li&gt;and we now that the stuff we want to replace finishes with the closing tag &lt;/attributeList&gt;&lt;/li&gt;
+&lt;li&gt;and we know that the stuff we want to replace finishes with the closing tag &lt;/attributeList&gt;&lt;/li&gt;
 &lt;li&gt;I think the ID is irrelevant, except Morpho won't allow multiple of the same id number within an EML&lt;/li&gt;
 &lt;li&gt;find the same and replace in the REML generated bit&lt;/li&gt;
-&lt;li&gt;also do the &lt;dataFormat&gt;&lt;/dataFormat&gt; section&lt;/li&gt;
 &lt;/ul&gt;
 
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-attributelist.png&quot; alt=&quot;morpho-attributelist.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And paste:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-dataformat.png&quot; alt=&quot;morpho-dataformat.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Also do the&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;dataFormat&amp;gt;&amp;lt;/dataFormat&amp;gt; section
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h1&gt;add another dataset&lt;/h1&gt;
 
@@ -142,6 +155,7 @@ setwd(wd)
 
 &lt;ul&gt;
 &lt;li&gt;go to documentation menu &gt; access info and set to public = no&lt;/li&gt;
+&lt;li&gt;save to metacat&lt;/li&gt;
 &lt;li&gt;now go to their (windows?) machine and log in as the same morpho profile,&lt;/li&gt;
 &lt;li&gt;log in to the metacat and download the new package for work&lt;/li&gt;
 &lt;/ul&gt;
