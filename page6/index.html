@@ -56,6 +56,200 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Studies of extreme weather events such as drought require long term climate data</li>
+<li>these are available at continental scale derived from</li>
+<li>observations from a network of weather stations that are interpolated to a surface</li>
+<li>I have been working on techniques with R and online resources (the Australian Water Availabilty Project AWAP) to make working with these long term climatology datasets easier.</li>
+<li>The package is in development at <a href="https://github.com/swish-climate-impact-assessment/awaptools">https://github.com/swish-climate-impact-assessment/awaptools</a></li>
+</ul>
+
+
+<h2>Case Study</h2>
+
+<ul>
+<li>aim is need to look at seasonal rainfall means.</li>
+<li>first thing is to download the data (I'm also working on a Rstudio server to host these data, as a Virtual Lab).</li>
+<li>data = multiple years of monthly rainfall data in a raster grid format.</li>
+<li>aim = combine rainfall in a seasonal basis in one grid</li>
+<li>(i.e. M-J-J-A-S-O 1900, 1901 etc.) calculate mean of each cell.</li>
+<li>assumption1 = filenames have year, month embedded so they will be sorted in order when listed</li>
+<li>assumption2 = all months are available, from 1:12 for all years in</li>
+<li>study period</li>
+<li>notes:</li>
+<li>this requires the files are listed in the right order by name, and all months are present. might be better to use grep on the file name and strsplit/substr to extract the month identifier more precisely?</li>
+</ul>
+
+
+<h3>Results</h3>
+
+<p><img src="/images/season_hot.png" alt="alttext" /></p>
+
+<h3>I'm looking for collaboration on this!</h3>
+
+<ul>
+<li>I've been in contact with:</li>
+<li><a href="https://github.com/RationShop/rain_r/wiki/The-Rain-Project">https://github.com/RationShop/rain_r/wiki/The-Rain-Project</a></li>
+<li>I apologise to windoze users but feel a bit like <a href="http://librestats.com/2014/02/24/how-to-make-a-bad-password-with-r/">this guy</a> when recomending how to install:</li>
+</ul>
+
+
+<h4>quote:</h4>
+
+<pre><code>probably the easiest way to do this is to use
+Hadley's devtools package.  Assuming you have devtools and my package's
+dependencies.  If you're using Linux or the BSD's, this should just
+work.  Welcome to the good life, player.  I think this will work out
+of the box on a Mac.  I have no idea if this will work on Windows; how
+you strange people get anything done amazes me.  At the least,
+Im guessing you have to install Rtools first.  
+You could also just source all the R scripts like 
+some kind of barbarian
+</code></pre>
+
+<p></p>
+
+
+<h4>R Code:</h4>
+
+<pre><code># depends
+require(swishdbtools)
+if(!require(raster)) install.packages("raster", dependencies = T); require(raster)
+if(!require(rgdal)) install.packages("rgdal", dependencies = T); require(rgdal)
+
+# on linux can install direct, on windoze you configure Rtools
+require(devtools)
+install_github("awaptools", "swish-climate-impact-assessment")
+require(awaptools)
+
+homedir &lt;- "~/data/AWAP_GRIDS/data"
+outdir &lt;- "~/data/AWAP_GRIDS/data-seasonal-vignette"
+
+# first make sure there are no left over files from previous runs
+#oldfiles &lt;- list.files(pattern = '.tif', full.names=T) 
+#for(oldfile in oldfiles)
+#{
+#  print(oldfile)
+#  file.remove(oldfile)
+#}
+################################################
+setwd(homedir)
+
+# local customisations
+workdir  &lt;- homedir
+setwd(workdir)
+# don't change this
+years &lt;- c(1900:2014)
+lengthYears &lt;- length(years)
+# change this
+startdate &lt;- "2013-01-01"
+enddate &lt;- "2014-01-31"
+# do
+load_monthly(start_date = startdate, end_date = enddate)
+
+# do
+filelist &lt;- dir(pattern = "grid.Z$")
+for(fname in filelist)
+{
+  #fname &lt;- filelist[1]
+  unzip_monthly(fname, aggregation_factor = 1)
+  fin &lt;- gsub(".grid.Z", ".grid", fname)
+  fout &lt;- gsub(".grid.Z", ".tif", fname)
+  r &lt;- raster(fin)
+  writeRaster(r, fout, format="GTiff",  overwrite = TRUE)
+  file.remove(fin)
+}
+
+cfiles &lt;- list.files(pattern = '.tif', full.names=T) 
+# loop thru
+# NEED TO SET THE FILESOFSEASEON_I counter EACH TIME YOU start
+
+
+for(season in c("hot", "cool"))
+{
+  # season &lt;- "hot" # for labelling
+  if(season == "cool")
+  {
+    filesOfSeason_i &lt;- c(5,6,7,8,9,10)  
+    endat &lt;- lengthYears
+  } else {
+    filesOfSeason_i &lt;- c(11,12,13,14,15,16) 
+    endat &lt;- lengthYears - 1
+  }
+
+  for (year in 1:endat){ 
+    ## setup for checking month 
+    # year  &lt;- 1 #endat
+
+
+    ## checking
+    print(cat("####################\n\n"))
+    print(cfiles[filesOfSeason_i])
+
+    b &lt;- brick(stack(cfiles[filesOfSeason_i])) 
+    ## calculate mean 
+    m &lt;- mean(b) 
+    ## checking 
+    # image(m) 
+    writeRaster(m, file.path(outdir,sprintf("season_%s_%s.tif", season, year)), drivername="GTiff")
+    filesOfSeason_i &lt;- filesOfSeason_i + 12
+  } 
+}
+
+##### now we will overall average
+setwd(outdir)
+for(season in c("cool", "hot"))
+{
+  cfiles &lt;- list.files(pattern = season, full.names=T)   
+  print(cfiles)
+  b &lt;- brick(stack(cfiles)) 
+  ## calculate mean 
+  m &lt;- mean(b) 
+  ## checking 
+  # image(m) 
+  writeRaster(m, file.path(outdir,sprintf("season_%s.tif", season)), drivername="GTiff")
+}
+
+# qc
+cool &lt;- raster("season_cool.tif")
+hot &lt;- raster("season_hot.tif")
+par(mfrow = c(2,1))
+image(cool)
+image(hot)
+
+# just summer rainfall
+png("season_hot.png")
+image(hot)
+dev.off()
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/long-term-climatology-contextual-data-for-ecological-research/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-02-28 00:00:00 +1100">28 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/02/yearmon-class-and-interoperability-with-excel-and-access/" title="yearmon-class-and-interoperability-with-excel-and-access" rel="bookmark">yearmon-class-and-interoperability-with-excel-and-access</a>
     </h1>
     <div class="entry-content full-content">
@@ -124,7 +318,7 @@ as.yearmon("Apr-2012")
       
       <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
       
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
       
     </p>
     <!--
@@ -134,7 +328,7 @@ as.yearmon("Apr-2012")
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Thu Feb 27 00:00:00 +1100 2014">27 Feb 2014</abbr>
+        <abbr class="published" title="2014-02-27 00:00:00 +1100">27 Feb 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -220,7 +414,7 @@ as.yearmon("Apr-2012")
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Sat Feb 22 00:00:00 +1100 2014">22 Feb 2014</abbr>
+        <abbr class="published" title="2014-02-22 00:00:00 +1100">22 Feb 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -361,7 +555,7 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Tue Feb 18 00:00:00 +1100 2014">18 Feb 2014</abbr>
+        <abbr class="published" title="2014-02-18 00:00:00 +1100">18 Feb 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -406,89 +600,7 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="Wed Feb 12 00:00:00 +1100 2014">12 Feb 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>Yesterday I had the opportunity to review the Tree based modelling methods we are implementing in a study I'm working on at the moment.
-I based the discussion on <a href="http://www.tandfonline.com/doi/abs/10.1080/00330124.2012.724347">a paper from 2012</a>, along with <a href="/pdfs/TreeModelNotes.pdf">some notes I have made related to the use of these methods in our context</a>.
-I had an hour and a half with a couple of senior statisticians and a bunch of sociologists at the study group yesterday.</p>
-
-<h4>My main question for the group was:</h4>
-
-<ul>
-<li>What do you think of the proposition that these models are suitable for "studies that test hypotheses generated from multiple theories"?</li>
-</ul>
-
-
-<p>The statisticians where underwhelmed by the Cutts study, but thought the stats method was "neat" and one had not heard of tree models before (!).</p>
-
-<h4>Key outcomes of that session were:</h4>
-
-<ul>
-<li><p>First stage PCA</p>
-
-<ul>
-<li>Q: did they need to do the PCA first stage to either a) reduce the the large number of potentially collinear variables or b) to control for measurement error?</li>
-<li>A: No they didn't need the PCA.  The large number, collinearity and measurement efficacy are dealt with by the tree based methods (ie cross-validation on steroids, grouping primary and surrogate splits, etc).  Also the trees have an advantage with the large number of predictors in that they are non-parametric and able to automatically detect interactions whereas PCA is parametric and typically assumes linearity. (Note that I saw Steve afterward and he is still not convinced.  Maybe he will respond to this with some description of the reason why not?)</li>
-</ul>
-</li>
-<li><p>Rescaling the variables</p>
-
-<ul>
-<li>Q: Did they need to centre each variable on the grand sample mean so that the relative weight of each variable was even?</li>
-<li>A: No the tree models are not effected by this, and it reduced the interpret-ability of the decision tree graphic.  The PCA is effected, however, and maybe that is why they did it.</li>
-</ul>
-</li>
-<li><p>Multiple working hypotheses</p>
-
-<ul>
-<li>Q: What do you think of the Cutts et al proposition that these models are suitable for "studies that test hypotheses generated from multiple theories"?</li>
-<li>A: It is a promising approach.  Not clear from this study if it is successful but the proposition is plausible.  It has more of a chance than the General Linear Model approach which cannot (this point was made categorically by one of the statisticians).  It will be important to be very clear about what exactly each of the "Theories" are predicting, so that the explanatory power attributable to those variables from one "theory" can be compared with that of the other theories.  The ability to uncover complex interactions is very attractive (extrovert/introvert personality type interacting with group demographics etc) but it also increases the potential for spurious results (and 'chasing the noise') ergo the need to base inferences on what the theories predict, not just on what the data reveal.</li>
-</ul>
-</li>
-<li><p>In general we thought that authors had overdone the stats.  It showed what 'could' be done with trees and forests, but possibly not what 'should' be done.</p></li>
-<li><p>Is the A3 variable really missing from ctree output but dominant in the randomForest in Figure3?</p>
-
-<ul>
-<li>when another group I'm in reviewed it last year it was noted as odd that fig3 has A3 most important in randomforest but does not appear in ctree. At the time I thought this might be due to the cross validation like in the rpart or tree package, but it turns out that ctree does not do that....</li>
-<li>Mislabelling is a possibility as these graphics appear to be edited from the default produced by the 'party' package.</li>
-<li>However, it also reasonable that these results could be correct. ctree (and rpart, tree, etc.) use greedy algorithms, meaning that the best local split is used even if this is suboptimal globally.</li>
-<li>Basically there are algorithmic reasons that this might be a true difference between ctree and randomforest.  It might just have been the way the cookie crumbled for the ctree's best local split which may not have survived through the randomForest's  thousands of iterations.</li>
-<li>But on page 569 they do say "total knowledge is lowest among those whod do not think that they are empowered and are unaware of information sources" which implies to me that the top or left-most node might be mis-labelled I3 when it is actually A3.</li>
-<li>this would give the appropriate left most box plot (ie I3 &lt;= -0.22 &amp; A3 &lt;= -0.64 gives lowest total knowledge??)</li>
-<li>at the group yesterday people also generally suspected mislabelling, given the dominance of A3 in randomforest.</li>
-</ul>
-</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-      <a href="/categories/overview" title="overview" rel="category tag">overview</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="Thu Jan 23 00:00:00 +1100 2014">23 Jan 2014</abbr>
+        <abbr class="published" title="2014-02-12 00:00:00 +1100">12 Feb 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -550,31 +662,35 @@ I had an hour and a half with a couple of senior statisticians and a bunch of so
 <!--               <a class="workflow" href="/categories/workflow.html">workflow</a> -->
 <!-- </li> -->
                 
-                <li><a href="/categories/disentangle">disentangle (4)</a></li>
-                
-                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
+                <li><a href="/categories/overview">overview (7)</a></li>
                 
                 <li><a href="/categories/research methods">research methods (45)</a></li>
                 
-                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
+                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
                 <li><a href="/categories/spatial">spatial (6)</a></li>
                 
+                <li><a href="/categories/extreme weather events">extreme weather events (10)</a></li>
+                
                 <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
                 
-                <li><a href="/categories/Data Documentation">Data Documentation (31)</a></li>
+                <li><a href="/categories/data documentation">data documentation (31)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (9)</a></li>
+                <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
-                <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
+                <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/overview">overview (7)</a></li>
+                <li><a href="/categories/disentangle">disentangle (4)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2014/12/climate-grids-and-thredds-server-experimenting/" title="climate-grids-and-thredds-server-experimenting" rel="bookmark">climate-grids-and-thredds-server-experimenting</a>
+                </li>
                 
                 <li>
                   <a href="/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor/" title="hotwire-a-morpho-package-using-r-and-xml-editor" rel="bookmark">hotwire-a-morpho-package-using-r-and-xml-editor</a>
@@ -592,21 +708,17 @@ I had an hour and a half with a couple of senior statisticians and a bunch of so
                   <a href="/2014/06/data-dictionary-function-needed-further-upgrades-to-my-misc-package/" title="data-dictionary-function-needed-further-upgrades-to-my-misc-package" rel="bookmark">data-dictionary-function-needed-further-upgrades-to-my-misc-package</a>
                 </li>
                 
-                <li>
-                  <a href="/2014/06/testing-thredds-server-with-r-code-from-tasmanian-tpac/" title="testing-thredds-server-with-r-code-from-tasmanian-tpac" rel="bookmark">testing-thredds-server-with-r-code-from-tasmanian-tpac</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
                 
-                <li><a href="/tag/bugs">bugs (1)</a></li>
-                
-                <li><a href="/tag/software">software (1)</a></li>
+                <li><a href="/tag/morpho">morpho (15)</a></li>
                 
                 <li><a href="/tag/R-eml">R-eml (3)</a></li>
                 
-                <li><a href="/tag/morpho">morpho (15)</a></li>
+                <li><a href="/tag/bugs">bugs (1)</a></li>
+                
+                <li><a href="/tag/software">software (2)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -617,13 +729,13 @@ I had an hour and a half with a couple of senior statisticians and a bunch of so
           <!--     <h2 class="widget-title">Tags</h2> -->
           <!--     <ul> -->
           <!--        -->
-          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
-          <!--        -->
-          <!--       <li><a href="/tag/software">software (1)</a></li> -->
+          <!--       <li><a href="/tag/morpho">morpho (15)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/R-eml">R-eml (3)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/morpho">morpho (15)</a></li> -->
+          <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/software">software (2)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->
