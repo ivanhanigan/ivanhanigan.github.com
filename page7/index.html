@@ -56,6 +56,192 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/02/aggregation-of-statistical-local-areas/" title="Aggregation Of Statistical Local Areas" rel="bookmark">Aggregation Of Statistical Local Areas</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h2>Reproducibility</h2>
+
+<ul>
+<li>A subset of the data and code used for this blog post is available at <a href="https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s">https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s</a></li>
+<li>Some parts of the data I used are not available due to shared Intellectual Property</li>
+<li>The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics</li>
+<li>The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.</li>
+</ul>
+
+
+<h2>Introduction</h2>
+
+<p>The Aim is to aggregate Statistical Local Areas (SLAs, recently relabelled SA2) Australian Standard Geographical Classification (ASGC, recently relabelled ASGS) to achieve a greater level of privacy protection.
+The rules to achieve a geography amenable to statistical comparisons are:</p>
+
+<ul>
+<li>similar populations (around 20,000 to 30,000)</li>
+<li>homogenous Index of Relative Socioeconomic Disadvantage</li>
+<li>nested within the next level up in the ASGC/ASGS</li>
+<li>so that SSD (recently relabelled SA3) are not split.</li>
+<li>the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments</li>
+<li>This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.</li>
+</ul>
+
+
+<h2>Results</h2>
+
+<h3>Data Prep</h3>
+
+<ul>
+<li>The data were prepared as spatial files</li>
+</ul>
+
+
+<p><img src="/images/aggregation-of-sa2s.png" alt="alttext" /></p>
+
+<h3>Assess proposed split in Belconnen</h3>
+
+<ul>
+<li>the proposed split in belconnen looks good</li>
+<li>This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score</li>
+<li>Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham</li>
+<li>Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence</li>
+</ul>
+
+
+<p><img src="/images/belco-split.png" alt="alttext" /></p>
+
+<h3>Assess the outliers</h3>
+
+<ul>
+<li>this can be done by identifying their component CCD SEIFA within new groups</li>
+<li>the seifa of CCD in outliers are compared to the others within their new groups</li>
+</ul>
+
+
+<p><img src="/images/seifa-by-newgroups1.png" alt="alttext" /></p>
+
+<ul>
+<li>zoom in on croweded areas</li>
+</ul>
+
+
+<p><img src="/images/seifa-by-newgroups1-2.png" alt="alttext" /></p>
+
+<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
+
+
+<!-- Tue Feb 18 22:03:04 2014 -->
+
+
+<TABLE border=1>
+<TR> <TH>  </TH> <TH> sa2_name.x </TH> <TH> new_sa2_group </TH> <TH> notes </TH>  </TR>
+  <TR> <TD align="right"> 12 </TD> <TD> Bruce </TD> <TD> Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 14 </TD> <TD> Campbell </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 20 </TD> <TD> Civic </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 31 </TD> <TD> Fadden </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 32 </TD> <TD> Farrer </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
+  <TR> <TD align="right"> 37 </TD> <TD> Forrest </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 60 </TD> <TD> Isaacs </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
+  <TR> <TD align="right"> 64 </TD> <TD> Kingston - Barton </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 71 </TD> <TD> Macarthur </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 73 </TD> <TD> Macquarie </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 87 </TD> <TD> O'Malley </TD> <TD> Chifley/ Lyons (ACT)/ O'Malley/ Phillip </TD> <TD> higher than neighbours </TD> </TR>
+  <TR> <TD align="right"> 89 </TD> <TD> Page </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
+  <TR> <TD align="right"> 98 </TD> <TD> Scullin </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
+   </TABLE>
+
+
+<h3>Investigating areas: eg the Kingston - Barton area</h3>
+
+<ul>
+<li>we can zoom in on some of these areas</li>
+</ul>
+
+
+<p><img src="/images/kingston-barton.png" alt="alttext" /></p>
+
+<h2>Conclusions</h2>
+
+<p>Basically, the problem comes from public housing policies in Canberra which distorts the effect of the housing market and land values in segregating rich from poor. Essentially, there are highly advantaged suburbs with pockets of disadvantaged public housing.</p>
+
+<p>Other 'problematic' features re this are:</p>
+
+<ul>
+<li>proximity to ornamental lakes</li>
+<li>proximity to urban green space</li>
+<li>proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement -- but different to 'distance from urban centre'</li>
+<li>elevation, especially with a view.</li>
+</ul>
+
+
+<p>Potentially the issue is going to be that this can't be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/aggregation-of-statistical-local-areas/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-02-18 00:00:00 +1100">18 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Last year I wrote to a Professor to let them know some numbers that quantified their effect estimate (computed be exponentiating their beta coefficient) described in their results section was inconsistent with the numbers in their table (the raw coefficients).</li>
+<li>Happily the recalculation showed that they had underestimated the effect size and their conclusions were not wrong, but erroneously conservative.</li>
+<li>Previously I would use Sweave documents to keep track of all my calculations, but I was still copy-and-pasting the key numbers into the text.</li>
+<li>I've become more interested now in using Inline R Outputs (called Sexpr - S expressions)</li>
+<li>This is also the first time I've created a report using the Palatino font, on the advice of a new colleague of mine.</li>
+<li>I popped up a <a href="https://github.com/ivanhanigan/DataDocumentation">Github repo with a Sweave template for Reproducible Reports with a few notes I made</a>.  Which looks like</li>
+</ul>
+
+
+<p><img src="/images/sexpr.png" alt="/images/sexpr.png" /></p>
+
+<ul>
+<li><p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.pdf">PDF output is here</a></p></li>
+<li><p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.Rnw">Sweave file is here</a></p></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/template-reproducible-research-with-r-tex-and-sweave/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-02-12 00:00:00 +1100">12 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
     </h1>
     <div class="entry-content full-content">
@@ -348,159 +534,6 @@ reml_boilerplate(
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/cwt-lter-data-submission-template-critique/" title="cwt-lter-data-submission-template-critique" rel="bookmark">cwt-lter-data-submission-template-critique</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>A colleague sent me the cwt_data_subm_template_2013.xls today</li>
-<li>You can download a copy here <a href="coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls">coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls</a></li>
-<li>LTER is The U.S. Long-Term Ecological Research (LTER) network</li>
-<li>I made the following notes, this is not intended to be a nasty critique</li>
-<li>The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches</li>
-</ul>
-
-
-<h4>Critique</h4>
-
-<ul>
-<li>opened first on windows, saw comments on cells with instructions</li>
-<li>opened next on linux with libreOffice and comments are gone</li>
-<li>opened at the last tab (split in two for no reason?)</li>
-<li>noticed recommended name "GCE site" = Site, otherwise "permanent plot" =      Plot?</li>
-<li><a href="http://nsmn1.uh.edu/steve/research/gce/gce.htm">GCE = Georgia Coastal Ecosystems LTER program</a></li>
-<li>flip to first tab, point 4 suggests there is some export functionality I cannot see (a VBA script?)</li>
-<li>cell 11 a    NOTE: When submitting updated metadata or re-using templates please highlight fields with modified contents in yellow</li>
-<li>and use glitter pen???</li>
-<li>personnell tab OK</li>
-<li>instrumentation, variable measured is free text. ok but for eg "max temp", "temperature maxima", "maximum temperature (c)" "maximum temperature in 24 hours after 9am local time in degrees" etc</li>
-<li>too wide, last column was off my wide screen! noticed wasted real estate in column A</li>
-<li>tabular data "–  Paste or enter your data values into the 'Values' section (white cells), starting with the indicated cell"</li>
-<li>this is an invitation for clerical error! Too many "copy-and-paste" actions will inevtably introduce errors</li>
-<li>I do like the extra metadata Column Name:
--- Description:
--- Units:
--- Data type:
--- Variable type:
--- Number type:
--- Precision:
--- Code values:
--- Calculations:
--- QC: Minimum Valid:
--- QC: Minimum Expected:
--- QC: Maximum Expected:
--- QC: Maximum Valid:
--- QC: Custom:
-–  Fill in missing values in the table with NaN (not a number), including text fields, and do not skip columns</li>
-<li>but what about missing values imbued with other meanings (NA = not observed, censored etc)?</li>
-<li>ask users to format digit rounding in Excel?? oh no</li>
-<li>old excel users may still be restricted to 65,536 rows by 256 columns.</li>
-<li>non tabular sheet is ok</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/cwt-lter-data-submission-template-critique/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-01-07 00:00:00 +1100">07 Jan 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/tumbarumba-supersite-dem/" title="tumbarumba-supersite-dem" rel="bookmark">tumbarumba-supersite-dem</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>The first dataset I downloaded from ASN for playing around with was the Tumba Lidar.</li>
-<li>I had thought it might be better to offer this as a OGC service rather than downloadable geotiff</li>
-<li>just in terms of the size firstly (104MB)</li>
-<li>but I also soon realised it would need some specialised tweaking which non-GIS users might struggle a bit and could avoid if the serverside data is set up by a GIS specialist (although can we assume only GIS specialists will download this kind of data)?</li>
-<li>kudos to <a href="http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object">http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object</a></li>
-</ul>
-
-
-<h4>Code:tumbarumba-supersite-dem</h4>
-
-<pre><code>setwd("~/data/supersite/tumba-lidar")
-require(raster)
-fname  &lt;- dir(pattern = "tif$")
-fname
-r  &lt;- raster(fname)
-str(r)
-dfr &lt;- as.data.frame(r)
-summary(dfr)
-# the -1 code looks like it might be missing?  They are around the edge.
-rna &lt;- reclassify(r, cbind(-1, 1197))
-png("tumba-lidar.png")
-plot(rna, col=terrain.colors(100), xlab = "eastings (m)", ylab = "northings (m)")
-title("Tumbarumba Supersite Digital Elevation Model")
-title(sub = "packageId=lloyd.374.2")
-dev.off()
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/tumba-lidar.png" alt="tumba-lidar.png" /></p>
-
-<h4>Alternately use a geoserver</h4>
-
-<ul>
-<li>If we use a Geoserver we could set it up so people can view this without downloading the data</li>
-<li>following the instructions <a href="http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html">http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html</a></li>
-<li>using the ANU GIS library server</li>
-</ul>
-
-
-<iframe style="border: none;" height="400" width="600" src="http://brawn.anu.edu.au:8081/geoexplorer/viewer/#maps/1"></iframe>
-
-
-<p>;</p>
-
-<ul>
-<li>PS the map might take a minute to show up, not sure why, might ask the sysadmin to look at the server performance</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/tumbarumba-supersite-dem/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-01-03 00:00:00 +1100">03 Jan 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -578,9 +611,19 @@ dev.off()
                 
                 <li><a href="/categories/disentangle">disentangle (4)</a></li>
                 
+                <li><a href="/categories/project management">project management (1)</a></li>
+                
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2015/03/tuftes-gantt-alternative-for-detail-within-context/" title="tuftes-gantt-alternative-for-detail-within-context" rel="bookmark">tuftes-gantt-alternative-for-detail-within-context</a>
+                </li>
+                
+                <li>
+                  <a href="/2014/12/todo-detail-within-context-as-per-tuftes-gantt-alternative/" title="todo-detail-within-context-as-per-tuftes-gantt-alternative" rel="bookmark">todo-detail-within-context-as-per-tuftes-gantt-alternative</a>
+                </li>
                 
                 <li>
                   <a href="/2014/12/climate-grids-and-thredds-server-experimenting/" title="climate-grids-and-thredds-server-experimenting" rel="bookmark">climate-grids-and-thredds-server-experimenting</a>
@@ -592,14 +635,6 @@ dev.off()
                 
                 <li>
                   <a href="/2014/08/morpho-doesnt-respect-quote-encapsulated-strings-in-csv/" title="morpho-doesnt-respect-quote-encapsulated-strings-in-csv" rel="bookmark">morpho-doesnt-respect-quote-encapsulated-strings-in-csv</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/07/r-eml-pgis-setting-up-the-software-stack/" title="r-eml-pgis-setting-up-the-software-stack" rel="bookmark">r-eml-pgis-setting-up-the-software-stack</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/06/data-dictionary-function-needed-further-upgrades-to-my-misc-package/" title="data-dictionary-function-needed-further-upgrades-to-my-misc-package" rel="bookmark">data-dictionary-function-needed-further-upgrades-to-my-misc-package</a>
                 </li>
                 
               </ul>
