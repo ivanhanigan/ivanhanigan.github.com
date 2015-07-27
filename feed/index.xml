@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-07-14T21:07:05+10:00</updated>
+ <updated>2015-07-27T12:26:21+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,51 +13,149 @@
 
  
  <entry>
-   <title>Using the R EML software to mitigate risks in Morpho and Metacat data publishing</title>
-   <link href="http://ivanhanigan.github.com/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing/"/>
-   <updated>2015-03-19T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing</id>
-   <content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+   <title>Web Data, Climate Grids and THREDDS UPDATE</title>
+   <link href="http://ivanhanigan.github.com/2015/07/climate-grids-and-thredds-server-experimenting-update/"/>
+   <updated>2015-07-27T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2015/07/climate-grids-and-thredds-server-experimenting-update</id>
+   <content type="html">&lt;h1&gt;Update&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Over the last few months I have used software called Metacat as a Data Portal and Repository.  Metacat is server software which has been
-developed by the Knowledge Network for Biocomplexity (KNB).&lt;/li&gt;
-&lt;li&gt;Metacat
-conforms to the Ecological Metadata Language (EML) Standard (&lt;a href=&quot;https://knb.ecoinformatics.org/#external//emlparser/docs/index.html&quot;&gt;https://knb.ecoinformatics.org/#external//emlparser/docs/index.html&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;KNB also develop another software package called Morpho to be used by Ecologists to document their data (&lt;a href=&quot;https://knb.ecoinformatics.org/#tools&quot;&gt;https://knb.ecoinformatics.org/#tools/morpho&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Morpho can be used to send the data and metadata documents to be published on a Metacat portal.&lt;/li&gt;
-&lt;li&gt;KNB’s software is used internationally by the Data
-Observation Network for Earth (DataONE) nodes, the United States Long
-Term Ecological Research (US LTER) network and the International Long
-Term Ecological Research (ILTER) network.&lt;/li&gt;
-&lt;li&gt;Additionally, the Australian Long Term Ecological Research Network
-Data Portal (&lt;a href=&quot;http://www.ltern.org.au/knb/&quot;&gt;www.ltern.org.au/knb/&lt;/a&gt;), Australian SuperSites Network and
-Australian Centre for Ecological Analysis and Synthesis used
-the same underlying technology to publish data packages.&lt;/li&gt;
-&lt;li&gt;The Metacat system is great for a data repository but unfortunately (in my experience) the Morpho software package has repeatedly hampered data processing and increased risks of inadvertently publishing data with errors.&lt;/li&gt;
-&lt;li&gt;My colleagues and I workaround these problems using a lot of different 'fixes' for the different problems.&lt;/li&gt;
-&lt;li&gt;Fortunately there is an alternative to Morpho in the R statistical software environment called the R-EML package (&lt;a href=&quot;https://github.com/ropensci/EML&quot;&gt;https://github.com/ropensci/EML&lt;/a&gt;).  This provides a library of functions used in the R language to generate and parse EML files.&lt;/li&gt;
-&lt;li&gt;This new workflow mitigates some of the risks of the Morpho software by ensuring the data related steps of the workflow are conducted in the R environment for statical computing.&lt;/li&gt;
-&lt;li&gt;However, some Issues remain in that this requires a fairly specialised computing environment with various Linux libraries configured appropriately&lt;/li&gt;
+&lt;li&gt;This is an update to my previous post:  &lt;a href=&quot;http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/&quot;&gt;http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I was worried about the available metadata with those netcdf data I was working with so contacted Dr Brad Evans at EMAST who set me straight:&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h1&gt;Results&lt;/h1&gt;
+&lt;h4&gt;QUOTE:&lt;/h4&gt;
 
-&lt;ul&gt;
-&lt;li&gt;I generate EML metadata using REML in the workflow shown in the figure below.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;&quot;you need to use ncdf4  - not ncdf  ...
+because they are netcdf4 files and not netcdf3 files. 
+This is poorly explained in the R community.
+All of the netcdf files from Australian providers (AusCover, BoM, etc...) 
+have been in netcdf4 for a couple of years now.&quot;
+&lt;/code&gt;&lt;/pre&gt;
 
+&lt;h1&gt;So here is the revised code using ncdf4 library:&lt;/h1&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/workflow-rmd-md.png&quot; alt=&quot;altext&quot; /&gt;&lt;/p&gt;
+&lt;h4&gt;CODE&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# sudo apt-get install r-cran-ncdf4 
+library(ncdf4)
+library(raster)
+strt &amp;lt;-'2012-01-01'
+end &amp;lt;- '2012-01-04'
+dates &amp;lt;- seq(as.Date(strt),as.Date(end),1)          
+dates
+par(mfrow = c(2,2))
+for(i in 1:length(dates)){
+ # i=1
+  date_i &amp;lt;- dates[i]
+  infile &amp;lt;- sprintf(&quot;http://dapds00.nci.org.au/thredds/dodsC/rr9/Climate/eMAST/ANUClimate/0_01deg/v1m0_aus/day/land/tmin/e_01/2012/eMAST_ANUClimate_day_tmin_v1m0_%s.nc&quot;, gsub(&quot;-&quot;, &quot;&quot;, date_i))
+
+  nc &amp;lt;- nc_open(infile)
+  str(nc)
+  print(nc)
+  vals &amp;lt;- ncvar_get(nc, varid=&quot;air_temperature&quot;)
+  str(vals)
+  nc.att &amp;lt;-    nc$var$air_temperature
+  xmin &amp;lt;- min(nc.att$dim[[1]]$vals)
+  xmax &amp;lt;- max(nc.att$dim[[1]]$vals)
+  ymin &amp;lt;- min(nc.att$dim[[2]]$vals)
+  ymax &amp;lt;- max(nc.att$dim[[2]]$vals)
+
+  print(c(xmin,xmax))
+  print(c(ymin,ymax))
+
+  r &amp;lt;- raster(t(vals),
+              xmn=xmin, xmx=xmax,
+              ymn=ymin, ymx=ymax)
+  #str(r)
+  plot(r)
+  nc_close(nc)
+}
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
+&lt;h1&gt;RESULTS 1: METADATA&lt;/h1&gt;
+
 &lt;ul&gt;
-&lt;li&gt;Image adapted from &lt;a href=&quot;http://kieranhealy.org/blog/archives/2014/01/23/plain-text/&quot;&gt;http://kieranhealy.org/blog/archives/2014/01/23/plain-text/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;the result is I now have a lot more metdata returned to my R workspace&lt;/li&gt;
 &lt;/ul&gt;
 
+
+&lt;h4&gt;EXERPT&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;[...]
+[1] &quot;        licence_copyright: Copyright 2009-2013 ANU. Rights owned by The Australian National University (ANU). Rights licensed subject to TERN  Attribution (TERN-BY).&quot;
+[1] &quot;        short_desc: Australian coverage, ANUClimate 1.0, 0.01 degree grid, 1970-2012&quot;
+[1] &quot;        summary: Minimum daily temperature, for the Australian continent between 1970-2012. Daily temperature regulates rates of plant growth and determines critical conditions such as frost on flowering and fruiting. Modelled by expressing each daily value as a difference anomaly with respect to the gridded 1976-2005 mean daily minimum temperature for each month as provided by eMAST_ANUClimate_mmn_tmin_v1m0_1976_2005. The daily anomalies were interpolated by trivariate thin plate smoothing spline functions of longitude, latitude and vertically exaggerated elevation using ANUSPLIN Version 4.5. There was an average of 671 Bureau of Meteorology data points available for each day between 1970 and 2012. Automated quality assessment rejected on average 3 data values per day with extreme studentised residuals. These were commonly associated with days following missing observations. The root mean square of all individual cross validation residuals provided by the spline analysis is 1.5 degrees Celsius. A comprehensive assessment of the analysis and the factors contributing to the quality of the final interpolated daily minimum temperature grids is in preparation.&quot;
+[1] &quot;        long_name: Daily minimum temperature&quot;
+[1] &quot;        contact: Michael Hutchinson, Professor of spatial and temporal analysis, 3.23A, Fenner School of Environment &amp;amp; Society, College of Medicine, Biology &amp;amp; Environment, Frank Fenner Building 141, Australian National University, Canberra, Australian Capital Territory, 200, Australia, (+61) 2 6125 4783, Michael.Hutchinson@anu.edu.au, http://orcid.org/0000-0001-8205-6689&quot;
+[1] &quot;        references: 1. Hutchinson, M.F., Mckenney, D.W., Lawrence, K., Pedlar, J., Hopkinson, R., Milewska, E. and Papadopol, P. 2009. Development and testing of Canada-wide interpolated spatial models of daily minimum/maximum temperature and precipitation for 1961-2003. Journal of Applied Meteorology and Climatology 48: 725�741. http://dx.doi.org/10.1175/2008JAMC1979.1 2. Hutchinson, M.F. and Xu, T. 2013. ANUSPLIN version 4.4 User Guide. Fenner School of Environment and Society, Australian National University, Canberra http://fennerschool.anu.edu.au/files/anusplin44.pdf&quot;
+[1] &quot;        source: ANUClimate 1.0&quot;
+[1] &quot;        keywords: EARTH SCIENCE &amp;gt; ATMOSPHERE &amp;gt; ATMOSPHERIC TEMPERATURE &amp;gt; MAXIMUM/MINIMUM TEMPERATURE&quot;
+[1] &quot;        Conventions: CF-1.6&quot;
+[1] &quot;        institution: Australian National University&quot;
+[1] &quot;        geospatial_lat_min: -43.74&quot;
+[1] &quot;        geospatial_lat_max: -9&quot;
+[1] &quot;        geospatial_lat_units: degrees_north&quot;
+[1] &quot;        geospatial_lat_resolution: -0.01&quot;
+[1] &quot;        geospatial_lon_min: 112.9&quot;
+[1] &quot;        geospatial_lon_max: 154&quot;
+[1] &quot;        geospatial_lon_units: degrees_east&quot;
+[1] &quot;        geospatial_lon_resolution: 0.01&quot;
+[1] &quot;        keywords_vocabulary: Global Change Master Directory (http://gcmd.nasa.gov)&quot;
+[1] &quot;        metadata_link: http://datamgt.nci.org.au:8080/geonetwork&quot;
+[1] &quot;        standard_name_vocabulary: Climate and Forecast(CF) convention standard names (http://cf-pcmdi.llnl.gov/documents/cf-standard-names)&quot;
+[1] &quot;        id: eMAST_ANUClimate_day_tmin_v1m0_1970_2012&quot;
+[1] &quot;        DOI: To be added&quot;
+[1] &quot;        cdm_data_type: grid&quot;
+[1] &quot;        contributor_name: Michael Hutchinson, Jennnifer Kesteven, Tingbao Xu&quot;
+[1] &quot;        contributor_role: principalInvestigator, author, author&quot;
+[1] &quot;        creator_email: eMAST.data@mq.edu.au&quot;
+[1] &quot;        creator_name: eMAST data manager&quot;
+[1] &quot;        creator_url: http://www.emast.org.au/&quot;
+[1] &quot;        Metadata_Conventions: Unidata Dataset Discovery v1.0&quot;
+[1] &quot;        publisher_name: Ecosystem Modelling and Scaling Infrastructure (eMAST) Facility: Macquarie University&quot;
+[1] &quot;        publisher_email: eMAST.data@mq.edu.au&quot;
+[1] &quot;        publisher_url: http://www.emast.org.au/&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;RESULTS 2: Grid data&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I still get lots of good data&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;images/thredds2.png&quot; alt=&quot;images/thredds2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;NOTE I still need that weird transpose&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I note that the weird hacky transpose is still required&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;CODE&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# NB weird hacky transpose still required or else you get this
+r &amp;lt;- raster(vals,
+            xmn=xmin, xmx=xmax,
+            ymn=ymin, ymx=ymax)
+
+#str(r)
+plot(r)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;images/thredds2raw.png&quot; alt=&quot;images/thredds2raw.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - Progress Report</title>
+    <title>Ivan Hanigan - Web Data, Climate Grids and THREDDS UPDATE</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -46,7 +46,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2012/01/progress-report/" title="Progress Report" rel="bookmark">Progress Report</a>
+    <a href="/2015/07/climate-grids-and-thredds-server-experimenting-update/" title="Web Data, Climate Grids and THREDDS UPDATE" rel="bookmark">Web Data, Climate Grids and THREDDS UPDATE</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -57,9 +57,145 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>I have had another crack at this conversion. No chance yet to tweak the colour scheme (I want green [EDIT this was a change to stylesheets/screen.css at #header and #footer background-color: #238B45;]).</p>
+    <h1>Update</h1>
 
-<p>Most of the obvious traces of Scott have gone, but it still looks like a rip-off.  Hoping to get a distinct look soon.</p>
+<ul>
+<li>This is an update to my previous post:  <a href="http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/">http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/</a></li>
+<li>I was worried about the available metadata with those netcdf data I was working with so contacted Dr Brad Evans at EMAST who set me straight:</li>
+</ul>
+
+
+<h4>QUOTE:</h4>
+
+<pre><code>"you need to use ncdf4  - not ncdf  ...
+because they are netcdf4 files and not netcdf3 files. 
+This is poorly explained in the R community.
+All of the netcdf files from Australian providers (AusCover, BoM, etc...) 
+have been in netcdf4 for a couple of years now."
+</code></pre>
+
+<h1>So here is the revised code using ncdf4 library:</h1>
+
+<h4>CODE</h4>
+
+<pre><code># sudo apt-get install r-cran-ncdf4 
+library(ncdf4)
+library(raster)
+strt &lt;-'2012-01-01'
+end &lt;- '2012-01-04'
+dates &lt;- seq(as.Date(strt),as.Date(end),1)          
+dates
+par(mfrow = c(2,2))
+for(i in 1:length(dates)){
+ # i=1
+  date_i &lt;- dates[i]
+  infile &lt;- sprintf("http://dapds00.nci.org.au/thredds/dodsC/rr9/Climate/eMAST/ANUClimate/0_01deg/v1m0_aus/day/land/tmin/e_01/2012/eMAST_ANUClimate_day_tmin_v1m0_%s.nc", gsub("-", "", date_i))
+
+  nc &lt;- nc_open(infile)
+  str(nc)
+  print(nc)
+  vals &lt;- ncvar_get(nc, varid="air_temperature")
+  str(vals)
+  nc.att &lt;-    nc$var$air_temperature
+  xmin &lt;- min(nc.att$dim[[1]]$vals)
+  xmax &lt;- max(nc.att$dim[[1]]$vals)
+  ymin &lt;- min(nc.att$dim[[2]]$vals)
+  ymax &lt;- max(nc.att$dim[[2]]$vals)
+
+  print(c(xmin,xmax))
+  print(c(ymin,ymax))
+
+  r &lt;- raster(t(vals),
+              xmn=xmin, xmx=xmax,
+              ymn=ymin, ymx=ymax)
+  #str(r)
+  plot(r)
+  nc_close(nc)
+}
+</code></pre>
+
+<p></p>
+
+
+<h1>RESULTS 1: METADATA</h1>
+
+<ul>
+<li>the result is I now have a lot more metdata returned to my R workspace</li>
+</ul>
+
+
+<h4>EXERPT</h4>
+
+<pre><code>[...]
+[1] "        licence_copyright: Copyright 2009-2013 ANU. Rights owned by The Australian National University (ANU). Rights licensed subject to TERN  Attribution (TERN-BY)."
+[1] "        short_desc: Australian coverage, ANUClimate 1.0, 0.01 degree grid, 1970-2012"
+[1] "        summary: Minimum daily temperature, for the Australian continent between 1970-2012. Daily temperature regulates rates of plant growth and determines critical conditions such as frost on flowering and fruiting. Modelled by expressing each daily value as a difference anomaly with respect to the gridded 1976-2005 mean daily minimum temperature for each month as provided by eMAST_ANUClimate_mmn_tmin_v1m0_1976_2005. The daily anomalies were interpolated by trivariate thin plate smoothing spline functions of longitude, latitude and vertically exaggerated elevation using ANUSPLIN Version 4.5. There was an average of 671 Bureau of Meteorology data points available for each day between 1970 and 2012. Automated quality assessment rejected on average 3 data values per day with extreme studentised residuals. These were commonly associated with days following missing observations. The root mean square of all individual cross validation residuals provided by the spline analysis is 1.5 degrees Celsius. A comprehensive assessment of the analysis and the factors contributing to the quality of the final interpolated daily minimum temperature grids is in preparation."
+[1] "        long_name: Daily minimum temperature"
+[1] "        contact: Michael Hutchinson, Professor of spatial and temporal analysis, 3.23A, Fenner School of Environment &amp; Society, College of Medicine, Biology &amp; Environment, Frank Fenner Building 141, Australian National University, Canberra, Australian Capital Territory, 200, Australia, (+61) 2 6125 4783, Michael.Hutchinson@anu.edu.au, http://orcid.org/0000-0001-8205-6689"
+[1] "        references: 1. Hutchinson, M.F., Mckenney, D.W., Lawrence, K., Pedlar, J., Hopkinson, R., Milewska, E. and Papadopol, P. 2009. Development and testing of Canada-wide interpolated spatial models of daily minimum/maximum temperature and precipitation for 1961-2003. Journal of Applied Meteorology and Climatology 48: 725�741. http://dx.doi.org/10.1175/2008JAMC1979.1 2. Hutchinson, M.F. and Xu, T. 2013. ANUSPLIN version 4.4 User Guide. Fenner School of Environment and Society, Australian National University, Canberra http://fennerschool.anu.edu.au/files/anusplin44.pdf"
+[1] "        source: ANUClimate 1.0"
+[1] "        keywords: EARTH SCIENCE &gt; ATMOSPHERE &gt; ATMOSPHERIC TEMPERATURE &gt; MAXIMUM/MINIMUM TEMPERATURE"
+[1] "        Conventions: CF-1.6"
+[1] "        institution: Australian National University"
+[1] "        geospatial_lat_min: -43.74"
+[1] "        geospatial_lat_max: -9"
+[1] "        geospatial_lat_units: degrees_north"
+[1] "        geospatial_lat_resolution: -0.01"
+[1] "        geospatial_lon_min: 112.9"
+[1] "        geospatial_lon_max: 154"
+[1] "        geospatial_lon_units: degrees_east"
+[1] "        geospatial_lon_resolution: 0.01"
+[1] "        keywords_vocabulary: Global Change Master Directory (http://gcmd.nasa.gov)"
+[1] "        metadata_link: http://datamgt.nci.org.au:8080/geonetwork"
+[1] "        standard_name_vocabulary: Climate and Forecast(CF) convention standard names (http://cf-pcmdi.llnl.gov/documents/cf-standard-names)"
+[1] "        id: eMAST_ANUClimate_day_tmin_v1m0_1970_2012"
+[1] "        DOI: To be added"
+[1] "        cdm_data_type: grid"
+[1] "        contributor_name: Michael Hutchinson, Jennnifer Kesteven, Tingbao Xu"
+[1] "        contributor_role: principalInvestigator, author, author"
+[1] "        creator_email: eMAST.data@mq.edu.au"
+[1] "        creator_name: eMAST data manager"
+[1] "        creator_url: http://www.emast.org.au/"
+[1] "        Metadata_Conventions: Unidata Dataset Discovery v1.0"
+[1] "        publisher_name: Ecosystem Modelling and Scaling Infrastructure (eMAST) Facility: Macquarie University"
+[1] "        publisher_email: eMAST.data@mq.edu.au"
+[1] "        publisher_url: http://www.emast.org.au/"
+</code></pre>
+
+<h1>RESULTS 2: Grid data</h1>
+
+<ul>
+<li>I still get lots of good data</li>
+</ul>
+
+
+<p><img src="images/thredds2.png" alt="images/thredds2.png" /></p>
+
+<p></p>
+
+
+<h1>NOTE I still need that weird transpose</h1>
+
+<ul>
+<li>I note that the weird hacky transpose is still required</li>
+</ul>
+
+
+<h4>CODE</h4>
+
+<pre><code># NB weird hacky transpose still required or else you get this
+r &lt;- raster(vals,
+            xmn=xmin, xmx=xmax,
+            ymn=ymin, ymx=ymax)
+
+#str(r)
+plot(r)
+</code></pre>
+
+<p></p>
+
+
+<p><img src="images/thredds2raw.png" alt="images/thredds2raw.png" /></p>
 
     <div class="clear"></div>
   </div>
@@ -74,12 +210,12 @@
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/overview" title="overview" rel="category tag">overview</a>
+    <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2012-01-15 00:00:00 +1100">15 Jan 2012</abbr>
+      <abbr class="published" title="2015-07-27 00:00:00 +1000">27 Jul 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -93,7 +229,7 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2012/01/progress-report/";
+    var disqus_url = "http://ivanhanigan.github.com/2015/07/climate-grids-and-thredds-server-experimenting-update/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
