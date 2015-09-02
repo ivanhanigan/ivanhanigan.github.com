@@ -56,6 +56,198 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/spatially-structured-time-series-with-nmmaps/" title="spatially-structured-time-series-with-nmmaps" rel="bookmark">spatially-structured-time-series-with-nmmaps</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I will use the NMMAPSlite datasets for a simple example of what I
+describe as "Spatially Structured Timeseries" as opposed to
+"Spatio-Temporal" which I think more explicitly includes spatial
+structure in the model.  <a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/">See This Report</a> for all the gory details.</p>
+
+<h1>R Codes</h1>
+
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+
+
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" -->
+
+
+<!--                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> -->
+
+
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> -->
+
+
+<p><head>
+<title>Spatiotemporal Regression Modelling</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Spatiotemporal Regression Modelling"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-10-16T15:17+1100"/>
+<meta name="author" content="Ivan Hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
+
+
+
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+
+<p></head>
+<body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">Spatiotemporal Regression Modelling</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Core Model</a></li>
+<li><a href="#sec-2">2 Core Model Plots</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1"><span class="section-number-4">1</span> Core Model</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+<pre class="src src-R"><span style="color: #5F7F5F;">################################################################</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">name:core</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">func</span>
+setwd(<span style="color: #CC9393;">"~/projects/spatiotemporal-regression-models/NMMAPS-example"</span>)
+<span style="color: #BFEBBF; font-weight: bold;">require</span>(mgcv)
+<span style="color: #BFEBBF; font-weight: bold;">require</span>(splines)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">load</span>
+analyte <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #CC9393;">"analyte.csv"</span>)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">clean</span>
+analyte$yy <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> substr(analyte$date,1,4)
+numYears<span style="color: #BFEBBF; font-weight: bold;">&lt;-</span>length(names(table(analyte$yy)))
+analyte$date <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> as.Date(analyte$date)
+analyte$time <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> as.numeric(analyte$date)
+analyte$agecat <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> factor(analyte$agecat,
+                          levels = c(<span style="color: #CC9393;">"under65"</span>,
+                              <span style="color: #CC9393;">"65to74"</span>, <span style="color: #CC9393;">"75p"</span>),
+                          ordered = <span style="color: #7CB8BB;">TRUE</span>
+                          )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">do</span>
+fit <span style="color: #BFEBBF; font-weight: bold;">&lt;-</span> gam(cvd ~ s(tmax) + s(dptp) +
+           city + agecat +
+           s(time, k= 7*numYears, fx=T) +
+           offset(log(pop)),
+           data = analyte, family = poisson
+           )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">plot of response functions</span>
+png(<span style="color: #CC9393;">"images/nmmaps-eg-core.png"</span>, width = 1000, height = 750, res = 150)
+par(mfrow=c(2,3))
+plot(fit, all.terms = <span style="color: #7CB8BB;">TRUE</span>)
+dev.off()
+
+
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2"><span class="section-number-4">2</span> Core Model Plots</h4>
+<div class="outline-text-4" id="text-2">
+
+<p><img src="/images/nmmaps-eg-core.png"  alt="/images/nmmaps-eg-core.png" />
+</p></div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/spatially-structured-time-series-with-nmmaps/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-16 00:00:00 +1100">16 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/morpho-and-rfigshare/" title="morpho-and-rfigshare" rel="bookmark">morpho-and-rfigshare</a>
     </h1>
     <div class="entry-content full-content">
@@ -480,95 +672,6 @@ str(dataTable(obj))
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>This post introduces a new series of blog posts in which I want to experiment with a few tools for data documentation, which I'll present as Case Studies.  This series of posts will be pitched to an audience mixture of data librarians and data analysts.</p>
-
-<p>Data documentation occurs in a spectrum from simple notes through to elaborate systems.  I've been working on a conceptual framework about how the actual process can be done in two distinct ways:</p>
-
-<ul>
-<li>Graphical User Interface (GUI) solutions</li>
-<li>Programmatic (Scripted/Automagic) solutions</li>
-</ul>
-
-
-<p>I think the GUI tools are in general pretty user friendly and useful
-for simple projects with only a small number of datasets, but have a
-major drawback for the challenge of heterogeneous data integration.  I
-think the problem is expressed nicely <a href="http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html">In This Post By Carl Boettiger</a>  in reference to Morpho:</p>
-
-<ul>
-<li>"looks like a rather useful if tedious tool for generating EML
-files. Unfortunately, without the ability to script inputs or
-automatically detect existing data structures, we are forced through
-the rather arduous process of adding all metadata annotation each
-time...."</li>
-<li>"...A package could also provide utilities to generate EML from R objects, leveraging the metadata implicit in R objects that is not present in a CSV (in which there is no built-in notion of whether  a column is numeric or character string, what missing value characters it uses, or really if it is consistent at all. Avoiding manual specification of these things makes the metadata annotation less tedious as well."</li>
-</ul>
-
-
-<h1>Centralised Repository, Distributed Users</h1>
-
-<p>A key aspect of current approaches is the existence of a centralised data management system.  All the examples I consider include at least a metadata catalogue and some also include a data repository.  An additional feature sometimes exists for managing users permissions.</p>
-
-<p>The relationship between users and centralised services is a really complicated space, but essentially consists of the ability for users to create the documentation and push it (perhaps along with the data) to the metadata catalogue  and/or repository.  So given these assumptions I propose the following types of arrangement:</p>
-
-<ul>
-<li>user sends metadata to metadata catalogue</li>
-<li>user sends metadata and data to metadata catalogue and data repository</li>
-<li>user sends metadata and data and permissions information to metadata catalogue and data repository and permissions system.</li>
-</ul>
-
-
-<p>The Case Studies I've identified that I want to explore are listed below, names follow the format 'client tool'-and-'data repository or metadata catalogue'-and-optionally-'permissions system':</p>
-
-<h4>Programmatic solutions</h4>
-
-<ul>
-<li>reml-and-rfigshare</li>
-<li>reml-and-knb (when/if this becomes available)</li>
-<li>make_ddixml-and-ddiindex-and-orapus</li>
-<li>r2ddi-ddiindex</li>
-<li>dc-uploader-and-ANU-DataCommons</li>
-<li>dc-uploader-and-RDA</li>
-</ul>
-
-
-<h4>Graphical User Interface solutions</h4>
-
-<ul>
-<li>morpho-and-knb-metacat</li>
-<li>nesstar-publisher-and-nesstar-and-whatever-Steve-calls-the-ADA-permissions-system</li>
-<li>xmet-and-Australian-Spatial-Data-Directory</li>
-<li>sdmx-editor-and-sdmx-registry</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/two-main-types-of-data-documentation-workflow/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-11 00:00:00 +1100">11 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -671,9 +774,15 @@ time...."</li>
                 
                 <li><a href="/categories/morpho">morpho (1)</a></li>
                 
+                <li><a href="/categories/workflow">workflow (1)</a></li>
+                
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2015/08/tracking-a-data-analysis-pipeline/" title="tracking-a-data-analysis-pipeline" rel="bookmark">tracking-a-data-analysis-pipeline</a>
+                </li>
                 
                 <li>
                   <a href="/2015/07/climate-grids-and-thredds-server-experimenting-update/" title="Web Data, Climate Grids and THREDDS UPDATE" rel="bookmark">Web Data, Climate Grids and THREDDS UPDATE</a>
@@ -689,10 +798,6 @@ time...."</li>
                 
                 <li>
                   <a href="/2014/12/climate-grids-and-thredds-server-experimenting/" title="climate-grids-and-thredds-server-experimenting" rel="bookmark">climate-grids-and-thredds-server-experimenting</a>
-                </li>
-                
-                <li>
-                  <a href="/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor/" title="hotwire-a-morpho-package-using-r-and-xml-editor" rel="bookmark">hotwire-a-morpho-package-using-r-and-xml-editor</a>
                 </li>
                 
               </ul>
