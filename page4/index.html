@@ -56,6 +56,48 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/06/releasing-my-misc-r-package-disentangle-version-1/" title="releasing-my-misc-r-package-disentangle-version-1" rel="bookmark">releasing-my-misc-r-package-disentangle-version-1</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>hello world!</li>
+<li>the associated notebook is <a href="http://ivanhanigan.github.io/disentangle">Here</a></li>
+<li>this blog will feature vignettes and documentation about the functions and use cases</li>
+<li><a href="http://ivanhanigan.github.io/disentangle/lib/disentangle_1.0.zip">Windows Version is Downloadable Here</a></li>
+<li>Linux and Mac users can just run this R code</li>
+</ul>
+
+
+<h4>R Code</h4>
+
+<pre><code>require(devtools)
+install_github("disentangle", "ivanhanigan")
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/06/releasing-my-misc-r-package-disentangle-version-1/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-06-11 00:00:00 +1000">11 Jun 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/05/using-additional-header-rows-for-metadata/" title="using-additional-header-rows-for-metadata" rel="bookmark">using-additional-header-rows-for-metadata</a>
     </h1>
     <div class="entry-content full-content">
@@ -787,107 +829,6 @@ Scroll down the list and find the PostgreSQL ODBC Driver.</li>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>We encountered a strange issue Morpho 1.8 has when ingesting a CSV with zero length strings as missing data.  An example of what this looks like is given below in the mulgara example dataset I;ve shown before.  I have added some rows with missing data as zero length strings (these are the ",," after the fictional value Treat = 0.5).</p>
-
-<h4>R Code:</h4>
-
-<pre><code>datatext &lt;- 'Treat, Before, After1, After2
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-0,  2.833213344,    1.609437912,    2.48490665
-0,  1.791759469,    2.197224577,    2.079441542
-0,  3.044522438,    2.708050201,    3.135494216
-0,  2.772588722,    1.791759469,    2.197224577
-0,  1.098612289,    1.609437912,    2.63905733
-1,  2.944438979,    0.693147181,    1.791759469
-1,  2.564949357,    0.693147181,    1.791759469
-1,  2.564949357,    1.609437912,    1.609437912
-1,  0.693147181,    1.098612289,    1.098612289
-1,  1.609437912,    0,      1.098612289'
-analyte &lt;- read.csv(textConnection(datatext))
-write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= "", quote=F)
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>Unfortunately for this blog entry, the example above doesn;t exhibit the problem!</li>
-<li>you can see what happens by selecting the "treat consecutive delimiters as as one" option</li>
-<li>showing that the data from the 3rd and 4th cols shifts to the right</li>
-<li>this is what happened to us but we were not able to modify this behaviour by changing that option!</li>
-<li>The problem only occurred when we had a file big file (200+ columns)</li>
-<li>the problem occured at col 23, shown in the image below</li>
-</ul>
-
-
-<p><img src="/images/morpho-bug-empty-na3.png" alt="morpho-bug-empty-na3.png" /></p>
-
-<ul>
-<li>this column is ftyp[12] which has 62 rows of missing and then some text codes.</li>
-<li>the next 24th column is  aerial[10] and it is this one that is then read incorrectly by morpho.  The importer makes the error of reading blanks for the first few rows and then *, even though in reality it is * and then date 1/06/2006 (shown in the image below)</li>
-</ul>
-
-
-<p><img src="/images/morpho-bug-empty-na2.1.png" alt="morpho-bug-empty-na2.1.png" /></p>
-
-<ul>
-<li>and finally col 25 fire[13] now appears as * and the date 1/06/2006 but it should be a different number of *s and the date 2/04/2007 further down</li>
-</ul>
-
-
-<p><img src="/images/morpho-bug-empty-na2.png" alt="morpho-bug-empty-na2.png" /></p>
-
-<h3>Workaround</h3>
-
-<ul>
-<li>to deal with this in this case we replaced all zero length strings as "NA"</li>
-<li>this is probably a good idea in most cases, except when NA is not an appropriate value and so in those cases we replaced with the word "blank"</li>
-</ul>
-
-
-<h3>Conclusions</h3>
-
-<ul>
-<li>This issue is probably rare and might be fixed in the newer version of Morpho</li>
-<li>We don;t use new morpho because we are still using the old metacat</li>
-<li>I thought it worth reporting here</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-05-02 00:00:00 +1000">02 May 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -986,15 +927,21 @@ write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= ""
                 
                 <li><a href="/categories/disentangle">disentangle (6)</a></li>
                 
-                <li><a href="/categories/project management">project management (1)</a></li>
+                <li><a href="/categories/project management">project management (2)</a></li>
                 
                 <li><a href="/categories/morpho">morpho (1)</a></li>
                 
                 <li><a href="/categories/writing">writing (1)</a></li>
                 
+                <li><a href="/categories/distenangle">distenangle (1)</a></li>
+                
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2015/09/task-management-like-an-open-science-hacker/" title="task-management-like-an-open-science-hacker" rel="bookmark">task-management-like-an-open-science-hacker</a>
+                </li>
                 
                 <li>
                   <a href="/2015/09/how-to-say-why-before-what/" title="how-to-say-why-before-what" rel="bookmark">how-to-say-why-before-what</a>
@@ -1010,10 +957,6 @@ write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= ""
                 
                 <li>
                   <a href="/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing/" title="Using the R EML software to mitigate risks in Morpho and Metacat data publishing" rel="bookmark">Using the R EML software to mitigate risks in Morpho and Metacat data publishing</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/03/tuftes-gantt-alternative-for-detail-within-context/" title="tuftes-gantt-alternative-for-detail-within-context" rel="bookmark">tuftes-gantt-alternative-for-detail-within-context</a>
                 </li>
                 
               </ul>

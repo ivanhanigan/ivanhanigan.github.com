@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-09-03T17:09:26+10:00</updated>
+ <updated>2015-09-13T18:11:41+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,43 +13,104 @@
 
  
  <entry>
-   <title>how-to-say-why-before-what</title>
-   <link href="http://ivanhanigan.github.com/2015/09/how-to-say-why-before-what/"/>
-   <updated>2015-09-03T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/09/how-to-say-why-before-what</id>
-   <content type="html">&lt;p&gt;I have discovered a flaw in my writing style.&lt;br/&gt;
-I often say what it it before I say why it is important.&lt;/p&gt;
+   <title>task-management-like-an-open-science-hacker</title>
+   <link href="http://ivanhanigan.github.com/2015/09/task-management-like-an-open-science-hacker/"/>
+   <updated>2015-09-13T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2015/09/task-management-like-an-open-science-hacker</id>
+   <content type="html">&lt;p&gt;I just read this impressive paper and it has really given me a push toward making this open lab notebook&lt;/p&gt;
 
-&lt;h4&gt;Example&lt;/h4&gt;
+&lt;h4&gt;Citation&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;Disentangling health effects of environmental from social factors
-is difficult for a variety of reasons. The effort to examine and
-to separate environmental and social causes is nevertheless
-valuable. [WHY IS IT VALUABLE?] This is especially important to
-policy makers and to others who seek to maximise the public
-good. A greater understanding of their respective contributions
-will lead to more rational, deep-seated, lasting and effective
-interventions.
+&lt;pre&gt;&lt;code&gt;Nosek, B. A., et al. (2015). Promoting an open research
+culture. Science, 348(6242), 1422–1425. doi:10.1126/science.aab2374
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;The caps question is from someone reading my draft.  I need to start with the why.
-Perhaps just turn the paragraph on its head?&lt;/p&gt;
+&lt;h4&gt;Quote&lt;/h4&gt;
 
-&lt;h4&gt;Example&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;A greater understanding of the respective contributions from
-environmental and social factors will lead to more rational,
-deep-seated, lasting and effective interventions by policy makers
-and to others who seek to maximise the public good.  Disentangling
-health effects of environmental from social factors is difficult
-for a variety of reasons. The effort to examine and to separate
-environmental and social causes is nevertheless valuable.
+&lt;pre&gt;&lt;code&gt;The situation is a classic collective action problem. Many individual researchers lack
+strong incentives to be more transparent, even though the credibility of science would 
+benefit if everyone were more transparent.
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So I think I'll try to step up the pace of logging my daily scientific work.
+One super easy thing to do is to publish my daily log from my task management in orgmode.
+Indeed I am also reading at the moment this guy who says&lt;/p&gt;
+
+&lt;h4&gt;Quote&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;The core of your documentation is the research log.
+
+Long, S. (2015). Reproducible Results and the Workflow of Data Analysis. 
+Retrieved from http://www.indiana.edu/~jslsoc/ftp/WIM/wf wim 2015 2015-08-21@3.pdf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Finally, I was struck by this reference &lt;a href=&quot;http://rich-iannone.github.io/about/2014/10/28/introduction.html&quot;&gt;http://rich-iannone.github.io/about/2014/10/28/introduction.html&lt;/a&gt; to something about 365+ day GitHub streaks. It was covered earlier by Geoff Greer, and by Dirk Eddelbuettel.&lt;/p&gt;
+
+&lt;h2&gt;Emacs and orgmode&lt;/h2&gt;
+
+&lt;p&gt;The set up of my daily log is pretty simple. I have a orgmode file that opens automatically when Emacs boots (in my init.el file I specify find-file).  Then I use this key command to insert a new entry for todays date&lt;/p&gt;
+
+&lt;h4&gt;CODE&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-skeleton org-journalentry
+  &quot;Template for a journal entry.&quot;
+  &quot;project:&quot;
+  &quot;*** &quot; (format-time-string &quot;%Y-%m-%d %a&quot;) &quot; \n&quot;
+  &quot;**** TODO-list \n&quot;
+  &quot;***** TODO \n&quot;
+  &quot;**** Nominal Project \n&quot;
+  &quot;#+begin_src R :session *R* :tangle no :exports none :eval yes\n&quot;
+  &quot;\n&quot;
+&quot;sink('timesheet.csv', append = T)\n&quot;
+&quot;cat('&quot; (format-time-string &quot;%Y-%m-%d %a&quot;) &quot;,&quot; str &quot;, 50')\n&quot;
+&quot;sink()\n&quot;
+&quot;\n&quot;
+  &quot;#+end_src\n&quot;
+)
+(global-set-key [C-S-f5] 'org-journalentry)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;I then select from TODO items from a global list that I keep at the top of the file, and cut/paste them into todays list.&lt;/p&gt;
+
+&lt;p&gt;Then I modified the org-agenda-files which was set in the main el file that kjhealy provided with his stater kit and then with the command C-c a a emacs will display my calendar.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/agenda.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Great so I just moved this research-log orgmode file into my blog github repo, and with the help of charlie park's bash script I am good to go&lt;/p&gt;
+
+&lt;h4&gt;CODE&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;alias build_blog=&quot;cd ~/projects/ivanhanigan.github.com.raw; jekyll b;
+cp -r ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com;
+cd ~/projects/ivanhanigan.github.com;git add .;git commit -am 'Latest build.';git push&quot;
+alias bb=&quot;build_blog&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So this will put the resulting changes onto my open lab book website here &lt;a href=&quot;https://github.com/ivanhanigan/ivanhanigan.github.com/blob/master/research-log.org&quot;&gt;https://github.com/ivanhanigan/ivanhanigan.github.com/blob/master/research-log.org&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Things to note:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I found this list of tips &lt;a href=&quot;http://natashatherobot.com/streak-github-mistakes/&quot;&gt;http://natashatherobot.com/streak-github-mistakes/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;In particular I realise I need to make my daily push by 4:50 PM in Canberra ACT as this is 11:50 PM the previous day for Github, Pacific Time (PT)&lt;/li&gt;
+&lt;li&gt;I also will need to ensure I don't publish sensitive (or embarrasing entries).&lt;/li&gt;
+&lt;li&gt;I'll try to keep the identity of my collaborators private as well, so just use their initials rather than names.&lt;/li&gt;
+&lt;/ul&gt;
 
 </content>
  </entry>

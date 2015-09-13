@@ -6,6 +6,108 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>task-management-like-an-open-science-hacker</title>
+				<description>&lt;p&gt;I just read this impressive paper and it has really given me a push toward making this open lab notebook&lt;/p&gt;
+
+&lt;h4&gt;Citation&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;Nosek, B. A., et al. (2015). Promoting an open research
+culture. Science, 348(6242), 1422–1425. doi:10.1126/science.aab2374
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;Quote&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;The situation is a classic collective action problem. Many individual researchers lack
+strong incentives to be more transparent, even though the credibility of science would 
+benefit if everyone were more transparent.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So I think I'll try to step up the pace of logging my daily scientific work.
+One super easy thing to do is to publish my daily log from my task management in orgmode.
+Indeed I am also reading at the moment this guy who says&lt;/p&gt;
+
+&lt;h4&gt;Quote&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;The core of your documentation is the research log.
+
+Long, S. (2015). Reproducible Results and the Workflow of Data Analysis. 
+Retrieved from http://www.indiana.edu/~jslsoc/ftp/WIM/wf wim 2015 2015-08-21@3.pdf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Finally, I was struck by this reference &lt;a href=&quot;http://rich-iannone.github.io/about/2014/10/28/introduction.html&quot;&gt;http://rich-iannone.github.io/about/2014/10/28/introduction.html&lt;/a&gt; to something about 365+ day GitHub streaks. It was covered earlier by Geoff Greer, and by Dirk Eddelbuettel.&lt;/p&gt;
+
+&lt;h2&gt;Emacs and orgmode&lt;/h2&gt;
+
+&lt;p&gt;The set up of my daily log is pretty simple. I have a orgmode file that opens automatically when Emacs boots (in my init.el file I specify find-file).  Then I use this key command to insert a new entry for todays date&lt;/p&gt;
+
+&lt;h4&gt;CODE&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-skeleton org-journalentry
+  &quot;Template for a journal entry.&quot;
+  &quot;project:&quot;
+  &quot;*** &quot; (format-time-string &quot;%Y-%m-%d %a&quot;) &quot; \n&quot;
+  &quot;**** TODO-list \n&quot;
+  &quot;***** TODO \n&quot;
+  &quot;**** Nominal Project \n&quot;
+  &quot;#+begin_src R :session *R* :tangle no :exports none :eval yes\n&quot;
+  &quot;\n&quot;
+&quot;sink('timesheet.csv', append = T)\n&quot;
+&quot;cat('&quot; (format-time-string &quot;%Y-%m-%d %a&quot;) &quot;,&quot; str &quot;, 50')\n&quot;
+&quot;sink()\n&quot;
+&quot;\n&quot;
+  &quot;#+end_src\n&quot;
+)
+(global-set-key [C-S-f5] 'org-journalentry)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;I then select from TODO items from a global list that I keep at the top of the file, and cut/paste them into todays list.&lt;/p&gt;
+
+&lt;p&gt;Then I modified the org-agenda-files which was set in the main el file that kjhealy provided with his stater kit and then with the command C-c a a emacs will display my calendar.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/agenda.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Great so I just moved this research-log orgmode file into my blog github repo, and with the help of charlie park's bash script I am good to go&lt;/p&gt;
+
+&lt;h4&gt;CODE&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;alias build_blog=&quot;cd ~/projects/ivanhanigan.github.com.raw; jekyll b;
+cp -r ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com;
+cd ~/projects/ivanhanigan.github.com;git add .;git commit -am 'Latest build.';git push&quot;
+alias bb=&quot;build_blog&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So this will put the resulting changes onto my open lab book website here &lt;a href=&quot;https://github.com/ivanhanigan/ivanhanigan.github.com/blob/master/research-log.org&quot;&gt;https://github.com/ivanhanigan/ivanhanigan.github.com/blob/master/research-log.org&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Things to note:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I found this list of tips &lt;a href=&quot;http://natashatherobot.com/streak-github-mistakes/&quot;&gt;http://natashatherobot.com/streak-github-mistakes/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;In particular I realise I need to make my daily push by 4:50 PM in Canberra ACT as this is 11:50 PM the previous day for Github, Pacific Time (PT)&lt;/li&gt;
+&lt;li&gt;I also will need to ensure I don't publish sensitive (or embarrasing entries).&lt;/li&gt;
+&lt;li&gt;I'll try to keep the identity of my collaborators private as well, so just use their initials rather than names.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>2015-09-13 00:00:00 +1000</published>
+				<link>http://ivanhanigan.github.com/2015/09/task-management-like-an-open-science-hacker/</link>
+			</item>
+		
+			<item>
 				<title>how-to-say-why-before-what</title>
 				<description>&lt;p&gt;I have discovered a flaw in my writing style.&lt;br/&gt;
 I often say what it it before I say why it is important.&lt;/p&gt;
@@ -1068,27 +1170,6 @@ dbSendQuery(ch,
 </description>
 				<published>2014-07-12 00:00:00 +1000</published>
 				<link>http://ivanhanigan.github.com/2014/07/r-eml-pgis-setting-up-the-software-stack/</link>
-			</item>
-		
-			<item>
-				<title>data-dictionary-function-needed-further-upgrades-to-my-misc-package</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;I've been enjoying summarising datasets with my data_dictionary function&lt;/li&gt;
-&lt;li&gt;There was a bug when a date variable had any missings.&lt;/li&gt;
-&lt;li&gt;I have modified the function to cope with these so have released version 1.2&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/disentangle/lib/disentangle_1.2.zip&quot;&gt;Windows Version is Downloadable Here&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Linux and Mac users can just run this R code&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(devtools)
-install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>2014-06-24 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2014/06/data-dictionary-function-needed-further-upgrades-to-my-misc-package/</link>
 			</item>
 		
 	</channel>
