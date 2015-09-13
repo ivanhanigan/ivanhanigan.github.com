@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-09-13T18:11:41+10:00</updated>
+ <updated>2015-09-13T22:01:35+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -55,36 +55,37 @@ Retrieved from http://www.indiana.edu/~jslsoc/ftp/WIM/wf wim 2015 2015-08-21@3.p
 
 &lt;p&gt;Finally, I was struck by this reference &lt;a href=&quot;http://rich-iannone.github.io/about/2014/10/28/introduction.html&quot;&gt;http://rich-iannone.github.io/about/2014/10/28/introduction.html&lt;/a&gt; to something about 365+ day GitHub streaks. It was covered earlier by Geoff Greer, and by Dirk Eddelbuettel.&lt;/p&gt;
 
+&lt;p&gt;It seems the basic concept is that you can leverage off an obsessive tendency by making sure you do something toward ticking off items from the task list every day.  The impulse to not breaking the chain is supposed to give you inspiration to keep going.  I think this might work well for my temperatment.&lt;/p&gt;
+
 &lt;h2&gt;Emacs and orgmode&lt;/h2&gt;
 
-&lt;p&gt;The set up of my daily log is pretty simple. I have a orgmode file that opens automatically when Emacs boots (in my init.el file I specify find-file).  Then I use this key command to insert a new entry for todays date&lt;/p&gt;
+&lt;p&gt;The set up of my daily log is pretty simple. After being set up by kjhealy's starter kit.
+Then I modified the org-agenda-files which was set in the main el file that kjhealy provided  and then with the command C-c a a emacs will display my calendar.&lt;/p&gt;
+
+&lt;p&gt;When I open emacs in the morning I  open the agenda and this also opens research-log file.  I move to that buffer, then I use this key command to insert a new entry for todays date&lt;/p&gt;
 
 &lt;h4&gt;CODE&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;(define-skeleton org-journalentry
-  &quot;Template for a journal entry.&quot;
-  &quot;project:&quot;
-  &quot;*** &quot; (format-time-string &quot;%Y-%m-%d %a&quot;) &quot; \n&quot;
-  &quot;**** TODO-list \n&quot;
-  &quot;***** TODO \n&quot;
-  &quot;**** Nominal Project \n&quot;
-  &quot;#+begin_src R :session *R* :tangle no :exports none :eval yes\n&quot;
-  &quot;\n&quot;
-&quot;sink('timesheet.csv', append = T)\n&quot;
-&quot;cat('&quot; (format-time-string &quot;%Y-%m-%d %a&quot;) &quot;,&quot; str &quot;, 50')\n&quot;
-&quot;sink()\n&quot;
-&quot;\n&quot;
-  &quot;#+end_src\n&quot;
-)
-(global-set-key [C-S-f5] 'org-journalentry)
+&lt;pre&gt;&lt;code&gt; (define-skeleton org-journalentry
+   &quot;Template for a journal entry.&quot;
+   &quot;project:&quot;
+   &quot;*** &quot; (format-time-string &quot;%Y-%m-%d %a&quot;) &quot; \n&quot;
+   &quot;**** TODO-list \n&quot;
+   &quot;***** TODO \n&quot;
+   &quot;**** timesheet\n&quot;
+   &quot;#+begin_src txt :tangle research-log.csv :eval no :padline no\n&quot;
+   (format-time-string &quot;%Y-%m-%d %a&quot;) &quot;, &quot; str &quot;, 50\n&quot; 
+   &quot;#+end_src\n&quot;
+ )
+ (global-set-key [C-S-f5] 'org-journalentry)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;I then select from TODO items from a global list that I keep at the top of the file, and cut/paste them into todays list.&lt;/p&gt;
+&lt;p&gt;This creates a new date, a stub of a TODO for anything ad hoc and a entry into my timesheet.csv file.&lt;/p&gt;
 
-&lt;p&gt;Then I modified the org-agenda-files which was set in the main el file that kjhealy provided with his stater kit and then with the command C-c a a emacs will display my calendar.&lt;/p&gt;
+&lt;p&gt;I then select from TODO items from a global list that I keep at the top of the file, and cut/paste them into todays list.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;images/agenda.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
 
