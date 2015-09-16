@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-09-15T15:39:55+10:00</updated>
+ <updated>2015-09-16T13:29:05+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,106 +13,164 @@
 
  
  <entry>
-   <title>task-management-like-an-open-science-hacker</title>
-   <link href="http://ivanhanigan.github.com/2015/09/task-management-like-an-open-science-hacker/"/>
-   <updated>2015-09-13T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/09/task-management-like-an-open-science-hacker</id>
-   <content type="html">&lt;p&gt;I just read this impressive paper and it has really given me a push toward making this open lab notebook&lt;/p&gt;
+   <title>Templates are Needed for Reproducible Research Reports (that Look Good)</title>
+   <link href="http://ivanhanigan.github.com/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/"/>
+   <updated>2015-09-16T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2015/09/templates-needed-for-reproducible-research-reports-that-look-good</id>
+   <content type="html">&lt;p&gt;I read with interest the the Transparency and Openness Promotion (TOP) Committee templates for guidelines to enhance transparency in the science that journals publish.&lt;/p&gt;
 
 &lt;h4&gt;Citation&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;Nosek, B. A., et al. (2015). Promoting an open research
-culture. Science, 348(6242), 1422–1425. doi:10.1126/science.aab2374
+&lt;pre&gt;&lt;code&gt;Supplementary Materials for Nosek, B. A., Alter, G., Banks, G. C.,
+Borsboom, D., Bowman, S. D., Breckler, S. J., … Yarkoni,
+T. (2015). Promoting an open research culture. Science, 348(6242),
+1422–1425. doi:10.1126/science.aab2374
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;h4&gt;Quote&lt;/h4&gt;
+&lt;p&gt;I think though that guidelines like the suggestion to copy-paste bits of the manuscript leave a bit to be desired:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;The situation is a classic collective action problem. Many individual researchers lack
-strong incentives to be more transparent, even though the credibility of science would 
-benefit if everyone were more transparent.
+&lt;h4&gt;Quote;&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;Authors document compliance by copy-pasting the relevant passages
+in the paper that address the question into the form. For example,
+when indicating how sample size was determined, authors copy paste
+into the form the text in the paper that describes how sample size
+was determined.
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;So I think I'll try to step up the pace of logging my daily scientific work.
-One super easy thing to do is to publish my daily log from my task management in orgmode.
-Indeed I am also reading at the moment this guy who says&lt;/p&gt;
+&lt;p&gt;Reproducible Research Reports solve this problem by ensuring that the data preparation and analysis are executed in the same script that produces the manuscript, therefore a one-stop-shop for documentation of the entire study.&lt;/p&gt;
 
-&lt;h4&gt;Quote&lt;/h4&gt;
+&lt;h2&gt;There is a need for Templates of Reproducible Research Reports (that look good!)&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;The core of your documentation is the research log.
+&lt;p&gt;Rstudio provides very easy support for these documents if you use R.  In particular the option of a menu button to create a new report populates that report with the required header information and some example script to work off.  But the easiest option does not look so good.  This is the Rmarkdown option and it is very user friendly in terms of the markup language needed to write the descriptive language around your analysis (mostly plain text with a few simple options for heading styles etc) rather than the Sweave option which leads to the full blown LaTeX markup language that is a lot more complicated.&lt;/p&gt;
 
-Long, S. (2015). Reproducible Results and the Workflow of Data Analysis. 
-Retrieved from http://www.indiana.edu/~jslsoc/ftp/WIM/wf wim 2015 2015-08-21@3.pdf
+&lt;h4&gt;Boilerplate Rmarkdown header from Rstudio:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;---
+title: &quot;Untitled&quot;
+author: &quot;Ivan C. Hanigan&quot;
+date: &quot;16 September 2015&quot;
+output: html_document
+---
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;Finally, I was struck by this reference &lt;a href=&quot;http://rich-iannone.github.io/about/2014/10/28/introduction.html&quot;&gt;http://rich-iannone.github.io/about/2014/10/28/introduction.html&lt;/a&gt; to something about 365+ day GitHub streaks. It was covered earlier by Geoff Greer, and by Dirk Eddelbuettel.&lt;/p&gt;
+&lt;p&gt;This is great for quick reporting of work as you go, but I  primarily write for output that will be printed (e.g. pdf docs). More specifically, I need the concept of a page, and to have full control over the placement of table and figure ‘environments’, stuff that is easy in LaTeX (once you figure out some of the esoteric parts of that language).&lt;/p&gt;
 
-&lt;p&gt;It seems the basic concept is that you can leverage off an obsessive tendency by making sure you do something toward ticking off items from the task list every day.  The impulse to not breaking the chain is supposed to give you inspiration to keep going.  I think this might work well for my temperatment.&lt;/p&gt;
+&lt;p&gt;To achieve a simple writing environment in Markdown but with the powerful layout options of LaTeX I reviewed this guys work but I think it takes it to an uneccessary level of complicated-ness
+&lt;a href=&quot;https://github.com/jhollist/manuscriptPackage&quot;&gt;https://github.com/jhollist/manuscriptPackage&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h2&gt;Emacs and orgmode&lt;/h2&gt;
+&lt;p&gt;So I went back to some of the old Sweave/Latex templates I had put together and ported it into a markdown header.&lt;/p&gt;
 
-&lt;p&gt;The set up of my daily log is pretty simple. After being set up by kjhealy's starter kit.
-Then I modified the org-agenda-files which was set in the main el file that kjhealy provided  and then with the command C-c a a emacs will display my calendar.&lt;/p&gt;
+&lt;h4&gt;Boilerplate Rmarkdown header for pretty report&lt;/h4&gt;
 
-&lt;p&gt;When I open emacs in the morning I  open the agenda and this also opens research-log file.  I move to that buffer, then I use this key command to insert a new entry for todays date&lt;/p&gt;
-
-&lt;h4&gt;CODE&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt; (define-skeleton org-journalentry
-   &quot;Template for a journal entry.&quot;
-   &quot;project:&quot;
-   &quot;*** &quot; (format-time-string &quot;%Y-%m-%d %a&quot;) &quot; \n&quot;
-   &quot;**** TODO-list \n&quot;
-   &quot;***** TODO \n&quot;
-   &quot;**** timesheet\n&quot;
-   &quot;#+begin_src txt :tangle research-log.csv :eval no :padline no\n&quot;
-   (format-time-string &quot;%Y-%m-%d %a&quot;) &quot;, &quot; str &quot;, 50\n&quot; 
-   &quot;#+end_src\n&quot;
- )
- (global-set-key [C-S-f5] 'org-journalentry)
+&lt;pre&gt;&lt;code&gt;---
+title: &quot;Untitled&quot;
+author: &quot;Ivan C. Hanigan&quot;
+date: &quot;16 September 2015&quot;
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyhdr} 
+  - \pagestyle{fancy} 
+  - \usepackage{lastpage}
+  - \usepackage{float} 
+  - \floatstyle{boxed} 
+  - \restylefloat{figure} 
+  - \usepackage{url} 
+  - \usepackage{color}
+  - \lhead{Left Header}
+  - \chead{Rmarkdown Rocks}
+  - \rhead{\today}
+  - \lfoot{Left Footer}
+  - \cfoot{Centre Footer}
+  - \rfoot{\thepage\ of \pageref{LastPage}}  
+output: 
+  pdf_document:
+    toc: false
+documentclass: article
+classoption: a4paper
+bibliography: references.bib
+---
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;This creates a new date, a stub of a TODO for anything ad hoc and a entry into my timesheet.csv file.&lt;/p&gt;
+&lt;p&gt;Now the layout of tables and figures is done with latex&lt;/p&gt;
 
-&lt;p&gt;I then select from TODO items from a global list that I keep at the top of the file, and cut/paste them into todays list.&lt;/p&gt;
+&lt;h4&gt;Code&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/agenda.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Using the xtable package allows results to be displyed in tables
+and has built in support for some R objects, so summrising the
+linear fit above in ~\ref{ATable}
 
-&lt;p&gt;Great so I just moved this research-log orgmode file into my blog github repo, and with the help of charlie park's bash script I am good to go&lt;/p&gt;
+```{r, results='asis', type = 'tex'}
+library(xtable)    
+print(xtable(fit, caption=&quot;Example Table&quot;,
+  digits=4,table.placement=&quot;ht&quot;,label=&quot;ATable&quot;), comment = F)    
+```
 
-&lt;h4&gt;CODE&lt;/h4&gt;
+## A Plot
 
-&lt;pre&gt;&lt;code&gt;alias build_blog=&quot;cd ~/projects/ivanhanigan.github.com.raw; jekyll b;
-cp -r ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com;
-cd ~/projects/ivanhanigan.github.com;git add .;git commit -am 'Latest build.';git push&quot;
-alias bb=&quot;build_blog&quot;
+Plots intergrate most easily if made seperately as can be seen in figure ~\ref{test}
+```{r}
+png(&quot;Rmarkdownfig.png&quot;)
+plot(x,y,main=&quot;Example Plot&quot;,xlab=&quot;X Variable&quot;,ylab=&quot;Y Variable&quot;)
+abline(fit,col=&quot;Red&quot;)
+dev.off()
+```
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=.5\textwidth]{Rmarkdownfig.png}
+\end{center}
+\caption{Some Plot}
+\label{test}
+\end{figure}
+\clearpage
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;So this will put the resulting changes onto my open lab book website here &lt;a href=&quot;https://github.com/ivanhanigan/ivanhanigan.github.com/blob/master/research-log.org&quot;&gt;https://github.com/ivanhanigan/ivanhanigan.github.com/blob/master/research-log.org&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I also realised that if this was to be a full report of a scientific study it would need to include some of the machinery needed for bibliographies.&lt;/p&gt;
 
-&lt;p&gt;Things to note:&lt;/p&gt;
+&lt;h4&gt;Stuff for bibliographies&lt;/h4&gt;
 
-&lt;ul&gt;
-&lt;li&gt;I found this list of tips &lt;a href=&quot;http://natashatherobot.com/streak-github-mistakes/&quot;&gt;http://natashatherobot.com/streak-github-mistakes/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;In particular I realise I need to make my daily push by 4:50 PM in Canberra ACT as this is 11:50 PM the previous day for Github, Pacific Time (PT)&lt;/li&gt;
-&lt;li&gt;I also will need to ensure I don't publish sensitive (or embarrasing entries).&lt;/li&gt;
-&lt;li&gt;I'll try to keep the identity of my collaborators private as well, so just use their initials rather than names.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;```{r, echo=F, results = 'hide', message = F, warning=F}
+library(&quot;knitcitations&quot;)
+library(&quot;bibtex&quot;)
+cleanbib()
+cite_options(citation_format = &quot;pandoc&quot;, check.entries = FALSE)
 
+bib &amp;lt;- read.bibtex(&quot;C:/Users/Ivan/Dropbox/references/library.bib&quot;)
+
+```
+
+&amp;lt;!--Put data analysis and reporting here, then at the end of the doc--&amp;gt;
+
+```{r, echo=F, message=F, eval=T}
+write.bibtex(file=&quot;references.bib&quot;)
+```
+
+# References
+
+&amp;lt;!--The bib will then be written following the final subheading--&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I hope this might help others develop their own templates for RRR that look great.&lt;/p&gt;
 </content>
  </entry>
  

@@ -56,6 +56,374 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/" title="Templates are Needed for Reproducible Research Reports (that Look Good)" rel="bookmark">Templates are Needed for Reproducible Research Reports (that Look Good)</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I read with interest the the Transparency and Openness Promotion (TOP) Committee templates for guidelines to enhance transparency in the science that journals publish.</p>
+
+<h4>Citation</h4>
+
+<pre><code>Supplementary Materials for Nosek, B. A., Alter, G., Banks, G. C.,
+Borsboom, D., Bowman, S. D., Breckler, S. J., … Yarkoni,
+T. (2015). Promoting an open research culture. Science, 348(6242),
+1422–1425. doi:10.1126/science.aab2374
+</code></pre>
+
+<p></p>
+
+
+<p>I think though that guidelines like the suggestion to copy-paste bits of the manuscript leave a bit to be desired:</p>
+
+<h4>Quote;</h4>
+
+<pre><code>Authors document compliance by copy-pasting the relevant passages
+in the paper that address the question into the form. For example,
+when indicating how sample size was determined, authors copy paste
+into the form the text in the paper that describes how sample size
+was determined.
+</code></pre>
+
+<p></p>
+
+
+<p>Reproducible Research Reports solve this problem by ensuring that the data preparation and analysis are executed in the same script that produces the manuscript, therefore a one-stop-shop for documentation of the entire study.</p>
+
+<h2>There is a need for Templates of Reproducible Research Reports (that look good!)</h2>
+
+<p>Rstudio provides very easy support for these documents if you use R.  In particular the option of a menu button to create a new report populates that report with the required header information and some example script to work off.  But the easiest option does not look so good.  This is the Rmarkdown option and it is very user friendly in terms of the markup language needed to write the descriptive language around your analysis (mostly plain text with a few simple options for heading styles etc) rather than the Sweave option which leads to the full blown LaTeX markup language that is a lot more complicated.</p>
+
+<h4>Boilerplate Rmarkdown header from Rstudio:</h4>
+
+<pre><code>---
+title: "Untitled"
+author: "Ivan C. Hanigan"
+date: "16 September 2015"
+output: html_document
+---
+</code></pre>
+
+<p></p>
+
+
+<p>This is great for quick reporting of work as you go, but I  primarily write for output that will be printed (e.g. pdf docs). More specifically, I need the concept of a page, and to have full control over the placement of table and figure ‘environments’, stuff that is easy in LaTeX (once you figure out some of the esoteric parts of that language).</p>
+
+<p>To achieve a simple writing environment in Markdown but with the powerful layout options of LaTeX I reviewed this guys work but I think it takes it to an uneccessary level of complicated-ness
+<a href="https://github.com/jhollist/manuscriptPackage">https://github.com/jhollist/manuscriptPackage</a>.</p>
+
+<p>So I went back to some of the old Sweave/Latex templates I had put together and ported it into a markdown header.</p>
+
+<h4>Boilerplate Rmarkdown header for pretty report</h4>
+
+<pre><code>---
+title: "Untitled"
+author: "Ivan C. Hanigan"
+date: "16 September 2015"
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyhdr} 
+  - \pagestyle{fancy} 
+  - \usepackage{lastpage}
+  - \usepackage{float} 
+  - \floatstyle{boxed} 
+  - \restylefloat{figure} 
+  - \usepackage{url} 
+  - \usepackage{color}
+  - \lhead{Left Header}
+  - \chead{Rmarkdown Rocks}
+  - \rhead{\today}
+  - \lfoot{Left Footer}
+  - \cfoot{Centre Footer}
+  - \rfoot{\thepage\ of \pageref{LastPage}}  
+output: 
+  pdf_document:
+    toc: false
+documentclass: article
+classoption: a4paper
+bibliography: references.bib
+---
+</code></pre>
+
+<p></p>
+
+
+<p>Now the layout of tables and figures is done with latex</p>
+
+<h4>Code</h4>
+
+<pre><code>Using the xtable package allows results to be displyed in tables
+and has built in support for some R objects, so summrising the
+linear fit above in ~\ref{ATable}
+
+```{r, results='asis', type = 'tex'}
+library(xtable)    
+print(xtable(fit, caption="Example Table",
+  digits=4,table.placement="ht",label="ATable"), comment = F)    
+```
+
+## A Plot
+
+Plots intergrate most easily if made seperately as can be seen in figure ~\ref{test}
+```{r}
+png("Rmarkdownfig.png")
+plot(x,y,main="Example Plot",xlab="X Variable",ylab="Y Variable")
+abline(fit,col="Red")
+dev.off()
+```
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=.5\textwidth]{Rmarkdownfig.png}
+\end{center}
+\caption{Some Plot}
+\label{test}
+\end{figure}
+\clearpage
+</code></pre>
+
+<p></p>
+
+
+<p>I also realised that if this was to be a full report of a scientific study it would need to include some of the machinery needed for bibliographies.</p>
+
+<h4>Stuff for bibliographies</h4>
+
+<pre><code>```{r, echo=F, results = 'hide', message = F, warning=F}
+library("knitcitations")
+library("bibtex")
+cleanbib()
+cite_options(citation_format = "pandoc", check.entries = FALSE)
+
+bib &lt;- read.bibtex("C:/Users/Ivan/Dropbox/references/library.bib")
+
+```
+
+&lt;!--Put data analysis and reporting here, then at the end of the doc--&gt;
+
+```{r, echo=F, message=F, eval=T}
+write.bibtex(file="references.bib")
+```
+
+# References
+
+&lt;!--The bib will then be written following the final subheading--&gt;
+</code></pre>
+
+<p></p>
+
+
+<h2>Conclusion</h2>
+
+<p>I hope this might help others develop their own templates for RRR that look great.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/reproducible research reports" title="reproducible research reports" rel="category tag">reproducible research reports</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-16 00:00:00 +1000">16 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2015/09/reproducible-research-reports-with-rmarkdown-and-latex-for-stylish-reports/" title="Templates are Needed for Reproducible Research Reports (Especially Stylish Reports)" rel="bookmark">Templates are Needed for Reproducible Research Reports (Especially Stylish Reports)</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I read with interest the the Transparency and Openness Promotion (TOP) Committee templates for guidelines to enhance transparency in the science that journals publish.</p>
+
+<h4>Citation</h4>
+
+<pre><code>Supplementary Materials for Nosek, B. A., Alter, G., Banks, G. C.,
+Borsboom, D., Bowman, S. D., Breckler, S. J., … Yarkoni,
+T. (2015). Promoting an open research culture. Science, 348(6242),
+1422–1425. doi:10.1126/science.aab2374
+</code></pre>
+
+<p></p>
+
+
+<p>I think though that guidelines like the suggestion to copy-paste bits of the manuscript leave a bit to be desired:</p>
+
+<h4>Quote;</h4>
+
+<pre><code>Authors document compliance by copy-pasting the relevant passages
+in the paper that address the question into the form. For example,
+when indicating how sample size was determined, authors copy paste
+into the form the text in the paper that describes how sample size
+was determined.
+</code></pre>
+
+<p></p>
+
+
+<p>Reproducible Research Reports solve this problem by ensuring that the data preparation and analysis are executed in the same script that produces the manuscript, therefore a one-stop-shop for documentation of the entire study.</p>
+
+<h2>There is a need for Templates of Reproducible Research Reports (that look good!)</h2>
+
+<p>Rstudio provides very easy support for these documents if you use R.  In particular the option of a menu button to create a new report populates that report with the required header information and some example script to work off.  But the easiest option does not look so good.  This is the Rmarkdown option and it is very user friendly in terms of the markup language needed to write the descriptive language around your analysis (mostly plain text with a few simple options for heading styles etc) rather than the Sweave option which leads to the full blown LaTeX markup language that is a lot more complicated.</p>
+
+<h4>Boilerplate Rmarkdown header from Rstudio:</h4>
+
+<pre><code>---
+title: "Untitled"
+author: "Ivan C. Hanigan"
+date: "16 September 2015"
+output: html_document
+---
+</code></pre>
+
+<p></p>
+
+
+<p>This is great for quick reporting of work as you go, but I  primarily write for output that will be printed (e.g. pdf docs). More specifically, I need the concept of a page, and to have full control over the placement of table and figure ‘environments’, stuff that is easy in LaTeX (once you figure out some of the esoteric parts of that language).</p>
+
+<p>To achieve a simple writing environment in Markdown but with the powerful layout options of LaTeX I reviewed this guys work but I think it takes it to an uneccessary level of complicated-ness
+<a href="https://github.com/jhollist/manuscriptPackage">https://github.com/jhollist/manuscriptPackage</a>.</p>
+
+<p>So I went back to some of the old Sweave/Latex templates I had put together and ported it into a markdown header.</p>
+
+<h4>Boilerplate Rmarkdown header for pretty report</h4>
+
+<pre><code>---
+title: "Untitled"
+author: "Ivan C. Hanigan"
+date: "16 September 2015"
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyhdr} 
+  - \pagestyle{fancy} 
+  - \usepackage{lastpage}
+  - \usepackage{float} 
+  - \floatstyle{boxed} 
+  - \restylefloat{figure} 
+  - \usepackage{url} 
+  - \usepackage{color}
+  - \lhead{Left Header}
+  - \chead{Rmarkdown Rocks}
+  - \rhead{\today}
+  - \lfoot{Left Footer}
+  - \cfoot{Centre Footer}
+  - \rfoot{\thepage\ of \pageref{LastPage}}  
+output: 
+  pdf_document:
+    toc: false
+documentclass: article
+classoption: a4paper
+bibliography: references.bib
+---
+</code></pre>
+
+<p></p>
+
+
+<p>Now the layout of tables and figures is done with latex</p>
+
+<h4>Code</h4>
+
+<pre><code>Using the xtable package allows results to be displyed in tables
+and has built in support for some R objects, so summrising the
+linear fit above in ~\ref{ATable}
+
+```{r, results='asis', type = 'tex'}
+library(xtable)    
+print(xtable(fit, caption="Example Table",
+  digits=4,table.placement="ht",label="ATable"), comment = F)    
+```
+
+## A Plot
+
+Plots intergrate most easily if made seperately as can be seen in figure ~\ref{test}
+```{r}
+png("Rmarkdownfig.png")
+plot(x,y,main="Example Plot",xlab="X Variable",ylab="Y Variable")
+abline(fit,col="Red")
+dev.off()
+```
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=.5\textwidth]{Rmarkdownfig.png}
+\end{center}
+\caption{Some Plot}
+\label{test}
+\end{figure}
+\clearpage
+</code></pre>
+
+<p></p>
+
+
+<p>I also realised that if this was to be a full report of a scientific study it would need to include some of the machinery needed for bibliographies.</p>
+
+<h4>Stuff for bibliographies</h4>
+
+<pre><code>```{r, echo=F, results = 'hide', message = F, warning=F}
+library("knitcitations")
+library("bibtex")
+cleanbib()
+cite_options(citation_format = "pandoc", check.entries = FALSE)
+
+bib &lt;- read.bibtex("C:/Users/Ivan/Dropbox/references/library.bib")
+
+```
+
+&lt;!--Put data analysis and reporting here, then at the end of the doc--&gt;
+
+```{r, echo=F, message=F, eval=T}
+write.bibtex(file="references.bib")
+```
+
+# References
+
+&lt;!--The bib will then be written following the final subheading--&gt;
+</code></pre>
+
+<p></p>
+
+
+<h2>Conclusion</h2>
+
+<p>I hope this might help others develop their own templates for RRR that look great.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/reproducible research reports" title="reproducible research reports" rel="category tag">reproducible research reports</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/reproducible-research-reports-with-rmarkdown-and-latex-for-stylish-reports/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-16 00:00:00 +1000">16 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/task-management-like-an-open-science-hacker/" title="task-management-like-an-open-science-hacker" rel="bookmark">task-management-like-an-open-science-hacker</a>
     </h1>
     <div class="entry-content full-content">
@@ -310,244 +678,6 @@ analysis pipelines.</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/07/climate-grids-and-thredds-server-experimenting-update/" title="Web Data, Climate Grids and THREDDS UPDATE" rel="bookmark">Web Data, Climate Grids and THREDDS UPDATE</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Update</h1>
-
-<ul>
-<li>This is an update to my previous post:  <a href="http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/">http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/</a></li>
-<li>I was worried about the available metadata with those netcdf data I was working with so contacted Dr Brad Evans at EMAST who set me straight:</li>
-</ul>
-
-
-<h4>QUOTE:</h4>
-
-<pre><code>"you need to use ncdf4  - not ncdf  ...
-because they are netcdf4 files and not netcdf3 files. 
-This is poorly explained in the R community.
-All of the netcdf files from Australian providers (AusCover, BoM, etc...) 
-have been in netcdf4 for a couple of years now."
-</code></pre>
-
-<h1>So here is the revised code using ncdf4 library:</h1>
-
-<h4>CODE</h4>
-
-<pre><code># sudo apt-get install r-cran-ncdf4 
-library(ncdf4)
-library(raster)
-strt &lt;-'2012-01-01'
-end &lt;- '2012-01-04'
-dates &lt;- seq(as.Date(strt),as.Date(end),1)          
-dates
-par(mfrow = c(2,2))
-for(i in 1:length(dates)){
- # i=1
-  date_i &lt;- dates[i]
-  infile &lt;- sprintf("http://dapds00.nci.org.au/thredds/dodsC/rr9/Climate/eMAST/ANUClimate/0_01deg/v1m0_aus/day/land/tmin/e_01/2012/eMAST_ANUClimate_day_tmin_v1m0_%s.nc", gsub("-", "", date_i))
-
-  nc &lt;- nc_open(infile)
-  str(nc)
-  print(nc)
-  vals &lt;- ncvar_get(nc, varid="air_temperature")
-  str(vals)
-  nc.att &lt;-    nc$var$air_temperature
-  xmin &lt;- min(nc.att$dim[[1]]$vals)
-  xmax &lt;- max(nc.att$dim[[1]]$vals)
-  ymin &lt;- min(nc.att$dim[[2]]$vals)
-  ymax &lt;- max(nc.att$dim[[2]]$vals)
-
-  print(c(xmin,xmax))
-  print(c(ymin,ymax))
-
-  r &lt;- raster(t(vals),
-              xmn=xmin, xmx=xmax,
-              ymn=ymin, ymx=ymax)
-  #str(r)
-  plot(r)
-  nc_close(nc)
-}
-</code></pre>
-
-<p></p>
-
-
-<h1>RESULTS 1: METADATA</h1>
-
-<ul>
-<li>the result is I now have a lot more metdata returned to my R workspace</li>
-</ul>
-
-
-<h4>EXERPT</h4>
-
-<pre><code>[...]
-[1] "        licence_copyright: Copyright 2009-2013 ANU. Rights owned by The Australian National University (ANU). Rights licensed subject to TERN  Attribution (TERN-BY)."
-[1] "        short_desc: Australian coverage, ANUClimate 1.0, 0.01 degree grid, 1970-2012"
-[1] "        summary: Minimum daily temperature, for the Australian continent between 1970-2012. Daily temperature regulates rates of plant growth and determines critical conditions such as frost on flowering and fruiting. Modelled by expressing each daily value as a difference anomaly with respect to the gridded 1976-2005 mean daily minimum temperature for each month as provided by eMAST_ANUClimate_mmn_tmin_v1m0_1976_2005. The daily anomalies were interpolated by trivariate thin plate smoothing spline functions of longitude, latitude and vertically exaggerated elevation using ANUSPLIN Version 4.5. There was an average of 671 Bureau of Meteorology data points available for each day between 1970 and 2012. Automated quality assessment rejected on average 3 data values per day with extreme studentised residuals. These were commonly associated with days following missing observations. The root mean square of all individual cross validation residuals provided by the spline analysis is 1.5 degrees Celsius. A comprehensive assessment of the analysis and the factors contributing to the quality of the final interpolated daily minimum temperature grids is in preparation."
-[1] "        long_name: Daily minimum temperature"
-[1] "        contact: Michael Hutchinson, Professor of spatial and temporal analysis, 3.23A, Fenner School of Environment &amp; Society, College of Medicine, Biology &amp; Environment, Frank Fenner Building 141, Australian National University, Canberra, Australian Capital Territory, 200, Australia, (+61) 2 6125 4783, Michael.Hutchinson@anu.edu.au, http://orcid.org/0000-0001-8205-6689"
-[1] "        references: 1. Hutchinson, M.F., Mckenney, D.W., Lawrence, K., Pedlar, J., Hopkinson, R., Milewska, E. and Papadopol, P. 2009. Development and testing of Canada-wide interpolated spatial models of daily minimum/maximum temperature and precipitation for 1961-2003. Journal of Applied Meteorology and Climatology 48: 725�741. http://dx.doi.org/10.1175/2008JAMC1979.1 2. Hutchinson, M.F. and Xu, T. 2013. ANUSPLIN version 4.4 User Guide. Fenner School of Environment and Society, Australian National University, Canberra http://fennerschool.anu.edu.au/files/anusplin44.pdf"
-[1] "        source: ANUClimate 1.0"
-[1] "        keywords: EARTH SCIENCE &gt; ATMOSPHERE &gt; ATMOSPHERIC TEMPERATURE &gt; MAXIMUM/MINIMUM TEMPERATURE"
-[1] "        Conventions: CF-1.6"
-[1] "        institution: Australian National University"
-[1] "        geospatial_lat_min: -43.74"
-[1] "        geospatial_lat_max: -9"
-[1] "        geospatial_lat_units: degrees_north"
-[1] "        geospatial_lat_resolution: -0.01"
-[1] "        geospatial_lon_min: 112.9"
-[1] "        geospatial_lon_max: 154"
-[1] "        geospatial_lon_units: degrees_east"
-[1] "        geospatial_lon_resolution: 0.01"
-[1] "        keywords_vocabulary: Global Change Master Directory (http://gcmd.nasa.gov)"
-[1] "        metadata_link: http://datamgt.nci.org.au:8080/geonetwork"
-[1] "        standard_name_vocabulary: Climate and Forecast(CF) convention standard names (http://cf-pcmdi.llnl.gov/documents/cf-standard-names)"
-[1] "        id: eMAST_ANUClimate_day_tmin_v1m0_1970_2012"
-[1] "        DOI: To be added"
-[1] "        cdm_data_type: grid"
-[1] "        contributor_name: Michael Hutchinson, Jennnifer Kesteven, Tingbao Xu"
-[1] "        contributor_role: principalInvestigator, author, author"
-[1] "        creator_email: eMAST.data@mq.edu.au"
-[1] "        creator_name: eMAST data manager"
-[1] "        creator_url: http://www.emast.org.au/"
-[1] "        Metadata_Conventions: Unidata Dataset Discovery v1.0"
-[1] "        publisher_name: Ecosystem Modelling and Scaling Infrastructure (eMAST) Facility: Macquarie University"
-[1] "        publisher_email: eMAST.data@mq.edu.au"
-[1] "        publisher_url: http://www.emast.org.au/"
-</code></pre>
-
-<h1>RESULTS 2: Grid data</h1>
-
-<ul>
-<li>I still get lots of good data</li>
-</ul>
-
-
-<p><img src="images/thredds2.png" alt="images/thredds2.png" /></p>
-
-<p></p>
-
-
-<h1>NOTE I still need that weird transpose</h1>
-
-<ul>
-<li>I note that the weird hacky transpose is still required</li>
-</ul>
-
-
-<h4>CODE</h4>
-
-<pre><code># NB weird hacky transpose still required or else you get this
-r &lt;- raster(vals,
-            xmn=xmin, xmx=xmax,
-            ymn=ymin, ymx=ymax)
-
-#str(r)
-plot(r)
-</code></pre>
-
-<p></p>
-
-
-<p><img src="images/thredds2raw.png" alt="images/thredds2raw.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/07/climate-grids-and-thredds-server-experimenting-update/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-07-27 00:00:00 +1000">27 Jul 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing/" title="Using the R EML software to mitigate risks in Morpho and Metacat data publishing" rel="bookmark">Using the R EML software to mitigate risks in Morpho and Metacat data publishing</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Introduction</h1>
-
-<ul>
-<li>Over the last few months I have used software called Metacat as a Data Portal and Repository.  Metacat is server software which has been
-developed by the Knowledge Network for Biocomplexity (KNB).</li>
-<li>Metacat
-conforms to the Ecological Metadata Language (EML) Standard (<a href="https://knb.ecoinformatics.org/#external//emlparser/docs/index.html">https://knb.ecoinformatics.org/#external//emlparser/docs/index.html</a>).</li>
-<li>KNB also develop another software package called Morpho to be used by Ecologists to document their data (<a href="https://knb.ecoinformatics.org/#tools">https://knb.ecoinformatics.org/#tools/morpho</a>).</li>
-<li>Morpho can be used to send the data and metadata documents to be published on a Metacat portal.</li>
-<li>KNB’s software is used internationally by the Data
-Observation Network for Earth (DataONE) nodes, the United States Long
-Term Ecological Research (US LTER) network and the International Long
-Term Ecological Research (ILTER) network.</li>
-<li>Additionally, the Australian Long Term Ecological Research Network
-Data Portal (<a href="http://www.ltern.org.au/knb/">www.ltern.org.au/knb/</a>), Australian SuperSites Network and
-Australian Centre for Ecological Analysis and Synthesis used
-the same underlying technology to publish data packages.</li>
-<li>The Metacat system is great for a data repository but unfortunately (in my experience) the Morpho software package has repeatedly hampered data processing and increased risks of inadvertently publishing data with errors.</li>
-<li>My colleagues and I workaround these problems using a lot of different 'fixes' for the different problems.</li>
-<li>Fortunately there is an alternative to Morpho in the R statistical software environment called the R-EML package (<a href="https://github.com/ropensci/EML">https://github.com/ropensci/EML</a>).  This provides a library of functions used in the R language to generate and parse EML files.</li>
-<li>This new workflow mitigates some of the risks of the Morpho software by ensuring the data related steps of the workflow are conducted in the R environment for statical computing.</li>
-<li>However, some Issues remain in that this requires a fairly specialised computing environment with various Linux libraries configured appropriately</li>
-</ul>
-
-
-<h1>Results</h1>
-
-<ul>
-<li>I generate EML metadata using REML in the workflow shown in the figure below.</li>
-</ul>
-
-
-<p><img src="/images/workflow-rmd-md.png" alt="altext" /></p>
-
-<p></p>
-
-
-<ul>
-<li>Image adapted from <a href="http://kieranhealy.org/blog/archives/2014/01/23/plain-text/">http://kieranhealy.org/blog/archives/2014/01/23/plain-text/</a></li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/morpho" title="morpho" rel="category tag">morpho</a>
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-03-19 00:00:00 +1100">19 Mar 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -640,7 +770,7 @@ the same underlying technology to publish data packages.</li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (6)</a></li>
+                <li><a href="/categories/disentangle">disentangle (8)</a></li>
                 
                 <li><a href="/categories/project management">project management (2)</a></li>
                 
@@ -650,9 +780,19 @@ the same underlying technology to publish data packages.</li>
                 
                 <li><a href="/categories/distenangle">distenangle (1)</a></li>
                 
+                <li><a href="/categories/reproducible research reports">reproducible research reports (2)</a></li>
+                
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/" title="Templates are Needed for Reproducible Research Reports (that Look Good)" rel="bookmark">Templates are Needed for Reproducible Research Reports (that Look Good)</a>
+                </li>
+                
+                <li>
+                  <a href="/2015/09/reproducible-research-reports-with-rmarkdown-and-latex-for-stylish-reports/" title="Templates are Needed for Reproducible Research Reports (Especially Stylish Reports)" rel="bookmark">Templates are Needed for Reproducible Research Reports (Especially Stylish Reports)</a>
+                </li>
                 
                 <li>
                   <a href="/2015/09/task-management-like-an-open-science-hacker/" title="task-management-like-an-open-science-hacker" rel="bookmark">task-management-like-an-open-science-hacker</a>
@@ -664,14 +804,6 @@ the same underlying technology to publish data packages.</li>
                 
                 <li>
                   <a href="/2015/08/tracking-a-data-analysis-pipeline/" title="tracking-a-data-analysis-pipeline" rel="bookmark">tracking-a-data-analysis-pipeline</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/07/climate-grids-and-thredds-server-experimenting-update/" title="Web Data, Climate Grids and THREDDS UPDATE" rel="bookmark">Web Data, Climate Grids and THREDDS UPDATE</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing/" title="Using the R EML software to mitigate risks in Morpho and Metacat data publishing" rel="bookmark">Using the R EML software to mitigate risks in Morpho and Metacat data publishing</a>
                 </li>
                 
               </ul>
