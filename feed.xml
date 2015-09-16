@@ -167,167 +167,6 @@ write.bibtex(file=&quot;references.bib&quot;)
 			</item>
 		
 			<item>
-				<title>Templates are Needed for Reproducible Research Reports (Especially Stylish Reports)</title>
-				<description>&lt;p&gt;I read with interest the the Transparency and Openness Promotion (TOP) Committee templates for guidelines to enhance transparency in the science that journals publish.&lt;/p&gt;
-
-&lt;h4&gt;Citation&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Supplementary Materials for Nosek, B. A., Alter, G., Banks, G. C.,
-Borsboom, D., Bowman, S. D., Breckler, S. J., … Yarkoni,
-T. (2015). Promoting an open research culture. Science, 348(6242),
-1422–1425. doi:10.1126/science.aab2374
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;I think though that guidelines like the suggestion to copy-paste bits of the manuscript leave a bit to be desired:&lt;/p&gt;
-
-&lt;h4&gt;Quote;&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Authors document compliance by copy-pasting the relevant passages
-in the paper that address the question into the form. For example,
-when indicating how sample size was determined, authors copy paste
-into the form the text in the paper that describes how sample size
-was determined.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Reproducible Research Reports solve this problem by ensuring that the data preparation and analysis are executed in the same script that produces the manuscript, therefore a one-stop-shop for documentation of the entire study.&lt;/p&gt;
-
-&lt;h2&gt;There is a need for Templates of Reproducible Research Reports (that look good!)&lt;/h2&gt;
-
-&lt;p&gt;Rstudio provides very easy support for these documents if you use R.  In particular the option of a menu button to create a new report populates that report with the required header information and some example script to work off.  But the easiest option does not look so good.  This is the Rmarkdown option and it is very user friendly in terms of the markup language needed to write the descriptive language around your analysis (mostly plain text with a few simple options for heading styles etc) rather than the Sweave option which leads to the full blown LaTeX markup language that is a lot more complicated.&lt;/p&gt;
-
-&lt;h4&gt;Boilerplate Rmarkdown header from Rstudio:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;---
-title: &quot;Untitled&quot;
-author: &quot;Ivan C. Hanigan&quot;
-date: &quot;16 September 2015&quot;
-output: html_document
----
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;This is great for quick reporting of work as you go, but I  primarily write for output that will be printed (e.g. pdf docs). More specifically, I need the concept of a page, and to have full control over the placement of table and figure ‘environments’, stuff that is easy in LaTeX (once you figure out some of the esoteric parts of that language).&lt;/p&gt;
-
-&lt;p&gt;To achieve a simple writing environment in Markdown but with the powerful layout options of LaTeX I reviewed this guys work but I think it takes it to an uneccessary level of complicated-ness
-&lt;a href=&quot;https://github.com/jhollist/manuscriptPackage&quot;&gt;https://github.com/jhollist/manuscriptPackage&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;So I went back to some of the old Sweave/Latex templates I had put together and ported it into a markdown header.&lt;/p&gt;
-
-&lt;h4&gt;Boilerplate Rmarkdown header for pretty report&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;---
-title: &quot;Untitled&quot;
-author: &quot;Ivan C. Hanigan&quot;
-date: &quot;16 September 2015&quot;
-header-includes:
-  - \usepackage{graphicx}
-  - \usepackage{fancyhdr} 
-  - \pagestyle{fancy} 
-  - \usepackage{lastpage}
-  - \usepackage{float} 
-  - \floatstyle{boxed} 
-  - \restylefloat{figure} 
-  - \usepackage{url} 
-  - \usepackage{color}
-  - \lhead{Left Header}
-  - \chead{Rmarkdown Rocks}
-  - \rhead{\today}
-  - \lfoot{Left Footer}
-  - \cfoot{Centre Footer}
-  - \rfoot{\thepage\ of \pageref{LastPage}}  
-output: 
-  pdf_document:
-    toc: false
-documentclass: article
-classoption: a4paper
-bibliography: references.bib
----
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Now the layout of tables and figures is done with latex&lt;/p&gt;
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Using the xtable package allows results to be displyed in tables
-and has built in support for some R objects, so summrising the
-linear fit above in ~\ref{ATable}
-
-```{r, results='asis', type = 'tex'}
-library(xtable)    
-print(xtable(fit, caption=&quot;Example Table&quot;,
-  digits=4,table.placement=&quot;ht&quot;,label=&quot;ATable&quot;), comment = F)    
-```
-
-## A Plot
-
-Plots intergrate most easily if made seperately as can be seen in figure ~\ref{test}
-```{r}
-png(&quot;Rmarkdownfig.png&quot;)
-plot(x,y,main=&quot;Example Plot&quot;,xlab=&quot;X Variable&quot;,ylab=&quot;Y Variable&quot;)
-abline(fit,col=&quot;Red&quot;)
-dev.off()
-```
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=.5\textwidth]{Rmarkdownfig.png}
-\end{center}
-\caption{Some Plot}
-\label{test}
-\end{figure}
-\clearpage
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;I also realised that if this was to be a full report of a scientific study it would need to include some of the machinery needed for bibliographies.&lt;/p&gt;
-
-&lt;h4&gt;Stuff for bibliographies&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;```{r, echo=F, results = 'hide', message = F, warning=F}
-library(&quot;knitcitations&quot;)
-library(&quot;bibtex&quot;)
-cleanbib()
-cite_options(citation_format = &quot;pandoc&quot;, check.entries = FALSE)
-
-bib &amp;lt;- read.bibtex(&quot;C:/Users/Ivan/Dropbox/references/library.bib&quot;)
-
-```
-
-&amp;lt;!--Put data analysis and reporting here, then at the end of the doc--&amp;gt;
-
-```{r, echo=F, message=F, eval=T}
-write.bibtex(file=&quot;references.bib&quot;)
-```
-
-# References
-
-&amp;lt;!--The bib will then be written following the final subheading--&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;I hope this might help others develop their own templates for RRR that look great.&lt;/p&gt;
-</description>
-				<published>2015-09-16 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2015/09/reproducible-research-reports-with-rmarkdown-and-latex-for-stylish-reports/</link>
-			</item>
-		
-			<item>
 				<title>task-management-like-an-open-science-hacker</title>
 				<description>&lt;p&gt;I just read this impressive paper and it has really given me a push toward making this open lab notebook&lt;/p&gt;
 
@@ -1205,6 +1044,23 @@ setwd(wd)
 </description>
 				<published>2014-08-21 00:00:00 +1000</published>
 				<link>http://ivanhanigan.github.com/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor/</link>
+			</item>
+		
+			<item>
+				<title>morpho-doesnt-respect-quote-encapsulated-strings-in-csv</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;We discovered this known morpho bug when we try to import a textual data to morpho&lt;/li&gt;
+&lt;li&gt;Even if you double check that you have selected the correct format for that data. For example, delimited or fixed width, and the correct delimiter.&lt;/li&gt;
+&lt;li&gt;see this bug report &lt;a href=&quot;https://projects.ecoinformatics.org/ecoinfo/issues/4636&quot;&gt;Bug #4636 Morpho should ignore commas inside double-quoted fields (CSV import)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;this unwanted Morpho behaviour is due to a comma in the cell and morpho doesn’t respect quote encapsulated strings with commas in them.&lt;/li&gt;
+&lt;li&gt;we do not think we can fix Morpho’s bug, and we cannot upgrade Morpho because of our Metacat version. We just need to find a workaround on that.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/morpho-quote-encapsulated.png&quot; alt=&quot;morpho-quote-encapsulated.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>2014-08-20 00:00:00 +1000</published>
+				<link>http://ivanhanigan.github.com/2014/08/morpho-doesnt-respect-quote-encapsulated-strings-in-csv/</link>
 			</item>
 		
 	</channel>
