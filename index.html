@@ -56,6 +56,89 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/" title="If You Don't Find A Solution In R, Keep Googling!" rel="bookmark">If You Don't Find A Solution In R, Keep Googling!</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I've learnt this lesson multiple times. It happens like this.  A solution is not immediately obvious in R so you might think of writing your own function.  Generally there is a solution you just did not google enough.
+This time I was tricked a little because the GIS functions have been bad for a long time but getting better very rapidly recently.  A little while ago I had a very successful
+outcome from using the <code>raster::extract</code> function on a large raster file
+to get the attributes for a set of points.  I needed to do the same
+thing but this time for a shapefile and points.  I looked at the
+raster package and saw you can use the <code>raster::intersect</code> function
+here, and it worked on the small sample data I tested with but failed
+with the big dataset as it ran out of memory.  I assumed that R had not caught up with the GIS world yet and so I came up with this workaround below by splitting the points data layer into chunks.</p>
+
+<p>I then got access to ArcMap and was wondering whether it could do it, and it DID!
+So then I googled a bit and found the solution was simple:</p>
+
+<h4>Code:</h4>
+
+<pre><code>sp::over()
+</code></pre>
+
+<p></p>
+
+
+<p>Here is my hack in case I ever need to pull out the bit that does the splitting up of the points file, or the tryCatch():</p>
+
+<h4>Code:</h4>
+
+<pre><code>big_pt_intersect &lt;- function(pts, ply, chunks = 100){
+  idx &lt;- split(pts@data, 1:chunks)
+  #str(idx)
+  for(i in 1:length(idx)){
+  #i = 1
+  print(i)
+    ids &lt;- idx[ [i] ][,1]
+  #str(pts@data)
+  qc &lt;- pts[pts@data[,1] %in% ids,]
+  #str(qc)
+  tryCatch(
+    chunk &lt;-  raster::intersect(qc, ply), 
+    error = function(err){print(err)})
+  if(!exists('chunk_out')){
+
+    chunk_out &lt;- chunk@data
+  } else {
+    chunk_out &lt;- rbind(chunk_out, chunk@data)
+  }
+  rm(chunk)
+
+  }
+  #str(chunk_out)
+  return(chunk_out)
+}
+# NB warning about split length multiple is not fatal, just due to nonequal chunks 
+# (ie the geocodes are 2009/100)
+</code></pre>
+
+<p></p>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-17 00:00:00 +1000">17 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/" title="Templates are Needed for Reproducible Research Reports (that Look Good)" rel="bookmark">Templates are Needed for Reproducible Research Reports (that Look Good)</a>
     </h1>
     <div class="entry-content full-content">
@@ -299,7 +382,7 @@ Then I modified the org-agenda-files which was set in the main el file that kjhe
    "**** TODO-list \n"
    "***** TODO \n"
    "**** timesheet\n"
-   "#+begin_src txt :tangle research-log.csv :eval no :padline no\n"
+   "#+begin_src txt :tangle work-log.csv :eval no :padline no\n"
    (format-time-string "%Y-%m-%d %a") ", " str ", 50\n" 
    "#+end_src\n"
  )
@@ -328,7 +411,7 @@ alias bb="build_blog"
 <p></p>
 
 
-<p>So this will put the resulting changes onto my open lab book website here <a href="https://github.com/ivanhanigan/ivanhanigan.github.com/blob/master/research-log.org">https://github.com/ivanhanigan/ivanhanigan.github.com/blob/master/research-log.org</a></p>
+<p>So this will put the resulting changes onto my open lab book website here <a href="https://raw.githubusercontent.com/ivanhanigan/ivanhanigan.github.com/master/work-log.org">https://raw.githubusercontent.com/ivanhanigan/ivanhanigan.github.com/master/work-log.org</a></p>
 
 <p>Things to note:</p>
 
@@ -345,7 +428,7 @@ alias bb="build_blog"
     <p class="alt-font tight">
       Posted in&nbsp;
       
-      <a href="/categories/distenangle" title="distenangle" rel="category tag">distenangle</a>
+      <a href="/categories/distentangle" title="distentangle" rel="category tag">distentangle</a>
       
       <a href="/categories/project management" title="project management" rel="category tag">project management</a>
       
@@ -494,173 +577,6 @@ analysis pipelines.</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/07/climate-grids-and-thredds-server-experimenting-update/" title="Web Data, Climate Grids and THREDDS UPDATE" rel="bookmark">Web Data, Climate Grids and THREDDS UPDATE</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Update</h1>
-
-<ul>
-<li>This is an update to my previous post:  <a href="http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/">http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/</a></li>
-<li>I was worried about the available metadata with those netcdf data I was working with so contacted Dr Brad Evans at EMAST who set me straight:</li>
-</ul>
-
-
-<h4>QUOTE:</h4>
-
-<pre><code>"you need to use ncdf4  - not ncdf  ...
-because they are netcdf4 files and not netcdf3 files. 
-This is poorly explained in the R community.
-All of the netcdf files from Australian providers (AusCover, BoM, etc...) 
-have been in netcdf4 for a couple of years now."
-</code></pre>
-
-<h1>So here is the revised code using ncdf4 library:</h1>
-
-<h4>CODE</h4>
-
-<pre><code># sudo apt-get install r-cran-ncdf4 
-library(ncdf4)
-library(raster)
-strt &lt;-'2012-01-01'
-end &lt;- '2012-01-04'
-dates &lt;- seq(as.Date(strt),as.Date(end),1)          
-dates
-par(mfrow = c(2,2))
-for(i in 1:length(dates)){
- # i=1
-  date_i &lt;- dates[i]
-  infile &lt;- sprintf("http://dapds00.nci.org.au/thredds/dodsC/rr9/Climate/eMAST/ANUClimate/0_01deg/v1m0_aus/day/land/tmin/e_01/2012/eMAST_ANUClimate_day_tmin_v1m0_%s.nc", gsub("-", "", date_i))
-
-  nc &lt;- nc_open(infile)
-  str(nc)
-  print(nc)
-  vals &lt;- ncvar_get(nc, varid="air_temperature")
-  str(vals)
-  nc.att &lt;-    nc$var$air_temperature
-  xmin &lt;- min(nc.att$dim[[1]]$vals)
-  xmax &lt;- max(nc.att$dim[[1]]$vals)
-  ymin &lt;- min(nc.att$dim[[2]]$vals)
-  ymax &lt;- max(nc.att$dim[[2]]$vals)
-
-  print(c(xmin,xmax))
-  print(c(ymin,ymax))
-
-  r &lt;- raster(t(vals),
-              xmn=xmin, xmx=xmax,
-              ymn=ymin, ymx=ymax)
-  #str(r)
-  plot(r)
-  nc_close(nc)
-}
-</code></pre>
-
-<p></p>
-
-
-<h1>RESULTS 1: METADATA</h1>
-
-<ul>
-<li>the result is I now have a lot more metdata returned to my R workspace</li>
-</ul>
-
-
-<h4>EXERPT</h4>
-
-<pre><code>[...]
-[1] "        licence_copyright: Copyright 2009-2013 ANU. Rights owned by The Australian National University (ANU). Rights licensed subject to TERN  Attribution (TERN-BY)."
-[1] "        short_desc: Australian coverage, ANUClimate 1.0, 0.01 degree grid, 1970-2012"
-[1] "        summary: Minimum daily temperature, for the Australian continent between 1970-2012. Daily temperature regulates rates of plant growth and determines critical conditions such as frost on flowering and fruiting. Modelled by expressing each daily value as a difference anomaly with respect to the gridded 1976-2005 mean daily minimum temperature for each month as provided by eMAST_ANUClimate_mmn_tmin_v1m0_1976_2005. The daily anomalies were interpolated by trivariate thin plate smoothing spline functions of longitude, latitude and vertically exaggerated elevation using ANUSPLIN Version 4.5. There was an average of 671 Bureau of Meteorology data points available for each day between 1970 and 2012. Automated quality assessment rejected on average 3 data values per day with extreme studentised residuals. These were commonly associated with days following missing observations. The root mean square of all individual cross validation residuals provided by the spline analysis is 1.5 degrees Celsius. A comprehensive assessment of the analysis and the factors contributing to the quality of the final interpolated daily minimum temperature grids is in preparation."
-[1] "        long_name: Daily minimum temperature"
-[1] "        contact: Michael Hutchinson, Professor of spatial and temporal analysis, 3.23A, Fenner School of Environment &amp; Society, College of Medicine, Biology &amp; Environment, Frank Fenner Building 141, Australian National University, Canberra, Australian Capital Territory, 200, Australia, (+61) 2 6125 4783, Michael.Hutchinson@anu.edu.au, http://orcid.org/0000-0001-8205-6689"
-[1] "        references: 1. Hutchinson, M.F., Mckenney, D.W., Lawrence, K., Pedlar, J., Hopkinson, R., Milewska, E. and Papadopol, P. 2009. Development and testing of Canada-wide interpolated spatial models of daily minimum/maximum temperature and precipitation for 1961-2003. Journal of Applied Meteorology and Climatology 48: 725�741. http://dx.doi.org/10.1175/2008JAMC1979.1 2. Hutchinson, M.F. and Xu, T. 2013. ANUSPLIN version 4.4 User Guide. Fenner School of Environment and Society, Australian National University, Canberra http://fennerschool.anu.edu.au/files/anusplin44.pdf"
-[1] "        source: ANUClimate 1.0"
-[1] "        keywords: EARTH SCIENCE &gt; ATMOSPHERE &gt; ATMOSPHERIC TEMPERATURE &gt; MAXIMUM/MINIMUM TEMPERATURE"
-[1] "        Conventions: CF-1.6"
-[1] "        institution: Australian National University"
-[1] "        geospatial_lat_min: -43.74"
-[1] "        geospatial_lat_max: -9"
-[1] "        geospatial_lat_units: degrees_north"
-[1] "        geospatial_lat_resolution: -0.01"
-[1] "        geospatial_lon_min: 112.9"
-[1] "        geospatial_lon_max: 154"
-[1] "        geospatial_lon_units: degrees_east"
-[1] "        geospatial_lon_resolution: 0.01"
-[1] "        keywords_vocabulary: Global Change Master Directory (http://gcmd.nasa.gov)"
-[1] "        metadata_link: http://datamgt.nci.org.au:8080/geonetwork"
-[1] "        standard_name_vocabulary: Climate and Forecast(CF) convention standard names (http://cf-pcmdi.llnl.gov/documents/cf-standard-names)"
-[1] "        id: eMAST_ANUClimate_day_tmin_v1m0_1970_2012"
-[1] "        DOI: To be added"
-[1] "        cdm_data_type: grid"
-[1] "        contributor_name: Michael Hutchinson, Jennnifer Kesteven, Tingbao Xu"
-[1] "        contributor_role: principalInvestigator, author, author"
-[1] "        creator_email: eMAST.data@mq.edu.au"
-[1] "        creator_name: eMAST data manager"
-[1] "        creator_url: http://www.emast.org.au/"
-[1] "        Metadata_Conventions: Unidata Dataset Discovery v1.0"
-[1] "        publisher_name: Ecosystem Modelling and Scaling Infrastructure (eMAST) Facility: Macquarie University"
-[1] "        publisher_email: eMAST.data@mq.edu.au"
-[1] "        publisher_url: http://www.emast.org.au/"
-</code></pre>
-
-<h1>RESULTS 2: Grid data</h1>
-
-<ul>
-<li>I still get lots of good data</li>
-</ul>
-
-
-<p><img src="images/thredds2.png" alt="images/thredds2.png" /></p>
-
-<p></p>
-
-
-<h1>NOTE I still need that weird transpose</h1>
-
-<ul>
-<li>I note that the weird hacky transpose is still required</li>
-</ul>
-
-
-<h4>CODE</h4>
-
-<pre><code># NB weird hacky transpose still required or else you get this
-r &lt;- raster(vals,
-            xmn=xmin, xmx=xmax,
-            ymn=ymin, ymx=ymax)
-
-#str(r)
-plot(r)
-</code></pre>
-
-<p></p>
-
-
-<p><img src="images/thredds2raw.png" alt="images/thredds2raw.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/07/climate-grids-and-thredds-server-experimenting-update/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-07-27 00:00:00 +1000">27 Jul 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -753,7 +669,7 @@ plot(r)
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (7)</a></li>
+                <li><a href="/categories/disentangle">disentangle (8)</a></li>
                 
                 <li><a href="/categories/project management">project management (2)</a></li>
                 
@@ -761,13 +677,17 @@ plot(r)
                 
                 <li><a href="/categories/writing">writing (1)</a></li>
                 
-                <li><a href="/categories/distenangle">distenangle (1)</a></li>
+                <li><a href="/categories/distentangle">distentangle (1)</a></li>
                 
                 <li><a href="/categories/reproducible research reports">reproducible research reports (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/" title="If You Don't Find A Solution In R, Keep Googling!" rel="bookmark">If You Don't Find A Solution In R, Keep Googling!</a>
+                </li>
                 
                 <li>
                   <a href="/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/" title="Templates are Needed for Reproducible Research Reports (that Look Good)" rel="bookmark">Templates are Needed for Reproducible Research Reports (that Look Good)</a>
@@ -785,10 +705,6 @@ plot(r)
                   <a href="/2015/08/tracking-a-data-analysis-pipeline/" title="tracking-a-data-analysis-pipeline" rel="bookmark">tracking-a-data-analysis-pipeline</a>
                 </li>
                 
-                <li>
-                  <a href="/2015/07/climate-grids-and-thredds-server-experimenting-update/" title="Web Data, Climate Grids and THREDDS UPDATE" rel="bookmark">Web Data, Climate Grids and THREDDS UPDATE</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
@@ -800,6 +716,8 @@ plot(r)
                 <li><a href="/tag/bugs">bugs (1)</a></li>
                 
                 <li><a href="/tag/software">software (3)</a></li>
+                
+                <li><a href="/tag/spatial">spatial (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -817,6 +735,8 @@ plot(r)
           <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/software">software (3)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/spatial">spatial (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

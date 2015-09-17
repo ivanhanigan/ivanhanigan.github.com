@@ -56,6 +56,95 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>This is a quick post on Quantum GIS for spatial data visualisation</li>
+<li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
+<li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
+<li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
+</ul>
+
+
+<h4>R Code: use postgis to create area-concordance</h4>
+
+<pre><code>require(devtools)
+install_github("gisviz", "ivanhanigan")
+require(gisviz)
+require(swishdbtools)
+ch &lt;- connect2postgres2("gislibrary")
+# make a temporary tablename, to avoid clobbering
+temp_table &lt;- swish_temptable("gislibrary")
+temp_table &lt;- paste("public", temp_table$table, sep = ".")
+temp_table
+# this is going to be public.foo11c7673416ea
+
+sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
+   source_zones_code = 'sla_id', target_table = "abs_sla.nswsla01",
+   target_zones_code = "sla_code",
+   into = temp_table, tolerance = 0.01,
+   subset_target_table = "cast(sla_code as text) like '105%'", 
+   eval = F) 
+cat(sql)
+dbSendQuery(ch, sql)
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
+<li>and add the layer to the map</li>
+<li>Style it how you like, I also added NSWSLA1991 over the top</li>
+<li>go into the "new print composer"</li>
+</ul>
+
+
+<p><img src="/images/qgis-new-print-composer.png" alt="qgis-new-print-composer.png" /></p>
+
+<p><img src="/images/qgis-add-new-map.png" alt="qgis-add-new-map.png" /></p>
+
+<h3>Results</h3>
+
+<ul>
+<li>hit the export to image and viola</li>
+</ul>
+
+
+<p><img src="/images/qgis-export-image.png" alt="qgis-export-image.png" /></p>
+
+<h3>Don't forget to clean up the database!</h3>
+
+<h4>R Code:</h4>
+
+<pre><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/quantum-gis-visualisations/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
     </h1>
     <div class="entry-content full-content">
@@ -833,42 +922,6 @@ Several things I'd like to change.</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors</li>
-<li>We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement</li>
-<li>I've hacked together some very very ugly code to construct the lagged variable</li>
-<li><a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3">http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3</a></li>
-<li>There may be errors, it's been a long day, but I won't have a chance to check back on this till next week so I thought I'd put it out there as is.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-28 00:00:00 +1100">28 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -965,7 +1018,7 @@ Several things I'd like to change.</p>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (7)</a></li>
+                <li><a href="/categories/disentangle">disentangle (8)</a></li>
                 
                 <li><a href="/categories/project management">project management (2)</a></li>
                 
@@ -973,13 +1026,17 @@ Several things I'd like to change.</p>
                 
                 <li><a href="/categories/writing">writing (1)</a></li>
                 
-                <li><a href="/categories/distenangle">distenangle (1)</a></li>
+                <li><a href="/categories/distentangle">distentangle (1)</a></li>
                 
                 <li><a href="/categories/reproducible research reports">reproducible research reports (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/" title="If You Don't Find A Solution In R, Keep Googling!" rel="bookmark">If You Don't Find A Solution In R, Keep Googling!</a>
+                </li>
                 
                 <li>
                   <a href="/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/" title="Templates are Needed for Reproducible Research Reports (that Look Good)" rel="bookmark">Templates are Needed for Reproducible Research Reports (that Look Good)</a>
@@ -997,10 +1054,6 @@ Several things I'd like to change.</p>
                   <a href="/2015/08/tracking-a-data-analysis-pipeline/" title="tracking-a-data-analysis-pipeline" rel="bookmark">tracking-a-data-analysis-pipeline</a>
                 </li>
                 
-                <li>
-                  <a href="/2015/07/climate-grids-and-thredds-server-experimenting-update/" title="Web Data, Climate Grids and THREDDS UPDATE" rel="bookmark">Web Data, Climate Grids and THREDDS UPDATE</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
@@ -1012,6 +1065,8 @@ Several things I'd like to change.</p>
                 <li><a href="/tag/bugs">bugs (1)</a></li>
                 
                 <li><a href="/tag/software">software (3)</a></li>
+                
+                <li><a href="/tag/spatial">spatial (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -1029,6 +1084,8 @@ Several things I'd like to change.</p>
           <!--       <li><a href="/tag/bugs">bugs (1)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/software">software (3)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/spatial">spatial (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->
