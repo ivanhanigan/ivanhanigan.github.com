@@ -6,6 +6,144 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)</title>
+				<description>&lt;h1&gt;Aims&lt;/h1&gt;
+
+&lt;p&gt;I have worked on a function that turns a &lt;code&gt;data.frame&lt;/code&gt; into a graphviz code in the dot language, with some of my preferred settings.  I realised that it might be useful for causal directed acyclic graphs.&lt;/p&gt;
+
+&lt;p&gt;Causal diagrams are useful for conceptualising the pathways of cause and effect.  These diagrams are sometimes simplly informal pictures but have also been developed in a more formal way to be used in modelling.  These formal developments use concepts derived from the mathmatical abstraction of Graphs (fundamentally Graphs  are networks of linked 'nodes', with the links being termed 'edges').  Causal diagrams can either be constructed to depict two things: first are feedback loops (a vexatious property of complex systems that confounds modelling) while second are more simple chain-of-events type pathways which proceed from an upstream cause to a downstream effect in a single direction, without cycles, called 'Directed Acyclic Graphs or DAGs.  The loop diagrams are out of the scope of this present blog post because the DAGs are much more easily addressed by the tool that I am describing.&lt;/p&gt;
+
+&lt;p&gt;To begin I am going to build on this other guy's blog post on causal DAGs with R
+  &lt;a href=&quot;http://donlelek.github.io/2015/03/31/dags-with-r/&quot;&gt;http://donlelek.github.io/2015/03/31/dags-with-r/&lt;/a&gt;
+I wanted to add an interface for building these.&lt;/p&gt;
+
+&lt;p&gt;Some background to the concepts that I use are provided in the references below.&lt;/p&gt;
+
+&lt;h1&gt;Materials and Methods&lt;/h1&gt;
+
+&lt;p&gt;The DiagrammeR package which has been integrated within R-Studio has made access to the graphing tool &lt;code&gt;graphviz&lt;/code&gt; much easier than it used to be.  My function &lt;code&gt;causal_dag&lt;/code&gt; (avaiable in my &lt;code&gt;disentangle&lt;/code&gt; github package) essentially constructs the required &lt;code&gt;nodes&lt;/code&gt; and &lt;code&gt;edges&lt;/code&gt; for that package to use.  Optionally we can also include &lt;code&gt;labels&lt;/code&gt; to indicate the direction of the effect.&lt;/p&gt;
+
+&lt;p&gt;To use the tool all you need to do is create a list of &lt;code&gt;edges&lt;/code&gt; and their associated &lt;code&gt;inputs&lt;/code&gt; nodes and &lt;code&gt;outputs&lt;/code&gt; nodes (as a comma separated values string) shown in the picture below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/causal-ssheet.png&quot; alt=&quot;causal-ssheet.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# read in the sheet
+library(disentangle)
+library(stringr)
+causes &amp;lt;- readxl::read_excel(&quot;causal-ssheet.xlsx&quot;)
+causes
+nodes &amp;lt;- newnode(causes, &quot;edges&quot;, &quot;inputs&quot;, &quot;outputs&quot;)
+cat(nodes)
+# The result is a formated graph in the dot language with some of my
+# preferred settings such as edges showing as 'records' and a spot to
+# write a description or include literature about each process
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;See the DOT code in the Appendix&lt;/li&gt;
+&lt;li&gt;to render the graph now DiagrammeR can use this text string R object to render this to SVG&lt;/li&gt;
+&lt;li&gt;I think it does not do PNG or PDF though so I still use graphviz and dot directly&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;grViz(nodes)
+
+# But I also use graphviz directly to produce a publishable image in
+# pdf or png
+sink(&quot;reproduce-donlelek.dot&quot;)
+cat(nodes)
+sink()# If graphviz is installed and on linux call it with a shell command
+#system(&quot;dot -Tpdf reproduce-donlelek.dot -o reproduce-donlelek.pdf&quot;)
+system(&quot;dot -Tpng reproduce-donlelek.dot -o reproduce-donlelek.png&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;Results&lt;/h1&gt;
+
+&lt;p&gt;Here I have reproduced the work of donlelek&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/reproduce-donlelek.png&quot; alt=&quot;reproduce-donlelek.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Future directions&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I'd like to make the edges implicit, so that the spreadsheet keeps track of the information about the causal process, but the graph just shows the lines connecting the nodes&lt;/li&gt;
+&lt;li&gt;The edges are where the action is, so I need to add a direction of effect.  This would be in a &lt;code&gt;label&lt;/code&gt; column and added in a [ label = 'abc' ] tag for each edge&lt;/li&gt;
+&lt;li&gt;the rankdir option is LR to make this go sideways, which seems more the norm for causal DAGs, left to right.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;References&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;Greenland, S., Pearl, J., &amp;amp; Robins, J. M. (1999). Causal diagrams for
+epidemiologic research. Epidemiology (Cambridge, Mass.), 10(1),
+37–48. doi:10.1097/00001648-199901000-00008
+
+Reid, C. E., Snowden, J. M., Kontgis, C., &amp;amp; Tager, I. B. (2012). The
+role of ambient ozone in epidemiologic studies of heat-related
+mortality. Environmental Health Perspectives, 120(12),
+1627–30. doi:10.1289/ehp.1205251
+
+Newell, B., &amp;amp; Wasson, R. (2001). Social System vs Solar System: Why
+Policy Makers Need History. In: Conflict and Cooperation related to
+International Water Resources : Historical Perspectives. In World
+Water (Vol. 2002).
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;Appendix&lt;/h1&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#####################################################################
+# The following output is automatically created by newnode()
+# NOTE for some reason, to show on the blog, I had to replace all { braces with normal (
+#####################################################################
+digraph transformations (
+
+&quot;Metritis&quot; -&amp;gt; &quot;Fertility effects&quot;
+&quot;Cistic Ovarian Disease&quot; -&amp;gt; &quot;Fertility effects&quot;
+&quot;Age&quot; -&amp;gt; &quot;Fertility effects&quot;
+&quot;Fertility effects&quot;  [ shape=record, label=&quot;(( ( Name | Description ) | ( Fertility effects |  ) ))&quot;]
+&quot;Fertility effects&quot; -&amp;gt; &quot;Fertility&quot;
+
+
+&quot;Metritis&quot; -&amp;gt; &quot;Cistic Ovarian effects&quot;
+&quot;Retained Placenta&quot; -&amp;gt; &quot;Cistic Ovarian effects&quot;
+&quot;Age&quot; -&amp;gt; &quot;Cistic Ovarian effects&quot;
+&quot;Cistic Ovarian effects&quot;  [ shape=record, label=&quot;(( ( Name | Description ) | ( Cistic Ovarian effects |  ) ))&quot;]
+&quot;Cistic Ovarian effects&quot; -&amp;gt; &quot;Cistic Ovarian Disease&quot;
+
+
+&quot;Retained Placenta&quot; -&amp;gt; &quot;Metritis effects&quot;
+&quot;Metritis effects&quot;  [ shape=record, label=&quot;(( ( Name | Description ) | ( Metritis effects |  ) ))&quot;]
+&quot;Metritis effects&quot; -&amp;gt; &quot;Metritis&quot;
+
+
+ &quot;Age&quot; -&amp;gt; &quot;Retained Placenta effects&quot;
+&quot;Retained Placenta effects&quot;  [ shape=record, label=&quot;(( ( Name | Description ) | ( Retained Placenta effects |  ) ))&quot;]
+&quot;Retained Placenta effects&quot; -&amp;gt; &quot;Retained Placenta&quot;
+
+
+ )
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+				<published>2015-09-19 00:00:00 +1000</published>
+				<link>http://ivanhanigan.github.com/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/</link>
+			</item>
+		
+			<item>
 				<title>If You Don't Find A Solution In R, Keep Googling!</title>
 				<description>&lt;p&gt;I've learnt this lesson multiple times. It happens like this.  A solution is not immediately obvious in R so you might think of writing your own function.  Generally there is a solution you just did not google enough.
 This time I was tricked a little because the GIS functions have been bad for a long time but getting better very rapidly recently.  A little while ago I had a very successful
@@ -944,168 +1082,6 @@ sessionInfo()
 </description>
 				<published>2014-12-13 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2014/12/climate-grids-and-thredds-server-experimenting/</link>
-			</item>
-		
-			<item>
-				<title>hotwire-a-morpho-package-using-r-and-xml-editor</title>
-				<description>&lt;h1&gt;Introduction&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;at my workplace we have had a significant number of issues trying to use Morpho to publish ecological data&lt;/li&gt;
-&lt;li&gt;I have been interested in the R EML package as an alternative and got this advice from the authors&lt;/li&gt;
-&lt;li&gt;&quot;I'm really happy to see you combining these tools and making best use of each of their features (authoring for Morpho, automation for REML). We should think more about how to make this combination seamless.&quot; &lt;a href=&quot;https://github.com/ropensci/EML/issues/93&quot;&gt;https://github.com/ropensci/EML/issues/93&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;That dream still seems a long way off (and I suspect will see a re-write of morpho in R's &quot;shiny apps&quot; language)&lt;/li&gt;
-&lt;li&gt;but here is an attempt to circumvent some of our main issues which seem to do with using Morpho to do anything with data tables&lt;/li&gt;
-&lt;li&gt;(morpho seems fine when just dealing with the documentation parts of EML)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h1&gt;Create a Minimal Morpho EML&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I am going to use Morpho to create a new data package and just step thru all the steps,  add TBA to all the options&lt;/li&gt;
-&lt;li&gt;another option was to create this using the REML example&lt;/li&gt;
-&lt;li&gt;but then there is uncertainty if it will be accepted easily by Morpho when imported&lt;/li&gt;
-&lt;li&gt;seriously, just TBA and only for the required fields (these are in red)&lt;/li&gt;
-&lt;li&gt;take note of the docid number, and save locally&lt;/li&gt;
-&lt;li&gt;now we can import this as our template.  lets save it as a reference file&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;cp ~/.morpho/profiles/hanigan/data/hanigan/XX.1 ~/tools/morpho_template_eml.xml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;Import to morpho&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;this skeletal eml can now be imported in the File menu / import&lt;/li&gt;
-&lt;li&gt;this is the 'hotwired' starting point of our morpho packages&lt;/li&gt;
-&lt;li&gt;I want to do this for others too. so change morpho profile on your computer and import the xml&lt;/li&gt;
-&lt;li&gt;gives a new package with a new morpho generated docid number&lt;/li&gt;
-&lt;li&gt;add the package title, with enough identification in the title to allow quick reference&lt;/li&gt;
-&lt;li&gt;SET THE ACCESS TO NOT PUBLIC BEFORE SAVING&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h1&gt;generate the EML Skeleton using the R EML package&lt;/h1&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;library(EML)
-library(devtools)
-install_github(&quot;disentangle&quot;, &quot;ivanhanigan&quot;)
-unit_defs &amp;lt;- reml_boilerplate(dat,titl = &quot;myFile&quot;)
-# you just got a quick and dirty unit_defs, these need to be made proper in morpho
-# we can get the col names easily
-col_defs &amp;lt;- names(dat)
-# then create a dataset with metadata
-ds &amp;lt;- data.set(dat,
-               col.defs = col_defs,
-               unit.defs = unit_defs
-               )
-# now write EML metadata file
-eml_config(creator=&quot;TBA &amp;lt;fakeaddress@gmail.com&amp;gt;&quot;)
-wd &amp;lt;- getwd()
-setwd(outdir)
-eml_write(ds,
-          file = gsub(&quot;.csv&quot;, &quot;_eml_skeleton.xml&quot;, outfile),
-          title = gsub(&quot;.csv&quot;, &quot;&quot;, outfile)
-          )
-tempfile &amp;lt;- dir(pattern=&quot;^data_table_&quot;)
-file.rename(tempfile, outfile)
-# rename the CSV file.
-setwd(wd)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;now attach the data&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;to avoid risk of morpho getting confused it is probably safe to let it start the new dataTable tags&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-hotwire-1.png&quot; alt=&quot;morpho-hotwire-1.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;say it is a simple CSV&lt;/li&gt;
-&lt;li&gt;say the name for the file for title, TBA for all other required fields, for attributes add one and say it is datetime (to be quick)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-hotwire-2.png&quot; alt=&quot;morpho-hotwire-2.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;note the docid (41.2) and download file id (ecogrid://knb/datalibrarian2.42.1)&lt;/li&gt;
-&lt;li&gt;save locally and close&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h1&gt;now replace the metadata info&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;use an XML editor to go to the eml skeleton we created in morpho and also to the one created in R&lt;/li&gt;
-&lt;li&gt;in the morpho generated XML find the attributeList tag within the dataTable group, mine looked like&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;attributeList&amp;gt;&amp;lt;attribute id=&quot;1408536821935&quot;&amp;gt;...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;and we know that the stuff we want to replace finishes with the closing tag &lt;/attributeList&gt;&lt;/li&gt;
-&lt;li&gt;I think the ID is irrelevant, except Morpho won't allow multiple of the same id number within an EML&lt;/li&gt;
-&lt;li&gt;find the same and replace in the REML generated bit&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-attributelist.png&quot; alt=&quot;morpho-attributelist.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And paste:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-dataformat.png&quot; alt=&quot;morpho-dataformat.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h4&gt;Also do the&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;dataFormat&amp;gt;&amp;lt;/dataFormat&amp;gt; section
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1&gt;add another dataset&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;assuming you already ran reml_boilerplate for this new file&lt;/li&gt;
-&lt;li&gt;use morpho menus to add another datatabe&lt;/li&gt;
-&lt;li&gt;save locally and close morpho&lt;/li&gt;
-&lt;li&gt;open with XML editor and the REML EML Skeleton&lt;/li&gt;
-&lt;li&gt;transfer dataformat and attributelist stuff&lt;/li&gt;
-&lt;li&gt;go to documentation and make minor mod (space in abstract?), save locally&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h1&gt;share it with colleagues&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;go to documentation menu &gt; access info and set/verify to public = no add user&lt;/li&gt;
-&lt;li&gt;save to metacat&lt;/li&gt;
-&lt;li&gt;now go to their (windows?) machine and log in as the same morpho profile,&lt;/li&gt;
-&lt;li&gt;log in to the metacat and download the new package for work&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>2014-08-21 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor/</link>
 			</item>
 		
 	</channel>

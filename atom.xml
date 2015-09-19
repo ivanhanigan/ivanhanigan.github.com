@@ -4,13 +4,152 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-09-18T16:30:40+10:00</updated>
+ <updated>2015-09-19T10:54:17+10:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)</title>
+   <link href="http://schamberlain.github.com/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/"/>
+   <updated>2015-09-19T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs</id>
+   <content type="html">&lt;h1&gt;Aims&lt;/h1&gt;
+
+&lt;p&gt;I have worked on a function that turns a &lt;code&gt;data.frame&lt;/code&gt; into a graphviz code in the dot language, with some of my preferred settings.  I realised that it might be useful for causal directed acyclic graphs.&lt;/p&gt;
+
+&lt;p&gt;Causal diagrams are useful for conceptualising the pathways of cause and effect.  These diagrams are sometimes simplly informal pictures but have also been developed in a more formal way to be used in modelling.  These formal developments use concepts derived from the mathmatical abstraction of Graphs (fundamentally Graphs  are networks of linked 'nodes', with the links being termed 'edges').  Causal diagrams can either be constructed to depict two things: first are feedback loops (a vexatious property of complex systems that confounds modelling) while second are more simple chain-of-events type pathways which proceed from an upstream cause to a downstream effect in a single direction, without cycles, called 'Directed Acyclic Graphs or DAGs.  The loop diagrams are out of the scope of this present blog post because the DAGs are much more easily addressed by the tool that I am describing.&lt;/p&gt;
+
+&lt;p&gt;To begin I am going to build on this other guy's blog post on causal DAGs with R
+  &lt;a href=&quot;http://donlelek.github.io/2015/03/31/dags-with-r/&quot;&gt;http://donlelek.github.io/2015/03/31/dags-with-r/&lt;/a&gt;
+I wanted to add an interface for building these.&lt;/p&gt;
+
+&lt;p&gt;Some background to the concepts that I use are provided in the references below.&lt;/p&gt;
+
+&lt;h1&gt;Materials and Methods&lt;/h1&gt;
+
+&lt;p&gt;The DiagrammeR package which has been integrated within R-Studio has made access to the graphing tool &lt;code&gt;graphviz&lt;/code&gt; much easier than it used to be.  My function &lt;code&gt;causal_dag&lt;/code&gt; (avaiable in my &lt;code&gt;disentangle&lt;/code&gt; github package) essentially constructs the required &lt;code&gt;nodes&lt;/code&gt; and &lt;code&gt;edges&lt;/code&gt; for that package to use.  Optionally we can also include &lt;code&gt;labels&lt;/code&gt; to indicate the direction of the effect.&lt;/p&gt;
+
+&lt;p&gt;To use the tool all you need to do is create a list of &lt;code&gt;edges&lt;/code&gt; and their associated &lt;code&gt;inputs&lt;/code&gt; nodes and &lt;code&gt;outputs&lt;/code&gt; nodes (as a comma separated values string) shown in the picture below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/causal-ssheet.png&quot; alt=&quot;causal-ssheet.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# read in the sheet
+library(disentangle)
+library(stringr)
+causes &amp;lt;- readxl::read_excel(&quot;causal-ssheet.xlsx&quot;)
+causes
+nodes &amp;lt;- newnode(causes, &quot;edges&quot;, &quot;inputs&quot;, &quot;outputs&quot;)
+cat(nodes)
+# The result is a formated graph in the dot language with some of my
+# preferred settings such as edges showing as 'records' and a spot to
+# write a description or include literature about each process
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;See the DOT code in the Appendix&lt;/li&gt;
+&lt;li&gt;to render the graph now DiagrammeR can use this text string R object to render this to SVG&lt;/li&gt;
+&lt;li&gt;I think it does not do PNG or PDF though so I still use graphviz and dot directly&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;grViz(nodes)
+
+# But I also use graphviz directly to produce a publishable image in
+# pdf or png
+sink(&quot;reproduce-donlelek.dot&quot;)
+cat(nodes)
+sink()# If graphviz is installed and on linux call it with a shell command
+#system(&quot;dot -Tpdf reproduce-donlelek.dot -o reproduce-donlelek.pdf&quot;)
+system(&quot;dot -Tpng reproduce-donlelek.dot -o reproduce-donlelek.png&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;Results&lt;/h1&gt;
+
+&lt;p&gt;Here I have reproduced the work of donlelek&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/reproduce-donlelek.png&quot; alt=&quot;reproduce-donlelek.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Future directions&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I'd like to make the edges implicit, so that the spreadsheet keeps track of the information about the causal process, but the graph just shows the lines connecting the nodes&lt;/li&gt;
+&lt;li&gt;The edges are where the action is, so I need to add a direction of effect.  This would be in a &lt;code&gt;label&lt;/code&gt; column and added in a [ label = 'abc' ] tag for each edge&lt;/li&gt;
+&lt;li&gt;the rankdir option is LR to make this go sideways, which seems more the norm for causal DAGs, left to right.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;References&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;Greenland, S., Pearl, J., &amp;amp; Robins, J. M. (1999). Causal diagrams for
+epidemiologic research. Epidemiology (Cambridge, Mass.), 10(1),
+37–48. doi:10.1097/00001648-199901000-00008
+
+Reid, C. E., Snowden, J. M., Kontgis, C., &amp;amp; Tager, I. B. (2012). The
+role of ambient ozone in epidemiologic studies of heat-related
+mortality. Environmental Health Perspectives, 120(12),
+1627–30. doi:10.1289/ehp.1205251
+
+Newell, B., &amp;amp; Wasson, R. (2001). Social System vs Solar System: Why
+Policy Makers Need History. In: Conflict and Cooperation related to
+International Water Resources : Historical Perspectives. In World
+Water (Vol. 2002).
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h1&gt;Appendix&lt;/h1&gt;
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#####################################################################
+# The following output is automatically created by newnode()
+# NOTE for some reason, to show on the blog, I had to replace all { braces with normal (
+#####################################################################
+digraph transformations (
+
+&quot;Metritis&quot; -&amp;gt; &quot;Fertility effects&quot;
+&quot;Cistic Ovarian Disease&quot; -&amp;gt; &quot;Fertility effects&quot;
+&quot;Age&quot; -&amp;gt; &quot;Fertility effects&quot;
+&quot;Fertility effects&quot;  [ shape=record, label=&quot;(( ( Name | Description ) | ( Fertility effects |  ) ))&quot;]
+&quot;Fertility effects&quot; -&amp;gt; &quot;Fertility&quot;
+
+
+&quot;Metritis&quot; -&amp;gt; &quot;Cistic Ovarian effects&quot;
+&quot;Retained Placenta&quot; -&amp;gt; &quot;Cistic Ovarian effects&quot;
+&quot;Age&quot; -&amp;gt; &quot;Cistic Ovarian effects&quot;
+&quot;Cistic Ovarian effects&quot;  [ shape=record, label=&quot;(( ( Name | Description ) | ( Cistic Ovarian effects |  ) ))&quot;]
+&quot;Cistic Ovarian effects&quot; -&amp;gt; &quot;Cistic Ovarian Disease&quot;
+
+
+&quot;Retained Placenta&quot; -&amp;gt; &quot;Metritis effects&quot;
+&quot;Metritis effects&quot;  [ shape=record, label=&quot;(( ( Name | Description ) | ( Metritis effects |  ) ))&quot;]
+&quot;Metritis effects&quot; -&amp;gt; &quot;Metritis&quot;
+
+
+ &quot;Age&quot; -&amp;gt; &quot;Retained Placenta effects&quot;
+&quot;Retained Placenta effects&quot;  [ shape=record, label=&quot;(( ( Name | Description ) | ( Retained Placenta effects |  ) ))&quot;]
+&quot;Retained Placenta effects&quot; -&amp;gt; &quot;Retained Placenta&quot;
+
+
+ )
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>If You Don't Find A Solution In R, Keep Googling!</title>
@@ -5676,46 +5815,6 @@ outdir = getwd()
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.r-bloggers.com/new-version-of-rstudio-v0-98/&quot;&gt;Updates to Rstudio server are always worth checking out&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-
-</content>
- </entry>
- 
- <entry>
-   <title>open-access-journal-templates-for-latex-with-emacs-orgmode</title>
-   <link href="http://schamberlain.github.com/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode/"/>
-   <updated>2013-12-13T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;I appreciate all the arguments for using OA journals&lt;/li&gt;
-&lt;li&gt;Using a LaTeX template is also attractive&lt;/li&gt;
-&lt;li&gt;This post is a record of some experiences with the BioMedCentral (BMC) template and the Public Library of Science (PLOS) templates&lt;/li&gt;
-&lt;li&gt;implemented with my favourite editor for everything Emacs Orgmode.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;BMC seemed like a good option&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I started this journey 6 months ago with the BMC template&lt;/li&gt;
-&lt;li&gt;because I pitch my work mostly at the health science community BMC seemed logical&lt;/li&gt;
-&lt;li&gt;It turns out I downloaded their old LaTeX template and it SUCKED&lt;/li&gt;
-&lt;li&gt;If you Download &lt;a href=&quot;http://www.biomedcentral.com/authors/tex&quot;&gt;the template and bibliography stuff&lt;/a&gt; now it looks better&lt;/li&gt;
-&lt;li&gt;But I am suspicious now because of the last little while I've been struggling so I've got a skeptical approach&lt;/li&gt;
-&lt;li&gt;First copy the stuff to a test dir&lt;/li&gt;
-&lt;li&gt;then use TexWorks to test compiling it&lt;/li&gt;
-&lt;li&gt;try deleting the provided BBL file, this reveales that the BIB file has to be compiled with bibtex to work&lt;/li&gt;
-&lt;li&gt;orgmode produces BBL files when evaluated but I don't know if it'll be smooth with the template&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;PLOS seems like a smoother option&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Download from &lt;a href=&quot;http://www.plosone.org/static/latexGuidelines&quot;&gt;the LaTeX template site&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;First thing I notice is there is no BIB file, Yay!&lt;/li&gt;
-&lt;li&gt;just make sure  bibliographystyle and bibliography are set&lt;/li&gt;
-&lt;li&gt;Looks like it isn't trying so hard&lt;/li&gt;
-&lt;/ul&gt;
 
 </content>
  </entry>
