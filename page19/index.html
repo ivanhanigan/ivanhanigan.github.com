@@ -56,6 +56,161 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/data-documentation-case-study-reml-and-rfigshare/" title="data-documentation-case-study-reml-and-rfigshare" rel="bookmark">data-documentation-case-study-reml-and-rfigshare</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h4>Case Study: reml-and-rfigshare</h4>
+
+<p>First we will look at the work of the ROpenSci team and the reml
+package.  In the vignette they show how to publish data to figshare
+using rfigshare package.  <a href="http://figshare.com/">figshare</a> is a site
+where scientists can share datasets/figures/code. The goals are to
+encourage researchers to share negative results and make reproducible
+research efforts user-friendly. It also uses a tagging system for
+scientific research discovery. They give you unlimited public space
+and 1GB of private space.</p>
+
+<p>Start by getting the reml package.</p>
+
+<h4>Code:</h4>
+
+<pre><code># func
+require(devtools)
+install_github("reml", "ropensci")
+require(reml)
+?eml_write
+</code></pre>
+
+<p></p>
+
+
+<p>This is the Top-level API function for writing eml.  Help page is a bit sparse.  See <a href="https://github.com/ropensci/reml">This Link</a> for more.  For eg "for convenience, dat could simply be a data.frame and reml will launch it's metadata wizard to assist in constructing the metadata based on the data.frame provided. While this may be helpful starting out, regular users will find it faster to define the columns and units directly in the format above."</p>
+
+<p>Now load up the test data for classification trees I described in <a href="/2013/10/test-data-for-classification-trees/">This Post</a></p>
+
+<h4>Code:</h4>
+
+<pre><code>install_github("disentangle", "ivanhanigan") # for the data
+                                             # described in prev post
+
+# load
+fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"),
+                     package = "disentangle"
+                     )
+civst_gend_sector &lt;- read.csv(fpath)
+
+# clean
+str(civst_gend_sector)
+
+# do
+eml_write(civst_gend_sector,
+          creator = "Ivan Hanigan &lt;ivanhanigan@gmail.com&gt;")
+
+
+
+
+
+# Starts up the wizard, a section is shown below.  The wizard
+# prompts in the console and the user writes the answer.
+
+# Enter description for column 'civil_status':
+#  marriage status
+# column civil_status appears to contain categorical data.
+#  
+# Categories are divorced/widowed, married, single
+#  Please define each of the categories at the prompt
+# define 'divorced/widowed':
+# was once married
+# define 'married':
+# still married
+# define 'single':
+# never married
+
+# TODO I don't really know what activity_sector is.  I assumed
+# school because Categories are primary, secondary, tertiary.
+
+# this created "metadata.xml" and "metadata.csv"
+file.remove(c("metadata.xml","metadata.csv"))
+</code></pre>
+
+<p></p>
+
+
+<p>
+This was a very minimal data documentation effort.  A bit more detail would be better.  Because I would now need to re-write all that in the wizard I will take the advice of the help file that "regular users will find it faster to define the columns and units directly in the format"</p>
+
+<h4>Code:</h4>
+
+<pre><code>ds &lt;- data.set(civst_gend_sector,
+               col.defs = c("Marriage status", "sex", "education", "counts"),
+               unit.defs = list(c("was once married","still married","never married"),
+                   c("women", "men"),
+                   c("primary school","secondary school","tertiary school"),
+                   c("persons"))
+               )
+ds
+# this prints the dataset and the metadata
+# now run the EML function
+eml_write(ds, 
+          title = "civst_gend_sector",  
+          description = "An example, fictional dataset for Decision Tree Models",
+          creator = "Ivan Hanigan &lt;ivanhanigan@gmail.com&gt;",
+          file = "inst/extdata/civst_gend_sector_eml.xml"
+          )
+# this created the xml and csv with out asking anything
+# but returned a
+## Warning message:
+## In `[&lt;-.data.frame`(`*tmp*`, , value = list(civil_status = c(2L,  :
+##   Setting class(x) to NULL;   result will no longer be an S4 object
+
+# TODO investigate this?
+
+# now we can access the local EML
+obj &lt;- eml_read("inst/extdata/civst_gend_sector_eml.xml")
+obj 
+str(dataTable(obj))
+# returns an error
+## Error in plyr::compact(lapply(slotNames(from), function(s) if (!isEmpty(slot(from,  (from attribute.R#300) : 
+##   subscript out of bounds
+</code></pre>
+
+<p></p>
+
+
+<h1>Conclusions</h1>
+
+<p>So this looks like a useful tool.  Next steps are to:</p>
+
+<ul>
+<li>look at sending these data to figshare</li>
+<li>describe a really really REALLY simple workflow (3 lines? create metadata, eml_write, push to figshare)</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/data-documentation-case-study-reml-and-rfigshare/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-12 00:00:00 +1100">12 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
     </h1>
     <div class="entry-content full-content">
@@ -793,77 +948,6 @@ QAICc.1
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/reviewing-lessons/" title="reviewing-lessons" rel="bookmark">reviewing-lessons</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h4>Introduction</h4>
-
-<p>This post is an attempt to put together a standard framework for reviewing lessons.  I've been to numerous workshops, master classes, tutorials and lectures and always take ad hoc notes that I generally re-write and re-organise afterwards.  I hope to develop a clearer methodology for reviewing what I learnt in each lesson.</p>
-
-<h4>Context</h4>
-
-<ul>
-<li><p>When:
-Either just the date and time or include more context like the broader event such as a conference, season, public holidays.</p></li>
-<li><p>Who:
-The presenter will give a bio at the start so make notes, especially to identify what disciplinary perspective they come from.</p></li>
-<li><p>Where:
-Includes the address, city, lecture theatre.  These are cues for memory.</p></li>
-<li><p>Why:
-Both why is the presenter here talking and also why am I hear listening.  It is important to critically reflect on what I want to get out of this lesson.</p></li>
-<li><p>What:
-What is this lesson all about?  This might start with a synopsis overview and will probably move on to a sequence of notes as the presenter's narrative unfolds, and my thoughts on the topic evolve.</p></li>
-</ul>
-
-
-<h4>Three Stages: Thesis, Antithesis, Synthesis</h4>
-
-<p>A guiding principle I use for writing the 'What' section is the three stages: thesis, antithesis, synthesis.  I am not a philosopher so I don't know the proper use of these concepts in that discipline, but for me they are useful to structure my notes as I go through the process of a lesson.  Here is how I think of these stages:</p>
-
-<ul>
-<li><p>Thesis:
-This is where I might pick out the key topics that are being presented, and write down my prior knowledge and preconceptions about the topic.</p></li>
-<li><p>Antithesis:
-What's the main message(s) of the presenter?  What are their priorities?  What secondary (surrogate) topics emerge around the main points?  If I bring questions to the lesson are they answered by the presenter?  If not why?</p></li>
-<li><p>Synthesis:
-My new understanding of the topic.</p></li>
-</ul>
-
-
-<h4>Other tools</h4>
-
-<p>Other things I use are:</p>
-
-<ul>
-<li>Mind maps: a central topic with a spiderweb of links extending out in a circle.</li>
-<li>TODO</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/reviewing-lessons/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-05 00:00:00 +1000">05 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -960,7 +1044,7 @@ My new understanding of the topic.</p></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (9)</a></li>
+                <li><a href="/categories/disentangle">disentangle (10)</a></li>
                 
                 <li><a href="/categories/project management">project management (2)</a></li>
                 
@@ -975,6 +1059,10 @@ My new understanding of the topic.</p></li>
               </ul>
               <h2 class="widget-title">Recent Entries</h2>
               <ul>
+                
+                <li>
+                  <a href="/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/" title="Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity" rel="bookmark">Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</a>
+                </li>
                 
                 <li>
                   <a href="/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/" title="My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)" rel="bookmark">My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)</a>
@@ -992,10 +1080,6 @@ My new understanding of the topic.</p></li>
                   <a href="/2015/09/task-management-like-an-open-science-hacker/" title="task-management-like-an-open-science-hacker" rel="bookmark">task-management-like-an-open-science-hacker</a>
                 </li>
                 
-                <li>
-                  <a href="/2015/09/how-to-say-why-before-what/" title="how-to-say-why-before-what" rel="bookmark">how-to-say-why-before-what</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
               <ul>
@@ -1011,6 +1095,8 @@ My new understanding of the topic.</p></li>
                 <li><a href="/tag/spatial">spatial (1)</a></li>
                 
                 <li><a href="/tag/diagrams">diagrams (1)</a></li>
+                
+                <li><a href="/tag/blogging">blogging (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -1032,6 +1118,8 @@ My new understanding of the topic.</p></li>
           <!--       <li><a href="/tag/spatial">spatial (1)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/diagrams">diagrams (1)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/blogging">blogging (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

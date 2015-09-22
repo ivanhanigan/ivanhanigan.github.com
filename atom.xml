@@ -4,13 +4,90 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-09-21T23:30:50+10:00</updated>
+ <updated>2015-09-22T13:44:03+10:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</title>
+   <link href="http://schamberlain.github.com/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/"/>
+   <updated>2015-09-22T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity</id>
+   <content type="html">&lt;p&gt;The other day I reported that I've implemented a new open science task management regime &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/&quot;&gt;http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This was instigated by my renewed enthusiasm for open science after a few high profile papers have come out in the last few months imploring scientists to take action on shonky statistics and the &quot;morass of poorly conducted data analyses, with errors ranging from trivial and strange to devastating&quot; (Peng 2015) &lt;a href=&quot;http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x&quot;&gt;http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I believe that making ones electronic notebook open is one of the most obvious and easily achieved things to do toward that ambition.  I also think that keeping the TODO-list in the forefront of ones mind and continuously checking things off the list is a great boost for productivity and keeping on track.  This culminates in the advice to keep momentum by doing something toward the plan on a daily basis, no matter how trivial.  This is sometimes called Jerry Seinfeld's secret to productivity: Just keep at it. Don't break the streak. &lt;a href=&quot;http://dirk.eddelbuettel.com/blog/2014/10/12/&quot;&gt;http://dirk.eddelbuettel.com/blog/2014/10/12/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So what was holding me back from a really useful daily publication of my open notebook?  I showed last post how I manage tasks in Emac Orgmode (a task organiser and calendar/agenda rolled up with code execution for running R scripts etc).  I also write my blog posts in orgmode.&lt;/p&gt;
+
+&lt;p&gt;The only problem with that set up was that I was still using the code from Charlie Park &lt;a href=&quot;http://charliepark.org/jekyll-with-plugins/&quot;&gt;http://charliepark.org/jekyll-with-plugins/&lt;/a&gt; which adds the inadequate commit description '&lt;code&gt;Latest build&lt;/code&gt;' every time.  What I needed was a way to actually log a summary of work each day, so I can look back over the history and know I actually did something everyday and was not just gaming the system by committing random little non-work additions (I want to balance this by doing &lt;em&gt;some&lt;/em&gt; work every day, but also take time off to read, exercise, socialize, and generally have fun).&lt;/p&gt;
+
+&lt;p&gt;So anyway, the point of this post is to describe my revision to Charlie Park's code for building a jekyll blog:&lt;/p&gt;
+
+&lt;h4&gt;Code: put in ~/.bash_profile&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;function bb() {
+  cd ~/projects/ivanhanigan.github.com.raw &amp;amp;&amp;amp; jekyll b &amp;amp;&amp;amp; cp -r    
+  ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com &amp;amp;&amp;amp; 
+  cd ~/projects/ivanhanigan.github.com &amp;amp;&amp;amp; git add . -A  &amp;amp;&amp;amp; 
+  git commit -m &quot;$*&quot; &amp;amp;&amp;amp; 
+  git push
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;That bit about &lt;code&gt;$*&lt;/code&gt; was a bit difficult for me to get working as this is the first time I have written a bash script in anger.  The alternative was to use &lt;code&gt;$1&lt;/code&gt; and require the git commit message to be passed within quotes, which also makes sense but I did not do that.&lt;/li&gt;
+&lt;li&gt;I also needed to change the terminal settings so that it always loads the bash_profile&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Bash terminal&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;Edit &amp;gt; Profile preferences
+Title and Command &amp;gt; Run command as a login shell 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;And so now I just have to deposit a markdown blog post into the jekyll &lt;code&gt;_posts&lt;/code&gt; folder and then&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Bash&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;bb Add a meaningful commit message about todays progress
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;There you have it, a meaningful message regarding what I have been doing towards my scientific output every day.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/seinfeld-streak-day9-1.png&quot; alt=&quot;images/seinfeld-streak-day9.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/seinfeld-streak-day9.png&quot; alt=&quot;images/seinfeld-streak-day9.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;References&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;Peng, R. (2015). The reproducibility crisis in science: 
+A statistical counterattack. Significance, 12(3), 30–32. 
+doi:10.1111/j.1740-9713.2015.00827.x
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)</title>
@@ -5772,50 +5849,6 @@ buffon.needle(mat = matrix(c(1, 2, 1, 3), 2))
 outdir = getwd()
 )
 &lt;/code&gt;&lt;/pre&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>links-to-useful-data-munging-posts</title>
-   <link href="http://schamberlain.github.com/2013/12/links-to-useful-data-munging-posts/"/>
-   <updated>2013-12-16T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/12/links-to-useful-data-munging-posts</id>
-   <content type="html">&lt;p&gt;Here are a few links to some recent data munging tips I picked up last week:&lt;/p&gt;
-
-&lt;h4&gt;Database Relationships&lt;/h4&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;http://pirategrunt.com/2013/12/13/24-days-of-r-day-13/&quot;&gt;This is a a very quick way to look at the relationships in a database&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h4&gt;MS Access field (column) descriptions:&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I'm looking for methods to access the metadata related to the columns.&lt;/li&gt;
-&lt;li&gt;In general MS Access seems to hide these:&lt;/li&gt;
-&lt;li&gt;http://blogannath.blogspot.com.au/2010/03/microsoft-access-tips-tricks-list-table.html&lt;/li&gt;
-&lt;li&gt;&quot;Field descriptions can be entered by the user when creating the table in design view. It is a highly encouraged practice since the description can provided valuable documentation about the purpose of each field in a table. The inability to extract the field descriptions as part of the table documentation using Access's built-in documenter is therefore quite inconvenient.&quot;&lt;/li&gt;
-&lt;li&gt;I can see there is &lt;a href=&quot;http://stackoverflow.com/questions/7041824/retrieve-msaccess-database-column-description&quot;&gt;a C# method, but I'd need visual studio or someone to compile this I suppose?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;My mate Francis said: &quot;you'll have to use a script that uses the Microsoft OLE-DB, as in the stackoverflow answers. However, you don't need Visual Studio or C# to do this, just any language that can interface with Windows COM objects. Python can do this, so this might be your excuse to finally learn it. I imagine there might even by a R library out there somewhere, although it would probably be more convenient to go the python route here.&quot;&lt;/li&gt;
-&lt;li&gt;To get started with COM and python, you &lt;a href=&quot;http://timgolden.me.uk/pywin32-docs/html/com/win32com/HTML/QuickStartClientCom.html&quot;&gt;could do worse than to start with&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Data manipulation&lt;/h4&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;http://christophergandrud.blogspot.com.au/2013/12/three-quick-and-simple-data-cleaning.html&quot;&gt;This guy has created some custom functions that look helpful&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://blog.revolutionanalytics.com/2013/12/tutorial-basic-data-processing-with-r.html&quot;&gt;Revolutions Blog links to several Data Wrangling resources&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h4&gt;Code editor / IDE&lt;/h4&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.r-bloggers.com/new-version-of-rstudio-v0-98/&quot;&gt;Updates to Rstudio server are always worth checking out&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
 </content>
  </entry>
  
