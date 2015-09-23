@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - toward-a-unified-ecology-dataset</title>
+    <title>Ivan Hanigan - Organising Graph Nodes And Edges In A Dataframe</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -46,7 +46,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
+    <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -57,48 +57,105 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h1>Ecology datasets</h1>
+    <p>I use the R package <code>DiagrammeR</code> for creating graphs (the formal kind, connecting nodes with edges)
+- This package is great and I like how it interacts with the Graphviz program
+- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
+- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
+- In my utilities R package <code>github.com/ivanhanigan/disentangle</code> I have written functions that turn this table into a graphiviz DOT language script
+- Recently I have needed to unpack the list for a more itemized view
+- Both these functions are showcased below</p>
 
-<p>These are my notes from a meeting that Kathryn and I had with a group of Ecologists at the ANU (primarily Luciana Porforio and Nasreen Khan).  We asked them to discuss how they search for and use Ecology datasets, especially how to best package up the parts of an ecological field data collection (ie weather, vegetation, biodiversity, soils, topography etc).</p>
+<h4>Code: newnode</h4>
 
-<p>Lu started off the discussion by stating that the most important thing to acknowledge is that every ecologist will start off with a main research question and then search for data that will address their specific research question.  It is difficult to work from a 'top-down' perspective that hopes to pre-empt the range of possible questions.  Lu felt that it may therefore be best to just keep all the data together in the biggest bundle that is possible and the end user can pick it apart once downloaded.</p>
+<pre><code># First create some test data, each step is a collection of edges 
+# with inputs or outputs simple comma seperated lists
+dat &lt;- read.csv(textConnection('
+cluster ,  step    , inputs                    , outputs                                , description                      
+A  ,  siteIDs      , "GPS, helicopter"          , "spatial, site doco"                 , latitude and longitude of sites  
+A  ,  weather      , BoM                       , exposures                              , weather data from BoM            
+B  ,  trapped      , spatial                   , trapped_no                             , counts of species caught in trap 
+B  ,  biomass      , spatial                   , biomass_g                              ,                                  
+B  ,  correlations , "exposures,trapped_no,biomass_g" , report1                         , A study we published             
+C  ,  paper1       , report1                   , "open access repository, data package" ,                                  
+D  ,  biomass revision, new estimates          , biomass_g                              , this came late
+'), stringsAsFactors = F, strip.white = T)    
+str(dat)
+# dat
 
-<p>We explained that LTERN datasets can be quite expansive with many dimensions and it seemed preferable to at least untangle the main 'themes' for packaging up.</p>
+# Now run the function and create a graph
+nodes &lt;- newnode(
+  indat = dat,
+  names_col = "step",
+  in_col = "inputs",
+  out_col = "outputs",
+  desc_col = "description",
+  clusters_col = "cluster",
+  nchar_to_snip = 40
+  )  
+sink("Transformations.dot")
+cat(nodes)
+sink()
+#DiagrammeR::grViz("Transformations.dot")
+system("dot -Tpng Transformations.dot -o Transformations.png")
+browseURL("Transformations.png")
+</code></pre>
 
-<p>Nasreen pointed out that there is always a protocol for how data are collected and this should give the data collection it's structure.  However I felt that ecology collections are so diverse they have been made (by necessity) very flexible and specific to the needs of the individual plot network.  Therefore generalisations across data collections are very hard to make (apart from easy things like "weather" or "aboveground dead biomass").</p>
+<p></p>
 
-<h1>Toward a Unified Ecology</h1>
 
-<p>I always fall back on the text book "Toward a Unified Ecology: Timothy F. H. Allen, Thomas W. Hoekstra 1992".  I wondered if it can guide us?  On pages 42-53 they describe the following framework and use the image below (the letters in the middle disc correspond to the criteria ie O = Organism).  In this framework it is possible to summarise ANY ecological study as they ALWAYS incorporate these scale-independent criteria:</p>
+<p></p>
+
+<p>That creates this diagram</p>
+
+<p><img src="/images/Transformations.png" alt="/images/Transformations.png" /></p>
+
+<h2>Now to showcase the tool that itemizes this list of inputs and outputs</h2>
 
 <ul>
-<li>Organism: genetic integrity, discrete body, autonomy from other organisms</li>
-<li>Population: relative similarity within the group</li>
-<li>Community: inter-species competition, interference, mutualism</li>
-<li>Ecosystem: biotic and abiotic interactions</li>
-<li>Landscape: spatial structure/contiguity</li>
-<li>Biome: characteristic physiognomy, disturbance and climate</li>
+<li>The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs</li>
+<li>To add detail for each we need to unpack each list and create a new table with one row per node</li>
+<li>I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output</li>
 </ul>
 
 
-<p>I thought that if these dimensions were identified in a data collection first then they might become the discrete packages by which each plot network publishes their collection?</p>
+<h4>Code: newnode_csv</h4>
 
-<p><img src="/images/datadoco-layercake.png" alt="datadoco-layercake.png" /></p>
-
-<h1>Aekos</h1>
-
-<p>Over at <a href="http://www.aekos.org.au/why_aekos#diversity">AEKOS</a> they have a similar conceptual framework</p>
-
-<pre><code>Observations can range from that of individual organisms and
-interactions, through to populations, communities, ecosystems and
-across broad global landscapes.
+<pre><code>nodes_graphy &lt;- newnode_csv(
+  indat = dat,
+  names_col = "step",
+  in_col = "inputs",
+  out_col = "outputs",
+  clusters_col = 'cluster'
+  ) 
+# which creates this table
+knitr::kable(nodes_graphy)
+|cluster |name             |in_or_out |value                  |
+|:-------|:----------------|:---------|:----------------------|
+|A       |siteIDs          |input     |GPS                    |
+|A       |siteIDs          |input     |helicopter             |
+|A       |siteIDs          |output    |spatial                |
+|A       |siteIDs          |output    |site doco              |
+|A       |weather          |input     |BoM                    |
+|A       |weather          |output    |exposures              |
+|B       |trapped          |input     |spatial                |
+|B       |trapped          |output    |trapped_no             |
+|B       |biomass          |input     |spatial                |
+|B       |biomass          |output    |biomass_g              |
+|B       |correlations     |input     |exposures              |
+|B       |correlations     |input     |trapped_no             |
+|B       |correlations     |input     |biomass_g              |
+|B       |correlations     |output    |report1                |
+|C       |paper1           |input     |report1                |
+|C       |paper1           |output    |open access repository |
+|C       |paper1           |output    |data package           |
+|D       |biomass revision |input     |new estimates          |
+|D       |biomass revision |output    |biomass_g              |
 </code></pre>
 
-<h1>Conclusions</h1>
+<p></p>
 
-<p>This is an open issue.  More discussions are needed internally for the Data Custodians.</p>
 
-<p>Lu also pointed out that the end users are the key stakeholders and perhaps more input from them (via surveys and workshops?) is needed?</p>
+<p>This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.</p>
 
     <div class="clear"></div>
   </div>
@@ -113,12 +170,12 @@ across broad global landscapes.
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+    <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-09-20 00:00:00 +1000">20 Sep 2013</abbr>
+      <abbr class="published" title="2015-09-23 00:00:00 +1000">23 Sep 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -132,7 +189,7 @@ across broad global landscapes.
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/09/toward-a-unified-ecology-dataset/";
+    var disqus_url = "http://ivanhanigan.github.com/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

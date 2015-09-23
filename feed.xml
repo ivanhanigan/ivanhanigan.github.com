@@ -6,6 +6,112 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Organising Graph Nodes And Edges In A Dataframe</title>
+				<description>&lt;p&gt;I use the R package &lt;code&gt;DiagrammeR&lt;/code&gt; for creating graphs (the formal kind, connecting nodes with edges)
+- This package is great and I like how it interacts with the Graphviz program
+- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
+- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
+- In my utilities R package &lt;code&gt;github.com/ivanhanigan/disentangle&lt;/code&gt; I have written functions that turn this table into a graphiviz DOT language script
+- Recently I have needed to unpack the list for a more itemized view
+- Both these functions are showcased below&lt;/p&gt;
+
+&lt;h4&gt;Code: newnode&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# First create some test data, each step is a collection of edges 
+# with inputs or outputs simple comma seperated lists
+dat &amp;lt;- read.csv(textConnection('
+cluster ,  step    , inputs                    , outputs                                , description                      
+A  ,  siteIDs      , &quot;GPS, helicopter&quot;          , &quot;spatial, site doco&quot;                 , latitude and longitude of sites  
+A  ,  weather      , BoM                       , exposures                              , weather data from BoM            
+B  ,  trapped      , spatial                   , trapped_no                             , counts of species caught in trap 
+B  ,  biomass      , spatial                   , biomass_g                              ,                                  
+B  ,  correlations , &quot;exposures,trapped_no,biomass_g&quot; , report1                         , A study we published             
+C  ,  paper1       , report1                   , &quot;open access repository, data package&quot; ,                                  
+D  ,  biomass revision, new estimates          , biomass_g                              , this came late
+'), stringsAsFactors = F, strip.white = T)    
+str(dat)
+# dat
+
+# Now run the function and create a graph
+nodes &amp;lt;- newnode(
+  indat = dat,
+  names_col = &quot;step&quot;,
+  in_col = &quot;inputs&quot;,
+  out_col = &quot;outputs&quot;,
+  desc_col = &quot;description&quot;,
+  clusters_col = &quot;cluster&quot;,
+  nchar_to_snip = 40
+  )  
+sink(&quot;Transformations.dot&quot;)
+cat(nodes)
+sink()
+#DiagrammeR::grViz(&quot;Transformations.dot&quot;)
+system(&quot;dot -Tpng Transformations.dot -o Transformations.png&quot;)
+browseURL(&quot;Transformations.png&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;That creates this diagram&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Transformations.png&quot; alt=&quot;/images/Transformations.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Now to showcase the tool that itemizes this list of inputs and outputs&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs&lt;/li&gt;
+&lt;li&gt;To add detail for each we need to unpack each list and create a new table with one row per node&lt;/li&gt;
+&lt;li&gt;I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code: newnode_csv&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;nodes_graphy &amp;lt;- newnode_csv(
+  indat = dat,
+  names_col = &quot;step&quot;,
+  in_col = &quot;inputs&quot;,
+  out_col = &quot;outputs&quot;,
+  clusters_col = 'cluster'
+  ) 
+# which creates this table
+knitr::kable(nodes_graphy)
+|cluster |name             |in_or_out |value                  |
+|:-------|:----------------|:---------|:----------------------|
+|A       |siteIDs          |input     |GPS                    |
+|A       |siteIDs          |input     |helicopter             |
+|A       |siteIDs          |output    |spatial                |
+|A       |siteIDs          |output    |site doco              |
+|A       |weather          |input     |BoM                    |
+|A       |weather          |output    |exposures              |
+|B       |trapped          |input     |spatial                |
+|B       |trapped          |output    |trapped_no             |
+|B       |biomass          |input     |spatial                |
+|B       |biomass          |output    |biomass_g              |
+|B       |correlations     |input     |exposures              |
+|B       |correlations     |input     |trapped_no             |
+|B       |correlations     |input     |biomass_g              |
+|B       |correlations     |output    |report1                |
+|C       |paper1           |input     |report1                |
+|C       |paper1           |output    |open access repository |
+|C       |paper1           |output    |data package           |
+|D       |biomass revision |input     |new estimates          |
+|D       |biomass revision |output    |biomass_g              |
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.&lt;/p&gt;
+</description>
+				<published>2015-09-23 00:00:00 +1000</published>
+				<link>http://ivanhanigan.github.com/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/</link>
+			</item>
+		
+			<item>
 				<title>Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</title>
 				<description>&lt;p&gt;The other day I reported that I've implemented a new open science task management regime &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/&quot;&gt;http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/&lt;/a&gt;.&lt;/p&gt;
 
@@ -823,107 +929,6 @@ the same underlying technology to publish data packages.&lt;/li&gt;
 </description>
 				<published>2015-03-19 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing/</link>
-			</item>
-		
-			<item>
-				<title>tuftes-gantt-alternative-for-detail-within-context</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;During the end of 2014 I found that the Gantt Chart by TaskJuggler was a struggle to really achieve any decent task management with (fine for higher level overviews though).&lt;/li&gt;
-&lt;li&gt;I had been following the approach described at &lt;a href=&quot;http://orgmode.org/worg/org-tutorials/org-taskjuggler.html&quot;&gt;this link&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I decided to code up an alternative based on the theory explained on &lt;a href=&quot;http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=000076&quot;&gt;this link&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Project Management Graphics (or Gantt Charts), by Edward Tufte&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Computer screens are generally too small for an overview of big
-serious projects. Horizontal and vertical scrolling are necessary to
-see more than about 40 horizontal time lines for a reasonable period
-of time. Thus, for large projects, print out the sequence on a big
-roll of paper and put it up on a wall.
-
-The chart might be retrospective as well as prospective. That is, the
-chart should show actualdates of achieved goals, evidence which will
-continuously reinforce a reality principle on the mythical future
-dates of goal achievement.
-
-Most of the Gantt charts are analytically thin, too simple, and lack
-substantive detail. The charts should be more intense. At a minimum,
-the charts should be annotated--for example, with to-do lists at
-particular points on the grid. Costs might also be included in
-appropriate cells of the table.
-
-About half the charts show their thin data in heavy grid prisons. For
-these charts the main visual statement is the administrative grid
-prison, not the actual tasks contained by the grid. No explicitly
-expressed grid is necessary--or use the ghost-grid graph
-paper. Degrid!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4&gt;The Results:&lt;/h4&gt;
-
-&lt;p&gt;I used the example for a fictional Journal Paper submission from my favourite reference for anything to do with Project Management:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Aragon, T., Mier, H. M., Payauys, T., &amp;amp; Siador, C. (2012). 
-Project Management for Health Professionals.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;  &lt;a href=&quot;http://www.academia.edu/1746564/Project_Management_for_Health_Professionals&quot;&gt;http://www.academia.edu/1746564/Project_Management_for_Health_Professionals&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;With the following results (PS SVG format allows you to zoom in).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/gantt_tufte_test.svg&quot; alt=&quot;alttext2&quot; /&gt;&lt;/p&gt;
-
-&lt;h4&gt;The codes:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;library(disentangle)
-library(sqldf)
-library(lubridate)
-
-datin  &amp;lt;- read.csv(
-textConnection(&quot;
-container_task_title  , task_id                      , allocated , fte , blocker               ,       start_date , effort , status , notes 
-01 Start              , Start                        , ivan      ,   1 , NA                    ,       2015-03-15 ,     1d , DONE   , NA    
-02 Update Lit Review  , Repeat MEDLINE search        , ivan      ,   1 , Start                 ,       2015-03-16 ,     5d , DONE   , NA    
-02 Update Lit Review  , Retrieve articles            , ivan      ,   1 , Repeat MEDLINE search ,               NA ,     5d , DONE   , NA    
-02 Update Lit Review  , Read articles                , ivan      ,   1 ,                       ,       2015-03-26 ,    11d , DONE   ,       
-02 Update Lit Review  , Summarize articles           , ivan      ,   1 ,                       ,       2015-04-06 ,     9d , TODO   ,       
-03 Write Draft        , Write introduction           , ivan      ,   1 ,                       ,       2015-04-09 ,     6d , TODO   ,       
-03 Write Draft        , Write methods                , ivan      ,   1 , Start                 ,                  ,    15d , TODO   ,       
-03 Write Draft        , Write results                , ivan      ,   1 ,                       ,       2015-03-30 ,    10d , TODO   ,       
-03 Write Draft        , Write discussion             , ivan      ,   1 ,                       ,       2015-04-15 ,    10d , TODO   ,       
-04 Internal Review    , Send to co-author for review , ivan      ,   1 , Write discussion      ,                  ,     2d , TODO   ,        
-04 Internal Review    , Revise draft 1               , ivan      ,   1 ,                       ,       2015-04-19 ,    10d , TODO   ,       
-05 Peer Review        , Submit article 1             , ivan      ,   1 , Revise draft 1        ,                  ,     5d , TODO   ,       
-06 Revise and Resubmit, Revise draft 2               , ivan      ,   1 ,                       ,       2015-04-30 ,    10d , TODO   ,       
-06 Revise and Resubmit, Submit article 2             , ivan      ,   1 , Revise draft 2        ,                  ,     5d , TODO   ,       
-07 End                , Accepted                     , ivan      ,   1 ,                       ,       2015-05-15 ,     1d , TODO   ,       
-&quot;),
-stringsAsFactor = F, strip.white = T)
-# or 
-# datin &amp;lt;- get_gantt_data(&quot;gantt_todo&quot;, test_data = T) # need to
-# adjust min_context_xrange to 2015-01-01 or something
-datin$start_date  &amp;lt;- as.Date(datin$start_date)
-str(datin)
-datin
-
-dat_out &amp;lt;- gantt_data_prep(dat_in = datin)
-str(dat_out)
-dat_out
-svg(&quot;tests/gantt_tufte_test.svg&quot;,height=10,width=8)
-gantt_tufte(dat_out, focal_date = &quot;2015-04-13&quot;, time_box = 3*7,
-            min_context_xrange = &quot;2015-03-16&quot;,
-            cex_context_ylab = 0.65, cex_context_xlab = .7,
-            cex_detail_ylab = 0.9,  cex_detail_xlab = .4,
-            show_today = F)
-dev.off()
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>2015-03-15 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/03/tuftes-gantt-alternative-for-detail-within-context/</link>
 			</item>
 		
 	</channel>

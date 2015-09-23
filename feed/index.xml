@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-09-22T14:16:03+10:00</updated>
+ <updated>2015-09-23T15:55:39+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,79 +13,109 @@
 
  
  <entry>
-   <title>Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</title>
-   <link href="http://ivanhanigan.github.com/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/"/>
-   <updated>2015-09-22T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity</id>
-   <content type="html">&lt;p&gt;The other day I reported that I've implemented a new open science task management regime &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/&quot;&gt;http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/&lt;/a&gt;.&lt;/p&gt;
+   <title>Organising Graph Nodes And Edges In A Dataframe</title>
+   <link href="http://ivanhanigan.github.com/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/"/>
+   <updated>2015-09-23T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2015/09/organising-graph-nodes-and-edges-in-a-dataframe</id>
+   <content type="html">&lt;p&gt;I use the R package &lt;code&gt;DiagrammeR&lt;/code&gt; for creating graphs (the formal kind, connecting nodes with edges)
+- This package is great and I like how it interacts with the Graphviz program
+- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
+- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
+- In my utilities R package &lt;code&gt;github.com/ivanhanigan/disentangle&lt;/code&gt; I have written functions that turn this table into a graphiviz DOT language script
+- Recently I have needed to unpack the list for a more itemized view
+- Both these functions are showcased below&lt;/p&gt;
 
-&lt;p&gt;This was instigated by my renewed enthusiasm for open science after a few high profile papers have come out in the last few months imploring scientists to take action on shonky statistics and the &quot;morass of poorly conducted data analyses, with errors ranging from trivial and strange to devastating&quot; (Peng 2015) &lt;a href=&quot;http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x&quot;&gt;http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Code: newnode&lt;/h4&gt;
 
-&lt;p&gt;I believe that making ones electronic notebook open is one of the most obvious and easily achieved things to do toward that ambition.  I also think that keeping the TODO-list in the forefront of ones mind and continuously checking things off the list is a great boost for productivity and keeping on track.  This culminates in the advice to keep momentum by doing something toward the plan on a daily basis, no matter how trivial.  This is sometimes called Jerry Seinfeld's secret to productivity: Just keep at it. Don't break the streak. &lt;a href=&quot;http://dirk.eddelbuettel.com/blog/2014/10/12/&quot;&gt;http://dirk.eddelbuettel.com/blog/2014/10/12/&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# First create some test data, each step is a collection of edges 
+# with inputs or outputs simple comma seperated lists
+dat &amp;lt;- read.csv(textConnection('
+cluster ,  step    , inputs                    , outputs                                , description                      
+A  ,  siteIDs      , &quot;GPS, helicopter&quot;          , &quot;spatial, site doco&quot;                 , latitude and longitude of sites  
+A  ,  weather      , BoM                       , exposures                              , weather data from BoM            
+B  ,  trapped      , spatial                   , trapped_no                             , counts of species caught in trap 
+B  ,  biomass      , spatial                   , biomass_g                              ,                                  
+B  ,  correlations , &quot;exposures,trapped_no,biomass_g&quot; , report1                         , A study we published             
+C  ,  paper1       , report1                   , &quot;open access repository, data package&quot; ,                                  
+D  ,  biomass revision, new estimates          , biomass_g                              , this came late
+'), stringsAsFactors = F, strip.white = T)    
+str(dat)
+# dat
 
-&lt;p&gt;So what was holding me back from a really useful daily publication of my open notebook?  I showed last post how I manage tasks in Emac Orgmode (a task organiser and calendar/agenda rolled up with code execution for running R scripts etc).  I also write my blog posts in orgmode.&lt;/p&gt;
-
-&lt;p&gt;The only problem with that set up was that I was still using the code from Charlie Park &lt;a href=&quot;http://charliepark.org/jekyll-with-plugins/&quot;&gt;http://charliepark.org/jekyll-with-plugins/&lt;/a&gt; which adds the inadequate commit description '&lt;code&gt;Latest build&lt;/code&gt;' every time.  What I needed was a way to actually log a summary of work each day, so I can look back over the history and know I actually did something everyday and was not just gaming the system by committing random little non-work additions (I want to balance this by doing &lt;em&gt;some&lt;/em&gt; work every day, but also take time off to read, exercise, socialize, and generally have fun).&lt;/p&gt;
-
-&lt;p&gt;So anyway, the point of this post is to describe my revision to Charlie Park's code for building a jekyll blog:&lt;/p&gt;
-
-&lt;h4&gt;Code: put in ~/.bash_profile&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;function bb() {
-  cd ~/projects/ivanhanigan.github.com.raw &amp;amp;&amp;amp; jekyll b &amp;amp;&amp;amp; cp -r    
-  ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com &amp;amp;&amp;amp; 
-  cd ~/projects/ivanhanigan.github.com &amp;amp;&amp;amp; git add . -A  &amp;amp;&amp;amp; 
-  git commit -m &quot;$*&quot; &amp;amp;&amp;amp; 
-  git push
-}
+# Now run the function and create a graph
+nodes &amp;lt;- newnode(
+  indat = dat,
+  names_col = &quot;step&quot;,
+  in_col = &quot;inputs&quot;,
+  out_col = &quot;outputs&quot;,
+  desc_col = &quot;description&quot;,
+  clusters_col = &quot;cluster&quot;,
+  nchar_to_snip = 40
+  )  
+sink(&quot;Transformations.dot&quot;)
+cat(nodes)
+sink()
+#DiagrammeR::grViz(&quot;Transformations.dot&quot;)
+system(&quot;dot -Tpng Transformations.dot -o Transformations.png&quot;)
+browseURL(&quot;Transformations.png&quot;)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;That creates this diagram&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Transformations.png&quot; alt=&quot;/images/Transformations.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Now to showcase the tool that itemizes this list of inputs and outputs&lt;/h2&gt;
+
 &lt;ul&gt;
-&lt;li&gt;That bit about &lt;code&gt;$*&lt;/code&gt; was a bit difficult for me to get working as this is the first time I have written a bash script in anger.  The alternative was to use &lt;code&gt;$1&lt;/code&gt; and require the git commit message to be passed within quotes, which also makes sense but I did not do that.&lt;/li&gt;
-&lt;li&gt;I also needed to change the terminal settings so that it always loads the bash_profile&lt;/li&gt;
+&lt;li&gt;The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs&lt;/li&gt;
+&lt;li&gt;To add detail for each we need to unpack each list and create a new table with one row per node&lt;/li&gt;
+&lt;li&gt;I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;Bash terminal&lt;/h4&gt;
+&lt;h4&gt;Code: newnode_csv&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;Edit &amp;gt; Profile preferences
-Title and Command &amp;gt; Run command as a login shell 
+&lt;pre&gt;&lt;code&gt;nodes_graphy &amp;lt;- newnode_csv(
+  indat = dat,
+  names_col = &quot;step&quot;,
+  in_col = &quot;inputs&quot;,
+  out_col = &quot;outputs&quot;,
+  clusters_col = 'cluster'
+  ) 
+# which creates this table
+knitr::kable(nodes_graphy)
+|cluster |name             |in_or_out |value                  |
+|:-------|:----------------|:---------|:----------------------|
+|A       |siteIDs          |input     |GPS                    |
+|A       |siteIDs          |input     |helicopter             |
+|A       |siteIDs          |output    |spatial                |
+|A       |siteIDs          |output    |site doco              |
+|A       |weather          |input     |BoM                    |
+|A       |weather          |output    |exposures              |
+|B       |trapped          |input     |spatial                |
+|B       |trapped          |output    |trapped_no             |
+|B       |biomass          |input     |spatial                |
+|B       |biomass          |output    |biomass_g              |
+|B       |correlations     |input     |exposures              |
+|B       |correlations     |input     |trapped_no             |
+|B       |correlations     |input     |biomass_g              |
+|B       |correlations     |output    |report1                |
+|C       |paper1           |input     |report1                |
+|C       |paper1           |output    |open access repository |
+|C       |paper1           |output    |data package           |
+|D       |biomass revision |input     |new estimates          |
+|D       |biomass revision |output    |biomass_g              |
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;ul&gt;
-&lt;li&gt;And so now I just have to deposit a markdown blog post into the jekyll &lt;code&gt;_posts&lt;/code&gt; folder and then&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Bash&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;bb Add a meaningful commit message about todays progress
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;There you have it, a meaningful message regarding what I have been doing towards my scientific output every day.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/seinfeld-streak-day9-1.png&quot; alt=&quot;/images/seinfeld-streak-day9.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/seinfeld-streak-day9.png&quot; alt=&quot;/images/seinfeld-streak-day9.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h4&gt;References&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Peng, R. (2015). The reproducibility crisis in science: 
-A statistical counterattack. Significance, 12(3), 30–32. 
-doi:10.1111/j.1740-9713.2015.00827.x
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
+&lt;p&gt;This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.&lt;/p&gt;
 </content>
  </entry>
  

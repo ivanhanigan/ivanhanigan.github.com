@@ -4,13 +4,120 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-09-22T14:16:03+10:00</updated>
+ <updated>2015-09-23T15:55:39+10:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Organising Graph Nodes And Edges In A Dataframe</title>
+   <link href="http://schamberlain.github.com/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/"/>
+   <updated>2015-09-23T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2015/09/organising-graph-nodes-and-edges-in-a-dataframe</id>
+   <content type="html">&lt;p&gt;I use the R package &lt;code&gt;DiagrammeR&lt;/code&gt; for creating graphs (the formal kind, connecting nodes with edges)
+- This package is great and I like how it interacts with the Graphviz program
+- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
+- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
+- In my utilities R package &lt;code&gt;github.com/ivanhanigan/disentangle&lt;/code&gt; I have written functions that turn this table into a graphiviz DOT language script
+- Recently I have needed to unpack the list for a more itemized view
+- Both these functions are showcased below&lt;/p&gt;
+
+&lt;h4&gt;Code: newnode&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# First create some test data, each step is a collection of edges 
+# with inputs or outputs simple comma seperated lists
+dat &amp;lt;- read.csv(textConnection('
+cluster ,  step    , inputs                    , outputs                                , description                      
+A  ,  siteIDs      , &quot;GPS, helicopter&quot;          , &quot;spatial, site doco&quot;                 , latitude and longitude of sites  
+A  ,  weather      , BoM                       , exposures                              , weather data from BoM            
+B  ,  trapped      , spatial                   , trapped_no                             , counts of species caught in trap 
+B  ,  biomass      , spatial                   , biomass_g                              ,                                  
+B  ,  correlations , &quot;exposures,trapped_no,biomass_g&quot; , report1                         , A study we published             
+C  ,  paper1       , report1                   , &quot;open access repository, data package&quot; ,                                  
+D  ,  biomass revision, new estimates          , biomass_g                              , this came late
+'), stringsAsFactors = F, strip.white = T)    
+str(dat)
+# dat
+
+# Now run the function and create a graph
+nodes &amp;lt;- newnode(
+  indat = dat,
+  names_col = &quot;step&quot;,
+  in_col = &quot;inputs&quot;,
+  out_col = &quot;outputs&quot;,
+  desc_col = &quot;description&quot;,
+  clusters_col = &quot;cluster&quot;,
+  nchar_to_snip = 40
+  )  
+sink(&quot;Transformations.dot&quot;)
+cat(nodes)
+sink()
+#DiagrammeR::grViz(&quot;Transformations.dot&quot;)
+system(&quot;dot -Tpng Transformations.dot -o Transformations.png&quot;)
+browseURL(&quot;Transformations.png&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;That creates this diagram&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Transformations.png&quot; alt=&quot;/images/Transformations.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Now to showcase the tool that itemizes this list of inputs and outputs&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs&lt;/li&gt;
+&lt;li&gt;To add detail for each we need to unpack each list and create a new table with one row per node&lt;/li&gt;
+&lt;li&gt;I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code: newnode_csv&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;nodes_graphy &amp;lt;- newnode_csv(
+  indat = dat,
+  names_col = &quot;step&quot;,
+  in_col = &quot;inputs&quot;,
+  out_col = &quot;outputs&quot;,
+  clusters_col = 'cluster'
+  ) 
+# which creates this table
+knitr::kable(nodes_graphy)
+|cluster |name             |in_or_out |value                  |
+|:-------|:----------------|:---------|:----------------------|
+|A       |siteIDs          |input     |GPS                    |
+|A       |siteIDs          |input     |helicopter             |
+|A       |siteIDs          |output    |spatial                |
+|A       |siteIDs          |output    |site doco              |
+|A       |weather          |input     |BoM                    |
+|A       |weather          |output    |exposures              |
+|B       |trapped          |input     |spatial                |
+|B       |trapped          |output    |trapped_no             |
+|B       |biomass          |input     |spatial                |
+|B       |biomass          |output    |biomass_g              |
+|B       |correlations     |input     |exposures              |
+|B       |correlations     |input     |trapped_no             |
+|B       |correlations     |input     |biomass_g              |
+|B       |correlations     |output    |report1                |
+|C       |paper1           |input     |report1                |
+|C       |paper1           |output    |open access repository |
+|C       |paper1           |output    |data package           |
+|D       |biomass revision |input     |new estimates          |
+|D       |biomass revision |output    |biomass_g              |
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</title>
@@ -5819,36 +5926,6 @@ contemplates the ideal work-life balance.
 
 
 &lt;h4&gt;Please pop a note in the comments if you want to send Marco a message.&lt;/h4&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>animations-using-R</title>
-   <link href="http://schamberlain.github.com/2013/12/animations-using-R/"/>
-   <updated>2013-12-18T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2013/12/animations-using-R</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;following on from my previous posts about &lt;a href=&quot;http://ivanhanigan.github.io/2013/07/animated-maps/&quot;&gt;animated maps&lt;/a&gt;, &lt;a href=&quot;http://ivanhanigan.github.io/2013/06/spatio-temporal-animations/&quot;&gt;spatio-temporal animations&lt;/a&gt; and animations &lt;a href=&quot;http://ivanhanigan.github.io/button/index.html&quot;&gt;with buttons for go, stop and reverse&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Here is a quick note about how to do a simple animation with R to create a movie file (GIF)&lt;/li&gt;
-&lt;li&gt;To create this movie&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/animation/animation.gif&quot; alt=&quot;animation.gif&quot; /&gt;&lt;/p&gt;
-
-&lt;h4&gt;Code:animations-using-R&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;if(!require(animation)) install.packages(&quot;animation&quot;);
-require(animation)
-saveGIF(
-{
-ani.options(nmax = 100, interval = 0.5)
-par(mar = c(3, 2.5, 0.5, 0.2), pch = 20, mgp = c(1.5, 0.5,0))
-buffon.needle(mat = matrix(c(1, 2, 1, 3), 2))
-},
-outdir = getwd()
-)
-&lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
  
