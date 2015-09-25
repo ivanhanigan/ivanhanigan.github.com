@@ -56,6 +56,77 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing/" title="Using the R EML software to mitigate risks in Morpho and Metacat data publishing" rel="bookmark">Using the R EML software to mitigate risks in Morpho and Metacat data publishing</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Introduction</h1>
+
+<ul>
+<li>Over the last few months I have used software called Metacat as a Data Portal and Repository.  Metacat is server software which has been
+developed by the Knowledge Network for Biocomplexity (KNB).</li>
+<li>Metacat
+conforms to the Ecological Metadata Language (EML) Standard (<a href="https://knb.ecoinformatics.org/#external//emlparser/docs/index.html">https://knb.ecoinformatics.org/#external//emlparser/docs/index.html</a>).</li>
+<li>KNB also develop another software package called Morpho to be used by Ecologists to document their data (<a href="https://knb.ecoinformatics.org/#tools">https://knb.ecoinformatics.org/#tools/morpho</a>).</li>
+<li>Morpho can be used to send the data and metadata documents to be published on a Metacat portal.</li>
+<li>KNB’s software is used internationally by the Data
+Observation Network for Earth (DataONE) nodes, the United States Long
+Term Ecological Research (US LTER) network and the International Long
+Term Ecological Research (ILTER) network.</li>
+<li>Additionally, the Australian Long Term Ecological Research Network
+Data Portal (<a href="http://www.ltern.org.au/knb/">www.ltern.org.au/knb/</a>), Australian SuperSites Network and
+Australian Centre for Ecological Analysis and Synthesis used
+the same underlying technology to publish data packages.</li>
+<li>The Metacat system is great for a data repository but unfortunately (in my experience) the Morpho software package has repeatedly hampered data processing and increased risks of inadvertently publishing data with errors.</li>
+<li>My colleagues and I workaround these problems using a lot of different 'fixes' for the different problems.</li>
+<li>Fortunately there is an alternative to Morpho in the R statistical software environment called the R-EML package (<a href="https://github.com/ropensci/EML">https://github.com/ropensci/EML</a>).  This provides a library of functions used in the R language to generate and parse EML files.</li>
+<li>This new workflow mitigates some of the risks of the Morpho software by ensuring the data related steps of the workflow are conducted in the R environment for statical computing.</li>
+<li>However, some Issues remain in that this requires a fairly specialised computing environment with various Linux libraries configured appropriately</li>
+</ul>
+
+
+<h1>Results</h1>
+
+<ul>
+<li>I generate EML metadata using REML in the workflow shown in the figure below.</li>
+</ul>
+
+
+<p><img src="/images/workflow-rmd-md.png" alt="altext" /></p>
+
+<p></p>
+
+
+<ul>
+<li>Image adapted from <a href="http://kieranhealy.org/blog/archives/2014/01/23/plain-text/">http://kieranhealy.org/blog/archives/2014/01/23/plain-text/</a></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/morpho" title="morpho" rel="category tag">morpho</a>
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-03-19 00:00:00 +1100">19 Mar 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/03/tuftes-gantt-alternative-for-detail-within-context/" title="tuftes-gantt-alternative-for-detail-within-context" rel="bookmark">tuftes-gantt-alternative-for-detail-within-context</a>
     </h1>
     <div class="entry-content full-content">
@@ -652,298 +723,6 @@ setwd(wd)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/07/r-eml-pgis-setting-up-the-software-stack/" title="r-eml-pgis-setting-up-the-software-stack" rel="bookmark">r-eml-pgis-setting-up-the-software-stack</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>r-eml</h2>
-
-<ul>
-<li>this is the R package for authoring EML</li>
-</ul>
-
-
-<h2>pgis</h2>
-
-<ul>
-<li>This is a spatial database</li>
-</ul>
-
-
-<h2>System Description</h2>
-
-<ul>
-<li>Ubuntu 12.04 LTS</li>
-<li>Macpro Tower</li>
-</ul>
-
-
-<h2>EML is a useful beast</h2>
-
-<h3>setting-up-the-software-stack</h3>
-
-<ul>
-<li>First I needed devtools and this required RCurl linux package dependencies</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code>sudo apt-get install libcurl libcurl-devel libcurl4-gnutls-dev
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>Now trying to install EML</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code>require(devtools)
-install_github("EML", "ropensci")
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>then XML Depends</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code>sudo apt-get install libcurl4-openssl-dev libxml2-dev
-sudo apt-get install r-cran-xml
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>rJava can be difficult, I was really dreading this but eventually stackoverflow to the rescue!</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code>sudo apt-get install openjdk-7-*
-sudo apt-get install r-cran-rjava
-update-java-alternatives -l
-sudo update-java-alternatives -s java-1.7.0-openjdk-amd64 
-sudo R CMD javareconf
-R
-install.packages("rJava")
-library(rJava)
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>now complaining about ‘RHTMLForms’ and ‘RWordXML’</li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code>install_github("RHTMLForms", "omegahat")
-install.packages("RWordXML", repos="http://www.omegahat.org/R", type="source")
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>on we go</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code>install.packages(c("knitr", "rfigshare", "testthat", "RCurl", "dataone", "rrdf"))
-</code></pre>
-
-<p></p>
-
-
-<h2>RGDAL</h2>
-
-<ul>
-<li>Spatial toolbox</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code>sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install libgdal1-dev libproj-dev
-gdal-config --version
-sudo R
-install.packages("rgdal")
-</code></pre>
-
-<p></p>
-
-
-<h2>PostgreSQL 9.3</h2>
-
-<ul>
-<li>following comes from <a href="http://technobytz.com/install-postgresql-9-3-ubuntu.html">http://technobytz.com/install-postgresql-9-3-ubuntu.html</a></li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code>sudo apt-get update
-sudo apt-get -y install python-software-properties
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" &gt;&gt; /etc/apt/sources.list.d/postgresql.list'
-sudo apt-get update
-sudo apt-get install postgresql-9.3 pgadmin3
-sudo -u postgres psql
-create role user_name login password 'passwd';
-show hba_file ;
-#/etc/postgresql/9.3/main/pg_hba.conf
-\q
-sudo nano /etc/postgresql/9.3/main/pg_hba.conf
-# add users to listen for at the firewall
-sudo nano /etc/postgresql/9.3/main/postgresql.conf
-# listenaddresses = *
-sudo services postgresql restart
-sudo ufw allow from my.ip.address.0/24 to any port 5432
-</code></pre>
-
-<p></p>
-
-
-<h2>PostGIS 2.0</h2>
-
-<ul>
-<li>following comes from <a href="http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html">http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html</a></li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code>sudo apt-get update
-sudo apt-get install postgresql-9.3-postgis-2.1 -f
-sudo su
-su - postgres
-createdb postgis_ltern
-psql -d postgis_ltern -U postgres  
-CREATE EXTENSION postgis;  
-CREATE EXTENSION postgis_topology;  
-CREATE ROLE public_group;
-CREATE ROLE ivan_hanigan LOGIN PASSWORD 'password';
-GRANT public_group TO ivan_hanigan;
-grant usage on schema public to public_group;
-GRANT select ON ALL TABLES IN SCHEMA public TO public_group;
-grant execute on all functions in schema public to public_group;
-grant select on all sequences in schema public to public_group;
-grant select on table geometry_columns to public_group;
-grant select on table spatial_ref_sys to public_group;
-grant select on table geography_columns to public_group;
-grant select on table raster_columns to public_group;
-grant select on table raster_overviews to public_group;
-</code></pre>
-
-<p></p>
-
-
-<h2>For transforming AGD 66 to GDA94</h2>
-
-<ul>
-<li>A special transformations grid file is required to be added to the PROJ.4 files for reprojecting the Australian projections AGD66 to GDA94.</li>
-<li>Thanks to <a href="https://github.com/josephguillaume">Joe Guillaume</a> and <a href="http://stackoverflow.com/users/103225/fmark">Francis Markham</a> for providing this solution.</li>
-</ul>
-
-
-<h4>Code: transformations grid for Australian projections</h4>
-
-<pre><code>cd /usr/share/proj
-wget http://www.icsm.gov.au/gda/gdatm/national66.zip  
-unzip national66.zip
-mv "A66 National (13.09.01).gsb" aust_national_agd66_13.09.01.gsb
-su - postgres 
-psql -d mydb
-
-UPDATE spatial_ref_sys SET
-proj4text='+proj=longlat +ellps=aust_SA +nadgrids=aust_national_agd66_13.09.01.gsb +wktext'
-where srid=4202;
-\q
-exit
-</code></pre>
-
-<p></p>
-
-
-<h2>make a spatial dataset</h2>
-
-<h4>Code</h4>
-
-<pre><code>require(devtools)
-install_github("swishdbtools", "swish-climate-impact-assessment")
-require(swishdbtools)
-require(ggmap)
-
-ch  &lt;- connect2postgres2("postgis_ltern")
-
-location_names &lt;- c("linnaeus way acton canberra act", "biology place acton canberra act")
-locations &lt;- geocode(location_names)
-locations &lt;- cbind(location_names, locations)
-
-dbWriteTable(ch, "anu_gisforum_locations", locations, row.names = F)
-sql &lt;- points2geom("public", "anu_gisforum_locations", col_lat = "lat", col_long = "lon")
-cat(sql)
-dbSendQuery(ch,
-            sql
-            )
-</code></pre>
-
-<p></p>
-
-
-<h2>This can now be shown in Quantum GIS</h2>
-
-<p><img src="/images/gisforum_locations.png" alt="images/gisforum_locations.png" /></p>
-
-<h3>TODO:</h3>
-
-<ul>
-<li>add EML for this using R</li>
-<li>finesse with Morpho (requires further Java shennanigans)</li>
-<li>publish something to KNB using R dataone package</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/07/r-eml-pgis-setting-up-the-software-stack/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-07-12 00:00:00 +1000">12 Jul 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1040,7 +819,7 @@ dbSendQuery(ch,
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (11)</a></li>
+                <li><a href="/categories/disentangle">disentangle (12)</a></li>
                 
                 <li><a href="/categories/project management">project management (2)</a></li>
                 
@@ -1057,6 +836,10 @@ dbSendQuery(ch,
               <ul>
                 
                 <li>
+                  <a href="/2015/09/reproducible-research-and-managing-digital-assets/" title="Reproducible Research And Managing Digital Assets (1/3)" rel="bookmark">Reproducible Research And Managing Digital Assets (1/3)</a>
+                </li>
+                
+                <li>
                   <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
                 </li>
                 
@@ -1070,10 +853,6 @@ dbSendQuery(ch,
                 
                 <li>
                   <a href="/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/" title="If You Don't Find A Solution In R, Keep Googling!" rel="bookmark">If You Don't Find A Solution In R, Keep Googling!</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/" title="Templates are Needed for Reproducible Research Reports (that Look Good)" rel="bookmark">Templates are Needed for Reproducible Research Reports (that Look Good)</a>
                 </li>
                 
               </ul>
@@ -1093,6 +872,8 @@ dbSendQuery(ch,
                 <li><a href="/tag/diagrams">diagrams (2)</a></li>
                 
                 <li><a href="/tag/blogging">blogging (1)</a></li>
+                
+                <li><a href="/tag/Data Management System">Data Management System (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -1116,6 +897,8 @@ dbSendQuery(ch,
           <!--       <li><a href="/tag/diagrams">diagrams (2)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/blogging">blogging (1)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/Data Management System">Data Management System (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

@@ -56,6 +56,137 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/" title="Project Templates That Initialize A New Project With A Skeleton Automatically" rel="bookmark">Project Templates That Initialize A New Project With A Skeleton Automatically</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I have been using <a href="http://projecttemplate.net/">John Myles Whites ProjectTemplate R package</a> for ages</li>
+<li>I really like the ease with which I can get up and running a new project</li>
+<li>and the ease with which I can pick up an old project and start adding new work</li>
+</ul>
+
+
+<h4>Quote from John's first post</h4>
+
+<pre><code>My inspiration for this approach comes from the rails command from
+Ruby on Rails, which initializes a new Rails project with the proper
+skeletal structure automatically. Also taken from Rails is
+ProjectTemplate’s approach of preferring convention over
+configuration: the automatic data and library loading as well as the
+automatic testing work out of the box because assumptions are made
+about the directory structure and naming conventions that will be used
+</code></pre>
+
+<p></p>
+
+
+<p><a href="http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/">http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/</a></p>
+
+<ul>
+<li>I dont know anything about RoR but this philosophy works really well for my R programming too</li>
+</ul>
+
+
+<h4>R Code</h4>
+
+<pre><code>if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
+setwd("~/projects")
+create.project("my-project")
+setwd('my-project')
+dir()
+##  [1] "cache"       "config"      "data"        "diagnostics" "doc"        
+##  [6] "graphs"      "lib"         "logs"        "munge"       "profiling"  
+## [11] "README"      "reports"     "src"         "tests"       "TODO"   
+##### these are very sensible default directories to create a modular
+##### analysis workflow.  See the project homepage for descriptions
+
+# now all you need to do whenever you start a new day 
+load.project()
+# and your workspace will be recreated and any new data automagically analysed in
+# the manner you want
+</code></pre>
+
+<p></p>
+
+
+<h4>Project Administration</h4>
+
+<ul>
+<li>I;ve found that these directories do not work so well for the administration of my projects and so I put together a different set of automatic defaults</li>
+<li>Ive based it on the <a href="http://ivanhanigan.github.io/2013/12/research-protocol-for-manitoba-centre-for-health-policy/">University of Manitoba Centre for Health Policy</a>- along with some other sources I can recall
+
+<h4>The full set</h4>
+
+<p>  # A.Background      <br/>
+  # B.Proposals
+  # C.Approvals
+  # D.Budget  <br/>
+  # E.Datasets<br/>
+  # F.Analysis<br/>
+  # G.Literature      <br/>
+  # H.Communication           <br/>
+  # I.Correspondance  <br/>
+  # J.Meetings<br/>
+  # K.Completion      <br/>
+  # ContactDetails.txt<br/>
+  # README.md
+  # TODO.txt</p></li>
+</ul>
+
+
+<p></p>
+
+
+<h4>R Code: my subset</h4>
+
+<pre><code>AdminTemplate &lt;- function(rootdir = getwd()){
+  setwd(rootdir)
+  dir.create(file.path(rootdir,'01_planning'))
+  dir.create(file.path(rootdir,'01_planning','proposal'))
+  dir.create(file.path(rootdir,'01_planning','scheduling'))
+  dir.create(file.path(rootdir,'02_budget'))
+  dir.create(file.path(rootdir,'03_communication'))
+  dir.create(file.path(rootdir,'04_reporting_and_meetings'))
+  file.create(file.path(rootdir,'contact_details.txt'))
+  file.create(file.path(rootdir,'README.md'))
+  }
+</code></pre>
+
+<p></p>
+
+
+<h4>Conclusion</h4>
+
+<ul>
+<li>hopefully by formalising some of these into my workflow I will find my projects easier to navigate through</li>
+<li>and pick up or put down as needed</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-03-29 00:00:00 +1100">29 Mar 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/02/long-term-climatology-contextual-data-for-ecological-research/" title="long-term-climatology-contextual-data-for-ecological-research" rel="bookmark">long-term-climatology-contextual-data-for-ecological-research</a>
     </h1>
     <div class="entry-content full-content">
@@ -562,51 +693,6 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Last year I wrote to a Professor to let them know some numbers that quantified their effect estimate (computed be exponentiating their beta coefficient) described in their results section was inconsistent with the numbers in their table (the raw coefficients).</li>
-<li>Happily the recalculation showed that they had underestimated the effect size and their conclusions were not wrong, but erroneously conservative.</li>
-<li>Previously I would use Sweave documents to keep track of all my calculations, but I was still copy-and-pasting the key numbers into the text.</li>
-<li>I've become more interested now in using Inline R Outputs (called Sexpr - S expressions)</li>
-<li>This is also the first time I've created a report using the Palatino font, on the advice of a new colleague of mine.</li>
-<li>I popped up a <a href="https://github.com/ivanhanigan/DataDocumentation">Github repo with a Sweave template for Reproducible Reports with a few notes I made</a>.  Which looks like</li>
-</ul>
-
-
-<p><img src="/images/sexpr.png" alt="/images/sexpr.png" /></p>
-
-<ul>
-<li><p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.pdf">PDF output is here</a></p></li>
-<li><p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.Rnw">Sweave file is here</a></p></li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/02/template-reproducible-research-with-r-tex-and-sweave/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-02-12 00:00:00 +1100">12 Feb 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -703,7 +789,7 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (11)</a></li>
+                <li><a href="/categories/disentangle">disentangle (12)</a></li>
                 
                 <li><a href="/categories/project management">project management (2)</a></li>
                 
@@ -720,6 +806,10 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
               <ul>
                 
                 <li>
+                  <a href="/2015/09/reproducible-research-and-managing-digital-assets/" title="Reproducible Research And Managing Digital Assets (1/3)" rel="bookmark">Reproducible Research And Managing Digital Assets (1/3)</a>
+                </li>
+                
+                <li>
                   <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
                 </li>
                 
@@ -733,10 +823,6 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
                 
                 <li>
                   <a href="/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/" title="If You Don't Find A Solution In R, Keep Googling!" rel="bookmark">If You Don't Find A Solution In R, Keep Googling!</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/" title="Templates are Needed for Reproducible Research Reports (that Look Good)" rel="bookmark">Templates are Needed for Reproducible Research Reports (that Look Good)</a>
                 </li>
                 
               </ul>
@@ -756,6 +842,8 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
                 <li><a href="/tag/diagrams">diagrams (2)</a></li>
                 
                 <li><a href="/tag/blogging">blogging (1)</a></li>
+                
+                <li><a href="/tag/Data Management System">Data Management System (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -779,6 +867,8 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
           <!--       <li><a href="/tag/diagrams">diagrams (2)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/blogging">blogging (1)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/Data Management System">Data Management System (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->
