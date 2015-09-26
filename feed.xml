@@ -6,6 +6,100 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Reproducible Research And Managing Digital Assets Part 2</title>
+				<description>&lt;p&gt;This post is about an effective and simple data management framework for analysis projects.
+This post introduces Josh Reich's LCFD framework, originally introduced in this answer on the stack overflow website here &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;http://stackoverflow.com/a/1434424&lt;/a&gt;, and encoded into the makeProject R package &lt;a href=&quot;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&quot;&gt;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Literature Review Approach&lt;/h2&gt;
+
+&lt;p&gt;This series of three posts is a summary of some of the most useful advice I have found based on my experience having implemented in my own work.&lt;/p&gt;
+
+&lt;p&gt;This is the second post in a series of three entries regarding some evidence-based best practice approaches I have reviewed.  I have read many website articles and blog posts on a variety of approaches to the organisation of digital assets in a reporoducible research pipeline.
+The material I've gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.&lt;/p&gt;
+
+&lt;h2&gt;Digital Assets Management for Reproducible Research&lt;/h2&gt;
+
+&lt;p&gt;The digital assets in a reproducible research pipeline include:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Publication material (documents, figures, tables, literature)&lt;/li&gt;
+&lt;li&gt;Data (raw measurements, data provided, data derived)&lt;/li&gt;
+&lt;li&gt;Code (pre-processing, analysis and presentation)&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h2&gt;How to use the &lt;code&gt;makeProject&lt;/code&gt; package&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;makeProject&lt;/code&gt; R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.&lt;/li&gt;
+&lt;li&gt;The theory is very similar to the approach described in the previous post about Scott Long's batch script: wfsetupsingle.bat &lt;a href=&quot;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&quot;&gt;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# choose your project dir
+setwd(&quot;~/projects&quot;)   
+library(makeProject)
+makeProject(&quot;makeProjectDemo&quot;)
+#returns
+&quot;Creating Directories ...
+Creating Code Files ...
+Complete ...&quot;
+matrix(dir(&quot;makeProjectDemo&quot;))
+#[1,] &quot;code&quot;       
+#[2,] &quot;data&quot;       
+#[3,] &quot;DESCRIPTION&quot;
+#[4,] &quot;main.R&quot;     
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;This has set up some simple and sensible tools for a data analysis.&lt;/li&gt;
+&lt;li&gt;Let's have a look at the &lt;code&gt;main.R&lt;/code&gt; script. This is the one file that is used to run all the modules of the project, found in the R scripts in the &lt;code&gt;code&lt;/code&gt; folder.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# Project: makeProjectDemo
+# Author: Your Name
+# Maintainer: Who to complain to &amp;lt;yourfault@somewhere.net&amp;gt;
+
+# This is the main file for the project
+# It should do very little except call the other files
+
+### Set the working directory
+setwd(&quot;/home/ivan_hanigan/projects/makeProjectDemo&quot;)
+
+
+### Set any global variables here
+####################
+
+
+
+####################
+
+
+### Run the code
+source(&quot;code/load.R&quot;)
+source(&quot;code/clean.R&quot;)
+source(&quot;code/func.R&quot;)
+source(&quot;code/do.R&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;I think that is very self-explanatory, but it does need some demonstration.  The next instalment in this three part blog post will describe the ProjectTemplate approach.  After that I will demonstrate ways that each of the three approaches can be used.&lt;/p&gt;
+</description>
+				<published>2015-09-26 00:00:00 +1000</published>
+				<link>http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets-part-2/</link>
+			</item>
+		
+			<item>
 				<title>Reproducible Research And Managing Digital Assets (1/3)</title>
 				<description>&lt;p&gt;This will be a series of three posts that describe some key evidence based best practice methods that have helped me plan and organise files and folders for data analysis.  I have found these via books and on websites.&lt;/p&gt;
 
@@ -62,8 +156,9 @@ IV : Managing digital assets Workflow for Tools for your WF.
     \Documentation 
     \Posted
          \Paper 1
-         \Correspondence \Text
-         \Analysis
+             \Correspondence 
+             \Text
+             \Analysis
     \PrePosted 
     \Resources 
     \Write 
@@ -74,6 +169,31 @@ IV : Managing digital assets Workflow for Tools for your WF.
 
 
 &lt;p&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;In another workshop report Long provides a useful tool to automatically create this structure on windows&lt;/li&gt;
+&lt;li&gt;Long, S. (2012). Principles of Workflow in Data Analysis.
+Retrieved from &lt;a href=&quot;http://www.indiana.edu/~wim/docs/2012-long-slides.pdf&quot;&gt;http://www.indiana.edu/~wim/docs/2012-long-slides.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;a bash version would be useful for linux and mac users, but also the R language can do this on all platforms with the &lt;code&gt;dir.create&lt;/code&gt; command&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code: wfsetupsingle.bat&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# wfsetupsingle.bat 
+REM workflow talk 2 \ wfsetupsingle.bat jsl 2009-07-12 
+REM directory structure for single person.
+FOR /F &quot;tokens=2,3,4 delims=/- &quot; %%a in (&quot;%DATE%&quot;) do set CDATE=%%c-%%a-%%b 
+md &quot;- History starting \%cdate%&quot; 
+md &quot;- Hold then delete &quot; 
+md &quot;- Pre posted &quot; 
+md &quot;- To clean&quot; 
+md &quot;Documentation&quot; 
+md &quot;Posted&quot; 
+md &quot;Resources&quot;
+md &quot;Text\- Versions\&quot; 
+md &quot;Work\- To do&quot;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2&gt;Critical reflections&lt;/h2&gt;
 
@@ -817,152 +937,6 @@ analysis pipelines.&lt;/p&gt;
 </description>
 				<published>2015-08-28 00:00:00 +1000</published>
 				<link>http://ivanhanigan.github.com/2015/08/tracking-a-data-analysis-pipeline/</link>
-			</item>
-		
-			<item>
-				<title>Web Data, Climate Grids and THREDDS UPDATE</title>
-				<description>&lt;h1&gt;Update&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This is an update to my previous post:  &lt;a href=&quot;http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/&quot;&gt;http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I was worried about the available metadata with those netcdf data I was working with so contacted Dr Brad Evans at EMAST who set me straight:&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;QUOTE:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&quot;you need to use ncdf4  - not ncdf  ...
-because they are netcdf4 files and not netcdf3 files. 
-This is poorly explained in the R community.
-All of the netcdf files from Australian providers (AusCover, BoM, etc...) 
-have been in netcdf4 for a couple of years now.&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1&gt;So here is the revised code using ncdf4 library:&lt;/h1&gt;
-
-&lt;h4&gt;CODE&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# sudo apt-get install r-cran-ncdf4 
-library(ncdf4)
-library(raster)
-strt &amp;lt;-'2012-01-01'
-end &amp;lt;- '2012-01-04'
-dates &amp;lt;- seq(as.Date(strt),as.Date(end),1)          
-dates
-par(mfrow = c(2,2))
-for(i in 1:length(dates)){
- # i=1
-  date_i &amp;lt;- dates[i]
-  infile &amp;lt;- sprintf(&quot;http://dapds00.nci.org.au/thredds/dodsC/rr9/Climate/eMAST/ANUClimate/0_01deg/v1m0_aus/day/land/tmin/e_01/2012/eMAST_ANUClimate_day_tmin_v1m0_%s.nc&quot;, gsub(&quot;-&quot;, &quot;&quot;, date_i))
-
-  nc &amp;lt;- nc_open(infile)
-  str(nc)
-  print(nc)
-  vals &amp;lt;- ncvar_get(nc, varid=&quot;air_temperature&quot;)
-  str(vals)
-  nc.att &amp;lt;-    nc$var$air_temperature
-  xmin &amp;lt;- min(nc.att$dim[[1]]$vals)
-  xmax &amp;lt;- max(nc.att$dim[[1]]$vals)
-  ymin &amp;lt;- min(nc.att$dim[[2]]$vals)
-  ymax &amp;lt;- max(nc.att$dim[[2]]$vals)
-
-  print(c(xmin,xmax))
-  print(c(ymin,ymax))
-
-  r &amp;lt;- raster(t(vals),
-              xmn=xmin, xmx=xmax,
-              ymn=ymin, ymx=ymax)
-  #str(r)
-  plot(r)
-  nc_close(nc)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;RESULTS 1: METADATA&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the result is I now have a lot more metdata returned to my R workspace&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;EXERPT&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;[...]
-[1] &quot;        licence_copyright: Copyright 2009-2013 ANU. Rights owned by The Australian National University (ANU). Rights licensed subject to TERN  Attribution (TERN-BY).&quot;
-[1] &quot;        short_desc: Australian coverage, ANUClimate 1.0, 0.01 degree grid, 1970-2012&quot;
-[1] &quot;        summary: Minimum daily temperature, for the Australian continent between 1970-2012. Daily temperature regulates rates of plant growth and determines critical conditions such as frost on flowering and fruiting. Modelled by expressing each daily value as a difference anomaly with respect to the gridded 1976-2005 mean daily minimum temperature for each month as provided by eMAST_ANUClimate_mmn_tmin_v1m0_1976_2005. The daily anomalies were interpolated by trivariate thin plate smoothing spline functions of longitude, latitude and vertically exaggerated elevation using ANUSPLIN Version 4.5. There was an average of 671 Bureau of Meteorology data points available for each day between 1970 and 2012. Automated quality assessment rejected on average 3 data values per day with extreme studentised residuals. These were commonly associated with days following missing observations. The root mean square of all individual cross validation residuals provided by the spline analysis is 1.5 degrees Celsius. A comprehensive assessment of the analysis and the factors contributing to the quality of the final interpolated daily minimum temperature grids is in preparation.&quot;
-[1] &quot;        long_name: Daily minimum temperature&quot;
-[1] &quot;        contact: Michael Hutchinson, Professor of spatial and temporal analysis, 3.23A, Fenner School of Environment &amp;amp; Society, College of Medicine, Biology &amp;amp; Environment, Frank Fenner Building 141, Australian National University, Canberra, Australian Capital Territory, 200, Australia, (+61) 2 6125 4783, Michael.Hutchinson@anu.edu.au, http://orcid.org/0000-0001-8205-6689&quot;
-[1] &quot;        references: 1. Hutchinson, M.F., Mckenney, D.W., Lawrence, K., Pedlar, J., Hopkinson, R., Milewska, E. and Papadopol, P. 2009. Development and testing of Canada-wide interpolated spatial models of daily minimum/maximum temperature and precipitation for 1961-2003. Journal of Applied Meteorology and Climatology 48: 725�741. http://dx.doi.org/10.1175/2008JAMC1979.1 2. Hutchinson, M.F. and Xu, T. 2013. ANUSPLIN version 4.4 User Guide. Fenner School of Environment and Society, Australian National University, Canberra http://fennerschool.anu.edu.au/files/anusplin44.pdf&quot;
-[1] &quot;        source: ANUClimate 1.0&quot;
-[1] &quot;        keywords: EARTH SCIENCE &amp;gt; ATMOSPHERE &amp;gt; ATMOSPHERIC TEMPERATURE &amp;gt; MAXIMUM/MINIMUM TEMPERATURE&quot;
-[1] &quot;        Conventions: CF-1.6&quot;
-[1] &quot;        institution: Australian National University&quot;
-[1] &quot;        geospatial_lat_min: -43.74&quot;
-[1] &quot;        geospatial_lat_max: -9&quot;
-[1] &quot;        geospatial_lat_units: degrees_north&quot;
-[1] &quot;        geospatial_lat_resolution: -0.01&quot;
-[1] &quot;        geospatial_lon_min: 112.9&quot;
-[1] &quot;        geospatial_lon_max: 154&quot;
-[1] &quot;        geospatial_lon_units: degrees_east&quot;
-[1] &quot;        geospatial_lon_resolution: 0.01&quot;
-[1] &quot;        keywords_vocabulary: Global Change Master Directory (http://gcmd.nasa.gov)&quot;
-[1] &quot;        metadata_link: http://datamgt.nci.org.au:8080/geonetwork&quot;
-[1] &quot;        standard_name_vocabulary: Climate and Forecast(CF) convention standard names (http://cf-pcmdi.llnl.gov/documents/cf-standard-names)&quot;
-[1] &quot;        id: eMAST_ANUClimate_day_tmin_v1m0_1970_2012&quot;
-[1] &quot;        DOI: To be added&quot;
-[1] &quot;        cdm_data_type: grid&quot;
-[1] &quot;        contributor_name: Michael Hutchinson, Jennnifer Kesteven, Tingbao Xu&quot;
-[1] &quot;        contributor_role: principalInvestigator, author, author&quot;
-[1] &quot;        creator_email: eMAST.data@mq.edu.au&quot;
-[1] &quot;        creator_name: eMAST data manager&quot;
-[1] &quot;        creator_url: http://www.emast.org.au/&quot;
-[1] &quot;        Metadata_Conventions: Unidata Dataset Discovery v1.0&quot;
-[1] &quot;        publisher_name: Ecosystem Modelling and Scaling Infrastructure (eMAST) Facility: Macquarie University&quot;
-[1] &quot;        publisher_email: eMAST.data@mq.edu.au&quot;
-[1] &quot;        publisher_url: http://www.emast.org.au/&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1&gt;RESULTS 2: Grid data&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I still get lots of good data&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/thredds2.png&quot; alt=&quot;/images/thredds2.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;NOTE I still need that weird transpose&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I note that the weird hacky transpose is still required&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;CODE&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# NB weird hacky transpose still required or else you get this
-r &amp;lt;- raster(vals,
-            xmn=xmin, xmx=xmax,
-            ymn=ymin, ymx=ymax)
-
-#str(r)
-plot(r)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/thredds2raw.png&quot; alt=&quot;/images/thredds2raw.png&quot; /&gt;&lt;/p&gt;
-</description>
-				<published>2015-07-27 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2015/07/climate-grids-and-thredds-server-experimenting-update/</link>
 			</item>
 		
 	</channel>
