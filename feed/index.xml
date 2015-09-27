@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-09-26T10:18:46+10:00</updated>
+ <updated>2015-09-27T16:50:15+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,97 +13,757 @@
 
  
  <entry>
-   <title>reproducible research and managing digital assets part 2/3</title>
-   <link href="http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets-part-2/"/>
-   <updated>2015-09-26T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets-part-2</id>
-   <content type="html">&lt;p&gt;This post is about an effective and simple data management framework for analysis projects.
-This post introduces Josh Reich's LCFD framework, originally introduced in this answer on the stack overflow website here &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;http://stackoverflow.com/a/1434424&lt;/a&gt;, and encoded into the makeProject R package &lt;a href=&quot;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&quot;&gt;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Literature Review Approach&lt;/h2&gt;
-
-&lt;p&gt;This series of three posts is a summary of some of the most useful advice I have found based on my experience having implemented in my own work.&lt;/p&gt;
-
-&lt;p&gt;This is the second post in a series of three entries regarding some evidence-based best practice approaches I have reviewed.  I have read many website articles and blog posts on a variety of approaches to the organisation of digital assets in a reporoducible research pipeline.
-The material I've gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.&lt;/p&gt;
-
-&lt;h2&gt;Digital Assets Management for Reproducible Research&lt;/h2&gt;
-
-&lt;p&gt;The digital assets in a reproducible research pipeline include:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Publication material (documents, figures, tables, literature)&lt;/li&gt;
-&lt;li&gt;Data (raw measurements, data provided, data derived)&lt;/li&gt;
-&lt;li&gt;Code (pre-processing, analysis and presentation)&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h2&gt;How to use the &lt;code&gt;makeProject&lt;/code&gt; package&lt;/h2&gt;
+   <title>Reproducible Research And Managing Digital Assets Part 3</title>
+   <link href="http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets-part-3/"/>
+   <updated>2015-09-27T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets-part-3</id>
+   <content type="html">&lt;h2&gt;Recap on this series of three posts&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;The &lt;code&gt;makeProject&lt;/code&gt; R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.&lt;/li&gt;
-&lt;li&gt;The theory is very similar to the approach described in the previous post about Scott Long's batch script: wfsetupsingle.bat &lt;a href=&quot;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&quot;&gt;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets/&quot;&gt;first post&lt;/a&gt; showed the recommended files and folders for a data analysis project from Scott Long&lt;/li&gt;
+&lt;li&gt;That recommendation was pretty complex, with a few folders that I felt did not jump out as super-useful&lt;/li&gt;
+&lt;li&gt;The &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-2/&quot;&gt;second post&lt;/a&gt; showed a very simple template from the R community called makeProject&lt;/li&gt;
+&lt;li&gt;I really like that one as it seems to be the minimum amount of stuff needed to make things work.&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;Code:&lt;/h4&gt;
+&lt;h2&gt;The ProjectTemplate framework&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;# choose your project dir
-setwd(&quot;~/projects&quot;)   
-library(makeProject)
-makeProject(&quot;makeProjectDemo&quot;)
-#returns
-&quot;Creating Directories ...
-Creating Code Files ...
-Complete ...&quot;
-matrix(dir(&quot;makeProjectDemo&quot;))
-#[1,] &quot;code&quot;       
-#[2,] &quot;data&quot;       
-#[3,] &quot;DESCRIPTION&quot;
-#[4,] &quot;main.R&quot;     
+&lt;ul&gt;
+&lt;li&gt;I have been using John Myles Whites ProjectTemplate R package &lt;a href=&quot;http://projecttemplate.net/&quot;&gt;http://projecttemplate.net/&lt;/a&gt; for ages&lt;/li&gt;
+&lt;li&gt;I really like the ease with which I can get up and running a new project&lt;/li&gt;
+&lt;li&gt;and the ease with which I can pick up an old project and start adding new work&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Quote from John's first post&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;My inspiration for this approach comes from the rails command from
+Ruby on Rails, which initializes a new Rails project with the proper
+skeletal structure automatically. Also taken from Rails is
+ProjectTemplate’s approach of preferring convention over
+configuration: the automatic data and library loading as well as the
+automatic testing work out of the box because assumptions are made
+about the directory structure and naming conventions that will be used
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
+&lt;p&gt;&lt;a href=&quot;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&quot;&gt;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&lt;/a&gt;&lt;/p&gt;
+
 &lt;ul&gt;
-&lt;li&gt;This has set up some simple and sensible tools for a data analysis.&lt;/li&gt;
-&lt;li&gt;Let's have a look at the &lt;code&gt;main.R&lt;/code&gt; script. This is the one file that is used to run all the modules of the project, found in the R scripts in the &lt;code&gt;code&lt;/code&gt; folder.&lt;/li&gt;
+&lt;li&gt;I dont know anything about RoR but this philosophy works really well for my R programming too&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;Code:&lt;/h4&gt;
+&lt;h4&gt;R Code&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;# Project: makeProjectDemo
-# Author: Your Name
-# Maintainer: Who to complain to &amp;lt;yourfault@somewhere.net&amp;gt;
+&lt;pre&gt;&lt;code&gt;if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
+setwd(&quot;~/projects&quot;)
+create.project(&quot;my-project&quot;)
+setwd('my-project')
+dir()
+##  [1] &quot;cache&quot;       &quot;config&quot;      &quot;data&quot;        &quot;diagnostics&quot; &quot;doc&quot;        
+##  [6] &quot;graphs&quot;      &quot;lib&quot;         &quot;logs&quot;        &quot;munge&quot;       &quot;profiling&quot;  
+## [11] &quot;README&quot;      &quot;reports&quot;     &quot;src&quot;         &quot;tests&quot;       &quot;TODO&quot;   
+##### these are very sensible default directories to create a modular
+##### analysis workflow.  See the project homepage for descriptions
 
-# This is the main file for the project
-# It should do very little except call the other files
-
-### Set the working directory
-setwd(&quot;/home/ivan_hanigan/projects/makeProjectDemo&quot;)
-
-
-### Set any global variables here
-####################
-
-
-
-####################
-
-
-### Run the code
-source(&quot;code/load.R&quot;)
-source(&quot;code/clean.R&quot;)
-source(&quot;code/func.R&quot;)
-source(&quot;code/do.R&quot;)
+# now all you need to do whenever you start a new day 
+load.project()
+# and your workspace will be recreated and any new data automagically analysed in
+# the manner you want
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;I think that is very self-explanatory, but it does need some demonstration.  The next instalment in this three part blog post will describe the ProjectTemplate approach.  After that I will demonstrate ways that each of the three approaches can be used.&lt;/p&gt;
+&lt;h2&gt;Advanced usage of ProjectTemplate&lt;/h2&gt;
+
+&lt;p&gt;&lt;body&gt;&lt;/p&gt;
+
+&lt;div id=&quot;preamble&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+
+&lt;div id=&quot;content&quot;&gt;
+&lt;h1 class=&quot;title&quot;&gt;ProjectTemplate Demo&lt;/h1&gt;
+
+
+
+
+&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1 The Compendium concept&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2 The R code that produced this report&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3 Inititalise R environment&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4 ProjectTemplate&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5 Why?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-6&quot;&gt;6 The Reichian load, clean, func, do approach&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-7&quot;&gt;7 The Peng NMMAPSlite approach&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-8&quot;&gt;8 Init the project&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-9&quot;&gt;9 dir()&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-10&quot;&gt;10 The reports directory&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-11&quot;&gt;11 Do the analysis&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-12&quot;&gt;12 Get the projecttemplate tutorial data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-13&quot;&gt;13 Tools&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-14&quot;&gt;14 Load the analysis data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-15&quot;&gt;15 check the analysis data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-16&quot;&gt;16 Develop munge code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-17&quot;&gt;17 To munge or not to munge?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-18&quot;&gt;18 Cache&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-19&quot;&gt;19 Plot first and second letter counts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-20&quot;&gt;20 Do generate plots&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-21&quot;&gt;21 First letter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-22&quot;&gt;22 Second letter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-23&quot;&gt;23 Report results&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-24&quot;&gt;24 Produce final report&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-25&quot;&gt;25 Personalised project management directories&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; The Compendium concept&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+
+&lt;p&gt;\section{The Compendium concept}
+My goal is to develop data analysis projects along the lines of the Compendium concept of Gentleman and Temple Lang (2007) \cite{Gentleman2007}.
+Compendia are dynamic documents containing text, code and data.
+Transformations are applied to the compendium to view its various aspects.
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Code Extraction (Tangle): source code
+&lt;/li&gt;
+&lt;li&gt;Export (Weave): LaTeX, HTML, etc
+&lt;/li&gt;
+&lt;li&gt;Code Evaluation
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;
+I'm also following the orgmode technique of Schulte et al (2012) \cite{Schulte}
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-2&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; The R code that produced this report&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
+
+
+&lt;p&gt;
+I support the philosophy of Reproducible Research &lt;a href=&quot;http://www.sciencemag.org/content/334/6060/1226.full&quot;&gt;http://www.sciencemag.org/content/334/6060/1226.full&lt;/a&gt;, and where possible I provide data and code in the statistical software R that will allow analyses to be reproduced.  This document is prepared automatically from the associated Emacs Orgmode file.  If you do not have access to the Orgmode file please contact me.
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;cat(&lt;span style=&quot;color: #2aa198;&quot;&gt;'&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; #######################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## The R code is free software; please cite this paper as the source.  &lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## Copyright 2012, Ivan C Hanigan &lt;a href=&quot;mailto:ivan.hanigan%40gmail.com&quot;&gt;&amp;lt;ivan.hanigan@gmail.com&amp;gt;&lt;/a&gt; &lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## This program is free software; you can redistribute it and/or modify&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## it under the terms of the GNU General Public License as published by&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## the Free Software Foundation; either version 2 of the License, or&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## (at your option) any later version.&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## &lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## This program is distributed in the hope that it will be useful,&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## but WITHOUT ANY WARRANTY; without even the implied warranty of&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## GNU General Public License for more details.&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## Free Software&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; ## 02110-1301, USA&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt; #######################################################################&lt;/span&gt;
+&lt;span style=&quot;color: #2aa198;&quot;&gt;'&lt;/span&gt;)
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-3&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; Inititalise R environment&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;####&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;MAKE SURE YOU HAVE THE CORE LIBS&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt; (!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(ProjectTemplate)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'ProjectTemplate'&lt;/span&gt;, repos=&lt;span style=&quot;color: #2aa198;&quot;&gt;'http://cran.csiro.au'&lt;/span&gt;); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(ProjectTemplate)
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt; (!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(lubridate)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'lubridate'&lt;/span&gt;, repos=&lt;span style=&quot;color: #2aa198;&quot;&gt;'http://cran.csiro.au'&lt;/span&gt;); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(lubridate)
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt; (!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(reshape)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'reshape'&lt;/span&gt;, repos=&lt;span style=&quot;color: #2aa198;&quot;&gt;'http://cran.csiro.au'&lt;/span&gt;); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(reshape)
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt; (!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(plyr)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'plyr'&lt;/span&gt;, repos=&lt;span style=&quot;color: #2aa198;&quot;&gt;'http://cran.csiro.au'&lt;/span&gt;); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(plyr)
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt; (!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(ggplot2)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'ggplot2'&lt;/span&gt;, repos=&lt;span style=&quot;color: #2aa198;&quot;&gt;'http://cran.csiro.au'&lt;/span&gt;); &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(ggplot2)
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(mgcv)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'mgcv'&lt;/span&gt;, repos=&lt;span style=&quot;color: #2aa198;&quot;&gt;'http://cran.csiro.au'&lt;/span&gt;);&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(mgcv);
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(splines)
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(!&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(NMMAPSlite)) install.packages(&lt;span style=&quot;color: #2aa198;&quot;&gt;'NMMAPSlite'&lt;/span&gt;, repos=&lt;span style=&quot;color: #2aa198;&quot;&gt;'http://cran.csiro.au'&lt;/span&gt;);&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(NMMAPSlite)
+rootdir &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; getwd()  
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-4&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; ProjectTemplate&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
+
+&lt;p&gt;\section{ProjectTemplate}
+This is a simple demo of the R package \emph{ProjectTemplate} &lt;a href=&quot;http://projecttemplate.net/&quot;&gt;http://projecttemplate.net/&lt;/a&gt; which is aimed at standardising the structure and general development of data analysis projects in R. 
+A primary aim is to allow analysts to quickly get a project loaded up and ready to:
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;reproduce or 
+&lt;/li&gt;
+&lt;li&gt;create new data analyses.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-5&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; Why?&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
+
+&lt;p&gt;It has been recognised on the R blogosphere that it 
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;is ``meant to handle very complex research projects'' (&lt;a href=&quot;http://bryer.org/2012/maker-an-r-package-for-managing-document-building-and-versioning&quot;&gt;http://bryer.org/2012/maker-an-r-package-for-managing-document-building-and-versioning&lt;/a&gt;) and 
+&lt;/li&gt;
+&lt;li&gt;is considered as being amongst the best approaches to the workflow for doing data analysis with R (&lt;a href=&quot;http://blog.revolutionanalytics.com/2010/10/a-workflow-for-r.html&quot;&gt;http://blog.revolutionanalytics.com/2010/10/a-workflow-for-r.html&lt;/a&gt;)
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-6&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-6&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;6&lt;/span&gt; The Reichian load, clean, func, do approach&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-6&quot;&gt;
+
+&lt;p&gt;\section{The Reichian load, clean, func, do approach}
+&lt;/p&gt;
+&lt;p&gt;
+The already mentioned blog post &lt;a href=&quot;http://blog.revolutionanalytics.com/2010/10/a-workflow-for-r.html&quot;&gt;http://blog.revolutionanalytics.com/2010/10/a-workflow-for-r.html&lt;/a&gt; also links to another`best' approach, the: 
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;\emph{Reichian load, clean, func, do} approach &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;http://stackoverflow.com/a/1434424&lt;/a&gt;.  
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;p&gt;
+By Josh Reich.  I've also followed to prepare this demo using the tutorial and data from the package website &lt;a href=&quot;http://projecttemplate.net/getting_started.html&quot;&gt;http://projecttemplate.net/getting_started.html&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-7&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-7&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;7&lt;/span&gt; The Peng NMMAPSlite approach&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-7&quot;&gt;
+
+&lt;p&gt;\section{The Peng NMMAPSlite approach}
+The other approach I followed was that of Roger Peng from Johns Hopkins and his NMMAPSlite R package \cite{Peng2004}.  Especially the function
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;readCity(name, collapseAge = &lt;span style=&quot;color: #b58900;&quot;&gt;FALSE&lt;/span&gt;, asDataFrame = &lt;span style=&quot;color: #b58900;&quot;&gt;TRUE&lt;/span&gt;)
+&lt;/pre&gt;
+
+
+&lt;p&gt;
+Arguments
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;name  character, abbreviated name of a city
+&lt;/li&gt;
+&lt;li&gt;collapseAge   logical, should age categories be collapsed?
+&lt;/li&gt;
+&lt;li&gt;asDataFrame   logical, should a data frame be returned?)
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;
+Description: Provides remote access to daily mortality, weather, and
+        air pollution data from the National Morbidity, Mortality, and
+        Air Pollution Study for 108 U.S. cities (1987&amp;ndash;2000); data are
+        obtained from the Internet-based Health and Air Pollution
+        Surveillance System (iHAPSS)
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-8&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-8&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;8&lt;/span&gt; Init the project&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-8&quot;&gt;
+
+&lt;p&gt;\section{Init the project}
+First we want to initialise the project directory.
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;####&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;init&lt;/span&gt;
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(&lt;span style=&quot;color: #2aa198;&quot;&gt;'ProjectTemplate'&lt;/span&gt;)
+create.project(&lt;span style=&quot;color: #2aa198;&quot;&gt;'analysis'&lt;/span&gt;,minimal=&lt;span style=&quot;color: #b58900;&quot;&gt;TRUE&lt;/span&gt;)
+&lt;/pre&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-9&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-9&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;9&lt;/span&gt; dir()&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-9&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;####&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;init dir&lt;/span&gt;
+dir(&lt;span style=&quot;color: #2aa198;&quot;&gt;'analysis'&lt;/span&gt;)
+&lt;/pre&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;cache&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;config&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;data&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;munge&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;README&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;src&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-10&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-10&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;10&lt;/span&gt; The reports directory&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-10&quot;&gt;
+
+&lt;p&gt;  I've added the reports directory manually and asked the package author if this is generic enough to be in the defaults for 
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;minimal = &lt;span style=&quot;color: #b58900;&quot;&gt;TRUE&lt;/span&gt; 
+&lt;/pre&gt;
+
+
+&lt;p&gt;
+I believe it may be as the \emph{Getting Started} guidebook states:
+&lt;/p&gt;&lt;blockquote&gt;
+
+&lt;p&gt;`It's meant to contain the sort of written descriptions of the results of your analyses that you'd \textbf{publish in a scientific paper.}
+&lt;/p&gt;
+&lt;p&gt;
+With that report written &amp;hellip;, we've gone through \textbf{the simplest sort of analysis you might run with ProjectTemplate}. 
+&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;####&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;init reports&lt;/span&gt;
+dir.create(&lt;span style=&quot;color: #2aa198;&quot;&gt;'analysis/reports'&lt;/span&gt;)
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-11&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-11&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;11&lt;/span&gt; Do the analysis&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-11&quot;&gt;
+
+&lt;p&gt;\section{Do the analysis: use load,clean,func,do}
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;####&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;this is the start of the analysis, &lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;assumes the init.r file has been run&lt;/span&gt;
+&lt;span style=&quot;color: #859900; font-weight: bold;&quot;&gt;if&lt;/span&gt;(file.exists(&lt;span style=&quot;color: #2aa198;&quot;&gt;'analysis'&lt;/span&gt;)) setwd(&lt;span style=&quot;color: #2aa198;&quot;&gt;'analysis'&lt;/span&gt;)  
+Sys.Date()
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;keep a track of the dates the analysis is rerun&lt;/span&gt;
+getwd()
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;may want to keep a reference of the directory &lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;the project is in so we can track the history &lt;/span&gt;
+&lt;/pre&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-12&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-12&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;12&lt;/span&gt; Get the projecttemplate tutorial data&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-12&quot;&gt;
+
+&lt;p&gt;Get the data from &lt;a href=&quot;http://projecttemplate.net/letters.csv.bz2&quot;&gt;http://projecttemplate.net/letters.csv.bz2&lt;/a&gt; (I downloaded on 13-4-2012)
+Put it in the data directory for auto loading.
+&lt;/p&gt;
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;####&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;analysis get tutorial data&lt;/span&gt;
+download.file(&lt;span style=&quot;color: #2aa198;&quot;&gt;'http://projecttemplate.net/letters.csv.bz2'&lt;/span&gt;, 
+  destfile = &lt;span style=&quot;color: #2aa198;&quot;&gt;'data/letters.csv.bz2'&lt;/span&gt;, mode = &lt;span style=&quot;color: #2aa198;&quot;&gt;'wb'&lt;/span&gt;)
+
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-13&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-13&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;13&lt;/span&gt; Tools&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-13&quot;&gt;
+
+&lt;p&gt;Edit the \emph{config/global.dcf} file to make sure that the load_libraries setting is turned on
+&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-14&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-14&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;14&lt;/span&gt; Load the analysis data&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-14&quot;&gt;
+
+&lt;p&gt;#\section{load}
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;####&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;analysis load&lt;/span&gt;
+&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(ProjectTemplate)
+load.project()
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-15&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-15&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;15&lt;/span&gt; check the analysis data&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-15&quot;&gt;
+
+&lt;p&gt;#\section{clean}
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;tail(letters)
+&lt;/pre&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;&lt;col class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;zyryan&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;z&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;y&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;zythem&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;z&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;y&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;zythia&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;z&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;y&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;zythum&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;z&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;y&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;zyzomys&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;z&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;y&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;zyzzogeton&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;z&lt;/td&gt;&lt;td class=&quot;left&quot;&gt;y&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-16&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-16&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;16&lt;/span&gt; Develop munge code&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-16&quot;&gt;
+
+&lt;p&gt;#\section{load with processing (munge)}
+&lt;/p&gt;
+&lt;p&gt;
+Edit the \emph{munge/01-A.R} script so that it contains the following two lines of code:
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;For our current analysis, we're interested in the total &lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;number of occurrences of each letter in the first and &lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;second letter positions and not in the words themselves.&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;compute aggregates&lt;/span&gt;
+first.letter.counts &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; ddply(letters, c(&lt;span style=&quot;color: #2aa198;&quot;&gt;'FirstLetter'&lt;/span&gt;), 
+  nrow)
+second.letter.counts &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; ddply(letters, c(&lt;span style=&quot;color: #2aa198;&quot;&gt;'SecondLetter'&lt;/span&gt;), 
+  nrow)
+&lt;/pre&gt;
+
+&lt;p&gt;
+Now if we run with 
+&lt;/p&gt;
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;load.project()
+&lt;/pre&gt;
+
+
+&lt;p&gt;
+all munging will happen automatically.  However&amp;hellip;
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-17&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-17&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;17&lt;/span&gt; To munge or not to munge?&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-17&quot;&gt;
+
+&lt;p&gt;As you'll see on the website, once the data munging is completed and outputs cached, load.project() will keep recomputing work over and over.  
+The author suggests we manually edit our configuration file.
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt; &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;edit the config file and turn munge on&lt;/span&gt;
+ &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;load.project()&lt;/span&gt;
+ &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;edit the config file and turn munge off&lt;/span&gt;
+ &lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;or my preference&lt;/span&gt;
+ &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;source&lt;/span&gt;(&lt;span style=&quot;color: #2aa198;&quot;&gt;'munge/01-A.r'&lt;/span&gt;)
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;which can be included in our first analysis script&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;but subsequent analysis scripts can just call load.project() &lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;without touching the config file&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-18&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-18&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;18&lt;/span&gt; Cache&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-18&quot;&gt;
+
+&lt;p&gt;Once munging is complete we cache the results
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;cache(&lt;span style=&quot;color: #2aa198;&quot;&gt;'first.letter.counts'&lt;/span&gt;)
+cache(&lt;span style=&quot;color: #2aa198;&quot;&gt;'second.letter.counts'&lt;/span&gt;)
+
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;And need to keep an eye on the implications for our config file to avoid re-calculating these next time we &lt;/span&gt;
+
+load.project()
+
+&lt;/pre&gt;
+
+
+
+
+&lt;p&gt;
+#\section{do}
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-19&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-19&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;19&lt;/span&gt; Plot first and second letter counts&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-19&quot;&gt;
+
+&lt;p&gt;Produce some simple density plots to see the shape of the first and second letter counts. 
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;Create \emph{src/generate_plots.R}. Use the src directory to store any analyses that you run. 
+&lt;/li&gt;
+&lt;li&gt;The convention is that every analysis script starts with load.project() and then goes on to do something original with the data.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-20&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-20&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;20&lt;/span&gt; Do generate plots&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-20&quot;&gt;
+
+&lt;p&gt;Write the first analysis script into a file in \textbf{src}
+&lt;/p&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;require&lt;/span&gt;(&lt;span style=&quot;color: #2aa198;&quot;&gt;'ProjectTemplate'&lt;/span&gt;)
+load.project()
+plot1 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; ggplot(first.letter.counts, aes(x = V1)) + 
+  geom_density()
+ggsave(file.path(&lt;span style=&quot;color: #2aa198;&quot;&gt;'reports'&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;'plot1.pdf'&lt;/span&gt;))
+
+plot2 &lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;&amp;lt;-&lt;/span&gt; ggplot(second.letter.counts, aes(x = V1)) + 
+  geom_density()
+ggsave(file.path(&lt;span style=&quot;color: #2aa198;&quot;&gt;'reports'&lt;/span&gt;, &lt;span style=&quot;color: #2aa198;&quot;&gt;'plot2.pdf'&lt;/span&gt;))
+dev.off()
+&lt;/pre&gt;
+
+
+&lt;p&gt;
+And now run it (I do this from a main `overview' script).
+&lt;/p&gt;
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #268bd2; font-weight: bold;&quot;&gt;source&lt;/span&gt;(&lt;span style=&quot;color: #2aa198;&quot;&gt;'src/generate_plots.r'&lt;/span&gt;)
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-21&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-21&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;21&lt;/span&gt; First letter&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-21&quot;&gt;
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-22&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-22&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;22&lt;/span&gt; Second letter&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-22&quot;&gt;
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-23&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-23&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;23&lt;/span&gt; Report results&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-23&quot;&gt;
+
+&lt;p&gt;\section{Report results}
+We see that both the first and second letter distributions are very skewed. To make a note of this for posterity, we can write up our discovery in a text file that we store in the reports directory.
+&lt;/p&gt;
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;\documentclass[a4paper]{article}
+\title{Letters analysis}
+\author{Ivan Hanigan}
+\begin{document}
+\maketitle
+blah blah blah
+\end{document}
+
+
+&lt;/pre&gt;
+
+
+
+
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-24&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-24&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;24&lt;/span&gt; Produce final report&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-24&quot;&gt;
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;now run LaTeX on the file in reports/letters.tex&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-25&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-25&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;25&lt;/span&gt; Personalised project management directories&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-25&quot;&gt;
+
+
+&lt;p&gt;
+\section{Personalised project management directories}
+&lt;/p&gt;
+
+
+
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;####&lt;/span&gt;
+&lt;span style=&quot;color: #586e75;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot;color: #586e75;&quot;&gt;init additional directories for project management&lt;/span&gt;
+analysisTemplate()
+&lt;/pre&gt;
+
+
+&lt;pre class=&quot;src src-R&quot;&gt;dir()
+&lt;/pre&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;colgroup&gt;&lt;col class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;admin&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;analysis&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;data&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;document&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;init.r&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;metadata&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;ProjectTemplateDemo.org&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;references&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;tools&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td class=&quot;left&quot;&gt;versions&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
 </content>
  </entry>
  

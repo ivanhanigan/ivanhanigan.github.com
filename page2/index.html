@@ -56,6 +56,165 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/" title="My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)" rel="bookmark">My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Aims</h1>
+
+<p>I have worked on a function that turns a <code>data.frame</code> into a graphviz code in the dot language, with some of my preferred settings.  I realised that it might be useful for causal directed acyclic graphs.</p>
+
+<p>Causal diagrams are useful for conceptualising the pathways of cause and effect.  These diagrams are sometimes simplly informal pictures but have also been developed in a more formal way to be used in modelling.  These formal developments use concepts derived from the mathmatical abstraction of Graphs (fundamentally Graphs  are networks of linked 'nodes', with the links being termed 'edges').  Causal diagrams can either be constructed to depict two things: first are feedback loops (a vexatious property of complex systems that confounds modelling) while second are more simple chain-of-events type pathways which proceed from an upstream cause to a downstream effect in a single direction, without cycles, called 'Directed Acyclic Graphs or DAGs.  The loop diagrams are out of the scope of this present blog post because the DAGs are much more easily addressed by the tool that I am describing.</p>
+
+<p>To begin I am going to build on this other guy's blog post on causal DAGs with R
+  <a href="http://donlelek.github.io/2015/03/31/dags-with-r/">http://donlelek.github.io/2015/03/31/dags-with-r/</a>
+I wanted to add an interface for building these.</p>
+
+<p>Some background to the concepts that I use are provided in the references below.</p>
+
+<h1>Materials and Methods</h1>
+
+<p>The DiagrammeR package which has been integrated within R-Studio has made access to the graphing tool <code>graphviz</code> much easier than it used to be.  My function <code>causal_dag</code> (avaiable in my <code>disentangle</code> github package) essentially constructs the required <code>nodes</code> and <code>edges</code> for that package to use.  Optionally we can also include <code>labels</code> to indicate the direction of the effect.</p>
+
+<p>To use the tool all you need to do is create a list of <code>edges</code> and their associated <code>inputs</code> nodes and <code>outputs</code> nodes (as a comma separated values string) shown in the picture below.</p>
+
+<p><img src="/images/causal-ssheet.png" alt="causal-ssheet.png" /></p>
+
+<h4>Code:</h4>
+
+<pre><code># read in the sheet
+library(disentangle)
+library(stringr)
+causes &lt;- readxl::read_excel("causal-ssheet.xlsx")
+causes
+nodes &lt;- newnode(causes, "edges", "inputs", "outputs")
+cat(nodes)
+# The result is a formated graph in the dot language with some of my
+# preferred settings such as edges showing as 'records' and a spot to
+# write a description or include literature about each process
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>See the DOT code in the Appendix</li>
+<li>to render the graph now DiagrammeR can use this text string R object to render this to SVG</li>
+<li>I think it does not do PNG or PDF though so I still use graphviz and dot directly</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code>grViz(nodes)
+
+# But I also use graphviz directly to produce a publishable image in
+# pdf or png
+sink("reproduce-donlelek.dot")
+cat(nodes)
+sink()# If graphviz is installed and on linux call it with a shell command
+#system("dot -Tpdf reproduce-donlelek.dot -o reproduce-donlelek.pdf")
+system("dot -Tpng reproduce-donlelek.dot -o reproduce-donlelek.png")
+</code></pre>
+
+<p></p>
+
+
+<h1>Results</h1>
+
+<p>Here I have reproduced the work of donlelek</p>
+
+<p><img src="/images/reproduce-donlelek.png" alt="reproduce-donlelek.png" /></p>
+
+<h1>Future directions</h1>
+
+<ul>
+<li>I'd like to make the edges implicit, so that the spreadsheet keeps track of the information about the causal process, but the graph just shows the lines connecting the nodes</li>
+<li>The edges are where the action is, so I need to add a direction of effect.  This would be in a <code>label</code> column and added in a [ label = 'abc' ] tag for each edge</li>
+<li>the rankdir option is LR to make this go sideways, which seems more the norm for causal DAGs, left to right.</li>
+</ul>
+
+
+<h4>References</h4>
+
+<pre><code>Greenland, S., Pearl, J., &amp; Robins, J. M. (1999). Causal diagrams for
+epidemiologic research. Epidemiology (Cambridge, Mass.), 10(1),
+37–48. doi:10.1097/00001648-199901000-00008
+
+Reid, C. E., Snowden, J. M., Kontgis, C., &amp; Tager, I. B. (2012). The
+role of ambient ozone in epidemiologic studies of heat-related
+mortality. Environmental Health Perspectives, 120(12),
+1627–30. doi:10.1289/ehp.1205251
+
+Newell, B., &amp; Wasson, R. (2001). Social System vs Solar System: Why
+Policy Makers Need History. In: Conflict and Cooperation related to
+International Water Resources : Historical Perspectives. In World
+Water (Vol. 2002).
+</code></pre>
+
+<p></p>
+
+
+<h1>Appendix</h1>
+
+<h4>Code:</h4>
+
+<pre><code>#####################################################################
+# The following output is automatically created by newnode()
+# NOTE for some reason, to show on the blog, I had to replace all { braces with normal (
+#####################################################################
+digraph transformations (
+
+"Metritis" -&gt; "Fertility effects"
+"Cistic Ovarian Disease" -&gt; "Fertility effects"
+"Age" -&gt; "Fertility effects"
+"Fertility effects"  [ shape=record, label="(( ( Name | Description ) | ( Fertility effects |  ) ))"]
+"Fertility effects" -&gt; "Fertility"
+
+
+"Metritis" -&gt; "Cistic Ovarian effects"
+"Retained Placenta" -&gt; "Cistic Ovarian effects"
+"Age" -&gt; "Cistic Ovarian effects"
+"Cistic Ovarian effects"  [ shape=record, label="(( ( Name | Description ) | ( Cistic Ovarian effects |  ) ))"]
+"Cistic Ovarian effects" -&gt; "Cistic Ovarian Disease"
+
+
+"Retained Placenta" -&gt; "Metritis effects"
+"Metritis effects"  [ shape=record, label="(( ( Name | Description ) | ( Metritis effects |  ) ))"]
+"Metritis effects" -&gt; "Metritis"
+
+
+ "Age" -&gt; "Retained Placenta effects"
+"Retained Placenta effects"  [ shape=record, label="(( ( Name | Description ) | ( Retained Placenta effects |  ) ))"]
+"Retained Placenta effects" -&gt; "Retained Placenta"
+
+
+ )
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-19 00:00:00 +1000">19 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/" title="If You Don't Find A Solution In R, Keep Googling!" rel="bookmark">If You Don't Find A Solution In R, Keep Googling!</a>
     </h1>
     <div class="entry-content full-content">
@@ -509,72 +668,6 @@ environmental and social causes is nevertheless valuable.
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/08/tracking-a-data-analysis-pipeline/" title="tracking-a-data-analysis-pipeline" rel="bookmark">tracking-a-data-analysis-pipeline</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I have just uploaded a new version of the windows build for my 'disentangle' package.  The blurb of the  draft vignette is below.</p>
-
-<h1>Introduction</h1>
-
-<p>It can be much easier to conceptually understand a complicated data
-analysis pipeline than it is to implement that pipeline effectively.
-This report outlines the use of the 'disentangle' R package, available from <a href="http://ivanhanigan.github.io/projects.html">http://ivanhanigan.github.io/projects.html</a>.  This package contains functions that were developed to aid data
-analysts to map out all the aspects of their work when planning and
-conducting complicated data analyses using the pipeline concept.    There are often many steps in the design and analysis of a study and
-when these are put together as a data analysis pipeline this addresses
-the challenge of reproducibility (Peng 2006).  The
-credibility of data analyses requires that every step is able to be
-scrutinised (Leek 2015).</p>
-
-<h2>Motivating scientific questions</h2>
-
-<p>The type of data analysis that is
-the focus of this work is more complicated than simply loading some
-data that are already cleaned, fitting some models and reporting some
-output.  Typically the type of data analysis projects that these tools
-are aimed at involve attempts to control for a large number
-of inter-relationships and associations between variables. It is
-especially problematic that these variables need to have been selected
-by the scientists from a multitude of possible variables and a
-plethora of possible data sources, during a long process of data
-collection, cleaning, exploration and decision making in preparation
-for data analysis. There are also a multitude of steps and decision
-points in the process of model building and model checking. The use of
-statistical models involving many entangled environmental and social
-variables can easily result in spurious association that may be
-mistakenly interpreted as causation.  Projects that the author has
-been involved in include explorations of hypotheses about health effects from
-droughts, bushfire smoke, heat-waves and dust-storms which produced
-novel findings, and informed controversial debates about the
-implications of climate change. The requirement to adequately convey
-the methods and results of this research was problematic and motivated
-the work on effective use of reproducible research techniques and data
-analysis pipelines.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/08/tracking-a-data-analysis-pipeline/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-08-28 00:00:00 +1000">28 Aug 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -624,6 +717,12 @@ analysis pipelines.</p>
           
       <!-- Add in logos here -->
       <a href="mailto:ivan.hanigan@gmail.com"><img src="/images/gmail.png" height=22px width=22px/></a>&nbsp;&nbsp;&nbsp;&nbsp; 
+          
+      <!-- Add in logos here -->
+      <a href="https://twitter.com/ivanhanigan"><img src="/images/twitter.png" height=22px width=22px/></a>&nbsp;&nbsp;&nbsp;&nbsp; 
+          
+      <!-- Add in logos here -->
+      <a href="http://www.linkedin.com/profile/view?id=AAMAAA-0wtwBnL35hDkq1UdK6vesju0LRODIVk0&trk=hp-identity-name"><img src="/images/linkedin.png" height=22px width=22px/></a>&nbsp;&nbsp;&nbsp;&nbsp; 
     
   </ul>
    
@@ -645,6 +744,30 @@ analysis pipelines.</p>
           
           <div id="primary-sidebar">
             <div class="widget">
+              <h2 class="widget-title">Recent Entries</h2>
+              <ul>
+                
+                <li>
+                  <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-3/" title="Reproducible Research And Managing Digital Assets Part 3" rel="bookmark">Reproducible Research And Managing Digital Assets Part 3</a>
+                </li>
+                
+                <li>
+                  <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-2/" title="Reproducible Research And Managing Digital Assets Part 2" rel="bookmark">Reproducible Research And Managing Digital Assets Part 2</a>
+                </li>
+                
+                <li>
+                  <a href="/2015/09/reproducible-research-and-managing-digital-assets/" title="Reproducible Research And Managing Digital Assets" rel="bookmark">Reproducible Research And Managing Digital Assets</a>
+                </li>
+                
+                <li>
+                  <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
+                </li>
+                
+                <li>
+                  <a href="/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/" title="Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity" rel="bookmark">Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</a>
+                </li>
+                
+              </ul>
               <h2 class="widget-title">Categories</h2>
               <ul>
 <!-- <li> -->
@@ -671,7 +794,7 @@ analysis pipelines.</p>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (13)</a></li>
+                <li><a href="/categories/disentangle">disentangle (12)</a></li>
                 
                 <li><a href="/categories/project management">project management (1)</a></li>
                 
@@ -680,32 +803,6 @@ analysis pipelines.</p>
                 <li><a href="/categories/writing">writing (1)</a></li>
                 
                 <li><a href="/categories/reproducible research reports">reproducible research reports (1)</a></li>
-                
-                <li><a href="/categories/data management">data management (1)</a></li>
-                
-              </ul>
-              <h2 class="widget-title">Recent Entries</h2>
-              <ul>
-                
-                <li>
-                  <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-2/" title="reproducible research and managing digital assets part 2/3" rel="bookmark">reproducible research and managing digital assets part 2/3</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/reproducible-research-and-managing-digital-assets/" title="Reproducible Research And Managing Digital Assets (1/3)" rel="bookmark">Reproducible Research And Managing Digital Assets (1/3)</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/" title="Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity" rel="bookmark">Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/" title="My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)" rel="bookmark">My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)</a>
-                </li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
@@ -726,10 +823,6 @@ analysis pipelines.</p>
                 <li><a href="/tag/diagrams">diagrams (2)</a></li>
                 
                 <li><a href="/tag/blogging">blogging (1)</a></li>
-                
-                <li><a href="/tag/Data Management System">Data Management System (1)</a></li>
-                
-                <li><a href="/tag/metadata">metadata (1)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -755,10 +848,6 @@ analysis pipelines.</p>
           <!--       <li><a href="/tag/diagrams">diagrams (2)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/blogging">blogging (1)</a></li> -->
-          <!--        -->
-          <!--       <li><a href="/tag/Data Management System">Data Management System (1)</a></li> -->
-          <!--        -->
-          <!--       <li><a href="/tag/metadata">metadata (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->
