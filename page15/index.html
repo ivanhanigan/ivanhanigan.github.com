@@ -56,6 +56,99 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/a-sharp-looking-orgmode-latex-export-header/" title="a-sharp-looking-orgmode-latex-export-header" rel="bookmark">a-sharp-looking-orgmode-latex-export-header</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I got this header for a nice looking report from Bull, G. (2011). Example Sweave Document. SharpStatistics.co.uk.</li>
+<li>This has a bunch of useful parameters, but I just really like the header and footer on pages 2 onward</li>
+<li>The original was a Sweave file.  I really like Sweave but orgmode allows other languages as well as R to be inter-woven into the script</li>
+<li>An alternative to Sweave is knitr and is still on my todo list, but this works well at the moment</li>
+<li>I also like how you can quickly change this to a Beamer presentation style.</li>
+<li>Once this is in your file use C-c C-e d to export and compile the PDF</li>
+<li>This example is available at <a href="/pdfs/SharpReportTemplate.pdf">this link</a></li>
+</ul>
+
+
+<h4>Emacs orgmode Code: Put this into your .org file</h4>
+
+<pre><code>#+TITLE: Sharp Report Template
+#+AUTHOR: Ivan Hanigan
+#+email: ivan.hanigan@anu.edu.au
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LaTeX_HEADER: \usepackage{amssymb,amsmath}
+#+LaTeX_HEADER: \usepackage{fancyhdr} %For headers and footers
+#+LaTeX_HEADER: \pagestyle{fancy} %For headers and footers
+#+LaTeX_HEADER: \usepackage{lastpage} %For getting page x of y
+#+LaTeX_HEADER: \usepackage{float} %Allows the figures to be positioned and formatted nicely
+#+LaTeX_HEADER: \floatstyle{boxed} %using this
+#+LaTeX_HEADER: \restylefloat{figure} %and this command
+#+LaTeX_HEADER: \usepackage{url} %Formatting of yrls
+#+LaTeX_HEADER: \lhead{ivanhanigan.github.com}
+#+LaTeX_HEADER: \chead{}
+#+LaTeX_HEADER: \rhead{\today}
+#+LaTeX_HEADER: \lfoot{Draft}
+#+LaTeX_HEADER: \cfoot{}
+#+LaTeX_HEADER: \rfoot{\thepage\ of \pageref{LastPage}}
+#+LATEX: \tableofcontents
+
+* Introduction
+This is a sharp looking report template I got from an R blogger \cite{Bull2011}.
+
+The pages after the first page have a nice looking header, footer and page number.
+\clearpage
+
+* Section 1
+In the Org file you can see some hidden R code that computes a linear regression and returns the results shown in Table \ref{ATable}.
+\input{ATable.tex}
+\clearpage
+*** COMMENT some-code
+#+name:some-code
+#+begin_src R :session *R* :tangle no :exports none :eval yes
+#### name:some-code ####
+x&lt;-rnorm(100,10,5)
+y&lt;-rnorm(100,20,15)
+fit &lt;- lm(y~x)
+library(xtable)
+sink("ATable.tex")
+xtable(fit, caption="Example Table",digits=4,table.placement="H",label="ATable")
+sink()
+#+end_src
+
+#+RESULTS: some-code
+
+
+
+* References
+\bibliographystyle{apalike}
+\bibliography{/home/ivan_hanigan/references/library}
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/a-sharp-looking-orgmode-latex-export-header/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-11-26 00:00:00 +1100">26 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/setting-up-a-workflow-with-code-chunks/" title="Setting Up A Workflow Script With Code Chunks" rel="bookmark">Setting Up A Workflow Script With Code Chunks</a>
     </h1>
     <div class="entry-content full-content">
@@ -727,48 +820,6 @@ write.csv(mendeley2, "mendeley_not_in_endnote_best_estimate.csv", row.names=F)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>Here is a really useful R snippet from  <a href="http://stackoverflow.com/a/6364905">http://stackoverflow.com/a/6364905</a> with a minor modification to allow differnt splits</p>
-
-<h4>Code:r-upcase-string</h4>
-
-<pre><code>x &lt;- c("The", "quick", "Brown", "fox/lazy dog")
-
-simpleCap &lt;- function(x, tosplit = " ") {
-  s &lt;- strsplit(x, tosplit)[[1]]
-  paste(toupper(substring(s, 1,1)), substring(s, 2),
-      sep="", collapse=tosplit)
-}
-sapply(x, simpleCap)
-sapply(x, simpleCap, tosplit = "/")
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/really-useful-r-upcase-string/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-11-17 00:00:00 +1100">17 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -849,6 +900,10 @@ sapply(x, simpleCap, tosplit = "/")
               <ul>
                 
                 <li>
+                  <a href="/2015/10/reproducible-research-pipelines-in-epidemiology/" title="Reproducible Research Pipelines In Epidemiology" rel="bookmark">Reproducible Research Pipelines In Epidemiology</a>
+                </li>
+                
+                <li>
                   <a href="/2015/09/the-best-thing-about-reproducibility-is-not-reproducibility-but-transparency-and-rigour/" title="The Best Thing About Reproducibility Is Not Reproducibility, It Is Transparency And Rigour" rel="bookmark">The Best Thing About Reproducibility Is Not Reproducibility, It Is Transparency And Rigour</a>
                 </li>
                 
@@ -862,10 +917,6 @@ sapply(x, simpleCap, tosplit = "/")
                 
                 <li>
                   <a href="/2015/09/reproducible-research-and-managing-digital-assets/" title="Reproducible Research And Managing Digital Assets (1 of 3). Scott Long wrote a book and some great tutorial slides" rel="bookmark">Reproducible Research And Managing Digital Assets (1 of 3). Scott Long wrote a book and some great tutorial slides</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
                 </li>
                 
               </ul>
@@ -895,7 +946,7 @@ sapply(x, simpleCap, tosplit = "/")
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (14)</a></li>
+                <li><a href="/categories/disentangle">disentangle (15)</a></li>
                 
                 <li><a href="/categories/project management">project management (1)</a></li>
                 
@@ -903,7 +954,7 @@ sapply(x, simpleCap, tosplit = "/")
                 
                 <li><a href="/categories/writing">writing (1)</a></li>
                 
-                <li><a href="/categories/reproducible research reports">reproducible research reports (2)</a></li>
+                <li><a href="/categories/reproducible research reports">reproducible research reports (3)</a></li>
                 
                 <li><a href="/categories/data management">data management (2)</a></li>
                 
