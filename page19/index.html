@@ -56,6 +56,42 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors</li>
+<li>We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement</li>
+<li>I've hacked together some very very ugly code to construct the lagged variable</li>
+<li><a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3">http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3</a></li>
+<li>There may be errors, it's been a long day, but I won't have a chance to check back on this till next week so I thought I'd put it out there as is.</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-28 00:00:00 +1100">28 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
     </h1>
     <div class="entry-content full-content">
@@ -862,71 +898,6 @@ dev.off()
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/morpho-and-rfigshare/" title="morpho-and-rfigshare" rel="bookmark">morpho-and-rfigshare</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>In this Case Study I will use Morpho to compare directly with reml.</p>
-
-<h1>Step one: Set up morpho</h1>
-
-<ul>
-<li>Follow the instructions at the ASN SuperSite website and install Morpho 1.8 rather than latest version because it has technical issues that stop it from setting permissions.</li>
-<li><a href="http://www.tern-supersites.net.au/index.php/data/repository-tutorial">Configure morpho</a>.  (I will follow the ASN SuperSite instructions as a future Case Study will be to use their KNB Metacat service).</li>
-<li>Do not configure to connect to the Metacat repository, will need a password to be assigned by ASN data manager.</li>
-</ul>
-
-
-<h1>Step 2: Look at the REML created metadata using Morpho</h1>
-
-<ul>
-<li>Morpho offers to open existing sets for modification.</li>
-</ul>
-
-
-<h4>Code: get location of my example dataset</h4>
-
-<pre><code>require(disentangle)
-fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"), package="disentangle")
-fpath
-dirname(fpath)
-# [1] "/home/ivan_hanigan/Rlibs/disentangle/extdata"
-</code></pre>
-
-<ul>
-<li>Morpho > File > import = civst_gend_sector_eml.xml</li>
-<li>(not the figshare_civst_gend_sector_eml.xml that was created when sending to figshare)</li>
-<li>Error encountered.  could not open metadata, open empty data package.  Offered to upgrade (unable to edit > accepted)</li>
-<li>unable to display data, empty data package will be shown</li>
-<li>top menu > Documentation > Add/Edit ion
-
-<h1>Step 3: Create new datasets with Morpho</h1></li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/morpho-and-rfigshare/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-14 00:00:00 +1100">14 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1007,6 +978,10 @@ dirname(fpath)
               <ul>
                 
                 <li>
+                  <a href="/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/" title="Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things" rel="bookmark">Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/research-protocol-for-manitoba-centre-for-health-policy/" title="Research Protocol For Manitoba Centre For Health Policy" rel="bookmark">Research Protocol For Manitoba Centre For Health Policy</a>
                 </li>
                 
@@ -1020,10 +995,6 @@ dirname(fpath)
                 
                 <li>
                   <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-3/" title="Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale" rel="bookmark">Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-2/" title="Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple" rel="bookmark">Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple</a>
                 </li>
                 
               </ul>
@@ -1049,7 +1020,7 @@ dirname(fpath)
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (17)</a></li>
+                <li><a href="/categories/disentangle">disentangle (18)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -1083,7 +1054,7 @@ dirname(fpath)
                 
                 <li><a href="/tag/spatial">spatial (1)</a></li>
                 
-                <li><a href="/tag/diagrams">diagrams (2)</a></li>
+                <li><a href="/tag/diagrams">diagrams (3)</a></li>
                 
                 <li><a href="/tag/blogging">blogging (1)</a></li>
                 
@@ -1114,7 +1085,7 @@ dirname(fpath)
           <!--        -->
           <!--       <li><a href="/tag/spatial">spatial (1)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/diagrams">diagrams (2)</a></li> -->
+          <!--       <li><a href="/tag/diagrams">diagrams (3)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/blogging">blogging (1)</a></li> -->
           <!--        -->

@@ -4,13 +4,135 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-10-02T16:22:21+10:00</updated>
+ <updated>2015-10-03T13:51:57+10:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</title>
+   <link href="http://schamberlain.github.com/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/"/>
+   <updated>2015-10-03T00:00:00+10:00</updated>
+   <id>http://schamberlain.github.com/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things</id>
+   <content type="html">&lt;p&gt;Using diagrams has long been a technique used in science to describe the relationships (edges) between things (nodes).  Mathematics and geometry tools have been applied to ameliorate the problem of laying out the diagram for the most efficient use of space.  It is desirable to minimise the gaps between the nodes and also to ensure that lines do not overlap too much.  This is because the complexity of graphs obfuscates the details that we are trying to show. Visual grouping helps to disentangle the relationships.&lt;/p&gt;
+
+&lt;p&gt;As an example, the relationship between drought and suicide is a complex system
+where the effects are indirect. The focus is on a chain
+of intermediary causal factors. These questions are usually explored
+in the context of many other factors that describe human biological
+variables and the socio-economic milieu.&lt;/p&gt;
+
+&lt;p&gt;In this post I utilise the R package &lt;code&gt;DiagrammeR&lt;/code&gt; to construct a causal directed acyclic graph (DAG) of the putative effects of a set of selected causal factors from both natural and social capital theories.&lt;/p&gt;
+
+&lt;p&gt;The following code produces graph
+&lt;img src=&quot;/images/suicide-drought.png&quot; alt=&quot;/images/suicide-drought.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Or this interactive version &lt;a href=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;/viewhtml21f36d8c5d7d/index.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;pre&gt;&lt;code class=&quot;r&quot;&gt;library(DiagrammeR)
+#### First create the outcome
+nodes_outcome &amp;lt;- create_nodes(nodes = c('suicide','depression','anxiety'),
+                        label = TRUE,
+                        colour = &quot;black&quot;)
+
+edges_outcome &amp;lt;- create_edges(from = c('depression','anxiety'),
+                        to =   c(&quot;suicide&quot;, &quot;suicide&quot;)
+                        )
+
+graph_outcome &amp;lt;- create_graph(nodes_df = nodes_outcome,
+                       edges_df = edges_outcome)
+# just test this out
+## render_graph(graph_outcome)
+
+#### now the social capital factors  
+nodes_social &amp;lt;- 
+  create_nodes(nodes =  c(&quot;stress&quot;, &quot;decreased community support&quot;, &quot;migration&quot;),
+               label = TRUE,
+               color = &quot;blue&quot;)
+
+edges_social &amp;lt;- create_edges(from =  c(&quot;stress&quot;, &quot;stress&quot;, &quot;decreased community support&quot;,
+                          &quot;migration&quot;),
+                        to =   c(&quot;anxiety&quot;, &quot;depression&quot;, &quot;anxiety&quot;,
+                          &quot;decreased community support&quot;)
+                        )
+graph_social &amp;lt;- create_graph(nodes_df = nodes_social,
+                       edges_df = edges_social)
+# render_graph(graph_social)
+
+#### now the financial capital factors
+nodes_financial &amp;lt;- 
+  create_nodes(nodes = c(&quot;employment&quot;, &quot;debt&quot;),
+               label = TRUE,
+               color = &quot;green&quot;)
+
+edges_financial &amp;lt;- create_edges(from = c(&quot;employment&quot;, &quot;employment&quot;, &quot;debt&quot;),
+                        to =   c(&quot;stress&quot;, &quot;debt&quot;, &quot;stress&quot;)
+                        )
+graph_financial &amp;lt;- create_graph(nodes_df = nodes_financial,
+                       edges_df = edges_financial)
+# render_graph(graph_financial)
+
+
+#### now the natural capital factors
+nodes_natural &amp;lt;- 
+  create_nodes(nodes = c(&quot;drought&quot;, &quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;),
+               label = TRUE,
+               color = &quot;red&quot;)
+
+edges_natural &amp;lt;- create_edges(from = c(&quot;drought&quot;, &quot;drought&quot;, &quot;declined agricultural productivity&quot;,
+                          &quot;declined agricultural productivity&quot;, &quot;declined agricultural productivity&quot;,
+                          &quot;decreased food security&quot;,
+                          &quot;drought&quot;),
+                        to =   c(&quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;, &quot;decreased food security&quot;,
+                          &quot;anxiety&quot;, &quot;employment&quot;,
+                          &quot;anxiety&quot;,
+                          &quot;migration&quot;)
+                        )
+graph_natural &amp;lt;- create_graph(nodes_df = nodes_natural,
+                       edges_df = edges_natural)
+## render_graph(graph_natural)
+
+# use create_graph on separate nodes and edges data frames, one for each cluster
+# then access the dot codes for each
+gr0 &amp;lt;- graph_outcome$dot_code
+gr1 &amp;lt;- graph_social$dot_code
+gr2 &amp;lt;- graph_financial$dot_code
+gr3 &amp;lt;- graph_natural$dot_code
+# then replace the graph with subgraph
+gr0 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster0&quot;, gr0)
+gr1 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster1&quot;, gr1)
+gr2 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster2&quot;, gr2)
+gr3 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster3&quot;, gr3)
+# and then combine the subgraphs into one graph
+gr_out &amp;lt;- sprintf(&quot;digraph{\n%s\n\n %s\n%s\n%s\n}&quot;, gr0, gr1, gr2, gr3)
+cat(gr_out)
+grViz(gr_out)
+# If graphviz is installed and on linux call it with a shell command
+sink(&quot;suicide-drought.dot&quot;)
+cat(gsub(&quot;'&quot;,'&quot;', gr_out))
+sink()
+system(&quot;dot -Tpng suicide-drought.dot -o suicide-drought.png&quot;)
+# Interactive
+nodes &amp;lt;- combine_nodes(nodes_outcome, nodes_social, nodes_natural, nodes_financial)
+edges &amp;lt;- combine_edges(edges_outcome, edges_social, edges_natural, edges_financial)
+
+# Render graph
+graph &amp;lt;- create_graph(nodes_df = nodes,
+                      edges_df = edges)
+
+render_graph(graph, output = &quot;visNetwork&quot;)    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Research Protocol For Manitoba Centre For Health Policy</title>
@@ -6850,60 +6972,6 @@ reml_boilerplate(
 &lt;li&gt;track the discussion via their emails (if they choose that option),&lt;/li&gt;
 &lt;li&gt;but those wanting  deeper involvement can fork and edit the pages and then submit pull  requests to the lead author.&lt;/li&gt;
 &lt;li&gt;Github's wiki and issues tracking functionality also could be used for serious development.&lt;/li&gt;
-&lt;/ul&gt;
-
-</content>
- </entry>
- 
- <entry>
-   <title>cwt-lter-data-submission-template-critique</title>
-   <link href="http://schamberlain.github.com/2014/01/cwt-lter-data-submission-template-critique/"/>
-   <updated>2014-01-07T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2014/01/cwt-lter-data-submission-template-critique</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;A colleague sent me the cwt_data_subm_template_2013.xls today&lt;/li&gt;
-&lt;li&gt;You can download a copy here &lt;a href=&quot;coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls&quot;&gt;coweeta.uga.edu/resources/forms/cwt_data_subm_template_2013.xls&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;LTER is The U.S. Long-Term Ecological Research (LTER) network&lt;/li&gt;
-&lt;li&gt;I made the following notes, this is not intended to be a nasty critique&lt;/li&gt;
-&lt;li&gt;The following is a few Frank and Fearless comments I'll be using to compare the pros and cons of a variety of data documentation approaches&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Critique&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;opened first on windows, saw comments on cells with instructions&lt;/li&gt;
-&lt;li&gt;opened next on linux with libreOffice and comments are gone&lt;/li&gt;
-&lt;li&gt;opened at the last tab (split in two for no reason?)&lt;/li&gt;
-&lt;li&gt;noticed recommended name &quot;GCE site&quot; = Site, otherwise &quot;permanent plot&quot; =      Plot?&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://nsmn1.uh.edu/steve/research/gce/gce.htm&quot;&gt;GCE = Georgia Coastal Ecosystems LTER program&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;flip to first tab, point 4 suggests there is some export functionality I cannot see (a VBA script?)&lt;/li&gt;
-&lt;li&gt;cell 11 a    NOTE: When submitting updated metadata or re-using templates please highlight fields with modified contents in yellow&lt;/li&gt;
-&lt;li&gt;and use glitter pen???&lt;/li&gt;
-&lt;li&gt;personnell tab OK&lt;/li&gt;
-&lt;li&gt;instrumentation, variable measured is free text. ok but for eg &quot;max temp&quot;, &quot;temperature maxima&quot;, &quot;maximum temperature (c)&quot; &quot;maximum temperature in 24 hours after 9am local time in degrees&quot; etc&lt;/li&gt;
-&lt;li&gt;too wide, last column was off my wide screen! noticed wasted real estate in column A&lt;/li&gt;
-&lt;li&gt;tabular data &quot;–  Paste or enter your data values into the 'Values' section (white cells), starting with the indicated cell&quot;&lt;/li&gt;
-&lt;li&gt;this is an invitation for clerical error! Too many &quot;copy-and-paste&quot; actions will inevtably introduce errors&lt;/li&gt;
-&lt;li&gt;I do like the extra metadata Column Name:
--- Description:
--- Units:
--- Data type:
--- Variable type:
--- Number type:
--- Precision:
--- Code values:
--- Calculations:
--- QC: Minimum Valid:
--- QC: Minimum Expected:
--- QC: Maximum Expected:
--- QC: Maximum Valid:
--- QC: Custom:
-–  Fill in missing values in the table with NaN (not a number), including text fields, and do not skip columns&lt;/li&gt;
-&lt;li&gt;but what about missing values imbued with other meanings (NA = not observed, censored etc)?&lt;/li&gt;
-&lt;li&gt;ask users to format digit rounding in Excel?? oh no&lt;/li&gt;
-&lt;li&gt;old excel users may still be restricted to 65,536 rows by 256 columns.&lt;/li&gt;
-&lt;li&gt;non tabular sheet is ok&lt;/li&gt;
 &lt;/ul&gt;
 
 </content>

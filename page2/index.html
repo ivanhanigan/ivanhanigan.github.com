@@ -56,6 +56,121 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-2/" title="Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple" rel="bookmark">Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This post is about an effective and simple data management framework for analysis projects.
+This post introduces Josh Reich's LCFD framework, originally introduced in this answer on the stack overflow website here <a href="http://stackoverflow.com/a/1434424">http://stackoverflow.com/a/1434424</a>, and encoded into the makeProject R package <a href="http://cran.r-project.org/web/packages/makeProject/makeProject.pdf">http://cran.r-project.org/web/packages/makeProject/makeProject.pdf</a>.</p>
+
+<h2>Literature Review Approach</h2>
+
+<p>This series of three posts is a summary of some of the most useful advice I have found based on my experience having implemented in my own work.</p>
+
+<p>This is the second post in a series of three entries regarding some evidence-based best practice approaches I have reviewed.  I have read many website articles and blog posts on a variety of approaches to the organisation of digital assets in a reporoducible research pipeline.
+The material I've gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.</p>
+
+<h2>Digital Assets Management for Reproducible Research</h2>
+
+<p>The digital assets in a reproducible research pipeline include:</p>
+
+<ol>
+<li>Publication material (documents, figures, tables, literature)</li>
+<li>Data (raw measurements, data provided, data derived)</li>
+<li>Code (pre-processing, analysis and presentation)</li>
+</ol>
+
+
+<h2>How to use the <code>makeProject</code> package</h2>
+
+<ul>
+<li>The <code>makeProject</code> R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.</li>
+<li>The theory is very similar to the approach described in the previous post about Scott Long's batch script: wfsetupsingle.bat <a href="https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets">https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets</a></li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code># choose your project dir
+setwd("~/projects")   
+library(makeProject)
+makeProject("makeProjectDemo")
+#returns
+"Creating Directories ...
+Creating Code Files ...
+Complete ..."
+matrix(dir("makeProjectDemo"))
+#[1,] "code"       
+#[2,] "data"       
+#[3,] "DESCRIPTION"
+#[4,] "main.R"     
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>This has set up some simple and sensible tools for a data analysis.</li>
+<li>Let's have a look at the <code>main.R</code> script. This is the one file that is used to run all the modules of the project, found in the R scripts in the <code>code</code> folder.</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code># Project: makeProjectDemo
+# Author: Your Name
+# Maintainer: Who to complain to &lt;yourfault@somewhere.net&gt;
+
+# This is the main file for the project
+# It should do very little except call the other files
+
+### Set the working directory
+setwd("/home/ivan_hanigan/projects/makeProjectDemo")
+
+
+### Set any global variables here
+####################
+
+
+
+####################
+
+
+### Run the code
+source("code/load.R")
+source("code/clean.R")
+source("code/func.R")
+source("code/do.R")
+</code></pre>
+
+<p></p>
+
+
+<p>I think that is very self-explanatory, but it does need some demonstration.  The next instalment in this three part blog post will describe the ProjectTemplate approach.  After that I will demonstrate ways that each of the three approaches can be used.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data management" title="data management" rel="category tag">data management</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/reproducible-research-and-managing-digital-assets-part-2/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-26 00:00:00 +1000">26 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/reproducible-research-and-managing-digital-assets/" title="Reproducible Research And Managing Digital Assets (1 of 3). Scott Long wrote a book and some great tutorial slides" rel="bookmark">Reproducible Research And Managing Digital Assets (1 of 3). Scott Long wrote a book and some great tutorial slides</a>
     </h1>
     <div class="entry-content full-content">
@@ -566,89 +681,6 @@ digraph transformations (
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/" title="If You Don't Find A Solution In R, Keep Googling!" rel="bookmark">If You Don't Find A Solution In R, Keep Googling!</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I've learnt this lesson multiple times. It happens like this.  A solution is not immediately obvious in R so you might think of writing your own function.  Generally there is a solution you just did not google enough.
-This time I was tricked a little because the GIS functions have been bad for a long time but getting better very rapidly recently.  A little while ago I had a very successful
-outcome from using the <code>raster::extract</code> function on a large raster file
-to get the attributes for a set of points.  I needed to do the same
-thing but this time for a shapefile and points.  I looked at the
-raster package and saw you can use the <code>raster::intersect</code> function
-here, and it worked on the small sample data I tested with but failed
-with the big dataset as it ran out of memory.  I assumed that R had not caught up with the GIS world yet and so I came up with this workaround below by splitting the points data layer into chunks.</p>
-
-<p>I then got access to ArcMap and was wondering whether it could do it, and it DID!
-So then I googled a bit and found the solution was simple:</p>
-
-<h4>Code:</h4>
-
-<pre><code>sp::over()
-</code></pre>
-
-<p></p>
-
-
-<p>Here is my hack in case I ever need to pull out the bit that does the splitting up of the points file, or the tryCatch():</p>
-
-<h4>Code:</h4>
-
-<pre><code>big_pt_intersect &lt;- function(pts, ply, chunks = 100){
-  idx &lt;- split(pts@data, 1:chunks)
-  #str(idx)
-  for(i in 1:length(idx)){
-  #i = 1
-  print(i)
-    ids &lt;- idx[ [i] ][,1]
-  #str(pts@data)
-  qc &lt;- pts[pts@data[,1] %in% ids,]
-  #str(qc)
-  tryCatch(
-    chunk &lt;-  raster::intersect(qc, ply), 
-    error = function(err){print(err)})
-  if(!exists('chunk_out')){
-
-    chunk_out &lt;- chunk@data
-  } else {
-    chunk_out &lt;- rbind(chunk_out, chunk@data)
-  }
-  rm(chunk)
-
-  }
-  #str(chunk_out)
-  return(chunk_out)
-}
-# NB warning about split length multiple is not fatal, just due to nonequal chunks 
-# (ie the geocodes are 2009/100)
-</code></pre>
-
-<p></p>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-09-17 00:00:00 +1000">17 Sep 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -729,6 +761,10 @@ So then I googled a bit and found the solution was simple:</p>
               <ul>
                 
                 <li>
+                  <a href="/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/" title="Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things" rel="bookmark">Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/research-protocol-for-manitoba-centre-for-health-policy/" title="Research Protocol For Manitoba Centre For Health Policy" rel="bookmark">Research Protocol For Manitoba Centre For Health Policy</a>
                 </li>
                 
@@ -742,10 +778,6 @@ So then I googled a bit and found the solution was simple:</p>
                 
                 <li>
                   <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-3/" title="Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale" rel="bookmark">Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-2/" title="Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple" rel="bookmark">Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple</a>
                 </li>
                 
               </ul>
@@ -771,7 +803,7 @@ So then I googled a bit and found the solution was simple:</p>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (17)</a></li>
+                <li><a href="/categories/disentangle">disentangle (18)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -805,7 +837,7 @@ So then I googled a bit and found the solution was simple:</p>
                 
                 <li><a href="/tag/spatial">spatial (1)</a></li>
                 
-                <li><a href="/tag/diagrams">diagrams (2)</a></li>
+                <li><a href="/tag/diagrams">diagrams (3)</a></li>
                 
                 <li><a href="/tag/blogging">blogging (1)</a></li>
                 
@@ -836,7 +868,7 @@ So then I googled a bit and found the solution was simple:</p>
           <!--        -->
           <!--       <li><a href="/tag/spatial">spatial (1)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/diagrams">diagrams (2)</a></li> -->
+          <!--       <li><a href="/tag/diagrams">diagrams (3)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/blogging">blogging (1)</a></li> -->
           <!--        -->

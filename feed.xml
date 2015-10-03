@@ -6,6 +6,127 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</title>
+				<description>&lt;p&gt;Using diagrams has long been a technique used in science to describe the relationships (edges) between things (nodes).  Mathematics and geometry tools have been applied to ameliorate the problem of laying out the diagram for the most efficient use of space.  It is desirable to minimise the gaps between the nodes and also to ensure that lines do not overlap too much.  This is because the complexity of graphs obfuscates the details that we are trying to show. Visual grouping helps to disentangle the relationships.&lt;/p&gt;
+
+&lt;p&gt;As an example, the relationship between drought and suicide is a complex system
+where the effects are indirect. The focus is on a chain
+of intermediary causal factors. These questions are usually explored
+in the context of many other factors that describe human biological
+variables and the socio-economic milieu.&lt;/p&gt;
+
+&lt;p&gt;In this post I utilise the R package &lt;code&gt;DiagrammeR&lt;/code&gt; to construct a causal directed acyclic graph (DAG) of the putative effects of a set of selected causal factors from both natural and social capital theories.&lt;/p&gt;
+
+&lt;p&gt;The following code produces graph
+&lt;img src=&quot;/images/suicide-drought.png&quot; alt=&quot;/images/suicide-drought.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Or this interactive version &lt;a href=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;/viewhtml21f36d8c5d7d/index.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;pre&gt;&lt;code class=&quot;r&quot;&gt;library(DiagrammeR)
+#### First create the outcome
+nodes_outcome &amp;lt;- create_nodes(nodes = c('suicide','depression','anxiety'),
+                        label = TRUE,
+                        colour = &quot;black&quot;)
+
+edges_outcome &amp;lt;- create_edges(from = c('depression','anxiety'),
+                        to =   c(&quot;suicide&quot;, &quot;suicide&quot;)
+                        )
+
+graph_outcome &amp;lt;- create_graph(nodes_df = nodes_outcome,
+                       edges_df = edges_outcome)
+# just test this out
+## render_graph(graph_outcome)
+
+#### now the social capital factors  
+nodes_social &amp;lt;- 
+  create_nodes(nodes =  c(&quot;stress&quot;, &quot;decreased community support&quot;, &quot;migration&quot;),
+               label = TRUE,
+               color = &quot;blue&quot;)
+
+edges_social &amp;lt;- create_edges(from =  c(&quot;stress&quot;, &quot;stress&quot;, &quot;decreased community support&quot;,
+                          &quot;migration&quot;),
+                        to =   c(&quot;anxiety&quot;, &quot;depression&quot;, &quot;anxiety&quot;,
+                          &quot;decreased community support&quot;)
+                        )
+graph_social &amp;lt;- create_graph(nodes_df = nodes_social,
+                       edges_df = edges_social)
+# render_graph(graph_social)
+
+#### now the financial capital factors
+nodes_financial &amp;lt;- 
+  create_nodes(nodes = c(&quot;employment&quot;, &quot;debt&quot;),
+               label = TRUE,
+               color = &quot;green&quot;)
+
+edges_financial &amp;lt;- create_edges(from = c(&quot;employment&quot;, &quot;employment&quot;, &quot;debt&quot;),
+                        to =   c(&quot;stress&quot;, &quot;debt&quot;, &quot;stress&quot;)
+                        )
+graph_financial &amp;lt;- create_graph(nodes_df = nodes_financial,
+                       edges_df = edges_financial)
+# render_graph(graph_financial)
+
+
+#### now the natural capital factors
+nodes_natural &amp;lt;- 
+  create_nodes(nodes = c(&quot;drought&quot;, &quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;),
+               label = TRUE,
+               color = &quot;red&quot;)
+
+edges_natural &amp;lt;- create_edges(from = c(&quot;drought&quot;, &quot;drought&quot;, &quot;declined agricultural productivity&quot;,
+                          &quot;declined agricultural productivity&quot;, &quot;declined agricultural productivity&quot;,
+                          &quot;decreased food security&quot;,
+                          &quot;drought&quot;),
+                        to =   c(&quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;, &quot;decreased food security&quot;,
+                          &quot;anxiety&quot;, &quot;employment&quot;,
+                          &quot;anxiety&quot;,
+                          &quot;migration&quot;)
+                        )
+graph_natural &amp;lt;- create_graph(nodes_df = nodes_natural,
+                       edges_df = edges_natural)
+## render_graph(graph_natural)
+
+# use create_graph on separate nodes and edges data frames, one for each cluster
+# then access the dot codes for each
+gr0 &amp;lt;- graph_outcome$dot_code
+gr1 &amp;lt;- graph_social$dot_code
+gr2 &amp;lt;- graph_financial$dot_code
+gr3 &amp;lt;- graph_natural$dot_code
+# then replace the graph with subgraph
+gr0 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster0&quot;, gr0)
+gr1 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster1&quot;, gr1)
+gr2 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster2&quot;, gr2)
+gr3 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster3&quot;, gr3)
+# and then combine the subgraphs into one graph
+gr_out &amp;lt;- sprintf(&quot;digraph{\n%s\n\n %s\n%s\n%s\n}&quot;, gr0, gr1, gr2, gr3)
+cat(gr_out)
+grViz(gr_out)
+# If graphviz is installed and on linux call it with a shell command
+sink(&quot;suicide-drought.dot&quot;)
+cat(gsub(&quot;'&quot;,'&quot;', gr_out))
+sink()
+system(&quot;dot -Tpng suicide-drought.dot -o suicide-drought.png&quot;)
+# Interactive
+nodes &amp;lt;- combine_nodes(nodes_outcome, nodes_social, nodes_natural, nodes_financial)
+edges &amp;lt;- combine_edges(edges_outcome, edges_social, edges_natural, edges_financial)
+
+# Render graph
+graph &amp;lt;- create_graph(nodes_df = nodes,
+                      edges_df = edges)
+
+render_graph(graph, output = &quot;visNetwork&quot;)    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+</description>
+				<published>2015-10-03 00:00:00 +1000</published>
+				<link>http://ivanhanigan.github.com/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/</link>
+			</item>
+		
+			<item>
 				<title>Research Protocol For Manitoba Centre For Health Policy</title>
 				<description>&lt;h4&gt;Version control&lt;/h4&gt;
 
@@ -1971,68 +2092,6 @@ digraph transformations (
 </description>
 				<published>2015-09-19 00:00:00 +1000</published>
 				<link>http://ivanhanigan.github.com/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/</link>
-			</item>
-		
-			<item>
-				<title>If You Don't Find A Solution In R, Keep Googling!</title>
-				<description>&lt;p&gt;I've learnt this lesson multiple times. It happens like this.  A solution is not immediately obvious in R so you might think of writing your own function.  Generally there is a solution you just did not google enough.
-This time I was tricked a little because the GIS functions have been bad for a long time but getting better very rapidly recently.  A little while ago I had a very successful
-outcome from using the &lt;code&gt;raster::extract&lt;/code&gt; function on a large raster file
-to get the attributes for a set of points.  I needed to do the same
-thing but this time for a shapefile and points.  I looked at the
-raster package and saw you can use the &lt;code&gt;raster::intersect&lt;/code&gt; function
-here, and it worked on the small sample data I tested with but failed
-with the big dataset as it ran out of memory.  I assumed that R had not caught up with the GIS world yet and so I came up with this workaround below by splitting the points data layer into chunks.&lt;/p&gt;
-
-&lt;p&gt;I then got access to ArcMap and was wondering whether it could do it, and it DID!
-So then I googled a bit and found the solution was simple:&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;sp::over()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Here is my hack in case I ever need to pull out the bit that does the splitting up of the points file, or the tryCatch():&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;big_pt_intersect &amp;lt;- function(pts, ply, chunks = 100){
-  idx &amp;lt;- split(pts@data, 1:chunks)
-  #str(idx)
-  for(i in 1:length(idx)){
-  #i = 1
-  print(i)
-    ids &amp;lt;- idx[ [i] ][,1]
-  #str(pts@data)
-  qc &amp;lt;- pts[pts@data[,1] %in% ids,]
-  #str(qc)
-  tryCatch(
-    chunk &amp;lt;-  raster::intersect(qc, ply), 
-    error = function(err){print(err)})
-  if(!exists('chunk_out')){
-
-    chunk_out &amp;lt;- chunk@data
-  } else {
-    chunk_out &amp;lt;- rbind(chunk_out, chunk@data)
-  }
-  rm(chunk)
-
-  }
-  #str(chunk_out)
-  return(chunk_out)
-}
-# NB warning about split length multiple is not fatal, just due to nonequal chunks 
-# (ie the geocodes are 2009/100)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-</description>
-				<published>2015-09-17 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2015/09/if-you-dont-find-a-solution-in-r-keep-googling/</link>
 			</item>
 		
 	</channel>

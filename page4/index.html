@@ -56,6 +56,173 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/07/climate-grids-and-thredds-server-experimenting-update/" title="Web Data, Climate Grids and THREDDS UPDATE" rel="bookmark">Web Data, Climate Grids and THREDDS UPDATE</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Update</h1>
+
+<ul>
+<li>This is an update to my previous post:  <a href="http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/">http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/</a></li>
+<li>I was worried about the available metadata with those netcdf data I was working with so contacted Dr Brad Evans at EMAST who set me straight:</li>
+</ul>
+
+
+<h4>QUOTE:</h4>
+
+<pre><code>"you need to use ncdf4  - not ncdf  ...
+because they are netcdf4 files and not netcdf3 files. 
+This is poorly explained in the R community.
+All of the netcdf files from Australian providers (AusCover, BoM, etc...) 
+have been in netcdf4 for a couple of years now."
+</code></pre>
+
+<h1>So here is the revised code using ncdf4 library:</h1>
+
+<h4>CODE</h4>
+
+<pre><code># sudo apt-get install r-cran-ncdf4 
+library(ncdf4)
+library(raster)
+strt &lt;-'2012-01-01'
+end &lt;- '2012-01-04'
+dates &lt;- seq(as.Date(strt),as.Date(end),1)          
+dates
+par(mfrow = c(2,2))
+for(i in 1:length(dates)){
+ # i=1
+  date_i &lt;- dates[i]
+  infile &lt;- sprintf("http://dapds00.nci.org.au/thredds/dodsC/rr9/Climate/eMAST/ANUClimate/0_01deg/v1m0_aus/day/land/tmin/e_01/2012/eMAST_ANUClimate_day_tmin_v1m0_%s.nc", gsub("-", "", date_i))
+
+  nc &lt;- nc_open(infile)
+  str(nc)
+  print(nc)
+  vals &lt;- ncvar_get(nc, varid="air_temperature")
+  str(vals)
+  nc.att &lt;-    nc$var$air_temperature
+  xmin &lt;- min(nc.att$dim[[1]]$vals)
+  xmax &lt;- max(nc.att$dim[[1]]$vals)
+  ymin &lt;- min(nc.att$dim[[2]]$vals)
+  ymax &lt;- max(nc.att$dim[[2]]$vals)
+
+  print(c(xmin,xmax))
+  print(c(ymin,ymax))
+
+  r &lt;- raster(t(vals),
+              xmn=xmin, xmx=xmax,
+              ymn=ymin, ymx=ymax)
+  #str(r)
+  plot(r)
+  nc_close(nc)
+}
+</code></pre>
+
+<p></p>
+
+
+<h1>RESULTS 1: METADATA</h1>
+
+<ul>
+<li>the result is I now have a lot more metdata returned to my R workspace</li>
+</ul>
+
+
+<h4>EXERPT</h4>
+
+<pre><code>[...]
+[1] "        licence_copyright: Copyright 2009-2013 ANU. Rights owned by The Australian National University (ANU). Rights licensed subject to TERN  Attribution (TERN-BY)."
+[1] "        short_desc: Australian coverage, ANUClimate 1.0, 0.01 degree grid, 1970-2012"
+[1] "        summary: Minimum daily temperature, for the Australian continent between 1970-2012. Daily temperature regulates rates of plant growth and determines critical conditions such as frost on flowering and fruiting. Modelled by expressing each daily value as a difference anomaly with respect to the gridded 1976-2005 mean daily minimum temperature for each month as provided by eMAST_ANUClimate_mmn_tmin_v1m0_1976_2005. The daily anomalies were interpolated by trivariate thin plate smoothing spline functions of longitude, latitude and vertically exaggerated elevation using ANUSPLIN Version 4.5. There was an average of 671 Bureau of Meteorology data points available for each day between 1970 and 2012. Automated quality assessment rejected on average 3 data values per day with extreme studentised residuals. These were commonly associated with days following missing observations. The root mean square of all individual cross validation residuals provided by the spline analysis is 1.5 degrees Celsius. A comprehensive assessment of the analysis and the factors contributing to the quality of the final interpolated daily minimum temperature grids is in preparation."
+[1] "        long_name: Daily minimum temperature"
+[1] "        contact: Michael Hutchinson, Professor of spatial and temporal analysis, 3.23A, Fenner School of Environment &amp; Society, College of Medicine, Biology &amp; Environment, Frank Fenner Building 141, Australian National University, Canberra, Australian Capital Territory, 200, Australia, (+61) 2 6125 4783, Michael.Hutchinson@anu.edu.au, http://orcid.org/0000-0001-8205-6689"
+[1] "        references: 1. Hutchinson, M.F., Mckenney, D.W., Lawrence, K., Pedlar, J., Hopkinson, R., Milewska, E. and Papadopol, P. 2009. Development and testing of Canada-wide interpolated spatial models of daily minimum/maximum temperature and precipitation for 1961-2003. Journal of Applied Meteorology and Climatology 48: 725�741. http://dx.doi.org/10.1175/2008JAMC1979.1 2. Hutchinson, M.F. and Xu, T. 2013. ANUSPLIN version 4.4 User Guide. Fenner School of Environment and Society, Australian National University, Canberra http://fennerschool.anu.edu.au/files/anusplin44.pdf"
+[1] "        source: ANUClimate 1.0"
+[1] "        keywords: EARTH SCIENCE &gt; ATMOSPHERE &gt; ATMOSPHERIC TEMPERATURE &gt; MAXIMUM/MINIMUM TEMPERATURE"
+[1] "        Conventions: CF-1.6"
+[1] "        institution: Australian National University"
+[1] "        geospatial_lat_min: -43.74"
+[1] "        geospatial_lat_max: -9"
+[1] "        geospatial_lat_units: degrees_north"
+[1] "        geospatial_lat_resolution: -0.01"
+[1] "        geospatial_lon_min: 112.9"
+[1] "        geospatial_lon_max: 154"
+[1] "        geospatial_lon_units: degrees_east"
+[1] "        geospatial_lon_resolution: 0.01"
+[1] "        keywords_vocabulary: Global Change Master Directory (http://gcmd.nasa.gov)"
+[1] "        metadata_link: http://datamgt.nci.org.au:8080/geonetwork"
+[1] "        standard_name_vocabulary: Climate and Forecast(CF) convention standard names (http://cf-pcmdi.llnl.gov/documents/cf-standard-names)"
+[1] "        id: eMAST_ANUClimate_day_tmin_v1m0_1970_2012"
+[1] "        DOI: To be added"
+[1] "        cdm_data_type: grid"
+[1] "        contributor_name: Michael Hutchinson, Jennnifer Kesteven, Tingbao Xu"
+[1] "        contributor_role: principalInvestigator, author, author"
+[1] "        creator_email: eMAST.data@mq.edu.au"
+[1] "        creator_name: eMAST data manager"
+[1] "        creator_url: http://www.emast.org.au/"
+[1] "        Metadata_Conventions: Unidata Dataset Discovery v1.0"
+[1] "        publisher_name: Ecosystem Modelling and Scaling Infrastructure (eMAST) Facility: Macquarie University"
+[1] "        publisher_email: eMAST.data@mq.edu.au"
+[1] "        publisher_url: http://www.emast.org.au/"
+</code></pre>
+
+<h1>RESULTS 2: Grid data</h1>
+
+<ul>
+<li>I still get lots of good data</li>
+</ul>
+
+
+<p><img src="/images/thredds2.png" alt="/images/thredds2.png" /></p>
+
+<p></p>
+
+
+<h1>NOTE I still need that weird transpose</h1>
+
+<ul>
+<li>I note that the weird hacky transpose is still required</li>
+</ul>
+
+
+<h4>CODE</h4>
+
+<pre><code># NB weird hacky transpose still required or else you get this
+r &lt;- raster(vals,
+            xmn=xmin, xmx=xmax,
+            ymn=ymin, ymx=ymax)
+
+#str(r)
+plot(r)
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/thredds2raw.png" alt="/images/thredds2raw.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/07/climate-grids-and-thredds-server-experimenting-update/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-07-27 00:00:00 +1000">27 Jul 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/03/r-eml-to-mitigate-risks-in-morpho-metacat-data-publishing/" title="Using the R EML software to mitigate risks in Morpho and Metacat data publishing" rel="bookmark">Using the R EML software to mitigate risks in Morpho and Metacat data publishing</a>
     </h1>
     <div class="entry-content full-content">
@@ -685,44 +852,6 @@ setwd(wd)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/08/morpho-doesnt-respect-quote-encapsulated-strings-in-csv/" title="morpho-doesnt-respect-quote-encapsulated-strings-in-csv" rel="bookmark">morpho-doesnt-respect-quote-encapsulated-strings-in-csv</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>We discovered this known morpho bug when we try to import a textual data to morpho</li>
-<li>Even if you double check that you have selected the correct format for that data. For example, delimited or fixed width, and the correct delimiter.</li>
-<li>see this bug report <a href="https://projects.ecoinformatics.org/ecoinfo/issues/4636">Bug #4636 Morpho should ignore commas inside double-quoted fields (CSV import)</a></li>
-<li>this unwanted Morpho behaviour is due to a comma in the cell and morpho doesn’t respect quote encapsulated strings with commas in them.</li>
-<li>we do not think we can fix Morpho’s bug, and we cannot upgrade Morpho because of our Metacat version. We just need to find a workaround on that.</li>
-</ul>
-
-
-<p><img src="/images/morpho-quote-encapsulated.png" alt="morpho-quote-encapsulated.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/08/morpho-doesnt-respect-quote-encapsulated-strings-in-csv/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-08-20 00:00:00 +1000">20 Aug 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -803,6 +932,10 @@ setwd(wd)
               <ul>
                 
                 <li>
+                  <a href="/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/" title="Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things" rel="bookmark">Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/research-protocol-for-manitoba-centre-for-health-policy/" title="Research Protocol For Manitoba Centre For Health Policy" rel="bookmark">Research Protocol For Manitoba Centre For Health Policy</a>
                 </li>
                 
@@ -816,10 +949,6 @@ setwd(wd)
                 
                 <li>
                   <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-3/" title="Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale" rel="bookmark">Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-2/" title="Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple" rel="bookmark">Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple</a>
                 </li>
                 
               </ul>
@@ -845,7 +974,7 @@ setwd(wd)
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (17)</a></li>
+                <li><a href="/categories/disentangle">disentangle (18)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -879,7 +1008,7 @@ setwd(wd)
                 
                 <li><a href="/tag/spatial">spatial (1)</a></li>
                 
-                <li><a href="/tag/diagrams">diagrams (2)</a></li>
+                <li><a href="/tag/diagrams">diagrams (3)</a></li>
                 
                 <li><a href="/tag/blogging">blogging (1)</a></li>
                 
@@ -910,7 +1039,7 @@ setwd(wd)
           <!--        -->
           <!--       <li><a href="/tag/spatial">spatial (1)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/diagrams">diagrams (2)</a></li> -->
+          <!--       <li><a href="/tag/diagrams">diagrams (3)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/blogging">blogging (1)</a></li> -->
           <!--        -->
