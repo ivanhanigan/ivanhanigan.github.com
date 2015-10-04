@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-10-03T13:51:57+10:00</updated>
+ <updated>2015-10-04T13:26:16+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,123 +13,81 @@
 
  
  <entry>
-   <title>Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</title>
-   <link href="http://ivanhanigan.github.com/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/"/>
-   <updated>2015-10-03T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things</id>
-   <content type="html">&lt;p&gt;Using diagrams has long been a technique used in science to describe the relationships (edges) between things (nodes).  Mathematics and geometry tools have been applied to ameliorate the problem of laying out the diagram for the most efficient use of space.  It is desirable to minimise the gaps between the nodes and also to ensure that lines do not overlap too much.  This is because the complexity of graphs obfuscates the details that we are trying to show. Visual grouping helps to disentangle the relationships.&lt;/p&gt;
-
-&lt;p&gt;As an example, the relationship between drought and suicide is a complex system
-where the effects are indirect. The focus is on a chain
-of intermediary causal factors. These questions are usually explored
-in the context of many other factors that describe human biological
-variables and the socio-economic milieu.&lt;/p&gt;
-
-&lt;p&gt;In this post I utilise the R package &lt;code&gt;DiagrammeR&lt;/code&gt; to construct a causal directed acyclic graph (DAG) of the putative effects of a set of selected causal factors from both natural and social capital theories.&lt;/p&gt;
-
-&lt;p&gt;The following code produces graph
-&lt;img src=&quot;/images/suicide-drought.png&quot; alt=&quot;/images/suicide-drought.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Or this interactive version &lt;a href=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;/viewhtml21f36d8c5d7d/index.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;&lt;/iframe&gt;
+   <title>Open Notebook Blogging Vs Twitter? Or Can I Do Both?</title>
+   <link href="http://ivanhanigan.github.com/2015/10/open-notebook-blogging-vs-twitter-or-can-i-do-both/"/>
+   <updated>2015-10-04T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2015/10/open-notebook-blogging-vs-twitter-or-can-i-do-both</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;I was tooling around someone's blog and noticed a link to this interesting talk &quot;Citation &amp;amp; Productivity Benefits from Open Science&quot; by &lt;a href=&quot;https://github.com/BillMills&quot;&gt;https://github.com/BillMills&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;the slides markdown is here &lt;a href=&quot;https://github.com/BillMills/practicalOpenScience/blob/gh-pages/outline.md&quot;&gt;https://github.com/BillMills/practicalOpenScience/blob/gh-pages/outline.md&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;the slide on &quot;Open Communication&quot; interested me, as I have turned up my open notebook blog to 11 recently with a couple of posts a week for the last few weeks&lt;/li&gt;
+&lt;li&gt;the recommendation to &quot;Blog Early And Blog Often&quot; resonated here!&lt;/li&gt;
+&lt;li&gt;I was intrigued by the comments&lt;/li&gt;
+&lt;/ul&gt;
 
 
-&lt;pre&gt;&lt;code class=&quot;r&quot;&gt;library(DiagrammeR)
-#### First create the outcome
-nodes_outcome &amp;lt;- create_nodes(nodes = c('suicide','depression','anxiety'),
-                        label = TRUE,
-                        colour = &quot;black&quot;)
-
-edges_outcome &amp;lt;- create_edges(from = c('depression','anxiety'),
-                        to =   c(&quot;suicide&quot;, &quot;suicide&quot;)
-                        )
-
-graph_outcome &amp;lt;- create_graph(nodes_df = nodes_outcome,
-                       edges_df = edges_outcome)
-# just test this out
-## render_graph(graph_outcome)
-
-#### now the social capital factors  
-nodes_social &amp;lt;- 
-  create_nodes(nodes =  c(&quot;stress&quot;, &quot;decreased community support&quot;, &quot;migration&quot;),
-               label = TRUE,
-               color = &quot;blue&quot;)
-
-edges_social &amp;lt;- create_edges(from =  c(&quot;stress&quot;, &quot;stress&quot;, &quot;decreased community support&quot;,
-                          &quot;migration&quot;),
-                        to =   c(&quot;anxiety&quot;, &quot;depression&quot;, &quot;anxiety&quot;,
-                          &quot;decreased community support&quot;)
-                        )
-graph_social &amp;lt;- create_graph(nodes_df = nodes_social,
-                       edges_df = edges_social)
-# render_graph(graph_social)
-
-#### now the financial capital factors
-nodes_financial &amp;lt;- 
-  create_nodes(nodes = c(&quot;employment&quot;, &quot;debt&quot;),
-               label = TRUE,
-               color = &quot;green&quot;)
-
-edges_financial &amp;lt;- create_edges(from = c(&quot;employment&quot;, &quot;employment&quot;, &quot;debt&quot;),
-                        to =   c(&quot;stress&quot;, &quot;debt&quot;, &quot;stress&quot;)
-                        )
-graph_financial &amp;lt;- create_graph(nodes_df = nodes_financial,
-                       edges_df = edges_financial)
-# render_graph(graph_financial)
-
-
-#### now the natural capital factors
-nodes_natural &amp;lt;- 
-  create_nodes(nodes = c(&quot;drought&quot;, &quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;),
-               label = TRUE,
-               color = &quot;red&quot;)
-
-edges_natural &amp;lt;- create_edges(from = c(&quot;drought&quot;, &quot;drought&quot;, &quot;declined agricultural productivity&quot;,
-                          &quot;declined agricultural productivity&quot;, &quot;declined agricultural productivity&quot;,
-                          &quot;decreased food security&quot;,
-                          &quot;drought&quot;),
-                        to =   c(&quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;, &quot;decreased food security&quot;,
-                          &quot;anxiety&quot;, &quot;employment&quot;,
-                          &quot;anxiety&quot;,
-                          &quot;migration&quot;)
-                        )
-graph_natural &amp;lt;- create_graph(nodes_df = nodes_natural,
-                       edges_df = edges_natural)
-## render_graph(graph_natural)
-
-# use create_graph on separate nodes and edges data frames, one for each cluster
-# then access the dot codes for each
-gr0 &amp;lt;- graph_outcome$dot_code
-gr1 &amp;lt;- graph_social$dot_code
-gr2 &amp;lt;- graph_financial$dot_code
-gr3 &amp;lt;- graph_natural$dot_code
-# then replace the graph with subgraph
-gr0 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster0&quot;, gr0)
-gr1 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster1&quot;, gr1)
-gr2 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster2&quot;, gr2)
-gr3 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster3&quot;, gr3)
-# and then combine the subgraphs into one graph
-gr_out &amp;lt;- sprintf(&quot;digraph{\n%s\n\n %s\n%s\n%s\n}&quot;, gr0, gr1, gr2, gr3)
-cat(gr_out)
-grViz(gr_out)
-# If graphviz is installed and on linux call it with a shell command
-sink(&quot;suicide-drought.dot&quot;)
-cat(gsub(&quot;'&quot;,'&quot;', gr_out))
-sink()
-system(&quot;dot -Tpng suicide-drought.dot -o suicide-drought.png&quot;)
-# Interactive
-nodes &amp;lt;- combine_nodes(nodes_outcome, nodes_social, nodes_natural, nodes_financial)
-edges &amp;lt;- combine_edges(edges_outcome, edges_social, edges_natural, edges_financial)
-
-# Render graph
-graph &amp;lt;- create_graph(nodes_df = nodes,
-                      edges_df = edges)
-
-render_graph(graph, output = &quot;visNetwork&quot;)    
+&lt;pre&gt;&lt;code&gt;
+used well, twitter can be a useful tool for frequent communication
+paradigms as a distributor and aggregator of links to the content in
+the other three bullet points. It can be really tough to stay on top
+of everyone's blog, everyone's issue tracker and everything else; by
+pushing links to our followers every time we have a new RFC out and
+vice versa, we greatly simplify this process. See this example.
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;the other three being: GitHub Issues/Working Open, Blogging/Journals of Brief Ideas and
+Study Preregistration/'publication bias'&lt;/li&gt;
+&lt;li&gt;RFC means 'Request For Comments'&lt;/li&gt;
+&lt;li&gt;and so I clicked on the link to this example &lt;a href=&quot;https://twitter.com/MozillaScience/status/628990222651428864&quot;&gt;https://twitter.com/MozillaScience/status/628990222651428864&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/twits.png&quot; alt=&quot;/images/twits.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Warning, Danger&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This seemed like a fascinating discussion, one that I have been thinking about a lot&lt;/li&gt;
+&lt;li&gt;and writing up here &lt;a href=&quot;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&quot;&gt;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&lt;/a&gt; in my thesis BUT...&lt;/li&gt;
+&lt;li&gt;I also recently received this warning from a blogger I admire: &lt;a href=&quot;http://charliepark.org/stepping-away-from-twitter/&quot;&gt;http://charliepark.org/stepping-away-from-twitter/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;He warns strongly that people with my temperament for seeking feedback and approval may be hampered by using twitter too much:&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;Stepping Away From Twitter
+June 12, 2015
+I recently noticed an interesting pattern.
+On days when I’m on Twitter, my ability to focus and 
+get good work done falls off a cliff.
+
+It’s not just “when you read Twitter first-thing in the day”, 
+something I’ve heard people discuss. 
+It was that I was on Twitter at all.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;But there are clear benefits right?&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;So I had to take a step back from my recent explorations with linking up my social media and blogging interests&lt;/li&gt;
+&lt;li&gt;Looking over what I am trying to achieve by keeping regular posts of my work, along with the need I feel to make sure people who are interested can &lt;em&gt;find&lt;/em&gt; my work, I began to despair&lt;/li&gt;
+&lt;li&gt;but then I kept digging around and see a lot of people I admire linking up twitter and more scientific communications&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;So what?&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I guess the real point of this post is to admit that I don't know how to use twitter&lt;/li&gt;
+&lt;li&gt;I'm happy to report I feel comfortable now (a couple of years in) making regular open notebook entries to communicate what is going on in my 'Lonely Analyst' lab &lt;a href=&quot;http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/&quot;&gt;http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;but a couple of recent emails asking me for data that I published years ago &lt;a href=&quot;https://gislibrary-extreme-weather.anu.edu.au/poa_weather&quot;&gt;like this Australian Postcode Area Weather Estimates stuff&lt;/a&gt; made me think I really need to get my stuff exposed so it is &lt;strong&gt;LOT&lt;/strong&gt; more visible.&lt;/li&gt;
+&lt;/ul&gt;
 
 </content>
  </entry>

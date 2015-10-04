@@ -56,6 +56,116 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/" title="using-r-eml-to-input-large-numbers-of-variables-part-2" rel="bookmark">using-r-eml-to-input-large-numbers-of-variables-part-2</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In my <a href="/2014/04/using-reml-to-input-large-number-of-column-descriptions">previous post</a> I showed a workaround to input large number of variabels than Morpho could handle.  I have found out an interesting thing about the R EML package data.set approach.  The unit.defs depends on the type of the column in the data frame (R knows if you try to trick it).  Rather than describe all the levels of the factor vars, I wanted to just have simple descriptions for numeric or character type columns.  If numeric it should be number and if character it can be the name of the column.  Because I am just trying to sidestep the issue with morpho failing to input the 200 plus variables I just need to create a dataframe with either number or character (not factor).</p>
+
+<p>For an example:</p>
+
+<h4>R Code:</h4>
+
+<pre><code>require(EML)
+fname &lt;- dir("myData", full.names=T, pattern = 'csv')
+fname
+fname  &lt;- "myData/paper_data.csv"  
+dat  &lt;- read.csv(fname, stringsAsFactor=F)
+# the variable names include special characters such as % and [ so need to do some extra work
+names_dat  &lt;- read.csv(fname, nrow=1, header=F, stringsAsFactor=F)
+names(dat) &lt;- names_dat
+head(dat)
+nrow(dat)
+# the first 46 variables are nominal, thereafter they are all numeric
+str(dat[,1:46])
+str(dat[,47:49])
+# but these numerics are character for some reason
+table(dat[ , 47])
+# it is because the raw data had * instead of NA...  I could use na.strings when I call read.table above, or deal with it here
+# I'll just convert them to numerics now
+dat1 &lt;- dat[,1:46]
+dat2 &lt;- dat[,47:ncol(dat)]
+dat2[dat2 == "*"] &lt;- NA
+for(i in 1:ncol(dat2)){
+  dat2[,i]  &lt;- as.numeric(dat2[ , i])
+}
+str(dat2)
+# good that has set them up properly, also make sure all the text are character type
+for(i in 1:ncol(dat1)){
+  dat1[,i]  &lt;- as.character(dat1[ , i])
+}
+# recombine
+dat &lt;- cbind(dat1,dat2)
+str(dat)
+# then I add to it the definition for the constructed variables
+unit_defs &lt;- list()
+for(i in 1:46){
+    unit_defs[[i]] &lt;- names(dat[i])
+}
+for(i in 47:ncol(dat)){
+    unit_defs[[i]] &lt;- "number"
+}
+unit_defs[1:20]
+col_defs &lt;- names(dat)
+col_defs
+#names(dat)
+dat &lt;- data.set(dat,
+               col.defs = col_defs,
+               unit.defs = unit_defs
+               )
+str(dat)
+
+eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
+dir()
+oldwd &lt;- getwd()
+setwd("myData")
+eml_write(dat, file = "test_eml.xml", title = "test_eml")
+setwd(oldwd)
+</code></pre>
+
+<p></p>
+
+
+<h3>Use Morpho to tidy up the Results</h3>
+
+<ul>
+<li>The result can be imported to Morpho and then edited from there</li>
+<li>or you can use a code editor like emacs or notepad++ to do bulk find-and-replace operations to fix up issues</li>
+</ul>
+
+
+<h3>Conclusions</h3>
+
+<ul>
+<li>Morpho failed with 200 plus variables</li>
+<li>the R EML package succeeded to write the file</li>
+<li>I needed to pay careful attention to the type of the variables in the data.frame before running the R EML functions</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/04/using-r-eml-to-input-large-numbers-of-variables-part-2/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-04-29 00:00:00 +1000">29 Apr 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/" title="Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs" rel="bookmark">Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</a>
     </h1>
     <div class="entry-content full-content">
@@ -998,125 +1108,6 @@ You can see this if you then open it up again in morpho and then under the docum
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/04/a-workaround-for-inserting-species-names-to-morpho/" title="A Workaround For Inserting Species Names To Morpho" rel="bookmark">A Workaround For Inserting Species Names To Morpho</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>Morpho is a pretty minimal editor for EML really.  It gives you a set
-of generically useful data entry forms but sometimes a specific task
-is better achieved through edits made directly to the XML document.
-An example of this is inserting a large number of species names to the
-taxonomic coverage module. The form to include these requires
-individual data entry for each species.</p>
-
-<p><img src="/images/morpho-taxo-smll.png" alt="morpho-taxo.png" /></p>
-
-<p>Which looks like this when published</p>
-
-<p><img src="/images/morpho-taxo2.1.png" alt="morpho-taxo2.png" /></p>
-
-<p>Go to the morpho catalogue (found at ~/.morpho/profiles/hanigan/data/hanigan/) and take a look at how the XML is constructed.</p>
-
-<h4>XML Code:</h4>
-
-<pre><code>&lt;taxonomicCoverage&gt;
-  &lt;taxonomicClassification&gt;
-    &lt;taxonRankName&gt;Genus&lt;/taxonRankName&gt;
-    &lt;taxonRankValue&gt;Dasycercus&lt;/taxonRankValue&gt;
-    &lt;taxonomicClassification&gt;
-      &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
-      &lt;taxonRankValue&gt;cristicauda&lt;/taxonRankValue&gt;
-      &lt;commonName&gt;Mulgara&lt;/commonName&gt;
-    &lt;/taxonomicClassification&gt;
-  &lt;/taxonomicClassification&gt;
-  &lt;taxonomicClassification&gt;
-    &lt;taxonRankName&gt;Genus&lt;/taxonRankName&gt;
-    &lt;taxonRankValue&gt;Homo&lt;/taxonRankValue&gt;
-      &lt;taxonomicClassification&gt;
-      &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
-      &lt;taxonRankValue&gt;sapiens&lt;/taxonRankValue&gt;
-      &lt;commonName&gt;Modern Human&lt;/commonName&gt;
-    &lt;/taxonomicClassification&gt;
-  &lt;/taxonomicClassification&gt;
-&lt;/taxonomicCoverage&gt;
-</code></pre>
-
-<p></p>
-
-
-<h4>SO how to insert a large number of these</h4>
-
-<p>One could use the taxon import feature to import the details from a
-file if there is a large list. Morpho’s taxon import feature does not
-correctly import more than one column of taxon data so if you have
-Genus and Species to enter you will actually need to combine Genus and
-Species into a binomial Species rank in one column (beware that if the data are sourced from a datafile that uses the underscore to seperate the words then these will not be correctly imported).</p>
-
-<p>Once you have formated your input list, then import this
-as a new data table and go to the taxonomic coverage form under the
-documentation menu.  Click on the option to "import taxon information
-from data table" and select the appropriate column, selecting
-'species' for the class.  This will populate the taxonomicCoverage module in the EML.  You can now remove that data table from the package to be tidy.</p>
-
-<p>This is what it looks like if you combine genus and species in the single column.</p>
-
-<p><img src="/images/morpho-taxo3.png" alt="morpho-taxo3.png" /></p>
-
-<p>And here is the XML</p>
-
-<h4>XML Code:</h4>
-
-<pre><code>&lt;taxonomicCoverage scope="document"&gt;
-  &lt;taxonomicClassification&gt;
-    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
-    &lt;taxonRankValue&gt;Abelmoschus moschatus&lt;/taxonRankValue&gt;
-  &lt;/taxonomicClassification&gt;
-  &lt;taxonomicClassification&gt;
-    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
-    &lt;taxonRankValue&gt;Abrus pector&lt;/taxonRankValue&gt;
-  &lt;/taxonomicClassification&gt;
-  &lt;taxonomicClassification&gt;
-    &lt;taxonRankName&gt;Species&lt;/taxonRankName&gt;
-    &lt;taxonRankValue&gt;Abrus precatorius&lt;/taxonRankValue&gt;
-  &lt;/taxonomicClassification&gt;
-</code></pre>
-
-<p></p>
-
-
-<h4>Morpho has problems subsequently editing a very long list</h4>
-
-<p>We found that if a very large amount of taxonomic information is entered into Morpho
-we had issues modifying it. When you click on Documentation >
-Taxonomic Coverage to try and go in and edit nothing will
-happen. Morpho crashes when trying to open the Taxonomic Coverage
-because the list is long enough to cause “Out of Memory” error with
-the default configuration of Java heap space. It is a Morpho bug. The
-workaround is to edit the XML file manually.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/04/a-workaround-for-inserting-species-names-to-morpho/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-04-20 00:00:00 +1000">20 Apr 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1197,6 +1188,10 @@ workaround is to edit the XML file manually.</p>
               <ul>
                 
                 <li>
+                  <a href="/2015/10/open-notebook-blogging-vs-twitter-or-can-i-do-both/" title="Open Notebook Blogging Vs Twitter? Or Can I Do Both?" rel="bookmark">Open Notebook Blogging Vs Twitter? Or Can I Do Both?</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/" title="Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things" rel="bookmark">Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</a>
                 </li>
                 
@@ -1210,10 +1205,6 @@ workaround is to edit the XML file manually.</p>
                 
                 <li>
                   <a href="/2015/09/the-best-thing-about-reproducibility-is-not-reproducibility-but-transparency-and-rigour/" title="The Best Thing About Reproducibility Is Not Reproducibility, It Is Transparency And Rigour" rel="bookmark">The Best Thing About Reproducibility Is Not Reproducibility, It Is Transparency And Rigour</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-3/" title="Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale" rel="bookmark">Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale</a>
                 </li>
                 
               </ul>
@@ -1239,7 +1230,7 @@ workaround is to edit the XML file manually.</p>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (18)</a></li>
+                <li><a href="/categories/disentangle">disentangle (19)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -1275,7 +1266,7 @@ workaround is to edit the XML file manually.</p>
                 
                 <li><a href="/tag/diagrams">diagrams (3)</a></li>
                 
-                <li><a href="/tag/blogging">blogging (1)</a></li>
+                <li><a href="/tag/blogging">blogging (2)</a></li>
                 
                 <li><a href="/tag/metadata">metadata (1)</a></li>
                 
@@ -1306,7 +1297,7 @@ workaround is to edit the XML file manually.</p>
           <!--        -->
           <!--       <li><a href="/tag/diagrams">diagrams (3)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/blogging">blogging (1)</a></li> -->
+          <!--       <li><a href="/tag/blogging">blogging (2)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/metadata">metadata (1)</a></li> -->
           <!--        -->
