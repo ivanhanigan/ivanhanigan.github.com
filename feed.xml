@@ -6,6 +6,79 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>A quick review of a quick guide to organizing computational biology projects</title>
+				<description>&lt;p&gt;The organisation of material is a particularly vexatious topic.  For a data analysis project it is very important that the set of folders and files is logical and intuitive, as well as being well documented. The oft-heard exhortation by computer scientists to their users to 'Read The F-ing Manual' (RTFM) is perennial and rooted in the fundamental difficulty of readers to have the time required to read and digest the detailed information there-in.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;In this post I review a paper that I was referred to by recent activity on the
+Mozillascience studyGroupLesson 'Open Science Utility Belt':
+&lt;a href=&quot;https://github.com/mozillascience/studyGroupLessons/issues/7&quot;&gt;https://github.com/mozillascience/studyGroupLessons/issues/7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;That group also holds a journal club &lt;a href=&quot;https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483&quot;&gt;https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483&lt;/a&gt; and they reviewed this paper:&lt;/li&gt;
+&lt;li&gt;Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;I missed out so I thought I'd put my notes up here for reference:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;core guiding principle is simple: Someone unfamiliar with your project should be able to look at your computer files and understand in detail what you did and why&lt;/li&gt;
+&lt;li&gt;your future self may find it difficult to understand your current work.&lt;/li&gt;
+&lt;li&gt;Noble's law: 'Everything you do, you will probably have to do over again'&lt;/li&gt;
+&lt;li&gt;store all of the files relevant to one project in common root directory&lt;/li&gt;
+&lt;li&gt;The exception to this rule is data/code that are used in multiple projects, they are standalone projects&lt;/li&gt;
+&lt;li&gt;Within a given project, use a top-level organization that is logical first, then chronological  at the next level, and then logical organization next&lt;/li&gt;
+&lt;li&gt;Core folders are &lt;code&gt;data&lt;/code&gt;, &lt;code&gt;results&lt;/code&gt;, &lt;code&gt;doc&lt;/code&gt; (versus Berndt Weiss' &lt;code&gt;dat&lt;/code&gt;, &lt;code&gt;ana&lt;/code&gt;, &lt;code&gt;doc&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Chronological order?  'tempting to apply a similar, logical organization... this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform'&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h3&gt;Recommended folder and file structures &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424.g001&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424.g001&lt;/a&gt;&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;r&quot;&gt;/projectname (eg msms)/
+    /doc/
+        /ms-analysis.html 
+        /paper/
+            /msms.tex
+            /msms.pdf
+    /data/
+        /YYYY-MM-DD/
+            /yeast/
+                /README
+                /yeast.sqt
+            /worm/
+                /README
+                /worm.sqt
+    /src/
+        /ms-analysis.c
+    /bin/
+        /parse-sqt.py
+    /results/
+        /notebook.html 
+        /YYYY-MM-DD-1/
+            /runall
+            /split1/
+            /split2/
+        /YYYY-MM-DD-2/
+            /runall
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Use a driver script to automate creation of a directory structure&lt;/li&gt;
+&lt;li&gt;maintain a chronologically organized lab notebook (I have been calling this a work 'log' sensu Scott Long's 2008 'Workflow book')&lt;/li&gt;
+&lt;li&gt;create either a README file, or a command line driver script (he calls this &lt;code&gt;runall&lt;/code&gt;, but see also &lt;code&gt;main.R&lt;/code&gt; sensu the Reichian LCFD model)&lt;/li&gt;
+&lt;li&gt;you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details&lt;/li&gt;
+&lt;li&gt;Version Control.  'Nuff said! But how to build capacity with Github when all my colleagues seem so confused by it?&lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+				<published>2015-10-07 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/</link>
+			</item>
+		
+			<item>
 				<title>Naming Conventions For Computer Files</title>
 				<description>&lt;p&gt;I'm working on a new Data Management Plan for a research group who
 merge data from air pollution, meteorology, population census and
@@ -2037,112 +2110,6 @@ md &quot;Work\- To do&quot;
 </description>
 				<published>2015-09-25 00:00:00 +1000</published>
 				<link>http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets/</link>
-			</item>
-		
-			<item>
-				<title>Organising Graph Nodes And Edges In A Dataframe</title>
-				<description>&lt;p&gt;I use the R package &lt;code&gt;DiagrammeR&lt;/code&gt; for creating graphs (the formal kind, connecting nodes with edges)
-- This package is great and I like how it interacts with the Graphviz program
-- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
-- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
-- In my utilities R package &lt;code&gt;github.com/ivanhanigan/disentangle&lt;/code&gt; I have written functions that turn this table into a graphiviz DOT language script
-- Recently I have needed to unpack the list for a more itemized view
-- Both these functions are showcased below&lt;/p&gt;
-
-&lt;h4&gt;Code: newnode&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# First create some test data, each step is a collection of edges 
-# with inputs or outputs simple comma seperated lists
-dat &amp;lt;- read.csv(textConnection('
-cluster ,  step    , inputs                    , outputs                                , description                      
-A  ,  siteIDs      , &quot;GPS, helicopter&quot;          , &quot;spatial, site doco&quot;                 , latitude and longitude of sites  
-A  ,  weather      , BoM                       , exposures                              , weather data from BoM            
-B  ,  trapped      , spatial                   , trapped_no                             , counts of species caught in trap 
-B  ,  biomass      , spatial                   , biomass_g                              ,                                  
-B  ,  correlations , &quot;exposures,trapped_no,biomass_g&quot; , report1                         , A study we published             
-C  ,  paper1       , report1                   , &quot;open access repository, data package&quot; ,                                  
-D  ,  biomass revision, new estimates          , biomass_g                              , this came late
-'), stringsAsFactors = F, strip.white = T)    
-str(dat)
-# dat
-
-# Now run the function and create a graph
-nodes &amp;lt;- newnode(
-  indat = dat,
-  names_col = &quot;step&quot;,
-  in_col = &quot;inputs&quot;,
-  out_col = &quot;outputs&quot;,
-  desc_col = &quot;description&quot;,
-  clusters_col = &quot;cluster&quot;,
-  nchar_to_snip = 40
-  )  
-sink(&quot;Transformations.dot&quot;)
-cat(nodes)
-sink()
-#DiagrammeR::grViz(&quot;Transformations.dot&quot;)
-system(&quot;dot -Tpng Transformations.dot -o Transformations.png&quot;)
-browseURL(&quot;Transformations.png&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;That creates this diagram&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/Transformations.png&quot; alt=&quot;/images/Transformations.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Now to showcase the tool that itemizes this list of inputs and outputs&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs&lt;/li&gt;
-&lt;li&gt;To add detail for each we need to unpack each list and create a new table with one row per node&lt;/li&gt;
-&lt;li&gt;I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code: newnode_csv&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;nodes_graphy &amp;lt;- newnode_csv(
-  indat = dat,
-  names_col = &quot;step&quot;,
-  in_col = &quot;inputs&quot;,
-  out_col = &quot;outputs&quot;,
-  clusters_col = 'cluster'
-  ) 
-# which creates this table
-knitr::kable(nodes_graphy)
-|cluster |name             |in_or_out |value                  |
-|:-------|:----------------|:---------|:----------------------|
-|A       |siteIDs          |input     |GPS                    |
-|A       |siteIDs          |input     |helicopter             |
-|A       |siteIDs          |output    |spatial                |
-|A       |siteIDs          |output    |site doco              |
-|A       |weather          |input     |BoM                    |
-|A       |weather          |output    |exposures              |
-|B       |trapped          |input     |spatial                |
-|B       |trapped          |output    |trapped_no             |
-|B       |biomass          |input     |spatial                |
-|B       |biomass          |output    |biomass_g              |
-|B       |correlations     |input     |exposures              |
-|B       |correlations     |input     |trapped_no             |
-|B       |correlations     |input     |biomass_g              |
-|B       |correlations     |output    |report1                |
-|C       |paper1           |input     |report1                |
-|C       |paper1           |output    |open access repository |
-|C       |paper1           |output    |data package           |
-|D       |biomass revision |input     |new estimates          |
-|D       |biomass revision |output    |biomass_g              |
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.&lt;/p&gt;
-</description>
-				<published>2015-09-23 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/</link>
 			</item>
 		
 	</channel>

@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-10-06T16:20:31+11:00</updated>
+ <updated>2015-10-07T10:31:36+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,189 +13,76 @@
 
  
  <entry>
-   <title>Naming Conventions For Computer Files</title>
-   <link href="http://ivanhanigan.github.com/2015/10/naming-conventions-for-computer-files/"/>
-   <updated>2015-10-05T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/10/naming-conventions-for-computer-files</id>
-   <content type="html">&lt;p&gt;I'm working on a new Data Management Plan for a research group who
-merge data from air pollution, meteorology, population census and
-health outcome datasets.  The folder organisation is pretty much under
-control now, but the file names are challenging.&lt;/p&gt;
-
-&lt;p&gt;I'm searching for inspiration and was recommended this conversation:
-&lt;a href=&quot;https://github.com/minisciencegirl/studyGroup/issues/20&quot;&gt;https://github.com/minisciencegirl/studyGroup/issues/20&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;File Organization and Naming:
-...
-I want to include details of what the settings were or what dataset I
-started out with. Rather than saving a file name a mile long
-&quot;FlightHomLog2_av1_Euc_ArrayEucl_AvgLink&quot;, there must be many
-different better ways to organizing my file space.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;There is a bunch of good advice already here, and I recommend the slides &lt;a href=&quot;https://github.com/Reproducible-Science-Curriculum/rr-organization1/tree/master/slides/naming-slides&quot;&gt;https://github.com/Reproducible-Science-Curriculum/rr-organization1/tree/master/slides/naming-slides&lt;/a&gt; and the two PLOS articles, but I wanted to pull out the two things I think it is important to get right:&lt;/p&gt;
+   <title>A quick review of a quick guide to organizing computational biology projects</title>
+   <link href="http://ivanhanigan.github.com/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/"/>
+   <updated>2015-10-07T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects</id>
+   <content type="html">&lt;p&gt;The organisation of material is a particularly vexatious topic.  For a data analysis project it is very important that the set of folders and files is logical and intuitive, as well as being well documented. The oft-heard exhortation by computer scientists to their users to 'Read The F-ing Manual' (RTFM) is perennial and rooted in the fundamental difficulty of readers to have the time required to read and digest the detailed information there-in.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;ordering in lists&lt;/li&gt;
-&lt;li&gt;substring chunks that can be extracted&lt;/li&gt;
+&lt;li&gt;In this post I review a paper that I was referred to by recent activity on the
+Mozillascience studyGroupLesson 'Open Science Utility Belt':
+&lt;a href=&quot;https://github.com/mozillascience/studyGroupLessons/issues/7&quot;&gt;https://github.com/mozillascience/studyGroupLessons/issues/7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;That group also holds a journal club &lt;a href=&quot;https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483&quot;&gt;https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483&lt;/a&gt; and they reviewed this paper:&lt;/li&gt;
+&lt;li&gt;Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;I think that the substring chunks are explained well in the slides link above (summary, use '_' or '-' to split the string), but I think that the ordering problem needs some thinking.&lt;/p&gt;
-
-&lt;h2&gt;Tidy Data:&lt;/h2&gt;
-
-&lt;p&gt;This all reminds me of words from Hadley Wickham about tidy data, and the order that columns should be arranged in tabular data.  The principles are similar I think.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;&quot;&gt;A good ordering makes it easier to scan the raw values. One way of
-organizing variables is by their role in the analysis: are values
-fixed by the design of the data collection, or are they measured
-during the course of the experiment? Fixed variables describe the
-experimental design and are known in advance. Computer scientists
-often call fixed variables dimensions, and statisticians usually
-denote them with subscripts on random variables. Measured variables
-are what we actually measure in the study. Fixed variables should come
-first, followed by measured variables, each ordered so that related
-variables are contiguous. Rows can then be ordered by the first
-variable, breaking ties with the second and subsequent (fixed)
-variables. 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Wickham, H. (2014). Tidy Data. JSS Journal of Statistical Software, 59(10).
-Retrieved from &lt;a href=&quot;http://www.jstatsoft.org/&quot;&gt;http://www.jstatsoft.org/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2&gt;One way that we did this:&lt;/h2&gt;
-
-&lt;p&gt;Colleagues and I came up with the following protocol for an ecology and biodiversity database&lt;/p&gt;
+&lt;p&gt;I missed out so I thought I'd put my notes up here for reference:&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Project name (optional sub-project name)&lt;/li&gt;
-&lt;li&gt;Data type (such as experimental unit, observational unit, and/or measurement methods)&lt;/li&gt;
-&lt;li&gt;Geographic location (State, Country)&lt;/li&gt;
-&lt;li&gt;Temporal frequency and coverge Annual or seasonal tranches&lt;/li&gt;
+&lt;li&gt;core guiding principle is simple: Someone unfamiliar with your project should be able to look at your computer files and understand in detail what you did and why&lt;/li&gt;
+&lt;li&gt;your future self may find it difficult to understand your current work.&lt;/li&gt;
+&lt;li&gt;Noble's law: 'Everything you do, you will probably have to do over again'&lt;/li&gt;
+&lt;li&gt;store all of the files relevant to one project in common root directory&lt;/li&gt;
+&lt;li&gt;The exception to this rule is data/code that are used in multiple projects, they are standalone projects&lt;/li&gt;
+&lt;li&gt;Within a given project, use a top-level organization that is logical first, then chronological  at the next level, and then logical organization next&lt;/li&gt;
+&lt;li&gt;Core folders are &lt;code&gt;data&lt;/code&gt;, &lt;code&gt;results&lt;/code&gt;, &lt;code&gt;doc&lt;/code&gt; (versus Berndt Weiss' &lt;code&gt;dat&lt;/code&gt;, &lt;code&gt;ana&lt;/code&gt;, &lt;code&gt;doc&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Chronological order?  'tempting to apply a similar, logical organization... this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform'&lt;/li&gt;
 &lt;/ol&gt;
 
 
-&lt;h2&gt;Tidy data generalisable concepts are dimensions and variables&lt;/h2&gt;
+&lt;h3&gt;Recommended folder and file structures &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424.g001&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424.g001&lt;/a&gt;&lt;/h3&gt;
 
-&lt;p&gt;The concept of dimensions and variables can be useful here, and especially for deciding on filenames.  Dimensions are fixed or change slowly while variables change more quickly .  For example the project name is 'fixed', that is it does not change across the files, but the sub-project name does change, just more slowly (say there may be 2-3 different sub-projects within a project). Then there may be a set of data types, and these 'change' more quickly than the sub-project name (by change I mean, there are more of them).  Then the geographic and temporal variables might change quickest of all.&lt;/p&gt;
-
-&lt;p&gt;So a general rule for the order of things can be stated
-The more fixed variables should come first (those things that don't change, or don't change much),
-followed by the more fluid variables (or things that change more across the project).
-List elements can then be ordered so that the groups of things that are similar will always be contiguous, and vary sequentially within clusters.&lt;/p&gt;
-
-&lt;p&gt;Perhaps an example would be easier to understand.  Here is a set of file names that we constructed for one of our ecological field sites (project) and plots (sub-project or measurement location):&lt;/p&gt;
-
-&lt;h4&gt;Notice we also had a controlled vocabulary of data types and their acronyms before starting this&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;| Filename                                                            | Title                                                                                                                                 |
-|---------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------|
-| asn_fnqr_soil_charact_robson_2011.csv                               | Soil Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2011                                                              |
-| asn_fnqr_soil_pit_robson_2012.csv                                   | Soil Pit Data, Water Content and Temperature, Far North Queensland Rainforest SuperSite, Robson Creek, 2012                           |
-| asn_fnqr_veg_seedling_robson_2010-2012.csv                          | Seedling Survey,  Far North Queensland Rainforest SuperSite, Robson Creek, 2010-2012                                                  |
-| asn_fnqr_veg_seedling_transect_coord_robson_2010-2012.csv           | Seedling Survey,  Far North Queensland Rainforest SuperSite, Robson Creek, 2010-2012                                                  |
-| asn_fnqr_core_1ha_robson_2014.csv                                   | Soil Pit Data, Soil Characterisation, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha plot, 2014                   |
-| asn_fnqr_fauna_biodiversity_ctbcc_2012.csv                          | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, 2012                                      |
-| asn_fnqr_fauna_biodiversity_ctbcc_2013.csv                          | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, 2013                                      |
-| asn_fnqr_fauna_biodiversity_ctbcc_capetrib_2014.csv                 | Avifauna Monitoring, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2014                                                |
-| asn_fnqr_fauna_biodiversity_ctbcc_lu11a_2014.csv                    | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU11A, 2014                               |
-| asn_fnqr_fauna_biodiversity_ctbcc_lu7a_2014.csv                     | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU7A, 2014                                |
-| asn_fnqr_fauna_biodiversity_ctbcc_lu7b_2014.csv                     | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU7B, 2014                                |
-| asn_fnqr_fauna_biodiversity_ctbcc_lu9a_2014.csv                     | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU9A, 2014                                |
-| asn_fnqr_fauna_biodiversity_ctbcc-lu11a_2009-2011.csv               | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU11A, 2009-2011                          |
-| asn_fnqr_fauna_biodiversity_ctbcc-lu7a_2009-2011.csv                | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU7A, 2009-2011                           |
-| asn_fnqr_fauna_biodiversity_ctbcc-lu9a_2009-2011.csv                | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU9A, 2009-2011                           |
-| asn_fnqr_fauna_biodiversity_habitat codes_ctbcc-lu11a_2009-2011.pdf | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU11A, 2009-2011                          |
-| asn_fnqr_fauna_biodiversity_habitat codes_ctbcc-lu9a_2009-2011.pdf  | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU9A, 2009-2011                           |
-| asn_fnqr_fauna_biodiversity_habitat_codes_ctbcc-lu7a_2009-2011.pdf  | Vertebrate Fauna Biodiversity Monitoring, Far North Queensland Rainforest SuperSite, CTBCC, LU7A, 2009-2011                           |
-| asn_fnqr_fauna_birds_capture_robson_2011-2014.csv                   | Bird Capture Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2011-2014                                                 |
-| asn_fnqr_fauna_birds_robson_2010-2014.csv                           | Bird Survey Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2010-2014                                                  |
-| asn_fnqr_fauna_invert_moth_robson_2009.csv                          | Moth Inventory at Canopy and Ground Level, Far North Queensland Rainforest SuperSite, Robson Creek, 2009                              |
-| asn_fnqr_fauna_invert_moth_robson_2010.csv                          | Moth Inventory at Canopy and Ground Level, Far North Queensland Rainforest SuperSite, Robson Creek, 2010                              |
-| asn_fnqr_fauna_invert_moth_robson_2011.csv                          | Moth Inventory at Canopy and Ground Level, Far North Queensland Rainforest SuperSite, Robson Creek, 2011                              |
-| asn_fnqr_fauna_invert_robson_25ha_2013                              | Invertebrate Fauna Survey, Far North Queensland Rainforest SuperSite, Robson Creek, 25 Ha Plot, 2013                                  |
-| asn_fnqr_geo_tracks_100m_grid_robson_2010-2013.kml                  | Base Geographical Data,  Far North Queensland Rainforest SuperSite, Robson Creek, 2010-2013                                           |
-| asn_fnqr_geo_tracks_robson_2010-2013.kml                            | Base Geographical Data,  Far North Queensland Rainforest SuperSite, Robson Creek, 2010-2013                                           |
-| asn_fnqr_geo_tracks_robson_2010-2013.mdb                            | Base Geographical Data,  Far North Queensland Rainforest SuperSite, Robson Creek, 2010-2013                                           |
-| asn_fnqr_geo_tracks_trees_robson_2010-2013.kml                      | Base Geographical Data,  Far North Queensland Rainforest SuperSite, Robson Creek, 2010-2013                                           |
-| asn_fnqr_soil_cosmos_robson_2011.csv                                | Soil Sampling for Calibration of Cosmic Ray Soil Moisture Sensor, Far North Queensland Rainforest SuperSite, Robson Creek, 2011       |
-| asn_fnqr_soil_pit_robson_2012.csv                                   | Soil Pit Data, Soil Characterisation, Far North Queensland Rainforest SuperSite, Robson Creek, 2012                                   |
-| asn_fnqr_soil_pit_robson_2013.csv                                   | Soil Pit Data, Water Content and Temperature, Far North Queensland Rainforest SuperSite, Robson Creek, 2013                           |
-| asn_fnqr_soil_properties_ddc_2013.csv                               | Soil Data, Far North Queensland Rainforest SuperSite, Daintree Discovery Centre, 2013                                                 |
-| asn_fnqr_soil_properties_ddc_2014.csv                               | Soil Data, Far North Queensland Rainforest SuperSite, Daintree Discovery Centre, 2014                                                 |
-| asn_fnqr_soil_properties_robson_2014.csv                            | Soil Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2014                                                              |
-| asn_fnqr_stream_chem_robson_201310.csv                              | Water Chemistry Data, Far North Queensland Rainforest SuperSite, Robson Creek, 201310-201311                                          |
-| asn_fnqr_stream_chem_robson_201310-201405.csv                       | Water Chemistry Data, Far North Queensland Rainforest SuperSite, Robson Creek, 201310-201405                                          |
-| asn_fnqr_stream_chem_robson_201311.csv                              | Water Chemistry Data, Far North Queensland Rainforest SuperSite, Robson Creek, 201310-201311                                          |
-| asn_fnqr_stream_chem_std_methods_robson_2013.pdf                    | Water Chemistry Data, Far North Queensland Rainforest SuperSite, Robson Creek, 201310-201311                                          |
-| asn_fnqr_stream_phys-chem_diagram_robson_2013.pdf                   | Stream Physico-Chemical Data,  Far North Queensland Rainforest SuperSite, Robson Creek, 201304-201305                                 |
-| asn_fnqr_stream-phys-chem_robson_201304-201305.csv                  | Stream Physico-Chemical Data,  Far North Queensland Rainforest SuperSite, Robson Creek, 201304-201305                                 |
-| asn_fnqr_veg_cwd_robson_core_1ha_2012.csv                           | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_dbh-h_capetrib_crane_plot_2001.csv                     | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 1 ha Crane Plot, 2001                               |
-| asn_fnqr_veg_dbh-h_capetrib_crane_plot_2005.csv                     | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 1 ha Crane Plot, 2005                               |
-| asn_fnqr_veg_dbh-h_capetrib_crane_plot_2010.csv                     | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 1 ha Crane Plot, 2010                               |
-| asn_fnqr_veg_dbh-h_robson_25ha_2009-2015.csv                        | Vascular Plant Data ÔëÑ 10 cm DBH,  Far North Queensland Rainforest SuperSite, Robson Creek, 25 ha Plot, 2009-2015                    |
-| asn_fnqr_veg_fruit_robson_25ha_2011-2015.csv                        | Fruit Phenology, Far North Queensland Rainforest SuperSite, Robson Creek, 25 ha Plot, 2011-2015                                       |
-| asn_fnqr_veg_gentry_mid-stratum_robson_core_1ha_2012.csv            | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_gentry_sub-stratum_herbs_robson_core_1ha_2012.csv      | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_gentry_sub-stratum_shrubs_robson_core_1ha_2012.csv     | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_lai_robson_core_1ha_2012.pdf                           | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_leaf_phys_capetrib_20120831.csv                        | Leaf Level Physiology, Chemistry and Structural Traits, Far North Queensland Rainforest SuperSite, Cape Tribulation, Crane Site, 2012 |
-| asn_fnqr_veg_leaf_phys_master_aci_curves_robson_2012.csv            | Leaf Level Physiology, Chemistry and Structural Traits, Far North Queensland SuperSite, Robson Creek, 2012                            |
-|                                                                     |                                                                                                                                       |
-| asn_fnqr_veg_leaf_phys_master_ai_curves_robson_2012.csv             | Leaf Level Physiology, Chemistry and Structural Traits, Far North Queensland SuperSite, Robson Creek, 2012                            |
-|                                                                     |                                                                                                                                       |
-| asn_fnqr_veg_seedling_species_robson_2010-2012.csv                  | Seedling Survey,  Far North Queensland Rainforest SuperSite, Robson Creek, 2010-2012                                                  |
-| asn_fnqr_veg_species_capetrib_crane_plot_2001.csv                   | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 1 ha Crane Plot, 2001                               |
-| asn_fnqr_veg_species_capetrib_crane_plot_2005.csv                   | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 1 ha Crane Plot, 2005                               |
-| asn_fnqr_veg_species_capetrib_crane_plot_2010.csv                   | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 1 ha Crane Plot, 2010                               |
-| asn_fnqr_veg_species_robson_2012.csv                                | Vegetation Species List, Far North Queensland Rainforest SuperSite, Robson Creek, 2012                                                |
-| asn_fnqr_veg_struct_robson_core_1ha_2012.csv                        | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_centre_images_2012.zip          | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_centre_images_2014.zip          | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_ne_corner_images_2012.zip       | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_ne_corner_images_2014.zip       | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_nw_corner_images_2012.zip       | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_nw_corner_images_2014.zip       | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_se_corner_images_2012.zip       | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_se_corner_images_2014.zip       | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_sw_corner_images_2012.zip       | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_struct_robson_core_1ha_sw_corner_images_2014.zip       | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_structure_robson_core_1 ha.csv                         | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_veg_vascular plant list_robson_core_1 ha_2012.csv          | Vascular Plant Data, Far North Queensland Rainforest SuperSite, Robson Creek, Core 1 ha, 2012                                         |
-| asn_fnqr_water_properties_robson_2013.csv                           | Stream Physico-Chemical Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2013                                           |
-| asn_fnqr_water_properties_robson_2014.csv                           | Stream Physico-Chemical Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2014                                           |
-| asn_fnqr_weather_capetrib_2006.csv                                  | Weather Station Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2006                                               |
-| asn_fnqr_weather_capetrib_2007.csv                                  | Weather Station Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2007                                               |
-| asn_fnqr_weather_capetrib_2008.csv                                  | Weather Station Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2008                                               |
-| asn_fnqr_weather_capetrib_2009.csv                                  | Weather Station Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2009                                               |
-| asn_fnqr_weather_capetrib_2010.csv                                  | Weather Station Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2010                                               |
-| asn_fnqr_weather_capetrib_2011.csv                                  | Weather Station Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2011                                               |
-| asn_fnqr_weather_capetrib_2012.csv                                  | Weather Station Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2012                                               |
-| asn_fnqr_weather_capetrib_2013.csv                                  | Weather Station Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2013                                               |
-| asn_fnqr_weather_capetrib_2014.csv                                  | Weather Station Data, Far North Queensland Rainforest SuperSite, Cape Tribulation, 2014                                               |
-| asn_fnqr_weather_ddc_2008.csv                                       | Weather Station Data, Far North Queensland Rainforest SuperSite, Daintree Discovery Centre, 2008                                      |
-| asn_fnqr_weather_ddc_2009.csv                                       | Weather Station Data, Far North Queensland Rainforest SuperSite, Daintree Discovery Centre, 2009                                      |
-| asn_fnqr_weather_ddc_2010.csv                                       | Weather Station Data, Far North Queensland Rainforest SuperSite, Daintree Discovery Centre, 2010                                      |
-| asn_fnqr_weather_ddc_2011.csv                                       | Weather Station Data, Far North Queensland Rainforest SuperSite, Daintree Discovery Centre, 2011                                      |
-| asn_fnqr_weather_ddc_2012.csv                                       | Weather Station Data, Far North Queensland Rainforest SuperSite, Daintree Discovery Centre, 2012                                      |
-| asn_fnqr_weather_ddc_2013.csv                                       | Weather Station Data, Far North Queensland Rainforest SuperSite, Daintree Discovery Centre, 2013                                      |
-| asn_fnqr_weather_robson_2010.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2010                                                   |
-| asn_fnqr_weather_robson_2011.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2011                                                   |
-| asn_fnqr_weather_robson_2012.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2012                                                   |
-| asn_fnqr_weather_robson_2013.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2013                                                   |
-| asn_fnqr_weather_robson_2014.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2014                                                   |
+&lt;pre&gt;&lt;code class=&quot;r&quot;&gt;/projectname (eg msms)/
+    /doc/
+        /ms-analysis.html 
+        /paper/
+            /msms.tex
+            /msms.pdf
+    /data/
+        /YYYY-MM-DD/
+            /yeast/
+                /README
+                /yeast.sqt
+            /worm/
+                /README
+                /worm.sqt
+    /src/
+        /ms-analysis.c
+    /bin/
+        /parse-sqt.py
+    /results/
+        /notebook.html 
+        /YYYY-MM-DD-1/
+            /runall
+            /split1/
+            /split2/
+        /YYYY-MM-DD-2/
+            /runall
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Use a driver script to automate creation of a directory structure&lt;/li&gt;
+&lt;li&gt;maintain a chronologically organized lab notebook (I have been calling this a work 'log' sensu Scott Long's 2008 'Workflow book')&lt;/li&gt;
+&lt;li&gt;create either a README file, or a command line driver script (he calls this &lt;code&gt;runall&lt;/code&gt;, but see also &lt;code&gt;main.R&lt;/code&gt; sensu the Reichian LCFD model)&lt;/li&gt;
+&lt;li&gt;you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details&lt;/li&gt;
+&lt;li&gt;Version Control.  'Nuff said! But how to build capacity with Github when all my colleagues seem so confused by it?&lt;/li&gt;
+&lt;/ol&gt;
+
 </content>
  </entry>
  
