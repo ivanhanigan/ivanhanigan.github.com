@@ -42,25 +42,19 @@ pnas.csl
 
 &lt;p&gt;NB also that the csl file in petrkeil's repo is an older version from 2012 of the version in the citation-style repo called &lt;code&gt;methods-in-ecology-and-evolution&lt;/code&gt;.  The differences are not large though.&lt;/p&gt;
 
+&lt;div&gt;
 &lt;div id=&quot;example-1&quot; class=&quot;section level3&quot;&gt;
 &lt;h3&gt;&lt;span class=&quot;header-section-number&quot;&gt;1.1.1&lt;/span&gt; Example 1:&lt;/h3&gt;
 &lt;p&gt;The journal article by &lt;span class=&quot;citation&quot;&gt;Michener et al. (1997)&lt;/span&gt; and another one &lt;span class=&quot;citation&quot;&gt;(Bodnar &lt;em&gt;et al.&lt;/em&gt; 2004)&lt;/span&gt; appear with their full URL even though I just want their DOI.&lt;/p&gt;
 &lt;/div&gt;
-
-
 &lt;div id=&quot;example-2&quot; class=&quot;section level3&quot;&gt;
 &lt;h3&gt;&lt;span class=&quot;header-section-number&quot;&gt;1.1.2&lt;/span&gt; Example 2:&lt;/h3&gt;
 &lt;p&gt;Some recent papers &lt;span class=&quot;citation&quot;&gt;(Open Science Collaboration 2015; Aiken &lt;em&gt;et al.&lt;/em&gt; 2015; Davey &lt;em&gt;et al.&lt;/em&gt; 2015)&lt;/span&gt; don’t have Volume info and I want to say [epub ahead of print].&lt;/p&gt;
 &lt;/div&gt;
-
-
 &lt;div id=&quot;example-3&quot; class=&quot;section level3&quot;&gt;
 &lt;h3&gt;&lt;span class=&quot;header-section-number&quot;&gt;1.1.3&lt;/span&gt; Example 3:&lt;/h3&gt;
 &lt;p&gt;This blog post on ‘evidence based data analysis pipeline’ by &lt;span class=&quot;citation&quot;&gt;Peng (2013)&lt;/span&gt; is one that definitely needs the URL and date accessed.&lt;/p&gt;
 &lt;/div&gt;
-
-
-
 
 &lt;div class=&quot;references&quot;&gt;
 &lt;h1&gt;References&lt;/h1&gt;
@@ -72,112 +66,101 @@ pnas.csl
 &lt;p&gt;Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. &lt;em&gt;Simply statistics&lt;/em&gt;. Retrieved July 26, 2015, from &lt;a href=&quot;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&quot; class=&quot;uri&quot;&gt;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 
-
-&lt;pre&gt;&lt;code&gt;# first replace the &amp;lt;macro name=&quot;access&quot;&amp;gt;
+ 
+```
+# first replace the &lt;macro name=&quot;access&quot;&gt;
 # with 
-&amp;lt;macro name=&quot;access&quot;&amp;gt;
-  &amp;lt;choose&amp;gt;
-    &amp;lt;if variable=&quot;DOI&quot;/&amp;gt;
-    &amp;lt;!--don't use if there is a DOI--&amp;gt;
-    &amp;lt;else&amp;gt;
-      &amp;lt;choose&amp;gt;
-        &amp;lt;if variable=&quot;URL&quot;&amp;gt;
-          &amp;lt;group delimiter=&quot; &quot; prefix=&quot; &quot;&amp;gt;
-            &amp;lt;group&amp;gt;
-              &amp;lt;text variable=&quot;URL&quot;/&amp;gt;
-            &amp;lt;/group&amp;gt;
-            &amp;lt;group prefix=&quot;[&quot; suffix=&quot;]&quot; delimiter=&quot; &quot;&amp;gt;
-              &amp;lt;date variable=&quot;accessed&quot;&amp;gt;
-                &amp;lt;date-part name=&quot;day&quot;/&amp;gt;
-                &amp;lt;date-part name=&quot;month&quot; prefix=&quot; &quot; suffix=&quot; &quot; form=&quot;short&quot;/&amp;gt;
-                &amp;lt;date-part name=&quot;year&quot;/&amp;gt;
-              &amp;lt;/date&amp;gt;
-            &amp;lt;/group&amp;gt;
-          &amp;lt;/group&amp;gt;
-        &amp;lt;/if&amp;gt;
-      &amp;lt;/choose&amp;gt;
-    &amp;lt;/else&amp;gt;
-  &amp;lt;/choose&amp;gt;
-&amp;lt;/macro&amp;gt;
+&lt;macro name=&quot;access&quot;&gt;
+  &lt;choose&gt;
+    &lt;if variable=&quot;DOI&quot;/&gt;
+    &lt;!--don't use if there is a DOI--&gt;
+    &lt;else&gt;
+      &lt;choose&gt;
+        &lt;if variable=&quot;URL&quot;&gt;
+          &lt;group delimiter=&quot; &quot; prefix=&quot; &quot;&gt;
+            &lt;group&gt;
+              &lt;text variable=&quot;URL&quot;/&gt;
+            &lt;/group&gt;
+            &lt;group prefix=&quot;[&quot; suffix=&quot;]&quot; delimiter=&quot; &quot;&gt;
+              &lt;date variable=&quot;accessed&quot;&gt;
+                &lt;date-part name=&quot;day&quot;/&gt;
+                &lt;date-part name=&quot;month&quot; prefix=&quot; &quot; suffix=&quot; &quot; form=&quot;short&quot;/&gt;
+                &lt;date-part name=&quot;year&quot;/&gt;
+              &lt;/date&gt;
+            &lt;/group&gt;
+          &lt;/group&gt;
+        &lt;/if&gt;
+      &lt;/choose&gt;
+    &lt;/else&gt;
+  &lt;/choose&gt;
+&lt;/macro&gt;
 #### Then add this ####
-&amp;lt;macro name=&quot;date&quot;&amp;gt;
-  &amp;lt;choose&amp;gt;
-    &amp;lt;if variable=&quot;issued&quot;&amp;gt;
-      &amp;lt;choose&amp;gt;
-        &amp;lt;if type=&quot;article-journal&quot;&amp;gt;
-          &amp;lt;date variable=&quot;issued&quot;&amp;gt;
-            &amp;lt;date-part name=&quot;year&quot;/&amp;gt;
-          &amp;lt;/date&amp;gt;
-        &amp;lt;/if&amp;gt;
-        &amp;lt;else&amp;gt;
-          &amp;lt;date variable=&quot;issued&quot;&amp;gt;
-            &amp;lt;date-part name=&quot;year&quot;/&amp;gt;
-          &amp;lt;/date&amp;gt;
-        &amp;lt;/else&amp;gt;
-      &amp;lt;/choose&amp;gt;
-    &amp;lt;/if&amp;gt;
-    &amp;lt;else&amp;gt;
-      &amp;lt;text term=&quot;no date&quot; prefix=&quot;[&quot; suffix=&quot;]&quot;/&amp;gt;
-    &amp;lt;/else&amp;gt;
-  &amp;lt;/choose&amp;gt;
-&amp;lt;/macro&amp;gt;
+&lt;macro name=&quot;date&quot;&gt;
+  &lt;choose&gt;
+    &lt;if variable=&quot;issued&quot;&gt;
+      &lt;choose&gt;
+        &lt;if type=&quot;article-journal&quot;&gt;
+          &lt;date variable=&quot;issued&quot;&gt;
+            &lt;date-part name=&quot;year&quot;/&gt;
+          &lt;/date&gt;
+        &lt;/if&gt;
+        &lt;else&gt;
+          &lt;date variable=&quot;issued&quot;&gt;
+            &lt;date-part name=&quot;year&quot;/&gt;
+          &lt;/date&gt;
+        &lt;/else&gt;
+      &lt;/choose&gt;
+    &lt;/if&gt;
+    &lt;else&gt;
+      &lt;text term=&quot;no date&quot; prefix=&quot;[&quot; suffix=&quot;]&quot;/&gt;
+    &lt;/else&gt;
+  &lt;/choose&gt;
+&lt;/macro&gt;
 #### And add this ####
-      &amp;lt;else-if type=&quot;article-journal&quot;&amp;gt;
-        &amp;lt;choose&amp;gt;
-          &amp;lt;if variable=&quot;issue volume&quot; match=&quot;any&quot;&amp;gt;
-            &amp;lt;text macro=&quot;title&quot; suffix=&quot; &quot;/&amp;gt;
-            &amp;lt;text variable=&quot;container-title&quot; suffix=&quot; &quot; form=&quot;short&quot; font-style=&quot;italic&quot; strip-periods=&quot;true&quot;/&amp;gt;
-            &amp;lt;text variable=&quot;volume&quot;/&amp;gt;
-            &amp;lt;text variable=&quot;page&quot; prefix=&quot;: &quot;/&amp;gt;
-            &amp;lt;text macro=&quot;date&quot; prefix=&quot;, &quot; suffix=&quot;.&quot;/&amp;gt;
-          &amp;lt;/if&amp;gt;
-          &amp;lt;else&amp;gt;
-            &amp;lt;choose&amp;gt;
-              &amp;lt;if variable=&quot;DOI&quot;&amp;gt;
-                &amp;lt;text macro=&quot;title&quot; suffix=&quot; &quot;/&amp;gt;
-                &amp;lt;text variable=&quot;container-title&quot; suffix=&quot; &quot; form=&quot;short&quot; font-style=&quot;italic&quot;/&amp;gt;
-                &amp;lt;group prefix=&quot;(&quot; suffix=&quot;).&quot;&amp;gt;
-                  &amp;lt;date variable=&quot;issued&quot;&amp;gt;
-                    &amp;lt;date-part name=&quot;month&quot; prefix=&quot; &quot; suffix=&quot; &quot;/&amp;gt;
-                    &amp;lt;date-part name=&quot;day&quot; suffix=&quot;, &quot;/&amp;gt;
-                    &amp;lt;date-part name=&quot;year&quot;/&amp;gt;
-                  &amp;lt;/date&amp;gt;
-                &amp;lt;/group&amp;gt;
-                &amp;lt;text variable=&quot;DOI&quot; prefix=&quot; doi: &quot;/&amp;gt;
-              &amp;lt;/if&amp;gt;
-              &amp;lt;else&amp;gt;
-                &amp;lt;text variable=&quot;container-title&quot; suffix=&quot;. &quot; form=&quot;short&quot; font-style=&quot;italic&quot;/&amp;gt;
-              &amp;lt;/else&amp;gt;
-            &amp;lt;/choose&amp;gt;
-          &amp;lt;/else&amp;gt;
-        &amp;lt;/choose&amp;gt;
-      &amp;lt;/else-if&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
+      &lt;else-if type=&quot;article-journal&quot;&gt;
+        &lt;choose&gt;
+          &lt;if variable=&quot;issue volume&quot; match=&quot;any&quot;&gt;
+            &lt;text macro=&quot;title&quot; suffix=&quot; &quot;/&gt;
+            &lt;text variable=&quot;container-title&quot; suffix=&quot; &quot; form=&quot;short&quot; font-style=&quot;italic&quot; strip-periods=&quot;true&quot;/&gt;
+            &lt;text variable=&quot;volume&quot;/&gt;
+            &lt;text variable=&quot;page&quot; prefix=&quot;: &quot;/&gt;
+            &lt;text macro=&quot;date&quot; prefix=&quot;, &quot; suffix=&quot;.&quot;/&gt;
+          &lt;/if&gt;
+          &lt;else&gt;
+            &lt;choose&gt;
+              &lt;if variable=&quot;DOI&quot;&gt;
+                &lt;text macro=&quot;title&quot; suffix=&quot; &quot;/&gt;
+                &lt;text variable=&quot;container-title&quot; suffix=&quot; &quot; form=&quot;short&quot; font-style=&quot;italic&quot;/&gt;
+                &lt;group prefix=&quot;(&quot; suffix=&quot;).&quot;&gt;
+                  &lt;date variable=&quot;issued&quot;&gt;
+                    &lt;date-part name=&quot;month&quot; prefix=&quot; &quot; suffix=&quot; &quot;/&gt;
+                    &lt;date-part name=&quot;day&quot; suffix=&quot;, &quot;/&gt;
+                    &lt;date-part name=&quot;year&quot;/&gt;
+                  &lt;/date&gt;
+                &lt;/group&gt;
+                &lt;text variable=&quot;DOI&quot; prefix=&quot; doi: &quot;/&gt;
+              &lt;/if&gt;
+              &lt;else&gt;
+                &lt;text variable=&quot;container-title&quot; suffix=&quot;. &quot; form=&quot;short&quot; font-style=&quot;italic&quot;/&gt;
+              &lt;/else&gt;
+            &lt;/choose&gt;
+          &lt;/else&gt;
+        &lt;/choose&gt;
+      &lt;/else-if&gt;
+```
 
-&lt;h2&gt;Now use this modified csl in the header of the RMD file instead of mee.csl&lt;/h2&gt;
+## Now use this modified csl in the header of the RMD file instead of mee.csl
+
 
 &lt;h1&gt;&lt;span class=&quot;header-section-number&quot;&gt;1.2&lt;/span&gt; NEW References&lt;/h1&gt;
-
-
 &lt;p&gt;Aiken, A.M., Davey, C., Hargreaves, J.R. &amp;amp; Hayes, R.J. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication &lt;em&gt;International Journal of Epidemiology&lt;/em&gt; (epub ahead of print July 2015). doi: &lt;a href=&quot;http://dx.doi.org/10.1093/ije/dyv127&quot;&gt;10.1093/ije/dyv127&lt;/a&gt;&lt;/p&gt;
-
-
 &lt;p&gt;Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp;amp; Smith, K.R. (2004).Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. &lt;em&gt;International journal of hygiene and environmental health&lt;/em&gt; 207: 57–67, 2004.&lt;/p&gt;
-
-
 &lt;p&gt;Davey, C., Aiken, A.M., Hayes, R.J. &amp;amp; Hargreaves, J.R. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial &lt;em&gt;International Journal of Epidemiology&lt;/em&gt; (epub ahead of print July 2015). doi: &lt;a href=&quot;http://dx.doi.org/10.1093/ije/dyv128&quot;&gt;10.1093/ije/dyv128&lt;/a&gt;&lt;/p&gt;
-
-
 &lt;p&gt;Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp;amp; Stafford, S.G. (1997).Nongeospatial metadata for the ecological sciences &lt;em&gt;Ecological Applications&lt;/em&gt; 7: 330–342, 1997. &lt;a href=&quot;http://www.scopus.com/inward/record.url?scp=0030616825\&amp;amp;partnerID=8YFLogxK&quot;&gt;http://www.scopus.com/inward/record.url?scp=0030616825\&amp;amp;partnerID=8YFLogxK&lt;/a&gt;&lt;/p&gt;
-
-
 &lt;p&gt;Open Science Collaboration. (2015).Estimating the reproducibility of psychological science &lt;em&gt;Science&lt;/em&gt; 349: aac4716–aac4716, 2015.&lt;/p&gt;
-
-
 &lt;p&gt;Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. &lt;em&gt;Simply statistics&lt;/em&gt;. &lt;a href=&quot;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&quot;&gt;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&lt;/a&gt; [26 Jul. 2015]&lt;/p&gt;
+&lt;/div&gt;
 
-
-&lt;p&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
 				<published>2015-10-09 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/</link>

@@ -92,25 +92,19 @@ pnas.csl
 
 <p>NB also that the csl file in petrkeil's repo is an older version from 2012 of the version in the citation-style repo called <code>methods-in-ecology-and-evolution</code>.  The differences are not large though.</p>
 
+<div>
 <div id="example-1" class="section level3">
 <h3><span class="header-section-number">1.1.1</span> Example 1:</h3>
 <p>The journal article by <span class="citation">Michener et al. (1997)</span> and another one <span class="citation">(Bodnar <em>et al.</em> 2004)</span> appear with their full URL even though I just want their DOI.</p>
 </div>
-
-
 <div id="example-2" class="section level3">
 <h3><span class="header-section-number">1.1.2</span> Example 2:</h3>
 <p>Some recent papers <span class="citation">(Open Science Collaboration 2015; Aiken <em>et al.</em> 2015; Davey <em>et al.</em> 2015)</span> don’t have Volume info and I want to say [epub ahead of print].</p>
 </div>
-
-
 <div id="example-3" class="section level3">
 <h3><span class="header-section-number">1.1.3</span> Example 3:</h3>
 <p>This blog post on ‘evidence based data analysis pipeline’ by <span class="citation">Peng (2013)</span> is one that definitely needs the URL and date accessed.</p>
 </div>
-
-
-
 
 <div class="references">
 <h1>References</h1>
@@ -122,112 +116,101 @@ pnas.csl
 <p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. <em>Simply statistics</em>. Retrieved July 26, 2015, from <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/" class="uri">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a></p>
 </div>
 
-
-<pre><code># first replace the &lt;macro name="access"&gt;
+ 
+```
+# first replace the <macro name="access">
 # with 
-&lt;macro name="access"&gt;
-  &lt;choose&gt;
-    &lt;if variable="DOI"/&gt;
-    &lt;!--don't use if there is a DOI--&gt;
-    &lt;else&gt;
-      &lt;choose&gt;
-        &lt;if variable="URL"&gt;
-          &lt;group delimiter=" " prefix=" "&gt;
-            &lt;group&gt;
-              &lt;text variable="URL"/&gt;
-            &lt;/group&gt;
-            &lt;group prefix="[" suffix="]" delimiter=" "&gt;
-              &lt;date variable="accessed"&gt;
-                &lt;date-part name="day"/&gt;
-                &lt;date-part name="month" prefix=" " suffix=" " form="short"/&gt;
-                &lt;date-part name="year"/&gt;
-              &lt;/date&gt;
-            &lt;/group&gt;
-          &lt;/group&gt;
-        &lt;/if&gt;
-      &lt;/choose&gt;
-    &lt;/else&gt;
-  &lt;/choose&gt;
-&lt;/macro&gt;
+<macro name="access">
+  <choose>
+    <if variable="DOI"/>
+    <!--don't use if there is a DOI-->
+    <else>
+      <choose>
+        <if variable="URL">
+          <group delimiter=" " prefix=" ">
+            <group>
+              <text variable="URL"/>
+            </group>
+            <group prefix="[" suffix="]" delimiter=" ">
+              <date variable="accessed">
+                <date-part name="day"/>
+                <date-part name="month" prefix=" " suffix=" " form="short"/>
+                <date-part name="year"/>
+              </date>
+            </group>
+          </group>
+        </if>
+      </choose>
+    </else>
+  </choose>
+</macro>
 #### Then add this ####
-&lt;macro name="date"&gt;
-  &lt;choose&gt;
-    &lt;if variable="issued"&gt;
-      &lt;choose&gt;
-        &lt;if type="article-journal"&gt;
-          &lt;date variable="issued"&gt;
-            &lt;date-part name="year"/&gt;
-          &lt;/date&gt;
-        &lt;/if&gt;
-        &lt;else&gt;
-          &lt;date variable="issued"&gt;
-            &lt;date-part name="year"/&gt;
-          &lt;/date&gt;
-        &lt;/else&gt;
-      &lt;/choose&gt;
-    &lt;/if&gt;
-    &lt;else&gt;
-      &lt;text term="no date" prefix="[" suffix="]"/&gt;
-    &lt;/else&gt;
-  &lt;/choose&gt;
-&lt;/macro&gt;
+<macro name="date">
+  <choose>
+    <if variable="issued">
+      <choose>
+        <if type="article-journal">
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+        </if>
+        <else>
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+        </else>
+      </choose>
+    </if>
+    <else>
+      <text term="no date" prefix="[" suffix="]"/>
+    </else>
+  </choose>
+</macro>
 #### And add this ####
-      &lt;else-if type="article-journal"&gt;
-        &lt;choose&gt;
-          &lt;if variable="issue volume" match="any"&gt;
-            &lt;text macro="title" suffix=" "/&gt;
-            &lt;text variable="container-title" suffix=" " form="short" font-style="italic" strip-periods="true"/&gt;
-            &lt;text variable="volume"/&gt;
-            &lt;text variable="page" prefix=": "/&gt;
-            &lt;text macro="date" prefix=", " suffix="."/&gt;
-          &lt;/if&gt;
-          &lt;else&gt;
-            &lt;choose&gt;
-              &lt;if variable="DOI"&gt;
-                &lt;text macro="title" suffix=" "/&gt;
-                &lt;text variable="container-title" suffix=" " form="short" font-style="italic"/&gt;
-                &lt;group prefix="(" suffix=")."&gt;
-                  &lt;date variable="issued"&gt;
-                    &lt;date-part name="month" prefix=" " suffix=" "/&gt;
-                    &lt;date-part name="day" suffix=", "/&gt;
-                    &lt;date-part name="year"/&gt;
-                  &lt;/date&gt;
-                &lt;/group&gt;
-                &lt;text variable="DOI" prefix=" doi: "/&gt;
-              &lt;/if&gt;
-              &lt;else&gt;
-                &lt;text variable="container-title" suffix=". " form="short" font-style="italic"/&gt;
-              &lt;/else&gt;
-            &lt;/choose&gt;
-          &lt;/else&gt;
-        &lt;/choose&gt;
-      &lt;/else-if&gt;
-</code></pre>
+      <else-if type="article-journal">
+        <choose>
+          <if variable="issue volume" match="any">
+            <text macro="title" suffix=" "/>
+            <text variable="container-title" suffix=" " form="short" font-style="italic" strip-periods="true"/>
+            <text variable="volume"/>
+            <text variable="page" prefix=": "/>
+            <text macro="date" prefix=", " suffix="."/>
+          </if>
+          <else>
+            <choose>
+              <if variable="DOI">
+                <text macro="title" suffix=" "/>
+                <text variable="container-title" suffix=" " form="short" font-style="italic"/>
+                <group prefix="(" suffix=").">
+                  <date variable="issued">
+                    <date-part name="month" prefix=" " suffix=" "/>
+                    <date-part name="day" suffix=", "/>
+                    <date-part name="year"/>
+                  </date>
+                </group>
+                <text variable="DOI" prefix=" doi: "/>
+              </if>
+              <else>
+                <text variable="container-title" suffix=". " form="short" font-style="italic"/>
+              </else>
+            </choose>
+          </else>
+        </choose>
+      </else-if>
+```
 
-<h2>Now use this modified csl in the header of the RMD file instead of mee.csl</h2>
+## Now use this modified csl in the header of the RMD file instead of mee.csl
+
 
 <h1><span class="header-section-number">1.2</span> NEW References</h1>
-
-
 <p>Aiken, A.M., Davey, C., Hargreaves, J.R. &amp; Hayes, R.J. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication <em>International Journal of Epidemiology</em> (epub ahead of print July 2015). doi: <a href="http://dx.doi.org/10.1093/ije/dyv127">10.1093/ije/dyv127</a></p>
-
-
 <p>Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp; Smith, K.R. (2004).Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. <em>International journal of hygiene and environmental health</em> 207: 57–67, 2004.</p>
-
-
 <p>Davey, C., Aiken, A.M., Hayes, R.J. &amp; Hargreaves, J.R. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial <em>International Journal of Epidemiology</em> (epub ahead of print July 2015). doi: <a href="http://dx.doi.org/10.1093/ije/dyv128">10.1093/ije/dyv128</a></p>
-
-
 <p>Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp; Stafford, S.G. (1997).Nongeospatial metadata for the ecological sciences <em>Ecological Applications</em> 7: 330–342, 1997. <a href="http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK">http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK</a></p>
-
-
 <p>Open Science Collaboration. (2015).Estimating the reproducibility of psychological science <em>Science</em> 349: aac4716–aac4716, 2015.</p>
-
-
 <p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. <em>Simply statistics</em>. <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a> [26 Jul. 2015]</p>
+</div>
 
-
-<p></div></p>
 
     <div class="clear"></div>
   </div>
