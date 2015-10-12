@@ -197,18 +197,18 @@
         <else-if type="article-journal">
           <choose>
             <if variable="issue volume" match="any">
-              <text macro="title" suffix=" "/>
-              <text variable="container-title" suffix=" " form="short" font-style="italic" strip-periods="true"/>
+              <text macro="title" prefix=" " suffix=". "/>
+              <text variable="container-title" suffix=", " form="short" font-style="italic" strip-periods="true" text-case="title"/>
               <text variable="volume"/>
-              <text variable="page" prefix=": "/>
-              <text macro="date" prefix=", " suffix="."/>
+              <text variable="issue" prefix="(" suffix="), "/>
+              <text variable="page" prefix=": " suffix="."/>
             </if>
             <else>
               <choose>
                 <if variable="DOI">
-                  <text macro="title" suffix=" "/>
-                  <text variable="container-title" suffix=" " form="short" font-style="italic"/>
-                  <group prefix="(epub ahead of print " suffix=").">
+                  <text macro="title" prefix=" " suffix=". "/>
+                  <text variable="container-title" suffix=" " form="short" font-style="italic" text-case="title"/>
+                  <group prefix="(Epub ahead of print " suffix=").">
                     <date variable="issued">
                       <date-part name="month" prefix=" " suffix=" "/>
                       <date-part name="day" suffix=", "/>
@@ -218,7 +218,8 @@
                   <text variable="DOI" prefix=" doi: "/>
                 </if>
                 <else>
-                  <text variable="container-title" suffix=". " form="short" font-style="italic"/>
+                  <text macro="title" prefix=" " suffix=". "/>
+                  <text variable="container-title" suffix=". " form="short" font-style="italic" text-case="title"/>
                 </else>
               </choose>
             </else>
@@ -230,7 +231,7 @@
             <text macro="editor-translator"/>
           </group>
           <group delimiter=", " suffix=".">
-            <text variable="container-title" font-style="italic"/>
+            <text variable="container-title" font-style="italic" text-case="title"/>
             <text variable="volume" font-weight="bold"/>
             <text variable="page"/>
           </group>

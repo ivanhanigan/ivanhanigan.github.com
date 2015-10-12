@@ -6,6 +6,62 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>A Driver Script To Set Up A Data Analysis Pipeline</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;In my previous post I reviewed a paper by Noble 2009 that proposed recommendations for best practice ways to set up a data analysis pipeline &lt;a href=&quot;http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/&quot;&gt;http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I was following up on a series of posts I made about other best practice recommendations &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/&quot;&gt;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;In the paper by Noble it is suggested that a one should use a 'driver script' to automate creation of a directory structure, this is the exact way that &lt;code&gt;ProjectTemplate&lt;/code&gt; and &lt;code&gt;makeProject&lt;/code&gt; work as I described them in the series of posts.&lt;/li&gt;
+&lt;li&gt;I think Noble's framework offers something new to the recomendations I had canvassed, that is the idea of chronological order of the contents of the results directory.  I think this is an eminently sensible idea and thought that the R function &lt;code&gt;Sys.Date()&lt;/code&gt; would be a great way to start off a project in this way.&lt;/li&gt;
+&lt;li&gt;so I have put together the following R function, as an alternative to the &lt;code&gt;makeProject&lt;/code&gt; core function, that I thought I'd name so that there may be a family of makeProject functions, so that analysts have a range of to choose from.  The other candidate would be &lt;code&gt;makeProjectLong&lt;/code&gt;, which I will also put up before long.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;makeProjectNoble &amp;lt;- function(rootdir = getwd()){
+  if(!exists(rootdir)) dir.create(rootdir)
+  dir.create(file.path(rootdir,'doc'))
+  dir.create(file.path(rootdir,'doc','paper'))
+  sink(file.path(rootdir,'doc','workplan.Rmd'))
+    cat(sprintf(&quot;---\ntitle: Untitled\nauthor: your name\ndate: %s\noutput: html_document\n---\n\n&quot;,
+                Sys.Date()))
+  sink()
+  dir.create(file.path(rootdir,'data'))
+  dir.create(file.path(rootdir,'data', Sys.Date()))
+  dir.create(file.path(rootdir,'src'))
+  dir.create(file.path(rootdir,'results')) 
+  dir.create(file.path(rootdir,'results', Sys.Date())) 
+  file.create(file.path(rootdir,'README.md'))
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Running this function will deploy the folders and files (I excluded the &lt;code&gt;bin&lt;/code&gt; folder for compiled binaries, as I believe that many data analysts may not need that, and those who do are geeky enough to write their own driver scripts.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/testProjectNoble.png&quot; alt=&quot;/images/testProjectNoble.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The Rmarkdown script is waiting for the analysis plan to be pumped out, and work can begin&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/testProjectNobleMD.png&quot; alt=&quot;/images/testProjectNobleMD.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>2015-10-12 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/</link>
+			</item>
+		
+			<item>
 				<title>Coming To Grips With Citations In Reproducible Research Reports</title>
 				<description>&lt;h1&gt;Introduction&lt;/h1&gt;
 
@@ -2094,100 +2150,6 @@ analysisTemplate()
 </description>
 				<published>2015-09-27 00:00:00 +1000</published>
 				<link>http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets-part-3/</link>
-			</item>
-		
-			<item>
-				<title>Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple</title>
-				<description>&lt;p&gt;This post is about an effective and simple data management framework for analysis projects.
-This post introduces Josh Reich's LCFD framework, originally introduced in this answer on the stack overflow website here &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;http://stackoverflow.com/a/1434424&lt;/a&gt;, and encoded into the makeProject R package &lt;a href=&quot;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&quot;&gt;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Literature Review Approach&lt;/h2&gt;
-
-&lt;p&gt;This series of three posts is a summary of some of the most useful advice I have found based on my experience having implemented in my own work.&lt;/p&gt;
-
-&lt;p&gt;This is the second post in a series of three entries regarding some evidence-based best practice approaches I have reviewed.  I have read many website articles and blog posts on a variety of approaches to the organisation of digital assets in a reporoducible research pipeline.
-The material I've gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.&lt;/p&gt;
-
-&lt;h2&gt;Digital Assets Management for Reproducible Research&lt;/h2&gt;
-
-&lt;p&gt;The digital assets in a reproducible research pipeline include:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Publication material (documents, figures, tables, literature)&lt;/li&gt;
-&lt;li&gt;Data (raw measurements, data provided, data derived)&lt;/li&gt;
-&lt;li&gt;Code (pre-processing, analysis and presentation)&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h2&gt;How to use the &lt;code&gt;makeProject&lt;/code&gt; package&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The &lt;code&gt;makeProject&lt;/code&gt; R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.&lt;/li&gt;
-&lt;li&gt;The theory is very similar to the approach described in the previous post about Scott Long's batch script: wfsetupsingle.bat &lt;a href=&quot;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&quot;&gt;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# choose your project dir
-setwd(&quot;~/projects&quot;)   
-library(makeProject)
-makeProject(&quot;makeProjectDemo&quot;)
-#returns
-&quot;Creating Directories ...
-Creating Code Files ...
-Complete ...&quot;
-matrix(dir(&quot;makeProjectDemo&quot;))
-#[1,] &quot;code&quot;       
-#[2,] &quot;data&quot;       
-#[3,] &quot;DESCRIPTION&quot;
-#[4,] &quot;main.R&quot;     
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;This has set up some simple and sensible tools for a data analysis.&lt;/li&gt;
-&lt;li&gt;Let's have a look at the &lt;code&gt;main.R&lt;/code&gt; script. This is the one file that is used to run all the modules of the project, found in the R scripts in the &lt;code&gt;code&lt;/code&gt; folder.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# Project: makeProjectDemo
-# Author: Your Name
-# Maintainer: Who to complain to &amp;lt;yourfault@somewhere.net&amp;gt;
-
-# This is the main file for the project
-# It should do very little except call the other files
-
-### Set the working directory
-setwd(&quot;/home/ivan_hanigan/projects/makeProjectDemo&quot;)
-
-
-### Set any global variables here
-####################
-
-
-
-####################
-
-
-### Run the code
-source(&quot;code/load.R&quot;)
-source(&quot;code/clean.R&quot;)
-source(&quot;code/func.R&quot;)
-source(&quot;code/do.R&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;I think that is very self-explanatory, but it does need some demonstration.  The next instalment in this three part blog post will describe the ProjectTemplate approach.  After that I will demonstrate ways that each of the three approaches can be used.&lt;/p&gt;
-</description>
-				<published>2015-09-26 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets-part-2/</link>
 			</item>
 		
 	</channel>

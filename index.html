@@ -56,6 +56,83 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/" title="A Driver Script To Set Up A Data Analysis Pipeline" rel="bookmark">A Driver Script To Set Up A Data Analysis Pipeline</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>In my previous post I reviewed a paper by Noble 2009 that proposed recommendations for best practice ways to set up a data analysis pipeline <a href="http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/">http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/</a></li>
+<li>I was following up on a series of posts I made about other best practice recommendations <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/">http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/</a></li>
+<li>In the paper by Noble it is suggested that a one should use a 'driver script' to automate creation of a directory structure, this is the exact way that <code>ProjectTemplate</code> and <code>makeProject</code> work as I described them in the series of posts.</li>
+<li>I think Noble's framework offers something new to the recomendations I had canvassed, that is the idea of chronological order of the contents of the results directory.  I think this is an eminently sensible idea and thought that the R function <code>Sys.Date()</code> would be a great way to start off a project in this way.</li>
+<li>so I have put together the following R function, as an alternative to the <code>makeProject</code> core function, that I thought I'd name so that there may be a family of makeProject functions, so that analysts have a range of to choose from.  The other candidate would be <code>makeProjectLong</code>, which I will also put up before long.</li>
+</ul>
+
+
+<pre><code>makeProjectNoble &lt;- function(rootdir = getwd()){
+  if(!exists(rootdir)) dir.create(rootdir)
+  dir.create(file.path(rootdir,'doc'))
+  dir.create(file.path(rootdir,'doc','paper'))
+  sink(file.path(rootdir,'doc','workplan.Rmd'))
+    cat(sprintf("---\ntitle: Untitled\nauthor: your name\ndate: %s\noutput: html_document\n---\n\n",
+                Sys.Date()))
+  sink()
+  dir.create(file.path(rootdir,'data'))
+  dir.create(file.path(rootdir,'data', Sys.Date()))
+  dir.create(file.path(rootdir,'src'))
+  dir.create(file.path(rootdir,'results')) 
+  dir.create(file.path(rootdir,'results', Sys.Date())) 
+  file.create(file.path(rootdir,'README.md'))
+  }
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>Running this function will deploy the folders and files (I excluded the <code>bin</code> folder for compiled binaries, as I believe that many data analysts may not need that, and those who do are geeky enough to write their own driver scripts.</li>
+</ul>
+
+
+<p><img src="/images/testProjectNoble.png" alt="/images/testProjectNoble.png" /></p>
+
+<ul>
+<li>The Rmarkdown script is waiting for the analysis plan to be pumped out, and work can begin</li>
+</ul>
+
+
+<p><img src="/images/testProjectNobleMD.png" alt="/images/testProjectNobleMD.png" /></p>
+
+<h1>References</h1>
+
+<ul>
+<li>Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">http://dx.doi.org/10.1371/journal.pcbi.1000424</a></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-12 00:00:00 +1100">12 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/" title="Coming To Grips With Citations In Reproducible Research Reports" rel="bookmark">Coming To Grips With Citations In Reproducible Research Reports</a>
     </h1>
     <div class="entry-content full-content">
@@ -662,148 +739,6 @@ It was that I was on Twitter at all.
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/" title="Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things" rel="bookmark">Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>Using diagrams has long been a technique used in science to describe the relationships (edges) between things (nodes).  Mathematics and geometry tools have been applied to ameliorate the problem of laying out the diagram for the most efficient use of space.  It is desirable to minimise the gaps between the nodes and also to ensure that lines do not overlap too much.  This is because the complexity of graphs obfuscates the details that we are trying to show. Visual grouping helps to disentangle the relationships.</p>
-
-<p>As an example, the relationship between drought and suicide is a complex system
-where the effects are indirect. The focus is on a chain
-of intermediary causal factors. These questions are usually explored
-in the context of many other factors that describe human biological
-variables and the socio-economic milieu.</p>
-
-<p>In this post I utilise the R package <code>DiagrammeR</code> to construct a causal directed acyclic graph (DAG) of the putative effects of a set of selected causal factors from both natural and social capital theories.</p>
-
-<p>The following code produces graph
-<img src="/images/suicide-drought.png" alt="/images/suicide-drought.png" /></p>
-
-<p>Or this interactive version <a href="/viewhtml21f36d8c5d7d/index.html">/viewhtml21f36d8c5d7d/index.html</a></p>
-
-<iframe style="border: none;" height="400" width="600" src="/viewhtml21f36d8c5d7d/index.html"></iframe>
-
-
-<pre><code class="r">library(DiagrammeR)
-#### First create the outcome
-nodes_outcome &lt;- create_nodes(nodes = c('suicide','depression','anxiety'),
-                        label = TRUE,
-                        colour = "black")
-
-edges_outcome &lt;- create_edges(from = c('depression','anxiety'),
-                        to =   c("suicide", "suicide")
-                        )
-
-graph_outcome &lt;- create_graph(nodes_df = nodes_outcome,
-                       edges_df = edges_outcome)
-# just test this out
-## render_graph(graph_outcome)
-
-#### now the social capital factors  
-nodes_social &lt;- 
-  create_nodes(nodes =  c("stress", "decreased community support", "migration"),
-               label = TRUE,
-               color = "blue")
-
-edges_social &lt;- create_edges(from =  c("stress", "stress", "decreased community support",
-                          "migration"),
-                        to =   c("anxiety", "depression", "anxiety",
-                          "decreased community support")
-                        )
-graph_social &lt;- create_graph(nodes_df = nodes_social,
-                       edges_df = edges_social)
-# render_graph(graph_social)
-
-#### now the financial capital factors
-nodes_financial &lt;- 
-  create_nodes(nodes = c("employment", "debt"),
-               label = TRUE,
-               color = "green")
-
-edges_financial &lt;- create_edges(from = c("employment", "employment", "debt"),
-                        to =   c("stress", "debt", "stress")
-                        )
-graph_financial &lt;- create_graph(nodes_df = nodes_financial,
-                       edges_df = edges_financial)
-# render_graph(graph_financial)
-
-
-#### now the natural capital factors
-nodes_natural &lt;- 
-  create_nodes(nodes = c("drought", "declined agricultural productivity", "decreased food security"),
-               label = TRUE,
-               color = "red")
-
-edges_natural &lt;- create_edges(from = c("drought", "drought", "declined agricultural productivity",
-                          "declined agricultural productivity", "declined agricultural productivity",
-                          "decreased food security",
-                          "drought"),
-                        to =   c("declined agricultural productivity", "decreased food security", "decreased food security",
-                          "anxiety", "employment",
-                          "anxiety",
-                          "migration")
-                        )
-graph_natural &lt;- create_graph(nodes_df = nodes_natural,
-                       edges_df = edges_natural)
-## render_graph(graph_natural)
-
-# use create_graph on separate nodes and edges data frames, one for each cluster
-# then access the dot codes for each
-gr0 &lt;- graph_outcome$dot_code
-gr1 &lt;- graph_social$dot_code
-gr2 &lt;- graph_financial$dot_code
-gr3 &lt;- graph_natural$dot_code
-# then replace the graph with subgraph
-gr0 &lt;- gsub("digraph", "subgraph cluster0", gr0)
-gr1 &lt;- gsub("digraph", "subgraph cluster1", gr1)
-gr2 &lt;- gsub("digraph", "subgraph cluster2", gr2)
-gr3 &lt;- gsub("digraph", "subgraph cluster3", gr3)
-# and then combine the subgraphs into one graph
-gr_out &lt;- sprintf("digraph{\n%s\n\n %s\n%s\n%s\n}", gr0, gr1, gr2, gr3)
-cat(gr_out)
-grViz(gr_out)
-# If graphviz is installed and on linux call it with a shell command
-sink("suicide-drought.dot")
-cat(gsub("'",'"', gr_out))
-sink()
-system("dot -Tpng suicide-drought.dot -o suicide-drought.png")
-# Interactive
-nodes &lt;- combine_nodes(nodes_outcome, nodes_social, nodes_natural, nodes_financial)
-edges &lt;- combine_edges(edges_outcome, edges_social, edges_natural, edges_financial)
-
-# Render graph
-graph &lt;- create_graph(nodes_df = nodes,
-                      edges_df = edges)
-
-render_graph(graph, output = "visNetwork")    
-</code></pre>
-
-<p></p>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-03 00:00:00 +1000">03 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -880,6 +815,10 @@ render_graph(graph, output = "visNetwork")
               <ul>
                 
                 <li>
+                  <a href="/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/" title="A Driver Script To Set Up A Data Analysis Pipeline" rel="bookmark">A Driver Script To Set Up A Data Analysis Pipeline</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/" title="Coming To Grips With Citations In Reproducible Research Reports" rel="bookmark">Coming To Grips With Citations In Reproducible Research Reports</a>
                 </li>
                 
@@ -893,10 +832,6 @@ render_graph(graph, output = "visNetwork")
                 
                 <li>
                   <a href="/2015/10/open-notebook-blogging-vs-twitter-or-can-i-do-both/" title="Open Notebook Blogging Vs Twitter? Or Can I Do Both?" rel="bookmark">Open Notebook Blogging Vs Twitter? Or Can I Do Both?</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/" title="Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things" rel="bookmark">Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</a>
                 </li>
                 
               </ul>
@@ -922,7 +857,7 @@ render_graph(graph, output = "visNetwork")
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (22)</a></li>
+                <li><a href="/categories/disentangle">disentangle (23)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -966,7 +901,7 @@ render_graph(graph, output = "visNetwork")
                 
                 <li><a href="/tag/Reproducible Research Reports">Reproducible Research Reports (2)</a></li>
                 
-                <li><a href="/tag/Data Management">Data Management (2)</a></li>
+                <li><a href="/tag/Data Management">Data Management (3)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -1001,7 +936,7 @@ render_graph(graph, output = "visNetwork")
           <!--        -->
           <!--       <li><a href="/tag/Reproducible Research Reports">Reproducible Research Reports (2)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/Data Management">Data Management (2)</a></li> -->
+          <!--       <li><a href="/tag/Data Management">Data Management (3)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

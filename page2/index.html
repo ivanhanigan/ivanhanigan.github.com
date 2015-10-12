@@ -56,6 +56,148 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/" title="Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things" rel="bookmark">Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Using diagrams has long been a technique used in science to describe the relationships (edges) between things (nodes).  Mathematics and geometry tools have been applied to ameliorate the problem of laying out the diagram for the most efficient use of space.  It is desirable to minimise the gaps between the nodes and also to ensure that lines do not overlap too much.  This is because the complexity of graphs obfuscates the details that we are trying to show. Visual grouping helps to disentangle the relationships.</p>
+
+<p>As an example, the relationship between drought and suicide is a complex system
+where the effects are indirect. The focus is on a chain
+of intermediary causal factors. These questions are usually explored
+in the context of many other factors that describe human biological
+variables and the socio-economic milieu.</p>
+
+<p>In this post I utilise the R package <code>DiagrammeR</code> to construct a causal directed acyclic graph (DAG) of the putative effects of a set of selected causal factors from both natural and social capital theories.</p>
+
+<p>The following code produces graph
+<img src="/images/suicide-drought.png" alt="/images/suicide-drought.png" /></p>
+
+<p>Or this interactive version <a href="/viewhtml21f36d8c5d7d/index.html">/viewhtml21f36d8c5d7d/index.html</a></p>
+
+<iframe style="border: none;" height="400" width="600" src="/viewhtml21f36d8c5d7d/index.html"></iframe>
+
+
+<pre><code class="r">library(DiagrammeR)
+#### First create the outcome
+nodes_outcome &lt;- create_nodes(nodes = c('suicide','depression','anxiety'),
+                        label = TRUE,
+                        colour = "black")
+
+edges_outcome &lt;- create_edges(from = c('depression','anxiety'),
+                        to =   c("suicide", "suicide")
+                        )
+
+graph_outcome &lt;- create_graph(nodes_df = nodes_outcome,
+                       edges_df = edges_outcome)
+# just test this out
+## render_graph(graph_outcome)
+
+#### now the social capital factors  
+nodes_social &lt;- 
+  create_nodes(nodes =  c("stress", "decreased community support", "migration"),
+               label = TRUE,
+               color = "blue")
+
+edges_social &lt;- create_edges(from =  c("stress", "stress", "decreased community support",
+                          "migration"),
+                        to =   c("anxiety", "depression", "anxiety",
+                          "decreased community support")
+                        )
+graph_social &lt;- create_graph(nodes_df = nodes_social,
+                       edges_df = edges_social)
+# render_graph(graph_social)
+
+#### now the financial capital factors
+nodes_financial &lt;- 
+  create_nodes(nodes = c("employment", "debt"),
+               label = TRUE,
+               color = "green")
+
+edges_financial &lt;- create_edges(from = c("employment", "employment", "debt"),
+                        to =   c("stress", "debt", "stress")
+                        )
+graph_financial &lt;- create_graph(nodes_df = nodes_financial,
+                       edges_df = edges_financial)
+# render_graph(graph_financial)
+
+
+#### now the natural capital factors
+nodes_natural &lt;- 
+  create_nodes(nodes = c("drought", "declined agricultural productivity", "decreased food security"),
+               label = TRUE,
+               color = "red")
+
+edges_natural &lt;- create_edges(from = c("drought", "drought", "declined agricultural productivity",
+                          "declined agricultural productivity", "declined agricultural productivity",
+                          "decreased food security",
+                          "drought"),
+                        to =   c("declined agricultural productivity", "decreased food security", "decreased food security",
+                          "anxiety", "employment",
+                          "anxiety",
+                          "migration")
+                        )
+graph_natural &lt;- create_graph(nodes_df = nodes_natural,
+                       edges_df = edges_natural)
+## render_graph(graph_natural)
+
+# use create_graph on separate nodes and edges data frames, one for each cluster
+# then access the dot codes for each
+gr0 &lt;- graph_outcome$dot_code
+gr1 &lt;- graph_social$dot_code
+gr2 &lt;- graph_financial$dot_code
+gr3 &lt;- graph_natural$dot_code
+# then replace the graph with subgraph
+gr0 &lt;- gsub("digraph", "subgraph cluster0", gr0)
+gr1 &lt;- gsub("digraph", "subgraph cluster1", gr1)
+gr2 &lt;- gsub("digraph", "subgraph cluster2", gr2)
+gr3 &lt;- gsub("digraph", "subgraph cluster3", gr3)
+# and then combine the subgraphs into one graph
+gr_out &lt;- sprintf("digraph{\n%s\n\n %s\n%s\n%s\n}", gr0, gr1, gr2, gr3)
+cat(gr_out)
+grViz(gr_out)
+# If graphviz is installed and on linux call it with a shell command
+sink("suicide-drought.dot")
+cat(gsub("'",'"', gr_out))
+sink()
+system("dot -Tpng suicide-drought.dot -o suicide-drought.png")
+# Interactive
+nodes &lt;- combine_nodes(nodes_outcome, nodes_social, nodes_natural, nodes_financial)
+edges &lt;- combine_edges(edges_outcome, edges_social, edges_natural, edges_financial)
+
+# Render graph
+graph &lt;- create_graph(nodes_df = nodes,
+                      edges_df = edges)
+
+render_graph(graph, output = "visNetwork")    
+</code></pre>
+
+<p></p>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-03 00:00:00 +1000">03 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/10/research-protocol-for-manitoba-centre-for-health-policy/" title="Research Protocol For Manitoba Centre For Health Policy" rel="bookmark">Research Protocol For Manitoba Centre For Health Policy</a>
     </h1>
     <div class="entry-content full-content">
@@ -1588,121 +1730,6 @@ analysisTemplate()
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-2/" title="Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple" rel="bookmark">Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>This post is about an effective and simple data management framework for analysis projects.
-This post introduces Josh Reich's LCFD framework, originally introduced in this answer on the stack overflow website here <a href="http://stackoverflow.com/a/1434424">http://stackoverflow.com/a/1434424</a>, and encoded into the makeProject R package <a href="http://cran.r-project.org/web/packages/makeProject/makeProject.pdf">http://cran.r-project.org/web/packages/makeProject/makeProject.pdf</a>.</p>
-
-<h2>Literature Review Approach</h2>
-
-<p>This series of three posts is a summary of some of the most useful advice I have found based on my experience having implemented in my own work.</p>
-
-<p>This is the second post in a series of three entries regarding some evidence-based best practice approaches I have reviewed.  I have read many website articles and blog posts on a variety of approaches to the organisation of digital assets in a reporoducible research pipeline.
-The material I've gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.</p>
-
-<h2>Digital Assets Management for Reproducible Research</h2>
-
-<p>The digital assets in a reproducible research pipeline include:</p>
-
-<ol>
-<li>Publication material (documents, figures, tables, literature)</li>
-<li>Data (raw measurements, data provided, data derived)</li>
-<li>Code (pre-processing, analysis and presentation)</li>
-</ol>
-
-
-<h2>How to use the <code>makeProject</code> package</h2>
-
-<ul>
-<li>The <code>makeProject</code> R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.</li>
-<li>The theory is very similar to the approach described in the previous post about Scott Long's batch script: wfsetupsingle.bat <a href="https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets">https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets</a></li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code># choose your project dir
-setwd("~/projects")   
-library(makeProject)
-makeProject("makeProjectDemo")
-#returns
-"Creating Directories ...
-Creating Code Files ...
-Complete ..."
-matrix(dir("makeProjectDemo"))
-#[1,] "code"       
-#[2,] "data"       
-#[3,] "DESCRIPTION"
-#[4,] "main.R"     
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>This has set up some simple and sensible tools for a data analysis.</li>
-<li>Let's have a look at the <code>main.R</code> script. This is the one file that is used to run all the modules of the project, found in the R scripts in the <code>code</code> folder.</li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code># Project: makeProjectDemo
-# Author: Your Name
-# Maintainer: Who to complain to &lt;yourfault@somewhere.net&gt;
-
-# This is the main file for the project
-# It should do very little except call the other files
-
-### Set the working directory
-setwd("/home/ivan_hanigan/projects/makeProjectDemo")
-
-
-### Set any global variables here
-####################
-
-
-
-####################
-
-
-### Run the code
-source("code/load.R")
-source("code/clean.R")
-source("code/func.R")
-source("code/do.R")
-</code></pre>
-
-<p></p>
-
-
-<p>I think that is very self-explanatory, but it does need some demonstration.  The next instalment in this three part blog post will describe the ProjectTemplate approach.  After that I will demonstrate ways that each of the three approaches can be used.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data management" title="data management" rel="category tag">data management</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/09/reproducible-research-and-managing-digital-assets-part-2/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-09-26 00:00:00 +1000">26 Sep 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1783,6 +1810,10 @@ source("code/do.R")
               <ul>
                 
                 <li>
+                  <a href="/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/" title="A Driver Script To Set Up A Data Analysis Pipeline" rel="bookmark">A Driver Script To Set Up A Data Analysis Pipeline</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/" title="Coming To Grips With Citations In Reproducible Research Reports" rel="bookmark">Coming To Grips With Citations In Reproducible Research Reports</a>
                 </li>
                 
@@ -1796,10 +1827,6 @@ source("code/do.R")
                 
                 <li>
                   <a href="/2015/10/open-notebook-blogging-vs-twitter-or-can-i-do-both/" title="Open Notebook Blogging Vs Twitter? Or Can I Do Both?" rel="bookmark">Open Notebook Blogging Vs Twitter? Or Can I Do Both?</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/" title="Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things" rel="bookmark">Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</a>
                 </li>
                 
               </ul>
@@ -1825,7 +1852,7 @@ source("code/do.R")
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (22)</a></li>
+                <li><a href="/categories/disentangle">disentangle (23)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -1869,7 +1896,7 @@ source("code/do.R")
                 
                 <li><a href="/tag/Reproducible Research Reports">Reproducible Research Reports (2)</a></li>
                 
-                <li><a href="/tag/Data Management">Data Management (2)</a></li>
+                <li><a href="/tag/Data Management">Data Management (3)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -1904,7 +1931,7 @@ source("code/do.R")
           <!--        -->
           <!--       <li><a href="/tag/Reproducible Research Reports">Reproducible Research Reports (2)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/Data Management">Data Management (2)</a></li> -->
+          <!--       <li><a href="/tag/Data Management">Data Management (3)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

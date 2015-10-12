@@ -4,13 +4,70 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-10-09T17:09:37+11:00</updated>
+ <updated>2015-10-12T16:51:28+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>A Driver Script To Set Up A Data Analysis Pipeline</title>
+   <link href="http://schamberlain.github.com/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/"/>
+   <updated>2015-10-12T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;In my previous post I reviewed a paper by Noble 2009 that proposed recommendations for best practice ways to set up a data analysis pipeline &lt;a href=&quot;http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/&quot;&gt;http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I was following up on a series of posts I made about other best practice recommendations &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/&quot;&gt;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;In the paper by Noble it is suggested that a one should use a 'driver script' to automate creation of a directory structure, this is the exact way that &lt;code&gt;ProjectTemplate&lt;/code&gt; and &lt;code&gt;makeProject&lt;/code&gt; work as I described them in the series of posts.&lt;/li&gt;
+&lt;li&gt;I think Noble's framework offers something new to the recomendations I had canvassed, that is the idea of chronological order of the contents of the results directory.  I think this is an eminently sensible idea and thought that the R function &lt;code&gt;Sys.Date()&lt;/code&gt; would be a great way to start off a project in this way.&lt;/li&gt;
+&lt;li&gt;so I have put together the following R function, as an alternative to the &lt;code&gt;makeProject&lt;/code&gt; core function, that I thought I'd name so that there may be a family of makeProject functions, so that analysts have a range of to choose from.  The other candidate would be &lt;code&gt;makeProjectLong&lt;/code&gt;, which I will also put up before long.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;makeProjectNoble &amp;lt;- function(rootdir = getwd()){
+  if(!exists(rootdir)) dir.create(rootdir)
+  dir.create(file.path(rootdir,'doc'))
+  dir.create(file.path(rootdir,'doc','paper'))
+  sink(file.path(rootdir,'doc','workplan.Rmd'))
+    cat(sprintf(&quot;---\ntitle: Untitled\nauthor: your name\ndate: %s\noutput: html_document\n---\n\n&quot;,
+                Sys.Date()))
+  sink()
+  dir.create(file.path(rootdir,'data'))
+  dir.create(file.path(rootdir,'data', Sys.Date()))
+  dir.create(file.path(rootdir,'src'))
+  dir.create(file.path(rootdir,'results')) 
+  dir.create(file.path(rootdir,'results', Sys.Date())) 
+  file.create(file.path(rootdir,'README.md'))
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Running this function will deploy the folders and files (I excluded the &lt;code&gt;bin&lt;/code&gt; folder for compiled binaries, as I believe that many data analysts may not need that, and those who do are geeky enough to write their own driver scripts.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/testProjectNoble.png&quot; alt=&quot;/images/testProjectNoble.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The Rmarkdown script is waiting for the analysis plan to be pumped out, and work can begin&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/testProjectNobleMD.png&quot; alt=&quot;/images/testProjectNobleMD.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Coming To Grips With Citations In Reproducible Research Reports</title>
@@ -7124,127 +7181,6 @@ as.yearmon(&quot;Apr-2012&quot;)
 &lt;li&gt;A drawback is that it has to go through the Emacs export function.&lt;/li&gt;
 &lt;/ul&gt;
 
-</content>
- </entry>
- 
- <entry>
-   <title>Aggregation Of Statistical Local Areas</title>
-   <link href="http://schamberlain.github.com/2014/02/aggregation-of-statistical-local-areas/"/>
-   <updated>2014-02-18T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2014/02/aggregation-of-statistical-local-areas</id>
-   <content type="html">&lt;h2&gt;Reproducibility&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;A subset of the data and code used for this blog post is available at &lt;a href=&quot;https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s&quot;&gt;https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Some parts of the data I used are not available due to shared Intellectual Property&lt;/li&gt;
-&lt;li&gt;The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics&lt;/li&gt;
-&lt;li&gt;The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;The Aim is to aggregate Statistical Local Areas (SLAs, recently relabelled SA2) Australian Standard Geographical Classification (ASGC, recently relabelled ASGS) to achieve a greater level of privacy protection.
-The rules to achieve a geography amenable to statistical comparisons are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;similar populations (around 20,000 to 30,000)&lt;/li&gt;
-&lt;li&gt;homogenous Index of Relative Socioeconomic Disadvantage&lt;/li&gt;
-&lt;li&gt;nested within the next level up in the ASGC/ASGS&lt;/li&gt;
-&lt;li&gt;so that SSD (recently relabelled SA3) are not split.&lt;/li&gt;
-&lt;li&gt;the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments&lt;/li&gt;
-&lt;li&gt;This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Results&lt;/h2&gt;
-
-&lt;h3&gt;Data Prep&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The data were prepared as spatial files&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/aggregation-of-sa2s.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Assess proposed split in Belconnen&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the proposed split in belconnen looks good&lt;/li&gt;
-&lt;li&gt;This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score&lt;/li&gt;
-&lt;li&gt;Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham&lt;/li&gt;
-&lt;li&gt;Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/belco-split.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Assess the outliers&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;this can be done by identifying their component CCD SEIFA within new groups&lt;/li&gt;
-&lt;li&gt;the seifa of CCD in outliers are compared to the others within their new groups&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/seifa-by-newgroups1.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;zoom in on croweded areas&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/seifa-by-newgroups1-2.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;!-- html table generated in R 3.0.2 by xtable 1.7-1 package --&gt;
-
-
-&lt;!-- Tue Feb 18 22:03:04 2014 --&gt;
-
-
-&lt;TABLE border=1&gt;
-&lt;TR&gt; &lt;TH&gt;  &lt;/TH&gt; &lt;TH&gt; sa2_name.x &lt;/TH&gt; &lt;TH&gt; new_sa2_group &lt;/TH&gt; &lt;TH&gt; notes &lt;/TH&gt;  &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 12 &lt;/TD&gt; &lt;TD&gt; Bruce &lt;/TD&gt; &lt;TD&gt; Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 14 &lt;/TD&gt; &lt;TD&gt; Campbell &lt;/TD&gt; &lt;TD&gt; Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 20 &lt;/TD&gt; &lt;TD&gt; Civic &lt;/TD&gt; &lt;TD&gt; Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 31 &lt;/TD&gt; &lt;TD&gt; Fadden &lt;/TD&gt; &lt;TD&gt; Fadden/ Gowrie (ACT)/ Macarthur/ Monash &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 32 &lt;/TD&gt; &lt;TD&gt; Farrer &lt;/TD&gt; &lt;TD&gt; Farrer/ Isaacs/ Mawson/ Pearce/ Torrens &lt;/TD&gt; &lt;TD&gt; higher than neighbours bar one ccd &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 37 &lt;/TD&gt; &lt;TD&gt; Forrest &lt;/TD&gt; &lt;TD&gt; Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 60 &lt;/TD&gt; &lt;TD&gt; Isaacs &lt;/TD&gt; &lt;TD&gt; Farrer/ Isaacs/ Mawson/ Pearce/ Torrens &lt;/TD&gt; &lt;TD&gt; higher than neighbours bar one ccd &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 64 &lt;/TD&gt; &lt;TD&gt; Kingston - Barton &lt;/TD&gt; &lt;TD&gt; Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 71 &lt;/TD&gt; &lt;TD&gt; Macarthur &lt;/TD&gt; &lt;TD&gt; Fadden/ Gowrie (ACT)/ Macarthur/ Monash &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 73 &lt;/TD&gt; &lt;TD&gt; Macquarie &lt;/TD&gt; &lt;TD&gt; Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 87 &lt;/TD&gt; &lt;TD&gt; O'Malley &lt;/TD&gt; &lt;TD&gt; Chifley/ Lyons (ACT)/ O'Malley/ Phillip &lt;/TD&gt; &lt;TD&gt; higher than neighbours &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 89 &lt;/TD&gt; &lt;TD&gt; Page &lt;/TD&gt; &lt;TD&gt; Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-  &lt;TR&gt; &lt;TD align=&quot;right&quot;&gt; 98 &lt;/TD&gt; &lt;TD&gt; Scullin &lt;/TD&gt; &lt;TD&gt; Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera &lt;/TD&gt; &lt;TD&gt; ok &lt;/TD&gt; &lt;/TR&gt;
-   &lt;/TABLE&gt;
-
-
-&lt;h3&gt;Investigating areas: eg the Kingston - Barton area&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;we can zoom in on some of these areas&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/kingston-barton.png&quot; alt=&quot;alttext&quot; /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Conclusions&lt;/h2&gt;
-
-&lt;p&gt;Basically, the problem comes from public housing policies in Canberra which distorts the effect of the housing market and land values in segregating rich from poor. Essentially, there are highly advantaged suburbs with pockets of disadvantaged public housing.&lt;/p&gt;
-
-&lt;p&gt;Other 'problematic' features re this are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;proximity to ornamental lakes&lt;/li&gt;
-&lt;li&gt;proximity to urban green space&lt;/li&gt;
-&lt;li&gt;proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement -- but different to 'distance from urban centre'&lt;/li&gt;
-&lt;li&gt;elevation, especially with a view.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Potentially the issue is going to be that this can't be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.&lt;/p&gt;
 </content>
  </entry>
  

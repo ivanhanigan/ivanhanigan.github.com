@@ -16,31 +16,35 @@ output:
     number_sections: no        
 documentclass: article
 classoption: a4paper
-csl: mee.csl
+csl: meemodified.csl
 bibliography: refs.bib
 ---
 
-```{r, echo=F, eval = T}
+```{r, echo=F, eval = F}
 
 # func
+setwd("~/tools/disentangle")
 library(rmarkdown)
 library(knitr)
 library(knitcitations)
 library(bibtex)
 cleanbib()
 #rm("bib")
-bib <- read.bibtex("refs.bib")
-
 #options("cite_format"="pandoc")
-#cite_options(citation_format = "pandoc", check.entries=FALSE)
-#rmarkdown::render("CitationsInRmarkdown.Rmd", "html_document")
+cite_options(citation_format = "pandoc", check.entries=FALSE)
+rmarkdown::render("~/projects/ivanhanigan.github.com.raw/rmarkdown_utils/CitationsInRmarkdown.Rmd", "html_document")
 #browseURL("CitationsInRmarkdown.html")  
-#rmarkdown::render("CitationsInRmarkdown.Rmd", "pdf_document")
+#rmarkdown::render("~/projects/ivanhanigan.github.com.raw/rmarkdown_utils/CitationsInRmarkdown.Rmd", "pdf_document")
 #browseURL("CitationsInRmarkdown.pdf")
 
 ```
 
-
+```{r, echo = F, results = 'hide'}
+# load my main bib file, generated from Mendeley
+if(!exists("bib")){
+bib <- read.bibtex("~/references/library.bib")
+}
+```
 
 # Introduction
 Earlier this year I was pleased to stumble on to Petr Keil\'s [Simple
@@ -86,4 +90,7 @@ Some recent papers `r citep(c(bib[["OpenScienceCollaboration2015"]],bib[["Davey2
 This blog post on 'evidence based data analysis pipeline' by `r citet(bib[["Peng2013"]])` is one that definitely needs the URL and date accessed.      
 
 
+```{r, echo=FALSE, message=FALSE, eval = T}
+write.bibtex(file="refs.bib")
+```
 # References
