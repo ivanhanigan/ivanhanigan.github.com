@@ -56,6 +56,781 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-3/" title="Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale" rel="bookmark">Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h2>Recap on this series of three posts</h2>
+
+<ul>
+<li>The <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets/">first post</a> showed the recommended files and folders for a data analysis project from Scott Long</li>
+<li>That recommendation was pretty complex, with a few folders that I felt did not jump out as super-useful</li>
+<li>The <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-2/">second post</a> showed a very simple template from the R community called makeProject</li>
+<li>I really like that one as it seems to be the minimum amount of stuff needed to make things work.</li>
+</ul>
+
+
+<h2>The ProjectTemplate framework</h2>
+
+<ul>
+<li>I have been using John Myles Whites ProjectTemplate R package <a href="http://projecttemplate.net/">http://projecttemplate.net/</a> for ages</li>
+<li>I really like the ease with which I can get up and running a new project</li>
+<li>and the ease with which I can pick up an old project and start adding new work</li>
+</ul>
+
+
+<h4>Quote from John's first post</h4>
+
+<pre><code>My inspiration for this approach comes from the rails command from
+Ruby on Rails, which initializes a new Rails project with the proper
+skeletal structure automatically. Also taken from Rails is
+ProjectTemplate’s approach of preferring convention over
+configuration: the automatic data and library loading as well as the
+automatic testing work out of the box because assumptions are made
+about the directory structure and naming conventions that will be used
+</code></pre>
+
+<p></p>
+
+
+<p><a href="http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/">http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/</a></p>
+
+<ul>
+<li>I dont know anything about RoR but this philosophy works really well for my R programming too</li>
+</ul>
+
+
+<h4>R Code</h4>
+
+<pre><code>if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
+setwd("~/projects")
+create.project("my-project")
+setwd('my-project')
+dir()
+##  [1] "cache"       "config"      "data"        "diagnostics" "doc"        
+##  [6] "graphs"      "lib"         "logs"        "munge"       "profiling"  
+## [11] "README"      "reports"     "src"         "tests"       "TODO"   
+##### these are very sensible default directories to create a modular
+##### analysis workflow.  See the project homepage for descriptions
+
+# now all you need to do whenever you start a new day 
+load.project()
+# and your workspace will be recreated and any new data automagically analysed in
+# the manner you want
+</code></pre>
+
+<p></p>
+
+
+<h2>Advanced usage of ProjectTemplate</h2>
+
+<p><body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">ProjectTemplate Demo</h1>
+
+
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 The Compendium concept</a></li>
+<li><a href="#sec-2">2 The R code that produced this report</a></li>
+<li><a href="#sec-3">3 Inititalise R environment</a></li>
+<li><a href="#sec-4">4 ProjectTemplate</a></li>
+<li><a href="#sec-5">5 Why?</a></li>
+<li><a href="#sec-6">6 The Reichian load, clean, func, do approach</a></li>
+<li><a href="#sec-7">7 The Peng NMMAPSlite approach</a></li>
+<li><a href="#sec-8">8 Init the project</a></li>
+<li><a href="#sec-9">9 dir()</a></li>
+<li><a href="#sec-10">10 The reports directory</a></li>
+<li><a href="#sec-11">11 Do the analysis</a></li>
+<li><a href="#sec-12">12 Get the projecttemplate tutorial data</a></li>
+<li><a href="#sec-13">13 Tools</a></li>
+<li><a href="#sec-14">14 Load the analysis data</a></li>
+<li><a href="#sec-15">15 check the analysis data</a></li>
+<li><a href="#sec-16">16 Develop munge code</a></li>
+<li><a href="#sec-17">17 To munge or not to munge?</a></li>
+<li><a href="#sec-18">18 Cache</a></li>
+<li><a href="#sec-19">19 Plot first and second letter counts</a></li>
+<li><a href="#sec-20">20 Do generate plots</a></li>
+<li><a href="#sec-21">21 First letter</a></li>
+<li><a href="#sec-22">22 Second letter</a></li>
+<li><a href="#sec-23">23 Report results</a></li>
+<li><a href="#sec-24">24 Produce final report</a></li>
+<li><a href="#sec-25">25 Personalised project management directories</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> The Compendium concept</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>\section{The Compendium concept}
+My goal is to develop data analysis projects along the lines of the Compendium concept of Gentleman and Temple Lang (2007) \cite{Gentleman2007}.
+Compendia are dynamic documents containing text, code and data.
+Transformations are applied to the compendium to view its various aspects.
+</p>
+<ul>
+<li>Code Extraction (Tangle): source code
+</li>
+<li>Export (Weave): LaTeX, HTML, etc
+</li>
+<li>Code Evaluation
+</li>
+</ul>
+
+
+<p>
+I'm also following the orgmode technique of Schulte et al (2012) \cite{Schulte}
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> The R code that produced this report</h2>
+<div class="outline-text-2" id="text-2">
+
+
+<p>
+I support the philosophy of Reproducible Research <a href="http://www.sciencemag.org/content/334/6060/1226.full">http://www.sciencemag.org/content/334/6060/1226.full</a>, and where possible I provide data and code in the statistical software R that will allow analyses to be reproduced.  This document is prepared automatically from the associated Emacs Orgmode file.  If you do not have access to the Orgmode file please contact me.
+</p>
+
+
+<pre class="src src-R">cat(<span style="color: #2aa198;">'</span>
+<span style="color: #2aa198;"> #######################################################################</span>
+<span style="color: #2aa198;"> ## The R code is free software; please cite this paper as the source.  </span>
+<span style="color: #2aa198;"> ## Copyright 2012, Ivan C Hanigan <a href="mailto:ivan.hanigan%40gmail.com">&lt;ivan.hanigan@gmail.com&gt;</a> </span>
+<span style="color: #2aa198;"> ## This program is free software; you can redistribute it and/or modify</span>
+<span style="color: #2aa198;"> ## it under the terms of the GNU General Public License as published by</span>
+<span style="color: #2aa198;"> ## the Free Software Foundation; either version 2 of the License, or</span>
+<span style="color: #2aa198;"> ## (at your option) any later version.</span>
+<span style="color: #2aa198;"> ## </span>
+<span style="color: #2aa198;"> ## This program is distributed in the hope that it will be useful,</span>
+<span style="color: #2aa198;"> ## but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span style="color: #2aa198;"> ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span style="color: #2aa198;"> ## GNU General Public License for more details.</span>
+<span style="color: #2aa198;"> ## Free Software</span>
+<span style="color: #2aa198;"> ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA</span>
+<span style="color: #2aa198;"> ## 02110-1301, USA</span>
+<span style="color: #2aa198;"> #######################################################################</span>
+<span style="color: #2aa198;">'</span>)
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Inititalise R environment</h2>
+<div class="outline-text-2" id="text-3">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">####</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">MAKE SURE YOU HAVE THE CORE LIBS</span>
+<span style="color: #859900; font-weight: bold;">if</span> (!<span style="color: #268bd2; font-weight: bold;">require</span>(ProjectTemplate)) install.packages(<span style="color: #2aa198;">'ProjectTemplate'</span>, repos=<span style="color: #2aa198;">'http://cran.csiro.au'</span>); <span style="color: #268bd2; font-weight: bold;">require</span>(ProjectTemplate)
+<span style="color: #859900; font-weight: bold;">if</span> (!<span style="color: #268bd2; font-weight: bold;">require</span>(lubridate)) install.packages(<span style="color: #2aa198;">'lubridate'</span>, repos=<span style="color: #2aa198;">'http://cran.csiro.au'</span>); <span style="color: #268bd2; font-weight: bold;">require</span>(lubridate)
+<span style="color: #859900; font-weight: bold;">if</span> (!<span style="color: #268bd2; font-weight: bold;">require</span>(reshape)) install.packages(<span style="color: #2aa198;">'reshape'</span>, repos=<span style="color: #2aa198;">'http://cran.csiro.au'</span>); <span style="color: #268bd2; font-weight: bold;">require</span>(reshape)
+<span style="color: #859900; font-weight: bold;">if</span> (!<span style="color: #268bd2; font-weight: bold;">require</span>(plyr)) install.packages(<span style="color: #2aa198;">'plyr'</span>, repos=<span style="color: #2aa198;">'http://cran.csiro.au'</span>); <span style="color: #268bd2; font-weight: bold;">require</span>(plyr)
+<span style="color: #859900; font-weight: bold;">if</span> (!<span style="color: #268bd2; font-weight: bold;">require</span>(ggplot2)) install.packages(<span style="color: #2aa198;">'ggplot2'</span>, repos=<span style="color: #2aa198;">'http://cran.csiro.au'</span>); <span style="color: #268bd2; font-weight: bold;">require</span>(ggplot2)
+<span style="color: #859900; font-weight: bold;">if</span>(!<span style="color: #268bd2; font-weight: bold;">require</span>(mgcv)) install.packages(<span style="color: #2aa198;">'mgcv'</span>, repos=<span style="color: #2aa198;">'http://cran.csiro.au'</span>);<span style="color: #268bd2; font-weight: bold;">require</span>(mgcv);
+<span style="color: #268bd2; font-weight: bold;">require</span>(splines)
+<span style="color: #859900; font-weight: bold;">if</span>(!<span style="color: #268bd2; font-weight: bold;">require</span>(NMMAPSlite)) install.packages(<span style="color: #2aa198;">'NMMAPSlite'</span>, repos=<span style="color: #2aa198;">'http://cran.csiro.au'</span>);<span style="color: #268bd2; font-weight: bold;">require</span>(NMMAPSlite)
+rootdir <span style="color: #268bd2; font-weight: bold;">&lt;-</span> getwd()  
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> ProjectTemplate</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>\section{ProjectTemplate}
+This is a simple demo of the R package \emph{ProjectTemplate} <a href="http://projecttemplate.net/">http://projecttemplate.net/</a> which is aimed at standardising the structure and general development of data analysis projects in R. 
+A primary aim is to allow analysts to quickly get a project loaded up and ready to:
+</p><ul>
+<li>reproduce or 
+</li>
+<li>create new data analyses.
+</li>
+</ul>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Why?</h2>
+<div class="outline-text-2" id="text-5">
+
+<p>It has been recognised on the R blogosphere that it 
+</p><ul>
+<li>is ``meant to handle very complex research projects'' (<a href="http://bryer.org/2012/maker-an-r-package-for-managing-document-building-and-versioning">http://bryer.org/2012/maker-an-r-package-for-managing-document-building-and-versioning</a>) and 
+</li>
+<li>is considered as being amongst the best approaches to the workflow for doing data analysis with R (<a href="http://blog.revolutionanalytics.com/2010/10/a-workflow-for-r.html">http://blog.revolutionanalytics.com/2010/10/a-workflow-for-r.html</a>)
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> The Reichian load, clean, func, do approach</h2>
+<div class="outline-text-2" id="text-6">
+
+<p>\section{The Reichian load, clean, func, do approach}
+</p>
+<p>
+The already mentioned blog post <a href="http://blog.revolutionanalytics.com/2010/10/a-workflow-for-r.html">http://blog.revolutionanalytics.com/2010/10/a-workflow-for-r.html</a> also links to another`best' approach, the: 
+</p>
+<ul>
+<li>\emph{Reichian load, clean, func, do} approach <a href="http://stackoverflow.com/a/1434424">http://stackoverflow.com/a/1434424</a>.  
+</li>
+</ul>
+
+
+
+<p>
+By Josh Reich.  I've also followed to prepare this demo using the tutorial and data from the package website <a href="http://projecttemplate.net/getting_started.html">http://projecttemplate.net/getting_started.html</a>
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> The Peng NMMAPSlite approach</h2>
+<div class="outline-text-2" id="text-7">
+
+<p>\section{The Peng NMMAPSlite approach}
+The other approach I followed was that of Roger Peng from Johns Hopkins and his NMMAPSlite R package \cite{Peng2004}.  Especially the function
+</p>
+
+
+<pre class="src src-R">readCity(name, collapseAge = <span style="color: #b58900;">FALSE</span>, asDataFrame = <span style="color: #b58900;">TRUE</span>)
+</pre>
+
+
+<p>
+Arguments
+</p><ul>
+<li>name  character, abbreviated name of a city
+</li>
+<li>collapseAge   logical, should age categories be collapsed?
+</li>
+<li>asDataFrame   logical, should a data frame be returned?)
+</li>
+</ul>
+
+
+<p>
+Description: Provides remote access to daily mortality, weather, and
+        air pollution data from the National Morbidity, Mortality, and
+        Air Pollution Study for 108 U.S. cities (1987&ndash;2000); data are
+        obtained from the Internet-based Health and Air Pollution
+        Surveillance System (iHAPSS)
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Init the project</h2>
+<div class="outline-text-2" id="text-8">
+
+<p>\section{Init the project}
+First we want to initialise the project directory.
+</p>
+
+
+<pre class="src src-R"><span style="color: #586e75;">####</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">init</span>
+<span style="color: #268bd2; font-weight: bold;">require</span>(<span style="color: #2aa198;">'ProjectTemplate'</span>)
+create.project(<span style="color: #2aa198;">'analysis'</span>,minimal=<span style="color: #b58900;">TRUE</span>)
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> dir()</h2>
+<div class="outline-text-2" id="text-9">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">####</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">init dir</span>
+dir(<span style="color: #2aa198;">'analysis'</span>)
+</pre>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">cache</td></tr>
+<tr><td class="left">config</td></tr>
+<tr><td class="left">data</td></tr>
+<tr><td class="left">munge</td></tr>
+<tr><td class="left">README</td></tr>
+<tr><td class="left">src</td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> The reports directory</h2>
+<div class="outline-text-2" id="text-10">
+
+<p>  I've added the reports directory manually and asked the package author if this is generic enough to be in the defaults for 
+</p>
+
+
+<pre class="src src-R">minimal = <span style="color: #b58900;">TRUE</span> 
+</pre>
+
+
+<p>
+I believe it may be as the \emph{Getting Started} guidebook states:
+</p><blockquote>
+
+<p>`It's meant to contain the sort of written descriptions of the results of your analyses that you'd \textbf{publish in a scientific paper.}
+</p>
+<p>
+With that report written &hellip;, we've gone through \textbf{the simplest sort of analysis you might run with ProjectTemplate}. 
+</p>
+</blockquote>
+
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">####</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">init reports</span>
+dir.create(<span style="color: #2aa198;">'analysis/reports'</span>)
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> Do the analysis</h2>
+<div class="outline-text-2" id="text-11">
+
+<p>\section{Do the analysis: use load,clean,func,do}
+</p>
+
+
+<pre class="src src-R"><span style="color: #586e75;">####</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">this is the start of the analysis, </span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">assumes the init.r file has been run</span>
+<span style="color: #859900; font-weight: bold;">if</span>(file.exists(<span style="color: #2aa198;">'analysis'</span>)) setwd(<span style="color: #2aa198;">'analysis'</span>)  
+Sys.Date()
+<span style="color: #586e75;"># </span><span style="color: #586e75;">keep a track of the dates the analysis is rerun</span>
+getwd()
+<span style="color: #586e75;"># </span><span style="color: #586e75;">may want to keep a reference of the directory </span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">the project is in so we can track the history </span>
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> Get the projecttemplate tutorial data</h2>
+<div class="outline-text-2" id="text-12">
+
+<p>Get the data from <a href="http://projecttemplate.net/letters.csv.bz2">http://projecttemplate.net/letters.csv.bz2</a> (I downloaded on 13-4-2012)
+Put it in the data directory for auto loading.
+</p>
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">####</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">analysis get tutorial data</span>
+download.file(<span style="color: #2aa198;">'http://projecttemplate.net/letters.csv.bz2'</span>, 
+  destfile = <span style="color: #2aa198;">'data/letters.csv.bz2'</span>, mode = <span style="color: #2aa198;">'wb'</span>)
+
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-13" class="outline-2">
+<h2 id="sec-13"><span class="section-number-2">13</span> Tools</h2>
+<div class="outline-text-2" id="text-13">
+
+<p>Edit the \emph{config/global.dcf} file to make sure that the load_libraries setting is turned on
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-14" class="outline-2">
+<h2 id="sec-14"><span class="section-number-2">14</span> Load the analysis data</h2>
+<div class="outline-text-2" id="text-14">
+
+<p>#\section{load}
+</p>
+
+
+<pre class="src src-R"><span style="color: #586e75;">####</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">analysis load</span>
+<span style="color: #268bd2; font-weight: bold;">require</span>(ProjectTemplate)
+load.project()
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-15" class="outline-2">
+<h2 id="sec-15"><span class="section-number-2">15</span> check the analysis data</h2>
+<div class="outline-text-2" id="text-15">
+
+<p>#\section{clean}
+</p>
+
+
+<pre class="src src-R">tail(letters)
+</pre>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">zyryan</td><td class="left">z</td><td class="left">y</td></tr>
+<tr><td class="left">zythem</td><td class="left">z</td><td class="left">y</td></tr>
+<tr><td class="left">zythia</td><td class="left">z</td><td class="left">y</td></tr>
+<tr><td class="left">zythum</td><td class="left">z</td><td class="left">y</td></tr>
+<tr><td class="left">zyzomys</td><td class="left">z</td><td class="left">y</td></tr>
+<tr><td class="left">zyzzogeton</td><td class="left">z</td><td class="left">y</td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-16" class="outline-2">
+<h2 id="sec-16"><span class="section-number-2">16</span> Develop munge code</h2>
+<div class="outline-text-2" id="text-16">
+
+<p>#\section{load with processing (munge)}
+</p>
+<p>
+Edit the \emph{munge/01-A.R} script so that it contains the following two lines of code:
+</p>
+
+
+<pre class="src src-R"><span style="color: #586e75;"># </span><span style="color: #586e75;">For our current analysis, we're interested in the total </span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">number of occurrences of each letter in the first and </span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">second letter positions and not in the words themselves.</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">compute aggregates</span>
+first.letter.counts <span style="color: #268bd2; font-weight: bold;">&lt;-</span> ddply(letters, c(<span style="color: #2aa198;">'FirstLetter'</span>), 
+  nrow)
+second.letter.counts <span style="color: #268bd2; font-weight: bold;">&lt;-</span> ddply(letters, c(<span style="color: #2aa198;">'SecondLetter'</span>), 
+  nrow)
+</pre>
+
+<p>
+Now if we run with 
+</p>
+
+
+
+<pre class="src src-R">load.project()
+</pre>
+
+
+<p>
+all munging will happen automatically.  However&hellip;
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-17" class="outline-2">
+<h2 id="sec-17"><span class="section-number-2">17</span> To munge or not to munge?</h2>
+<div class="outline-text-2" id="text-17">
+
+<p>As you'll see on the website, once the data munging is completed and outputs cached, load.project() will keep recomputing work over and over.  
+The author suggests we manually edit our configuration file.
+</p>
+
+
+<pre class="src src-R"> <span style="color: #586e75;"># </span><span style="color: #586e75;">edit the config file and turn munge on</span>
+ <span style="color: #586e75;"># </span><span style="color: #586e75;">load.project()</span>
+ <span style="color: #586e75;"># </span><span style="color: #586e75;">edit the config file and turn munge off</span>
+ <span style="color: #586e75;"># </span><span style="color: #586e75;">or my preference</span>
+ <span style="color: #268bd2; font-weight: bold;">source</span>(<span style="color: #2aa198;">'munge/01-A.r'</span>)
+<span style="color: #586e75;"># </span><span style="color: #586e75;">which can be included in our first analysis script</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">but subsequent analysis scripts can just call load.project() </span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">without touching the config file</span>
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-18" class="outline-2">
+<h2 id="sec-18"><span class="section-number-2">18</span> Cache</h2>
+<div class="outline-text-2" id="text-18">
+
+<p>Once munging is complete we cache the results
+</p>
+
+
+<pre class="src src-R">cache(<span style="color: #2aa198;">'first.letter.counts'</span>)
+cache(<span style="color: #2aa198;">'second.letter.counts'</span>)
+
+<span style="color: #586e75;"># </span><span style="color: #586e75;">And need to keep an eye on the implications for our config file to avoid re-calculating these next time we </span>
+
+load.project()
+
+</pre>
+
+
+
+
+<p>
+#\section{do}
+</p></div>
+
+</div>
+
+<div id="outline-container-19" class="outline-2">
+<h2 id="sec-19"><span class="section-number-2">19</span> Plot first and second letter counts</h2>
+<div class="outline-text-2" id="text-19">
+
+<p>Produce some simple density plots to see the shape of the first and second letter counts. 
+</p><ul>
+<li>Create \emph{src/generate_plots.R}. Use the src directory to store any analyses that you run. 
+</li>
+<li>The convention is that every analysis script starts with load.project() and then goes on to do something original with the data.
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-20" class="outline-2">
+<h2 id="sec-20"><span class="section-number-2">20</span> Do generate plots</h2>
+<div class="outline-text-2" id="text-20">
+
+<p>Write the first analysis script into a file in \textbf{src}
+</p>
+
+
+<pre class="src src-R"><span style="color: #268bd2; font-weight: bold;">require</span>(<span style="color: #2aa198;">'ProjectTemplate'</span>)
+load.project()
+plot1 <span style="color: #268bd2; font-weight: bold;">&lt;-</span> ggplot(first.letter.counts, aes(x = V1)) + 
+  geom_density()
+ggsave(file.path(<span style="color: #2aa198;">'reports'</span>, <span style="color: #2aa198;">'plot1.pdf'</span>))
+
+plot2 <span style="color: #268bd2; font-weight: bold;">&lt;-</span> ggplot(second.letter.counts, aes(x = V1)) + 
+  geom_density()
+ggsave(file.path(<span style="color: #2aa198;">'reports'</span>, <span style="color: #2aa198;">'plot2.pdf'</span>))
+dev.off()
+</pre>
+
+
+<p>
+And now run it (I do this from a main `overview' script).
+</p>
+
+
+
+<pre class="src src-R"><span style="color: #268bd2; font-weight: bold;">source</span>(<span style="color: #2aa198;">'src/generate_plots.r'</span>)
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-21" class="outline-2">
+<h2 id="sec-21"><span class="section-number-2">21</span> First letter</h2>
+<div class="outline-text-2" id="text-21">
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-22" class="outline-2">
+<h2 id="sec-22"><span class="section-number-2">22</span> Second letter</h2>
+<div class="outline-text-2" id="text-22">
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-23" class="outline-2">
+<h2 id="sec-23"><span class="section-number-2">23</span> Report results</h2>
+<div class="outline-text-2" id="text-23">
+
+<p>\section{Report results}
+We see that both the first and second letter distributions are very skewed. To make a note of this for posterity, we can write up our discovery in a text file that we store in the reports directory.
+</p>
+
+
+
+<pre class="src src-R">\documentclass[a4paper]{article}
+\title{Letters analysis}
+\author{Ivan Hanigan}
+\begin{document}
+\maketitle
+blah blah blah
+\end{document}
+
+
+</pre>
+
+
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-24" class="outline-2">
+<h2 id="sec-24"><span class="section-number-2">24</span> Produce final report</h2>
+<div class="outline-text-2" id="text-24">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;"># </span><span style="color: #586e75;">now run LaTeX on the file in reports/letters.tex</span>
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-25" class="outline-2">
+<h2 id="sec-25"><span class="section-number-2">25</span> Personalised project management directories</h2>
+<div class="outline-text-2" id="text-25">
+
+
+<p>
+\section{Personalised project management directories}
+</p>
+
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">####</span>
+<span style="color: #586e75;"># </span><span style="color: #586e75;">init additional directories for project management</span>
+analysisTemplate()
+</pre>
+
+
+<pre class="src src-R">dir()
+</pre>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">admin</td></tr>
+<tr><td class="left">analysis</td></tr>
+<tr><td class="left">data</td></tr>
+<tr><td class="left">document</td></tr>
+<tr><td class="left">init.r</td></tr>
+<tr><td class="left">metadata</td></tr>
+<tr><td class="left">ProjectTemplateDemo.org</td></tr>
+<tr><td class="left">references</td></tr>
+<tr><td class="left">tools</td></tr>
+<tr><td class="left">versions</td></tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+</div>
+
+
+<p></body></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data management" title="data management" rel="category tag">data management</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/reproducible-research-and-managing-digital-assets-part-3/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-27 00:00:00 +1000">27 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-2/" title="Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple" rel="bookmark">Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple</a>
     </h1>
     <div class="entry-content full-content">
@@ -522,165 +1297,6 @@ doi:10.1111/j.1740-9713.2015.00827.x
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/" title="My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)" rel="bookmark">My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Aims</h1>
-
-<p>I have worked on a function that turns a <code>data.frame</code> into a graphviz code in the dot language, with some of my preferred settings.  I realised that it might be useful for causal directed acyclic graphs.</p>
-
-<p>Causal diagrams are useful for conceptualising the pathways of cause and effect.  These diagrams are sometimes simplly informal pictures but have also been developed in a more formal way to be used in modelling.  These formal developments use concepts derived from the mathmatical abstraction of Graphs (fundamentally Graphs  are networks of linked 'nodes', with the links being termed 'edges').  Causal diagrams can either be constructed to depict two things: first are feedback loops (a vexatious property of complex systems that confounds modelling) while second are more simple chain-of-events type pathways which proceed from an upstream cause to a downstream effect in a single direction, without cycles, called 'Directed Acyclic Graphs or DAGs.  The loop diagrams are out of the scope of this present blog post because the DAGs are much more easily addressed by the tool that I am describing.</p>
-
-<p>To begin I am going to build on this other guy's blog post on causal DAGs with R
-  <a href="http://donlelek.github.io/2015/03/31/dags-with-r/">http://donlelek.github.io/2015/03/31/dags-with-r/</a>
-I wanted to add an interface for building these.</p>
-
-<p>Some background to the concepts that I use are provided in the references below.</p>
-
-<h1>Materials and Methods</h1>
-
-<p>The DiagrammeR package which has been integrated within R-Studio has made access to the graphing tool <code>graphviz</code> much easier than it used to be.  My function <code>causal_dag</code> (avaiable in my <code>disentangle</code> github package) essentially constructs the required <code>nodes</code> and <code>edges</code> for that package to use.  Optionally we can also include <code>labels</code> to indicate the direction of the effect.</p>
-
-<p>To use the tool all you need to do is create a list of <code>edges</code> and their associated <code>inputs</code> nodes and <code>outputs</code> nodes (as a comma separated values string) shown in the picture below.</p>
-
-<p><img src="/images/causal-ssheet.png" alt="causal-ssheet.png" /></p>
-
-<h4>Code:</h4>
-
-<pre><code># read in the sheet
-library(disentangle)
-library(stringr)
-causes &lt;- readxl::read_excel("causal-ssheet.xlsx")
-causes
-nodes &lt;- newnode(causes, "edges", "inputs", "outputs")
-cat(nodes)
-# The result is a formated graph in the dot language with some of my
-# preferred settings such as edges showing as 'records' and a spot to
-# write a description or include literature about each process
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>See the DOT code in the Appendix</li>
-<li>to render the graph now DiagrammeR can use this text string R object to render this to SVG</li>
-<li>I think it does not do PNG or PDF though so I still use graphviz and dot directly</li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code>grViz(nodes)
-
-# But I also use graphviz directly to produce a publishable image in
-# pdf or png
-sink("reproduce-donlelek.dot")
-cat(nodes)
-sink()# If graphviz is installed and on linux call it with a shell command
-#system("dot -Tpdf reproduce-donlelek.dot -o reproduce-donlelek.pdf")
-system("dot -Tpng reproduce-donlelek.dot -o reproduce-donlelek.png")
-</code></pre>
-
-<p></p>
-
-
-<h1>Results</h1>
-
-<p>Here I have reproduced the work of donlelek</p>
-
-<p><img src="/images/reproduce-donlelek.png" alt="reproduce-donlelek.png" /></p>
-
-<h1>Future directions</h1>
-
-<ul>
-<li>I'd like to make the edges implicit, so that the spreadsheet keeps track of the information about the causal process, but the graph just shows the lines connecting the nodes</li>
-<li>The edges are where the action is, so I need to add a direction of effect.  This would be in a <code>label</code> column and added in a [ label = 'abc' ] tag for each edge</li>
-<li>the rankdir option is LR to make this go sideways, which seems more the norm for causal DAGs, left to right.</li>
-</ul>
-
-
-<h4>References</h4>
-
-<pre><code>Greenland, S., Pearl, J., &amp; Robins, J. M. (1999). Causal diagrams for
-epidemiologic research. Epidemiology (Cambridge, Mass.), 10(1),
-37–48. doi:10.1097/00001648-199901000-00008
-
-Reid, C. E., Snowden, J. M., Kontgis, C., &amp; Tager, I. B. (2012). The
-role of ambient ozone in epidemiologic studies of heat-related
-mortality. Environmental Health Perspectives, 120(12),
-1627–30. doi:10.1289/ehp.1205251
-
-Newell, B., &amp; Wasson, R. (2001). Social System vs Solar System: Why
-Policy Makers Need History. In: Conflict and Cooperation related to
-International Water Resources : Historical Perspectives. In World
-Water (Vol. 2002).
-</code></pre>
-
-<p></p>
-
-
-<h1>Appendix</h1>
-
-<h4>Code:</h4>
-
-<pre><code>#####################################################################
-# The following output is automatically created by newnode()
-# NOTE for some reason, to show on the blog, I had to replace all { braces with normal (
-#####################################################################
-digraph transformations (
-
-"Metritis" -&gt; "Fertility effects"
-"Cistic Ovarian Disease" -&gt; "Fertility effects"
-"Age" -&gt; "Fertility effects"
-"Fertility effects"  [ shape=record, label="(( ( Name | Description ) | ( Fertility effects |  ) ))"]
-"Fertility effects" -&gt; "Fertility"
-
-
-"Metritis" -&gt; "Cistic Ovarian effects"
-"Retained Placenta" -&gt; "Cistic Ovarian effects"
-"Age" -&gt; "Cistic Ovarian effects"
-"Cistic Ovarian effects"  [ shape=record, label="(( ( Name | Description ) | ( Cistic Ovarian effects |  ) ))"]
-"Cistic Ovarian effects" -&gt; "Cistic Ovarian Disease"
-
-
-"Retained Placenta" -&gt; "Metritis effects"
-"Metritis effects"  [ shape=record, label="(( ( Name | Description ) | ( Metritis effects |  ) ))"]
-"Metritis effects" -&gt; "Metritis"
-
-
- "Age" -&gt; "Retained Placenta effects"
-"Retained Placenta effects"  [ shape=record, label="(( ( Name | Description ) | ( Retained Placenta effects |  ) ))"]
-"Retained Placenta effects" -&gt; "Retained Placenta"
-
-
- )
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-09-19 00:00:00 +1000">19 Sep 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -761,6 +1377,10 @@ digraph transformations (
               <ul>
                 
                 <li>
+                  <a href="/2015/10/a-set-of-guidelines-for-exploratory-data-analysis-and-cleaning/" title="A Set Of Guidelines For Exploratory Data Analysis And Cleaning" rel="bookmark">A Set Of Guidelines For Exploratory Data Analysis And Cleaning</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/" title="A Driver Script To Set Up A Data Analysis Pipeline" rel="bookmark">A Driver Script To Set Up A Data Analysis Pipeline</a>
                 </li>
                 
@@ -774,10 +1394,6 @@ digraph transformations (
                 
                 <li>
                   <a href="/2015/10/naming-conventions-for-computer-files/" title="Naming Conventions For Computer Files" rel="bookmark">Naming Conventions For Computer Files</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/10/open-notebook-blogging-vs-twitter-or-can-i-do-both/" title="Open Notebook Blogging Vs Twitter? Or Can I Do Both?" rel="bookmark">Open Notebook Blogging Vs Twitter? Or Can I Do Both?</a>
                 </li>
                 
               </ul>
@@ -803,7 +1419,7 @@ digraph transformations (
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (23)</a></li>
+                <li><a href="/categories/disentangle">disentangle (24)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -849,6 +1465,8 @@ digraph transformations (
                 
                 <li><a href="/tag/Data Management">Data Management (3)</a></li>
                 
+                <li><a href="/tag/Exploratory Data Analysis">Exploratory Data Analysis (1)</a></li>
+                
               <div class="clear"></div>
               </ul>
             </div>
@@ -883,6 +1501,8 @@ digraph transformations (
           <!--       <li><a href="/tag/Reproducible Research Reports">Reproducible Research Reports (2)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/Data Management">Data Management (3)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/Exploratory Data Analysis">Exploratory Data Analysis (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

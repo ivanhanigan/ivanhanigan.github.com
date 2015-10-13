@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-10-13T14:09:55+11:00</updated>
+ <updated>2015-10-14T10:07:28+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,58 +13,54 @@
 
  
  <entry>
-   <title>A Driver Script To Set Up A Data Analysis Pipeline</title>
-   <link href="http://ivanhanigan.github.com/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/"/>
-   <updated>2015-10-12T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;In my previous post I reviewed a paper by Noble 2009 that proposed recommendations for best practice ways to set up a data analysis pipeline &lt;a href=&quot;http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/&quot;&gt;http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I was following up on a series of posts I made about other best practice recommendations &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/&quot;&gt;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;In the paper by Noble it is suggested that a one should use a 'driver script' to automate creation of a directory structure, this is the exact way that &lt;code&gt;ProjectTemplate&lt;/code&gt; and &lt;code&gt;makeProject&lt;/code&gt; work as I described them in the series of posts.&lt;/li&gt;
-&lt;li&gt;I think Noble's framework offers something new to the recomendations I had canvassed, that is the idea of chronological order of the contents of the results directory.  I think this is an eminently sensible idea and thought that the R function &lt;code&gt;Sys.Date()&lt;/code&gt; would be a great way to start off a project in this way.&lt;/li&gt;
-&lt;li&gt;so I have put together the following R function, as an alternative to the &lt;code&gt;makeProject&lt;/code&gt; core function, that I thought I'd name so that there may be a family of makeProject functions, so that analysts have a range of to choose from.  The other candidate would be &lt;code&gt;makeProjectLong&lt;/code&gt;, which I will also put up before long.&lt;/li&gt;
-&lt;/ul&gt;
+   <title>A Set Of Guidelines For Exploratory Data Analysis And Cleaning</title>
+   <link href="http://ivanhanigan.github.com/2015/10/a-set-of-guidelines-for-exploratory-data-analysis-and-cleaning/"/>
+   <updated>2015-10-14T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/10/a-set-of-guidelines-for-exploratory-data-analysis-and-cleaning</id>
+   <content type="html">&lt;p&gt;The New York Times ran a piece on August 17, 2014: “For Big-Data Scientists, ‘Janitor Work’ Is Key Hurdle to Insights” [1].  The article bemoaned the need for too much of what data scientists call “data wrangling”, “data munging” and “data janitor work”.  In essence this means data quality control processes.
+A key task of my role as data manager/analyst is to perform Exploratory Data Analysis (EDA) to review data deposited for consistency, quality and its compliance with standards to ensure that reusability of data published in the portal is maximised.   To do this, I use relevant data formatting standards (for example the International Standards from ISO), undertake thorough taxonomic reviews of each dataset and have well documented procedures for dealing with miscellaneous errors such as data inconsistencies, duplicate variable names and reformatting numeric or character strings. I sometimes make changes to the data and give no further thoughts to it, but at  other times I need to make recommendations to the data provider and ask for their decisions/approvals on what to change.&lt;/p&gt;
 
-
-&lt;pre&gt;&lt;code&gt;makeProjectNoble &amp;lt;- function(rootdir = getwd()){
-  if(!exists(rootdir)) dir.create(rootdir)
-  dir.create(file.path(rootdir,'doc'))
-  dir.create(file.path(rootdir,'doc','paper'))
-  sink(file.path(rootdir,'doc','workplan.Rmd'))
-    cat(sprintf(&quot;---\ntitle: Untitled\nauthor: your name\ndate: %s\noutput: html_document\n---\n\n&quot;,
-                Sys.Date()))
-  sink()
-  dir.create(file.path(rootdir,'data'))
-  dir.create(file.path(rootdir,'data', Sys.Date()))
-  dir.create(file.path(rootdir,'src'))
-  dir.create(file.path(rootdir,'results')) 
-  dir.create(file.path(rootdir,'results', Sys.Date())) 
-  file.create(file.path(rootdir,'README.md'))
-  }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
+&lt;p&gt;I have put down this set of guidelines for my procedures to create standardised data structures, based on things that have been recommended in the literature [2-6] to make data as re-usable as possible. Here is a list of standard amendments undertaken during my EDA process:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Running this function will deploy the folders and files (I excluded the &lt;code&gt;bin&lt;/code&gt; folder for compiled binaries, as I believe that many data analysts may not need that, and those who do are geeky enough to write their own driver scripts.&lt;/li&gt;
+&lt;li&gt;identify any out-of-range values (based on the specified units), or questionable data in general;&lt;/li&gt;
+&lt;li&gt;rename all files and variables using lower_case_with_underscores naming convention;&lt;/li&gt;
+&lt;li&gt;tabulate frequencies and variable distributions, note any outliers for review;&lt;/li&gt;
+&lt;li&gt;identify any opportunities to make wide data longer, or many files that can be merged;&lt;/li&gt;
+&lt;li&gt;If you have multiple linked tables, each table should include a column that allows those tables to be linked unambiguously (such as the site_ID variables); check that linking variables that link two or more data tables are identical in each table&lt;/li&gt;
+&lt;li&gt;check that values in linked files marry up to values in other files (eg a site code in one file that is missing from the spatial data file);&lt;/li&gt;
+&lt;li&gt;write as CSV with quote encapsulated strings (for archival purposes);&lt;/li&gt;
+&lt;li&gt;code missing data as NA, or identify if these were actually censored;&lt;/li&gt;
+&lt;li&gt;coerce dates to ISO 8601 to be in the the YYYY-MM-DD format, or MMM-YYYY;&lt;/li&gt;
+&lt;li&gt;cast nominal variables that use integer codes as character;&lt;/li&gt;
+&lt;li&gt;check that all value labels in enumerated lists are described (ie codes for “1” = “low”, “2” = “mid” and “3” = “high”);&lt;/li&gt;
+&lt;li&gt;attempt to identify and split any combined variables (like season AND year like “winter-97” or species and comments ie “Banksia Dead”);&lt;/li&gt;
+&lt;li&gt;review any species lists against current scientific name conventions, recommend any modifications;&lt;/li&gt;
+&lt;li&gt;rename any non-conformant species lists (for instance including comments such as Alive/Dead) to “fauna_descriptor” or “flora_descriptor”;&lt;/li&gt;
+&lt;li&gt;identify any characters in numeric or date variables and replace with NA, (add to a comments variable if possible);&lt;/li&gt;
+&lt;li&gt;identify any values that Excel may try to convert to date type (for eg. site code “1-5” will appear as 5-Jan and should be rewritten as “site_1-5”);&lt;/li&gt;
+&lt;li&gt;use a GIS to confirm spatial coordinates and add geographical coordinates in decimal degrees (GDA94) if only supplied in metres UTM or AMG (always request the datum and the zone);&lt;/li&gt;
+&lt;li&gt;check what the coordinates refer to (e.g. approximate location of SW corner of 1ha plot).&lt;/li&gt;
+&lt;li&gt;rename files to be consistent with all data in the LTERN Data Portal.  Our standardised names have been created using controlled vocabularies.  Packages and files are designated tracking numbers – this is denoted by a plot network code and a unique “Package” number ascribed to each data package.  Each data package contains one or more data table which is the smallest trackable unit (denoted by a unique “Table” number).&lt;/li&gt;
+&lt;li&gt;while we prefer deposit of plain text CSV files, if we receive Excel spreadsheets we check for hidden rows or columns that might not be intended for publication (and  may have been deposited as an oversight).&lt;/li&gt;
+&lt;li&gt;it is always best to open Excel workbooks and use the in-built export function to save as CSV files for further re-use.  While R packages and other tools exist to programmatically extract the data from Excel, few tools that interoperate with Excel actually get the all the bug/feature cases right.  It has been noted that
+&quot;because working with data that has passed through Excel is hard to get right, data that has passed through Excel is often wrong.&quot; [7]&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;&lt;img src=&quot;/images/testProjectNoble.png&quot; alt=&quot;/images/testProjectNoble.png&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;References:&lt;/h2&gt;
 
-&lt;ul&gt;
-&lt;li&gt;The Rmarkdown script is waiting for the analysis plan to be pumped out, and work can begin&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/testProjectNobleMD.png&quot; alt=&quot;/images/testProjectNobleMD.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1&gt;References&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;Lohr, S. &lt;a href=&quot;http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0&quot;&gt;http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;White, E., Baldridge, E., Brym, Z., Locey, K., McGlinn, D., &amp;amp; Supp, S. (2013). Nine simple ways to make it easier to (re)use your data. Ideas in Ecology and Evolution, 6(2), 1–10. &lt;a href=&quot;http://dx.doi.org/10.4033/iee.2013.6b.6.f&quot;&gt;http://dx.doi.org/10.4033/iee.2013.6b.6.f&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Wickham, H. (Under Review). Tidy data. Journal of Statistical Software, VV(Ii).&lt;/li&gt;
+&lt;li&gt;Leek, J. 2014. &lt;a href=&quot;https://github.com/jtleek/datasharing&quot;&gt;https://github.com/jtleek/datasharing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Borer, E., Seabloom, E., Jones, M., and Schildhauer, M. 2009. Some Simple Guidelines for Effective Data Management. Bulletin of the Ecological Society of America 90:205–214. &lt;a href=&quot;http://dx.doi.org/10.1890/0012-9623-90.2.205&quot;&gt;http://dx.doi.org/10.1890/0012-9623-90.2.205&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Campbell, J. L., Rustad, L. E., Porter, J. H., Taylor, J. R., Dereszynski, E. W., Shanley, J. B., Gries, C., Henshaw, D. L., Martin, M. E., Sheldon, W. M., and Boose, E. R. 2013. Quantity is Nothing
+without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioScience, 63,
+574-585. &lt;a href=&quot;http://dx.doi.org/10.1525/bio.2013.63.7.10&quot;&gt;http://dx.doi.org/10.1525/bio.2013.63.7.10&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Mount, J. 2014. Excel spreadsheets are hard to get right. &lt;a href=&quot;http://www.win-vector.com/blog/2014/11/excel-spreadsheets-are-hard-to-get-right/&quot;&gt;http://www.win-vector.com/blog/2014/11/excel-spreadsheets-are-hard-to-get-right/&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
 </content>
  </entry>
