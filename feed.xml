@@ -6,6 +6,81 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>GIS Issues when R is Used for Transforming Coordinate Systems</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;I have been using using RGDAL to transform and write out spatial data in GDA94&lt;/li&gt;
+&lt;li&gt;It is a problem to know what I need to do to create the right prj file for ArcGIS to read without complaining&lt;/li&gt;
+&lt;li&gt;I have an example of code below, that I used on a dataset I knew was in GDA94 when I read it in.  I want to do this mostly for when I have to convert from one to another, but I have done the manual hack a couple of times now and thought I better just check with an expert.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;infile &amp;lt;- &quot;ap_map&quot;
+outfile &amp;lt;- gsub(&quot;map&quot;, &quot;map_GDA94.shp&quot;, infile)
+outfile
+setwd(indir)
+shp &amp;lt;- readOGR(&quot;.&quot;, infile)
+setwd(projdir)
+plot(shp, add = T)
+#str(shp)
+shp@proj4string@projargs
+#[1] &quot;+proj=longlat +ellps=GRS80 +no_defs&quot;
+# confirm this is GDA94
+epsg &amp;lt;- make_EPSG()
+str(epsg)
+epsg[grep(4283, epsg$code),]
+#     code    note                                                       prj4
+# 212 4283 # GDA94   +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
+# Arcmap sees this as GRS 1980(IUGG, 1980) which I think is the same thing
+# to be on the safe side I will force it to refer to GDA94
+shp2 &amp;lt;- spTransform(shp, CRS(&quot;+init=epsg:4283&quot;))
+shp2@proj4string@projargs
+#now write
+setwd(outdir)
+dir()
+writeOGR(shp2,  outfile, gsub(&quot;.shp&quot;, &quot;&quot;, outfile), driver = &quot;ESRI Shapefile&quot;)
+setwd(projdir)
+# Checking this shows it did not write the correct prj file, but I believe that this is because the GDA94 definition is not different to the WGS80 params.
+# one other option is to manually replace that prj file with the correct text found at http://spatialreference.org/ref/epsg/4283/
+# SO I did this to avoid any future confusions
+# OLD GEOGCS[&quot;GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;D_unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.017453292519943295]]
+# NEW GEOGCS[&quot;GDA94&quot;,DATUM[&quot;D_GDA_1994&quot;,SPHEROID[&quot;GRS_1980&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.017453292519943295]]
+# checked with ArcMap and they align ok
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;I asked on of my colleagues and here is his reply&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I usually use the sp and maptools library, rather than the readOGR and writeOGR functions.  Generally my workflow, as an example of projecting a GDA94 zone 55 file to WGS84, would be something like:&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;R Code:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;shp &amp;lt;- readShapePoly(&quot;myfile.shp&quot;)
+proj4string(shp) &amp;lt;- &quot;+proj=utm +zone=55 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&quot;
+shp2 &amp;lt;- spTransform(shp, CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;))
+writePolyShape(shp2,&quot;myfile_p.shp&quot;,proj4string=CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;I've never &lt;em&gt;noticed&lt;/em&gt; any problems doing this, the projection file is generated and I've never noticed any alignment problems in ArcMap.  It's true that I recall ArcMap sometimes displays an incorrect plaintext projection description, but things seem to be in the right place.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Also, I don't really ever rely on EPSG numbers in R - I just grab the proj4 strings and try to use them directly.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>2015-10-16 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/10/gis-issues-when-r-used-transforming-coordinate-systems/</link>
+			</item>
+		
+			<item>
 				<title>A Set Of Guidelines For Exploratory Data Analysis And Cleaning</title>
 				<description>&lt;p&gt;The New York Times ran a piece on August 17, 2014: “For Big-Data Scientists, ‘Janitor Work’ Is Key Hurdle to Insights” [1].  The article bemoaned the need for too much of what data scientists call “data wrangling”, “data munging” and “data janitor work”.  In essence this means data quality control processes.
 A key task of my role as data manager/analyst is to perform Exploratory Data Analysis (EDA) to review data deposited for consistency, quality and its compliance with standards to ensure that reusability of data published in the portal is maximised.   To do this, I use relevant data formatting standards (for example the International Standards from ISO), undertake thorough taxonomic reviews of each dataset and have well documented procedures for dealing with miscellaneous errors such as data inconsistencies, duplicate variable names and reformatting numeric or character strings. I sometimes make changes to the data and give no further thoughts to it, but at  other times I need to make recommendations to the data provider and ask for their decisions/approvals on what to change.&lt;/p&gt;
@@ -1408,46 +1483,6 @@ and formatted manuscript).&lt;/p&gt;
 </description>
 				<published>2015-10-01 00:00:00 +1000</published>
 				<link>http://ivanhanigan.github.com/2015/10/reproducible-research-pipelines-in-epidemiology/</link>
-			</item>
-		
-			<item>
-				<title>The Best Thing About Reproducibility Is Not Reproducibility, It Is Transparency And Rigour</title>
-				<description>&lt;p&gt;Adequately documenting the methods and results of data analysis helps
-safeguard against errors of execution and
-interpretation. My PhD thesis proposes that
-reproducible research pipelines address the problem of
-adequate documentation of data analysis.&lt;/p&gt;
-
-&lt;p&gt;A graphical view of the reproducible research pipeline concept is shown below.  The ideas  were introduced into epidemiology by Peng et al in 2006, although Peng has more recently been using the terms 'evidence based data analysis pipeline' (Peng 2013) and 'Data Science Pipeline' (Peng 2015). Both terms are useful, but I chose to follow the original phrase.  The graphical version shown below was introduced by Solymos and Feher (2008).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/reproduciblepipeline2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The best thing about reproducible work is not merely the ability to repeatedly arrive at the same result, but that having the organisational structures in place that are required for reproducibility also implicitly will improve the transparency and rigour of the work.  This is because they make
-it easy to check the methods. Assumptions are easy
-to challenge and results verified in new analyses.&lt;/p&gt;
-
-&lt;p&gt;Reproducible
-research pipelines extend traditional research.  They do this by
-encoding the steps in a computer ‘scripting’ language and distributing
-the data and code with publications.  Traditional research moves
-through the steps of hypothesis and design, measured data, analytic
-data, computational results (for figures, tables and numerical
-results), and reports (text and formatted manuscript).&lt;/p&gt;
-
-&lt;p&gt;This model of the research pipeline sees a new relationship possible between the author and the reader.  They approach the results and understandings of the research from opposite directions. Readers can dig deeper into the research to verify results or conduct similar studies. Reproducibility exists along a spectrum from minimum reproducibility that can be achieved by providing measured or analytic data and the analytic code. More reproducibility is gained by providing processing code necessary to transform original measured data into tidy data for analysis. Full reproducibility would include all stages of the pipeline.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Peng, R.D., Dominici, F. &amp;amp; Zeger, S.L. (2006). Reproducible epidemiologic research. American Journal of Epidemiology, 163, 783–789.  Retrieved from &lt;a href=&quot;http://dx.doi.org/10.1093/aje/kwj093&quot;&gt;http://dx.doi.org/10.1093/aje/kwj093&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. Simply statistics. Retrieved from &lt;a href=&quot;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&quot;&gt;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Peng, R.D. (2015). Report Writing for Data Science in R. leanpub. Retrieved from &lt;a href=&quot;https://leanpub.com/reportwriting&quot;&gt;https://leanpub.com/reportwriting&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Sólymos, P. &amp;amp; Fehér, Z. (2008). The mefa package: a tool for reproducible data processing in biogeography. International Biogeography Society Newsletter.  Retrieved from &lt;a href=&quot;http://biogeography.blogspot.com.au/2008/04/mefa-package-tool-for-reproducible-data.html&quot;&gt;http://biogeography.blogspot.com.au/2008/04/mefa-package-tool-for-reproducible-data.html&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>2015-09-28 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2015/09/the-best-thing-about-reproducibility-is-not-reproducibility-but-transparency-and-rigour/</link>
 			</item>
 		
 	</channel>
