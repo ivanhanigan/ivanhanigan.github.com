@@ -60,7 +60,7 @@
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>I have been using using RGDAL to transform and write out spatial data in GDA94</li>
+<li>I have been using RGDAL to transform and write out spatial data in GDA94</li>
 <li>It is a problem to know what I need to do to create the right prj file for ArcGIS to read without complaining</li>
 <li>I have an example of code below, that I used on a dataset I knew was in GDA94 when I read it in.  I want to do this mostly for when I have to convert from one to another, but I have done the manual hack a couple of times now and thought I better just check with an expert.</li>
 </ul>
@@ -125,6 +125,14 @@ writePolyShape(shp2,"myfile_p.shp",proj4string=CRS("+proj=longlat +ellps=WGS84 +
 <ul>
 <li><p>I've never <em>noticed</em> any problems doing this, the projection file is generated and I've never noticed any alignment problems in ArcMap.  It's true that I recall ArcMap sometimes displays an incorrect plaintext projection description, but things seem to be in the right place.</p></li>
 <li><p>Also, I don't really ever rely on EPSG numbers in R - I just grab the proj4 strings and try to use them directly.</p></li>
+</ul>
+
+
+<h2>TODO, see if PostGIS handles this OK</h2>
+
+<ul>
+<li>I wonder if my FOSS GIS stack should still pass things through PostGIS as I suspect it does these things better.</li>
+<li>I might check the output if I run it through the DB use st_transform and then extract to shapefile.</li>
 </ul>
 
 

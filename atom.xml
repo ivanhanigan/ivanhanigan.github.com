@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-10-16T14:56:50+11:00</updated>
+ <updated>2015-10-16T14:59:18+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -18,7 +18,7 @@
    <updated>2015-10-16T00:00:00+11:00</updated>
    <id>http://schamberlain.github.com/2015/10/gis-issues-when-r-used-transforming-coordinate-systems</id>
    <content type="html">&lt;ul&gt;
-&lt;li&gt;I have been using using RGDAL to transform and write out spatial data in GDA94&lt;/li&gt;
+&lt;li&gt;I have been using RGDAL to transform and write out spatial data in GDA94&lt;/li&gt;
 &lt;li&gt;It is a problem to know what I need to do to create the right prj file for ArcGIS to read without complaining&lt;/li&gt;
 &lt;li&gt;I have an example of code below, that I used on a dataset I knew was in GDA94 when I read it in.  I want to do this mostly for when I have to convert from one to another, but I have done the manual hack a couple of times now and thought I better just check with an expert.&lt;/li&gt;
 &lt;/ul&gt;
@@ -83,6 +83,14 @@ writePolyShape(shp2,&quot;myfile_p.shp&quot;,proj4string=CRS(&quot;+proj=longlat
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;I've never &lt;em&gt;noticed&lt;/em&gt; any problems doing this, the projection file is generated and I've never noticed any alignment problems in ArcMap.  It's true that I recall ArcMap sometimes displays an incorrect plaintext projection description, but things seem to be in the right place.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Also, I don't really ever rely on EPSG numbers in R - I just grab the proj4 strings and try to use them directly.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;TODO, see if PostGIS handles this OK&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I wonder if my FOSS GIS stack should still pass things through PostGIS as I suspect it does these things better.&lt;/li&gt;
+&lt;li&gt;I might check the output if I run it through the DB use st_transform and then extract to shapefile.&lt;/li&gt;
 &lt;/ul&gt;
 
 </content>
