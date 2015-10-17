@@ -56,6 +56,126 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.</p>
+
+<h1>What does it do?</h1>
+
+<p>The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.</p>
+
+<p>Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.</p>
+
+<h1>Create the metadata.txt</h1>
+
+<p>You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.</p>
+
+<p>change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.</p>
+
+<p>Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.</p>
+
+<p>You can look int the "Keys.txt" file that contains the full list of values that can be specified in this metadata.txt file.</p>
+
+<h4>Code:</h4>
+
+<pre><code>setwd("~/tools/dcupload")
+sink("metadata.txt")
+cat("
+# This file, referred to as a collection parameter file, consists of
+# data in key=value pairs. This data is sent to the ANU Data Commons
+# to create a collection, establish relations with other records,
+# and/or upload files to those collections.
+
+# The metadata section consists of metadata for use in creation (not
+# for modification) of record metadata in ANU Data Commons. The
+# following fields are required for the creation of a record. The file
+# Keys.txt contains the full list of values that can be specified in
+# this file. Based on this information below, a collection record of
+# type databaset with the title "Test Collection 6/05/2013" will be
+# created owned by Meteorology and Health group.
+[metadata]
+type = Collection
+subType = dataset
+ownerGroup = 5
+# 6 on production, 5 on dev
+name = Civil Status, Gender and Activity Sector
+briefDesc = An example, fictional dataset for Decision Tree Models
+citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
+email = ivan.hanigan@anu.edu.au
+anzforSubject = 1601
+
+# The relations section allows you to specify the relation this record
+# has with other records in the system.  Currently relations with NLA
+# identifiers is not supported.
+[relations]
+isOutputOf = anudc:123
+
+# This section contains a line of the form 'pid = anudc:123' once a
+# record has been created so executing the uploader script with the
+# same collection parameter file doesnt create a new record with the
+# same metadata.
+[pid]
+")
+sink()
+
+# run the dcload
+system("python3 dcuploader.py -c metadata.txt")
+</code></pre>
+
+<p></p>
+
+
+<h1>What happened?</h1>
+
+<ul>
+<li>Looking in the metadata.txt file it now has a pid like "pid = test:3527"</li>
+<li>And we have created a new record in our account on the DataCommons server.</li>
+</ul>
+
+
+<h1>go to the website</h1>
+
+<p>Now go to <a href="https://dc7-dev2.anu.edu.au:8443/DataCommons/">the dev site</a> and you can continue editing the record manually in the browser.</p>
+
+<p>Or if we have ironed out the wrinkles you could go straight to the production server at <a href="https://datacommons.anu.edu.au:8443/DataCommons">This Link</a></p>
+
+<h1>Uploading the data</h1>
+
+<p>The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.</p>
+
+<h1>Notes</h1>
+
+<ul>
+<li><p>After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.</p></li>
+<li><p>Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.</p></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/dc-uploader-and-ANU-DataCommons/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-13 00:00:00 +1100">13 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/reml-and-rfigshare-part-2/" title="reml-and-rfigshare-part-2" rel="bookmark">reml-and-rfigshare-part-2</a>
     </h1>
     <div class="entry-content full-content">
@@ -566,167 +686,6 @@ head(df)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/test-data-for-classification-trees/" title="test-data-for-classification-trees" rel="bookmark">test-data-for-classification-trees</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h4>A fictitious sample dataset</h4>
-
-<p>For discussion, I'll use a fictional example dataset that I'm using to work through some statistical theory related to Classification and Regression Trees (CART).
-In the motivating example use case we are interested in predicting the civil status (married, single, divorced/widowed) of individuals from their sex (male, female) and sector of activity (primary, secondary, tertiary). The data set is composed of 273 cases.</p>
-
-<p>The data (and related statistical theory) come from:</p>
-
-<ul>
-<li><p>Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf">This Link</a></p></li>
-<li><p>Ritschard, G., Pisetta, V., &amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf">This Link</a></p></li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code># copy and paste the data from the PDF (Table 1 in both papers)
-civst_gend_sector  &lt;- read.csv(textConnection(
-    "civil_status gender activity_sector number_of_cases
-         married   male         primary              50
-         married   male       secondary              40
-         married   male        tertiary               6
-         married female         primary               0
-         married female       secondary              14
-         married female        tertiary              10
-          single   male         primary               5
-          single   male       secondary               5
-          single   male        tertiary              12
-          single female         primary              50
-          single female       secondary              30
-          single female        tertiary              18
-divorced/widowed   male         primary               5
-divorced/widowed   male       secondary               8
-divorced/widowed   male        tertiary              10
-divorced/widowed female         primary               6
-divorced/widowed female       secondary               2
-divorced/widowed female        tertiary               2
-"),sep = "")
-
-# save this to my personal R utilities package "disentangle" 
-# for use later when I am exploring functions
-dir.create("inst/extdata", recursive=T)
-write.csv(civst_gend_sector, "inst/extdata/civst_gend_sector.csv", row.names = F)
-</code></pre>
-
-<p></p>
-
-
-<p>That is fine and good, we can use the case weights option to include number of cases but sometimes we want to use one row per person.
-In the next chunk of code I;ll reformat the data, and also add another fictitious variable called income and contrive an example where a certain group earns less based on their activity sector.</p>
-
-<h4>Code:</h4>
-
-<pre><code>df &lt;- as.data.frame(matrix(NA, nrow = 0, ncol = 3))
-for(i in 1:nrow(civst_gend_sector))
-    {
-    #    i &lt;- 1
-        n &lt;- civst_gend_sector$number_of_cases[i]
-        if(n == 0) next
-        for(j in 1:n)
-            {
-              df &lt;- rbind(df, civst_gend_sector[i,1:3])              
-            }
-
-    }
-
-df$income  &lt;- rnorm(nrow(df), 1000,200)
-# Let us say secondary men earn less
-df$income[df$gender == "male" &amp; df$activity == "secondary"]  &lt;- df$income[df$gender == "male" &amp; df$activity == "secondary"] - 500
-str(df)
-# save this for use later
-write.csv(df, "inst/extdata/civst_gend_sector_full.csv", row.names = F)
-</code></pre>
-
-<h4>Motivating reason for using these data</h4>
-
-<p>Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.</p>
-
-<p>I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.</p>
-
-<p>For example if we look at the reduction in deviance between the Null model and the fitted tree we can say that the tree explains about XYZ% of the variation. We can also test if this is a statistically significant reduction based on a chi-squared test.</p>
-
-<p>Consider this example from page 310 of Hastie, T., Tibshirani, R., &amp; Friedman, J. (2001). The elements of statistical learning. 2nd Edition:</p>
-
-<ul>
-<li>in a two-class problem with 400 observations in each class (denote this by (400, 400))</li>
-<li>suppose one split created nodes (300, 100) and (100, 300),</li>
-<li>the other created nodes (200, 400) and (200, 0).</li>
-<li>Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.</li>
-</ul>
-
-
-<p>During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write... I thought would publish it properly.</p>
-
-<h4>The Tree Model</h4>
-
-<p>So just before we leave Ritschard and the CART method, let's just fit the model.  Let's also install my R utilities package "disentangle", to test that we can access the data from it.</p>
-
-<p>In this analysis the civil status is the outcome (or response or decision or dependent) variable, while sex and activity sector are the predictors (or condition or independent variables).</p>
-
-<h4>Code:</h4>
-
-<pre><code># func
-require(rpart)
-require(partykit) 
-require(devtools)
-install_github("disentangle", "ivanhanigan")
-
-# load
-fpath &lt;- system.file(file.path("extdata", "civst_gend_sector.csv"),
-                     package = "disentangle"
-                     )
-civst_gend_sector &lt;- read.csv(fpath)
-
-# clean
-str(civst_gend_sector)
-
-# do
-fit &lt;- rpart(civil_status ~ gender + activity_sector,
-             data = civst_gend_sector, weights = number_of_cases,
-             control=rpart.control(minsplit=1))
-# NB need minsplit to be adjusted for weights.
-summary(fit)
-
-# report
-dir.create("images")
-png("images/fit1.png", 1000, 480)
-plot(as.party(fit))
-dev.off()
-</code></pre>
-
-<h4>The Result</h4>
-
-<p><img src="/images/fit1.png" alt="fit1.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/test-data-for-classification-trees/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-10 00:00:00 +1100">10 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -807,6 +766,10 @@ dev.off()
               <ul>
                 
                 <li>
+                  <a href="/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/" title="Reproducible research pipelines improve description of method steps" rel="bookmark">Reproducible research pipelines improve description of method steps</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/" title="How To Effectively Implement Electronic Lab Notebooks In Epidemiology" rel="bookmark">How To Effectively Implement Electronic Lab Notebooks In Epidemiology</a>
                 </li>
                 
@@ -820,10 +783,6 @@ dev.off()
                 
                 <li>
                   <a href="/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/" title="A Driver Script To Set Up A Data Analysis Pipeline" rel="bookmark">A Driver Script To Set Up A Data Analysis Pipeline</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/" title="Coming To Grips With Citations In Reproducible Research Reports" rel="bookmark">Coming To Grips With Citations In Reproducible Research Reports</a>
                 </li>
                 
               </ul>
@@ -849,7 +808,7 @@ dev.off()
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (25)</a></li>
+                <li><a href="/categories/disentangle">disentangle (26)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -867,7 +826,7 @@ dev.off()
                 
                 <li><a href="/categories/data operation">data operation (1)</a></li>
                 
-                <li><a href="/categories/workflow tools">workflow tools (1)</a></li>
+                <li><a href="/categories/workflow tools">workflow tools (2)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

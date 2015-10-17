@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-10-17T14:36:27+11:00</updated>
+ <updated>2015-10-18T10:30:14+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,77 +13,79 @@
 
  
  <entry>
-   <title>How To Effectively Implement Electronic Lab Notebooks In Epidemiology</title>
-   <link href="http://ivanhanigan.github.com/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/"/>
-   <updated>2015-10-17T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;It is often stated in the literature that an electronic lab notebook is a core component of reproducible research&lt;/li&gt;
-&lt;li&gt;For example the following is from Buck, S. (2015). Solving reproducibility. Science, 348(6242), 1403–1403. &lt;a href=&quot;http://dx.doi.org/10.1126/science.aac8041&quot;&gt;http://dx.doi.org/10.1126/science.aac8041&lt;/a&gt;&lt;/li&gt;
+   <title>Reproducible research pipelines improve description of method steps</title>
+   <link href="http://ivanhanigan.github.com/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/"/>
+   <updated>2015-10-18T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/10/reproducible-research-pipelines-improve-description-of-method-steps</id>
+   <content type="html">&lt;p&gt;Adequately documenting the methods and results of data analysis helps
+safeguard against errors of execution and
+interpretation. It is proposed that
+reproducible research pipelines address the problem of
+adequate documentation of data analysis.&lt;/p&gt;
+
+&lt;p&gt;This is because they make it easy to
+check the methods. Assumptions are easy to challenge and results
+verified in new analyses. Reproducible research pipelines extend
+traditional research.  They do this by encoding the steps in a
+computer ‘scripting’ language and distributing the data and code with
+publications.  Traditional research moves through the steps of
+hypothesis and design, measured data, analytic data, computational
+results (for figures, tables and numerical results), and reports (text
+and formatted manuscript).&lt;/p&gt;
+
+&lt;h2&gt;Fundamental components of a reproducible research pipeline&lt;/h2&gt;
+
+&lt;p&gt;The basic components of a pipeline are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Data Management Plan and Data Inventory&lt;/li&gt;
+&lt;li&gt;Method steps&lt;/li&gt;
+&lt;li&gt;Code&lt;/li&gt;
+&lt;li&gt;Data storage&lt;/li&gt;
+&lt;li&gt;Reports&lt;/li&gt;
+&lt;li&gt;Distribution.&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;pre&gt;&lt;code&gt;one of the most effective ways to promote high-quality science 
-is to create free open-source tools that give scientists
-easier and cheaper ways to incorporate transparency
-into their daily workflow: from open lab notebooks, to
-software that tracks every version of a data set, to dynamic 
-document generation.
+&lt;h3&gt;Method Steps&lt;/h3&gt;
+
+&lt;p&gt;The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.&lt;/p&gt;
+
+&lt;p&gt;A simple way to keep track of the steps, inputs and outputs is shown in the Table below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(stringr)
+steps &amp;lt;- read.csv(textConnection('
+CLUSTER ,  STEP  , INPUTS                   , OUTPUTS                   
+A  ,  Step1      , &quot;Input 1, Input 2&quot;       , &quot;Output 1&quot;                 
+A  ,  Step2      ,  Input 3                  , Output 2                   
+B  ,  Step3      , &quot;Output 1, Output 2&quot;      , Output 3                  
+'), stringsAsFactors = F, strip.white = T)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;ul&gt;
-&lt;li&gt;But I have struggled to operationalise the lab notebook in the epidemiology projects I work in&lt;/li&gt;
-&lt;li&gt;Here are some notes based on my recent readings and attempts with a new team&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;The steps and data listed in the Table above can be visualised.
+To achieve this an R function was written as part of this PhD project and is distributed in my own R package available on Github &lt;a href=&quot;https://github.com/ivanhanigan/disentangle&quot;&gt;https://github.com/ivanhanigan/disentangle&lt;/a&gt;.
+This is the &lt;code&gt;newnode&lt;/code&gt; function.  The function returns a string of text
+written in the &lt;code&gt;dot&lt;/code&gt; language which can be rendered in R using the
+&lt;code&gt;DiagrammeR&lt;/code&gt; package, or the standalone &lt;code&gt;graphviz&lt;/code&gt; package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(disentangle); library(stringr)
+nodes &amp;lt;- newnode(indat = steps,   names_col = &quot;STEP&quot;, in_col = &quot;INPUTS&quot;,
+  out_col = &quot;OUTPUTS&quot;, 
+  nchar_to_snip = 40)
+sink(&quot;fig-basic.dot&quot;);
+cat(nodes);
+sink()
+# or DiagrammeR::grViz(nodes)
+system(&quot;dot -Tpdf fig-basic.dot -o fig-basic.pdf&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 
-&lt;h2&gt;Modularised lab notebooks&lt;/h2&gt;
-
-&lt;p&gt;There seem to be a small number of components to a lab notebook that can be defined as:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Data management plan&lt;/li&gt;
-&lt;li&gt;Workplan&lt;/li&gt;
-&lt;li&gt;Worklog&lt;/li&gt;
-&lt;li&gt;Workflow&lt;/li&gt;
-&lt;li&gt;Distribution&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;One thing I think is important is to have levels of organisation in a hierarchy:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Macro level: The 'Research Programme' level is about the entire breadth of the projects in the group.
-
-&lt;ul&gt;
-&lt;li&gt;Data Management Plan: including managing the computers and a Data Inventory&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Personal Workplan and Worklog&lt;/em&gt;: this is an overview of things I do, plan to do or learn along the way (this is for the high level things like planning professional development, or a holiday)&lt;/li&gt;
-&lt;li&gt;This is operationalised in the blog you are reading right now.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Meso level: the 'Research Project' level is about a single study, or a small group of studies based around a core dataset or Concept
-
-&lt;ul&gt;
-&lt;li&gt;This is the level that you might write up a manuscript for a journal, or report to a client&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Project workplan&lt;/em&gt;: at this level there may be high level information about the study design, hypotheses, resources and admin for managing relationships with a variety of collaborators&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Worklog&lt;/em&gt;: WS Noble &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt; recommends that this be the main lab notebook for the analysts&lt;/li&gt;
-&lt;li&gt;He says 'This is a document that resides in the root of the results directory and that records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to de- scribing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work'&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Micro level: the 'Experiment Results' level is about work you might do on a single day, or over a week
-
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;Workflow&lt;/em&gt; scripts: At this level each 'experiment' is written up in chronological order, as entries to the Worklog at the meso level&lt;/li&gt;
-&lt;li&gt;Noble recommends 'create either a README file, in which I store every command line that I used while performing the experi- ment, or a driver script (I usually call this runall) that carries out the entire experiment automatically'...&lt;/li&gt;
-&lt;li&gt;and 'you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details.'&lt;/li&gt;
-&lt;li&gt;this is the level I usually think of managing the distribution side of things.  I will want to pack up the results and email to my collaborators, or decide on the one set of tables and figures to write into the manuscript for submission to a journal.  If this is accepted for publication, this is the one combined package of 'analytical data and code' that I would consider putting up online (to github) as supporting information for the paper.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-
+&lt;p&gt;&lt;img src=&quot;/images/fig-basic.png&quot; alt=&quot;/images/fig-basic.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  

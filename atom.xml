@@ -4,13 +4,90 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-10-17T14:36:27+11:00</updated>
+ <updated>2015-10-18T10:30:14+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Reproducible research pipelines improve description of method steps</title>
+   <link href="http://schamberlain.github.com/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/"/>
+   <updated>2015-10-18T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2015/10/reproducible-research-pipelines-improve-description-of-method-steps</id>
+   <content type="html">&lt;p&gt;Adequately documenting the methods and results of data analysis helps
+safeguard against errors of execution and
+interpretation. It is proposed that
+reproducible research pipelines address the problem of
+adequate documentation of data analysis.&lt;/p&gt;
+
+&lt;p&gt;This is because they make it easy to
+check the methods. Assumptions are easy to challenge and results
+verified in new analyses. Reproducible research pipelines extend
+traditional research.  They do this by encoding the steps in a
+computer ‘scripting’ language and distributing the data and code with
+publications.  Traditional research moves through the steps of
+hypothesis and design, measured data, analytic data, computational
+results (for figures, tables and numerical results), and reports (text
+and formatted manuscript).&lt;/p&gt;
+
+&lt;h2&gt;Fundamental components of a reproducible research pipeline&lt;/h2&gt;
+
+&lt;p&gt;The basic components of a pipeline are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Data Management Plan and Data Inventory&lt;/li&gt;
+&lt;li&gt;Method steps&lt;/li&gt;
+&lt;li&gt;Code&lt;/li&gt;
+&lt;li&gt;Data storage&lt;/li&gt;
+&lt;li&gt;Reports&lt;/li&gt;
+&lt;li&gt;Distribution.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Method Steps&lt;/h3&gt;
+
+&lt;p&gt;The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.&lt;/p&gt;
+
+&lt;p&gt;A simple way to keep track of the steps, inputs and outputs is shown in the Table below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(stringr)
+steps &amp;lt;- read.csv(textConnection('
+CLUSTER ,  STEP  , INPUTS                   , OUTPUTS                   
+A  ,  Step1      , &quot;Input 1, Input 2&quot;       , &quot;Output 1&quot;                 
+A  ,  Step2      ,  Input 3                  , Output 2                   
+B  ,  Step3      , &quot;Output 1, Output 2&quot;      , Output 3                  
+'), stringsAsFactors = F, strip.white = T)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;The steps and data listed in the Table above can be visualised.
+To achieve this an R function was written as part of this PhD project and is distributed in my own R package available on Github &lt;a href=&quot;https://github.com/ivanhanigan/disentangle&quot;&gt;https://github.com/ivanhanigan/disentangle&lt;/a&gt;.
+This is the &lt;code&gt;newnode&lt;/code&gt; function.  The function returns a string of text
+written in the &lt;code&gt;dot&lt;/code&gt; language which can be rendered in R using the
+&lt;code&gt;DiagrammeR&lt;/code&gt; package, or the standalone &lt;code&gt;graphviz&lt;/code&gt; package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(disentangle); library(stringr)
+nodes &amp;lt;- newnode(indat = steps,   names_col = &quot;STEP&quot;, in_col = &quot;INPUTS&quot;,
+  out_col = &quot;OUTPUTS&quot;, 
+  nchar_to_snip = 40)
+sink(&quot;fig-basic.dot&quot;);
+cat(nodes);
+sink()
+# or DiagrammeR::grViz(nodes)
+system(&quot;dot -Tpdf fig-basic.dot -o fig-basic.pdf&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/fig-basic.png&quot; alt=&quot;/images/fig-basic.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>How To Effectively Implement Electronic Lab Notebooks In Epidemiology</title>
@@ -6977,117 +7054,6 @@ workaround is to edit the XML file manually.&lt;/p&gt;
 &lt;p&gt;In 2010 &lt;a href=&quot;http://carlboettiger.info/2012/09/28/Welcome-to-my-lab-notebook.html&quot;&gt;Carl Boettiger&lt;/a&gt; initiated an experiment &quot;to see if any of the purported benefits or supposed risks were well-founded.&quot;  After three years of his experiment Boettiger reported that his &quot;evidence suggests that the practice of open notebook science can faciliate both the performance and dissemination of research while remaining compatible and even synergistic with academic publishing.&quot;&lt;/p&gt;
 
 &lt;p&gt;This promising result has inspired me to follow these practices in my own part-time PhD and my full-time work as Data Manager at a University (to the extent I am allowed to by the rules of the University and the willingness of my boss to share our results).&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Project Templates That Initialize A New Project With A Skeleton Automatically</title>
-   <link href="http://schamberlain.github.com/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically/"/>
-   <updated>2014-03-29T00:00:00+11:00</updated>
-   <id>http://schamberlain.github.com/2014/03/project-templates-that-initialize-a-new-project-with-a-skeleton-automatically</id>
-   <content type="html">&lt;ul&gt;
-&lt;li&gt;I have been using &lt;a href=&quot;http://projecttemplate.net/&quot;&gt;John Myles Whites ProjectTemplate R package&lt;/a&gt; for ages&lt;/li&gt;
-&lt;li&gt;I really like the ease with which I can get up and running a new project&lt;/li&gt;
-&lt;li&gt;and the ease with which I can pick up an old project and start adding new work&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Quote from John's first post&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;My inspiration for this approach comes from the rails command from
-Ruby on Rails, which initializes a new Rails project with the proper
-skeletal structure automatically. Also taken from Rails is
-ProjectTemplate’s approach of preferring convention over
-configuration: the automatic data and library loading as well as the
-automatic testing work out of the box because assumptions are made
-about the directory structure and naming conventions that will be used
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;a href=&quot;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&quot;&gt;http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I dont know anything about RoR but this philosophy works really well for my R programming too&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
-setwd(&quot;~/projects&quot;)
-create.project(&quot;my-project&quot;)
-setwd('my-project')
-dir()
-##  [1] &quot;cache&quot;       &quot;config&quot;      &quot;data&quot;        &quot;diagnostics&quot; &quot;doc&quot;        
-##  [6] &quot;graphs&quot;      &quot;lib&quot;         &quot;logs&quot;        &quot;munge&quot;       &quot;profiling&quot;  
-## [11] &quot;README&quot;      &quot;reports&quot;     &quot;src&quot;         &quot;tests&quot;       &quot;TODO&quot;   
-##### these are very sensible default directories to create a modular
-##### analysis workflow.  See the project homepage for descriptions
-
-# now all you need to do whenever you start a new day 
-load.project()
-# and your workspace will be recreated and any new data automagically analysed in
-# the manner you want
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;Project Administration&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I;ve found that these directories do not work so well for the administration of my projects and so I put together a different set of automatic defaults&lt;/li&gt;
-&lt;li&gt;Ive based it on the &lt;a href=&quot;http://ivanhanigan.github.io/2013/12/research-protocol-for-manitoba-centre-for-health-policy/&quot;&gt;University of Manitoba Centre for Health Policy&lt;/a&gt;- along with some other sources I can recall
-
-&lt;h4&gt;The full set&lt;/h4&gt;
-
-&lt;p&gt;  # A.Background      &lt;br/&gt;
-  # B.Proposals
-  # C.Approvals
-  # D.Budget  &lt;br/&gt;
-  # E.Datasets&lt;br/&gt;
-  # F.Analysis&lt;br/&gt;
-  # G.Literature      &lt;br/&gt;
-  # H.Communication           &lt;br/&gt;
-  # I.Correspondance  &lt;br/&gt;
-  # J.Meetings&lt;br/&gt;
-  # K.Completion      &lt;br/&gt;
-  # ContactDetails.txt&lt;br/&gt;
-  # README.md
-  # TODO.txt&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;R Code: my subset&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;AdminTemplate &amp;lt;- function(rootdir = getwd()){
-  setwd(rootdir)
-  dir.create(file.path(rootdir,'01_planning'))
-  dir.create(file.path(rootdir,'01_planning','proposal'))
-  dir.create(file.path(rootdir,'01_planning','scheduling'))
-  dir.create(file.path(rootdir,'02_budget'))
-  dir.create(file.path(rootdir,'03_communication'))
-  dir.create(file.path(rootdir,'04_reporting_and_meetings'))
-  file.create(file.path(rootdir,'contact_details.txt'))
-  file.create(file.path(rootdir,'README.md'))
-  }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;Conclusion&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;hopefully by formalising some of these into my workflow I will find my projects easier to navigate through&lt;/li&gt;
-&lt;li&gt;and pick up or put down as needed&lt;/li&gt;
-&lt;/ul&gt;
-
 </content>
  </entry>
  
