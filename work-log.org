@@ -697,18 +697,85 @@ Use examples of
 
 ***** DONE ucrh 0601 UCRH Files files walkability for BJ, queries to GM and MR
 ***** DONE ucrh 0601 UCRH Files files walkability footpaths dataset and etc osm fileshare to q drive
-***** TODO ucrh 0603 UCRH Noise data_traffic_zenith Contract Re Sharing internally
-***** TODO ucrh 0603 UCRH Noise email BHnz re Noise
-***** TODO ucrh 0602 UCRH Neighbourhood methods summarise Akita paper summary 
-***** TODO ucrh 0605 UCRH General Assignments Marking 
-      SCHEDULED: <2015-10-16 Fri 11:30>
-[[
-***** TODO phd postdoc at UC, print levels
-***** TODO ucrh 0605 UCRH General Project work plan exposures, generalise Neuro for all SEEF
-***** TODO ucrh 0602 UCRH neighbourhood analysis plan and lit review for meeting
+***** DONE phd post note about writeOGR and sptransform
+***** DONE ucrh 0603 UCRH Noise data_traffic_zenith Contract Re Sharing internally
 
 
 **** timesheet
 #+begin_src txt :tangle work-log.csv :eval no :padline no
 2015-10-16 Fri, ucrh, 100
+#+end_src
+*** 2015-10-17 Sat 
+**** TODO-list 
+***** DONE personal nea gym
+      SCHEDULED: <2015-10-17 Sat 09:15>
+***** DONE ucrh describte the workplan, worklog, workflow concept in a blog post
+***** TODO ucrh 0603 UCRH Noise email BHnz re Noise
+***** TODO ucrh 0603 UCRH Noise data_traffic_zenith Contract Re Sharing internally
+***** TODO phd datinv mod to Intellectualright
+    Field('data_owner', 'string', comment = 'The person or organisation with authority to grant permissions to access data.'),
+    Field('data_owner_contact', 'string', comment = 'Optional.'),
+    Field('licencee', comment = 'Optional.'),    
+    Field('special_conditions', 'text', comment = 'Any restrictions to be placed on the access or use, especially the timeframe if limited.'),
+    Field('path_to_licence', 'string', comment = 'Optional.')
+
+***** TODO phd datinv add function to get attr as per DROUGHT-BOM-GRIDS
+#+begin_src R :session *R* :tangle no :exports none :eval no
+  #### name:2015-10-15 ####
+  
+  #### Set any global variables here ####
+  projdir <- "~/projects/DROUGHT-BOM-GRIDS/"
+  outdir <- file.path(projdir, "data")
+  # if(!file.exists(outdir)) dir.create(outdir)
+  #outfile <- "data"
+  #file.path(outdir, outfile) 
+  setwd(projdir)
+  
+  #### Load any needed libraries #### 
+  #library(gdata)
+  library(disentangle)
+  library(sqldf)
+  #library(taxize)
+  indir <- "data"
+  
+  #### Identify your data inputs ####
+  dir(indir)
+  infile <- "drought_bom_grids.rain_act_1890_2008.csv"
+  
+   
+  #### load ####
+  print(file.path(projdir, indir,infile))
+  dat <- read.csv(file.path(indir,infile), stringsAsFactors = F)
+      
+  #### check ####
+  str(dat)
+  # write down the nrows and ncols here for future reference
+  # 'data.frame': 4260 obs. of  11 variables:
+  head(dat) 
+  tail(dat)
+  summary(dat)
+  
+  vl  <- variable_names_and_labels(infile = file.path(indir, infile))
+  for(i in 1:nrow(vl)){
+  #  i=1
+  inst <- "INSERT INTO attr(
+              entity_id, variable_name, variable_definition, measurement_scales, 
+              units, value_labels)
+      VALUES ("
+    txt  <- paste(c(34, vl[i,1:(ncol(vl)-3)]), sep = "", collapse = "','")
+  txt <- gsub("34'", "34", txt)
+  cat(sprintf("%s\n%s');\n", inst,txt))
+  }
+#+end_src
+
+***** TODO phd datinv add function to extract the report
+***** TODO ucrh 0602 UCRH Neighbourhood methods summarise Akita paper summary 
+***** TODO ucrh 0605 UCRH General Assignments Marking 
+***** TODO phd postdoc at UC, print levels
+***** TODO ucrh 0605 UCRH General Project work plan exposures, generalise Neuro for all SEEF
+***** TODO ucrh 0602 UCRH neighbourhood analysis plan and lit review for meeting
+
+**** timesheet
+#+begin_src txt :tangle work-log.csv :eval no :padline no
+2015-10-17 Sat, ucrh, 50
 #+end_src

@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-10-16T14:59:18+11:00</updated>
+ <updated>2015-10-17T14:36:27+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,84 +13,75 @@
 
  
  <entry>
-   <title>GIS Issues when R is Used for Transforming Coordinate Systems</title>
-   <link href="http://ivanhanigan.github.com/2015/10/gis-issues-when-r-used-transforming-coordinate-systems/"/>
-   <updated>2015-10-16T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/10/gis-issues-when-r-used-transforming-coordinate-systems</id>
+   <title>How To Effectively Implement Electronic Lab Notebooks In Epidemiology</title>
+   <link href="http://ivanhanigan.github.com/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/"/>
+   <updated>2015-10-17T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology</id>
    <content type="html">&lt;ul&gt;
-&lt;li&gt;I have been using RGDAL to transform and write out spatial data in GDA94&lt;/li&gt;
-&lt;li&gt;It is a problem to know what I need to do to create the right prj file for ArcGIS to read without complaining&lt;/li&gt;
-&lt;li&gt;I have an example of code below, that I used on a dataset I knew was in GDA94 when I read it in.  I want to do this mostly for when I have to convert from one to another, but I have done the manual hack a couple of times now and thought I better just check with an expert.&lt;/li&gt;
+&lt;li&gt;It is often stated in the literature that an electronic lab notebook is a core component of reproducible research&lt;/li&gt;
+&lt;li&gt;For example the following is from Buck, S. (2015). Solving reproducibility. Science, 348(6242), 1403–1403. &lt;a href=&quot;http://dx.doi.org/10.1126/science.aac8041&quot;&gt;http://dx.doi.org/10.1126/science.aac8041&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;infile &amp;lt;- &quot;ap_map&quot;
-outfile &amp;lt;- gsub(&quot;map&quot;, &quot;map_GDA94.shp&quot;, infile)
-outfile
-setwd(indir)
-shp &amp;lt;- readOGR(&quot;.&quot;, infile)
-setwd(projdir)
-plot(shp, add = T)
-#str(shp)
-shp@proj4string@projargs
-#[1] &quot;+proj=longlat +ellps=GRS80 +no_defs&quot;
-# confirm this is GDA94
-epsg &amp;lt;- make_EPSG()
-str(epsg)
-epsg[grep(4283, epsg$code),]
-#     code    note                                                       prj4
-# 212 4283 # GDA94   +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
-# Arcmap sees this as GRS 1980(IUGG, 1980) which I think is the same thing
-# to be on the safe side I will force it to refer to GDA94
-shp2 &amp;lt;- spTransform(shp, CRS(&quot;+init=epsg:4283&quot;))
-shp2@proj4string@projargs
-#now write
-setwd(outdir)
-dir()
-writeOGR(shp2,  outfile, gsub(&quot;.shp&quot;, &quot;&quot;, outfile), driver = &quot;ESRI Shapefile&quot;)
-setwd(projdir)
-# Checking this shows it did not write the correct prj file, but I believe that this is because the GDA94 definition is not different to the WGS80 params.
-# one other option is to manually replace that prj file with the correct text found at http://spatialreference.org/ref/epsg/4283/
-# SO I did this to avoid any future confusions
-# OLD GEOGCS[&quot;GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;D_unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.017453292519943295]]
-# NEW GEOGCS[&quot;GDA94&quot;,DATUM[&quot;D_GDA_1994&quot;,SPHEROID[&quot;GRS_1980&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.017453292519943295]]
-# checked with ArcMap and they align ok
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;I asked on of my colleagues and here is his reply&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I usually use the sp and maptools library, rather than the readOGR and writeOGR functions.  Generally my workflow, as an example of projecting a GDA94 zone 55 file to WGS84, would be something like:&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;shp &amp;lt;- readShapePoly(&quot;myfile.shp&quot;)
-proj4string(shp) &amp;lt;- &quot;+proj=utm +zone=55 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&quot;
-shp2 &amp;lt;- spTransform(shp, CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;))
-writePolyShape(shp2,&quot;myfile_p.shp&quot;,proj4string=CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;))
+&lt;pre&gt;&lt;code&gt;one of the most effective ways to promote high-quality science 
+is to create free open-source tools that give scientists
+easier and cheaper ways to incorporate transparency
+into their daily workflow: from open lab notebooks, to
+software that tracks every version of a data set, to dynamic 
+document generation.
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;I've never &lt;em&gt;noticed&lt;/em&gt; any problems doing this, the projection file is generated and I've never noticed any alignment problems in ArcMap.  It's true that I recall ArcMap sometimes displays an incorrect plaintext projection description, but things seem to be in the right place.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Also, I don't really ever rely on EPSG numbers in R - I just grab the proj4 strings and try to use them directly.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;But I have struggled to operationalise the lab notebook in the epidemiology projects I work in&lt;/li&gt;
+&lt;li&gt;Here are some notes based on my recent readings and attempts with a new team&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h2&gt;TODO, see if PostGIS handles this OK&lt;/h2&gt;
+&lt;h2&gt;Modularised lab notebooks&lt;/h2&gt;
+
+&lt;p&gt;There seem to be a small number of components to a lab notebook that can be defined as:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;I wonder if my FOSS GIS stack should still pass things through PostGIS as I suspect it does these things better.&lt;/li&gt;
-&lt;li&gt;I might check the output if I run it through the DB use st_transform and then extract to shapefile.&lt;/li&gt;
+&lt;li&gt;Data management plan&lt;/li&gt;
+&lt;li&gt;Workplan&lt;/li&gt;
+&lt;li&gt;Worklog&lt;/li&gt;
+&lt;li&gt;Workflow&lt;/li&gt;
+&lt;li&gt;Distribution&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;One thing I think is important is to have levels of organisation in a hierarchy:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Macro level: The 'Research Programme' level is about the entire breadth of the projects in the group.
+
+&lt;ul&gt;
+&lt;li&gt;Data Management Plan: including managing the computers and a Data Inventory&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Personal Workplan and Worklog&lt;/em&gt;: this is an overview of things I do, plan to do or learn along the way (this is for the high level things like planning professional development, or a holiday)&lt;/li&gt;
+&lt;li&gt;This is operationalised in the blog you are reading right now.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Meso level: the 'Research Project' level is about a single study, or a small group of studies based around a core dataset or Concept
+
+&lt;ul&gt;
+&lt;li&gt;This is the level that you might write up a manuscript for a journal, or report to a client&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Project workplan&lt;/em&gt;: at this level there may be high level information about the study design, hypotheses, resources and admin for managing relationships with a variety of collaborators&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Worklog&lt;/em&gt;: WS Noble &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt; recommends that this be the main lab notebook for the analysts&lt;/li&gt;
+&lt;li&gt;He says 'This is a document that resides in the root of the results directory and that records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to de- scribing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work'&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Micro level: the 'Experiment Results' level is about work you might do on a single day, or over a week
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Workflow&lt;/em&gt; scripts: At this level each 'experiment' is written up in chronological order, as entries to the Worklog at the meso level&lt;/li&gt;
+&lt;li&gt;Noble recommends 'create either a README file, in which I store every command line that I used while performing the experi- ment, or a driver script (I usually call this runall) that carries out the entire experiment automatically'...&lt;/li&gt;
+&lt;li&gt;and 'you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details.'&lt;/li&gt;
+&lt;li&gt;this is the level I usually think of managing the distribution side of things.  I will want to pack up the results and email to my collaborators, or decide on the one set of tables and figures to write into the manuscript for submission to a journal.  If this is accepted for publication, this is the one combined package of 'analytical data and code' that I would consider putting up online (to github) as supporting information for the paper.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 
 </content>

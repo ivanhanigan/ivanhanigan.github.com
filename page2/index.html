@@ -56,6 +56,100 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/" title="A quick review of a quick guide to organizing computational biology projects" rel="bookmark">A quick review of a quick guide to organizing computational biology projects</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>The organisation of material is a particularly vexatious topic.  For a data analysis project it is very important that the set of folders and files is logical and intuitive, as well as being well documented. The oft-heard exhortation by computer scientists to their users to 'Read The F-ing Manual' (RTFM) is perennial and rooted in the fundamental difficulty of readers to have the time required to read and digest the detailed information there-in.</p>
+
+<ul>
+<li>In this post I review a paper that I was referred to by recent activity on the
+Mozillascience studyGroupLesson 'Open Science Utility Belt':
+<a href="https://github.com/mozillascience/studyGroupLessons/issues/7">https://github.com/mozillascience/studyGroupLessons/issues/7</a></li>
+<li>That group also holds a journal club <a href="https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483">https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483</a> and they reviewed this paper:</li>
+<li>Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">http://dx.doi.org/10.1371/journal.pcbi.1000424</a></li>
+</ul>
+
+
+<p>I missed out so I thought I'd put my notes up here for reference:</p>
+
+<ol>
+<li>core guiding principle is simple: Someone unfamiliar with your project should be able to look at your computer files and understand in detail what you did and why</li>
+<li>your future self may find it difficult to understand your current work.</li>
+<li>Noble's law: 'Everything you do, you will probably have to do over again'</li>
+<li>store all of the files relevant to one project in common root directory</li>
+<li>The exception to this rule is data/code that are used in multiple projects, they are standalone projects</li>
+<li>Within a given project, use a top-level organization that is logical first, then chronological  at the next level, and then logical organization next</li>
+<li>Core folders are <code>data</code>, <code>results</code>, <code>doc</code> (versus Berndt Weiss' <code>dat</code>, <code>ana</code>, <code>doc</code>)</li>
+<li>Chronological order?  'tempting to apply a similar, logical organization... this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform'</li>
+</ol>
+
+
+<h3>Recommended folder and file structures <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424.g001">http://dx.doi.org/10.1371/journal.pcbi.1000424.g001</a></h3>
+
+<pre><code class="r">/projectname (eg msms)/
+    /doc/
+        /ms-analysis.html 
+        /paper/
+            /msms.tex
+            /msms.pdf
+    /data/
+        /YYYY-MM-DD/
+            /yeast/
+                /README
+                /yeast.sqt
+            /worm/
+                /README
+                /worm.sqt
+    /src/
+        /ms-analysis.c
+    /bin/
+        /parse-sqt.py
+    /results/
+        /notebook.html 
+        /YYYY-MM-DD-1/
+            /runall
+            /split1/
+            /split2/
+        /YYYY-MM-DD-2/
+            /runall
+</code></pre>
+
+<p></p>
+
+
+<ol>
+<li>Use a driver script to automate creation of a directory structure</li>
+<li>maintain a chronologically organized lab notebook (I have been calling this a work 'log' sensu Scott Long's 2008 'Workflow book')</li>
+<li>create either a README file, or a command line driver script (he calls this <code>runall</code>, but see also <code>main.R</code> sensu the Reichian LCFD model)</li>
+<li>you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details</li>
+<li>Version Control.  'Nuff said! But how to build capacity with Github when all my colleagues seem so confused by it?</li>
+</ol>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-07 00:00:00 +1100">07 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/10/naming-conventions-for-computer-files/" title="Naming Conventions For Computer Files" rel="bookmark">Naming Conventions For Computer Files</a>
     </h1>
     <div class="entry-content full-content">
@@ -1107,98 +1201,6 @@ In this case it is MCHP and Manitoba Health Reports - an example of cross-checki
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/reproducible-research-pipelines-in-epidemiology/" title="Reproducible Research Pipelines In Epidemiology" rel="bookmark">Reproducible Research Pipelines In Epidemiology</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>The scientific questions motivating my work explore the health
-effects of environmental changes.  These include droughts, bushfires,
-woodsmoke, dust storms, heat waves and local environmental
-conditions. The research needed to disentangle health effects of
-environmental changes from social factors. Some of the findings were
-novel and unexpected. Adequate documentation of the methods was
-problematic because of the many steps of data processing and
-analysis. Reproducible research pipelines address the problem of
-documenting data analyses by distributing data and code with
-publications.</p>
-
-<p>Reproducibility is needed to improve credibility.  It is often
-asserted in the literature that much research is not easy to
-reproduce. It is not clear what an effective way to implement these
-techniques is. The thesis asks how pipelines can be effectively
-implemented in epidemiology. It describes methods for reproducible
-research pipelines. It also demonstrates several applications of these
-methods in environmental epidemiology.</p>
-
-<p>Environmental epidemiology requires us to study multifactorial
-pathogenesis.  All diseases have multiple causal factors. To
-understand the many factors affecting health, epidemiologists must
-disentangle strands of a web of causal influences. Isolating factors
-is difficult and risks being overly reductionist. These determinants
-can interact in complex ways. Environmental epidemiologists often
-narrow the focus to a single environmental cause and health effect. A
-simple example is bushfire smoke and direct effects on
-cardio-respiratory disease.  A more complex example is drought and
-suicide where the effects are indirect. The focus is on a chain
-of intermediary causal factors. These questions are usually explored
-in the context of many other factors that describe human biological
-variables and the socio-economic milieu.</p>
-
-<p>While there is greater weight given to evidence from experimental than
-observational studies, experiments are difficult in environmental
-health.  Analysis of observational data is often used instead. There
-are problems inherent in observational studies that pertain to
-variables that are confounders and effect modifiers.  Observational
-studies face the principal problem of a large number of
-inter-relationships between variables. These can confound or modify
-effects.  It is vital to a valid analysis and meaningful
-interpretation that we include these. It is problematic that
-scientists select variables from a multitude of possibilities found in
-the literature. Scientists also gather variables from a plethora of
-possible data sources. There is a long process of hypothesising, study
-design, data collection, cleaning, exploration, decision making,
-preparation, data analysis, model building and model checking.  This
-process has been described as a vast ‘garden of forking paths’ which
-connect steps and decisions the analyst must make, but they could have
-made others. These issues might result in mere
-correlation interpreted as causation.</p>
-
-<p>Adequately documenting the methods and results of data analysis helps
-safeguard against such mistakes. This thesis proposes that
-reproducible research pipelines address the problem of adequate
-documentation of data analysis.  This is because they make it easy to
-check the methods. Assumptions are easy to challenge and results
-verified in new analyses. Reproducible research pipelines extend
-traditional research.  They do this by encoding the steps in a
-computer ‘scripting’ language and distributing the data and code with
-publications.  Traditional research moves through the steps of
-hypothesis and design, measured data, analytic data, computational
-results (for figures, tables and numerical results), and reports (text
-and formatted manuscript).</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/reproducible-research-pipelines-in-epidemiology/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-01 00:00:00 +1000">01 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1279,6 +1281,10 @@ and formatted manuscript).</p>
               <ul>
                 
                 <li>
+                  <a href="/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/" title="How To Effectively Implement Electronic Lab Notebooks In Epidemiology" rel="bookmark">How To Effectively Implement Electronic Lab Notebooks In Epidemiology</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/gis-issues-when-r-used-transforming-coordinate-systems/" title="GIS Issues when R is Used for Transforming Coordinate Systems" rel="bookmark">GIS Issues when R is Used for Transforming Coordinate Systems</a>
                 </li>
                 
@@ -1292,10 +1298,6 @@ and formatted manuscript).</p>
                 
                 <li>
                   <a href="/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/" title="Coming To Grips With Citations In Reproducible Research Reports" rel="bookmark">Coming To Grips With Citations In Reproducible Research Reports</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/" title="A quick review of a quick guide to organizing computational biology projects" rel="bookmark">A quick review of a quick guide to organizing computational biology projects</a>
                 </li>
                 
               </ul>
@@ -1321,7 +1323,7 @@ and formatted manuscript).</p>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (24)</a></li>
+                <li><a href="/categories/disentangle">disentangle (25)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -1338,6 +1340,8 @@ and formatted manuscript).</p>
                 <li><a href="/categories/data management">data management (2)</a></li>
                 
                 <li><a href="/categories/data operation">data operation (1)</a></li>
+                
+                <li><a href="/categories/workflow tools">workflow tools (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
