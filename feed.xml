@@ -6,6 +6,68 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>sanitize-mendeley-references-in-r-markdown-reporting</title>
+				<description>&lt;p&gt;A key challenge for Reproducible Research Reports in Rmarkdown remains adequate scholarly citation management; the machinery of scholarly citations and references.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;knitcitations&lt;/code&gt; R package does a great job of working with bibtex bibliography files, however the bibtex manager that I use is Mendeley and it has implemented some rules on the way it handles special characters that forces the bibtex references into a state with some 'escaped' elements that breaks their presentation via &lt;code&gt;knitcitations&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is a post from my open notebook that shows the workaround I am using for sanitizing the Mendeley escaped underscores in URLS.&lt;/p&gt;
+
+&lt;p&gt;Here is an example:&lt;/p&gt;
+
+&lt;p&gt;There is considerable public health impact from the effects on mental of drought &lt;span class=&quot;citation&quot;&gt;(&lt;span&gt;Sarathi Biswas&lt;/span&gt; 2012)&lt;/span&gt;. It is proposed that the best method to disentangle the multifactorial nature of this causal mechanism is the ‘five-capitals’ framework, indeed this method may even enable understanding the human carrying capacity of ecosystems &lt;span class=&quot;citation&quot;&gt;(McMichael &amp;amp; Butler 2002)&lt;/span&gt;.&lt;/p&gt;
+
+
+
+
+&lt;h1&gt;References&lt;/h1&gt;
+
+
+&lt;p&gt;McMichael, A.J. &amp;amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. &lt;em&gt;International Union for the Scientific Study of Population Committee on Emerging Health Threats&lt;/em&gt;. &lt;a href=&quot;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&quot;&gt;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&lt;/a&gt; [21 Sep. 2003]&lt;/p&gt;
+
+
+&lt;p&gt;&lt;span&gt;Sarathi Biswas&lt;/span&gt;, P. (2012). Alcohol, drought lead to farmer’s suicide. &lt;em&gt;Daily News and Analysis&lt;/em&gt;. &lt;a href=&quot;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&quot;&gt;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&lt;/a&gt; [17 May 2012]&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;See those pesky curly braces &lt;code&gt;{&lt;/code&gt; and &lt;code&gt;}&lt;/code&gt; around the underscores?&lt;/h2&gt;
+
+&lt;h2&gt;The fix&lt;/h2&gt;
+
+&lt;p&gt;The fix I am using is to sanitize each record where this is an issue as I build my document, so the mendeley version stays as-is, while the R version has been sanitized by removing the escape characters.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# read mendeley bibtex file
+bib &amp;lt;- read.bibtex(&quot;~/references/library.bib&quot;)
+# ad hoc fix
+for(bibkey in c(&quot;SarathiBiswas2012&quot;,
+  &quot;Mcmichael2002a&quot;  
+)){
+  bib[ [ bibkey ] ]$url &amp;lt;- gsub(&quot;\\{\\\\_\\}&quot;,&quot;_&quot;, bib[ [ bibkey ] ]$url)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is the result:&lt;/p&gt;
+
+&lt;p&gt;McMichael, A.J. &amp;amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. &lt;em&gt;International Union for the Scientific Study of Population Committee on Emerging Health Threats&lt;/em&gt;. &lt;a href=&quot;http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf&quot;&gt;http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf&lt;/a&gt; [21 Sep. 2003]&lt;/p&gt;
+
+
+&lt;p&gt;&lt;span&gt;Sarathi Biswas&lt;/span&gt;, P. (2012). Alcohol, drought lead to farmer’s suicide. &lt;em&gt;Daily News and Analysis&lt;/em&gt;. &lt;a href=&quot;http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976&quot;&gt;http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976&lt;/a&gt; [17 May 2012]&lt;/p&gt;
+
+
+
+
+&lt;p&gt;&lt;/p&gt;
+
+</description>
+				<published>2015-10-24 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/10/sanitize-mendeley-references-in-r-markdown-reporting/</link>
+			</item>
+		
+			<item>
 				<title>Keeping an electronic lab notebook for computational statistics projects</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;In my previous post on this topic &lt;a href=&quot;http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/&quot;&gt;http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/&lt;/a&gt; I summarised some recommendations for electronic lab notebooks&lt;/li&gt;
@@ -931,85 +993,6 @@ List elements can then be ordered so that the groups of things that are similar 
 </description>
 				<published>2015-10-05 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/naming-conventions-for-computer-files/</link>
-			</item>
-		
-			<item>
-				<title>Open Notebook Blogging Vs Twitter? Or Can I Do Both?</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;I was tooling around someone's blog and noticed a link to this interesting talk &quot;Citation &amp;amp; Productivity Benefits from Open Science&quot; by &lt;a href=&quot;https://github.com/BillMills&quot;&gt;https://github.com/BillMills&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;the slides markdown is here &lt;a href=&quot;https://github.com/BillMills/practicalOpenScience/blob/gh-pages/outline.md&quot;&gt;https://github.com/BillMills/practicalOpenScience/blob/gh-pages/outline.md&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;the slide on &quot;Open Communication&quot; interested me, as I have turned up my open notebook blog to 11 recently with a couple of posts a week for the last few weeks&lt;/li&gt;
-&lt;li&gt;the recommendation to &quot;Blog Early And Blog Often&quot; resonated here!&lt;/li&gt;
-&lt;li&gt;I was intrigued by the comments&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;pre&gt;&lt;code&gt;
-used well, twitter can be a useful tool for frequent communication
-paradigms as a distributor and aggregator of links to the content in
-the other three bullet points. It can be really tough to stay on top
-of everyone's blog, everyone's issue tracker and everything else; by
-pushing links to our followers every time we have a new RFC out and
-vice versa, we greatly simplify this process. See this example.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;the other three being: GitHub Issues/Working Open, Blogging/Journals of Brief Ideas and
-Study Preregistration/'publication bias'&lt;/li&gt;
-&lt;li&gt;RFC means 'Request For Comments'&lt;/li&gt;
-&lt;li&gt;and so I clicked on the link to this example &lt;a href=&quot;https://twitter.com/MozillaScience/status/628990222651428864&quot;&gt;https://twitter.com/MozillaScience/status/628990222651428864&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/twits.png&quot; alt=&quot;/images/twits.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Warning, Danger&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This seemed like a fascinating discussion, one that I have been thinking about a lot&lt;/li&gt;
-&lt;li&gt;and writing up here &lt;a href=&quot;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&quot;&gt;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&lt;/a&gt; in my thesis BUT...&lt;/li&gt;
-&lt;li&gt;I also recently received this warning from a blogger I admire: &lt;a href=&quot;http://charliepark.org/stepping-away-from-twitter/&quot;&gt;http://charliepark.org/stepping-away-from-twitter/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;He warns strongly that people with my temperament for seeking feedback and approval may be hampered by using twitter too much:&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;pre&gt;&lt;code&gt;Stepping Away From Twitter
-June 12, 2015
-I recently noticed an interesting pattern.
-On days when I’m on Twitter, my ability to focus and 
-get good work done falls off a cliff.
-
-It’s not just “when you read Twitter first-thing in the day”, 
-something I’ve heard people discuss. 
-It was that I was on Twitter at all.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;But there are clear benefits right?&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;So I had to take a step back from my recent explorations with linking up my social media and blogging interests&lt;/li&gt;
-&lt;li&gt;Looking over what I am trying to achieve by keeping regular posts of my work, along with the need I feel to make sure people who are interested can &lt;em&gt;find&lt;/em&gt; my work, I began to despair&lt;/li&gt;
-&lt;li&gt;but then I kept digging around and see a lot of people I admire linking up twitter and more scientific communications&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;So what?&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I guess the real point of this post is to admit that I don't know how to use twitter&lt;/li&gt;
-&lt;li&gt;I'm happy to report I feel comfortable now (a couple of years in) making regular open notebook entries to communicate what is going on in my 'Lonely Analyst' lab &lt;a href=&quot;http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/&quot;&gt;http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;but a couple of recent emails asking me for data that I published years ago &lt;a href=&quot;https://gislibrary-extreme-weather.anu.edu.au/poa_weather&quot;&gt;like this Australian Postcode Area Weather Estimates stuff&lt;/a&gt; made me think I really need to get my stuff exposed so it is &lt;strong&gt;LOT&lt;/strong&gt; more visible.&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>2015-10-04 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2015/10/open-notebook-blogging-vs-twitter-or-can-i-do-both/</link>
 			</item>
 		
 	</channel>

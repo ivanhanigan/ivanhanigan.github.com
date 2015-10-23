@@ -4,13 +4,76 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-10-23T11:03:36+11:00</updated>
+ <updated>2015-10-24T10:45:26+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>sanitize-mendeley-references-in-r-markdown-reporting</title>
+   <link href="http://schamberlain.github.com/2015/10/sanitize-mendeley-references-in-r-markdown-reporting/"/>
+   <updated>2015-10-24T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2015/10/sanitize-mendeley-references-in-r-markdown-reporting</id>
+   <content type="html">&lt;p&gt;A key challenge for Reproducible Research Reports in Rmarkdown remains adequate scholarly citation management; the machinery of scholarly citations and references.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;knitcitations&lt;/code&gt; R package does a great job of working with bibtex bibliography files, however the bibtex manager that I use is Mendeley and it has implemented some rules on the way it handles special characters that forces the bibtex references into a state with some 'escaped' elements that breaks their presentation via &lt;code&gt;knitcitations&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is a post from my open notebook that shows the workaround I am using for sanitizing the Mendeley escaped underscores in URLS.&lt;/p&gt;
+
+&lt;p&gt;Here is an example:&lt;/p&gt;
+
+&lt;p&gt;There is considerable public health impact from the effects on mental of drought &lt;span class=&quot;citation&quot;&gt;(&lt;span&gt;Sarathi Biswas&lt;/span&gt; 2012)&lt;/span&gt;. It is proposed that the best method to disentangle the multifactorial nature of this causal mechanism is the ‘five-capitals’ framework, indeed this method may even enable understanding the human carrying capacity of ecosystems &lt;span class=&quot;citation&quot;&gt;(McMichael &amp;amp; Butler 2002)&lt;/span&gt;.&lt;/p&gt;
+
+
+
+
+&lt;h1&gt;References&lt;/h1&gt;
+
+
+&lt;p&gt;McMichael, A.J. &amp;amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. &lt;em&gt;International Union for the Scientific Study of Population Committee on Emerging Health Threats&lt;/em&gt;. &lt;a href=&quot;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&quot;&gt;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&lt;/a&gt; [21 Sep. 2003]&lt;/p&gt;
+
+
+&lt;p&gt;&lt;span&gt;Sarathi Biswas&lt;/span&gt;, P. (2012). Alcohol, drought lead to farmer’s suicide. &lt;em&gt;Daily News and Analysis&lt;/em&gt;. &lt;a href=&quot;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&quot;&gt;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&lt;/a&gt; [17 May 2012]&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;See those pesky curly braces &lt;code&gt;{&lt;/code&gt; and &lt;code&gt;}&lt;/code&gt; around the underscores?&lt;/h2&gt;
+
+&lt;h2&gt;The fix&lt;/h2&gt;
+
+&lt;p&gt;The fix I am using is to sanitize each record where this is an issue as I build my document, so the mendeley version stays as-is, while the R version has been sanitized by removing the escape characters.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# read mendeley bibtex file
+bib &amp;lt;- read.bibtex(&quot;~/references/library.bib&quot;)
+# ad hoc fix
+for(bibkey in c(&quot;SarathiBiswas2012&quot;,
+  &quot;Mcmichael2002a&quot;  
+)){
+  bib[ [ bibkey ] ]$url &amp;lt;- gsub(&quot;\\{\\\\_\\}&quot;,&quot;_&quot;, bib[ [ bibkey ] ]$url)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is the result:&lt;/p&gt;
+
+&lt;p&gt;McMichael, A.J. &amp;amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. &lt;em&gt;International Union for the Scientific Study of Population Committee on Emerging Health Threats&lt;/em&gt;. &lt;a href=&quot;http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf&quot;&gt;http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf&lt;/a&gt; [21 Sep. 2003]&lt;/p&gt;
+
+
+&lt;p&gt;&lt;span&gt;Sarathi Biswas&lt;/span&gt;, P. (2012). Alcohol, drought lead to farmer’s suicide. &lt;em&gt;Daily News and Analysis&lt;/em&gt;. &lt;a href=&quot;http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976&quot;&gt;http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976&lt;/a&gt; [17 May 2012]&lt;/p&gt;
+
+
+
+
+&lt;p&gt;&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Keeping an electronic lab notebook for computational statistics projects</title>
@@ -7059,105 +7122,6 @@ You can see this if you then open it up again in morpho and then under the docum
 
 &lt;p&gt;&lt;/body&gt;
 &lt;/html&gt;&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>A Workaround For Inserting Species Names To Morpho</title>
-   <link href="http://schamberlain.github.com/2014/04/a-workaround-for-inserting-species-names-to-morpho/"/>
-   <updated>2014-04-20T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2014/04/a-workaround-for-inserting-species-names-to-morpho</id>
-   <content type="html">&lt;p&gt;Morpho is a pretty minimal editor for EML really.  It gives you a set
-of generically useful data entry forms but sometimes a specific task
-is better achieved through edits made directly to the XML document.
-An example of this is inserting a large number of species names to the
-taxonomic coverage module. The form to include these requires
-individual data entry for each species.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-taxo-smll.png&quot; alt=&quot;morpho-taxo.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Which looks like this when published&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-taxo2.1.png&quot; alt=&quot;morpho-taxo2.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Go to the morpho catalogue (found at ~/.morpho/profiles/hanigan/data/hanigan/) and take a look at how the XML is constructed.&lt;/p&gt;
-
-&lt;h4&gt;XML Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;taxonomicCoverage&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Genus&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Dasycercus&amp;lt;/taxonRankValue&amp;gt;
-    &amp;lt;taxonomicClassification&amp;gt;
-      &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-      &amp;lt;taxonRankValue&amp;gt;cristicauda&amp;lt;/taxonRankValue&amp;gt;
-      &amp;lt;commonName&amp;gt;Mulgara&amp;lt;/commonName&amp;gt;
-    &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Genus&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Homo&amp;lt;/taxonRankValue&amp;gt;
-      &amp;lt;taxonomicClassification&amp;gt;
-      &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-      &amp;lt;taxonRankValue&amp;gt;sapiens&amp;lt;/taxonRankValue&amp;gt;
-      &amp;lt;commonName&amp;gt;Modern Human&amp;lt;/commonName&amp;gt;
-    &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-&amp;lt;/taxonomicCoverage&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;SO how to insert a large number of these&lt;/h4&gt;
-
-&lt;p&gt;One could use the taxon import feature to import the details from a
-file if there is a large list. Morpho’s taxon import feature does not
-correctly import more than one column of taxon data so if you have
-Genus and Species to enter you will actually need to combine Genus and
-Species into a binomial Species rank in one column (beware that if the data are sourced from a datafile that uses the underscore to seperate the words then these will not be correctly imported).&lt;/p&gt;
-
-&lt;p&gt;Once you have formated your input list, then import this
-as a new data table and go to the taxonomic coverage form under the
-documentation menu.  Click on the option to &quot;import taxon information
-from data table&quot; and select the appropriate column, selecting
-'species' for the class.  This will populate the taxonomicCoverage module in the EML.  You can now remove that data table from the package to be tidy.&lt;/p&gt;
-
-&lt;p&gt;This is what it looks like if you combine genus and species in the single column.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-taxo3.png&quot; alt=&quot;morpho-taxo3.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And here is the XML&lt;/p&gt;
-
-&lt;h4&gt;XML Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;taxonomicCoverage scope=&quot;document&quot;&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Abelmoschus moschatus&amp;lt;/taxonRankValue&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Abrus pector&amp;lt;/taxonRankValue&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-  &amp;lt;taxonomicClassification&amp;gt;
-    &amp;lt;taxonRankName&amp;gt;Species&amp;lt;/taxonRankName&amp;gt;
-    &amp;lt;taxonRankValue&amp;gt;Abrus precatorius&amp;lt;/taxonRankValue&amp;gt;
-  &amp;lt;/taxonomicClassification&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h4&gt;Morpho has problems subsequently editing a very long list&lt;/h4&gt;
-
-&lt;p&gt;We found that if a very large amount of taxonomic information is entered into Morpho
-we had issues modifying it. When you click on Documentation &gt;
-Taxonomic Coverage to try and go in and edit nothing will
-happen. Morpho crashes when trying to open the Taxonomic Coverage
-because the list is long enough to cause “Out of Memory” error with
-the default configuration of Java heap space. It is a Morpho bug. The
-workaround is to edit the XML file manually.&lt;/p&gt;
 </content>
  </entry>
  
