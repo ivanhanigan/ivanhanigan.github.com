@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-10-18T10:30:14+11:00</updated>
+ <updated>2015-10-23T11:03:36+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,79 +13,145 @@
 
  
  <entry>
-   <title>Reproducible research pipelines improve description of method steps</title>
-   <link href="http://ivanhanigan.github.com/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/"/>
-   <updated>2015-10-18T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/10/reproducible-research-pipelines-improve-description-of-method-steps</id>
-   <content type="html">&lt;p&gt;Adequately documenting the methods and results of data analysis helps
-safeguard against errors of execution and
-interpretation. It is proposed that
-reproducible research pipelines address the problem of
-adequate documentation of data analysis.&lt;/p&gt;
-
-&lt;p&gt;This is because they make it easy to
-check the methods. Assumptions are easy to challenge and results
-verified in new analyses. Reproducible research pipelines extend
-traditional research.  They do this by encoding the steps in a
-computer ‘scripting’ language and distributing the data and code with
-publications.  Traditional research moves through the steps of
-hypothesis and design, measured data, analytic data, computational
-results (for figures, tables and numerical results), and reports (text
-and formatted manuscript).&lt;/p&gt;
-
-&lt;h2&gt;Fundamental components of a reproducible research pipeline&lt;/h2&gt;
-
-&lt;p&gt;The basic components of a pipeline are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Data Management Plan and Data Inventory&lt;/li&gt;
-&lt;li&gt;Method steps&lt;/li&gt;
-&lt;li&gt;Code&lt;/li&gt;
-&lt;li&gt;Data storage&lt;/li&gt;
-&lt;li&gt;Reports&lt;/li&gt;
-&lt;li&gt;Distribution.&lt;/li&gt;
+   <title>Keeping an electronic lab notebook for computational statistics projects</title>
+   <link href="http://ivanhanigan.github.com/2015/10/keeping-an-electronic-lab-notebook-for-computational-statistics-projects/"/>
+   <updated>2015-10-23T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/10/keeping-an-electronic-lab-notebook-for-computational-statistics-projects</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;In my previous post on this topic &lt;a href=&quot;http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/&quot;&gt;http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/&lt;/a&gt; I summarised some recommendations for electronic lab notebooks&lt;/li&gt;
+&lt;li&gt;I've collated from a variety of sources for managing computational statistics projects in a reproducible research Pipelines&lt;/li&gt;
+&lt;li&gt;One thing I found while reading the literature around this topic is that the concepts are difficult to really grasp until I see them being used&lt;/li&gt;
+&lt;li&gt;The example worklog from Scott Long was a good insight into his method, that I really got more out of the figure below than from descriptions of the concept&lt;/li&gt;
+&lt;li&gt;screen shot taken from Long, S. (2012). Principles of Workflow in Data Analysis. Retrieved from &lt;a href=&quot;http://www.indiana.edu/~wim/docs/2012-long-slides.pdf&quot;&gt;http://www.indiana.edu/~wim/docs/2012-long-slides.pdf&lt;/a&gt; (accessed 2015-10-23).&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h3&gt;Method Steps&lt;/h3&gt;
-
-&lt;p&gt;The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.&lt;/p&gt;
-
-&lt;p&gt;A simple way to keep track of the steps, inputs and outputs is shown in the Table below.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(stringr)
-steps &amp;lt;- read.csv(textConnection('
-CLUSTER ,  STEP  , INPUTS                   , OUTPUTS                   
-A  ,  Step1      , &quot;Input 1, Input 2&quot;       , &quot;Output 1&quot;                 
-A  ,  Step2      ,  Input 3                  , Output 2                   
-B  ,  Step3      , &quot;Output 1, Output 2&quot;      , Output 3                  
-'), stringsAsFactors = F, strip.white = T)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/images/worklog-long.png&quot; alt=&quot;/images/worklog-long.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;The steps and data listed in the Table above can be visualised.
-To achieve this an R function was written as part of this PhD project and is distributed in my own R package available on Github &lt;a href=&quot;https://github.com/ivanhanigan/disentangle&quot;&gt;https://github.com/ivanhanigan/disentangle&lt;/a&gt;.
-This is the &lt;code&gt;newnode&lt;/code&gt; function.  The function returns a string of text
-written in the &lt;code&gt;dot&lt;/code&gt; language which can be rendered in R using the
-&lt;code&gt;DiagrammeR&lt;/code&gt; package, or the standalone &lt;code&gt;graphviz&lt;/code&gt; package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I added a red box around an important aspect of this example, the communication of gory details, that are often difficult to track if not using a notebook to log our work&lt;/li&gt;
+&lt;li&gt;ARGH! indeed.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;pre&gt;&lt;code&gt;library(disentangle); library(stringr)
-nodes &amp;lt;- newnode(indat = steps,   names_col = &quot;STEP&quot;, in_col = &quot;INPUTS&quot;,
-  out_col = &quot;OUTPUTS&quot;, 
-  nchar_to_snip = 40)
-sink(&quot;fig-basic.dot&quot;);
-cat(nodes);
-sink()
-# or DiagrammeR::grViz(nodes)
-system(&quot;dot -Tpdf fig-basic.dot -o fig-basic.pdf&quot;)
-&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Replication from Noble's description&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;That looks good, but I also really liked the description in Noble's paper where scripts that do computations are linked to log entries&lt;/li&gt;
+&lt;li&gt;This was something that I felt I wanted to see in action&lt;/li&gt;
+&lt;li&gt;Without an example online, I had to have a go at creating one from the instructions&lt;/li&gt;
+&lt;li&gt;I also had to make some modifications to the method because I want to have this set up work in a multidisciplinary team with some users on windows and others on linux, sharing the project on a network folder&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;My paraphrasing of Noble's description&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Worklog: this is the main file, like a 'lab notebook' for the analyst to track their work.  This  document resides in the root of the project directory and records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to describing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work&lt;/li&gt;
+&lt;li&gt;For group work, this can also contain a 'working' folder for each person to store their messy day-to-day files that we don't want to clutter up the main folder (eg 'working_ivan')&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Conventions I used for writing the worklog entries are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Names follow this structure [**] [date in ISO 8601 YYYY-MM-DD] [meeting/notes/results] [with/from UserName] [Re: topic shortname]&lt;/li&gt;
+&lt;li&gt;'meetings' are for both agenda preparation and also notes of discussion&lt;/li&gt;
+&lt;li&gt;'notes' are such things as emailed information or ad hoc Discovery&lt;/li&gt;
+&lt;li&gt;'results' are entries related to a section of the 'results' folder. That is, this kind of entry is in parallel to the results entry (see below), however the log contains a prose description of the experiment, whereas the results folder contains scripts etc of all the gory details.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Tests&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I use Emacs on linux for most of my work but I need to share with windows users so tested out keeping the log in a MS word doc.  This got corrupted quickly I think because I edited in Libre office.&lt;/li&gt;
+&lt;li&gt;I decided to try and just use a plain text format&lt;/li&gt;
+&lt;li&gt;text files created in Ubuntu are so difficult to understand (read) when opened in Windows' Notepad. No matter how many lines have been used, all the lines appear in the same one line.
+To set the buffer coding to DOS style issue:&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;code&gt;M-x set-buffer-file-coding-system utf-8-dos&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3&gt;a couple of examples&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;As this is a plain text document opening it in emacs will not automatically render it in the Orgmode fashion&lt;/li&gt;
+&lt;li&gt;To achieve this the command is &lt;code&gt;M-x org-mode&lt;/code&gt; and the file looks like below&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/worklog-ivan1.png&quot; alt=&quot;/images/worklog-ivan1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;&lt;img src=&quot;/images/fig-basic.png&quot; alt=&quot;/images/fig-basic.png&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;From here I can keep adding new entries at the bottom, and have a section for URGENT ACTION a the top&lt;/li&gt;
+&lt;li&gt;Orgmode can expand the entries by moving to that line and hitting TAB, or use the command &lt;code&gt;C-u C-u C-u TAB&lt;/code&gt; to expand all branches&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/worklog-ivan2.png&quot; alt=&quot;/images/worklog-ivan2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;the 'Experiment Results' level is about work you might do on a single day, or over a week or two&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Each results subfolder would have workflow scripts that does the work&lt;/li&gt;
+&lt;li&gt;At this level each 'experiment' is written up in chronological order&lt;/li&gt;
+&lt;li&gt;It is recommended to store every command used while performing the experiment preferably as an executable script that carries out the entire experiment automatically&lt;/li&gt;
+&lt;li&gt;you should end up with a file that is parallel to the worklog entry&lt;/li&gt;
+&lt;li&gt;The worklog contains a prose description of the experiment, whereas the driver script contains all the gory details&lt;/li&gt;
+&lt;li&gt;this is the level I usually think of the distribution side of things&lt;/li&gt;
+&lt;li&gt;You may want to pack up the results from one of these folders and email it to the collaborators, or decide on the one set of tables and figures to write into the manuscript for submission to a journal&lt;/li&gt;
+&lt;li&gt;If this is accepted for publication, this is the one combined package of 'analytical data and code' that I would consider putting up online as supporting information for the paper.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Example&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I followed Noble's advice to create a driver script to set up the folder structure:&lt;/li&gt;
+&lt;li&gt;it is in my Github R package &lt;code&gt;disentangle&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; dir.create(&quot;exposures_blending&quot;)
+&amp;gt; setwd(&quot;exposures_blending&quot;)
+&amp;gt; disentangle::AdminTemplate()
+[1] TRUE
+&amp;gt; dir.create(&quot;results&quot;)
+&amp;gt; setwd(&quot;results&quot;)
+&amp;gt; makeProject::makeProject(&quot;2015-10-23-preliminary-modelling&quot;)
+Creating Directories ...
+Creating Code Files ...
+Complete ...
+&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This populates the folders as shown below&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/worklog-ivan3.png&quot; alt=&quot;/images/worklog-ivan3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I feel pretty happy with this as a replication of Noble's method&lt;/li&gt;
+&lt;li&gt;My colleagues can look at my work and see a high level log that links to the gory details of day to day life in the trenches&lt;/li&gt;
+&lt;li&gt;The only downside I can see at the moment is that my colleagues on windows will see a text file that is pretty dense, and will not be as easy to navigate as a word document (or emacs org file)&lt;/li&gt;
+&lt;li&gt;Perhaps notepad++ can be used instead.  On my windows machine I did a quick experiment with NPP and found that under the Language menu &gt; Define your language there is a method to define code folding with ** as the opening.  Just need to define a closing tag.  I experimented with '---' which might be good, but ultimately I don't think my colleagues are going to want to do this on their machines.&lt;/li&gt;
+&lt;/ul&gt;
+
 </content>
  </entry>
  

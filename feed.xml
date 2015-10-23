@@ -6,6 +6,148 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Keeping an electronic lab notebook for computational statistics projects</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;In my previous post on this topic &lt;a href=&quot;http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/&quot;&gt;http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/&lt;/a&gt; I summarised some recommendations for electronic lab notebooks&lt;/li&gt;
+&lt;li&gt;I've collated from a variety of sources for managing computational statistics projects in a reproducible research Pipelines&lt;/li&gt;
+&lt;li&gt;One thing I found while reading the literature around this topic is that the concepts are difficult to really grasp until I see them being used&lt;/li&gt;
+&lt;li&gt;The example worklog from Scott Long was a good insight into his method, that I really got more out of the figure below than from descriptions of the concept&lt;/li&gt;
+&lt;li&gt;screen shot taken from Long, S. (2012). Principles of Workflow in Data Analysis. Retrieved from &lt;a href=&quot;http://www.indiana.edu/~wim/docs/2012-long-slides.pdf&quot;&gt;http://www.indiana.edu/~wim/docs/2012-long-slides.pdf&lt;/a&gt; (accessed 2015-10-23).&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/worklog-long.png&quot; alt=&quot;/images/worklog-long.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;I added a red box around an important aspect of this example, the communication of gory details, that are often difficult to track if not using a notebook to log our work&lt;/li&gt;
+&lt;li&gt;ARGH! indeed.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Replication from Noble's description&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;That looks good, but I also really liked the description in Noble's paper where scripts that do computations are linked to log entries&lt;/li&gt;
+&lt;li&gt;This was something that I felt I wanted to see in action&lt;/li&gt;
+&lt;li&gt;Without an example online, I had to have a go at creating one from the instructions&lt;/li&gt;
+&lt;li&gt;I also had to make some modifications to the method because I want to have this set up work in a multidisciplinary team with some users on windows and others on linux, sharing the project on a network folder&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;My paraphrasing of Noble's description&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Worklog: this is the main file, like a 'lab notebook' for the analyst to track their work.  This  document resides in the root of the project directory and records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to describing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work&lt;/li&gt;
+&lt;li&gt;For group work, this can also contain a 'working' folder for each person to store their messy day-to-day files that we don't want to clutter up the main folder (eg 'working_ivan')&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Conventions I used for writing the worklog entries are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Names follow this structure [**] [date in ISO 8601 YYYY-MM-DD] [meeting/notes/results] [with/from UserName] [Re: topic shortname]&lt;/li&gt;
+&lt;li&gt;'meetings' are for both agenda preparation and also notes of discussion&lt;/li&gt;
+&lt;li&gt;'notes' are such things as emailed information or ad hoc Discovery&lt;/li&gt;
+&lt;li&gt;'results' are entries related to a section of the 'results' folder. That is, this kind of entry is in parallel to the results entry (see below), however the log contains a prose description of the experiment, whereas the results folder contains scripts etc of all the gory details.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Tests&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I use Emacs on linux for most of my work but I need to share with windows users so tested out keeping the log in a MS word doc.  This got corrupted quickly I think because I edited in Libre office.&lt;/li&gt;
+&lt;li&gt;I decided to try and just use a plain text format&lt;/li&gt;
+&lt;li&gt;text files created in Ubuntu are so difficult to understand (read) when opened in Windows' Notepad. No matter how many lines have been used, all the lines appear in the same one line.
+To set the buffer coding to DOS style issue:&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;code&gt;M-x set-buffer-file-coding-system utf-8-dos&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3&gt;a couple of examples&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;As this is a plain text document opening it in emacs will not automatically render it in the Orgmode fashion&lt;/li&gt;
+&lt;li&gt;To achieve this the command is &lt;code&gt;M-x org-mode&lt;/code&gt; and the file looks like below&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/worklog-ivan1.png&quot; alt=&quot;/images/worklog-ivan1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;From here I can keep adding new entries at the bottom, and have a section for URGENT ACTION a the top&lt;/li&gt;
+&lt;li&gt;Orgmode can expand the entries by moving to that line and hitting TAB, or use the command &lt;code&gt;C-u C-u C-u TAB&lt;/code&gt; to expand all branches&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/worklog-ivan2.png&quot; alt=&quot;/images/worklog-ivan2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;the 'Experiment Results' level is about work you might do on a single day, or over a week or two&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Each results subfolder would have workflow scripts that does the work&lt;/li&gt;
+&lt;li&gt;At this level each 'experiment' is written up in chronological order&lt;/li&gt;
+&lt;li&gt;It is recommended to store every command used while performing the experiment preferably as an executable script that carries out the entire experiment automatically&lt;/li&gt;
+&lt;li&gt;you should end up with a file that is parallel to the worklog entry&lt;/li&gt;
+&lt;li&gt;The worklog contains a prose description of the experiment, whereas the driver script contains all the gory details&lt;/li&gt;
+&lt;li&gt;this is the level I usually think of the distribution side of things&lt;/li&gt;
+&lt;li&gt;You may want to pack up the results from one of these folders and email it to the collaborators, or decide on the one set of tables and figures to write into the manuscript for submission to a journal&lt;/li&gt;
+&lt;li&gt;If this is accepted for publication, this is the one combined package of 'analytical data and code' that I would consider putting up online as supporting information for the paper.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Example&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I followed Noble's advice to create a driver script to set up the folder structure:&lt;/li&gt;
+&lt;li&gt;it is in my Github R package &lt;code&gt;disentangle&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; dir.create(&quot;exposures_blending&quot;)
+&amp;gt; setwd(&quot;exposures_blending&quot;)
+&amp;gt; disentangle::AdminTemplate()
+[1] TRUE
+&amp;gt; dir.create(&quot;results&quot;)
+&amp;gt; setwd(&quot;results&quot;)
+&amp;gt; makeProject::makeProject(&quot;2015-10-23-preliminary-modelling&quot;)
+Creating Directories ...
+Creating Code Files ...
+Complete ...
+&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This populates the folders as shown below&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/worklog-ivan3.png&quot; alt=&quot;/images/worklog-ivan3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I feel pretty happy with this as a replication of Noble's method&lt;/li&gt;
+&lt;li&gt;My colleagues can look at my work and see a high level log that links to the gory details of day to day life in the trenches&lt;/li&gt;
+&lt;li&gt;The only downside I can see at the moment is that my colleagues on windows will see a text file that is pretty dense, and will not be as easy to navigate as a word document (or emacs org file)&lt;/li&gt;
+&lt;li&gt;Perhaps notepad++ can be used instead.  On my windows machine I did a quick experiment with NPP and found that under the Language menu &gt; Define your language there is a method to define code folding with ** as the opening.  Just need to define a closing tag.  I experimented with '---' which might be good, but ultimately I don't think my colleagues are going to want to do this on their machines.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>2015-10-23 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/10/keeping-an-electronic-lab-notebook-for-computational-statistics-projects/</link>
+			</item>
+		
+			<item>
 				<title>Reproducible research pipelines improve description of method steps</title>
 				<description>&lt;p&gt;Adequately documenting the methods and results of data analysis helps
 safeguard against errors of execution and
@@ -868,127 +1010,6 @@ It was that I was on Twitter at all.
 </description>
 				<published>2015-10-04 00:00:00 +1000</published>
 				<link>http://ivanhanigan.github.com/2015/10/open-notebook-blogging-vs-twitter-or-can-i-do-both/</link>
-			</item>
-		
-			<item>
-				<title>Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</title>
-				<description>&lt;p&gt;Using diagrams has long been a technique used in science to describe the relationships (edges) between things (nodes).  Mathematics and geometry tools have been applied to ameliorate the problem of laying out the diagram for the most efficient use of space.  It is desirable to minimise the gaps between the nodes and also to ensure that lines do not overlap too much.  This is because the complexity of graphs obfuscates the details that we are trying to show. Visual grouping helps to disentangle the relationships.&lt;/p&gt;
-
-&lt;p&gt;As an example, the relationship between drought and suicide is a complex system
-where the effects are indirect. The focus is on a chain
-of intermediary causal factors. These questions are usually explored
-in the context of many other factors that describe human biological
-variables and the socio-economic milieu.&lt;/p&gt;
-
-&lt;p&gt;In this post I utilise the R package &lt;code&gt;DiagrammeR&lt;/code&gt; to construct a causal directed acyclic graph (DAG) of the putative effects of a set of selected causal factors from both natural and social capital theories.&lt;/p&gt;
-
-&lt;p&gt;The following code produces graph
-&lt;img src=&quot;/images/suicide-drought.png&quot; alt=&quot;/images/suicide-drought.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Or this interactive version &lt;a href=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;/viewhtml21f36d8c5d7d/index.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;&lt;/iframe&gt;
-
-
-&lt;pre&gt;&lt;code class=&quot;r&quot;&gt;library(DiagrammeR)
-#### First create the outcome
-nodes_outcome &amp;lt;- create_nodes(nodes = c('suicide','depression','anxiety'),
-                        label = TRUE,
-                        colour = &quot;black&quot;)
-
-edges_outcome &amp;lt;- create_edges(from = c('depression','anxiety'),
-                        to =   c(&quot;suicide&quot;, &quot;suicide&quot;)
-                        )
-
-graph_outcome &amp;lt;- create_graph(nodes_df = nodes_outcome,
-                       edges_df = edges_outcome)
-# just test this out
-## render_graph(graph_outcome)
-
-#### now the social capital factors  
-nodes_social &amp;lt;- 
-  create_nodes(nodes =  c(&quot;stress&quot;, &quot;decreased community support&quot;, &quot;migration&quot;),
-               label = TRUE,
-               color = &quot;blue&quot;)
-
-edges_social &amp;lt;- create_edges(from =  c(&quot;stress&quot;, &quot;stress&quot;, &quot;decreased community support&quot;,
-                          &quot;migration&quot;),
-                        to =   c(&quot;anxiety&quot;, &quot;depression&quot;, &quot;anxiety&quot;,
-                          &quot;decreased community support&quot;)
-                        )
-graph_social &amp;lt;- create_graph(nodes_df = nodes_social,
-                       edges_df = edges_social)
-# render_graph(graph_social)
-
-#### now the financial capital factors
-nodes_financial &amp;lt;- 
-  create_nodes(nodes = c(&quot;employment&quot;, &quot;debt&quot;),
-               label = TRUE,
-               color = &quot;green&quot;)
-
-edges_financial &amp;lt;- create_edges(from = c(&quot;employment&quot;, &quot;employment&quot;, &quot;debt&quot;),
-                        to =   c(&quot;stress&quot;, &quot;debt&quot;, &quot;stress&quot;)
-                        )
-graph_financial &amp;lt;- create_graph(nodes_df = nodes_financial,
-                       edges_df = edges_financial)
-# render_graph(graph_financial)
-
-
-#### now the natural capital factors
-nodes_natural &amp;lt;- 
-  create_nodes(nodes = c(&quot;drought&quot;, &quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;),
-               label = TRUE,
-               color = &quot;red&quot;)
-
-edges_natural &amp;lt;- create_edges(from = c(&quot;drought&quot;, &quot;drought&quot;, &quot;declined agricultural productivity&quot;,
-                          &quot;declined agricultural productivity&quot;, &quot;declined agricultural productivity&quot;,
-                          &quot;decreased food security&quot;,
-                          &quot;drought&quot;),
-                        to =   c(&quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;, &quot;decreased food security&quot;,
-                          &quot;anxiety&quot;, &quot;employment&quot;,
-                          &quot;anxiety&quot;,
-                          &quot;migration&quot;)
-                        )
-graph_natural &amp;lt;- create_graph(nodes_df = nodes_natural,
-                       edges_df = edges_natural)
-## render_graph(graph_natural)
-
-# use create_graph on separate nodes and edges data frames, one for each cluster
-# then access the dot codes for each
-gr0 &amp;lt;- graph_outcome$dot_code
-gr1 &amp;lt;- graph_social$dot_code
-gr2 &amp;lt;- graph_financial$dot_code
-gr3 &amp;lt;- graph_natural$dot_code
-# then replace the graph with subgraph
-gr0 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster0&quot;, gr0)
-gr1 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster1&quot;, gr1)
-gr2 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster2&quot;, gr2)
-gr3 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster3&quot;, gr3)
-# and then combine the subgraphs into one graph
-gr_out &amp;lt;- sprintf(&quot;digraph{\n%s\n\n %s\n%s\n%s\n}&quot;, gr0, gr1, gr2, gr3)
-cat(gr_out)
-grViz(gr_out)
-# If graphviz is installed and on linux call it with a shell command
-sink(&quot;suicide-drought.dot&quot;)
-cat(gsub(&quot;'&quot;,'&quot;', gr_out))
-sink()
-system(&quot;dot -Tpng suicide-drought.dot -o suicide-drought.png&quot;)
-# Interactive
-nodes &amp;lt;- combine_nodes(nodes_outcome, nodes_social, nodes_natural, nodes_financial)
-edges &amp;lt;- combine_edges(edges_outcome, edges_social, edges_natural, edges_financial)
-
-# Render graph
-graph &amp;lt;- create_graph(nodes_df = nodes,
-                      edges_df = edges)
-
-render_graph(graph, output = &quot;visNetwork&quot;)    
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-</description>
-				<published>2015-10-03 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/</link>
 			</item>
 		
 	</channel>

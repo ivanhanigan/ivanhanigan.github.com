@@ -33,6 +33,7 @@ If you have any questions about this process you can contact the Examinations Of
     SCHEDULED: <2015-11-19 17:00>
 
 *** 02 Thesis production
+
 ***** TODO phd add section on data inventory and EML
 
 ***** TODO phd best figures
@@ -93,6 +94,8 @@ For those interested, a reporting checklist and further information can be acces
 ***** DONE phd send to RN
 
 *** 03 Approvals
+***** TODO phd add DFish to the signatures 
+
 
 ***** DONE phd 03 Approvals Copyright approval
 JAWMA Paper: Integration of historical records
@@ -109,6 +112,56 @@ JAWMA Paper: Integration of historical records
 
 ***** TODO phd thank all co-authors for signing
 *** 04 Data Management
+***** TODO phd datinv work toward function to extract the report
+***** TODO phd datinv add function to get attr as per DROUGHT-BOM-GRIDS
+#+begin_src R :session *R* :tangle no :exports none :eval no
+  #### name:2015-10-15 ####
+  
+  #### Set any global variables here ####
+  projdir <- "~/projects/DROUGHT-BOM-GRIDS/"
+  outdir <- file.path(projdir, "data")
+  # if(!file.exists(outdir)) dir.create(outdir)
+  #outfile <- "data"
+  #file.path(outdir, outfile) 
+  setwd(projdir)
+  
+  #### Load any needed libraries #### 
+  #library(gdata)
+  library(disentangle)
+  library(sqldf)
+  #library(taxize)
+  indir <- "data"
+  
+  #### Identify your data inputs ####
+  dir(indir)
+  infile <- "drought_bom_grids.rain_act_1890_2008.csv"
+  
+   
+  #### load ####
+  print(file.path(projdir, indir,infile))
+  dat <- read.csv(file.path(indir,infile), stringsAsFactors = F)
+      
+  #### check ####
+  str(dat)
+  # write down the nrows and ncols here for future reference
+  # 'data.frame': 4260 obs. of  11 variables:
+  head(dat) 
+  tail(dat)
+  summary(dat)
+  
+  vl  <- variable_names_and_labels(infile = file.path(indir, infile))
+  for(i in 1:nrow(vl)){
+  #  i=1
+  inst <- "INSERT INTO attr(
+              entity_id, variable_name, variable_definition, measurement_scales, 
+              units, value_labels)
+      VALUES ("
+    txt  <- paste(c(34, vl[i,1:(ncol(vl)-3)]), sep = "", collapse = "','")
+  txt <- gsub("34'", "34", txt)
+  cat(sprintf("%s\n%s');\n", inst,txt))
+  } 
+#+end_src 
+
 ***** TODO phd gastro save to datainventory and project area
 ***** TODO phd drought  data inv for drought bom grids
 ***** TODO phd drought 04 Data Management Drought Data on EWEDB
@@ -127,6 +180,8 @@ OR /home/ivan_hanigan/projects/vally_rrv
 
 
 ***** TODO phd postdoc at UC
+***** TODO phd postdoc at UC, print levels
+
 *** 06 Paid Work
 
 ***** TODO 06 Work opportunities Contact enago and ask for work 
@@ -149,27 +204,20 @@ Use examples of Neuro
 - sabrina work
 - noise
 - DMP, datainv, workplans, worklogs, workflows, distribution, group/individual
-***** TODO [#A] ucrh 0601 UCRH Files files walkability footpaths dataset and etc osm fileshare to q drive
-***** TODO [#A] ucrh 0601 UCRH Files files walkability to BJ
+***** TODO [#A] ucrh 0601 UCRH Files files planning deploy to SURE workspace, test on Rstudio server
+
 ***** TODO ucrh 0602 UCRH Neighbourhood data inventory 
-***** TODO ucrh 0602 UCRH Neighbourhood methods
+***** TODO [#A] ucrh 0602 UCRH Neighbourhood methods summarise Akita paper summary 
+
 summarise Akita paper summary 
 This doco will be about the data sources we have identified during UCRH data inventory that can be applied. It will also describe the stats methods, Key task is to tighten the aims 
 and methods, discuss neighbourhood BME summary with MBor and LK and Gwil?
 - Gwil and LK first, explore language
 - then MB with a targeted specifics query
-***** TODO [#A] ucrh 0602 UCRH Neighbourhood methods summarise Akita paper summary 
-***** TODO ucrh 0602 UCRH Neighbourhood Neighbourhood meeting 3 URGENT_ACTION
+***** TODO ucrh 0602 UCRH Neighbourhood Neighbourhood meeting 4
 ***** TODO ucrh 0602 UCRH Neighbourhood Neighbourhood setup BMElib
 BME install and test, got warnings, need to resolve
 NA
-***** TODO ucrh 0603 UCRH Noise data_traffic_council and RMS
-
-***** TODO [#A] ucrh 0603 UCRH Noise data_traffic_zenith Contract Re Sharing internally
-
-***** TODO ucrh 0603 UCRH Noise EJ notes from CC
-
-***** TODO [#A] ucrh 0603 UCRH Noise email BHnz re Noise
 ***** TODO ucrh 0603 UCRH Noise Noise Meeting prep
 ucrh noise write the TODO from last meeting into the task list
 
@@ -183,12 +231,16 @@ ucrh noise write the TODO from last meeting into the task list
 ***** TODO ucrh 0605 UCRH General Assignments Marking 
 [[/home/ivan_hanigan/Dropbox/projects/air_pollution_ucrh/Assignment_marking_201510/ucrh-marking-log.org]]
 ***** TODO ucrh 0605 UCRH General Contract management
-***** TODO ucrh 0605 UCRH General Neuro exposures, send to BJ URGENT_ACTION 
-just need to add shipping tifs
-NA
-
+***** TODO ucrh 0605 UCRH General walkability, follow up with Darren Re changes
 ***** TODO ucrh 0605 UCRH General Project exposures, generalise Neuro for all SEEF
+***** TODO ucrh 0605 UCRH General Project exposures Training UCRH staff in workflows
 ***** TODO ucrh 0605 UCRH General Project exposures, Neuro add IDW metadata 
+
+***** TODO ucrh 0603 UCRH Noise add traffic counts bankstown licence to datinv
+***** TODO ucrh 0602 UCRH Neighbourhood methods sketch our own data inputs
+***** TODO ucrh 0605 UCRH General Assignments Marking 
+***** TODO ucrh 0605 UCRH General Project work plan exposures, generalise Neuro for all SEEF
+***** TODO ucrh 0602 UCRH neighbourhood analysis plan and lit review for meeting
 
 ** Personal
 ***** TODO personal map nea
@@ -718,70 +770,102 @@ Use examples of
 *** 2015-10-18 Sun 
 **** TODO-list 
 ***** DONE phd datinv mod to Intellectualright
-***** TODO ucrh mods to datinv to allow standard workplan devs
-***** TODO ucrh 0603 UCRH Noise email BHnz re Noise
-***** TODO ucrh 0603 UCRH Noise data_traffic_zenith Contract Re Sharing internally
+***** DONE ucrh mods to datinv to allow standard workplan devs
 
 ***** DONE phd updates on gislibrary, failed, alert DF
-***** TODO personal bike shopping
+***** DONE personal bike shopping
       SCHEDULED: <2015-10-18 Sun 11:00>
-***** TODO phd datinv add function to get attr as per DROUGHT-BOM-GRIDS
-#+begin_src R :session *R* :tangle no :exports none :eval no
-  #### name:2015-10-15 ####
-  
-  #### Set any global variables here ####
-  projdir <- "~/projects/DROUGHT-BOM-GRIDS/"
-  outdir <- file.path(projdir, "data")
-  # if(!file.exists(outdir)) dir.create(outdir)
-  #outfile <- "data"
-  #file.path(outdir, outfile) 
-  setwd(projdir)
-  
-  #### Load any needed libraries #### 
-  #library(gdata)
-  library(disentangle)
-  library(sqldf)
-  #library(taxize)
-  indir <- "data"
-  
-  #### Identify your data inputs ####
-  dir(indir)
-  infile <- "drought_bom_grids.rain_act_1890_2008.csv"
-  
-   
-  #### load ####
-  print(file.path(projdir, indir,infile))
-  dat <- read.csv(file.path(indir,infile), stringsAsFactors = F)
-      
-  #### check ####
-  str(dat)
-  # write down the nrows and ncols here for future reference
-  # 'data.frame': 4260 obs. of  11 variables:
-  head(dat) 
-  tail(dat)
-  summary(dat)
-  
-  vl  <- variable_names_and_labels(infile = file.path(indir, infile))
-  for(i in 1:nrow(vl)){
-  #  i=1
-  inst <- "INSERT INTO attr(
-              entity_id, variable_name, variable_definition, measurement_scales, 
-              units, value_labels)
-      VALUES ("
-    txt  <- paste(c(34, vl[i,1:(ncol(vl)-3)]), sep = "", collapse = "','")
-  txt <- gsub("34'", "34", txt)
-  cat(sprintf("%s\n%s');\n", inst,txt))
-  }
-#+end_src
 
-***** TODO phd datinv add function to extract the report
-***** TODO ucrh 0602 UCRH Neighbourhood methods summarise Akita paper summary 
-***** TODO ucrh 0605 UCRH General Assignments Marking 
-***** TODO phd postdoc at UC, print levels
-***** TODO ucrh 0605 UCRH General Project work plan exposures, generalise Neuro for all SEEF
-***** TODO ucrh 0602 UCRH neighbourhood analysis plan and lit review for meeting
+***** DONE phd datinv work toward function to extract the report
 
 **** timesheet
 #+begin_src txt :tangle work-log.csv :eval no :padline no
 2015-10-18 Sun, ucrh, 50
+#+end_src
+*** 2015-10-19 Mon 
+**** TODO-list 
+***** DONE ucrh 0603 UCRH Noise email BHnz re Noise
+***** DONE ucrh 0603 UCRH Noise data_traffic_zenith Contract Re Sharing internally
+***** DONE ucrh 0603 UCRH Noise data_traffic_council and RMS
+***** DONE personal green waste
+***** DONE ucrh 0602 UCRH Neighbourhood methods summarise Akita paper summary 
+***** DONE ucrh 0605 UCRH General walkability, get walkability ready for BJ
+***** DONE personal maeve gym
+      SCHEDULED: <2015-10-19 Mon 15:50>
+**** timesheet
+#+begin_src txt :tangle work-log.csv :eval no :padline no
+2015-10-19 Mon, ucrh, 100
+#+end_src
+*** 2015-10-20 Tue 
+**** TODO-list 
+***** DONE ucrh 0605 UCRH General walkability, prep send to BJ URGENT_ACTION 
+***** DONE ucrh 0605 UCRH General walkability, prep send to BJ URGENT_ACTION 
+***** DONE ucrh 0603 UCRH Noise EJ notes from CC and BJ emails to worklog
+***** DONE ucrh 0605 UCRH General Project exposures email re Training sabrina in workflows
+***** DONE ucrh update datainv website for better methods section
+***** DONE phd updates on gislibrary, success after DF advice
+***** DONE ucrh 0605 UCRH General Project exposures project/dataset homepage (and datinv)
+tested on noise
+
+**** timesheet
+#+begin_src txt :tangle work-log.csv :eval no :padline no
+2015-10-20 Tue, ucrh, 100
+#+end_src
+*** 2015-10-21 Wed 
+**** TODO-list 
+***** DONE ucrh 0602 UCRH Neighbourhood Prep for meeting
+***** DONE [#A] ucrh 0602 UCRH Neighbourhood methods summarise Akita paper summary 
+
+***** DONE ucrh 0602 UCRH Neighbourhood data inventory in sydney
+***** DONE ucrh 0602 UCRH Neighbourhood Neighbourhood meeting 3 URGENT_ACTION
+      SCHEDULED: <2015-10-21 Wed 14:00>
+***** DONE [#A] ucrh 0602 UCRH Neighbourhood methods summarise Akita paper summary 
+
+**** timesheet
+#+begin_src txt :tangle work-log.csv :eval no :padline no
+2015-10-21 Wed, ucrh, 110
+#+end_src
+*** 2015-10-22 Thu 
+**** TODO-list 
+
+***** DONE ucrh datinv setup for methods protocol
+
+***** DONE phd key slide to CB, replication V reproducibility crises!
+
+***** DONE personal jog
+
+***** DONE phd deploy datinv to public github
+***** DONE [#A] ucrh 0602 UCRH Neighbourhood methods summarise Akita paper summary 
+      SCHEDULED: <2015-10-22 Thu 10:30>
+***** DONE ucrh ucrh 0602 UCRH Neighbourhood meet LK to discuss Akita
+      SCHEDULED: <2015-10-22 Thu 15:30>
+- talk about GEE
+- talk about workflow pipeline
+
+***** DONE ucrh timesheet
+      SCHEDULED: <2015-10-22 Thu 16:00>
+
+***** DONE phd references, fix books, add URL to IUSSP etc
+**** timesheet
+#+begin_src txt :tangle work-log.csv :eval no :padline no
+2015-10-22 Thu, ucrh, 100
+#+end_src
+*** 2015-10-23 Fri 
+**** TODO-list 
+***** DONE ucrh 0602 UCRH Neighbourhood summarise notes from discussion with LK
+***** TODO ucrh 0602 UCRH Neighbourhood questions to LK
+***** TODO ucrh 0602 UCRH Neighbourhood GEE question to AdB
+***** TODO phd references,
+***** TODO ucrh 0602 UCRH Neighbourhood email CC about passive
+***** TODO ucrh 0602 UCRH Neighbourhood email JH about passive and LUR and CTM
+***** TODO ucrh 0605 UCRH General Assignments Marking 
+      SCHEDULED: <2015-10-22 Thu 11:00>
+
+
+***** TODO phd post doc opp UC
+***** TODO phd supervision meet CB, discuss pipeline image
+      SCHEDULED: <2015-10-23 Fri 16:00>
+**** timesheet
+#+begin_src txt :tangle work-log.csv :eval no :padline no
+2015-10-23 Fri, ucrh, 100
 #+end_src
