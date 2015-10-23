@@ -4,7 +4,7 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-10-24T10:45:26+11:00</updated>
+ <updated>2015-10-24T10:52:33+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
@@ -13,7 +13,7 @@
 
  
  <entry>
-   <title>sanitize-mendeley-references-in-r-markdown-reporting</title>
+   <title>Sanitize mendeley references in r markdown reporting</title>
    <link href="http://schamberlain.github.com/2015/10/sanitize-mendeley-references-in-r-markdown-reporting/"/>
    <updated>2015-10-24T00:00:00+11:00</updated>
    <id>http://schamberlain.github.com/2015/10/sanitize-mendeley-references-in-r-markdown-reporting</id>
@@ -30,16 +30,13 @@
 
 
 
-&lt;h1&gt;References&lt;/h1&gt;
-
-
 &lt;p&gt;McMichael, A.J. &amp;amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. &lt;em&gt;International Union for the Scientific Study of Population Committee on Emerging Health Threats&lt;/em&gt;. &lt;a href=&quot;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&quot;&gt;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&lt;/a&gt; [21 Sep. 2003]&lt;/p&gt;
 
 
 &lt;p&gt;&lt;span&gt;Sarathi Biswas&lt;/span&gt;, P. (2012). Alcohol, drought lead to farmer’s suicide. &lt;em&gt;Daily News and Analysis&lt;/em&gt;. &lt;a href=&quot;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&quot;&gt;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&lt;/a&gt; [17 May 2012]&lt;/p&gt;
 
 
-&lt;p&gt;&lt;/div&gt;&lt;/p&gt;
+
 
 &lt;p&gt;&lt;/p&gt;
 
@@ -53,9 +50,7 @@
 &lt;pre&gt;&lt;code&gt;# read mendeley bibtex file
 bib &amp;lt;- read.bibtex(&quot;~/references/library.bib&quot;)
 # ad hoc fix
-for(bibkey in c(&quot;SarathiBiswas2012&quot;,
-  &quot;Mcmichael2002a&quot;  
-)){
+for(bibkey in c(&quot;SarathiBiswas2012&quot;, &quot;Mcmichael2002a&quot;)){
   bib[ [ bibkey ] ]$url &amp;lt;- gsub(&quot;\\{\\\\_\\}&quot;,&quot;_&quot;, bib[ [ bibkey ] ]$url)
 }
 &lt;/code&gt;&lt;/pre&gt;

@@ -6,7 +6,7 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
-				<title>sanitize-mendeley-references-in-r-markdown-reporting</title>
+				<title>Sanitize mendeley references in r markdown reporting</title>
 				<description>&lt;p&gt;A key challenge for Reproducible Research Reports in Rmarkdown remains adequate scholarly citation management; the machinery of scholarly citations and references.&lt;/p&gt;
 
 &lt;p&gt;The &lt;code&gt;knitcitations&lt;/code&gt; R package does a great job of working with bibtex bibliography files, however the bibtex manager that I use is Mendeley and it has implemented some rules on the way it handles special characters that forces the bibtex references into a state with some 'escaped' elements that breaks their presentation via &lt;code&gt;knitcitations&lt;/code&gt;.&lt;/p&gt;
@@ -20,16 +20,13 @@
 
 
 
-&lt;h1&gt;References&lt;/h1&gt;
-
-
 &lt;p&gt;McMichael, A.J. &amp;amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. &lt;em&gt;International Union for the Scientific Study of Population Committee on Emerging Health Threats&lt;/em&gt;. &lt;a href=&quot;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&quot;&gt;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&lt;/a&gt; [21 Sep. 2003]&lt;/p&gt;
 
 
 &lt;p&gt;&lt;span&gt;Sarathi Biswas&lt;/span&gt;, P. (2012). Alcohol, drought lead to farmer’s suicide. &lt;em&gt;Daily News and Analysis&lt;/em&gt;. &lt;a href=&quot;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&quot;&gt;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&lt;/a&gt; [17 May 2012]&lt;/p&gt;
 
 
-&lt;p&gt;&lt;/div&gt;&lt;/p&gt;
+
 
 &lt;p&gt;&lt;/p&gt;
 
@@ -43,9 +40,7 @@
 &lt;pre&gt;&lt;code&gt;# read mendeley bibtex file
 bib &amp;lt;- read.bibtex(&quot;~/references/library.bib&quot;)
 # ad hoc fix
-for(bibkey in c(&quot;SarathiBiswas2012&quot;,
-  &quot;Mcmichael2002a&quot;  
-)){
+for(bibkey in c(&quot;SarathiBiswas2012&quot;, &quot;Mcmichael2002a&quot;)){
   bib[ [ bibkey ] ]$url &amp;lt;- gsub(&quot;\\{\\\\_\\}&quot;,&quot;_&quot;, bib[ [ bibkey ] ]$url)
 }
 &lt;/code&gt;&lt;/pre&gt;
