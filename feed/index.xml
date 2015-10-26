@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-10-25T16:20:27+11:00</updated>
+ <updated>2015-10-26T16:43:12+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,60 +13,57 @@
 
  
  <entry>
-   <title>Sanitize mendeley references in r markdown reporting</title>
-   <link href="http://ivanhanigan.github.com/2015/10/sanitize-mendeley-references-in-r-markdown-reporting/"/>
-   <updated>2015-10-24T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/10/sanitize-mendeley-references-in-r-markdown-reporting</id>
-   <content type="html">&lt;p&gt;A key challenge for Reproducible Research Reports in Rmarkdown remains adequate scholarly citation management; the machinery of scholarly citations and references.&lt;/p&gt;
+   <title>show-missingness-in-large-dataframes</title>
+   <link href="http://ivanhanigan.github.com/2015/10/show-missingness-in-large-dataframes/"/>
+   <updated>2015-10-26T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/10/show-missingness-in-large-dataframes</id>
+   <content type="html">&lt;p&gt;Sometime ago I saw this example of a method for assessing missing data in a large data frame &lt;a href=&quot;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&quot;&gt;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;The &lt;code&gt;knitcitations&lt;/code&gt; R package does a great job of working with bibtex bibliography files, however the bibtex manager that I use is Mendeley and it has implemented some rules on the way it handles special characters that forces the bibtex references into a state with some 'escaped' elements that breaks their presentation via &lt;code&gt;knitcitations&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:&lt;/p&gt;
 
-&lt;p&gt;This is a post from my open notebook that shows the workaround I am using for sanitizing the Mendeley escaped underscores in URLS.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/misstable.png&quot; alt=&quot;/images/misstable.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Here is an example:&lt;/p&gt;
+&lt;h4&gt;Code&lt;/h4&gt;
 
-&lt;p&gt;There is considerable public health impact from the effects on mental of drought &lt;span class=&quot;citation&quot;&gt;(&lt;span&gt;Sarathi Biswas&lt;/span&gt; 2012)&lt;/span&gt;. It is proposed that the best method to disentangle the multifactorial nature of this causal mechanism is the ‘five-capitals’ framework, indeed this method may even enable understanding the human carrying capacity of ecosystems &lt;span class=&quot;citation&quot;&gt;(McMichael &amp;amp; Butler 2002)&lt;/span&gt;.&lt;/p&gt;
-
-
-
-
-&lt;p&gt;McMichael, A.J. &amp;amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. &lt;em&gt;International Union for the Scientific Study of Population Committee on Emerging Health Threats&lt;/em&gt;. &lt;a href=&quot;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&quot;&gt;http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf&lt;/a&gt; [21 Sep. 2003]&lt;/p&gt;
-
-
-&lt;p&gt;&lt;span&gt;Sarathi Biswas&lt;/span&gt;, P. (2012). Alcohol, drought lead to farmer’s suicide. &lt;em&gt;Daily News and Analysis&lt;/em&gt;. &lt;a href=&quot;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&quot;&gt;http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976&lt;/a&gt; [17 May 2012]&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;require(grDevices)
+misstable &amp;lt;- function(atable){
+ op &amp;lt;- par(bg = &quot;white&quot;)
+ plot(c(0, 400), c(0, 1000), type = &quot;n&quot;, xlab=&quot;&quot;, ylab=&quot;&quot;,
+     main = &quot;Missing Data Table&quot;)
 
 
+ pmin=000
+ pmax=400
+ stre=pmax-pmin
+ lnames=length(atable)
+ cstep = (stre/lnames)
+ for(titles in 1:lnames){
+ text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
+ }
 
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;See those pesky curly braces &lt;code&gt;{&lt;/code&gt; and &lt;code&gt;}&lt;/code&gt; around the underscores?&lt;/h2&gt;
-
-&lt;h2&gt;The fix&lt;/h2&gt;
-
-&lt;p&gt;The fix I am using is to sanitize each record where this is an issue as I build my document, so the mendeley version stays as-is, while the R version has been sanitized by removing the escape characters.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# read mendeley bibtex file
-bib &amp;lt;- read.bibtex(&quot;~/references/library.bib&quot;)
-# ad hoc fix
-for(bibkey in c(&quot;SarathiBiswas2012&quot;, &quot;Mcmichael2002a&quot;)){
-  bib[ [ bibkey ] ]$url &amp;lt;- gsub(&quot;\\{\\\\_\\}&quot;,&quot;_&quot;, bib[ [ bibkey ] ]$url)
+ gmax=900
+ gmin=0
+ gstre=gmax-gmin
+ rvec = as.vector(atable[[1]])
+ dnames=length(rvec)
+ step = gstre / dnames
+ for(rows in 1:dnames){
+ text(30,gmax - (rows-1)*step-step/2,rvec[rows])
+ ymax=gmax - (rows-1)*step
+ ymin=gmax - (rows)*step
+ for(col in 2:lnames-1){
+ if(atable[rows,col+1] == F){
+ tcolor = &quot;red&quot;
+ }
+ if(atable[rows,col+1] == T){
+ tcolor = &quot;white&quot;
+ }
+ rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
+ ymax,col=tcolor,lty=&quot;blank&quot;)
+ }
+ }
 }
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This is the result:&lt;/p&gt;
-
-&lt;p&gt;McMichael, A.J. &amp;amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. &lt;em&gt;International Union for the Scientific Study of Population Committee on Emerging Health Threats&lt;/em&gt;. &lt;a href=&quot;http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf&quot;&gt;http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf&lt;/a&gt; [21 Sep. 2003]&lt;/p&gt;
-
-
-&lt;p&gt;&lt;span&gt;Sarathi Biswas&lt;/span&gt;, P. (2012). Alcohol, drought lead to farmer’s suicide. &lt;em&gt;Daily News and Analysis&lt;/em&gt;. &lt;a href=&quot;http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976&quot;&gt;http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976&lt;/a&gt; [17 May 2012]&lt;/p&gt;
-
-
-
-
-&lt;p&gt;&lt;/p&gt;
-
 </content>
  </entry>
  
