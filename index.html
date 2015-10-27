@@ -67,46 +67,6 @@
 
 <h4>Code</h4>
 
-<pre><code>require(grDevices)
-misstable &lt;- function(atable){
- op &lt;- par(bg = "white")
- plot(c(0, 400), c(0, 1000), type = "n", xlab="", ylab="",
-     main = "Missing Data Table")
-
-
- pmin=000
- pmax=400
- stre=pmax-pmin
- lnames=length(atable)
- cstep = (stre/lnames)
- for(titles in 1:lnames){
- text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
- }
-
- gmax=900
- gmin=0
- gstre=gmax-gmin
- rvec = as.vector(atable[[1]])
- dnames=length(rvec)
- step = gstre / dnames
- for(rows in 1:dnames){
- text(30,gmax - (rows-1)*step-step/2,rvec[rows])
- ymax=gmax - (rows-1)*step
- ymin=gmax - (rows)*step
- for(col in 2:lnames-1){
- if(atable[rows,col+1] == F){
- tcolor = "red"
- }
- if(atable[rows,col+1] == T){
- tcolor = "white"
- }
- rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
- ymax,col=tcolor,lty="blank")
- }
- }
-}
-</code></pre>
-
       <div class="clear"></div>
     </div>
     <p class="alt-font tight">
