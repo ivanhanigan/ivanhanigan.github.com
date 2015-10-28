@@ -4,13 +4,135 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-10-28T14:52:16+11:00</updated>
+ <updated>2015-10-28T16:45:12+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Show missingness in large dataframes, version 2</title>
+   <link href="http://schamberlain.github.com/2015/10/show-missingness-in-large-dataframes-v2/"/>
+   <updated>2015-10-28T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2015/10/show-missingness-in-large-dataframes-v2</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;UPDATE: the other day I blogged this but I needed to tweak things, so this is a re-post with extra&lt;/li&gt;
+&lt;li&gt;Sometime ago I saw this example of a method for assessing missing data in a large data frame &lt;a href=&quot;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&quot;&gt;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/bankstown_traffic_counts_full_listing_june_2014.svg&quot; alt=&quot;/images/bankstown_traffic_counts_full_listing_june_2014.svg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;misstable &amp;lt;- function(atable){
+ op &amp;lt;- par(bg = &quot;white&quot;)
+ plot(c(0, 400), c(0, 1000), type = &quot;n&quot;, xlab=&quot;&quot;, ylab=&quot;&quot;,
+     main = &quot;Missing Data Table&quot;)
+
+
+ pmin=000
+ pmax=400
+ stre=pmax-pmin
+ lnames=length(atable)
+ cstep = (stre/lnames)
+ for(titles in 1:lnames){
+ text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
+ }
+
+ gmax=900
+ gmin=0
+ gstre=gmax-gmin
+ rvec = as.vector(atable[ [ 1 ] ])
+ dnames=length(rvec)
+ step = gstre / dnames
+ for(rows in 1:dnames){
+ text(30,gmax - (rows-1)*step-step/2,rvec[rows])
+ ymax=gmax - (rows-1)*step
+ ymin=gmax - (rows)*step
+ for(col in 2:lnames-1){
+ if(atable[rows,col+1] == F){
+ tcolor = &quot;red&quot;
+ }
+ if(atable[rows,col+1] == T){
+ tcolor = &quot;white&quot;
+ }
+ rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
+ ymax,col=tcolor,lty=&quot;blank&quot;)
+ }
+ }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Now things to note are that the function expects the data to be TRUE if Not NA and  FALSE if is NA&lt;/li&gt;
+&lt;li&gt;so might need to massage things a bit first&lt;/li&gt;
+&lt;li&gt;here is the small test Grant supplied&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(grDevices)
+
+# Make a quick dataframe with true/false representing data availability
+locs=c(&quot;Australia&quot;,&quot;India&quot;,&quot;New Zealand&quot;,&quot;Sri Lanka&quot;,&quot;Uruguay&quot;,&quot;Somalia&quot;)
+f1=c(T,F,T,T,F,F)
+f2=c(F,F,F,T,F,F)
+f3=c(F,T,T,T,F,T)
+atable=data.frame(locs,f1,f2,f3)
+atable
+#Draw the table.
+misstable(atable)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;here is the one I worked on today&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# having defined the input dir and input file tried reading the excel sheet (without head 3 rows)
+#dat &amp;lt;- readxl::read_excel(file.path(indir, infile), skip =3)
+# got lots of warnings()
+## 50: In read_xlsx_(path, sheet, col_names = col_names, col_types = col_types,  ... :
+##   [1278, 4]: expecting date: got '[NULL]'
+# I always worry about using excel connections so open in excel (in windows) 
+# and save as to convert to CSV
+dat &amp;lt;- read.csv(file.path(indir, gsub(&quot;.xlsx&quot;, &quot;.csv&quot;, infile)), skip =3, stringsAsFactor = F)
+str(dat)
+# 'data.frame':     1396 obs. of  167 variables:
+# but most of the cols and a third of the rows are empty!
+# check missings
+dat2 &amp;lt;- data.frame(id = 1:nrow(dat), dat)
+str(dat2)
+# first if they are empty strings
+dat2[dat2 == &quot;&quot;] &amp;lt;- NA
+# now if NA
+dat2[,2:ncol(dat2)] &amp;lt;- !is.na(dat2[,2:ncol(dat2)])
+
+# Truncate the hundreds of empty cols
+str(dat2[,1:18])
+tail(dat2[,1:18])
+svg(file.path(outdir, gsub(&quot;.csv&quot;, &quot;.svg&quot;, outfile))    )
+misstable(dat2[,1:18])
+dev.off()
+browseURL(file.path(outdir, gsub(&quot;.csv&quot;, &quot;.svg&quot;, outfile))    )
+
+# cool, that is an effective way to look at the data
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>show-missingness-in-large-dataframes</title>
@@ -24,6 +146,57 @@
 &lt;p&gt;&lt;img src=&quot;/images/misstable.png&quot; alt=&quot;/images/misstable.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;misstable &amp;lt;- function(atable){
+ op &amp;lt;- par(bg = &quot;white&quot;)
+ plot(c(0, 400), c(0, 1000), type = &quot;n&quot;, xlab=&quot;&quot;, ylab=&quot;&quot;,
+     main = &quot;Missing Data Table&quot;)
+
+
+ pmin=000
+ pmax=400
+ stre=pmax-pmin
+ lnames=length(atable)
+ cstep = (stre/lnames)
+ for(titles in 1:lnames){
+ text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
+ }
+
+ gmax=900
+ gmin=0
+ gstre=gmax-gmin
+ rvec = as.vector(atable[ [ 1 ] ])
+ dnames=length(rvec)
+ step = gstre / dnames
+ for(rows in 1:dnames){
+ text(30,gmax - (rows-1)*step-step/2,rvec[rows])
+ ymax=gmax - (rows-1)*step
+ ymin=gmax - (rows)*step
+ for(col in 2:lnames-1){
+ if(atable[rows,col+1] == F){
+ tcolor = &quot;red&quot;
+ }
+ if(atable[rows,col+1] == T){
+ tcolor = &quot;white&quot;
+ }
+ rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
+ ymax,col=tcolor,lty=&quot;blank&quot;)
+ }
+ }
+}
+
+require(grDevices)
+
+# Make a quick dataframe with true/false representing data availability
+locs=c(&quot;Australia&quot;,&quot;India&quot;,&quot;New Zealand&quot;,&quot;Sri Lanka&quot;,&quot;Uruguay&quot;,&quot;Somalia&quot;)
+f1=c(T,F,T,T,F,F)
+f2=c(F,F,F,T,F,F)
+f3=c(F,T,T,T,F,T)
+atable=data.frame(locs,f1,f2,f3)
+atable
+#Draw the table.
+misstable(atable)
+&lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
  
@@ -6624,62 +6797,6 @@ write.csv(dat, filename, row.names =F, quote=F)
 &lt;p&gt;Which now seems to have attached the variable defintions and dataTable adequately.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/morpho-wide2.png&quot; alt=&quot;morpho-wide2.png&quot; /&gt;&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>linking-eml-packages-by-umbrella-project-info</title>
-   <link href="http://schamberlain.github.com/2014/04/linking-eml-packages-by-umbrella-project-info/"/>
-   <updated>2014-04-21T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2014/04/linking-eml-packages-by-umbrella-project-info</id>
-   <content type="html">&lt;p&gt;In Eml the optional &quot;project&quot; module provides an overall description
-of the larger-scale project or research context with which that
-dataset is associated. For the examples in our work the &quot;project&quot; will
-most often be an LTER (Longterm Ecological Research Network) site that
-directed the research.  Accordingly, the &quot;title&quot; here consists of the
-name of the LTER site. The &quot;personnel&quot; group contains the same
-elements as &quot;creator&quot; and &quot;contact&quot;, with the addition of a mandatory
-&quot;role&quot; element, and it is used to identify the lead PI and/or
-information manager on the site. Other optional elements in the
-&quot;project&quot; module include &quot;abstract&quot;, &quot;funding&quot;,
-&quot;studyAreaDescription&quot;, and &quot;designDescription&quot;, each of which can be
-used to provide a richer textual description of the LTER site
-responsible for the research project being documented.  If used, the
-&quot;abstract&quot; includes basic information about the LTER site, such as its
-general history and administration, while &quot;studyAreaDescription&quot; is
-more of a physical description of the area where the site is
-located. This description may also include the &quot;coverage&quot; module,
-which is fully discussed on page XX of this handbook, or the
-&quot;citation&quot; module, covered on page XX. The &quot;funding&quot; tag is textual
-and self-explanatory, but &quot;designDescription&quot; is best used for a
-description of the site’s database information and availability.&lt;/p&gt;
-
-&lt;p&gt;Morpho doesn't give all these options so you need to go to the EML file found in the &quot;~/.morpho/...&quot; directory and edit this with a text editor
-I think the order of the tags here might make a difference so I always put thye &quot;abstract&quot; tag after the &quot;/personnel&quot; tag.  I also think you might need this &quot;para&quot; tag:&lt;/p&gt;
-
-&lt;h4&gt;Code:linking-eml-packages-by-umbrella-project-inf&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;abstract&amp;gt; 
-  &amp;lt;para&amp;gt;Prof McMichael set up this group to develop new methods of researching Environmental (especially Climate Change) and Health
-  &amp;lt;/para&amp;gt;
-&amp;lt;/abstract&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an &quot;additionalLinks&quot; node at the bottom of the EML:&lt;/p&gt;
-
-&lt;h4&gt;Code:linking-eml-packages-by-umbrella-project-info&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;additionalMetadata&amp;gt;
-  &amp;lt;metadata&amp;gt;
-    &amp;lt;additionalLinks&amp;gt;
-      &amp;lt;url name=&quot;The name of the homepage&quot;&amp;gt;http://...&amp;lt;/url&amp;gt;
-    &amp;lt;/additionalLinks&amp;gt;
-  &amp;lt;/metadata&amp;gt;
-&amp;lt;/additionalMetadata&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
  

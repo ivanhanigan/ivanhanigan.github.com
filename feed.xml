@@ -6,6 +6,127 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Show missingness in large dataframes, version 2</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;UPDATE: the other day I blogged this but I needed to tweak things, so this is a re-post with extra&lt;/li&gt;
+&lt;li&gt;Sometime ago I saw this example of a method for assessing missing data in a large data frame &lt;a href=&quot;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&quot;&gt;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/bankstown_traffic_counts_full_listing_june_2014.svg&quot; alt=&quot;/images/bankstown_traffic_counts_full_listing_june_2014.svg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;misstable &amp;lt;- function(atable){
+ op &amp;lt;- par(bg = &quot;white&quot;)
+ plot(c(0, 400), c(0, 1000), type = &quot;n&quot;, xlab=&quot;&quot;, ylab=&quot;&quot;,
+     main = &quot;Missing Data Table&quot;)
+
+
+ pmin=000
+ pmax=400
+ stre=pmax-pmin
+ lnames=length(atable)
+ cstep = (stre/lnames)
+ for(titles in 1:lnames){
+ text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
+ }
+
+ gmax=900
+ gmin=0
+ gstre=gmax-gmin
+ rvec = as.vector(atable[ [ 1 ] ])
+ dnames=length(rvec)
+ step = gstre / dnames
+ for(rows in 1:dnames){
+ text(30,gmax - (rows-1)*step-step/2,rvec[rows])
+ ymax=gmax - (rows-1)*step
+ ymin=gmax - (rows)*step
+ for(col in 2:lnames-1){
+ if(atable[rows,col+1] == F){
+ tcolor = &quot;red&quot;
+ }
+ if(atable[rows,col+1] == T){
+ tcolor = &quot;white&quot;
+ }
+ rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
+ ymax,col=tcolor,lty=&quot;blank&quot;)
+ }
+ }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Now things to note are that the function expects the data to be TRUE if Not NA and  FALSE if is NA&lt;/li&gt;
+&lt;li&gt;so might need to massage things a bit first&lt;/li&gt;
+&lt;li&gt;here is the small test Grant supplied&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;require(grDevices)
+
+# Make a quick dataframe with true/false representing data availability
+locs=c(&quot;Australia&quot;,&quot;India&quot;,&quot;New Zealand&quot;,&quot;Sri Lanka&quot;,&quot;Uruguay&quot;,&quot;Somalia&quot;)
+f1=c(T,F,T,T,F,F)
+f2=c(F,F,F,T,F,F)
+f3=c(F,T,T,T,F,T)
+atable=data.frame(locs,f1,f2,f3)
+atable
+#Draw the table.
+misstable(atable)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;here is the one I worked on today&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;# having defined the input dir and input file tried reading the excel sheet (without head 3 rows)
+#dat &amp;lt;- readxl::read_excel(file.path(indir, infile), skip =3)
+# got lots of warnings()
+## 50: In read_xlsx_(path, sheet, col_names = col_names, col_types = col_types,  ... :
+##   [1278, 4]: expecting date: got '[NULL]'
+# I always worry about using excel connections so open in excel (in windows) 
+# and save as to convert to CSV
+dat &amp;lt;- read.csv(file.path(indir, gsub(&quot;.xlsx&quot;, &quot;.csv&quot;, infile)), skip =3, stringsAsFactor = F)
+str(dat)
+# 'data.frame':     1396 obs. of  167 variables:
+# but most of the cols and a third of the rows are empty!
+# check missings
+dat2 &amp;lt;- data.frame(id = 1:nrow(dat), dat)
+str(dat2)
+# first if they are empty strings
+dat2[dat2 == &quot;&quot;] &amp;lt;- NA
+# now if NA
+dat2[,2:ncol(dat2)] &amp;lt;- !is.na(dat2[,2:ncol(dat2)])
+
+# Truncate the hundreds of empty cols
+str(dat2[,1:18])
+tail(dat2[,1:18])
+svg(file.path(outdir, gsub(&quot;.csv&quot;, &quot;.svg&quot;, outfile))    )
+misstable(dat2[,1:18])
+dev.off()
+browseURL(file.path(outdir, gsub(&quot;.csv&quot;, &quot;.svg&quot;, outfile))    )
+
+# cool, that is an effective way to look at the data
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+				<published>2015-10-28 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/10/show-missingness-in-large-dataframes-v2/</link>
+			</item>
+		
+			<item>
 				<title>show-missingness-in-large-dataframes</title>
 				<description>&lt;p&gt;Sometime ago I saw this example of a method for assessing missing data in a large data frame &lt;a href=&quot;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&quot;&gt;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&lt;/a&gt;&lt;/p&gt;
 
@@ -14,6 +135,57 @@
 &lt;p&gt;&lt;img src=&quot;/images/misstable.png&quot; alt=&quot;/images/misstable.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h4&gt;Code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;misstable &amp;lt;- function(atable){
+ op &amp;lt;- par(bg = &quot;white&quot;)
+ plot(c(0, 400), c(0, 1000), type = &quot;n&quot;, xlab=&quot;&quot;, ylab=&quot;&quot;,
+     main = &quot;Missing Data Table&quot;)
+
+
+ pmin=000
+ pmax=400
+ stre=pmax-pmin
+ lnames=length(atable)
+ cstep = (stre/lnames)
+ for(titles in 1:lnames){
+ text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
+ }
+
+ gmax=900
+ gmin=0
+ gstre=gmax-gmin
+ rvec = as.vector(atable[ [ 1 ] ])
+ dnames=length(rvec)
+ step = gstre / dnames
+ for(rows in 1:dnames){
+ text(30,gmax - (rows-1)*step-step/2,rvec[rows])
+ ymax=gmax - (rows-1)*step
+ ymin=gmax - (rows)*step
+ for(col in 2:lnames-1){
+ if(atable[rows,col+1] == F){
+ tcolor = &quot;red&quot;
+ }
+ if(atable[rows,col+1] == T){
+ tcolor = &quot;white&quot;
+ }
+ rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
+ ymax,col=tcolor,lty=&quot;blank&quot;)
+ }
+ }
+}
+
+require(grDevices)
+
+# Make a quick dataframe with true/false representing data availability
+locs=c(&quot;Australia&quot;,&quot;India&quot;,&quot;New Zealand&quot;,&quot;Sri Lanka&quot;,&quot;Uruguay&quot;,&quot;Somalia&quot;)
+f1=c(T,F,T,T,F,F)
+f2=c(F,F,F,T,F,F)
+f3=c(F,T,T,T,F,T)
+atable=data.frame(locs,f1,f2,f3)
+atable
+#Draw the table.
+misstable(atable)
+&lt;/code&gt;&lt;/pre&gt;
 </description>
 				<published>2015-10-26 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/show-missingness-in-large-dataframes/</link>
@@ -743,79 +915,6 @@ pnas.csl
 </description>
 				<published>2015-10-09 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/</link>
-			</item>
-		
-			<item>
-				<title>A quick review of a quick guide to organizing computational biology projects</title>
-				<description>&lt;p&gt;The organisation of material is a particularly vexatious topic.  For a data analysis project it is very important that the set of folders and files is logical and intuitive, as well as being well documented. The oft-heard exhortation by computer scientists to their users to 'Read The F-ing Manual' (RTFM) is perennial and rooted in the fundamental difficulty of readers to have the time required to read and digest the detailed information there-in.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;In this post I review a paper that I was referred to by recent activity on the
-Mozillascience studyGroupLesson 'Open Science Utility Belt':
-&lt;a href=&quot;https://github.com/mozillascience/studyGroupLessons/issues/7&quot;&gt;https://github.com/mozillascience/studyGroupLessons/issues/7&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;That group also holds a journal club &lt;a href=&quot;https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483&quot;&gt;https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483&lt;/a&gt; and they reviewed this paper:&lt;/li&gt;
-&lt;li&gt;Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;I missed out so I thought I'd put my notes up here for reference:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;core guiding principle is simple: Someone unfamiliar with your project should be able to look at your computer files and understand in detail what you did and why&lt;/li&gt;
-&lt;li&gt;your future self may find it difficult to understand your current work.&lt;/li&gt;
-&lt;li&gt;Noble's law: 'Everything you do, you will probably have to do over again'&lt;/li&gt;
-&lt;li&gt;store all of the files relevant to one project in common root directory&lt;/li&gt;
-&lt;li&gt;The exception to this rule is data/code that are used in multiple projects, they are standalone projects&lt;/li&gt;
-&lt;li&gt;Within a given project, use a top-level organization that is logical first, then chronological  at the next level, and then logical organization next&lt;/li&gt;
-&lt;li&gt;Core folders are &lt;code&gt;data&lt;/code&gt;, &lt;code&gt;results&lt;/code&gt;, &lt;code&gt;doc&lt;/code&gt; (versus Berndt Weiss' &lt;code&gt;dat&lt;/code&gt;, &lt;code&gt;ana&lt;/code&gt;, &lt;code&gt;doc&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;Chronological order?  'tempting to apply a similar, logical organization... this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform'&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h3&gt;Recommended folder and file structures &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424.g001&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424.g001&lt;/a&gt;&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&quot;r&quot;&gt;/projectname (eg msms)/
-    /doc/
-        /ms-analysis.html 
-        /paper/
-            /msms.tex
-            /msms.pdf
-    /data/
-        /YYYY-MM-DD/
-            /yeast/
-                /README
-                /yeast.sqt
-            /worm/
-                /README
-                /worm.sqt
-    /src/
-        /ms-analysis.c
-    /bin/
-        /parse-sqt.py
-    /results/
-        /notebook.html 
-        /YYYY-MM-DD-1/
-            /runall
-            /split1/
-            /split2/
-        /YYYY-MM-DD-2/
-            /runall
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ol&gt;
-&lt;li&gt;Use a driver script to automate creation of a directory structure&lt;/li&gt;
-&lt;li&gt;maintain a chronologically organized lab notebook (I have been calling this a work 'log' sensu Scott Long's 2008 'Workflow book')&lt;/li&gt;
-&lt;li&gt;create either a README file, or a command line driver script (he calls this &lt;code&gt;runall&lt;/code&gt;, but see also &lt;code&gt;main.R&lt;/code&gt; sensu the Reichian LCFD model)&lt;/li&gt;
-&lt;li&gt;you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details&lt;/li&gt;
-&lt;li&gt;Version Control.  'Nuff said! But how to build capacity with Github when all my colleagues seem so confused by it?&lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-				<published>2015-10-07 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/</link>
 			</item>
 		
 	</channel>

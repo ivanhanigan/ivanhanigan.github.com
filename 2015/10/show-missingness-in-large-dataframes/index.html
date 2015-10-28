@@ -65,6 +65,57 @@
 
 <h4>Code</h4>
 
+<pre><code>misstable &lt;- function(atable){
+ op &lt;- par(bg = "white")
+ plot(c(0, 400), c(0, 1000), type = "n", xlab="", ylab="",
+     main = "Missing Data Table")
+
+
+ pmin=000
+ pmax=400
+ stre=pmax-pmin
+ lnames=length(atable)
+ cstep = (stre/lnames)
+ for(titles in 1:lnames){
+ text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
+ }
+
+ gmax=900
+ gmin=0
+ gstre=gmax-gmin
+ rvec = as.vector(atable[ [ 1 ] ])
+ dnames=length(rvec)
+ step = gstre / dnames
+ for(rows in 1:dnames){
+ text(30,gmax - (rows-1)*step-step/2,rvec[rows])
+ ymax=gmax - (rows-1)*step
+ ymin=gmax - (rows)*step
+ for(col in 2:lnames-1){
+ if(atable[rows,col+1] == F){
+ tcolor = "red"
+ }
+ if(atable[rows,col+1] == T){
+ tcolor = "white"
+ }
+ rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
+ ymax,col=tcolor,lty="blank")
+ }
+ }
+}
+
+require(grDevices)
+
+# Make a quick dataframe with true/false representing data availability
+locs=c("Australia","India","New Zealand","Sri Lanka","Uruguay","Somalia")
+f1=c(T,F,T,T,F,F)
+f2=c(F,F,F,T,F,F)
+f3=c(F,T,T,T,F,T)
+atable=data.frame(locs,f1,f2,f3)
+atable
+#Draw the table.
+misstable(atable)
+</code></pre>
+
     <div class="clear"></div>
   </div>
   <!-- AddThis Button BEGIN -->
@@ -174,6 +225,10 @@
               <ul>
                 
                 <li>
+                  <a href="/2015/10/show-missingness-in-large-dataframes-v2/" title="Show missingness in large dataframes, version 2" rel="bookmark">Show missingness in large dataframes, version 2</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/show-missingness-in-large-dataframes/" title="show-missingness-in-large-dataframes" rel="bookmark">show-missingness-in-large-dataframes</a>
                 </li>
                 
@@ -187,10 +242,6 @@
                 
                 <li>
                   <a href="/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/" title="Reproducible research pipelines improve description of method steps" rel="bookmark">Reproducible research pipelines improve description of method steps</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/" title="How To Effectively Implement Electronic Lab Notebooks In Epidemiology" rel="bookmark">How To Effectively Implement Electronic Lab Notebooks In Epidemiology</a>
                 </li>
                 
               </ul>
@@ -216,7 +267,7 @@
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (29)</a></li>
+                <li><a href="/categories/disentangle">disentangle (30)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -236,7 +287,7 @@
                 
                 <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
                 
-                <li><a href="/categories/exploratory data analysis">exploratory data analysis (1)</a></li>
+                <li><a href="/categories/exploratory data analysis">exploratory data analysis (2)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

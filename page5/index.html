@@ -56,6 +56,133 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I use the R package <code>DiagrammeR</code> for creating graphs (the formal kind, connecting nodes with edges)
+- This package is great and I like how it interacts with the Graphviz program
+- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
+- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
+- In my utilities R package <code>github.com/ivanhanigan/disentangle</code> I have written functions that turn this table into a graphiviz DOT language script
+- Recently I have needed to unpack the list for a more itemized view
+- Both these functions are showcased below</p>
+
+<h4>Code: newnode</h4>
+
+<pre><code># First create some test data, each step is a collection of edges 
+# with inputs or outputs simple comma seperated lists
+dat &lt;- read.csv(textConnection('
+cluster ,  step    , inputs                    , outputs                                , description                      
+A  ,  siteIDs      , "GPS, helicopter"          , "spatial, site doco"                 , latitude and longitude of sites  
+A  ,  weather      , BoM                       , exposures                              , weather data from BoM            
+B  ,  trapped      , spatial                   , trapped_no                             , counts of species caught in trap 
+B  ,  biomass      , spatial                   , biomass_g                              ,                                  
+B  ,  correlations , "exposures,trapped_no,biomass_g" , report1                         , A study we published             
+C  ,  paper1       , report1                   , "open access repository, data package" ,                                  
+D  ,  biomass revision, new estimates          , biomass_g                              , this came late
+'), stringsAsFactors = F, strip.white = T)    
+str(dat)
+# dat
+
+# Now run the function and create a graph
+nodes &lt;- newnode(
+  indat = dat,
+  names_col = "step",
+  in_col = "inputs",
+  out_col = "outputs",
+  desc_col = "description",
+  clusters_col = "cluster",
+  nchar_to_snip = 40
+  )  
+sink("Transformations.dot")
+cat(nodes)
+sink()
+#DiagrammeR::grViz("Transformations.dot")
+system("dot -Tpng Transformations.dot -o Transformations.png")
+browseURL("Transformations.png")
+</code></pre>
+
+<p></p>
+
+
+<p></p>
+
+<p>That creates this diagram</p>
+
+<p><img src="/images/Transformations.png" alt="/images/Transformations.png" /></p>
+
+<h2>Now to showcase the tool that itemizes this list of inputs and outputs</h2>
+
+<ul>
+<li>The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs</li>
+<li>To add detail for each we need to unpack each list and create a new table with one row per node</li>
+<li>I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output</li>
+</ul>
+
+
+<h4>Code: newnode_csv</h4>
+
+<pre><code>nodes_graphy &lt;- newnode_csv(
+  indat = dat,
+  names_col = "step",
+  in_col = "inputs",
+  out_col = "outputs",
+  clusters_col = 'cluster'
+  ) 
+# which creates this table
+knitr::kable(nodes_graphy)
+|cluster |name             |in_or_out |value                  |
+|:-------|:----------------|:---------|:----------------------|
+|A       |siteIDs          |input     |GPS                    |
+|A       |siteIDs          |input     |helicopter             |
+|A       |siteIDs          |output    |spatial                |
+|A       |siteIDs          |output    |site doco              |
+|A       |weather          |input     |BoM                    |
+|A       |weather          |output    |exposures              |
+|B       |trapped          |input     |spatial                |
+|B       |trapped          |output    |trapped_no             |
+|B       |biomass          |input     |spatial                |
+|B       |biomass          |output    |biomass_g              |
+|B       |correlations     |input     |exposures              |
+|B       |correlations     |input     |trapped_no             |
+|B       |correlations     |input     |biomass_g              |
+|B       |correlations     |output    |report1                |
+|C       |paper1           |input     |report1                |
+|C       |paper1           |output    |open access repository |
+|C       |paper1           |output    |data package           |
+|D       |biomass revision |input     |new estimates          |
+|D       |biomass revision |output    |biomass_g              |
+</code></pre>
+
+<p></p>
+
+
+<p>This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-23 00:00:00 +1000">23 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/" title="Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity" rel="bookmark">Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</a>
     </h1>
     <div class="entry-content full-content">
@@ -577,130 +704,6 @@ write.bibtex(file="references.bib")
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/09/task-management-like-an-open-science-hacker/" title="task-management-like-an-open-science-hacker" rel="bookmark">task-management-like-an-open-science-hacker</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I just read this impressive paper and it has really given me a push toward making this open lab notebook</p>
-
-<h4>Citation</h4>
-
-<pre><code>Nosek, B. A., et al. (2015). Promoting an open research
-culture. Science, 348(6242), 1422–1425. doi:10.1126/science.aab2374
-</code></pre>
-
-<p></p>
-
-
-<h4>Quote</h4>
-
-<pre><code>The situation is a classic collective action problem. Many individual researchers lack
-strong incentives to be more transparent, even though the credibility of science would 
-benefit if everyone were more transparent.
-</code></pre>
-
-<p></p>
-
-
-<p>So I think I'll try to step up the pace of logging my daily scientific work.
-One super easy thing to do is to publish my daily log from my task management in orgmode.
-Indeed I am also reading at the moment this guy who says</p>
-
-<h4>Quote</h4>
-
-<pre><code>The core of your documentation is the research log.
-
-Long, S. (2015). Reproducible Results and the Workflow of Data Analysis. 
-Retrieved from http://www.indiana.edu/~jslsoc/ftp/WIM/wf wim 2015 2015-08-21@3.pdf
-</code></pre>
-
-<p></p>
-
-
-<p>Finally, I was struck by this reference <a href="http://rich-iannone.github.io/about/2014/10/28/introduction.html">http://rich-iannone.github.io/about/2014/10/28/introduction.html</a> to something about 365+ day GitHub streaks. It was covered earlier by Geoff Greer, and by Dirk Eddelbuettel.</p>
-
-<p>It seems the basic concept is that you can leverage off an obsessive tendency by making sure you do something toward ticking off items from the task list every day.  The impulse to not breaking the chain is supposed to give you inspiration to keep going.  I think this might work well for my temperatment.</p>
-
-<h2>Emacs and orgmode</h2>
-
-<p>The set up of my daily log is pretty simple. After being set up by kjhealy's starter kit.
-Then I modified the org-agenda-files which was set in the main el file that kjhealy provided  and then with the command C-c a a emacs will display my calendar.</p>
-
-<p>When I open emacs in the morning I  open the agenda and this also opens research-log file.  I move to that buffer, then I use this key command to insert a new entry for todays date</p>
-
-<h4>CODE</h4>
-
-<pre><code> (define-skeleton org-journalentry
-   "Template for a journal entry."
-   "project:"
-   "*** " (format-time-string "%Y-%m-%d %a") " \n"
-   "**** TODO-list \n"
-   "***** TODO \n"
-   "**** timesheet\n"
-   "#+begin_src txt :tangle work-log.csv :eval no :padline no\n"
-   (format-time-string "%Y-%m-%d %a") ", " str ", 50\n" 
-   "#+end_src\n"
- )
- (global-set-key [C-S-f5] 'org-journalentry)
-</code></pre>
-
-<p></p>
-
-
-<p>This creates a new date, a stub of a TODO for anything ad hoc and a entry into my timesheet.csv file.</p>
-
-<p>I then select from TODO items from a global list that I keep at the top of the file, and cut/paste them into todays list.</p>
-
-<p><img src="/images/agenda.png" alt="img" /></p>
-
-<p>Great so I just moved this research-log orgmode file into my blog github repo, and with the help of charlie park's bash script I am good to go</p>
-
-<h4>CODE</h4>
-
-<pre><code>alias build_blog="cd ~/projects/ivanhanigan.github.com.raw; jekyll b;
-cp -r ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com;
-cd ~/projects/ivanhanigan.github.com;git add .;git commit -am 'Latest build.';git push"
-alias bb="build_blog"
-</code></pre>
-
-<p></p>
-
-
-<p>So this will put the resulting changes onto my open lab book website here <a href="https://raw.githubusercontent.com/ivanhanigan/ivanhanigan.github.com/master/work-log.org">https://raw.githubusercontent.com/ivanhanigan/ivanhanigan.github.com/master/work-log.org</a></p>
-
-<p>Things to note:</p>
-
-<ul>
-<li>I found this list of tips <a href="http://natashatherobot.com/streak-github-mistakes/">http://natashatherobot.com/streak-github-mistakes/</a></li>
-<li>In particular I realise I need to make my daily push by 4:50 PM in Canberra ACT as this is 11:50 PM the previous day for Github, Pacific Time (PT)</li>
-<li>I also will need to ensure I don't publish sensitive (or embarrasing entries).</li>
-<li>I'll try to keep the identity of my collaborators private as well, so just use their initials rather than names.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/09/task-management-like-an-open-science-hacker/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-09-13 00:00:00 +1000">13 Sep 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -781,6 +784,10 @@ alias bb="build_blog"
               <ul>
                 
                 <li>
+                  <a href="/2015/10/show-missingness-in-large-dataframes-v2/" title="Show missingness in large dataframes, version 2" rel="bookmark">Show missingness in large dataframes, version 2</a>
+                </li>
+                
+                <li>
                   <a href="/2015/10/show-missingness-in-large-dataframes/" title="show-missingness-in-large-dataframes" rel="bookmark">show-missingness-in-large-dataframes</a>
                 </li>
                 
@@ -794,10 +801,6 @@ alias bb="build_blog"
                 
                 <li>
                   <a href="/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/" title="Reproducible research pipelines improve description of method steps" rel="bookmark">Reproducible research pipelines improve description of method steps</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/" title="How To Effectively Implement Electronic Lab Notebooks In Epidemiology" rel="bookmark">How To Effectively Implement Electronic Lab Notebooks In Epidemiology</a>
                 </li>
                 
               </ul>
@@ -823,7 +826,7 @@ alias bb="build_blog"
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (29)</a></li>
+                <li><a href="/categories/disentangle">disentangle (30)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -843,7 +846,7 @@ alias bb="build_blog"
                 
                 <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
                 
-                <li><a href="/categories/exploratory data analysis">exploratory data analysis (1)</a></li>
+                <li><a href="/categories/exploratory data analysis">exploratory data analysis (2)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
