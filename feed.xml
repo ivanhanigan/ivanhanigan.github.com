@@ -6,6 +6,183 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Decisions to make when modelling interactions</title>
+				<description>&lt;p&gt;This post focuses on decision making during statistical
+modelling.  The case of investigating effect modification is used as
+an example.  The analyst has several options available to them when
+constructing the model parametrisation for adjustment to explain
+modification effectively.  Unlike confounding (in which the criterion
+of substantial magnitude change of the effect estimate when
+controlling for a third variable can be easily assessed), models
+including effect modification can be hard to interpret.  Taking
+account of effect modification becomes increasingly important when
+modelling complex interactions.&lt;/p&gt;
+
+&lt;p&gt;If an effect moderator is present then the relationship between
+exposure and response varies between different levels of the
+moderator. An example is provided by a paper we published, in which the
+relationship between proximity to wetlands and Ross River virus
+infection was found to be different for towns and rural areas, where the
+'urban' variable is the 'effect moderator'.&lt;/p&gt;
+
+&lt;p&gt;There are three common ways for data analysts to address this question
+in statistical models:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;multiple models for each group,&lt;/li&gt;
+&lt;li&gt;interaction terms or&lt;/li&gt;
+&lt;li&gt;re-parametrisation to explicitly depict interactions.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;p&gt;The first way is
+to split apart the dataset and conduct separate analyses of multiple
+groups. For example, one could run the regression in the urban zone
+and the rural zone seperately and see if there were different exposure
+response functions in the two models.  This was the approach of our paper.
+This approach has the strength that it is simple to do and yeilds
+results that are easy to interpret.  A limitation of this method is
+that by splitting the dataset one loses degrees of freedom and
+therefore statistical power.&lt;/p&gt;
+
+&lt;p&gt;The second approach (which removes that limitation of the first option) is to
+fit interaction terms.  The example shown in Figure 1 is a multiplicative interaction model (Brambor 2006).
+This  approach was not taken in the models reported in our paper, but can easily be implemented and shows that the function of distance was
+estimated to have different 'slopes' in each of the dichotomous urban
+groups.&lt;/p&gt;
+
+&lt;p&gt;The statistical method can be easily implemented in
+software by including a multiplicative term between two variables,
+however in practice the resulting post estimation regression outputs
+can be difficult to interpret.  For example, say one wants to calculate
+the effect and standard error for exposure X on health outcome Y with
+the interaction of the effect modifier Z.  The form of this model can
+be written as:&lt;/p&gt;
+
+&lt;p&gt;$$ Y ~ \beta&lt;em&gt;{1}X + \beta&lt;/em&gt;{2}Z + \beta_{3}XZ $$&lt;/p&gt;
+
+&lt;p&gt;where B1, B2 and B3 are the regression coefficients estimated and  the term XZ is the interaction between exposure and effect modifier.&lt;/p&gt;
+
+&lt;p&gt;The difficulty for interpretation comes when using this method for calculating the marginal effect of X on Y and the conditional standard error.  The specific method described in Brambor et al. is:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Calculate the coefficients and the variance-covariance matrix from the regression model&lt;/li&gt;
+&lt;li&gt;The marginal effect is $\beta&lt;em&gt;{1} + \beta&lt;/em&gt;{3}XZ$ where Z is the level of the
+modifying factor (0 or 1 in the dichotomous effect modifier case)&lt;/li&gt;
+&lt;li&gt;The conditional standard error is:&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;p&gt;$$\sqrt{var(\beta&lt;em&gt;{1}) + Z&lt;sup&gt;2&lt;/sup&gt; var(\beta&lt;/em&gt;{3}) + 2Zcov(\beta&lt;em&gt;{1}\beta&lt;/em&gt;{3})}$$&lt;/p&gt;
+
+&lt;p&gt;Therefore the strengths of this approach is that it does not reduce
+degrees of freedom and is straightforward to specify the model in
+standard statistical software packages. The limitations are related to
+interpretation of the resulting coefficients for both the main effects and the marginal effects, and standard errors for these.&lt;/p&gt;
+
+&lt;p&gt;The third approach available to analysts makes it easier to access the
+resulting regression output.  This method was employed in Paper 1 in
+the final modelling phase in which estimates were calculated for the
+different drought exposure-response funcitons in each of the
+sub-groups. In the terms of Figure \ref{fig:effectmod.png} it is simple to:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Calculate X1 = X * Z (i.e = exposure for condition is met, zero otherwise)&lt;/li&gt;
+&lt;li&gt;Calculate X0 = X * (1-Z) (i.e. = exposure for NON-condition, zero for condition is TRUE)&lt;/li&gt;
+&lt;li&gt;Instead of X, Z and XZ, fit X1, X0 and Z.  This model also contains three parameters and captures the same interactions as it is the same model with a different parametrisation.  The standard errors for the X1 and X0 are calculated directly from the regression.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;p&gt;This method is much easier to implement and interpret.  This is also
+considerably more flexible than the other two approaches.  A
+limitation remains for this method in that the pre-processing steps
+required are more complicated, and there are inherently more
+possibilities for the data analyst to make errors in writing their
+code as they make these changes to the analytical data.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Demonstrating this with the data from the paper (available in table 2)
+## the following code shows the different parametrisations for the effect modification by urban
+## we show that the coeffs and se are equivalent but that the psuedo-R
+## squared will be better when including all our data in stratified analysis
+
+# model 0 effect in eastern
+d_eastern
+fit &amp;lt;- glm(cases~ buffer + offset(log(1+pops)),family='poisson', data=d_eastern )
+summa &amp;lt;- summary(fit)
+summa
+## Coefficients:
+##             Estimate Std. Error z value Pr(&amp;gt;|z|)
+## (Intercept) -4.82425    0.14451 -33.382  &amp;lt; 2e-16 ***
+## buffer      -0.24702    0.07921  -3.119  0.00182 **
+
+# model 1 effect in urban
+fit1 &amp;lt;- glm(cases~ buffer + offset(log(1+pops)),family='poisson', data=d_urban )
+summa &amp;lt;- summary(fit1)
+summa
+## Coefficients:
+##             Estimate Std. Error z value Pr(&amp;gt;|z|)
+## (Intercept) -5.52363    0.33354 -16.561   &amp;lt;2e-16 ***
+## buffer       0.03853    0.06352   0.607    0.544
+
+# step 1, combine the urban and rural data
+d_eastern$urban &amp;lt;- 0
+d_urban$urban &amp;lt;- 1
+dat2 &amp;lt;- rbind(d_eastern, d_urban)
+str(dat2)
+dat2
+
+# model 2 is a multiplicative term
+fit2 &amp;lt;- glm(cases ~ buffer * urban + offset(log(1+pops)), family = 'poisson', data = dat2)
+summa &amp;lt;- summary(fit2)
+summa
+## Coefficients:
+##              Estimate Std. Error z value Pr(&amp;gt;|z|)
+## (Intercept)  -4.82425    0.14451 -33.382  &amp;lt; 2e-16 ***
+## buffer       -0.24702    0.07921  -3.119  0.00182 **
+## urban        -0.69938    0.36350  -1.924  0.05435 .
+## buffer:urban  0.28555    0.10153   2.812  0.00492 **
+
+# the coeff on buffer is for urban = 0 is main effect
+# the coeff on buffer:urban is for urban = 1 is the marginal effect
+b1 &amp;lt;- summa$coeff[2,1]
+b3 &amp;lt;- summa$coeff[4,1]
+b1 + b3
+# 0.0385268
+# but what about that p-value?  and the se?
+str(fit2)
+fit2_vcov &amp;lt;- vcov(fit2)
+fit2_vcov
+# now calculate the conditional standard error for the marginal effect of buffer for the value of the modifying variable (Z, urban =1)
+varb1&amp;lt;-fit2_vcov[2,2]
+varb3&amp;lt;-fit2_vcov[4,4]
+covarb1b3&amp;lt;-fit2_vcov[2,4]
+Z&amp;lt;-1
+conditional_se &amp;lt;- sqrt(varb1+varb3*(Z^2)+2*Z*covarb1b3)
+conditional_se
+
+
+
+# model 3 is the re-parametrisation
+dat2$buffer_urban &amp;lt;- dat2$buffer * dat2$urban
+dat2$buffer_eastern &amp;lt;- dat2$buffer * (1-dat2$urban)
+
+fit3 &amp;lt;- glm(cases ~ buffer_urban + buffer_eastern + urban + offset(log(1+pops)), family = 'poisson', data = dat2)
+summa &amp;lt;- summary(fit3)
+summa
+
+## Coefficients:
+##                Estimate Std. Error z value Pr(&amp;gt;|z|)
+## (Intercept)    -4.82425    0.14451 -33.382  &amp;lt; 2e-16 ***
+## buffer_urban    0.03853    0.06352   0.607  0.54416
+## buffer_eastern -0.24702    0.07921  -3.119  0.00182 **
+## urban          -0.69938    0.36350  -1.924  0.05435 .
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+				<published>2015-10-31 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/10/decisions-to-make-when-modelling-interactions/</link>
+			</item>
+		
+			<item>
 				<title>Show missingness in large dataframes, version 2</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;UPDATE: the other day I blogged this but I needed to tweak things, so this is a re-post with extra&lt;/li&gt;
@@ -729,192 +906,6 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
 </description>
 				<published>2015-10-12 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/</link>
-			</item>
-		
-			<item>
-				<title>Coming To Grips With Citations In Reproducible Research Reports</title>
-				<description>&lt;h1&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;Earlier this year I was pleased to stumble on to Petr Keil\'s &lt;a href=&quot;http://www.petrkeil.com/?p=2401&quot;&gt;Simple
-template for scientific manuscripts in
-Rmarkdown&lt;/a&gt; and the Github Repo
-&lt;a href=&quot;https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template&quot;&gt;https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I was already using Rmarkdown effectively for everything I wanted
-except my bibliography, and this helped a lot.  But I eventually
-found I needed to tweak the format of the citation style.  I tried
-out a bunch of other CSL files but none felt just right.  I tried out
-these after downloading from &lt;a href=&quot;https://github.com/citation-style-language/styles&quot;&gt;https://github.com/citation-style-language/styles&lt;/a&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;american-physiological-society.csl
-annals-of-the-association-of-american-geographers.csl
-biomed-central.csl
-ecology.csl
-pnas.csl
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;SO I hacked the CSL file&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I used the &lt;code&gt;american-physiological-society.csl&lt;/code&gt; to get stuff I wanted and pasted into the &lt;code&gt;mee.csl&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;get the files from this link &lt;a href=&quot;/rmarkdown_utils/CitationsInRmarkdown.Rmd&quot;&gt;/rmarkdown_utils/CitationsInRmarkdown.Rmd&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;get the files from this link &lt;a href=&quot;/rmarkdown_utils/meemodified.csl&quot;&gt;/rmarkdown_utils/meemodified.csl&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;get the files from this link &lt;a href=&quot;/rmarkdown_utils/refs.bib&quot;&gt;/rmarkdown_utils/refs.bib&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;NB also that the csl file in petrkeil's repo is an older version from 2012 of the version in the citation-style repo called &lt;code&gt;methods-in-ecology-and-evolution&lt;/code&gt;.  The differences are not large though.&lt;/p&gt;
-
-&lt;h3&gt;&lt;span class=&quot;header-section-number&quot;&gt;1.1.1&lt;/span&gt; Example 1:&lt;/h3&gt;
-
-
-&lt;p&gt;The journal article by &lt;span class=&quot;citation&quot;&gt;Michener et al. (1997)&lt;/span&gt; and another one &lt;span class=&quot;citation&quot;&gt;(Bodnar &lt;em&gt;et al.&lt;/em&gt; 2004)&lt;/span&gt; appear with their full URL even though I just want their DOI.&lt;/p&gt;
-
-
-&lt;h3&gt;&lt;span class=&quot;header-section-number&quot;&gt;1.1.2&lt;/span&gt; Example 2:&lt;/h3&gt;
-
-
-&lt;p&gt;Some recent papers &lt;span class=&quot;citation&quot;&gt;(Open Science Collaboration 2015; Aiken &lt;em&gt;et al.&lt;/em&gt; 2015; Davey &lt;em&gt;et al.&lt;/em&gt; 2015)&lt;/span&gt; don’t have Volume info and I want to say [epub ahead of print].&lt;/p&gt;
-
-
-&lt;h3&gt;&lt;span class=&quot;header-section-number&quot;&gt;1.1.3&lt;/span&gt; Example 3:&lt;/h3&gt;
-
-
-&lt;p&gt;This blog post on ‘evidence based data analysis pipeline’ by &lt;span class=&quot;citation&quot;&gt;Peng (2013)&lt;/span&gt; is one that definitely needs the URL and date accessed.&lt;/p&gt;
-
-
-
-
-&lt;h1&gt;References&lt;/h1&gt;
-
-
-&lt;p&gt;Aiken, A.M., Davey, C., Hargreaves, J.R. &amp;amp; Hayes, R.J. (2015). Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication. &lt;em&gt;International Journal of Epidemiology&lt;/em&gt;, dyv127. Retrieved from &lt;a href=&quot;http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv127.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv127&quot; class=&quot;uri&quot;&gt;http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv127.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv127&lt;/a&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp;amp; Smith, K.R. (2004). Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. &lt;em&gt;International journal of hygiene and environmental health&lt;/em&gt;, &lt;strong&gt;207&lt;/strong&gt;, 57–67. Retrieved from &lt;a href=&quot;http://www.sciencedirect.com/science/article/pii/S1438463904702643&quot; class=&quot;uri&quot;&gt;http://www.sciencedirect.com/science/article/pii/S1438463904702643&lt;/a&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Davey, C., Aiken, A.M., Hayes, R.J. &amp;amp; Hargreaves, J.R. (2015). Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial. &lt;em&gt;International Journal of Epidemiology&lt;/em&gt;, dyv128. Retrieved from &lt;a href=&quot;http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv128.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv128&quot; class=&quot;uri&quot;&gt;http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv128.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv128&lt;/a&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp;amp; Stafford, S.G. (1997). Nongeospatial metadata for the ecological sciences. &lt;em&gt;Ecological Applications&lt;/em&gt;, &lt;strong&gt;7&lt;/strong&gt;, 330–342. Retrieved from &lt;a href=&quot;http://www.scopus.com/inward/record.url?scp=0030616825\&amp;amp;partnerID=8YFLogxK&quot; class=&quot;uri&quot;&gt;http://www.scopus.com/inward/record.url?scp=0030616825\&amp;amp;partnerID=8YFLogxK&lt;/a&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Open Science Collaboration. (2015). Estimating the reproducibility of psychological science. &lt;em&gt;Science&lt;/em&gt;, &lt;strong&gt;349&lt;/strong&gt;, aac4716–aac4716. Retrieved from &lt;a href=&quot;http://www.sciencemag.org/cgi/doi/10.1126/science.aac4716&quot; class=&quot;uri&quot;&gt;http://www.sciencemag.org/cgi/doi/10.1126/science.aac4716&lt;/a&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. &lt;em&gt;Simply statistics&lt;/em&gt;. Retrieved July 26, 2015, from &lt;a href=&quot;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&quot; class=&quot;uri&quot;&gt;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&lt;/a&gt;&lt;/p&gt;
-
-
-&lt;pre&gt;&lt;code&gt;# first replace the &amp;lt;macro name=&quot;access&quot;&amp;gt;
-# with 
-&amp;lt;macro name=&quot;access&quot;&amp;gt;
-  &amp;lt;choose&amp;gt;
-    &amp;lt;if variable=&quot;DOI&quot;/&amp;gt;
-    &amp;lt;!--don't use if there is a DOI--&amp;gt;
-    &amp;lt;else&amp;gt;
-      &amp;lt;choose&amp;gt;
-        &amp;lt;if variable=&quot;URL&quot;&amp;gt;
-          &amp;lt;group delimiter=&quot; &quot; prefix=&quot; &quot;&amp;gt;
-            &amp;lt;group&amp;gt;
-              &amp;lt;text variable=&quot;URL&quot;/&amp;gt;
-            &amp;lt;/group&amp;gt;
-            &amp;lt;group prefix=&quot;[&quot; suffix=&quot;]&quot; delimiter=&quot; &quot;&amp;gt;
-              &amp;lt;date variable=&quot;accessed&quot;&amp;gt;
-                &amp;lt;date-part name=&quot;day&quot;/&amp;gt;
-                &amp;lt;date-part name=&quot;month&quot; prefix=&quot; &quot; suffix=&quot; &quot; form=&quot;short&quot;/&amp;gt;
-                &amp;lt;date-part name=&quot;year&quot;/&amp;gt;
-              &amp;lt;/date&amp;gt;
-            &amp;lt;/group&amp;gt;
-          &amp;lt;/group&amp;gt;
-        &amp;lt;/if&amp;gt;
-      &amp;lt;/choose&amp;gt;
-    &amp;lt;/else&amp;gt;
-  &amp;lt;/choose&amp;gt;
-&amp;lt;/macro&amp;gt;
-#### Then add this ####
-&amp;lt;macro name=&quot;date&quot;&amp;gt;
-  &amp;lt;choose&amp;gt;
-    &amp;lt;if variable=&quot;issued&quot;&amp;gt;
-      &amp;lt;choose&amp;gt;
-        &amp;lt;if type=&quot;article-journal&quot;&amp;gt;
-          &amp;lt;date variable=&quot;issued&quot;&amp;gt;
-            &amp;lt;date-part name=&quot;year&quot;/&amp;gt;
-          &amp;lt;/date&amp;gt;
-        &amp;lt;/if&amp;gt;
-        &amp;lt;else&amp;gt;
-          &amp;lt;date variable=&quot;issued&quot;&amp;gt;
-            &amp;lt;date-part name=&quot;year&quot;/&amp;gt;
-          &amp;lt;/date&amp;gt;
-        &amp;lt;/else&amp;gt;
-      &amp;lt;/choose&amp;gt;
-    &amp;lt;/if&amp;gt;
-    &amp;lt;else&amp;gt;
-      &amp;lt;text term=&quot;no date&quot; prefix=&quot;[&quot; suffix=&quot;]&quot;/&amp;gt;
-    &amp;lt;/else&amp;gt;
-  &amp;lt;/choose&amp;gt;
-&amp;lt;/macro&amp;gt;
-#### And add this ####
-      &amp;lt;else-if type=&quot;article-journal&quot;&amp;gt;
-        &amp;lt;choose&amp;gt;
-          &amp;lt;if variable=&quot;issue volume&quot; match=&quot;any&quot;&amp;gt;
-            &amp;lt;text macro=&quot;title&quot; suffix=&quot; &quot;/&amp;gt;
-            &amp;lt;text variable=&quot;container-title&quot; suffix=&quot; &quot; form=&quot;short&quot; font-style=&quot;italic&quot; strip-periods=&quot;true&quot;/&amp;gt;
-            &amp;lt;text variable=&quot;volume&quot;/&amp;gt;
-            &amp;lt;text variable=&quot;page&quot; prefix=&quot;: &quot;/&amp;gt;
-            &amp;lt;text macro=&quot;date&quot; prefix=&quot;, &quot; suffix=&quot;.&quot;/&amp;gt;
-          &amp;lt;/if&amp;gt;
-          &amp;lt;else&amp;gt;
-            &amp;lt;choose&amp;gt;
-              &amp;lt;if variable=&quot;DOI&quot;&amp;gt;
-                &amp;lt;text macro=&quot;title&quot; suffix=&quot; &quot;/&amp;gt;
-                &amp;lt;text variable=&quot;container-title&quot; suffix=&quot; &quot; form=&quot;short&quot; font-style=&quot;italic&quot;/&amp;gt;
-                &amp;lt;group prefix=&quot;(&quot; suffix=&quot;).&quot;&amp;gt;
-                  &amp;lt;date variable=&quot;issued&quot;&amp;gt;
-                    &amp;lt;date-part name=&quot;month&quot; prefix=&quot; &quot; suffix=&quot; &quot;/&amp;gt;
-                    &amp;lt;date-part name=&quot;day&quot; suffix=&quot;, &quot;/&amp;gt;
-                    &amp;lt;date-part name=&quot;year&quot;/&amp;gt;
-                  &amp;lt;/date&amp;gt;
-                &amp;lt;/group&amp;gt;
-                &amp;lt;text variable=&quot;DOI&quot; prefix=&quot; doi: &quot;/&amp;gt;
-              &amp;lt;/if&amp;gt;
-              &amp;lt;else&amp;gt;
-                &amp;lt;text variable=&quot;container-title&quot; suffix=&quot;. &quot; form=&quot;short&quot; font-style=&quot;italic&quot;/&amp;gt;
-              &amp;lt;/else&amp;gt;
-            &amp;lt;/choose&amp;gt;
-          &amp;lt;/else&amp;gt;
-        &amp;lt;/choose&amp;gt;
-      &amp;lt;/else-if&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;Now use this modified csl in the header of the RMD file instead of mee.csl&lt;/h2&gt;
-
-&lt;h1&gt;&lt;span class=&quot;header-section-number&quot;&gt;1.2&lt;/span&gt; NEW References&lt;/h1&gt;
-
-
-&lt;p&gt;Aiken, A.M., Davey, C., Hargreaves, J.R. &amp;amp; Hayes, R.J. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication &lt;em&gt;International Journal of Epidemiology&lt;/em&gt; (epub ahead of print July 2015). doi: &lt;a href=&quot;http://dx.doi.org/10.1093/ije/dyv127&quot;&gt;10.1093/ije/dyv127&lt;/a&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp;amp; Smith, K.R. (2004).Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. &lt;em&gt;International journal of hygiene and environmental health&lt;/em&gt; 207: 57–67, 2004.&lt;/p&gt;
-
-
-&lt;p&gt;Davey, C., Aiken, A.M., Hayes, R.J. &amp;amp; Hargreaves, J.R. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial &lt;em&gt;International Journal of Epidemiology&lt;/em&gt; (epub ahead of print July 2015). doi: &lt;a href=&quot;http://dx.doi.org/10.1093/ije/dyv128&quot;&gt;10.1093/ije/dyv128&lt;/a&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp;amp; Stafford, S.G. (1997).Nongeospatial metadata for the ecological sciences &lt;em&gt;Ecological Applications&lt;/em&gt; 7: 330–342, 1997. &lt;a href=&quot;http://www.scopus.com/inward/record.url?scp=0030616825\&amp;amp;partnerID=8YFLogxK&quot;&gt;http://www.scopus.com/inward/record.url?scp=0030616825\&amp;amp;partnerID=8YFLogxK&lt;/a&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Open Science Collaboration. (2015).Estimating the reproducibility of psychological science &lt;em&gt;Science&lt;/em&gt; 349: aac4716–aac4716, 2015.&lt;/p&gt;
-
-
-&lt;p&gt;Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. &lt;em&gt;Simply statistics&lt;/em&gt;. &lt;a href=&quot;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&quot;&gt;http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/&lt;/a&gt; [26 Jul. 2015]&lt;/p&gt;
-
-</description>
-				<published>2015-10-09 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/</link>
 			</item>
 		
 	</channel>
