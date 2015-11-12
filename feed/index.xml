@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-11-12T13:50:44+11:00</updated>
+ <updated>2015-11-13T10:09:56+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,26 +13,69 @@
 
  
  <entry>
-   <title>Adopting a bullet point style</title>
-   <link href="http://ivanhanigan.github.com/2015/11/adopting-a-bullet-point-style/"/>
-   <updated>2015-11-12T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/11/adopting-a-bullet-point-style</id>
-   <content type="html">&lt;p&gt;With respect to bullet points:&lt;/p&gt;
+   <title>Judging the evidence using a literature review database</title>
+   <link href="http://ivanhanigan.github.com/2015/11/judging-the-evidence-using-a-literature-review-database/"/>
+   <updated>2015-11-13T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/11/judging-the-evidence-using-a-literature-review-database</id>
+   <content type="html">&lt;p&gt;I recently read through a lecture slide deck called 'Judging the Evidence' by  Adrian Sleigh for a course PUBH7001 Introduction to Epidemiology, April 30, 2001.&lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;there are a range of styles accepted&lt;/li&gt;
-&lt;li&gt;you just have to be consistent&lt;/li&gt;
-&lt;li&gt;I have decided I like the bullet point style from
-&lt;a href=&quot;http://www.monash.edu/about/editorialstyle/editing/punctuation&quot;&gt;http://www.monash.edu/about/editorialstyle/editing/punctuation&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;It had a lot of great material in it but I especially liked the section 'CRITIQUE OF AN EPIDEMIOLOGIC STUDY' and slide 11 'Quantity of data, duplication' which says:&lt;/p&gt;
 
-
-&lt;pre&gt;&lt;code&gt;End the introductory phrase preceding a list of bullet points in a
-colon. If the individual bullet points are sentence fragments, don't
-use a full stop, comma or semi-colon. Leave it bare until the last
-bullet point, and then use a full stop. Don't use capitals. Use full
-stops if each bullet point is a complete sentence.
+&lt;pre&gt;&lt;code&gt;Set clear criteria for admission of studies to your ‘judgement of evidence’
+Devise ways to tabulate the information
+‘Evidence tables’ show key features of design 
+  (source, sample and study pop, N)
+  exposures-outcomes measured
+  observation methods
+  confounding
+  key results
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;I thought this was a great idea, to build a database for keeping 'evidence tables' for each study I read.&lt;/p&gt;
+
+&lt;p&gt;I then read through all the slides.  There is a lot of great information here, but it was spread out across the narrative.  I realised I wanted to collate these into a 'evidence table'. I also compared this with my understanding of the Ecological Metadata Language (EML) schema and the 'ANU Data Analysis Plan Template' and have put together a bit of a 'cross-walk' that lets me combine all this info and create a evidence table (database).&lt;/p&gt;
+
+&lt;p&gt;I have started to use the database I built which uses EML concepts heavily and I include some these other ideas into my free &lt;code&gt;data_inventory&lt;/code&gt; application for a web2py database &lt;a href=&quot;https://github.com/ivanhanigan/data_inventory&quot;&gt;https://github.com/ivanhanigan/data_inventory&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It is a webform style data entry interface, and I think good for these 'evidence tables'.
+In the first instance I piggy back a lot of the elements into single EML tags, especially the abstract.
+This may make it hard to parse.  The simple solution is to try to keep each element on a seperate line of the absract.&lt;/p&gt;
+
+&lt;h2&gt;The key info for an evidence table entry per study&lt;/h2&gt;
+
+&lt;table border=1&gt;
+&lt;tr&gt; &lt;th&gt; EML &lt;/th&gt; &lt;th&gt; ANU &lt;/th&gt; &lt;th&gt; Adrian_Sleigh &lt;/th&gt;  &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; dataset/title &lt;/td&gt; &lt;td&gt;  Study name &lt;/td&gt; &lt;td&gt;   &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; dataset/creator &lt;/td&gt; &lt;td&gt;  Person conducting analysis &lt;/td&gt; &lt;td&gt;   &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; project/personnel/[data_owner or orginator] &lt;/td&gt; &lt;td&gt;  Chief investigator &lt;/td&gt; &lt;td&gt;   &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; dataset/abstract &lt;/td&gt; &lt;td&gt;  Background to the study &lt;/td&gt; &lt;td&gt;  Purpose of Study &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;          &lt;/td&gt; &lt;td&gt;   Study research question  &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;          &lt;/td&gt; &lt;td&gt;   Specific hypothesis under study &lt;/td&gt; &lt;td&gt;   &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;          &lt;/td&gt; &lt;td&gt;  outcomes of interest/ Exposure variables /Covariates &lt;/td&gt; &lt;td&gt;  exposures-outcomes measured &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;          &lt;/td&gt; &lt;td&gt;   &lt;/td&gt; &lt;td&gt;  key results &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; dataset/studyextent &lt;/td&gt; &lt;td&gt;  Study population &lt;/td&gt; &lt;td&gt;  Study Setting &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;                     &lt;/td&gt; &lt;td&gt;                   &lt;/td&gt; &lt;td&gt;  source / sample and study pop &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; dataset/temporalcoverage &lt;/td&gt; &lt;td&gt;  Duration of study &lt;/td&gt; &lt;td&gt;   &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; dataset/methods_protocol &lt;/td&gt; &lt;td&gt;  Study Type &lt;/td&gt; &lt;td&gt;  Type of study &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; dataset/sampling_desc &lt;/td&gt; &lt;td&gt;    &lt;/td&gt; &lt;td&gt;  Subject Selection &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; dataset/methods_steps &lt;/td&gt; &lt;td&gt;  analytical strategy &lt;/td&gt; &lt;td&gt;  Statistical procedures &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;                       &lt;/td&gt; &lt;td&gt;  exposures/ potential confounders or effect modifiers &lt;/td&gt; &lt;td&gt;  Confounding &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; entity/numberOfRecords &lt;/td&gt; &lt;td&gt;  Number study subjects &lt;/td&gt; &lt;td&gt;  N &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; dataset/distribution_methods &lt;/td&gt; &lt;td&gt;  dissemination strategy &lt;/td&gt; &lt;td&gt;    &lt;/td&gt; &lt;/tr&gt;
+   &lt;/table&gt;
+
+
+
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;Here is a screen shot of my data inventory data entry form&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/datinv_entry.png&quot; alt=&quot;/images/datinv_entry.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  
