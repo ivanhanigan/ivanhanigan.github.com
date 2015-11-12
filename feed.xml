@@ -6,6 +6,29 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Adopting a bullet point style</title>
+				<description>&lt;p&gt;With respect to bullet points:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;there are a range of styles accepted&lt;/li&gt;
+&lt;li&gt;you just have to be consistent&lt;/li&gt;
+&lt;li&gt;I have decided I like the bullet point style from
+&lt;a href=&quot;http://www.monash.edu/about/editorialstyle/editing/punctuation&quot;&gt;http://www.monash.edu/about/editorialstyle/editing/punctuation&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;End the introductory phrase preceding a list of bullet points in a
+colon. If the individual bullet points are sentence fragments, don't
+use a full stop, comma or semi-colon. Leave it bare until the last
+bullet point, and then use a full stop. Don't use capitals. Use full
+stops if each bullet point is a complete sentence.
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+				<published>2015-11-12 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/11/adopting-a-bullet-point-style/</link>
+			</item>
+		
+			<item>
 				<title>Decisions to make when modelling interactions</title>
 				<description>&lt;p&gt;This post focuses on decision making during statistical
 modelling.  The case of investigating effect modification is used as
@@ -850,62 +873,6 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
 </description>
 				<published>2015-10-14 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/a-set-of-guidelines-for-exploratory-data-analysis-and-cleaning/</link>
-			</item>
-		
-			<item>
-				<title>A Driver Script To Set Up A Data Analysis Pipeline</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;In my previous post I reviewed a paper by Noble 2009 that proposed recommendations for best practice ways to set up a data analysis pipeline &lt;a href=&quot;http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/&quot;&gt;http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I was following up on a series of posts I made about other best practice recommendations &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/&quot;&gt;http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;In the paper by Noble it is suggested that a one should use a 'driver script' to automate creation of a directory structure, this is the exact way that &lt;code&gt;ProjectTemplate&lt;/code&gt; and &lt;code&gt;makeProject&lt;/code&gt; work as I described them in the series of posts.&lt;/li&gt;
-&lt;li&gt;I think Noble's framework offers something new to the recomendations I had canvassed, that is the idea of chronological order of the contents of the results directory.  I think this is an eminently sensible idea and thought that the R function &lt;code&gt;Sys.Date()&lt;/code&gt; would be a great way to start off a project in this way.&lt;/li&gt;
-&lt;li&gt;so I have put together the following R function, as an alternative to the &lt;code&gt;makeProject&lt;/code&gt; core function, that I thought I'd name so that there may be a family of makeProject functions, so that analysts have a range of to choose from.  The other candidate would be &lt;code&gt;makeProjectLong&lt;/code&gt;, which I will also put up before long.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;pre&gt;&lt;code&gt;makeProjectNoble &amp;lt;- function(rootdir = getwd()){
-  if(!exists(rootdir)) dir.create(rootdir)
-  dir.create(file.path(rootdir,'doc'))
-  dir.create(file.path(rootdir,'doc','paper'))
-  sink(file.path(rootdir,'doc','workplan.Rmd'))
-    cat(sprintf(&quot;---\ntitle: Untitled\nauthor: your name\ndate: %s\noutput: html_document\n---\n\n&quot;,
-                Sys.Date()))
-  sink()
-  dir.create(file.path(rootdir,'data'))
-  dir.create(file.path(rootdir,'data', Sys.Date()))
-  dir.create(file.path(rootdir,'src'))
-  dir.create(file.path(rootdir,'results')) 
-  dir.create(file.path(rootdir,'results', Sys.Date())) 
-  file.create(file.path(rootdir,'README.md'))
-  }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;Running this function will deploy the folders and files (I excluded the &lt;code&gt;bin&lt;/code&gt; folder for compiled binaries, as I believe that many data analysts may not need that, and those who do are geeky enough to write their own driver scripts.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/testProjectNoble.png&quot; alt=&quot;/images/testProjectNoble.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The Rmarkdown script is waiting for the analysis plan to be pumped out, and work can begin&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/testProjectNobleMD.png&quot; alt=&quot;/images/testProjectNobleMD.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1&gt;References&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>2015-10-12 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/</link>
 			</item>
 		
 	</channel>

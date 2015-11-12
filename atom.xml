@@ -4,13 +4,37 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-11-10T22:06:42+11:00</updated>
+ <updated>2015-11-12T13:50:44+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Adopting a bullet point style</title>
+   <link href="http://schamberlain.github.com/2015/11/adopting-a-bullet-point-style/"/>
+   <updated>2015-11-12T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2015/11/adopting-a-bullet-point-style</id>
+   <content type="html">&lt;p&gt;With respect to bullet points:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;there are a range of styles accepted&lt;/li&gt;
+&lt;li&gt;you just have to be consistent&lt;/li&gt;
+&lt;li&gt;I have decided I like the bullet point style from
+&lt;a href=&quot;http://www.monash.edu/about/editorialstyle/editing/punctuation&quot;&gt;http://www.monash.edu/about/editorialstyle/editing/punctuation&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;End the introductory phrase preceding a list of bullet points in a
+colon. If the individual bullet points are sentence fragments, don't
+use a full stop, comma or semi-colon. Leave it bare until the last
+bullet point, and then use a full stop. Don't use capitals. Use full
+stops if each bullet point is a complete sentence.
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Decisions to make when modelling interactions</title>
@@ -6621,77 +6645,6 @@ setwd(oldwd)
 &lt;li&gt;Morpho failed with 200 plus variables&lt;/li&gt;
 &lt;li&gt;the R EML package succeeded to write the file&lt;/li&gt;
 &lt;li&gt;I needed to pay careful attention to the type of the variables in the data.frame before running the R EML functions&lt;/li&gt;
-&lt;/ul&gt;
-
-</content>
- </entry>
- 
- <entry>
-   <title>Tweaking R Eml Package Outputs With Morpho And Failing That With Emacs</title>
-   <link href="http://schamberlain.github.com/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs/"/>
-   <updated>2014-04-25T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2014/04/tweaking-r-eml-package-outputs-with-morpho-and-failing-that-with-emacs</id>
-   <content type="html">&lt;p&gt;I realised that the work I did yesterday had an error in it.  I'd
-created a list of unit.defs with one less than I needed.  So the
-variable V100 was given the definition of NA!  I can fix this by open
-that package in Morpho and go to the column and select it, then under
-the Data menu, choose Edit Column Documentation.  There we can change
-all the definitions.  Now I start thinking about changing the type
-from count to ArealDensity, numberPerMeterSquared.  To change all
-these new variables I don't want to go thru the GUI 95 times!  Change
-the first one and then look at the EML&lt;/p&gt;
-
-&lt;h4&gt;EML Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;attribute id=&quot;1398382425052&quot;&amp;gt;
-  &amp;lt;attributeName&amp;gt;V99&amp;lt;/attributeName&amp;gt;
-  &amp;lt;attributeDefinition&amp;gt;count stuff&amp;lt;/attributeDefinition&amp;gt;
-  &amp;lt;measurementScale&amp;gt;
-    &amp;lt;ratio&amp;gt;
-      &amp;lt;unit&amp;gt;&amp;lt;standardUnit&amp;gt;number&amp;lt;/standardUnit&amp;gt;&amp;lt;/unit&amp;gt;
-      &amp;lt;numericDomain&amp;gt;&amp;lt;numberType&amp;gt;real&amp;lt;/numberType&amp;gt;&amp;lt;/numericDomain&amp;gt;
-    &amp;lt;/ratio&amp;gt;
-  &amp;lt;/measurementScale&amp;gt;
-&amp;lt;/attribute&amp;gt;
-&amp;lt;attribute id=&quot;1398382385863&quot;&amp;gt;
-  &amp;lt;attributeName&amp;gt;V100&amp;lt;/attributeName&amp;gt;
-  &amp;lt;attributeDefinition&amp;gt;A random variable&amp;lt;/attributeDefinition&amp;gt;
-  &amp;lt;measurementScale&amp;gt;
-    &amp;lt;ratio&amp;gt;
-      &amp;lt;unit&amp;gt;&amp;lt;standardUnit&amp;gt;numberPerMeterSquared&amp;lt;/standardUnit&amp;gt;&amp;lt;/unit&amp;gt;
-      &amp;lt;numericDomain&amp;gt;&amp;lt;numberType&amp;gt;real&amp;lt;/numberType&amp;gt;&amp;lt;/numericDomain&amp;gt;
-    &amp;lt;/ratio&amp;gt;
-  &amp;lt;/measurementScale&amp;gt;
-&amp;lt;/attribute&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;So this looks like I can do a find and replace in Emacs so go to the
-&quot;~/.morpho&quot; database and make a copy of the appropriate EML (number was in the morpho saved) and rename it with the increment up one of the minor version. Open this and run the find and replace.&lt;/p&gt;
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;standardUnit&amp;gt;number&amp;lt;
-to
-&amp;lt;standardUnit&amp;gt;numberPerMeterSquared&amp;lt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Which was a much quicker way to redefine all these.  Save to our Metacat Network and it shows up as I wanted it to.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-wide3.png&quot; alt=&quot;morpho-wide3.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Conclusions&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Morpho and a code editor can be used in conjunction to edit EML quite well&lt;/li&gt;
-&lt;li&gt;I suspect edits to the EML directly with a code editor are pretty dangerous&lt;/li&gt;
-&lt;li&gt;For eg if you do the wrong change then that EML will likely not be valid and Morpho will complain.&lt;/li&gt;
-&lt;li&gt;But the advantage of quickly modifying things like 100 variables unit definitions rather than opening every one in the GUI seems to be a worthwhile risk to me.&lt;/li&gt;
 &lt;/ul&gt;
 
 </content>
