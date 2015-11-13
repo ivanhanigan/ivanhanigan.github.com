@@ -56,6 +56,56 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/09/using-orgmode-and-jekyll-for-open-notebook/" title="using-orgmode-and-jekyll-for-open-notebook" rel="bookmark">using-orgmode-and-jekyll-for-open-notebook</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Using Orgmode and Jekyll for Open Notebook</h1>
+
+<p>Orgmode is a great notebook tool because it allows the coding, evaluation and documentation all in one.  I also want to use it to send the documentation to my blog as an Open Notebook.</p>
+
+<p>If starting again I'd look into this:</p>
+
+<ul>
+<li><a href="http://orgmode.org/worg/org-tutorials/org-jekyll.html">http://orgmode.org/worg/org-tutorials/org-jekyll.html</a></li>
+</ul>
+
+
+<p>But as it is I already put a lot of work into configuring a jekyll blog I cloned from Scott Chamberlain over at ROpenSci and I will just use orgmode to publish the posts related to each project, tagged as 'categories'.</p>
+
+<p>But here is a problem I just found out how to solve.  For a long time I thought that because github disabled ruby plugins that the automatic generate categories index pages was broken.  Luckily Charlie Park has written up the following solution and this seems to have worked for me today:</p>
+
+<ul>
+<li><a href="http://charliepark.org/tags-in-jekyll/">http://charliepark.org/tags-in-jekyll/</a></li>
+<li><a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a></li>
+</ul>
+
+
+<p>Cheers!</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/09/using-orgmode-and-jekyll-for-open-notebook/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-09-22 00:00:00 +1000">22 Sep 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/09/toward-a-unified-ecology-dataset/" title="toward-a-unified-ecology-dataset" rel="bookmark">toward-a-unified-ecology-dataset</a>
     </h1>
     <div class="entry-content full-content">
@@ -393,54 +443,6 @@ for(i in 1:nrow(filesList))
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/06/spatio-temporal-animations/" title="spatio-temporal-animations" rel="bookmark">spatio-temporal-animations</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>Space time animations are cool</h2>
-
-<p>This is a graphic I made a few years ago of temperature in Sydney.  It is a GAM with smoothing splines on longitude, latitude and time (t):</p>
-
-<pre><code>require(mgcv)
-fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)  
-</code></pre>
-
-<p><img src="/button/spacetimegamSydney3hrTemp.gif" alt="spacetimegamSydney3hrTemp.gif" /></p>
-
-<p><a href="/button/index.html">Clink here for an example of where I think this kind of animation should go now</a>.</p>
-
-<p>The addition of stop/play/fwd/reverse buttons adds potential for exploratory insights.</p>
-
-<p>The secret to getting the play/pause/next buttons is to insert graphing code between:</p>
-
-<pre><code>saveHTML(..., outdir = getwd())
-</code></pre>
-
-<p>Unfortunately the rest of the code that accompanies the graphic above is too specific to my workflow that it is not reproducible.  That was back before (during the time that) I became obsessed with the prospect of <a href="http://swish-climate-impact-assessment.github.io/">creating reproducible data analysis workflows</a>.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/06/spatio-temporal-animations/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-06-06 00:00:00 +1000">06 Jun 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -521,6 +523,10 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
               <ul>
                 
                 <li>
+                  <a href="/2015/11/developing-a-lit-review-database/" title="Developing a lit review database" rel="bookmark">Developing a lit review database</a>
+                </li>
+                
+                <li>
                   <a href="/2015/11/judging-the-evidence-using-a-literature-review-database/" title="Judging the evidence using a literature review database" rel="bookmark">Judging the evidence using a literature review database</a>
                 </li>
                 
@@ -534,10 +540,6 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
                 
                 <li>
                   <a href="/2015/10/show-missingness-in-large-dataframes-v2/" title="Show missingness in large dataframes, version 2" rel="bookmark">Show missingness in large dataframes, version 2</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/10/show-missingness-in-large-dataframes/" title="show-missingness-in-large-dataframes" rel="bookmark">show-missingness-in-large-dataframes</a>
                 </li>
                 
               </ul>
@@ -565,7 +567,7 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (33)</a></li>
+                <li><a href="/categories/disentangle">disentangle (34)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -623,7 +625,7 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
                 
                 <li><a href="/tag/Exploratory Data Analysis">Exploratory Data Analysis (1)</a></li>
                 
-                <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li>
+                <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (2)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -664,7 +666,7 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
           <!--        -->
           <!--       <li><a href="/tag/Exploratory Data Analysis">Exploratory Data Analysis (1)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li> -->
+          <!--       <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (2)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

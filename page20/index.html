@@ -56,6 +56,75 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/pumilio-bushfm-test-dev-prod/" title="pumilio-bushfm-test-dev-prod" rel="bookmark">pumilio-bushfm-test-dev-prod</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Testing the pumilio-bushfm-test-dev-prod build process, in an Open Notebook</h1>
+
+<h4>Aims:</h4>
+
+<p>It was suggested I could document the pumilio test build as an OpenNotebook.
+I imagined that I could link this blog to github repo and doco hosted on gh-pages.</p>
+
+<h4>Methods:</h4>
+
+<ul>
+<li>For ie the emacs html output now goes to <a href="http://ivanhanigan.github.io/pumilio-bushfm/">http://ivanhanigan.github.io/pumilio-bushfm/</a></li>
+<li>then collaborators can clone/fork <a href="https://github.com/ivanhanigan/pumilio-bushfm">https://github.com/ivanhanigan/pumilio-bushfm</a></li>
+<li>and comment/complain at <a href="https://github.com/ivanhanigan/pumilio-bushfm/wiki">https://github.com/ivanhanigan/pumilio-bushfm/wiki</a></li>
+</ul>
+
+
+<h4>Results:</h4>
+
+<ul>
+<li>I did a test build a month ago on an old laptop sitting around, then rebuilt on the Nectar cloud</li>
+<li>Unfortunately I didn't realise that the Nectar VM had mounted /var on to the smaller root partition (the 40GB 2nd disk is on /mnt).</li>
+<li>then when I tried to upload a big sound file it broke :-(</li>
+<li>I did a bit of reading and whilst I began thinking I'd just need to move the mysql datadir via</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code>sudo nano /etc/mysql/my.cnf
+</code></pre>
+
+<p></p>
+
+
+<h4>BUT</h4>
+
+<ul>
+<li>it actually looks like there is a WAV and MP3 file under /var/www/pumilio-2...</li>
+<li>so I think I can <a href="http://askubuntu.com/questions/39536/how-can-i-store-var-on-a-separate-partition">just remount /var</a> onto the larger /mnt secondary disk.</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/cloud building" title="cloud building" rel="category tag">cloud building</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/pumilio-bushfm-test-dev-prod/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-11-15 00:00:00 +1100">15 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/india-p1-sneha-suicide-prevention-chennai-india/" title="India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India" rel="bookmark">India Part 1. Society for Natal Effects on Health (SNEHA) Suicide Prevention, Chennai India</a>
     </h1>
     <div class="entry-content full-content">
@@ -515,181 +584,6 @@ description(dds$sexe)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h3>Background</h3>
-
-<p>This is an example of using github for a Reproducible Research Report (RRR) using a casestudy of the  Hutchinson Drought Index.  The project is available under GNU licence at <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a>.</p>
-
-<h3>Aims</h3>
-
-<p>This example will clone the repository from github and run the replication codes using the replication datasets.</p>
-
-<h3>Materials and Methods</h3>
-
-<ul>
-<li>assumes you are connected to the internet</li>
-<li>assumes you have git, a github account and ssh key set up</li>
-<li>assumes you have R and GDAL configured</li>
-<li>assumes BoM and ABS have kept their data in the locations I specified to download from</li>
-</ul>
-
-
-<h3>Hutchinsons Drought Index</h3>
-
-<p>The Hutchinson Drought Index (or Drought Severity Index) is a climatic drought index
-that was designed to reflect agricultural droughts using only rainfall data.</p>
-
-<p>The index was invented by Professor Mike Hutchinson at the ANU in 1992 (1) and
-this project includes R codes written to describe the calculations
-and also to download data (2,3) to play with.</p>
-
-<h3>Results</h3>
-
-<h4>Replication Codes to run in the terminal</h4>
-
-<pre><code>git clone git@github.com:ivanhanigan/HutchinsonDroughtIndex.git ~/data/HutchinsonDroughtIndex
-R
-setwd("~/data/HutchinsonDroughtIndex")
-source("HutchinsonDroughtIndex_go.r")
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>WARNING this downloads 5.4MB from BoM and 19.9MB from ABS</li>
-<li>This runs the codes and produces graphs</li>
-<li>an alternative workflow would be to run the sweave file in the reports directory but I dont like that method as much and have set all the evaluation commands to false.</li>
-<li>it will run now that we have the graphs though, to create a report:</li>
-</ul>
-
-
-<h4>Code:</h4>
-
-<pre><code>setwd("reports")
-Sweave("HutchinsonDroughtIndex_transformations_doc.Rnw")
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>which creates a tex file that can create <a href="/pdfs/HutchinsonDroughtIndex_transformations_doc.pdf">this pdf</a></li>
-<li>but the simplest example I gave above will compute the index and create the graphs (one is shown below)</li>
-</ul>
-
-
-<p><img src="/images/CentralWestDrought8283.png" alt="CentralWestDrought8283.png" /></p>
-
-<h3>So what actually happened?</h3>
-
-<ul>
-<li>This project adheres to the <a href="http://stackoverflow.com/a/1434424">Reichian LCFD model of writing R code</a></li>
-<li>In this the code is bundled into modules Func (tools), Load, Do, Clean (check).  These live in the src directory (following teh White ProjectTemplate model - well almost, He would put tools/func into lib)</li>
-<li>then a main.r (or go.r) script calls these modules</li>
-</ul>
-
-
-<h4>go.r</h4>
-
-<pre><code> source('src/HutchinsonDroughtIndex_tools.r')
- source('src/HutchinsonDroughtIndex_load.r')
- source('src/HutchinsonDroughtIndex_do.r')
- source('src/HutchinsonDroughtIndex_check.r')
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li><p>The really interesting bit is <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">a tool written for this project</a> that is called from within tools.r</p>
-
-<p>   source('src/HutchinsonDroughtIndex_tools_droughtIndex.r')</p></li>
-</ul>
-
-
-<p></p>
-
-
-<ul>
-<li>A keen reader would look in that script to find out exactly what the function does</li>
-<li>A keen author would push that function to an R package (a super keen bean would publish this on CRAN)</li>
-</ul>
-
-
-<h3>Discussion</h3>
-
-<h4>Strengths:</h4>
-
-<ul>
-<li>full codes are provided to reproduce the data access, manipulation and analysis</li>
-<li>the gory details are hidden from the casual user</li>
-</ul>
-
-
-<h4>Weaknesses:</h4>
-
-<ul>
-<li>the important details are hidden from the technical user</li>
-<li>the script depends on a bunch of things that might not be true</li>
-</ul>
-
-
-<h4>Conclusions</h4>
-
-<ul>
-<li>This is an example of a self-contained RRR</li>
-</ul>
-
-
-<h3>References</h3>
-
-<ol>
-<li><p>Smith, D. I, Hutchinson, M. F, &amp; McArthur, R. J. (1992) Climatic and
-Agricultural Drought: Payments and Policy. (Centre for Resource and Environmental
-Studies, Australian National University, Canberra, Australia).<br/>
-http://fennerschool-research.anu.edu.au/spatio-temporal/publications/cres_paper1992.pdf</p></li>
-<li><p>Bureau of Meteorology High Quality Monthly precipitation data
-downloaded on 2012-01-09
-from ftp://ftp.bom.gov.au/anon/home/ncc/www/change/HQmonthlyR/HQ_monthly_prcp_txt.tar</p></li>
-<li><p>Australian Bureau of Statistics Statistical Divisions 2006
-downloaded on 2012-01-09
-from http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.0022006?OpenDocument</p></li>
-</ol>
-
-
-<h3>Acknowledgements</h3>
-
-<p>Financial support was provided by Professor Tony McMichael's
-"Australia Fellowship" from the the National Health and Medical Research Council, via the
-National Centre for Epidemiology and Population Health, Australian National University.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-11-06 00:00:00 +1100">06 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -770,6 +664,10 @@ National Centre for Epidemiology and Population Health, Australian National Univ
               <ul>
                 
                 <li>
+                  <a href="/2015/11/developing-a-lit-review-database/" title="Developing a lit review database" rel="bookmark">Developing a lit review database</a>
+                </li>
+                
+                <li>
                   <a href="/2015/11/judging-the-evidence-using-a-literature-review-database/" title="Judging the evidence using a literature review database" rel="bookmark">Judging the evidence using a literature review database</a>
                 </li>
                 
@@ -783,10 +681,6 @@ National Centre for Epidemiology and Population Health, Australian National Univ
                 
                 <li>
                   <a href="/2015/10/show-missingness-in-large-dataframes-v2/" title="Show missingness in large dataframes, version 2" rel="bookmark">Show missingness in large dataframes, version 2</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/10/show-missingness-in-large-dataframes/" title="show-missingness-in-large-dataframes" rel="bookmark">show-missingness-in-large-dataframes</a>
                 </li>
                 
               </ul>
@@ -814,7 +708,7 @@ National Centre for Epidemiology and Population Health, Australian National Univ
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (33)</a></li>
+                <li><a href="/categories/disentangle">disentangle (34)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -872,7 +766,7 @@ National Centre for Epidemiology and Population Health, Australian National Univ
                 
                 <li><a href="/tag/Exploratory Data Analysis">Exploratory Data Analysis (1)</a></li>
                 
-                <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li>
+                <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (2)</a></li>
                 
               <div class="clear"></div>
               </ul>
@@ -913,7 +807,7 @@ National Centre for Epidemiology and Population Health, Australian National Univ
           <!--        -->
           <!--       <li><a href="/tag/Exploratory Data Analysis">Exploratory Data Analysis (1)</a></li> -->
           <!--        -->
-          <!--       <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li> -->
+          <!--       <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (2)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

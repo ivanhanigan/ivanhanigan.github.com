@@ -6,6 +6,66 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Developing a lit review database</title>
+				<description>&lt;p&gt;My work yesterday on implementing &lt;a href=&quot;/2015/11/judging-the-evidence-using-a-literature-review-database&quot;&gt;a lit review section of my data inventory database&lt;/a&gt;
+went pretty well, and I tested this while collating information on the papers I compile into my thesis.&lt;/p&gt;
+
+&lt;p&gt;However, as I worked through the information for each paper I realised that attaching this stuff at the EML/dataset level is not always going to work.
+In particular I have projects in which several papers are part of the one dataset.  To deal with this I have invented a non-EML relationship module for publications.
+So in my new schema the following is possible&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;eml/project/
+           /dataset1/
+                    /publication1
+                    /publication2
+           /dataset2/
+                    /etc  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;In this scenario a single dataset (ie bushfire smoke, temperature and mortality) can be used to write one paper focused on smoke, controlling for temperature.  Another paper on heatwaves, controlling for smoke. Indeed we might use time-series Poisson models for one and case-crossover design for the other (this is similar to what I did with Johnston and Morgan).&lt;/p&gt;
+
+&lt;p&gt;So the simple thing to do is input these 'evidence tables' fields at the publication level, rather than the dataset as I did yesterday.&lt;/p&gt;
+
+&lt;p&gt;This also partially solves my problem about aggregating these non-EML tags inside the text of the abstract, and worrying about parsing that to extract the elements of information.&lt;/p&gt;
+
+&lt;h2&gt;The fields&lt;/h2&gt;
+
+&lt;!-- html table generated in R 3.2.2 by xtable 1.7-4 package --&gt;
+
+
+&lt;!-- Sat Nov 14 10:12:49 2015 --&gt;
+
+
+&lt;table border=1&gt;
+&lt;tr&gt; &lt;th&gt; data_inventory_field &lt;/th&gt; &lt;th&gt; description &lt;/th&gt;  &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Citation &lt;/td&gt; &lt;td&gt; At a minimum author-date-journal, perhaps DOI? &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Key results &lt;/td&gt; &lt;td&gt; Include both effect estimates and uncertainty &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Background to the study &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Research question &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Study extent &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Outcomes &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Exposures &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Covariates &lt;/td&gt; &lt;td&gt; Include covariates, effect modifiers, confounders and subgroups &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Method protocol &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; General Comments &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+   &lt;/table&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;An example&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/datinv_pub.png&quot; alt=&quot;/images/datinv_pub.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>2015-11-14 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/11/developing-a-lit-review-database/</link>
+			</item>
+		
+			<item>
 				<title>Judging the evidence using a literature review database</title>
 				<description>&lt;p&gt;I recently read through a lecture slide deck called 'Judging the Evidence' by  Adrian Sleigh for a course PUBH7001 Introduction to Epidemiology, April 30, 2001.&lt;/p&gt;
 
@@ -804,89 +864,6 @@ document generation.
 </description>
 				<published>2015-10-17 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/</link>
-			</item>
-		
-			<item>
-				<title>GIS Issues when R is Used for Transforming Coordinate Systems</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;I have been using RGDAL to transform and write out spatial data in GDA94&lt;/li&gt;
-&lt;li&gt;It is a problem to know what I need to do to create the right prj file for ArcGIS to read without complaining&lt;/li&gt;
-&lt;li&gt;I have an example of code below, that I used on a dataset I knew was in GDA94 when I read it in.  I want to do this mostly for when I have to convert from one to another, but I have done the manual hack a couple of times now and thought I better just check with an expert.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;infile &amp;lt;- &quot;ap_map&quot;
-outfile &amp;lt;- gsub(&quot;map&quot;, &quot;map_GDA94.shp&quot;, infile)
-outfile
-setwd(indir)
-shp &amp;lt;- readOGR(&quot;.&quot;, infile)
-setwd(projdir)
-plot(shp, add = T)
-#str(shp)
-shp@proj4string@projargs
-#[1] &quot;+proj=longlat +ellps=GRS80 +no_defs&quot;
-# confirm this is GDA94
-epsg &amp;lt;- make_EPSG()
-str(epsg)
-epsg[grep(4283, epsg$code),]
-#     code    note                                                       prj4
-# 212 4283 # GDA94   +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
-# Arcmap sees this as GRS 1980(IUGG, 1980) which I think is the same thing
-# to be on the safe side I will force it to refer to GDA94
-shp2 &amp;lt;- spTransform(shp, CRS(&quot;+init=epsg:4283&quot;))
-shp2@proj4string@projargs
-#now write
-setwd(outdir)
-dir()
-writeOGR(shp2,  outfile, gsub(&quot;.shp&quot;, &quot;&quot;, outfile), driver = &quot;ESRI Shapefile&quot;)
-setwd(projdir)
-# Checking this shows it did not write the correct prj file, but I believe that this is because the GDA94 definition is not different to the WGS80 params.
-# one other option is to manually replace that prj file with the correct text found at http://spatialreference.org/ref/epsg/4283/
-# SO I did this to avoid any future confusions
-# OLD GEOGCS[&quot;GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;D_unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.017453292519943295]]
-# NEW GEOGCS[&quot;GDA94&quot;,DATUM[&quot;D_GDA_1994&quot;,SPHEROID[&quot;GRS_1980&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.017453292519943295]]
-# checked with ArcMap and they align ok
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;I asked on of my colleagues and here is his reply&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I usually use the sp and maptools library, rather than the readOGR and writeOGR functions.  Generally my workflow, as an example of projecting a GDA94 zone 55 file to WGS84, would be something like:&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;shp &amp;lt;- readShapePoly(&quot;myfile.shp&quot;)
-proj4string(shp) &amp;lt;- &quot;+proj=utm +zone=55 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&quot;
-shp2 &amp;lt;- spTransform(shp, CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;))
-writePolyShape(shp2,&quot;myfile_p.shp&quot;,proj4string=CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;I've never &lt;em&gt;noticed&lt;/em&gt; any problems doing this, the projection file is generated and I've never noticed any alignment problems in ArcMap.  It's true that I recall ArcMap sometimes displays an incorrect plaintext projection description, but things seem to be in the right place.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Also, I don't really ever rely on EPSG numbers in R - I just grab the proj4 strings and try to use them directly.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;TODO, see if PostGIS handles this OK&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I wonder if my FOSS GIS stack should still pass things through PostGIS as I suspect it does these things better.&lt;/li&gt;
-&lt;li&gt;I might check the output if I run it through the DB use st_transform and then extract to shapefile.&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>2015-10-16 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/10/gis-issues-when-r-used-transforming-coordinate-systems/</link>
 			</item>
 		
 	</channel>

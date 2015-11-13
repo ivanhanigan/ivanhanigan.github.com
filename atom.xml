@@ -4,13 +4,74 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-11-13T10:09:56+11:00</updated>
+ <updated>2015-11-14T10:42:30+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Developing a lit review database</title>
+   <link href="http://schamberlain.github.com/2015/11/developing-a-lit-review-database/"/>
+   <updated>2015-11-14T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2015/11/developing-a-lit-review-database</id>
+   <content type="html">&lt;p&gt;My work yesterday on implementing &lt;a href=&quot;/2015/11/judging-the-evidence-using-a-literature-review-database&quot;&gt;a lit review section of my data inventory database&lt;/a&gt;
+went pretty well, and I tested this while collating information on the papers I compile into my thesis.&lt;/p&gt;
+
+&lt;p&gt;However, as I worked through the information for each paper I realised that attaching this stuff at the EML/dataset level is not always going to work.
+In particular I have projects in which several papers are part of the one dataset.  To deal with this I have invented a non-EML relationship module for publications.
+So in my new schema the following is possible&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;eml/project/
+           /dataset1/
+                    /publication1
+                    /publication2
+           /dataset2/
+                    /etc  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;In this scenario a single dataset (ie bushfire smoke, temperature and mortality) can be used to write one paper focused on smoke, controlling for temperature.  Another paper on heatwaves, controlling for smoke. Indeed we might use time-series Poisson models for one and case-crossover design for the other (this is similar to what I did with Johnston and Morgan).&lt;/p&gt;
+
+&lt;p&gt;So the simple thing to do is input these 'evidence tables' fields at the publication level, rather than the dataset as I did yesterday.&lt;/p&gt;
+
+&lt;p&gt;This also partially solves my problem about aggregating these non-EML tags inside the text of the abstract, and worrying about parsing that to extract the elements of information.&lt;/p&gt;
+
+&lt;h2&gt;The fields&lt;/h2&gt;
+
+&lt;!-- html table generated in R 3.2.2 by xtable 1.7-4 package --&gt;
+
+
+&lt;!-- Sat Nov 14 10:12:49 2015 --&gt;
+
+
+&lt;table border=1&gt;
+&lt;tr&gt; &lt;th&gt; data_inventory_field &lt;/th&gt; &lt;th&gt; description &lt;/th&gt;  &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Citation &lt;/td&gt; &lt;td&gt; At a minimum author-date-journal, perhaps DOI? &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Key results &lt;/td&gt; &lt;td&gt; Include both effect estimates and uncertainty &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Background to the study &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Research question &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Study extent &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Outcomes &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Exposures &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Covariates &lt;/td&gt; &lt;td&gt; Include covariates, effect modifiers, confounders and subgroups &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; Method protocol &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt; General Comments &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
+   &lt;/table&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;h2&gt;An example&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/datinv_pub.png&quot; alt=&quot;/images/datinv_pub.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Judging the evidence using a literature review database</title>
@@ -6589,41 +6650,6 @@ write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names =
 &lt;li&gt;I thought it worth reporting here&lt;/li&gt;
 &lt;/ul&gt;
 
-</content>
- </entry>
- 
- <entry>
-   <title>workaround-for-installing-morpho-on-a-windows-network</title>
-   <link href="http://schamberlain.github.com/2014/04/workaround-for-installing-morpho-on-a-windows-network/"/>
-   <updated>2014-04-29T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2014/04/workaround-for-installing-morpho-on-a-windows-network</id>
-   <content type="html">&lt;h3&gt;Introduction&lt;/h3&gt;
-
-&lt;p&gt;Morpho is an open source piece of software designed to host all kinds of ecological data.  It is used to describe data collections. We publish to Metacat using Morpho.  For technical reasons, we have our own server running an older version of the Metacat software so have to run an old version of Morpho (v1.8).&lt;/p&gt;
-
-&lt;h3&gt;Installation and configuration&lt;/h3&gt;
-
-&lt;p&gt;TERN specific instructions are replicated across:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&quot;&gt;http://www.tern-supersites.net.au/index.php/data/repository-tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.ltern.org.au/index.php/data/guides-and-tutorial&quot;&gt;http://www.ltern.org.au/index.php/data/guides-and-tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Morpho issue on Windows in our network environment&lt;/h3&gt;
-
-&lt;p&gt;The ANU Fenner School came across this issue. Our local IT department have discovered with Morpho (v1.8) Installation on Windows in our network environment, Morpho installs a hidden directory called &quot;.morpho&quot; and this is written to a PATH next to the User Desktop. This is actually on a network share with a very small quota.&lt;/p&gt;
-
-&lt;p&gt;Therefore as Morpho writes data there it can easily exceed the quota causing the software to stop working.  All users of Morpho on such a network should check for the location of the &quot;.morpho&quot; directory and if it is located with such a restricted quota then alternative arrangements need to be made.&lt;/p&gt;
-
-&lt;p&gt;At the ANU Fenner School we opted to set up local user accounts (the &quot;.morpho&quot; file is then on the C drive) and this user is accessible from the main User's account.  The Morpho files are therefore stored on the C drive which is of course a danger for hard disk failure and data loss.&lt;/p&gt;
-
-&lt;p&gt;We feel that as long as the draft packages are saved to the networked Metacat (with the maximum access restrictions in force for draft work) then if the local hard disk dies then the draft data package is not lost but can be accessed again from a new Morpho install and the Metacat server.&lt;/p&gt;
-
-&lt;p&gt;Issues remain about the long term solution to this problem but this will work in the short-term.&lt;/p&gt;
-
-&lt;p&gt;We think you can also create a junction (symlink) so that .morpho/ can point to a different location (perhaps another network storage with bigger capacity and automated backup).&lt;/p&gt;
 </content>
  </entry>
  
