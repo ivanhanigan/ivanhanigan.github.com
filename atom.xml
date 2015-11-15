@@ -4,13 +4,48 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2015-11-14T10:42:30+11:00</updated>
+ <updated>2015-11-15T15:57:14+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Putting bibtex key into my lit review database needs sanitsed latex characters</title>
+   <link href="http://schamberlain.github.com/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitsed-latex-characters/"/>
+   <updated>2015-11-15T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitsed-latex-characters</id>
+   <content type="html">&lt;p&gt;As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(xtable)
+library(rpostgrestools) # my own work
+if(!exists(&quot;ch&quot;)) ch &amp;lt;- connect2postgres2(&quot;data_inventory_hanigan_dev4&quot;)
+
+dat &amp;lt;- dbGetQuery(ch,
+&quot;SELECT id, dataset_id, bibtex_key, title,  key_results,background_to_study, 
+       research_question, study_extent, outcomes, exposures,  covariates, method_protocol,
+        general_comments
+  FROM publication
+  where key_results is not null and key_results != '';
+&quot;)
+names(dat) &amp;lt;- gsub(&quot;_&quot;, &quot; &quot;, names(dat))
+tabcode &amp;lt;- xtable(dat[,1:8])
+align(tabcode) &amp;lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7in}','p{1.8in}','p{1.7in}', 'p{1.7in}')
+print(tabcode,  include.rownames = F, table.placement = '!ht',
+      floating.environment='sidewaystable',
+      sanitize.text.function = function(x) x)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Produces the below table:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/bibtable.png&quot; alt=&quot;/images/bibtable.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Developing a lit review database</title>
@@ -6569,87 +6604,6 @@ Scroll down the list and find the PostgreSQL ODBC Driver.&lt;/li&gt;
 - ask users to format digit rounding in Excel?? oh no
 - old excel users may still be restricted to 65,536 rows by 256 columns.
 - non tabular sheet is ok&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>morpho-has-an-issue-with-zero-length-strings-as-missing-data</title>
-   <link href="http://schamberlain.github.com/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/"/>
-   <updated>2014-05-02T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data</id>
-   <content type="html">&lt;p&gt;We encountered a strange issue Morpho 1.8 has when ingesting a CSV with zero length strings as missing data.  An example of what this looks like is given below in the mulgara example dataset I;ve shown before.  I have added some rows with missing data as zero length strings (these are the &quot;,,&quot; after the fictional value Treat = 0.5).&lt;/p&gt;
-
-&lt;h4&gt;R Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;datatext &amp;lt;- 'Treat, Before, After1, After2
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-a,,-9999,9999
-0,  2.833213344,    1.609437912,    2.48490665
-0,  1.791759469,    2.197224577,    2.079441542
-0,  3.044522438,    2.708050201,    3.135494216
-0,  2.772588722,    1.791759469,    2.197224577
-0,  1.098612289,    1.609437912,    2.63905733
-1,  2.944438979,    0.693147181,    1.791759469
-1,  2.564949357,    0.693147181,    1.791759469
-1,  2.564949357,    1.609437912,    1.609437912
-1,  0.693147181,    1.098612289,    1.098612289
-1,  1.609437912,    0,      1.098612289'
-analyte &amp;lt;- read.csv(textConnection(datatext))
-write.csv(analyte, &quot;inst/extdata/morpho-bug-empty-na.csv&quot;, row.names = F, na= &quot;&quot;, quote=F)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;Unfortunately for this blog entry, the example above doesn;t exhibit the problem!&lt;/li&gt;
-&lt;li&gt;you can see what happens by selecting the &quot;treat consecutive delimiters as as one&quot; option&lt;/li&gt;
-&lt;li&gt;showing that the data from the 3rd and 4th cols shifts to the right&lt;/li&gt;
-&lt;li&gt;this is what happened to us but we were not able to modify this behaviour by changing that option!&lt;/li&gt;
-&lt;li&gt;The problem only occurred when we had a file big file (200+ columns)&lt;/li&gt;
-&lt;li&gt;the problem occured at col 23, shown in the image below&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na3.png&quot; alt=&quot;morpho-bug-empty-na3.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;this column is ftyp[12] which has 62 rows of missing and then some text codes.&lt;/li&gt;
-&lt;li&gt;the next 24th column is  aerial[10] and it is this one that is then read incorrectly by morpho.  The importer makes the error of reading blanks for the first few rows and then *, even though in reality it is * and then date 1/06/2006 (shown in the image below)&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na2.1.png&quot; alt=&quot;morpho-bug-empty-na2.1.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;and finally col 25 fire[13] now appears as * and the date 1/06/2006 but it should be a different number of *s and the date 2/04/2007 further down&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/morpho-bug-empty-na2.png&quot; alt=&quot;morpho-bug-empty-na2.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Workaround&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;to deal with this in this case we replaced all zero length strings as &quot;NA&quot;&lt;/li&gt;
-&lt;li&gt;this is probably a good idea in most cases, except when NA is not an appropriate value and so in those cases we replaced with the word &quot;blank&quot;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Conclusions&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This issue is probably rare and might be fixed in the newer version of Morpho&lt;/li&gt;
-&lt;li&gt;We don;t use new morpho because we are still using the old metacat&lt;/li&gt;
-&lt;li&gt;I thought it worth reporting here&lt;/li&gt;
-&lt;/ul&gt;
-
 </content>
  </entry>
  

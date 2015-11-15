@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-11-14T10:42:30+11:00</updated>
+ <updated>2015-11-15T15:57:14+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,63 +13,37 @@
 
  
  <entry>
-   <title>Developing a lit review database</title>
-   <link href="http://ivanhanigan.github.com/2015/11/developing-a-lit-review-database/"/>
-   <updated>2015-11-14T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/11/developing-a-lit-review-database</id>
-   <content type="html">&lt;p&gt;My work yesterday on implementing &lt;a href=&quot;/2015/11/judging-the-evidence-using-a-literature-review-database&quot;&gt;a lit review section of my data inventory database&lt;/a&gt;
-went pretty well, and I tested this while collating information on the papers I compile into my thesis.&lt;/p&gt;
+   <title>Putting bibtex key into my lit review database needs sanitsed latex characters</title>
+   <link href="http://ivanhanigan.github.com/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitsed-latex-characters/"/>
+   <updated>2015-11-15T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitsed-latex-characters</id>
+   <content type="html">&lt;p&gt;As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:&lt;/p&gt;
 
-&lt;p&gt;However, as I worked through the information for each paper I realised that attaching this stuff at the EML/dataset level is not always going to work.
-In particular I have projects in which several papers are part of the one dataset.  To deal with this I have invented a non-EML relationship module for publications.
-So in my new schema the following is possible&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;library(xtable)
+library(rpostgrestools) # my own work
+if(!exists(&quot;ch&quot;)) ch &amp;lt;- connect2postgres2(&quot;data_inventory_hanigan_dev4&quot;)
 
-&lt;pre&gt;&lt;code&gt;eml/project/
-           /dataset1/
-                    /publication1
-                    /publication2
-           /dataset2/
-                    /etc  
+dat &amp;lt;- dbGetQuery(ch,
+&quot;SELECT id, dataset_id, bibtex_key, title,  key_results,background_to_study, 
+       research_question, study_extent, outcomes, exposures,  covariates, method_protocol,
+        general_comments
+  FROM publication
+  where key_results is not null and key_results != '';
+&quot;)
+names(dat) &amp;lt;- gsub(&quot;_&quot;, &quot; &quot;, names(dat))
+tabcode &amp;lt;- xtable(dat[,1:8])
+align(tabcode) &amp;lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7in}','p{1.8in}','p{1.7in}', 'p{1.7in}')
+print(tabcode,  include.rownames = F, table.placement = '!ht',
+      floating.environment='sidewaystable',
+      sanitize.text.function = function(x) x)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;p&gt;In this scenario a single dataset (ie bushfire smoke, temperature and mortality) can be used to write one paper focused on smoke, controlling for temperature.  Another paper on heatwaves, controlling for smoke. Indeed we might use time-series Poisson models for one and case-crossover design for the other (this is similar to what I did with Johnston and Morgan).&lt;/p&gt;
+&lt;p&gt;Produces the below table:&lt;/p&gt;
 
-&lt;p&gt;So the simple thing to do is input these 'evidence tables' fields at the publication level, rather than the dataset as I did yesterday.&lt;/p&gt;
-
-&lt;p&gt;This also partially solves my problem about aggregating these non-EML tags inside the text of the abstract, and worrying about parsing that to extract the elements of information.&lt;/p&gt;
-
-&lt;h2&gt;The fields&lt;/h2&gt;
-
-&lt;!-- html table generated in R 3.2.2 by xtable 1.7-4 package --&gt;
-
-
-&lt;!-- Sat Nov 14 10:12:49 2015 --&gt;
-
-
-&lt;table border=1&gt;
-&lt;tr&gt; &lt;th&gt; data_inventory_field &lt;/th&gt; &lt;th&gt; description &lt;/th&gt;  &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; Citation &lt;/td&gt; &lt;td&gt; At a minimum author-date-journal, perhaps DOI? &lt;/td&gt; &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; Key results &lt;/td&gt; &lt;td&gt; Include both effect estimates and uncertainty &lt;/td&gt; &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; Background to the study &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; Research question &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; Study extent &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; Outcomes &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; Exposures &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; Covariates &lt;/td&gt; &lt;td&gt; Include covariates, effect modifiers, confounders and subgroups &lt;/td&gt; &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; Method protocol &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
-  &lt;tr&gt; &lt;td&gt; General Comments &lt;/td&gt; &lt;td&gt;  &lt;/td&gt; &lt;/tr&gt;
-   &lt;/table&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;An example&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/datinv_pub.png&quot; alt=&quot;/images/datinv_pub.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/bibtable.png&quot; alt=&quot;/images/bibtable.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  

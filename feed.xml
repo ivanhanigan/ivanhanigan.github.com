@@ -6,6 +6,40 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Putting bibtex key into my lit review database needs sanitsed latex characters</title>
+				<description>&lt;p&gt;As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(xtable)
+library(rpostgrestools) # my own work
+if(!exists(&quot;ch&quot;)) ch &amp;lt;- connect2postgres2(&quot;data_inventory_hanigan_dev4&quot;)
+
+dat &amp;lt;- dbGetQuery(ch,
+&quot;SELECT id, dataset_id, bibtex_key, title,  key_results,background_to_study, 
+       research_question, study_extent, outcomes, exposures,  covariates, method_protocol,
+        general_comments
+  FROM publication
+  where key_results is not null and key_results != '';
+&quot;)
+names(dat) &amp;lt;- gsub(&quot;_&quot;, &quot; &quot;, names(dat))
+tabcode &amp;lt;- xtable(dat[,1:8])
+align(tabcode) &amp;lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7in}','p{1.8in}','p{1.7in}', 'p{1.7in}')
+print(tabcode,  include.rownames = F, table.placement = '!ht',
+      floating.environment='sidewaystable',
+      sanitize.text.function = function(x) x)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Produces the below table:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/bibtable.png&quot; alt=&quot;/images/bibtable.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>2015-11-15 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitsed-latex-characters/</link>
+			</item>
+		
+			<item>
 				<title>Developing a lit review database</title>
 				<description>&lt;p&gt;My work yesterday on implementing &lt;a href=&quot;/2015/11/judging-the-evidence-using-a-literature-review-database&quot;&gt;a lit review section of my data inventory database&lt;/a&gt;
 went pretty well, and I tested this while collating information on the papers I compile into my thesis.&lt;/p&gt;
@@ -790,80 +824,6 @@ system(&quot;dot -Tpdf fig-basic.dot -o fig-basic.pdf&quot;)
 </description>
 				<published>2015-10-18 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/</link>
-			</item>
-		
-			<item>
-				<title>How To Effectively Implement Electronic Lab Notebooks In Epidemiology</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;It is often stated in the literature that an electronic lab notebook is a core component of reproducible research&lt;/li&gt;
-&lt;li&gt;For example the following is from Buck, S. (2015). Solving reproducibility. Science, 348(6242), 1403–1403. &lt;a href=&quot;http://dx.doi.org/10.1126/science.aac8041&quot;&gt;http://dx.doi.org/10.1126/science.aac8041&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;pre&gt;&lt;code&gt;one of the most effective ways to promote high-quality science 
-is to create free open-source tools that give scientists
-easier and cheaper ways to incorporate transparency
-into their daily workflow: from open lab notebooks, to
-software that tracks every version of a data set, to dynamic 
-document generation.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;But I have struggled to operationalise the lab notebook in the epidemiology projects I work in&lt;/li&gt;
-&lt;li&gt;Here are some notes based on my recent readings and attempts with a new team&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Modularised lab notebooks&lt;/h2&gt;
-
-&lt;p&gt;There seem to be a small number of components to a lab notebook that can be defined as:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Data management plan&lt;/li&gt;
-&lt;li&gt;Workplan&lt;/li&gt;
-&lt;li&gt;Worklog&lt;/li&gt;
-&lt;li&gt;Workflow&lt;/li&gt;
-&lt;li&gt;Distribution&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;One thing I think is important is to have levels of organisation in a hierarchy:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Macro level: The 'Research Programme' level is about the entire breadth of the projects in the group.
-
-&lt;ul&gt;
-&lt;li&gt;Data Management Plan: including managing the computers and a Data Inventory&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Personal Workplan and Worklog&lt;/em&gt;: this is an overview of things I do, plan to do or learn along the way (this is for the high level things like planning professional development, or a holiday)&lt;/li&gt;
-&lt;li&gt;This is operationalised in the blog you are reading right now.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Meso level: the 'Research Project' level is about a single study, or a small group of studies based around a core dataset or Concept
-
-&lt;ul&gt;
-&lt;li&gt;This is the level that you might write up a manuscript for a journal, or report to a client&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Project workplan&lt;/em&gt;: at this level there may be high level information about the study design, hypotheses, resources and admin for managing relationships with a variety of collaborators&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Worklog&lt;/em&gt;: WS Noble &lt;a href=&quot;http://dx.doi.org/10.1371/journal.pcbi.1000424&quot;&gt;http://dx.doi.org/10.1371/journal.pcbi.1000424&lt;/a&gt; recommends that this be the main lab notebook for the analysts&lt;/li&gt;
-&lt;li&gt;He says 'This is a document that resides in the root of the results directory and that records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to de- scribing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work'&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Micro level: the 'Experiment Results' level is about work you might do on a single day, or over a week
-
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;Workflow&lt;/em&gt; scripts: At this level each 'experiment' is written up in chronological order, as entries to the Worklog at the meso level&lt;/li&gt;
-&lt;li&gt;Noble recommends 'create either a README file, in which I store every command line that I used while performing the experi- ment, or a driver script (I usually call this runall) that carries out the entire experiment automatically'...&lt;/li&gt;
-&lt;li&gt;and 'you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details.'&lt;/li&gt;
-&lt;li&gt;this is the level I usually think of managing the distribution side of things.  I will want to pack up the results and email to my collaborators, or decide on the one set of tables and figures to write into the manuscript for submission to a journal.  If this is accepted for publication, this is the one combined package of 'analytical data and code' that I would consider putting up online (to github) as supporting information for the paper.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>2015-10-17 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/</link>
 			</item>
 		
 	</channel>
