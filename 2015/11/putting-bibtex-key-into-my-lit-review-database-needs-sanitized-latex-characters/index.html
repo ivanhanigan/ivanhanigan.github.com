@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - Coming To Grips With Citations In Reproducible Research Reports</title>
+    <title>Ivan Hanigan - Putting bibtex key into my lit review database needs sanitized latex characters</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -46,7 +46,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/" title="Coming To Grips With Citations In Reproducible Research Reports" rel="bookmark">Coming To Grips With Citations In Reproducible Research Reports</a>
+    <a href="/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters/" title="Putting bibtex key into my lit review database needs sanitized latex characters" rel="bookmark">Putting bibtex key into my lit review database needs sanitized latex characters</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -57,185 +57,33 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h1>Introduction</h1>
+    <p>As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:</p>
 
-<p>Earlier this year I was pleased to stumble on to Petr Keil\'s <a href="http://www.petrkeil.com/?p=2401">Simple
-template for scientific manuscripts in
-Rmarkdown</a> and the Github Repo
-<a href="https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template">https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template</a>.</p>
+<pre><code>library(xtable)
+library(rpostgrestools) # my own work
+if(!exists("ch")) ch &lt;- connect2postgres2("data_inventory_hanigan_dev4")
 
-<p>I was already using Rmarkdown effectively for everything I wanted
-except my bibliography, and this helped a lot.  But I eventually
-found I needed to tweak the format of the citation style.  I tried
-out a bunch of other CSL files but none felt just right.  I tried out
-these after downloading from <a href="https://github.com/citation-style-language/styles">https://github.com/citation-style-language/styles</a>:</p>
-
-<pre><code>american-physiological-society.csl
-annals-of-the-association-of-american-geographers.csl
-biomed-central.csl
-ecology.csl
-pnas.csl
+dat &lt;- dbGetQuery(ch,
+"SELECT id, dataset_id, bibtex_key, title,  key_results,background_to_study, 
+       research_question, study_extent, outcomes, exposures,  covariates, method_protocol,
+        general_comments
+  FROM publication
+  where key_results is not null and key_results != '';
+")
+names(dat) &lt;- gsub("_", " ", names(dat))
+tabcode &lt;- xtable(dat[,1:8])
+align(tabcode) &lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7in}','p{1.8in}','p{1.7in}', 'p{1.7in}')
+print(tabcode,  include.rownames = F, table.placement = '!ht',
+      floating.environment='sidewaystable',
+      sanitize.text.function = function(x) x)
 </code></pre>
 
 <p></p>
 
 
-<h1>SO I hacked the CSL file</h1>
+<p>Produces the below table:</p>
 
-<ul>
-<li>I used the <code>american-physiological-society.csl</code> to get stuff I wanted and pasted into the <code>mee.csl</code></li>
-<li>get the files from this link <a href="/rmarkdown_utils/CitationsInRmarkdown.Rmd">/rmarkdown_utils/CitationsInRmarkdown.Rmd</a></li>
-<li>get the files from this link <a href="/rmarkdown_utils/meemodified.csl">/rmarkdown_utils/meemodified.csl</a></li>
-<li>get the files from this link <a href="/rmarkdown_utils/refs.bib">/rmarkdown_utils/refs.bib</a></li>
-</ul>
-
-
-<p>NB also that the csl file in petrkeil's repo is an older version from 2012 of the version in the citation-style repo called <code>methods-in-ecology-and-evolution</code>.  The differences are not large though.</p>
-
-<h3><span class="header-section-number">1.1.1</span> Example 1:</h3>
-
-
-<p>The journal article by <span class="citation">Michener et al. (1997)</span> and another one <span class="citation">(Bodnar <em>et al.</em> 2004)</span> appear with their full URL even though I just want their DOI.</p>
-
-
-<h3><span class="header-section-number">1.1.2</span> Example 2:</h3>
-
-
-<p>Some recent papers <span class="citation">(Open Science Collaboration 2015; Aiken <em>et al.</em> 2015; Davey <em>et al.</em> 2015)</span> don’t have Volume info and I want to say [epub ahead of print].</p>
-
-
-<h3><span class="header-section-number">1.1.3</span> Example 3:</h3>
-
-
-<p>This blog post on ‘evidence based data analysis pipeline’ by <span class="citation">Peng (2013)</span> is one that definitely needs the URL and date accessed.</p>
-
-
-
-
-<h1>References</h1>
-
-
-<p>Aiken, A.M., Davey, C., Hargreaves, J.R. &amp; Hayes, R.J. (2015). Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication. <em>International Journal of Epidemiology</em>, dyv127. Retrieved from <a href="http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv127.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv127" class="uri">http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv127.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv127</a></p>
-
-
-<p>Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp; Smith, K.R. (2004). Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. <em>International journal of hygiene and environmental health</em>, <strong>207</strong>, 57–67. Retrieved from <a href="http://www.sciencedirect.com/science/article/pii/S1438463904702643" class="uri">http://www.sciencedirect.com/science/article/pii/S1438463904702643</a></p>
-
-
-<p>Davey, C., Aiken, A.M., Hayes, R.J. &amp; Hargreaves, J.R. (2015). Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial. <em>International Journal of Epidemiology</em>, dyv128. Retrieved from <a href="http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv128.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv128" class="uri">http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv128.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv128</a></p>
-
-
-<p>Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp; Stafford, S.G. (1997). Nongeospatial metadata for the ecological sciences. <em>Ecological Applications</em>, <strong>7</strong>, 330–342. Retrieved from <a href="http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK" class="uri">http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK</a></p>
-
-
-<p>Open Science Collaboration. (2015). Estimating the reproducibility of psychological science. <em>Science</em>, <strong>349</strong>, aac4716–aac4716. Retrieved from <a href="http://www.sciencemag.org/cgi/doi/10.1126/science.aac4716" class="uri">http://www.sciencemag.org/cgi/doi/10.1126/science.aac4716</a></p>
-
-
-<p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. <em>Simply statistics</em>. Retrieved July 26, 2015, from <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/" class="uri">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a></p>
-
-
-<pre><code># first replace the &lt;macro name="access"&gt;
-# with 
-&lt;macro name="access"&gt;
-  &lt;choose&gt;
-    &lt;if variable="DOI"/&gt;
-    &lt;!--don't use if there is a DOI--&gt;
-    &lt;else&gt;
-      &lt;choose&gt;
-        &lt;if variable="URL"&gt;
-          &lt;group delimiter=" " prefix=" "&gt;
-            &lt;group&gt;
-              &lt;text variable="URL"/&gt;
-            &lt;/group&gt;
-            &lt;group prefix="[" suffix="]" delimiter=" "&gt;
-              &lt;date variable="accessed"&gt;
-                &lt;date-part name="day"/&gt;
-                &lt;date-part name="month" prefix=" " suffix=" " form="short"/&gt;
-                &lt;date-part name="year"/&gt;
-              &lt;/date&gt;
-            &lt;/group&gt;
-          &lt;/group&gt;
-        &lt;/if&gt;
-      &lt;/choose&gt;
-    &lt;/else&gt;
-  &lt;/choose&gt;
-&lt;/macro&gt;
-#### Then add this ####
-&lt;macro name="date"&gt;
-  &lt;choose&gt;
-    &lt;if variable="issued"&gt;
-      &lt;choose&gt;
-        &lt;if type="article-journal"&gt;
-          &lt;date variable="issued"&gt;
-            &lt;date-part name="year"/&gt;
-          &lt;/date&gt;
-        &lt;/if&gt;
-        &lt;else&gt;
-          &lt;date variable="issued"&gt;
-            &lt;date-part name="year"/&gt;
-          &lt;/date&gt;
-        &lt;/else&gt;
-      &lt;/choose&gt;
-    &lt;/if&gt;
-    &lt;else&gt;
-      &lt;text term="no date" prefix="[" suffix="]"/&gt;
-    &lt;/else&gt;
-  &lt;/choose&gt;
-&lt;/macro&gt;
-#### And add this ####
-      &lt;else-if type="article-journal"&gt;
-        &lt;choose&gt;
-          &lt;if variable="issue volume" match="any"&gt;
-            &lt;text macro="title" suffix=" "/&gt;
-            &lt;text variable="container-title" suffix=" " form="short" font-style="italic" strip-periods="true"/&gt;
-            &lt;text variable="volume"/&gt;
-            &lt;text variable="page" prefix=": "/&gt;
-            &lt;text macro="date" prefix=", " suffix="."/&gt;
-          &lt;/if&gt;
-          &lt;else&gt;
-            &lt;choose&gt;
-              &lt;if variable="DOI"&gt;
-                &lt;text macro="title" suffix=" "/&gt;
-                &lt;text variable="container-title" suffix=" " form="short" font-style="italic"/&gt;
-                &lt;group prefix="(" suffix=")."&gt;
-                  &lt;date variable="issued"&gt;
-                    &lt;date-part name="month" prefix=" " suffix=" "/&gt;
-                    &lt;date-part name="day" suffix=", "/&gt;
-                    &lt;date-part name="year"/&gt;
-                  &lt;/date&gt;
-                &lt;/group&gt;
-                &lt;text variable="DOI" prefix=" doi: "/&gt;
-              &lt;/if&gt;
-              &lt;else&gt;
-                &lt;text variable="container-title" suffix=". " form="short" font-style="italic"/&gt;
-              &lt;/else&gt;
-            &lt;/choose&gt;
-          &lt;/else&gt;
-        &lt;/choose&gt;
-      &lt;/else-if&gt;
-</code></pre>
-
-<h2>Now use this modified csl in the header of the RMD file instead of mee.csl</h2>
-
-<h1><span class="header-section-number">1.2</span> NEW References</h1>
-
-
-<p>Aiken, A.M., Davey, C., Hargreaves, J.R. &amp; Hayes, R.J. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication <em>International Journal of Epidemiology</em> (epub ahead of print July 2015). doi: <a href="http://dx.doi.org/10.1093/ije/dyv127">10.1093/ije/dyv127</a></p>
-
-
-<p>Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp; Smith, K.R. (2004).Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. <em>International journal of hygiene and environmental health</em> 207: 57–67, 2004.</p>
-
-
-<p>Davey, C., Aiken, A.M., Hayes, R.J. &amp; Hargreaves, J.R. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial <em>International Journal of Epidemiology</em> (epub ahead of print July 2015). doi: <a href="http://dx.doi.org/10.1093/ije/dyv128">10.1093/ije/dyv128</a></p>
-
-
-<p>Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp; Stafford, S.G. (1997).Nongeospatial metadata for the ecological sciences <em>Ecological Applications</em> 7: 330–342, 1997. <a href="http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK">http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK</a></p>
-
-
-<p>Open Science Collaboration. (2015).Estimating the reproducibility of psychological science <em>Science</em> 349: aac4716–aac4716, 2015.</p>
-
-
-<p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. <em>Simply statistics</em>. <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a> [26 Jul. 2015]</p>
-
+<p><img src="/images/bibtable.png" alt="/images/bibtable.png" /></p>
 
     <div class="clear"></div>
   </div>
@@ -255,7 +103,7 @@ pnas.csl
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-10-09 00:00:00 +1100">09 Oct 2015</abbr>
+      <abbr class="published" title="2015-11-15 00:00:00 +1100">15 Nov 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -269,7 +117,7 @@ pnas.csl
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/";
+    var disqus_url = "http://ivanhanigan.github.com/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
