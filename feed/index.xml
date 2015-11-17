@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-11-16T16:38:14+11:00</updated>
+ <updated>2015-11-17T15:57:37+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,37 +13,30 @@
 
  
  <entry>
-   <title>Putting bibtex key into my lit review database needs sanitized latex characters</title>
-   <link href="http://ivanhanigan.github.com/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters/"/>
-   <updated>2015-11-15T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters</id>
-   <content type="html">&lt;p&gt;As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:&lt;/p&gt;
+   <title>a-picture-of-the-newnode-function-for-workflow-visualisation-in-r</title>
+   <link href="http://ivanhanigan.github.com/2015/11/a-picture-of-the-newnode-function-for-workflow-visualisation-in-r/"/>
+   <updated>2015-11-17T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/11/a-picture-of-the-newnode-function-for-workflow-visualisation-in-r</id>
+   <content type="html">&lt;h2&gt;Newnode: An R function for visualising workflows&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;library(xtable)
-library(rpostgrestools) # my own work
-if(!exists(&quot;ch&quot;)) ch &amp;lt;- connect2postgres2(&quot;data_inventory_hanigan_dev4&quot;)
+&lt;p&gt;The scientific workflow concept is essentially a pipeline.  The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.&lt;/p&gt;
 
-dat &amp;lt;- dbGetQuery(ch,
-&quot;SELECT id, dataset_id, bibtex_key, title,  key_results,background_to_study, 
-       research_question, study_extent, outcomes, exposures,  covariates, method_protocol,
-        general_comments
-  FROM publication
-  where key_results is not null and key_results != '';
-&quot;)
-names(dat) &amp;lt;- gsub(&quot;_&quot;, &quot; &quot;, names(dat))
-tabcode &amp;lt;- xtable(dat[,1:8])
-align(tabcode) &amp;lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7in}','p{1.8in}','p{1.7in}', 'p{1.7in}')
-print(tabcode,  include.rownames = F, table.placement = '!ht',
-      floating.environment='sidewaystable',
-      sanitize.text.function = function(x) x)
+&lt;p&gt;A simple way to keep track of the steps, inputs and outputs is shown in Table below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CLUSTER ,  STEP       , INPUTS                   , OUTPUTS                   
+A  ,       Step1      , &quot;Input 1, Input 2&quot;       , Output 1                 
+A  ,       Step2      ,  Input 3                 , Output 2                   
+B  ,       Step3      , &quot;Output 1, Output 2&quot;     , Output 3                  
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;The steps and data listed in this way can be visualised.
+To achieve this an R function was written as part of my PhD project and is distributed in the R package available on Github &lt;a href=&quot;https://github.com/ivanhanigan/disentangle&quot;&gt;https://github.com/ivanhanigan/disentangle&lt;/a&gt;.&lt;/p&gt;
 
+&lt;p&gt;This is the &lt;code&gt;newnode&lt;/code&gt; function.  The function returns a string of text
+written in the &lt;code&gt;dot&lt;/code&gt; language which can be rendered in R using the
+&lt;code&gt;DiagrammeR&lt;/code&gt; package, or the standalone &lt;code&gt;graphviz&lt;/code&gt; package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.&lt;/p&gt;
 
-&lt;p&gt;Produces the below table:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/bibtable.png&quot; alt=&quot;/images/bibtable.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/steps_basic_rstudio-test.png&quot; alt=&quot;/images/steps_basic_rstudio-test.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  

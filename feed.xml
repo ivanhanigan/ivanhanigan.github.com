@@ -6,6 +6,33 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>a-picture-of-the-newnode-function-for-workflow-visualisation-in-r</title>
+				<description>&lt;h2&gt;Newnode: An R function for visualising workflows&lt;/h2&gt;
+
+&lt;p&gt;The scientific workflow concept is essentially a pipeline.  The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.&lt;/p&gt;
+
+&lt;p&gt;A simple way to keep track of the steps, inputs and outputs is shown in Table below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CLUSTER ,  STEP       , INPUTS                   , OUTPUTS                   
+A  ,       Step1      , &quot;Input 1, Input 2&quot;       , Output 1                 
+A  ,       Step2      ,  Input 3                 , Output 2                   
+B  ,       Step3      , &quot;Output 1, Output 2&quot;     , Output 3                  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The steps and data listed in this way can be visualised.
+To achieve this an R function was written as part of my PhD project and is distributed in the R package available on Github &lt;a href=&quot;https://github.com/ivanhanigan/disentangle&quot;&gt;https://github.com/ivanhanigan/disentangle&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is the &lt;code&gt;newnode&lt;/code&gt; function.  The function returns a string of text
+written in the &lt;code&gt;dot&lt;/code&gt; language which can be rendered in R using the
+&lt;code&gt;DiagrammeR&lt;/code&gt; package, or the standalone &lt;code&gt;graphviz&lt;/code&gt; package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/steps_basic_rstudio-test.png&quot; alt=&quot;/images/steps_basic_rstudio-test.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>2015-11-17 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/11/a-picture-of-the-newnode-function-for-workflow-visualisation-in-r/</link>
+			</item>
+		
+			<item>
 				<title>Putting bibtex key into my lit review database needs sanitized latex characters</title>
 				<description>&lt;p&gt;As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:&lt;/p&gt;
 
@@ -748,82 +775,6 @@ Complete ...
 </description>
 				<published>2015-10-23 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/keeping-an-electronic-lab-notebook-for-computational-statistics-projects/</link>
-			</item>
-		
-			<item>
-				<title>Reproducible research pipelines improve description of method steps</title>
-				<description>&lt;p&gt;Adequately documenting the methods and results of data analysis helps
-safeguard against errors of execution and
-interpretation. It is proposed that
-reproducible research pipelines address the problem of
-adequate documentation of data analysis.&lt;/p&gt;
-
-&lt;p&gt;This is because they make it easy to
-check the methods. Assumptions are easy to challenge and results
-verified in new analyses. Reproducible research pipelines extend
-traditional research.  They do this by encoding the steps in a
-computer ‘scripting’ language and distributing the data and code with
-publications.  Traditional research moves through the steps of
-hypothesis and design, measured data, analytic data, computational
-results (for figures, tables and numerical results), and reports (text
-and formatted manuscript).&lt;/p&gt;
-
-&lt;h2&gt;Fundamental components of a reproducible research pipeline&lt;/h2&gt;
-
-&lt;p&gt;The basic components of a pipeline are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Data Management Plan and Data Inventory&lt;/li&gt;
-&lt;li&gt;Method steps&lt;/li&gt;
-&lt;li&gt;Code&lt;/li&gt;
-&lt;li&gt;Data storage&lt;/li&gt;
-&lt;li&gt;Reports&lt;/li&gt;
-&lt;li&gt;Distribution.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Method Steps&lt;/h3&gt;
-
-&lt;p&gt;The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.&lt;/p&gt;
-
-&lt;p&gt;A simple way to keep track of the steps, inputs and outputs is shown in the Table below.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(stringr)
-steps &amp;lt;- read.csv(textConnection('
-CLUSTER ,  STEP  , INPUTS                   , OUTPUTS                   
-A  ,  Step1      , &quot;Input 1, Input 2&quot;       , &quot;Output 1&quot;                 
-A  ,  Step2      ,  Input 3                  , Output 2                   
-B  ,  Step3      , &quot;Output 1, Output 2&quot;      , Output 3                  
-'), stringsAsFactors = F, strip.white = T)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;The steps and data listed in the Table above can be visualised.
-To achieve this an R function was written as part of this PhD project and is distributed in my own R package available on Github &lt;a href=&quot;https://github.com/ivanhanigan/disentangle&quot;&gt;https://github.com/ivanhanigan/disentangle&lt;/a&gt;.
-This is the &lt;code&gt;newnode&lt;/code&gt; function.  The function returns a string of text
-written in the &lt;code&gt;dot&lt;/code&gt; language which can be rendered in R using the
-&lt;code&gt;DiagrammeR&lt;/code&gt; package, or the standalone &lt;code&gt;graphviz&lt;/code&gt; package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(disentangle); library(stringr)
-nodes &amp;lt;- newnode(indat = steps,   names_col = &quot;STEP&quot;, in_col = &quot;INPUTS&quot;,
-  out_col = &quot;OUTPUTS&quot;, 
-  nchar_to_snip = 40)
-sink(&quot;fig-basic.dot&quot;);
-cat(nodes);
-sink()
-# or DiagrammeR::grViz(nodes)
-system(&quot;dot -Tpdf fig-basic.dot -o fig-basic.pdf&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/fig-basic.png&quot; alt=&quot;/images/fig-basic.png&quot; /&gt;&lt;/p&gt;
-</description>
-				<published>2015-10-18 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/</link>
 			</item>
 		
 	</channel>
