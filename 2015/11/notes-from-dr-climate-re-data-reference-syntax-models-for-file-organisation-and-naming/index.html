@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - Github And Reproducible Research Report Casestudy Hutchinson Drought Index</title>
+    <title>Ivan Hanigan - Notes from Dr Climate Re data reference syntax models for file organisation and naming</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -46,7 +46,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
+    <a href="/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/" title="Notes from Dr Climate Re data reference syntax models for file organisation and naming" rel="bookmark">Notes from Dr Climate Re data reference syntax models for file organisation and naming</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -57,153 +57,145 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h3>Background</h3>
-
-<p>This is an example of using github for a Reproducible Research Report (RRR) using a casestudy of the  Hutchinson Drought Index.  The project is available under GNU licence at <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a>.</p>
-
-<h3>Aims</h3>
-
-<p>This example will clone the repository from github and run the replication codes using the replication datasets.</p>
-
-<h3>Materials and Methods</h3>
-
-<ul>
-<li>assumes you are connected to the internet</li>
-<li>assumes you have git, a github account and ssh key set up</li>
-<li>assumes you have R and GDAL configured</li>
-<li>assumes BoM and ABS have kept their data in the locations I specified to download from</li>
+    <ul>
+<li>This is an excellent explanation of the Australian Integrated Marine Observing System (IMOS) Data Reference Syntax by Damien Irving on the Dr Climate blog  <a href="https://drclimate.wordpress.com/2015/09/04/managing-your-data/">https://drclimate.wordpress.com/2015/09/04/managing-your-data/</a></li>
+<li>A Data Reference Syntax (DRS) – a convention for naming your files</li>
 </ul>
 
 
-<h3>Hutchinsons Drought Index</h3>
+<pre><code>&lt;computer&gt;/&lt;project&gt;/&lt;organisation&gt;/&lt;collection&gt;/&lt;facility&gt;/&lt;data-type&gt;/&lt;site-code&gt;/&lt;year&gt;/
 
-<p>The Hutchinson Drought Index (or Drought Severity Index) is a climatic drought index
-that was designed to reflect agricultural droughts using only rainfall data.</p>
+The data type has a sub-DRS of its own, which tells us that the data
+represents the 1-hourly average surface current for a single month
+(October 2012), and that it is archived on a regularly spaced spatial
+grid and has not been quality controlled.
 
-<p>The index was invented by Professor Mike Hutchinson at the ANU in 1992 (1) and
-this project includes R codes written to describe the calculations
-and also to download data (2,3) to play with.</p>
+Just in case the file gets separated from this informative directory
+structure, much of the information is repeated in the file name
+itself, along with some more detailed information about the start and
+end time of the data, and the last time the file was modified:
 
-<h3>Results</h3>
+&lt;project&gt;_&lt;facility&gt;_V_&lt;time-start&gt;_&lt;site-code&gt;_FV00_&lt;data-type&gt;_&lt;time-end&gt;_&lt;modified&gt;.nc.gz
 
-<h4>Replication Codes to run in the terminal</h4>
+In the first instance this level of detail seems like a bit of
+overkill... 
 
-<pre><code>git clone git@github.com:ivanhanigan/HutchinsonDroughtIndex.git ~/data/HutchinsonDroughtIndex
-R
-setwd("~/data/HutchinsonDroughtIndex")
-source("HutchinsonDroughtIndex_go.r")
+Since the data are so well labelled,
+locating all monthly timescale ACORN data from the Turquoise Coast and
+Rottnest Shelf sites (which represents hundreds of files) would be as
+simple as typing the following at the command line:
+
+$ ls */ACORN/monthly_*/{TURQ,ROT}/*/*.nc
 </code></pre>
 
 <p></p>
 
 
+<h2>Damien's personalised DRS</h2>
+
 <ul>
-<li>WARNING this downloads 5.4MB from BoM and 19.9MB from ABS</li>
-<li>This runs the codes and produces graphs</li>
-<li>an alternative workflow would be to run the sweave file in the reports directory but I dont like that method as much and have set all the evaluation commands to false.</li>
-<li>it will run now that we have the graphs though, to create a report:</li>
+<li>It is worthwhile thinking through these ideas and incorporating them in ones data management system as early as possible</li>
+<li>Damien has also helpfully openly shared his own DRS at <a href="https://github.com/DamienIrving/climate-analysis/blob/master/data_reference_syntax.md">https://github.com/DamienIrving/climate-analysis/blob/master/data_reference_syntax.md</a></li>
+<li>Here is a summary of some key items I'm going to implement versions of for my own work</li>
 </ul>
 
 
-<h4>Code:</h4>
+<p>Basic data files</p>
 
-<pre><code>setwd("reports")
-Sweave("HutchinsonDroughtIndex_transformations_doc.Rnw")
+<p><code>&lt;var&gt;_&lt;dataset&gt;_&lt;level&gt;_&lt;time&gt;_&lt;spatial&gt;.nc</code></p>
+
+<p>Sub-categories:</p>
+
+<ul>
+<li><code>&lt;time&gt;</code>: <code>&lt;tstep&gt;-&lt;aggregation&gt;-&lt;season&gt;</code></li>
+<li><code>&lt;spatial&gt;</code>: <code>&lt;grid&gt;-&lt;region&gt;-&lt;bounds&gt;-&lt;np&gt;</code></li>
+</ul>
+
+
+<p>Where:</p>
+
+<ul>
+<li><code>&lt;tstep&gt;</code>: <code>daily</code>, <code>monthly</code></li>
+<li><code>&lt;aggregation&gt;</code>: <code>030day-runmean</code>, <code>anom-wrt-1979-2011</code>, <code>anom-wrt-all</code></li>
+<li><code>&lt;season&gt;</code>: <code>JJA</code>, <code>MJJASO</code></li>
+<li><code>&lt;grid&gt;</code>: <code>native</code> or something like <code>y181x360</code>, which describes the number of latitude (181) and longitude (360) points (in this case it is a 1 by 1 degree horizontal grid).</li>
+<li><code>&lt;region&gt;</code>: Region names are defined in <code>netcdf_io.py</code></li>
+<li><code>&lt;bounds&gt;</code>: e.g. <code>lon225E335E-lat10S10N</code> or <code>mermax</code>, <code>zonal-anom</code></li>
+<li><code>&lt;np&gt;</code>: North pole location, e.g. <code>np20N260E</code></li>
+</ul>
+
+
+<p>Examples include:<br/>
+<code>psl_Merra_surface_daily_y181x360.nc</code></p>
+
+<p>More complex file names</p>
+
+<p><code>&lt;inside&gt;_&lt;filters&gt;_&lt;prev-var&gt;_&lt;dataset&gt;_&lt;level&gt;_&lt;time&gt;_&lt;spatial&gt;.nc</code></p>
+
+<p>Sub-categories:</p>
+
+<ul>
+<li><code>&lt;inside&gt;</code>: The variable inside the file. e.g. <code>tas-composite</code>, <code>datelist</code></li>
+<li><code>&lt;filters&gt;</code>: e.g. <code>samgt90pct</code> (<code>gt</code> and <code>lt</code> and used for greater and less than, <code>pct</code> for percentile)</li>
+<li><code>&lt;prev-var&gt;</code>: if it's not obvious what variable <code>&lt;inside&gt;</code> was created from, include the previous variable/s</li>
+</ul>
+
+
+<p>Examples:<br/>
+<code>tas-composite_pwigt90pct_ERAInterim_500hPa_030day-runmean-anom-wrt-all_native-sh.png</code></p>
+
+<h3>Principles of Tidy Data</h3>
+
+<p>In the words of Hadley Wickham the order that data should be
+arranged in follows some generic principles:</p>
+
+<pre><code>'A good ordering makes it easier to scan the raw values. One way of
+organizing variables is by their role in the analysis: are values
+fixed by the design of the data collection, or are they measured
+during the course of the experiment? Fixed variables describe the
+experimental design and are known in advance. Computer scientists
+often call fixed variables dimensions, and statisticians usually
+denote them with subscripts on random variables. Measured variables
+are what we actually measure in the study. Fixed variables should come
+first, followed by measured variables, each ordered so that related
+variables are contiguous. Rows can then be ordered by the first
+variable, breaking ties with the second and subsequent (fixed)
+variables.'
 </code></pre>
 
 <p></p>
 
 
-<ul>
-<li>which creates a tex file that can create <a href="/pdfs/HutchinsonDroughtIndex_transformations_doc.pdf">this pdf</a></li>
-<li>but the simplest example I gave above will compute the index and create the graphs (one is shown below)</li>
-</ul>
+<h3>An exemplar</h3>
 
-
-<p><img src="/images/CentralWestDrought8283.png" alt="CentralWestDrought8283.png" /></p>
-
-<h3>So what actually happened?</h3>
-
-<ul>
-<li>This project adheres to the <a href="http://stackoverflow.com/a/1434424">Reichian LCFD model of writing R code</a></li>
-<li>In this the code is bundled into modules Func (tools), Load, Do, Clean (check).  These live in the src directory (following teh White ProjectTemplate model - well almost, He would put tools/func into lib)</li>
-<li>then a main.r (or go.r) script calls these modules</li>
-</ul>
-
-
-<h4>go.r</h4>
-
-<pre><code> source('src/HutchinsonDroughtIndex_tools.r')
- source('src/HutchinsonDroughtIndex_load.r')
- source('src/HutchinsonDroughtIndex_do.r')
- source('src/HutchinsonDroughtIndex_check.r')
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li><p>The really interesting bit is <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">a tool written for this project</a> that is called from within tools.r</p>
-
-<p>   source('src/HutchinsonDroughtIndex_tools_droughtIndex.r')</p></li>
-</ul>
-
-
-<p></p>
-
-
-<ul>
-<li>A keen reader would look in that script to find out exactly what the function does</li>
-<li>A keen author would push that function to an R package (a super keen bean would publish this on CRAN)</li>
-</ul>
-
-
-<h3>Discussion</h3>
-
-<h4>Strengths:</h4>
-
-<ul>
-<li>full codes are provided to reproduce the data access, manipulation and analysis</li>
-<li>the gory details are hidden from the casual user</li>
-</ul>
-
-
-<h4>Weaknesses:</h4>
-
-<ul>
-<li>the important details are hidden from the technical user</li>
-<li>the script depends on a bunch of things that might not be true</li>
-</ul>
-
-
-<h4>Conclusions</h4>
-
-<ul>
-<li>This is an example of a self-contained RRR</li>
-</ul>
-
-
-<h3>References</h3>
+<p>In my last project the protocol we developed (for an ecology and biodiversity database) had a naming convention which relied heavily on a sequence of information being used to order the names of folders, subfolders and files.  This is:</p>
 
 <ol>
-<li><p>Smith, D. I, Hutchinson, M. F, &amp; McArthur, R. J. (1992) Climatic and
-Agricultural Drought: Payments and Policy. (Centre for Resource and Environmental
-Studies, Australian National University, Canberra, Australia).<br/>
-http://fennerschool-research.anu.edu.au/spatio-temporal/publications/cres_paper1992.pdf</p></li>
-<li><p>Bureau of Meteorology High Quality Monthly precipitation data
-downloaded on 2012-01-09
-from ftp://ftp.bom.gov.au/anon/home/ncc/www/change/HQmonthlyR/HQ_monthly_prcp_txt.tar</p></li>
-<li><p>Australian Bureau of Statistics Statistical Divisions 2006
-downloaded on 2012-01-09
-from http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.0022006?OpenDocument</p></li>
+<li>The project name (and optional sub-project name)</li>
+<li>Data type (such as experimental unit, observational unit, and/or measurement methods)</li>
+<li>Geographic location (locality name, State, Country)</li>
+<li>Temporal frequency and coverage (such as annual or seasonal tranches).</li>
 </ol>
 
 
-<h3>Acknowledgements</h3>
+<h3>The concepts of slow moving dimensions and fast moving variables</h3>
 
-<p>Financial support was provided by Professor Tony McMichael's
-"Australia Fellowship" from the the National Health and Medical Research Council, via the
-National Centre for Epidemiology and Population Health, Australian National University.</p>
+<p>The concept of dimensions and variables can be useful here, and especially for deciding on filenames.  Dimensions are fixed or change slowly while variables change more quickly.  By 'change', this  means that there are more of them. For example the project name is 'fixed', that is it does not change across the files, but the sub-project name does change, just more slowly (say there may be 2-3 different sub-projects within a project). Then there may be a set of data types, and these 'change' more quickly than the sub-project name.  Then the geographic and temporal variables might change quickest of all.</p>
+
+<p>So a general rule for the order of things can be stated. The fixed and slowly changing variables should come first (those things that don't change, or don't change much),
+followed by the more fluid variables (or things that change more across the project).
+List elements can then be ordered so that the groups of things that are similar will always be contiguous, and vary sequentially within clusters.</p>
+
+<p>So the only thing I disagree with Damien about is his decision to put space after time:</p>
+
+<p><code>&lt;var&gt;_&lt;dataset&gt;_&lt;level&gt;_&lt;time&gt;_&lt;spatial&gt;.nc</code></p>
+
+<p></p>
+
+
+<p>This is  because I think that the geography is more stable than the time period for a data collection, and as most of my studies look at changes of variables measured at a location over time I generally want to compare the same spot at multiple times.  There are pros and cons of each approach such as if the analyst wants to make maps of a variable measured at several locations at a single point in time then having the data arranged by time first and then location may make that job simpler.</p>
+
+<p>I also notice however that the IMOS syntax puts the site spatial location before the year.</p>
 
     <div class="clear"></div>
   </div>
@@ -218,12 +210,12 @@ National Centre for Epidemiology and Population Health, Australian National Univ
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+    <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-11-06 00:00:00 +1100">06 Nov 2013</abbr>
+      <abbr class="published" title="2015-11-29 00:00:00 +1100">29 Nov 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -237,7 +229,7 @@ National Centre for Epidemiology and Population Health, Australian National Univ
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/";
+    var disqus_url = "http://ivanhanigan.github.com/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

@@ -56,6 +56,95 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/two-main-types-of-data-documentation-workflow/" title="two-main-types-of-data-documentation-workflow" rel="bookmark">two-main-types-of-data-documentation-workflow</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This post introduces a new series of blog posts in which I want to experiment with a few tools for data documentation, which I'll present as Case Studies.  This series of posts will be pitched to an audience mixture of data librarians and data analysts.</p>
+
+<p>Data documentation occurs in a spectrum from simple notes through to elaborate systems.  I've been working on a conceptual framework about how the actual process can be done in two distinct ways:</p>
+
+<ul>
+<li>Graphical User Interface (GUI) solutions</li>
+<li>Programmatic (Scripted/Automagic) solutions</li>
+</ul>
+
+
+<p>I think the GUI tools are in general pretty user friendly and useful
+for simple projects with only a small number of datasets, but have a
+major drawback for the challenge of heterogeneous data integration.  I
+think the problem is expressed nicely <a href="http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html">In This Post By Carl Boettiger</a>  in reference to Morpho:</p>
+
+<ul>
+<li>"looks like a rather useful if tedious tool for generating EML
+files. Unfortunately, without the ability to script inputs or
+automatically detect existing data structures, we are forced through
+the rather arduous process of adding all metadata annotation each
+time...."</li>
+<li>"...A package could also provide utilities to generate EML from R objects, leveraging the metadata implicit in R objects that is not present in a CSV (in which there is no built-in notion of whether  a column is numeric or character string, what missing value characters it uses, or really if it is consistent at all. Avoiding manual specification of these things makes the metadata annotation less tedious as well."</li>
+</ul>
+
+
+<h1>Centralised Repository, Distributed Users</h1>
+
+<p>A key aspect of current approaches is the existence of a centralised data management system.  All the examples I consider include at least a metadata catalogue and some also include a data repository.  An additional feature sometimes exists for managing users permissions.</p>
+
+<p>The relationship between users and centralised services is a really complicated space, but essentially consists of the ability for users to create the documentation and push it (perhaps along with the data) to the metadata catalogue  and/or repository.  So given these assumptions I propose the following types of arrangement:</p>
+
+<ul>
+<li>user sends metadata to metadata catalogue</li>
+<li>user sends metadata and data to metadata catalogue and data repository</li>
+<li>user sends metadata and data and permissions information to metadata catalogue and data repository and permissions system.</li>
+</ul>
+
+
+<p>The Case Studies I've identified that I want to explore are listed below, names follow the format 'client tool'-and-'data repository or metadata catalogue'-and-optionally-'permissions system':</p>
+
+<h4>Programmatic solutions</h4>
+
+<ul>
+<li>reml-and-rfigshare</li>
+<li>reml-and-knb (when/if this becomes available)</li>
+<li>make_ddixml-and-ddiindex-and-orapus</li>
+<li>r2ddi-ddiindex</li>
+<li>dc-uploader-and-ANU-DataCommons</li>
+<li>dc-uploader-and-RDA</li>
+</ul>
+
+
+<h4>Graphical User Interface solutions</h4>
+
+<ul>
+<li>morpho-and-knb-metacat</li>
+<li>nesstar-publisher-and-nesstar-and-whatever-Steve-calls-the-ADA-permissions-system</li>
+<li>xmet-and-Australian-Spatial-Data-Directory</li>
+<li>sdmx-editor-and-sdmx-registry</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/two-main-types-of-data-documentation-workflow/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-11 00:00:00 +1100">11 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/wickhams-tidy-tools-only-get-you-90-pct-the-way/" title="wickhams-tidy-tools-only-get-you-90-pct-the-way" rel="bookmark">wickhams-tidy-tools-only-get-you-90-pct-the-way</a>
     </h1>
     <div class="entry-content full-content">
@@ -775,288 +864,6 @@ My new understanding of the topic.</p></li>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/" title="spatially-structured-timeseries-vs-spatiotemporal-modelling" rel="bookmark">spatially-structured-timeseries-vs-spatiotemporal-modelling</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p><head>
-<title>Spatiotemporal Regression Modelling</title>
-<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
-<meta name="title" content="Spatiotemporal Regression Modelling"/>
-<meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-09-26T10:18+1000"/>
-<meta name="author" content="Ivan Hanigan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/></p>
-
-
-
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-
-
-<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
-/**
- *
- * @source: http://orgmode.org/mathjax/MathJax.js
- *
- * @licstart  The following is the entire license notice for the
- *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- * Copyright (C) 2012-2013  MathJax
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @licend  The above is the entire license notice
- * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- */
-
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code below.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code below is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code below.
-*/
-<!--/*--><![CDATA[/*><!--*/
-    MathJax.Hub.Config({
-        // Only one of the two following lines, depending on user settings
-        // First allows browser-native MathML display, second forces HTML/CSS
-        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
-            jax: ["input/TeX", "output/HTML-CSS"],
-        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
-                     "TeX/noUndefined.js"],
-        tex2jax: {
-            inlineMath: [ ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
-            skipTags: ["script","noscript","style","textarea","pre","code"],
-            ignoreClass: "tex2jax_ignore",
-            processEscapes: false,
-            processEnvironments: true,
-            preview: "TeX"
-        },
-        showProcessingMessages: true,
-        displayAlign: "center",
-        displayIndent: "2em",
-
-        "HTML-CSS": {
-             scale: 100,
-             availableFonts: ["STIX","TeX"],
-             preferredFont: "TeX",
-             webFont: "TeX",
-             imageFont: "TeX",
-             showMathMenu: true,
-        },
-        MMLorHTML: {
-             prefer: {
-                 MSIE:    "MML",
-                 Firefox: "MML",
-                 Opera:   "HTML",
-                 other:   "HTML"
-             }
-        }
-    });
-/*]]>*///-->
-</script>
-
-
-<p></head>
-<body></p>
-
-<div id="preamble">
-
-</div>
-
-
-
-
-<div id="content">
-<h1 class="title">Spatiotemporal Regression Modelling</h1>
-
-
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 Spatially Structured Timeseries Vs Spatiotemporal Modelling</a>
-<ul>
-<li><a href="#sec-1-1">1.1 Spatially Structured Time Series</a></li>
-<li><a href="#sec-1-2">1.2 Spatiotemporal modelling</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="section-number-3">1</span> Spatially Structured Timeseries Vs Spatiotemporal Modelling</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>In my last post about <a href="http://ivanhanigan.github.io/2013/09/reflections-bob-haining-update">spatiotemporal regression modelling</a> I mentioned that I am mostly interested in "spatially structured time-series models" rather than spatial models at a single point in time. By this I mean that we have several neighbouring areal units observed over a period of time. In this framework the general methods of time series modelling are used to control for temporal autocorrelation. However this makes the methods of spatial error and spatial lag models tricky because the spatial autocorrelation needs to be assessed at many points in time.
-</p>
-<p>
-I want to expand more on this topic because I want to be clear that the organisation of the material I am aiming to bring to this notebook topic is not aimed at purely spatial regression models <a href="https://geodacenter.asu.edu/spatial-lag-and">(there is a lot of material and tools out there already for that)</a>.  I am trying with these notes to document my learning steps toward integrating spatial methods with time-series methods to allow me to practice (and understand) spatiotemporal regression modelling.
-</p>
-
-</div>
-
-<div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1"><span class="section-number-4">1.1</span> Spatially Structured Time Series</h4>
-<div class="outline-text-4" id="text-1-1">
-
-<p>In <a href="http://www.pnas.org/content/early/2012/08/08/1112965109.full.pdf+html">my most successful previous attempt to conduct a spatiotemporal analysis of Suicide and Droughts</a> I built on my knowledge of time-series regression models from single-city air pollution studies where the whole city is the unit of analysis and the temporal variation is modelled with controlling techniques for temporal autocorrelation.  These techniques are also valid for multi-city studies because it is pretty safe to assume the cities are all independent at each time point.  I structured my study by Eleven large zones (Census Statistical Divisions) of NSW and assumed each of these would vary over time independent of each other, and I fitted a zone-specific time trend and cycle. This is what I call "spatially structured time-series" modelling.  
-</p>
-<p>
-I justify using this model in this case because aggregating up to these very large regions will diminish the possibility of spatial autocorrelation and because Droughts vary over large spatial zones too, we will not suffer from exposure misclassificaiton bias.
-</p>
-<p>
-So this model is a simple time-series regression (with trend and seasonality) and an additional term for spatial Zone.
-</p>
-
-
-\begin{eqnarray*}
-        log({\color{red} O_{ijk}})  & = & s({\color{red}ExposureVariable})  + {\color{blue} OtherExplanators}  \\
-        & &   + AgeGroup_{i} + Sex_{j} \\
-        & &   + {\color{blue} SpatialZone_{k}}  \\
-        & &  + sin(Time \times 2 \times \pi) + cos(Time \times 2 \times \pi) \\
-        & &  + Trend \\
-        & &   + offset({\color{blue} log(Pop_{ijk})})\\
-\end{eqnarray*}
-
-<p>
-Where:<br/>
-</p>
-<ul>
-<li>\({\color{red}O_{ijk}}\) = Outcome (counts) by Age\(_{i}\), Sex\(_{j}\) and SpatialZone\(_{k}\) <br/>
-</li>
-<li>{\color{red}ExposureVariable} = Data with {\color{red}Restrictive Intellectual Property~(IP)} <br/>
-</li>
-<li>{\color{blue}OtherExplanators} = Other {\color{blue}Less Restricted}  Explanatory variables <br/>
-</li>
-<li>s( ) = penalized regression splines <br/>
-</li>
-<li>\({\color{blue} SpatialZone_{k}}\)  = {\color{blue} Less Restricted} data representing the \(SpatialZone_{k}\)  <br/>
-</li>
-<li>Trend = Longterm smooth trend(s) <br/>
-</li>
-<li>\({\color{blue}Pop_{ijk}}\) = interpolated Census populations, by time in each group<br/>
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-1-2" class="outline-4">
-<h4 id="sec-1-2"><span class="section-number-4">1.2</span> <span class="todo TODO">TODO</span> Spatiotemporal modelling</h4>
-<div class="outline-text-4" id="text-1-2">
-
-<p>In contrast to the above model for modelling exposures that have fine resolution spatial variation (such as air pollution) the exposure misclassification effect of aggregating up to very large spatial zones will conteract the benefits of avoiding spatially autocorrelated errors and this might be unacceptable for certain research questions.  Therefore it is important to move toward a spatiotemporal regression model that replaces the \(SpatialZone_{k}\) term with a more spatial error or spatial lag approach.
-</p></div>
-</div>
-</div>
-</div>
-
-
-<p></body>
-</html></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/09/spatially-structured-timeseries-vs-spatiotemporal-modelling/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-09-26 00:00:00 +1000">26 Sep 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1137,6 +944,10 @@ Where:<br/>
               <ul>
                 
                 <li>
+                  <a href="/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/" title="Notes from Dr Climate Re data reference syntax models for file organisation and naming" rel="bookmark">Notes from Dr Climate Re data reference syntax models for file organisation and naming</a>
+                </li>
+                
+                <li>
                   <a href="/2015/11/visualisation-tools-for-communicating-data-management-concepts/" title="Visualisation tools for communicating data management concepts" rel="bookmark">Visualisation tools for communicating data management concepts</a>
                 </li>
                 
@@ -1150,10 +961,6 @@ Where:<br/>
                 
                 <li>
                   <a href="/2015/11/developing-a-lit-review-database/" title="Developing a lit review database" rel="bookmark">Developing a lit review database</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/11/judging-the-evidence-using-a-literature-review-database/" title="Judging the evidence using a literature review database" rel="bookmark">Judging the evidence using a literature review database</a>
                 </li>
                 
               </ul>
@@ -1181,7 +988,7 @@ Where:<br/>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (37)</a></li>
+                <li><a href="/categories/disentangle">disentangle (38)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -1243,6 +1050,8 @@ Where:<br/>
                 
                 <li><a href="/tag/workflow tools">workflow tools (1)</a></li>
                 
+                <li><a href="/tag/data management">data management (1)</a></li>
+                
               <div class="clear"></div>
               </ul>
             </div>
@@ -1285,6 +1094,8 @@ Where:<br/>
           <!--       <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (2)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/workflow tools">workflow tools (1)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/data management">data management (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

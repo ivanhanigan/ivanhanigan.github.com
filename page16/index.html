@@ -56,6 +56,217 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/" title="add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot" rel="bookmark">add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p><head>
+<title>Catastrophic Regime Shifts Visualisation  </title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Catastrophic Regime Shifts Visualisation  "/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-12-21T11:39+1100"/>
+<meta name="author" content="Ivan Hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
+
+
+
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+
+<p></head>
+<body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">Catastrophic Regime Shifts Visualisation  </h1>
+
+
+<hr/>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Try adding 2D plot of the trend overtime and the variation within basins of attraction</a>
+<ul>
+<li><a href="#sec-1-1">1.1 figure</a></li>
+<li><a href="#sec-1-2">1.2 code</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Try adding 2D plot of the trend overtime and the variation within basins of attraction</h2>
+<div class="outline-text-2" id="text-1">
+
+<ul>
+<li>Following on from the previous work I now want to calculate the 2D paths.
+</li>
+<li>This will then form the basis for a "walk through" animation 
+</li>
+<li>Either with recorded narration or annotations that appear at the right time to describe each transition
+</li>
+<li>This is most of what I want to include except I have not added the wiggly variations around the main trend line, that show the system varying within the basin of attraction
+</li>
+<li>I got advice that Blender3d was the best way to finish this off.  Any other suggestions?
+</li>
+</ul>
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> figure</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<p><img src="/images/TrendsAndTriggers-v2.1.gif"  alt="/images/TrendsAndTriggers-v2.1.gif" />
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> code</h3>
+<div class="outline-text-3" id="text-1-2">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;"># </span><span style="color: #586e75;">functions</span>
+x <span style="color: #268bd2; font-weight: bold;">&lt;-</span> seq(from=-2.5, to=2.5, by=0.1)
+
+<span style="color: #586e75;"># </span><span style="color: #586e75;">load</span>
+data_out <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #2aa198;">"TrendsAndTriggers-v2.csv"</span>)
+
+<span style="color: #586e75;">## </span><span style="color: #586e75;">do</span>
+x2d  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> matrix(<span style="color: #b58900;">NA</span>, ncol = 3, nrow = 0)
+xindex  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(rep(-1.9, 5), 
+             -1.7, -1.5 , -1.3, -1.1, 0, 1.1, 1.3, 1.5, 1.7
+             , rep(2, 4))
+j  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> 1
+xind  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> xindex[j]
+<span style="color: #859900; font-weight: bold;">for</span>(index <span style="color: #859900; font-weight: bold;">in</span> c(1:5,rep(5,8), 6:10)){
+x2d <span style="color: #268bd2; font-weight: bold;">&lt;-</span> rbind(x2d, subset(data_out, y == index &amp; x == xind))
+j <span style="color: #268bd2; font-weight: bold;">&lt;-</span> j + 1
+xind <span style="color: #268bd2; font-weight: bold;">&lt;-</span> xindex[j]
+}
+<span style="color: #586e75;">#  </span><span style="color: #586e75;">x2d</span>
+
+<span style="color: #586e75;">#</span><span style="color: #586e75;">png("/images/TrendsAndTriggers-v2.1.gif")</span>
+setwd(<span style="color: #2aa198;">"images"</span>)
+saveGIF(
+{
+ani.options(interval = 0.2)  
+<span style="color: #859900; font-weight: bold;">for</span>(ith <span style="color: #859900; font-weight: bold;">in</span> 100:140){
+layout(matrix(c(1,2,1,3,1,4), 3, 2, byrow = <span style="color: #b58900;">TRUE</span>), widths=c(2,1), heights=c(2,2,2))
+<span style="color: #586e75;"># </span><span style="color: #586e75;">layout.show(4)</span>
+res <span style="color: #268bd2; font-weight: bold;">&lt;-</span>  persp(x, 1:10, matrix(data_out$z, ncol = 10, nrow = length(x)),
+               ylab= <span style="color: #2aa198;">"y"</span>,  xlab= <span style="color: #2aa198;">"x"</span>, zlab = <span style="color: #2aa198;">"z"</span>,  
+               theta = ith, 
+               phi = 42, ltheta = 120, shade = 0.75,
+               expand = 0.5, col = <span style="color: #2aa198;">"lightgrey"</span>)
+lines (trans3d(x2d$x, x2d$y, x2d$z, pmat = res), col = <span style="color: #2aa198;">"red"</span>, lwd = 4)
+plot(x2d$x, x2d$y, type = <span style="color: #2aa198;">"l"</span>, xlab=<span style="color: #2aa198;">"x"</span>, ylab=<span style="color: #2aa198;">"y"</span>)
+plot(x2d$x, x2d$z, type = <span style="color: #2aa198;">"l"</span>, xlab=<span style="color: #2aa198;">"x"</span>, ylab=<span style="color: #2aa198;">"z"</span>)
+plot(x2d$y, x2d$z, type = <span style="color: #2aa198;">"l"</span>, xlab=<span style="color: #2aa198;">"y"</span>, ylab=<span style="color: #2aa198;">"z"</span>)
+}
+}
+
+outdir = getwd(), movie.name = <span style="color: #2aa198;">"TrendsAndTriggers-v2.1.gif"</span>
+)
+setwd(<span style="color: #2aa198;">".."</span>)
+
+<span style="color: #586e75;">#  </span><span style="color: #586e75;">dev.off()</span>
+</pre>
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+<p></body></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/ecosocial tipping points" title="ecosocial tipping points" rel="category tag">ecosocial tipping points</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/12/add-2d-plots-of-trend-and-wiggle-to-catastrophic-regime-shifts-plot/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-12-21 00:00:00 +1100">21 Dec 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/12/animation-illustrating-catastrophic-regime-shifts/" title="Animation Illustrating Catastrophic Regime Shifts" rel="bookmark">Animation Illustrating Catastrophic Regime Shifts</a>
     </h1>
     <div class="entry-content full-content">
@@ -582,66 +793,6 @@ outdir = getwd()
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode/" title="open-access-journal-templates-for-latex-with-emacs-orgmode" rel="bookmark">open-access-journal-templates-for-latex-with-emacs-orgmode</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>I appreciate all the arguments for using OA journals</li>
-<li>Using a LaTeX template is also attractive</li>
-<li>This post is a record of some experiences with the BioMedCentral (BMC) template and the Public Library of Science (PLOS) templates</li>
-<li>implemented with my favourite editor for everything Emacs Orgmode.</li>
-</ul>
-
-
-<h4>BMC seemed like a good option</h4>
-
-<ul>
-<li>I started this journey 6 months ago with the BMC template</li>
-<li>because I pitch my work mostly at the health science community BMC seemed logical</li>
-<li>It turns out I downloaded their old LaTeX template and it SUCKED</li>
-<li>If you Download <a href="http://www.biomedcentral.com/authors/tex">the template and bibliography stuff</a> now it looks better</li>
-<li>But I am suspicious now because of the last little while I've been struggling so I've got a skeptical approach</li>
-<li>First copy the stuff to a test dir</li>
-<li>then use TexWorks to test compiling it</li>
-<li>try deleting the provided BBL file, this reveales that the BIB file has to be compiled with bibtex to work</li>
-<li>orgmode produces BBL files when evaluated but I don't know if it'll be smooth with the template</li>
-</ul>
-
-
-<h4>PLOS seems like a smoother option</h4>
-
-<ul>
-<li>Download from <a href="http://www.plosone.org/static/latexGuidelines">the LaTeX template site</a></li>
-<li>First thing I notice is there is no BIB file, Yay!</li>
-<li>just make sure  bibliographystyle and bibliography are set</li>
-<li>Looks like it isn't trying so hard</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/12/open-access-journal-templates-for-latex-with-emacs-orgmode/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-12-13 00:00:00 +1100">13 Dec 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -722,6 +873,10 @@ outdir = getwd()
               <ul>
                 
                 <li>
+                  <a href="/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/" title="Notes from Dr Climate Re data reference syntax models for file organisation and naming" rel="bookmark">Notes from Dr Climate Re data reference syntax models for file organisation and naming</a>
+                </li>
+                
+                <li>
                   <a href="/2015/11/visualisation-tools-for-communicating-data-management-concepts/" title="Visualisation tools for communicating data management concepts" rel="bookmark">Visualisation tools for communicating data management concepts</a>
                 </li>
                 
@@ -735,10 +890,6 @@ outdir = getwd()
                 
                 <li>
                   <a href="/2015/11/developing-a-lit-review-database/" title="Developing a lit review database" rel="bookmark">Developing a lit review database</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/11/judging-the-evidence-using-a-literature-review-database/" title="Judging the evidence using a literature review database" rel="bookmark">Judging the evidence using a literature review database</a>
                 </li>
                 
               </ul>
@@ -766,7 +917,7 @@ outdir = getwd()
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (37)</a></li>
+                <li><a href="/categories/disentangle">disentangle (38)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -828,6 +979,8 @@ outdir = getwd()
                 
                 <li><a href="/tag/workflow tools">workflow tools (1)</a></li>
                 
+                <li><a href="/tag/data management">data management (1)</a></li>
+                
               <div class="clear"></div>
               </ul>
             </div>
@@ -870,6 +1023,8 @@ outdir = getwd()
           <!--       <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (2)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/workflow tools">workflow tools (1)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/data management">data management (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

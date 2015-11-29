@@ -56,6 +56,86 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/10/sanitize-mendeley-references-in-r-markdown-reporting/" title="Sanitize mendeley references in r markdown reporting" rel="bookmark">Sanitize mendeley references in r markdown reporting</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>A key challenge for Reproducible Research Reports in Rmarkdown remains adequate scholarly citation management; the machinery of scholarly citations and references.</p>
+
+<p>The <code>knitcitations</code> R package does a great job of working with bibtex bibliography files, however the bibtex manager that I use is Mendeley and it has implemented some rules on the way it handles special characters that forces the bibtex references into a state with some 'escaped' elements that breaks their presentation via <code>knitcitations</code>.</p>
+
+<p>This is a post from my open notebook that shows the workaround I am using for sanitizing the Mendeley escaped underscores in URLS.</p>
+
+<p>Here is an example:</p>
+
+<p>There is considerable public health impact from the effects on mental of drought <span class="citation">(<span>Sarathi Biswas</span> 2012)</span>. It is proposed that the best method to disentangle the multifactorial nature of this causal mechanism is the ‘five-capitals’ framework, indeed this method may even enable understanding the human carrying capacity of ecosystems <span class="citation">(McMichael &amp; Butler 2002)</span>.</p>
+
+
+
+
+<p>McMichael, A.J. &amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. <em>International Union for the Scientific Study of Population Committee on Emerging Health Threats</em>. <a href="http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf">http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf</a> [21 Sep. 2003]</p>
+
+
+<p><span>Sarathi Biswas</span>, P. (2012). Alcohol, drought lead to farmer’s suicide. <em>Daily News and Analysis</em>. <a href="http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976">http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976</a> [17 May 2012]</p>
+
+
+
+
+<p></p>
+
+
+<h2>See those pesky curly braces <code>{</code> and <code>}</code> around the underscores?</h2>
+
+<h2>The fix</h2>
+
+<p>The fix I am using is to sanitize each record where this is an issue as I build my document, so the mendeley version stays as-is, while the R version has been sanitized by removing the escape characters.</p>
+
+<pre><code># read mendeley bibtex file
+bib &lt;- read.bibtex("~/references/library.bib")
+# ad hoc fix
+for(bibkey in c("SarathiBiswas2012", "Mcmichael2002a")){
+  bib[ [ bibkey ] ]$url &lt;- gsub("\\{\\\\_\\}","_", bib[ [ bibkey ] ]$url)
+}
+</code></pre>
+
+<p>This is the result:</p>
+
+<p>McMichael, A.J. &amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. <em>International Union for the Scientific Study of Population Committee on Emerging Health Threats</em>. <a href="http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf">http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf</a> [21 Sep. 2003]</p>
+
+
+<p><span>Sarathi Biswas</span>, P. (2012). Alcohol, drought lead to farmer’s suicide. <em>Daily News and Analysis</em>. <a href="http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976">http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976</a> [17 May 2012]</p>
+
+
+
+
+<p></p>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/reproducible research reports" title="reproducible research reports" rel="category tag">reproducible research reports</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/sanitize-mendeley-references-in-r-markdown-reporting/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-24 00:00:00 +1100">24 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/10/keeping-an-electronic-lab-notebook-for-computational-statistics-projects/" title="Keeping an electronic lab notebook for computational statistics projects" rel="bookmark">Keeping an electronic lab notebook for computational statistics projects</a>
     </h1>
     <div class="entry-content full-content">
@@ -521,79 +601,6 @@ writePolyShape(shp2,"myfile_p.shp",proj4string=CRS("+proj=longlat +ellps=WGS84 +
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/a-set-of-guidelines-for-exploratory-data-analysis-and-cleaning/" title="A Set Of Guidelines For Exploratory Data Analysis And Cleaning" rel="bookmark">A Set Of Guidelines For Exploratory Data Analysis And Cleaning</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>The New York Times ran a piece on August 17, 2014: “For Big-Data Scientists, ‘Janitor Work’ Is Key Hurdle to Insights” [1].  The article bemoaned the need for too much of what data scientists call “data wrangling”, “data munging” and “data janitor work”.  In essence this means data quality control processes.
-A key task of my role as data manager/analyst is to perform Exploratory Data Analysis (EDA) to review data deposited for consistency, quality and its compliance with standards to ensure that reusability of data published in the portal is maximised.   To do this, I use relevant data formatting standards (for example the International Standards from ISO), undertake thorough taxonomic reviews of each dataset and have well documented procedures for dealing with miscellaneous errors such as data inconsistencies, duplicate variable names and reformatting numeric or character strings. I sometimes make changes to the data and give no further thoughts to it, but at  other times I need to make recommendations to the data provider and ask for their decisions/approvals on what to change.</p>
-
-<p>I have put down this set of guidelines for my procedures to create standardised data structures, based on things that have been recommended in the literature [2-6] to make data as re-usable as possible. Here is a list of standard amendments undertaken during my EDA process:</p>
-
-<ul>
-<li>identify any out-of-range values (based on the specified units), or questionable data in general;</li>
-<li>rename all files and variables using lower_case_with_underscores naming convention;</li>
-<li>tabulate frequencies and variable distributions, note any outliers for review;</li>
-<li>identify any opportunities to make wide data longer, or many files that can be merged;</li>
-<li>If you have multiple linked tables, each table should include a column that allows those tables to be linked unambiguously (such as the site_ID variables); check that linking variables that link two or more data tables are identical in each table</li>
-<li>check that values in linked files marry up to values in other files (eg a site code in one file that is missing from the spatial data file);</li>
-<li>write as CSV with quote encapsulated strings (for archival purposes);</li>
-<li>code missing data as NA, or identify if these were actually censored;</li>
-<li>coerce dates to ISO 8601 to be in the the YYYY-MM-DD format, or MMM-YYYY;</li>
-<li>cast nominal variables that use integer codes as character;</li>
-<li>check that all value labels in enumerated lists are described (ie codes for “1” = “low”, “2” = “mid” and “3” = “high”);</li>
-<li>attempt to identify and split any combined variables (like season AND year like “winter-97” or species and comments ie “Banksia Dead”);</li>
-<li>review any species lists against current scientific name conventions, recommend any modifications;</li>
-<li>rename any non-conformant species lists (for instance including comments such as Alive/Dead) to “fauna_descriptor” or “flora_descriptor”;</li>
-<li>identify any characters in numeric or date variables and replace with NA, (add to a comments variable if possible);</li>
-<li>identify any values that Excel may try to convert to date type (for eg. site code “1-5” will appear as 5-Jan and should be rewritten as “site_1-5”);</li>
-<li>use a GIS to confirm spatial coordinates and add geographical coordinates in decimal degrees (GDA94) if only supplied in metres UTM or AMG (always request the datum and the zone);</li>
-<li>check what the coordinates refer to (e.g. approximate location of SW corner of 1ha plot).</li>
-<li>rename files to be consistent with all data in the LTERN Data Portal.  Our standardised names have been created using controlled vocabularies.  Packages and files are designated tracking numbers – this is denoted by a plot network code and a unique “Package” number ascribed to each data package.  Each data package contains one or more data table which is the smallest trackable unit (denoted by a unique “Table” number).</li>
-<li>while we prefer deposit of plain text CSV files, if we receive Excel spreadsheets we check for hidden rows or columns that might not be intended for publication (and  may have been deposited as an oversight).</li>
-<li>it is always best to open Excel workbooks and use the in-built export function to save as CSV files for further re-use.  While R packages and other tools exist to programmatically extract the data from Excel, few tools that interoperate with Excel actually get the all the bug/feature cases right.  It has been noted that
-"because working with data that has passed through Excel is hard to get right, data that has passed through Excel is often wrong." [7]</li>
-</ul>
-
-
-<h2>References:</h2>
-
-<ol>
-<li>Lohr, S. <a href="http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0">http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0</a></li>
-<li>White, E., Baldridge, E., Brym, Z., Locey, K., McGlinn, D., &amp; Supp, S. (2013). Nine simple ways to make it easier to (re)use your data. Ideas in Ecology and Evolution, 6(2), 1–10. <a href="http://dx.doi.org/10.4033/iee.2013.6b.6.f">http://dx.doi.org/10.4033/iee.2013.6b.6.f</a></li>
-<li>Wickham, H. (Under Review). Tidy data. Journal of Statistical Software, VV(Ii).</li>
-<li>Leek, J. 2014. <a href="https://github.com/jtleek/datasharing">https://github.com/jtleek/datasharing</a></li>
-<li>Borer, E., Seabloom, E., Jones, M., and Schildhauer, M. 2009. Some Simple Guidelines for Effective Data Management. Bulletin of the Ecological Society of America 90:205–214. <a href="http://dx.doi.org/10.1890/0012-9623-90.2.205">http://dx.doi.org/10.1890/0012-9623-90.2.205</a></li>
-<li>Campbell, J. L., Rustad, L. E., Porter, J. H., Taylor, J. R., Dereszynski, E. W., Shanley, J. B., Gries, C., Henshaw, D. L., Martin, M. E., Sheldon, W. M., and Boose, E. R. 2013. Quantity is Nothing
-without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioScience, 63,
-574-585. <a href="http://dx.doi.org/10.1525/bio.2013.63.7.10">http://dx.doi.org/10.1525/bio.2013.63.7.10</a></li>
-<li>Mount, J. 2014. Excel spreadsheets are hard to get right. <a href="http://www.win-vector.com/blog/2014/11/excel-spreadsheets-are-hard-to-get-right/">http://www.win-vector.com/blog/2014/11/excel-spreadsheets-are-hard-to-get-right/</a></li>
-</ol>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/a-set-of-guidelines-for-exploratory-data-analysis-and-cleaning/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-14 00:00:00 +1100">14 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -674,6 +681,10 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
               <ul>
                 
                 <li>
+                  <a href="/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/" title="Notes from Dr Climate Re data reference syntax models for file organisation and naming" rel="bookmark">Notes from Dr Climate Re data reference syntax models for file organisation and naming</a>
+                </li>
+                
+                <li>
                   <a href="/2015/11/visualisation-tools-for-communicating-data-management-concepts/" title="Visualisation tools for communicating data management concepts" rel="bookmark">Visualisation tools for communicating data management concepts</a>
                 </li>
                 
@@ -687,10 +698,6 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
                 
                 <li>
                   <a href="/2015/11/developing-a-lit-review-database/" title="Developing a lit review database" rel="bookmark">Developing a lit review database</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/11/judging-the-evidence-using-a-literature-review-database/" title="Judging the evidence using a literature review database" rel="bookmark">Judging the evidence using a literature review database</a>
                 </li>
                 
               </ul>
@@ -718,7 +725,7 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (37)</a></li>
+                <li><a href="/categories/disentangle">disentangle (38)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -780,6 +787,8 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
                 
                 <li><a href="/tag/workflow tools">workflow tools (1)</a></li>
                 
+                <li><a href="/tag/data management">data management (1)</a></li>
+                
               <div class="clear"></div>
               </ul>
             </div>
@@ -822,6 +831,8 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
           <!--       <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (2)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/workflow tools">workflow tools (1)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/data management">data management (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->

@@ -56,6 +56,189 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor/" title="hotwire-a-morpho-package-using-r-and-xml-editor" rel="bookmark">hotwire-a-morpho-package-using-r-and-xml-editor</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h1>Introduction</h1>
+
+<ul>
+<li>at my workplace we have had a significant number of issues trying to use Morpho to publish ecological data</li>
+<li>I have been interested in the R EML package as an alternative and got this advice from the authors</li>
+<li>"I'm really happy to see you combining these tools and making best use of each of their features (authoring for Morpho, automation for REML). We should think more about how to make this combination seamless." <a href="https://github.com/ropensci/EML/issues/93">https://github.com/ropensci/EML/issues/93</a></li>
+<li>That dream still seems a long way off (and I suspect will see a re-write of morpho in R's "shiny apps" language)</li>
+<li>but here is an attempt to circumvent some of our main issues which seem to do with using Morpho to do anything with data tables</li>
+<li>(morpho seems fine when just dealing with the documentation parts of EML)</li>
+</ul>
+
+
+<h1>Create a Minimal Morpho EML</h1>
+
+<ul>
+<li>I am going to use Morpho to create a new data package and just step thru all the steps,  add TBA to all the options</li>
+<li>another option was to create this using the REML example</li>
+<li>but then there is uncertainty if it will be accepted easily by Morpho when imported</li>
+<li>seriously, just TBA and only for the required fields (these are in red)</li>
+<li>take note of the docid number, and save locally</li>
+<li>now we can import this as our template.  lets save it as a reference file</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code>cp ~/.morpho/profiles/hanigan/data/hanigan/XX.1 ~/tools/morpho_template_eml.xml
+</code></pre>
+
+<p></p>
+
+
+<h1>Import to morpho</h1>
+
+<ul>
+<li>this skeletal eml can now be imported in the File menu / import</li>
+<li>this is the 'hotwired' starting point of our morpho packages</li>
+<li>I want to do this for others too. so change morpho profile on your computer and import the xml</li>
+<li>gives a new package with a new morpho generated docid number</li>
+<li>add the package title, with enough identification in the title to allow quick reference</li>
+<li>SET THE ACCESS TO NOT PUBLIC BEFORE SAVING</li>
+</ul>
+
+
+<h1>generate the EML Skeleton using the R EML package</h1>
+
+<h4>Code:</h4>
+
+<pre><code>library(EML)
+library(devtools)
+install_github("disentangle", "ivanhanigan")
+unit_defs &lt;- reml_boilerplate(dat,titl = "myFile")
+# you just got a quick and dirty unit_defs, these need to be made proper in morpho
+# we can get the col names easily
+col_defs &lt;- names(dat)
+# then create a dataset with metadata
+ds &lt;- data.set(dat,
+               col.defs = col_defs,
+               unit.defs = unit_defs
+               )
+# now write EML metadata file
+eml_config(creator="TBA &lt;fakeaddress@gmail.com&gt;")
+wd &lt;- getwd()
+setwd(outdir)
+eml_write(ds,
+          file = gsub(".csv", "_eml_skeleton.xml", outfile),
+          title = gsub(".csv", "", outfile)
+          )
+tempfile &lt;- dir(pattern="^data_table_")
+file.rename(tempfile, outfile)
+# rename the CSV file.
+setwd(wd)
+</code></pre>
+
+<p></p>
+
+
+<h1>now attach the data</h1>
+
+<ul>
+<li>to avoid risk of morpho getting confused it is probably safe to let it start the new dataTable tags</li>
+</ul>
+
+
+<p><img src="/images/morpho-hotwire-1.png" alt="morpho-hotwire-1.png" /></p>
+
+<ul>
+<li>say it is a simple CSV</li>
+<li>say the name for the file for title, TBA for all other required fields, for attributes add one and say it is datetime (to be quick)</li>
+</ul>
+
+
+<p><img src="/images/morpho-hotwire-2.png" alt="morpho-hotwire-2.png" /></p>
+
+<ul>
+<li>note the docid (41.2) and download file id (ecogrid://knb/datalibrarian2.42.1)</li>
+<li>save locally and close</li>
+</ul>
+
+
+<h1>now replace the metadata info</h1>
+
+<ul>
+<li>use an XML editor to go to the eml skeleton we created in morpho and also to the one created in R</li>
+<li>in the morpho generated XML find the attributeList tag within the dataTable group, mine looked like</li>
+</ul>
+
+
+<h4>Code:</h4>
+
+<pre><code>&lt;attributeList&gt;&lt;attribute id="1408536821935"&gt;...
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>and we know that the stuff we want to replace finishes with the closing tag </attributeList></li>
+<li>I think the ID is irrelevant, except Morpho won't allow multiple of the same id number within an EML</li>
+<li>find the same and replace in the REML generated bit</li>
+</ul>
+
+
+<p><img src="/images/morpho-attributelist.png" alt="morpho-attributelist.png" /></p>
+
+<p>And paste:</p>
+
+<p><img src="/images/morpho-dataformat.png" alt="morpho-dataformat.png" /></p>
+
+<h4>Also do the</h4>
+
+<pre><code>&lt;dataFormat&gt;&lt;/dataFormat&gt; section
+</code></pre>
+
+<h1>add another dataset</h1>
+
+<ul>
+<li>assuming you already ran reml_boilerplate for this new file</li>
+<li>use morpho menus to add another datatabe</li>
+<li>save locally and close morpho</li>
+<li>open with XML editor and the REML EML Skeleton</li>
+<li>transfer dataformat and attributelist stuff</li>
+<li>go to documentation and make minor mod (space in abstract?), save locally</li>
+</ul>
+
+
+<h1>share it with colleagues</h1>
+
+<ul>
+<li>go to documentation menu > access info and set/verify to public = no add user</li>
+<li>save to metacat</li>
+<li>now go to their (windows?) machine and log in as the same morpho profile,</li>
+<li>log in to the metacat and download the new package for work</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/08/hotwire-a-morpho-package-using-r-and-xml-editor/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-08-21 00:00:00 +1000">21 Aug 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/08/morpho-doesnt-respect-quote-encapsulated-strings-in-csv/" title="morpho-doesnt-respect-quote-encapsulated-strings-in-csv" rel="bookmark">morpho-doesnt-respect-quote-encapsulated-strings-in-csv</a>
     </h1>
     <div class="entry-content full-content">
@@ -545,69 +728,6 @@ print(xtable(dataDictionary), type = "html", include.rownames = F)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/06/reflecting-on-aekos-data-portal-test/" title="reflecting-on-aekos-data-portal-test" rel="bookmark">reflecting-on-aekos-data-portal-test</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>In <a href="/2014/06/testing-aekos-data-portal">my last post on AEKOS Dta Portal</a> I reported my test of the Australian Terrestrial Ecosystem Research Network (TERN) AEKOS Data Portal system implemented by Uni Adelaide's Eco-informatics Facility.</li>
-<li>I've reflected a bit on this process and I want to jot down some notes</li>
-</ul>
-
-
-<h3>Database restore scripts are complicated and inhibit access</h3>
-
-<ul>
-<li>I'd re-iterate my conclusion that I really like how this model emphasises the use of databases for data management (and postgres or mysql are great options)</li>
-<li>but for a less-technically savvy person or for a casual browser just looking for some quick data to play with this is not easy enough</li>
-<li>for a good description of alternative approaches see <a href="http://flowingdata.com/2014/06/10/how-to-make-government-data-sites-better/">http://flowingdata.com/2014/06/10/how-to-make-government-data-sites-better/</a> which is a good set of requests for simple and efficient access to data via Government portals in the USA</li>
-<li>I spoke with Squid and Matt the developers and they described the new enhancement they are working on now to provide a simple flat file download so that will be great.</li>
-</ul>
-
-
-<h3>Linking Exploratory Data Analyses back to metadata and source data documentation</h3>
-
-<ul>
-<li>In my normal mode of operating I spend more time reviewing the metadata and source data documentation before exploring data (much like the workflow described at <a href="http://simplystatistics.org/2014/06/13/what-i-do-when-i-get-a-new-data-set-as-told-through-tweets/">http://simplystatistics.org/2014/06/13/what-i-do-when-i-get-a-new-data-set-as-told-through-tweets/</a>, especially see Step 1: Learn about the elephant)</li>
-<li>but this time I just wanted to get some data out and so went full steam ahead like a bull at a gate</li>
-<li>Once I had <a href="/2014/06/testing-aekos-data-portal/#toc_12">my map visualisation done</a> I decided to go back to the documentation to read up a bit more on why these locations were studied and other contextual metadata</li>
-<li>But when I look in the zip I downloaded I investigated the citation.pdf and the tabledefinitions.pdf but these don't really have much in it for me to link back to the source of the data and the documentation I need</li>
-<li>See the citation link h ref="http://www.portal.aekos.org.au/" target="_blank"</li>
-<li>so hunting around the portal again I search for the survey name "Department of Environment, Water and Natural Resources, South Australia - Dalhousie Survey (Scientific Expedition Group)
-Survey"</li>
-<li>and got 10 hits, chose number 1</li>
-<li>skim-read of overview and scope. seems the link out from the overview/abstract is the most useful to get an overview</li>
-<li>moved on to methods and I really like the way the segments collapse and expand as you read them, but didn't like how I had to keep navigating back and forward with the browser (like between Study Location Selection Method and Study Location Visit Method, each time I went back I had to scroll to bottom of page to get to list of sections)</li>
-<li>Finally I got to explore the observation diagram and methods diagram which I have not seen before.  These seem like a great way to show the information and let people browse through the concepts etc...</li>
-<li>But I think I still prefer an old school document with a table of contents and some kind of index.</li>
-</ul>
-
-
-<p><img src="/images/aekos_obs_diagram.png" alt="aekos_obs_diagram.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/06/reflecting-on-aekos-data-portal-test/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-06-15 00:00:00 +1000">15 Jun 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -688,6 +808,10 @@ Survey"</li>
               <ul>
                 
                 <li>
+                  <a href="/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/" title="Notes from Dr Climate Re data reference syntax models for file organisation and naming" rel="bookmark">Notes from Dr Climate Re data reference syntax models for file organisation and naming</a>
+                </li>
+                
+                <li>
                   <a href="/2015/11/visualisation-tools-for-communicating-data-management-concepts/" title="Visualisation tools for communicating data management concepts" rel="bookmark">Visualisation tools for communicating data management concepts</a>
                 </li>
                 
@@ -701,10 +825,6 @@ Survey"</li>
                 
                 <li>
                   <a href="/2015/11/developing-a-lit-review-database/" title="Developing a lit review database" rel="bookmark">Developing a lit review database</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/11/judging-the-evidence-using-a-literature-review-database/" title="Judging the evidence using a literature review database" rel="bookmark">Judging the evidence using a literature review database</a>
                 </li>
                 
               </ul>
@@ -732,7 +852,7 @@ Survey"</li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (37)</a></li>
+                <li><a href="/categories/disentangle">disentangle (38)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -794,6 +914,8 @@ Survey"</li>
                 
                 <li><a href="/tag/workflow tools">workflow tools (1)</a></li>
                 
+                <li><a href="/tag/data management">data management (1)</a></li>
+                
               <div class="clear"></div>
               </ul>
             </div>
@@ -836,6 +958,8 @@ Survey"</li>
           <!--       <li><a href="/tag/bibliometrics and literature reviewing">bibliometrics and literature reviewing (2)</a></li> -->
           <!--        -->
           <!--       <li><a href="/tag/workflow tools">workflow tools (1)</a></li> -->
+          <!--        -->
+          <!--       <li><a href="/tag/data management">data management (1)</a></li> -->
           <!--        -->
           <!--     <div class="clear"></div> -->
           <!--     </ul> -->
