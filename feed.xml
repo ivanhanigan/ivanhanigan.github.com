@@ -6,6 +6,58 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;This is a revision of my post &lt;a href=&quot;/2015/10/show-missingness-in-large-dataframes-v2&quot;&gt;/2015/10/show-missingness-in-large-dataframes-v2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;This guy posted &lt;a href=&quot;http://www.njtierney.com/r/missing%20data/rbloggers/2015/12/01/ggplot-missing-data/&quot;&gt;http://www.njtierney.com/r/missing%20data/rbloggers/2015/12/01/ggplot-missing-data/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Let's try it out!&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;library(devtools)
+# depends
+install.packages(&quot;gbm&quot;)
+install_github(&quot;tierneyn/neato&quot;)
+library(neato)
+# small eg
+locs=c(&quot;Australia&quot;,&quot;India&quot;,&quot;New Zealand&quot;,&quot;Sri Lanka&quot;,&quot;Uruguay&quot;,&quot;Somalia&quot;)
+f1=c(T,F,T,T,F,F)
+f2=c(F,F,F,T,F,F)
+f3=c(F,T,T,T,F,T)
+atable=data.frame(locs,f1,f2,f3)
+atable[atable == FALSE] &amp;lt;- NA
+atable
+png(&quot;ggplotmissing.png&quot;)
+ggplot_missing(atable)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/ggplotmissing.png&quot; alt=&quot;/images/ggplotmissing.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The one I had problems with because too large is:&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;# Cool but what about a big one?
+dat &amp;lt;- read.csv(&quot;~/path/to/file.csv&quot;)
+str(dat)
+png(&quot;ggplotmissing2.png&quot;, height=1800, width = 3000, res = 200)
+ggplot_missing(dat)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ggplotmissing2.png&quot; alt=&quot;/images/ggplotmissing2.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>2015-12-02 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger/</link>
+			</item>
+		
+			<item>
 				<title>Notes from Dr Climate Re data reference syntax models for file organisation and naming</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;This is an excellent explanation of the Australian Integrated Marine Observing System (IMOS) Data Reference Syntax by Damien Irving on the Dr Climate blog  &lt;a href=&quot;https://drclimate.wordpress.com/2015/09/04/managing-your-data/&quot;&gt;https://drclimate.wordpress.com/2015/09/04/managing-your-data/&lt;/a&gt;&lt;/li&gt;
@@ -564,6 +616,13 @@ summa
 				<title>Show missingness in large dataframes, version 2</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;UPDATE: the other day I blogged this but I needed to tweak things, so this is a re-post with extra&lt;/li&gt;
+&lt;li&gt;UPDATE 2: Today an R blogger has posted a new solution &lt;a href=&quot;/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger&quot;&gt;/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;The old post&lt;/h2&gt;
+
+&lt;ul&gt;
 &lt;li&gt;Sometime ago I saw this example of a method for assessing missing data in a large data frame &lt;a href=&quot;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&quot;&gt;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:&lt;/li&gt;
 &lt;/ul&gt;
@@ -679,71 +738,6 @@ browseURL(file.path(outdir, gsub(&quot;.csv&quot;, &quot;.svg&quot;, outfile))  
 </description>
 				<published>2015-10-28 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/show-missingness-in-large-dataframes-v2/</link>
-			</item>
-		
-			<item>
-				<title>show-missingness-in-large-dataframes</title>
-				<description>&lt;p&gt;Sometime ago I saw this example of a method for assessing missing data in a large data frame &lt;a href=&quot;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&quot;&gt;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/misstable.png&quot; alt=&quot;/images/misstable.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;misstable &amp;lt;- function(atable){
- op &amp;lt;- par(bg = &quot;white&quot;)
- plot(c(0, 400), c(0, 1000), type = &quot;n&quot;, xlab=&quot;&quot;, ylab=&quot;&quot;,
-     main = &quot;Missing Data Table&quot;)
-
-
- pmin=000
- pmax=400
- stre=pmax-pmin
- lnames=length(atable)
- cstep = (stre/lnames)
- for(titles in 1:lnames){
- text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
- }
-
- gmax=900
- gmin=0
- gstre=gmax-gmin
- rvec = as.vector(atable[ [ 1 ] ])
- dnames=length(rvec)
- step = gstre / dnames
- for(rows in 1:dnames){
- text(30,gmax - (rows-1)*step-step/2,rvec[rows])
- ymax=gmax - (rows-1)*step
- ymin=gmax - (rows)*step
- for(col in 2:lnames-1){
- if(atable[rows,col+1] == F){
- tcolor = &quot;red&quot;
- }
- if(atable[rows,col+1] == T){
- tcolor = &quot;white&quot;
- }
- rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
- ymax,col=tcolor,lty=&quot;blank&quot;)
- }
- }
-}
-
-require(grDevices)
-
-# Make a quick dataframe with true/false representing data availability
-locs=c(&quot;Australia&quot;,&quot;India&quot;,&quot;New Zealand&quot;,&quot;Sri Lanka&quot;,&quot;Uruguay&quot;,&quot;Somalia&quot;)
-f1=c(T,F,T,T,F,F)
-f2=c(F,F,F,T,F,F)
-f3=c(F,T,T,T,F,T)
-atable=data.frame(locs,f1,f2,f3)
-atable
-#Draw the table.
-misstable(atable)
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>2015-10-26 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/10/show-missingness-in-large-dataframes/</link>
 			</item>
 		
 	</channel>

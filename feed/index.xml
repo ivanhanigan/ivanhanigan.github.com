@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-12-01T22:29:31+11:00</updated>
+ <updated>2015-12-02T14:16:02+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,149 +13,55 @@
 
  
  <entry>
-   <title>Notes from Dr Climate Re data reference syntax models for file organisation and naming</title>
-   <link href="http://ivanhanigan.github.com/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/"/>
-   <updated>2015-11-29T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming</id>
+   <title>show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</title>
+   <link href="http://ivanhanigan.github.com/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger/"/>
+   <updated>2015-12-02T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</id>
    <content type="html">&lt;ul&gt;
-&lt;li&gt;This is an excellent explanation of the Australian Integrated Marine Observing System (IMOS) Data Reference Syntax by Damien Irving on the Dr Climate blog  &lt;a href=&quot;https://drclimate.wordpress.com/2015/09/04/managing-your-data/&quot;&gt;https://drclimate.wordpress.com/2015/09/04/managing-your-data/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;A Data Reference Syntax (DRS) – a convention for naming your files&lt;/li&gt;
+&lt;li&gt;This is a revision of my post &lt;a href=&quot;/2015/10/show-missingness-in-large-dataframes-v2&quot;&gt;/2015/10/show-missingness-in-large-dataframes-v2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;This guy posted &lt;a href=&quot;http://www.njtierney.com/r/missing%20data/rbloggers/2015/12/01/ggplot-missing-data/&quot;&gt;http://www.njtierney.com/r/missing%20data/rbloggers/2015/12/01/ggplot-missing-data/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;pre&gt;&lt;code&gt;&amp;lt;computer&amp;gt;/&amp;lt;project&amp;gt;/&amp;lt;organisation&amp;gt;/&amp;lt;collection&amp;gt;/&amp;lt;facility&amp;gt;/&amp;lt;data-type&amp;gt;/&amp;lt;site-code&amp;gt;/&amp;lt;year&amp;gt;/
+&lt;h3&gt;Let's try it out!&lt;/h3&gt;
 
-The data type has a sub-DRS of its own, which tells us that the data
-represents the 1-hourly average surface current for a single month
-(October 2012), and that it is archived on a regularly spaced spatial
-grid and has not been quality controlled.
-
-Just in case the file gets separated from this informative directory
-structure, much of the information is repeated in the file name
-itself, along with some more detailed information about the start and
-end time of the data, and the last time the file was modified:
-
-&amp;lt;project&amp;gt;_&amp;lt;facility&amp;gt;_V_&amp;lt;time-start&amp;gt;_&amp;lt;site-code&amp;gt;_FV00_&amp;lt;data-type&amp;gt;_&amp;lt;time-end&amp;gt;_&amp;lt;modified&amp;gt;.nc.gz
-
-In the first instance this level of detail seems like a bit of
-overkill... 
-
-Since the data are so well labelled,
-locating all monthly timescale ACORN data from the Turquoise Coast and
-Rottnest Shelf sites (which represents hundreds of files) would be as
-simple as typing the following at the command line:
-
-$ ls */ACORN/monthly_*/{TURQ,ROT}/*/*.nc
+&lt;pre&gt;&lt;code&gt;library(devtools)
+# depends
+install.packages(&quot;gbm&quot;)
+install_github(&quot;tierneyn/neato&quot;)
+library(neato)
+# small eg
+locs=c(&quot;Australia&quot;,&quot;India&quot;,&quot;New Zealand&quot;,&quot;Sri Lanka&quot;,&quot;Uruguay&quot;,&quot;Somalia&quot;)
+f1=c(T,F,T,T,F,F)
+f2=c(F,F,F,T,F,F)
+f3=c(F,T,T,T,F,T)
+atable=data.frame(locs,f1,f2,f3)
+atable[atable == FALSE] &amp;lt;- NA
+atable
+png(&quot;ggplotmissing.png&quot;)
+ggplot_missing(atable)
+dev.off()
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 
-&lt;h2&gt;Damien's personalised DRS&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/images/ggplotmissing.png&quot; alt=&quot;/images/ggplotmissing.png&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;It is worthwhile thinking through these ideas and incorporating them in ones data management system as early as possible&lt;/li&gt;
-&lt;li&gt;Damien has also helpfully openly shared his own DRS at &lt;a href=&quot;https://github.com/DamienIrving/climate-analysis/blob/master/data_reference_syntax.md&quot;&gt;https://github.com/DamienIrving/climate-analysis/blob/master/data_reference_syntax.md&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Here is a summary of some key items I'm going to implement versions of for my own work&lt;/li&gt;
+&lt;li&gt;The one I had problems with because too large is:&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;Basic data files&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;var&amp;gt;_&amp;lt;dataset&amp;gt;_&amp;lt;level&amp;gt;_&amp;lt;time&amp;gt;_&amp;lt;spatial&amp;gt;.nc&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Sub-categories:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;time&amp;gt;&lt;/code&gt;: &lt;code&gt;&amp;lt;tstep&amp;gt;-&amp;lt;aggregation&amp;gt;-&amp;lt;season&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;spatial&amp;gt;&lt;/code&gt;: &lt;code&gt;&amp;lt;grid&amp;gt;-&amp;lt;region&amp;gt;-&amp;lt;bounds&amp;gt;-&amp;lt;np&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Where:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;tstep&amp;gt;&lt;/code&gt;: &lt;code&gt;daily&lt;/code&gt;, &lt;code&gt;monthly&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;aggregation&amp;gt;&lt;/code&gt;: &lt;code&gt;030day-runmean&lt;/code&gt;, &lt;code&gt;anom-wrt-1979-2011&lt;/code&gt;, &lt;code&gt;anom-wrt-all&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;season&amp;gt;&lt;/code&gt;: &lt;code&gt;JJA&lt;/code&gt;, &lt;code&gt;MJJASO&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;grid&amp;gt;&lt;/code&gt;: &lt;code&gt;native&lt;/code&gt; or something like &lt;code&gt;y181x360&lt;/code&gt;, which describes the number of latitude (181) and longitude (360) points (in this case it is a 1 by 1 degree horizontal grid).&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;region&amp;gt;&lt;/code&gt;: Region names are defined in &lt;code&gt;netcdf_io.py&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;bounds&amp;gt;&lt;/code&gt;: e.g. &lt;code&gt;lon225E335E-lat10S10N&lt;/code&gt; or &lt;code&gt;mermax&lt;/code&gt;, &lt;code&gt;zonal-anom&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;np&amp;gt;&lt;/code&gt;: North pole location, e.g. &lt;code&gt;np20N260E&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Examples include:&lt;br/&gt;
-&lt;code&gt;psl_Merra_surface_daily_y181x360.nc&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;More complex file names&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;inside&amp;gt;_&amp;lt;filters&amp;gt;_&amp;lt;prev-var&amp;gt;_&amp;lt;dataset&amp;gt;_&amp;lt;level&amp;gt;_&amp;lt;time&amp;gt;_&amp;lt;spatial&amp;gt;.nc&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Sub-categories:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;inside&amp;gt;&lt;/code&gt;: The variable inside the file. e.g. &lt;code&gt;tas-composite&lt;/code&gt;, &lt;code&gt;datelist&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;filters&amp;gt;&lt;/code&gt;: e.g. &lt;code&gt;samgt90pct&lt;/code&gt; (&lt;code&gt;gt&lt;/code&gt; and &lt;code&gt;lt&lt;/code&gt; and used for greater and less than, &lt;code&gt;pct&lt;/code&gt; for percentile)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;prev-var&amp;gt;&lt;/code&gt;: if it's not obvious what variable &lt;code&gt;&amp;lt;inside&amp;gt;&lt;/code&gt; was created from, include the previous variable/s&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Examples:&lt;br/&gt;
-&lt;code&gt;tas-composite_pwigt90pct_ERAInterim_500hPa_030day-runmean-anom-wrt-all_native-sh.png&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3&gt;Principles of Tidy Data&lt;/h3&gt;
-
-&lt;p&gt;In the words of Hadley Wickham the order that data should be
-arranged in follows some generic principles:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;'A good ordering makes it easier to scan the raw values. One way of
-organizing variables is by their role in the analysis: are values
-fixed by the design of the data collection, or are they measured
-during the course of the experiment? Fixed variables describe the
-experimental design and are known in advance. Computer scientists
-often call fixed variables dimensions, and statisticians usually
-denote them with subscripts on random variables. Measured variables
-are what we actually measure in the study. Fixed variables should come
-first, followed by measured variables, each ordered so that related
-variables are contiguous. Rows can then be ordered by the first
-variable, breaking ties with the second and subsequent (fixed)
-variables.'
+&lt;pre&gt;&lt;code&gt;# Cool but what about a big one?
+dat &amp;lt;- read.csv(&quot;~/path/to/file.csv&quot;)
+str(dat)
+png(&quot;ggplotmissing2.png&quot;, height=1800, width = 3000, res = 200)
+ggplot_missing(dat)
+dev.off()
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h3&gt;An exemplar&lt;/h3&gt;
-
-&lt;p&gt;In my last project the protocol we developed (for an ecology and biodiversity database) had a naming convention which relied heavily on a sequence of information being used to order the names of folders, subfolders and files.  This is:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;The project name (and optional sub-project name)&lt;/li&gt;
-&lt;li&gt;Data type (such as experimental unit, observational unit, and/or measurement methods)&lt;/li&gt;
-&lt;li&gt;Geographic location (locality name, State, Country)&lt;/li&gt;
-&lt;li&gt;Temporal frequency and coverage (such as annual or seasonal tranches).&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h3&gt;The concepts of slow moving dimensions and fast moving variables&lt;/h3&gt;
-
-&lt;p&gt;The concept of dimensions and variables can be useful here, and especially for deciding on filenames.  Dimensions are fixed or change slowly while variables change more quickly.  By 'change', this  means that there are more of them. For example the project name is 'fixed', that is it does not change across the files, but the sub-project name does change, just more slowly (say there may be 2-3 different sub-projects within a project). Then there may be a set of data types, and these 'change' more quickly than the sub-project name.  Then the geographic and temporal variables might change quickest of all.&lt;/p&gt;
-
-&lt;p&gt;So a general rule for the order of things can be stated. The fixed and slowly changing variables should come first (those things that don't change, or don't change much),
-followed by the more fluid variables (or things that change more across the project).
-List elements can then be ordered so that the groups of things that are similar will always be contiguous, and vary sequentially within clusters.&lt;/p&gt;
-
-&lt;p&gt;So the only thing I disagree with Damien about is his decision to put space after time:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;var&amp;gt;_&amp;lt;dataset&amp;gt;_&amp;lt;level&amp;gt;_&amp;lt;time&amp;gt;_&amp;lt;spatial&amp;gt;.nc&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;This is  because I think that the geography is more stable than the time period for a data collection, and as most of my studies look at changes of variables measured at a location over time I generally want to compare the same spot at multiple times.  There are pros and cons of each approach such as if the analyst wants to make maps of a variable measured at several locations at a single point in time then having the data arranged by time first and then location may make that job simpler.&lt;/p&gt;
-
-&lt;p&gt;I also notice however that the IMOS syntax puts the site spatial location before the year.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/ggplotmissing2.png&quot; alt=&quot;/images/ggplotmissing2.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  
