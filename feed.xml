@@ -6,6 +6,50 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>My project inventory</title>
+				<description>&lt;h3&gt;Auditing and inventorising&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I just completed an audit of my project files and updated the list on my website &lt;a href=&quot;/projects.html&quot;&gt;http://ivanhanigan.github.com/projects.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;This was enabled by the work I have been doing on a data inventory web2py app &lt;a href=&quot;https://github.com/ivanhanigan/data_inventory&quot;&gt;https://github.com/ivanhanigan/data_inventory&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The list shows some of the project data collections I have amassed during my research over the last 15 years&lt;/li&gt;
+&lt;li&gt;Some of these are data collections I have developed, others are derivatives of collections originated by others&lt;/li&gt;
+&lt;li&gt;Many of these are areas of active research, but others are dormant&lt;/li&gt;
+&lt;li&gt;This list will be updated as time permits.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Projects&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1 Air pollution&lt;/li&gt;
+&lt;li&gt;2 Australian health&lt;/li&gt;
+&lt;li&gt;3 Australian population&lt;/li&gt;
+&lt;li&gt;4 Biodiversity and environmental change&lt;/li&gt;
+&lt;li&gt;5 Bioregions&lt;/li&gt;
+&lt;li&gt;6 Cardio-respiratory disease, biomass smoke, dust and heatwaves&lt;/li&gt;
+&lt;li&gt;7 Climate Change&lt;/li&gt;
+&lt;li&gt;8 Eco-social observatories&lt;/li&gt;
+&lt;li&gt;9 Extreme Weather Events&lt;/li&gt;
+&lt;li&gt;10 GIS&lt;/li&gt;
+&lt;li&gt;11 Infectious diseases and local habitat&lt;/li&gt;
+&lt;li&gt;12 Mental health and drought&lt;/li&gt;
+&lt;li&gt;13 Mortality and morbidity effects from weather&lt;/li&gt;
+&lt;li&gt;14 Reproducible research pipelines&lt;/li&gt;
+&lt;li&gt;15 Medical geography theory and tools&lt;/li&gt;
+&lt;li&gt;16 Roads and places&lt;/li&gt;
+&lt;li&gt;17 Transformational adaptation&lt;/li&gt;
+&lt;li&gt;18 Ultraviolet radiation&lt;/li&gt;
+&lt;li&gt;19 Water&lt;/li&gt;
+&lt;li&gt;20 Weather&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<published>2015-12-07 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/12/my-project-inventory/</link>
+			</item>
+		
+			<item>
 				<title>show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;This is a revision of my post &lt;a href=&quot;/2015/10/show-missingness-in-large-dataframes-v2&quot;&gt;/2015/10/show-missingness-in-large-dataframes-v2&lt;/a&gt;&lt;/li&gt;
@@ -610,134 +654,6 @@ summa
 </description>
 				<published>2015-10-31 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/10/decisions-to-make-when-modelling-interactions/</link>
-			</item>
-		
-			<item>
-				<title>Show missingness in large dataframes, version 2</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;UPDATE: the other day I blogged this but I needed to tweak things, so this is a re-post with extra&lt;/li&gt;
-&lt;li&gt;UPDATE 2: Today an R blogger has posted a new solution &lt;a href=&quot;/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger&quot;&gt;/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;The old post&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sometime ago I saw this example of a method for assessing missing data in a large data frame &lt;a href=&quot;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&quot;&gt;http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/bankstown_traffic_counts_full_listing_june_2014.svg&quot; alt=&quot;/images/bankstown_traffic_counts_full_listing_june_2014.svg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;misstable &amp;lt;- function(atable){
- op &amp;lt;- par(bg = &quot;white&quot;)
- plot(c(0, 400), c(0, 1000), type = &quot;n&quot;, xlab=&quot;&quot;, ylab=&quot;&quot;,
-     main = &quot;Missing Data Table&quot;)
-
-
- pmin=000
- pmax=400
- stre=pmax-pmin
- lnames=length(atable)
- cstep = (stre/lnames)
- for(titles in 1:lnames){
- text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
- }
-
- gmax=900
- gmin=0
- gstre=gmax-gmin
- rvec = as.vector(atable[ [ 1 ] ])
- dnames=length(rvec)
- step = gstre / dnames
- for(rows in 1:dnames){
- text(30,gmax - (rows-1)*step-step/2,rvec[rows])
- ymax=gmax - (rows-1)*step
- ymin=gmax - (rows)*step
- for(col in 2:lnames-1){
- if(atable[rows,col+1] == F){
- tcolor = &quot;red&quot;
- }
- if(atable[rows,col+1] == T){
- tcolor = &quot;white&quot;
- }
- rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
- ymax,col=tcolor,lty=&quot;blank&quot;)
- }
- }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;Now things to note are that the function expects the data to be TRUE if Not NA and  FALSE if is NA&lt;/li&gt;
-&lt;li&gt;so might need to massage things a bit first&lt;/li&gt;
-&lt;li&gt;here is the small test Grant supplied&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;require(grDevices)
-
-# Make a quick dataframe with true/false representing data availability
-locs=c(&quot;Australia&quot;,&quot;India&quot;,&quot;New Zealand&quot;,&quot;Sri Lanka&quot;,&quot;Uruguay&quot;,&quot;Somalia&quot;)
-f1=c(T,F,T,T,F,F)
-f2=c(F,F,F,T,F,F)
-f3=c(F,T,T,T,F,T)
-atable=data.frame(locs,f1,f2,f3)
-atable
-#Draw the table.
-misstable(atable)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;here is the one I worked on today&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# having defined the input dir and input file tried reading the excel sheet (without head 3 rows)
-#dat &amp;lt;- readxl::read_excel(file.path(indir, infile), skip =3)
-# got lots of warnings()
-## 50: In read_xlsx_(path, sheet, col_names = col_names, col_types = col_types,  ... :
-##   [1278, 4]: expecting date: got '[NULL]'
-# I always worry about using excel connections so open in excel (in windows) 
-# and save as to convert to CSV
-dat &amp;lt;- read.csv(file.path(indir, gsub(&quot;.xlsx&quot;, &quot;.csv&quot;, infile)), skip =3, stringsAsFactor = F)
-str(dat)
-# 'data.frame':     1396 obs. of  167 variables:
-# but most of the cols and a third of the rows are empty!
-# check missings
-dat2 &amp;lt;- data.frame(id = 1:nrow(dat), dat)
-str(dat2)
-# first if they are empty strings
-dat2[dat2 == &quot;&quot;] &amp;lt;- NA
-# now if NA
-dat2[,2:ncol(dat2)] &amp;lt;- !is.na(dat2[,2:ncol(dat2)])
-
-# Truncate the hundreds of empty cols
-str(dat2[,1:18])
-tail(dat2[,1:18])
-svg(file.path(outdir, gsub(&quot;.csv&quot;, &quot;.svg&quot;, outfile))    )
-misstable(dat2[,1:18])
-dev.off()
-browseURL(file.path(outdir, gsub(&quot;.csv&quot;, &quot;.svg&quot;, outfile))    )
-
-# cool, that is an effective way to look at the data
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>2015-10-28 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/10/show-missingness-in-large-dataframes-v2/</link>
 			</item>
 		
 	</channel>
