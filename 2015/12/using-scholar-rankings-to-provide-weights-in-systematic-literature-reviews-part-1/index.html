@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - our-paper-is-out-heat-health-warning-systems</title>
+    <title>Ivan Hanigan - Using scholar rankings to provide weights in systematic literature reviews part 1</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -46,7 +46,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2013/11/our-paper-is-out-heat-health-warning-systems/" title="our-paper-is-out-heat-health-warning-systems" rel="bookmark">our-paper-is-out-heat-health-warning-systems</a>
+    <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -57,21 +57,62 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>Finally our article has been published in final version in Environmental Health.</p>
-
-<ul>
-<li>Title: The impact of heat on mortality and morbidity in the Greater Metropolitan Sydney Region: a case crossover analysis</li>
-<li>Authors: Wilson Ann Leigh, Gerard Morgan  Geoffrey, Hanigan Charles Ivan, Johnston H Fay, Abu-Rayya  Hisham, Broome  Richard, Gaskin  Clive, Jalaludin  Bin,</li>
-<li>Environmental Health.2013, 12:98.</li>
-<li>DOI: 10.1186/10.1186/1476-069X-12-98</li>
-<li>URL: <a href="http://www.ehjournal.net/content/12/1/98">http://www.ehjournal.net/content/12/1/98</a></li>
+    <ul>
+<li>I've been thinking alot recently about an approach used in this recent systematic review</li>
 </ul>
 
 
-<p>Finally.......
-thanks to everyone,  especially Geoff Morgan, Richard Broome, Fay Johnston; Bin Jalaludin</p>
+<pre><code>Vins, H., Bell, J., Saha, S., &amp; Hess, J. (2015). The mental health
+outcomes of drought: A systematic review and causal process
+diagram. International Journal of Environmental Research and Public
+Health, 12(10), 13251–13275. doi:10.3390/ijerph121013251
+</code></pre>
 
-<p>And especially Leigh Wilson.</p>
+<p></p>
+
+
+<ul>
+<li>They identify causal pathways from papers and ascribe the supporting evidentiary weight based on the number of papers published with findings that support this cause-effect pathway</li>
+<li>The raw number of papers is probably not a good metric, prone to bias so I was thinking of ways to ascribe weight based on quality of journal or authors</li>
+<li>This is not supposed to replace the need to actually read the papers, but purely as an additional source of information</li>
+<li>This recent post on scholar metrics provided some impetus via h-indices
+<a href="http://datascienceplus.com/hindex-gindex-pubmed-rismed/">http://datascienceplus.com/hindex-gindex-pubmed-rismed/</a></li>
+<li>I also think this approach of text mining the abstracts could be useful <a href="http://tuxette.nathalievilla.org/?p=1682">http://tuxette.nathalievilla.org/?p=1682</a></li>
+</ul>
+
+
+<h3>Sanity check of the two options using myself as guinea pig</h3>
+
+<pre><code class="">library(RISmed)
+x &lt;- "hanigan+ic[Author]"
+res &lt;- EUtilsSummary(x, type="esearch", db="pubmed", datetype='pdat', mindate=1900, 
+  maxdate=2015, retmax=500)
+str(res)
+citations1 &lt;- Cited(res)
+citations &lt;- as.data.frame(citations1)
+citations &lt;- citations[order(citations$citations,decreasing=TRUE),]
+citations &lt;- as.data.frame(citations)
+str(citations)
+citations &lt;- cbind(id=rownames(citations),citations)
+citations$id&lt;- as.character(citations$id)
+citations$id&lt;- as.numeric(citations$id)
+hindex &lt;- max(which(citations$id&lt;=citations$citations))
+
+hindex
+# 5
+
+library(scholar)
+myid &lt;- "cGN1P0wAAAAJ"
+y &lt;- scholar::get_publications(myid)
+str(y)
+y[,c("author", "cites")]
+y$id &lt;- as.numeric(row.names(y))
+hindex2 &lt;- max(which(y$id&lt;=y$cites))
+hindex2
+# 15
+</code></pre>
+
+<h3>Clearly the pubmed and google scholar search engines makes a big difference to my score!</h3>
 
     <div class="clear"></div>
   </div>
@@ -86,12 +127,12 @@ thanks to everyone,  especially Geoff Morgan, Richard Broome, Fay Johnston; Bin 
   <p class="alt-font tight">
     Posted in&nbsp;
     
-    <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+    <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
     
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-11-27 00:00:00 +1100">27 Nov 2013</abbr>
+      <abbr class="published" title="2015-12-17 00:00:00 +1100">17 Dec 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -105,7 +146,7 @@ thanks to everyone,  especially Geoff Morgan, Richard Broome, Fay Johnston; Bin 
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2013/11/our-paper-is-out-heat-health-warning-systems/";
+    var disqus_url = "http://ivanhanigan.github.com/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

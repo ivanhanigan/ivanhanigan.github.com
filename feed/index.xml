@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-12-09T10:54:36+11:00</updated>
+ <updated>2015-12-17T16:47:52+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,47 +13,66 @@
 
  
  <entry>
-   <title>My project inventory</title>
-   <link href="http://ivanhanigan.github.com/2015/12/my-project-inventory/"/>
-   <updated>2015-12-07T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/12/my-project-inventory</id>
-   <content type="html">&lt;h3&gt;Auditing and inventorising&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I just completed an audit of my project files and updated the list on my website &lt;a href=&quot;/projects.html&quot;&gt;http://ivanhanigan.github.com/projects.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;This was enabled by the work I have been doing on a data inventory web2py app &lt;a href=&quot;https://github.com/ivanhanigan/data_inventory&quot;&gt;https://github.com/ivanhanigan/data_inventory&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;The list shows some of the project data collections I have amassed during my research over the last 15 years&lt;/li&gt;
-&lt;li&gt;Some of these are data collections I have developed, others are derivatives of collections originated by others&lt;/li&gt;
-&lt;li&gt;Many of these are areas of active research, but others are dormant&lt;/li&gt;
-&lt;li&gt;This list will be updated as time permits.&lt;/li&gt;
+   <title>Using scholar rankings to provide weights in systematic literature reviews part 1</title>
+   <link href="http://ivanhanigan.github.com/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/"/>
+   <updated>2015-12-17T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;I've been thinking alot recently about an approach used in this recent systematic review&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h3&gt;Projects&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;Vins, H., Bell, J., Saha, S., &amp;amp; Hess, J. (2015). The mental health
+outcomes of drought: A systematic review and causal process
+diagram. International Journal of Environmental Research and Public
+Health, 12(10), 13251–13275. doi:10.3390/ijerph121013251
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
 
 &lt;ul&gt;
-&lt;li&gt;1 Air pollution&lt;/li&gt;
-&lt;li&gt;2 Australian health&lt;/li&gt;
-&lt;li&gt;3 Australian population&lt;/li&gt;
-&lt;li&gt;4 Biodiversity and environmental change&lt;/li&gt;
-&lt;li&gt;5 Bioregions&lt;/li&gt;
-&lt;li&gt;6 Cardio-respiratory disease, biomass smoke, dust and heatwaves&lt;/li&gt;
-&lt;li&gt;7 Climate Change&lt;/li&gt;
-&lt;li&gt;8 Eco-social observatories&lt;/li&gt;
-&lt;li&gt;9 Extreme Weather Events&lt;/li&gt;
-&lt;li&gt;10 GIS&lt;/li&gt;
-&lt;li&gt;11 Infectious diseases and local habitat&lt;/li&gt;
-&lt;li&gt;12 Mental health and drought&lt;/li&gt;
-&lt;li&gt;13 Mortality and morbidity effects from weather&lt;/li&gt;
-&lt;li&gt;14 Reproducible research pipelines&lt;/li&gt;
-&lt;li&gt;15 Medical geography theory and tools&lt;/li&gt;
-&lt;li&gt;16 Roads and places&lt;/li&gt;
-&lt;li&gt;17 Transformational adaptation&lt;/li&gt;
-&lt;li&gt;18 Ultraviolet radiation&lt;/li&gt;
-&lt;li&gt;19 Water&lt;/li&gt;
-&lt;li&gt;20 Weather&lt;/li&gt;
+&lt;li&gt;They identify causal pathways from papers and ascribe the supporting evidentiary weight based on the number of papers published with findings that support this cause-effect pathway&lt;/li&gt;
+&lt;li&gt;The raw number of papers is probably not a good metric, prone to bias so I was thinking of ways to ascribe weight based on quality of journal or authors&lt;/li&gt;
+&lt;li&gt;This is not supposed to replace the need to actually read the papers, but purely as an additional source of information&lt;/li&gt;
+&lt;li&gt;This recent post on scholar metrics provided some impetus via h-indices
+&lt;a href=&quot;http://datascienceplus.com/hindex-gindex-pubmed-rismed/&quot;&gt;http://datascienceplus.com/hindex-gindex-pubmed-rismed/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I also think this approach of text mining the abstracts could be useful &lt;a href=&quot;http://tuxette.nathalievilla.org/?p=1682&quot;&gt;http://tuxette.nathalievilla.org/?p=1682&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
+
+&lt;h3&gt;Sanity check of the two options using myself as guinea pig&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;&quot;&gt;library(RISmed)
+x &amp;lt;- &quot;hanigan+ic[Author]&quot;
+res &amp;lt;- EUtilsSummary(x, type=&quot;esearch&quot;, db=&quot;pubmed&quot;, datetype='pdat', mindate=1900, 
+  maxdate=2015, retmax=500)
+str(res)
+citations1 &amp;lt;- Cited(res)
+citations &amp;lt;- as.data.frame(citations1)
+citations &amp;lt;- citations[order(citations$citations,decreasing=TRUE),]
+citations &amp;lt;- as.data.frame(citations)
+str(citations)
+citations &amp;lt;- cbind(id=rownames(citations),citations)
+citations$id&amp;lt;- as.character(citations$id)
+citations$id&amp;lt;- as.numeric(citations$id)
+hindex &amp;lt;- max(which(citations$id&amp;lt;=citations$citations))
+
+hindex
+# 5
+
+library(scholar)
+myid &amp;lt;- &quot;cGN1P0wAAAAJ&quot;
+y &amp;lt;- scholar::get_publications(myid)
+str(y)
+y[,c(&quot;author&quot;, &quot;cites&quot;)]
+y$id &amp;lt;- as.numeric(row.names(y))
+hindex2 &amp;lt;- max(which(y$id&amp;lt;=y$cites))
+hindex2
+# 15
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Clearly the pubmed and google scholar search engines makes a big difference to my score!&lt;/h3&gt;
 </content>
  </entry>
  

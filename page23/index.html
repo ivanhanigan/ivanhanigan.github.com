@@ -56,6 +56,80 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
+<li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
+<li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
+<li>The beta coefficient itself shouldn't be affected.</li>
+<li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
+<li>To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
+<li>I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
+<li>So I asked Sarunya for a discussion about her research</li>
+</ul>
+
+
+<h3>Sarunya's model is essentially like this</h3>
+
+<h4>R Code:</h4>
+
+<pre><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
+       ns(temp, df) + ns(humidity, df) +
+       ns(time, df = 7*numYears) +
+       SLA * ns(time, df = 2),
+       data = analyte, family = poisson
+       )
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
+<li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
+<li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
+<li>therefore this study avoids the issue by it's intentional design to compare betas not se</li>
+<li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
+<li>this is fascinating in itself, but a separate issue for another post</li>
+</ul>
+
+
+<h3>Conclusions</h3>
+
+<ul>
+<li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
+<li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
+</ul>
+
+
+<p>THANKS Sarunya!</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
     </h1>
     <div class="entry-content full-content">
@@ -795,37 +869,6 @@ Several things I'd like to change.</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
-    </h1>
-    <div class="entry-content full-content">
-      
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/awap grids" title="awap grids" rel="category tag">awap grids</a>
-      
-      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/extract-weather-data-from-awap-grids/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-26 00:00:00 +1100">26 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -906,6 +949,10 @@ Several things I'd like to change.</p>
               <ul>
                 
                 <li>
+                  <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
+                </li>
+                
+                <li>
                   <a href="/2015/12/my-project-inventory/" title="My project inventory" rel="bookmark">My project inventory</a>
                 </li>
                 
@@ -919,10 +966,6 @@ Several things I'd like to change.</p>
                 
                 <li>
                   <a href="/2015/11/visualisation-tools-for-communicating-data-management-concepts/" title="Visualisation tools for communicating data management concepts" rel="bookmark">Visualisation tools for communicating data management concepts</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/11/a-picture-of-the-newnode-function-for-workflow-visualisation-in-r/" title="A picture of the newnode function for workflow visualisation in R" rel="bookmark">A picture of the newnode function for workflow visualisation in R</a>
                 </li>
                 
               </ul>
@@ -950,7 +993,7 @@ Several things I'd like to change.</p>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (39)</a></li>
+                <li><a href="/categories/disentangle">disentangle (40)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
