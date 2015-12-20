@@ -40,7 +40,7 @@
         <div id="content">
           <h2>Welcome to my Open Notebook</h2>
 
-<p>This is an Open Notebook with <a href="http://onsclaims.wikispaces.com/">Selected Content - Delayed</a>. Find out more <a href="/research.html">Here</a>.</p>
+<p>This is an Open Notebook with <a href="https://en.wikipedia.org/wiki/Open_notebook_science/" target="new">Selected Content - Delayed</a>. Find out more <a href="/research.html">Here</a>.</p>
 
 <p>  <img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
 
@@ -53,6 +53,171 @@
 </div>
 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=SChamberlain"></script>
 <!-- AddThis Button END -->
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2015/10/keeping-an-electronic-lab-notebook-for-computational-statistics-projects/" title="Keeping an electronic lab notebook for computational statistics projects" rel="bookmark">Keeping an electronic lab notebook for computational statistics projects</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>In my previous post on this topic <a href="http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/">http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/</a> I summarised some recommendations for electronic lab notebooks</li>
+<li>I've collated from a variety of sources for managing computational statistics projects in a reproducible research Pipelines</li>
+<li>One thing I found while reading the literature around this topic is that the concepts are difficult to really grasp until I see them being used</li>
+<li>The example worklog from Scott Long was a good insight into his method, that I really got more out of the figure below than from descriptions of the concept</li>
+<li>screen shot taken from Long, S. (2012). Principles of Workflow in Data Analysis. Retrieved from <a href="http://www.indiana.edu/~wim/docs/2012-long-slides.pdf">http://www.indiana.edu/~wim/docs/2012-long-slides.pdf</a> (accessed 2015-10-23).</li>
+</ul>
+
+
+<p><img src="/images/worklog-long.png" alt="/images/worklog-long.png" /></p>
+
+<p></p>
+
+
+<ul>
+<li>I added a red box around an important aspect of this example, the communication of gory details, that are often difficult to track if not using a notebook to log our work</li>
+<li>ARGH! indeed.</li>
+</ul>
+
+
+<h2>Replication from Noble's description</h2>
+
+<ul>
+<li>That looks good, but I also really liked the description in Noble's paper where scripts that do computations are linked to log entries</li>
+<li>This was something that I felt I wanted to see in action</li>
+<li>Without an example online, I had to have a go at creating one from the instructions</li>
+<li>I also had to make some modifications to the method because I want to have this set up work in a multidisciplinary team with some users on windows and others on linux, sharing the project on a network folder</li>
+</ul>
+
+
+<h2>My paraphrasing of Noble's description</h2>
+
+<ul>
+<li>Worklog: this is the main file, like a 'lab notebook' for the analyst to track their work.  This  document resides in the root of the project directory and records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to describing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work</li>
+<li>For group work, this can also contain a 'working' folder for each person to store their messy day-to-day files that we don't want to clutter up the main folder (eg 'working_ivan')</li>
+</ul>
+
+
+<p>Conventions I used for writing the worklog entries are:</p>
+
+<ul>
+<li>Names follow this structure [**] [date in ISO 8601 YYYY-MM-DD] [meeting/notes/results] [with/from UserName] [Re: topic shortname]</li>
+<li>'meetings' are for both agenda preparation and also notes of discussion</li>
+<li>'notes' are such things as emailed information or ad hoc Discovery</li>
+<li>'results' are entries related to a section of the 'results' folder. That is, this kind of entry is in parallel to the results entry (see below), however the log contains a prose description of the experiment, whereas the results folder contains scripts etc of all the gory details.</li>
+</ul>
+
+
+<h2>Tests</h2>
+
+<ul>
+<li>I use Emacs on linux for most of my work but I need to share with windows users so tested out keeping the log in a MS word doc.  This got corrupted quickly I think because I edited in Libre office.</li>
+<li>I decided to try and just use a plain text format</li>
+<li>text files created in Ubuntu are so difficult to understand (read) when opened in Windows' Notepad. No matter how many lines have been used, all the lines appear in the same one line.
+To set the buffer coding to DOS style issue:</li>
+</ul>
+
+
+<p><code>M-x set-buffer-file-coding-system utf-8-dos</code></p>
+
+<h3>a couple of examples</h3>
+
+<ul>
+<li>As this is a plain text document opening it in emacs will not automatically render it in the Orgmode fashion</li>
+<li>To achieve this the command is <code>M-x org-mode</code> and the file looks like below</li>
+</ul>
+
+
+<p><img src="/images/worklog-ivan1.png" alt="/images/worklog-ivan1.png" /></p>
+
+<p></p>
+
+
+<ul>
+<li>From here I can keep adding new entries at the bottom, and have a section for URGENT ACTION a the top</li>
+<li>Orgmode can expand the entries by moving to that line and hitting TAB, or use the command <code>C-u C-u C-u TAB</code> to expand all branches</li>
+</ul>
+
+
+<p><img src="/images/worklog-ivan2.png" alt="/images/worklog-ivan2.png" /></p>
+
+<p></p>
+
+
+<h2>the 'Experiment Results' level is about work you might do on a single day, or over a week or two</h2>
+
+<ul>
+<li>Each results subfolder would have workflow scripts that does the work</li>
+<li>At this level each 'experiment' is written up in chronological order</li>
+<li>It is recommended to store every command used while performing the experiment preferably as an executable script that carries out the entire experiment automatically</li>
+<li>you should end up with a file that is parallel to the worklog entry</li>
+<li>The worklog contains a prose description of the experiment, whereas the driver script contains all the gory details</li>
+<li>this is the level I usually think of the distribution side of things</li>
+<li>You may want to pack up the results from one of these folders and email it to the collaborators, or decide on the one set of tables and figures to write into the manuscript for submission to a journal</li>
+<li>If this is accepted for publication, this is the one combined package of 'analytical data and code' that I would consider putting up online as supporting information for the paper.</li>
+</ul>
+
+
+<h3>Example</h3>
+
+<ul>
+<li>I followed Noble's advice to create a driver script to set up the folder structure:</li>
+<li>it is in my Github R package <code>disentangle</code></li>
+</ul>
+
+
+<pre><code>&gt; dir.create("exposures_blending")
+&gt; setwd("exposures_blending")
+&gt; disentangle::AdminTemplate()
+[1] TRUE
+&gt; dir.create("results")
+&gt; setwd("results")
+&gt; makeProject::makeProject("2015-10-23-preliminary-modelling")
+Creating Directories ...
+Creating Code Files ...
+Complete ...
+&gt; 
+</code></pre>
+
+<p>This populates the folders as shown below</p>
+
+<p><img src="/images/worklog-ivan3.png" alt="/images/worklog-ivan3.png" /></p>
+
+<p></p>
+
+
+<h2>Conclusions</h2>
+
+<ul>
+<li>I feel pretty happy with this as a replication of Noble's method</li>
+<li>My colleagues can look at my work and see a high level log that links to the gory details of day to day life in the trenches</li>
+<li>The only downside I can see at the moment is that my colleagues on windows will see a text file that is pretty dense, and will not be as easy to navigate as a word document (or emacs org file)</li>
+<li>Perhaps notepad++ can be used instead.  On my windows machine I did a quick experiment with NPP and found that under the Language menu > Define your language there is a method to define code folding with ** as the opening.  Just need to define a closing tag.  I experimented with '---' which might be good, but ultimately I don't think my colleagues are going to want to do this on their machines.</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/workflow tools" title="workflow tools" rel="category tag">workflow tools</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/keeping-an-electronic-lab-notebook-for-computational-statistics-projects/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-23 00:00:00 +1100">23 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
 
   <div class="full">
     <h1 class="entry-title">
@@ -429,83 +594,6 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/" title="A Driver Script To Set Up A Data Analysis Pipeline" rel="bookmark">A Driver Script To Set Up A Data Analysis Pipeline</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>In my previous post I reviewed a paper by Noble 2009 that proposed recommendations for best practice ways to set up a data analysis pipeline <a href="http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/">http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/</a></li>
-<li>I was following up on a series of posts I made about other best practice recommendations <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/">http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/</a></li>
-<li>In the paper by Noble it is suggested that a one should use a 'driver script' to automate creation of a directory structure, this is the exact way that <code>ProjectTemplate</code> and <code>makeProject</code> work as I described them in the series of posts.</li>
-<li>I think Noble's framework offers something new to the recomendations I had canvassed, that is the idea of chronological order of the contents of the results directory.  I think this is an eminently sensible idea and thought that the R function <code>Sys.Date()</code> would be a great way to start off a project in this way.</li>
-<li>so I have put together the following R function, as an alternative to the <code>makeProject</code> core function, that I thought I'd name so that there may be a family of makeProject functions, so that analysts have a range of to choose from.  The other candidate would be <code>makeProjectLong</code>, which I will also put up before long.</li>
-</ul>
-
-
-<pre><code>makeProjectNoble &lt;- function(rootdir = getwd()){
-  if(!exists(rootdir)) dir.create(rootdir)
-  dir.create(file.path(rootdir,'doc'))
-  dir.create(file.path(rootdir,'doc','paper'))
-  sink(file.path(rootdir,'doc','workplan.Rmd'))
-    cat(sprintf("---\ntitle: Untitled\nauthor: your name\ndate: %s\noutput: html_document\n---\n\n",
-                Sys.Date()))
-  sink()
-  dir.create(file.path(rootdir,'data'))
-  dir.create(file.path(rootdir,'data', Sys.Date()))
-  dir.create(file.path(rootdir,'src'))
-  dir.create(file.path(rootdir,'results')) 
-  dir.create(file.path(rootdir,'results', Sys.Date())) 
-  file.create(file.path(rootdir,'README.md'))
-  }
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>Running this function will deploy the folders and files (I excluded the <code>bin</code> folder for compiled binaries, as I believe that many data analysts may not need that, and those who do are geeky enough to write their own driver scripts.</li>
-</ul>
-
-
-<p><img src="/images/testProjectNoble.png" alt="/images/testProjectNoble.png" /></p>
-
-<ul>
-<li>The Rmarkdown script is waiting for the analysis plan to be pumped out, and work can begin</li>
-</ul>
-
-
-<p><img src="/images/testProjectNobleMD.png" alt="/images/testProjectNobleMD.png" /></p>
-
-<h1>References</h1>
-
-<ul>
-<li>Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">http://dx.doi.org/10.1371/journal.pcbi.1000424</a></li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/a-driver-script-to-set-up-a-data-analysis-pipeline/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-12 00:00:00 +1100">12 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -586,6 +674,10 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
               <ul>
                 
                 <li>
+                  <a href="/2015/12/this-is-an-open-notebook-but-selected-content-delayed/" title="This is an open notebook but selected content delayed" rel="bookmark">This is an open notebook but selected content delayed</a>
+                </li>
+                
+                <li>
                   <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
                 </li>
                 
@@ -599,10 +691,6 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
                 
                 <li>
                   <a href="/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/" title="Notes from Dr Climate Re data reference syntax models for file organisation and naming" rel="bookmark">Notes from Dr Climate Re data reference syntax models for file organisation and naming</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/11/visualisation-tools-for-communicating-data-management-concepts/" title="Visualisation tools for communicating data management concepts" rel="bookmark">Visualisation tools for communicating data management concepts</a>
                 </li>
                 
               </ul>
@@ -630,7 +718,7 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (40)</a></li>
+                <li><a href="/categories/disentangle">disentangle (41)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
