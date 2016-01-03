@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2015-12-22T17:48:55+11:00</updated>
+ <updated>2016-01-03T22:15:17+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,127 +13,25 @@
 
  
  <entry>
-   <title>My framework of scientific workflow and integration software for holistic data analysis</title>
-   <link href="http://ivanhanigan.github.com/2015/12/my-framework-of-scientific-workflow-and-integration-software-for-holistic-data-analysis/"/>
-   <updated>2015-12-22T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2015/12/my-framework-of-scientific-workflow-and-integration-software-for-holistic-data-analysis</id>
-   <content type="html">&lt;p&gt;Scientific workflow and integration software for holistic data analysis (SWISH) is a
-title I have given to describe the area of my research that focuses on the tools and techniques
-of reproducible data analysis.&lt;/p&gt;
+   <title>Exemplars of distributing data and code - rOpenSci</title>
+   <link href="http://ivanhanigan.github.com/2016/01/exemplars-of-distributing-data-and-code-ropensci/"/>
+   <updated>2016-01-03T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2016/01/exemplars-of-distributing-data-and-code-ropensci</id>
+   <content type="html">&lt;p&gt;The practice of distributing data and code has a wide variety of possible approaches.  There are many resources available to be used to post data and code to the internet for dissemination, and it is very easy to access these resources.  It is more difficult to find exemplars of how data and code are easily and effectively distributed.  I am conducting a review of some of the resources that describe procedures for this and present exemplars in this and following notes.&lt;/p&gt;
 
-&lt;p&gt;Reproducibility is the ability to recompute the results of a data
-analysis with the original data.  It is possible to have analyses that
-are reproducible with varying degrees of difficulty. A data
-analysis might be reproducible but require thousands of hours of work to
-piece together the datasets, transformations, manipulations, calculations and interpretations of computational results.
-A primary challenge to reproducible data analysis is to make analyses
-that are &lt;em&gt;easy&lt;/em&gt; to reproduce.&lt;/p&gt;
+&lt;p&gt;A paper that describes the rOpenSci project's approach is &lt;a href=&quot;http://dx.doi.org/10.5334/jors.bu&quot;&gt;http://dx.doi.org/10.5334/jors.bu&lt;/a&gt;:&lt;/p&gt;
 
-&lt;p&gt;To achieve this, a guiding principle is that analysts should
-effectively implement 'pipelines' of method steps and tools.  Data
-analysts should employ standardised and evidence-based methods based
-on conventions developed from many data analysts approaching the
-problems in a similar way, rather than each analyst configuring
-pipelines to suit particular individual or domain-specific
-preferences.&lt;/p&gt;
-
-&lt;h2&gt;Planning and implementing a pipeline&lt;/h2&gt;
-
-&lt;p&gt;It can be much easier to conceptualise a complicated data analysis
-method than to implement this as a reproducible research pipeline. The
-most effective way to implement a pipeline is by methodically tracking
-each of the steps taken, the data inputs needed and all the outputs of
-the step.  If done in a disciplined way then the analyst or some other
-person could 'audit' the procedure easily and access the details of
-the pipeline they need to scrutinise.&lt;/p&gt;
-
-&lt;h3&gt;Toward a standardised data analysis pipeline framework&lt;/h3&gt;
-
-&lt;p&gt;In my own work I have tried a diverse variety of configurations based on
-things I have read and discussions I have had.  Coming to the end of
-my PhD project I have reflected on the framework that I have arrived at and
-present this below as a schematic overview.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;  *   /home/
-  **    /overview.org 
-           - summary data_inventory
-           - DMP
-  **    /worklog.org    
-           - YYYY-MM-DD
-  **   /projects/
-  ***      /project1_data_analysis_project_health_research
-               - index.org
-               - git (local private, gitignore all subfolders)
-               - workplan
-               - worklog
-               - workflow
-                   - main.Rmd
-  ****         /data1_provided
-  ****         /data2_derived
-  *****            - workflow script
-  ****         /code
-  ****         /results/  (this has all the pathways explored)
-  *****            - README.md
-                   - git (public Github)
-                   /YYYY-MM-DD-shortname (i.e. EDA, prelim, model-selection, sensitivity)
-                       /main.Rmd
-                       /code/
-                       /data/
-  ****         /report/
-                   /manuscript.Rmd
-                       - main results recomputed in production/publication quality
-                       - supporting_information (but also can refer to github/results)
-                   /figures_and_tables/
-                       - png
-                       - csv
-  *****           /journal_submission/
-                       - cover letter
-                       - approval signatures
-                       - submitted manuscript
-  *****           /journal_revision/
-                       - response.org
-  ***      /project2_data_analysis_project_exposure_assessment
-               - index.org
-               - git
-               /data1_provided
-               /data2_derived 
-                   - stored here or
-                   - web2py crud or
-                   - geoserver
-               /reports/
-                   - manuscript.Rmd -&amp;gt; publish with the data somehow
-               /tools (R package)
-                   - git/master -&amp;gt; Github
-           /methods_or_literature_review_project
-  **   /tools/
-           /web2py
-               /applications
-                   /data_inventory
-                       - holdings
-                       - prospective
-                   /database_crud
-            /disentangle (R package)
-            /pipeline_templates
-  **   /data/
-           /postgis_hanigan
-           /postgis_anu_gislibrary
-           /geoserver_anu_gislibrary
-  **   /references/
-           - mendeley
-           - bib
-           - PDFs annotated
-  **   /KeplerData/workflows/MyWorkflows/
-  ***      /data_analysis_workflow_using_kepler (implemented as an R package)
-  ****         /inst/doc/A01_load.R
-  ***      /data_analysis_workflow_using_kepler (implemented as an R LCFD workflow)
-               - main.Rmd (raw R version)
-               - main.xml (this is kepler)
-  ****         /data/
-                   - file1.csv
-                   - file2.csv
-  ****         /code/
-                   - load.R
+&lt;pre&gt;&lt;code class=&quot;&quot;&gt;Boettiger, C., Chamberlain, S., Hart, E., &amp;amp; Ram,
+K. (2015). Building Software, Building Community: Lessons from the
+rOpenSci Project. Journal of Open Research Software,
+3(1). 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This paper is focused on the way the community development and capacity building part of the project was conducted.  The diagram shown below is introduced as an example of the style that rOpenSci recommend a data analysis workflow be constructed.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/workflow-ropensci.png&quot; alt=&quot;/images/workflow-ropensci.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The focus on publishing data to a public repository so early in the project (prior to final analysis and manuscript) seems premature to me. But then, I do feel that I am somewhat more concerned with vexatious activity by climate skeptics than the rOpenSci team.&lt;/p&gt;
 </content>
  </entry>
  

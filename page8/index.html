@@ -54,6 +54,103 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/" title="Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity" rel="bookmark">Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>The other day I reported that I've implemented a new open science task management regime <a href="http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/">http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/</a>.</p>
+
+<p>This was instigated by my renewed enthusiasm for open science after a few high profile papers have come out in the last few months imploring scientists to take action on shonky statistics and the "morass of poorly conducted data analyses, with errors ranging from trivial and strange to devastating" (Peng 2015) <a href="http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x">http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x</a>.</p>
+
+<p>I believe that making ones electronic notebook open is one of the most obvious and easily achieved things to do toward that ambition.  I also think that keeping the TODO-list in the forefront of ones mind and continuously checking things off the list is a great boost for productivity and keeping on track.  This culminates in the advice to keep momentum by doing something toward the plan on a daily basis, no matter how trivial.  This is sometimes called Jerry Seinfeld's secret to productivity: Just keep at it. Don't break the streak. <a href="http://dirk.eddelbuettel.com/blog/2014/10/12/">http://dirk.eddelbuettel.com/blog/2014/10/12/</a>.</p>
+
+<p>So what was holding me back from a really useful daily publication of my open notebook?  I showed last post how I manage tasks in Emac Orgmode (a task organiser and calendar/agenda rolled up with code execution for running R scripts etc).  I also write my blog posts in orgmode.</p>
+
+<p>The only problem with that set up was that I was still using the code from Charlie Park <a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a> which adds the inadequate commit description '<code>Latest build</code>' every time.  What I needed was a way to actually log a summary of work each day, so I can look back over the history and know I actually did something everyday and was not just gaming the system by committing random little non-work additions (I want to balance this by doing <em>some</em> work every day, but also take time off to read, exercise, socialize, and generally have fun).</p>
+
+<p>So anyway, the point of this post is to describe my revision to Charlie Park's code for building a jekyll blog:</p>
+
+<h4>Code: put in ~/.bash_profile</h4>
+
+<pre><code>function bb() {
+  cd ~/projects/ivanhanigan.github.com.raw &amp;&amp; jekyll b &amp;&amp; cp -r    
+  ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com &amp;&amp; 
+  cd ~/projects/ivanhanigan.github.com &amp;&amp; git add . -A  &amp;&amp; 
+  git commit -m "$*" &amp;&amp; 
+  git push
+}
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>That bit about <code>$*</code> was a bit difficult for me to get working as this is the first time I have written a bash script in anger.  The alternative was to use <code>$1</code> and require the git commit message to be passed within quotes, which also makes sense but I did not do that.</li>
+<li>I also needed to change the terminal settings so that it always loads the bash_profile</li>
+</ul>
+
+
+<h4>Bash terminal</h4>
+
+<pre><code>Edit &gt; Profile preferences
+Title and Command &gt; Run command as a login shell 
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>And so now I just have to deposit a markdown blog post into the jekyll <code>_posts</code> folder and then</li>
+</ul>
+
+
+<h4>Bash</h4>
+
+<pre><code>bb Add a meaningful commit message about todays progress
+</code></pre>
+
+<p></p>
+
+
+<p>There you have it, a meaningful message regarding what I have been doing towards my scientific output every day.</p>
+
+<p><img src="/images/seinfeld-streak-day9-1.png" alt="/images/seinfeld-streak-day9.png" /></p>
+
+<p><img src="/images/seinfeld-streak-day9.png" alt="/images/seinfeld-streak-day9.png" /></p>
+
+<h4>References</h4>
+
+<pre><code>Peng, R. (2015). The reproducibility crisis in science: 
+A statistical counterattack. Significance, 12(3), 30–32. 
+doi:10.1111/j.1740-9713.2015.00827.x
+</code></pre>
+
+<p></p>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-22 00:00:00 +1000">22 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/" title="My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)" rel="bookmark">My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)</a>
     </h1>
     <div class="entry-content full-content">
@@ -602,68 +699,6 @@ alias bb="build_blog"
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/09/how-to-say-why-before-what/" title="how-to-say-why-before-what" rel="bookmark">how-to-say-why-before-what</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I have discovered a flaw in my writing style.<br/>
-I often say what it it before I say why it is important.</p>
-
-<h4>Example</h4>
-
-<pre><code>Disentangling health effects of environmental from social factors
-is difficult for a variety of reasons. The effort to examine and
-to separate environmental and social causes is nevertheless
-valuable. [WHY IS IT VALUABLE?] This is especially important to
-policy makers and to others who seek to maximise the public
-good. A greater understanding of their respective contributions
-will lead to more rational, deep-seated, lasting and effective
-interventions.
-</code></pre>
-
-<p></p>
-
-
-<p>The caps question is from someone reading my draft.  I need to start with the why.
-Perhaps just turn the paragraph on its head?</p>
-
-<h4>Example</h4>
-
-<pre><code>A greater understanding of the respective contributions from
-environmental and social factors will lead to more rational,
-deep-seated, lasting and effective interventions by policy makers
-and to others who seek to maximise the public good.  Disentangling
-health effects of environmental from social factors is difficult
-for a variety of reasons. The effort to examine and to separate
-environmental and social causes is nevertheless valuable.
-</code></pre>
-
-<p></p>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/09/how-to-say-why-before-what/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-09-03 00:00:00 +1000">03 Sep 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -744,6 +779,10 @@ environmental and social causes is nevertheless valuable.
               <ul>
                 
                 <li>
+                  <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
+                </li>
+                
+                <li>
                   <a href="/2015/12/my-framework-of-scientific-workflow-and-integration-software-for-holistic-data-analysis/" title="My framework of scientific workflow and integration software for holistic data analysis" rel="bookmark">My framework of scientific workflow and integration software for holistic data analysis</a>
                 </li>
                 
@@ -757,10 +796,6 @@ environmental and social causes is nevertheless valuable.
                 
                 <li>
                   <a href="/2015/12/my-project-inventory/" title="My project inventory" rel="bookmark">My project inventory</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger/" title="show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger" rel="bookmark">show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</a>
                 </li>
                 
               </ul>
@@ -788,7 +823,7 @@ environmental and social causes is nevertheless valuable.
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (41)</a></li>
+                <li><a href="/categories/disentangle">disentangle (42)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -815,6 +850,8 @@ environmental and social causes is nevertheless valuable.
                 <li><a href="/categories/blog home">blog home (1)</a></li>
                 
                 <li><a href="/categories/swish">swish (1)</a></li>
+                
+                <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
