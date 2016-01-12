@@ -168,101 +168,6 @@ Repeatability in Ecology. BioScience,
 
   <div class="full">
     <h1 class="entry-title">
-      <a href="/2016/01/dmp-and-data-inventory/" title="Data management plan and data inventory" rel="bookmark">Data management plan and data inventory</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>In eco-social epidemiology there is a need for a data management
-plan and a data inventory that enables individual scientists, or
-multidisciplinary teams of scientists, to manage large and
-heterogeneous collections of disparate data sources efficiently.
-Keeping track of all the elements of a linked health, social and
-environmental database is very challenging, despite major improvements
-in data management software, web-portals and virtual laboratories
-<code>r citep(bib[ [ "Fleming2014" ]])</code>.</p>
-
-<p>Effective data management policies and procedures are essential in
-managing data-related risk. Such risks include data loss or
-corruption, technological obsolescence, breaches of privacy or
-copyright, and errors or misuse.  Misuse may be due either to
-unintended user misunderstandings about data attributes (no dataset is
-perfect and self-explanatory, see <code>r citet(bib[ [ "Michener1997" ]])</code>) or
-intentional mis-use for malicious or selfish reasons (for example the
-misuse of data by Bjorn Lomborg to support the argument that
-environmental health conditions are actually improving.  See
-<code>r citet(bib[ [ "Bodnar2004" ]])</code> for a discussion on Lomborg\'s misuse
-of data.  There have also been examples of mistakes in climate change
-science <code>r citep(bib[ [ "Cai2010" ]])</code>.  The careful storage and curation
-of datasets is critical—data from many studies are lost
-<code>r citep(c(bib[ [ "Pullin2010" ]], bib[ [ "Vines2014a" ]]))</code>.</p>
-
-<p>Data management plans are needed for developing procedures and
-processes to keep data safe.  There is an issue when ensuring that all
-relevant data are collected in deciding what is relevant.  Keeping an
-up-to-date data inventory and careful organisation of all folders and
-files helps mitigate these problems.</p>
-
-<p>Whether data management is the responsibility of the individuals
-collecting or collating it, or of the lead scientist, clarity on how
-and where data are stored and who manages it is vital, as is a
-'succession plan' that sets out the vision of the data collections
-preservation and re-use into the future.</p>
-
-<h3>Case study 1: Ecological Metadata  Language (EML)</h3>
-
-<p>For data to be reused in the future, metadata and documentation need to be carefully
-prepared to allow future users (including the original collector) to find and understand the
-data (Michener et al. 1997). Metadata should be associated with the data
-and adhere to a standard schema. This example shows the use of the Ecological Metadata Language (EML).</p>
-
-<p>Good metadata requires sufficient detail
-to describe the collection process and to record decisions that were made during the
-design phase about the use of different sampling methods. Time and effort may be saved
-by considering metadata requirements at the commencement of a study, rather than trying
-to recall all the details later. If metadata adheres to a standard schema, it can be used in
-catalogues to enable fast searching and retrieval, or in machine-to-machine data queries
-that assist data access and use.</p>
-
-<p>In EML the elements of any dataset can be seen as a nested hierarchy at three levels:</p>
-
-<ol>
-<li>The Project level: this is an overarching grouping of data.  It might be indicative of the principal investigator or organisation who provided the data, or a programme of research studies.</li>
-<li>The Dataset level: this is a distinct grouping of data that might be organised around a particular time period or geographical region.</li>
-<li>The Entity level: This grouping of data includes data files (such as tables in CSV or Excel, shapefiles and raster images) or documents (such as metadata descriptions or related publications).</li>
-</ol>
-
-
-<p>This conceptual framework can be very useful for the organisation of the work constituting a single pipeline, as well as when working with multiple pipelines within several projects.</p>
-
-<p><img src="/images/EML_project1.png" alt="/images/EML_project1.png" /></p>
-
-<h3>An EML based metadata database</h3>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/data management" title="data management" rel="category tag">data management</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2016/01/dmp-and-data-inventory/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2016-01-10 00:00:00 +1100">10 Jan 2016</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
       <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
     </h1>
     <div class="entry-content full-content">
@@ -346,89 +251,89 @@ the pipeline they need to scrutinise.</p>
 <p>In my own work I have tried a diverse variety of configurations based on
 things I have read and discussions I have had.  Coming to the end of
 my PhD project I have reflected on the framework that I have arrived at and
-present this below as a schematic overview.
-<code>
-    ,*   /home/
-  ,**    /overview.org
-             - summary data_inventory
+present this below as a schematic overview.</p>
+
+<pre><code>*   /home/
+  **    /overview.org 
+           - summary data_inventory
            - DMP
-    ,**    /worklog.org    
+  **    /worklog.org    
            - YYYY-MM-DD
-    ,**   /projects/
-  ,***      /project1_data_analysis_project_health_research
-                 - index.org
+  **   /projects/
+  ***      /project1_data_analysis_project_health_research
+               - index.org
                - git (local private, gitignore all subfolders)
-                 - workplan
+               - workplan
                - worklog
-                 - workflow
-                   - main.Rmd
-    ,****         /data1_provided
-  ,****         /data2_deriveds
-    ,*****            - workflow script
-  ,****         /code
-    ,****         /results/  (this has all the pathways explored)
-  ,*****            - README.md
-                     - git (public Github)
+               - workflow
+               - main.Rmd
+  ****         /data1_provided
+  ****         /data2_deriveds
+  *****            - workflow script
+  ****         /code
+  ****         /results/  (this has all the pathways explored)
+  *****            - README.md
+                   - git (public Github)
                    /YYYY-MM-DD-shortname (i.e. EDA, prelim, model-selection, sensitivity)
-                         /main.Rmd
+                       /main.Rmd
                        /code/
-                         /data/
-  ,****         /report/
+                       /data/
+  ****         /report/
                      /manuscript.Rmd
                        - main results recomputed in production/publication quality
-                         - supporting_information (but also can refer to github/results)
+                       - supporting_information (but also can refer to github/results)
                    /figures_and_tables/
-                         - png
+                       - png
                        - csv
-    ,*****           /journal_submission/
+  *****           /journal_submission/
                        - cover letter
-                         - approval signatures
+                       - approval signatures
                        - submitted manuscript
-    ,*****           /journal_revision/
+  *****           /journal_revision/
                        - response.org
-    ,***      /project2_data_analysis_project_exposure_assessment
+  ***      /project2_data_analysis_project_exposure_assessment
                - index.org
-                 - git
+               - git
                /data1_provided
-                 /data2_derived
+               /data2_derived 
                    - stored here or
-                     - web2py crud or
+                   - web2py crud or
                    - geoserver
-                 /data1_and_data2_backups
+               /data1_and_data2_backups
                /reports/
-                     - manuscript.Rmd -&gt; publish with the data somehow
+                   - manuscript.Rmd -&gt; publish with the data somehow
                /tools (R package)
-                     - git/master -&gt; Github
+                   - git/master -&gt; Github
            /methods_or_literature_review_project
-    ,**   /tools/
+  **   /tools/
            /web2py
-                 /applications
+               /applications
                    /data_inventory
-                         - holdings
+                       - holdings
                        - prospective
-                     /database_crud
+                   /database_crud
             /disentangle (R package)
-              /pipeline_templates
-  ,**   /data/
-             /postgis_hanigan
+            /pipeline_templates
+  **   /data/
+           /postgis_hanigan
            /postgis_anu_gislibrary
-             /geoserver_anu_gislibrary
-  ,**   /references/
-             - mendeley
+           /geoserver_anu_gislibrary
+  **   /references/
+           - mendeley
            - bib
-             - PDFs annotated
-  ,**   /KeplerData/workflows/MyWorkflows/
-    ,***      /data_analysis_workflow_using_kepler (implemented as an R package)
-  ,****         /inst/doc/A01_load.R
-    ,***      /data_analysis_workflow_using_kepler (implemented as an R LCFD workflow)
+           - PDFs annotated
+  **   /KeplerData/workflows/MyWorkflows/
+  ***      /data_analysis_workflow_using_kepler (implemented as an R package)
+  ****         /inst/doc/A01_load.R
+  ***      /data_analysis_workflow_using_kepler (implemented as an R LCFD workflow)
                - main.Rmd (raw R version)
-                 - main.xml (this is kepler)
-  ,****         /data/
-                     - file1.csv
+               - main.xml (this is kepler)
+  ****         /data/
+                   - file1.csv
                    - file2.csv
-    ,****         /code/
+  ****         /code/
                    - load.R
- </code></p>
+</code></pre>
 
       <div class="clear"></div>
     </div>
@@ -656,6 +561,90 @@ $ git push -u origin master
   </div>
   <div class="rule"><hr/></div>
 
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I've been thinking alot recently about an approach used in this recent systematic review</li>
+</ul>
+
+
+<pre><code>Vins, H., Bell, J., Saha, S., &amp; Hess, J. (2015). The mental health
+outcomes of drought: A systematic review and causal process
+diagram. International Journal of Environmental Research and Public
+Health, 12(10), 13251–13275. doi:10.3390/ijerph121013251
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>They identify causal pathways from papers and ascribe the supporting evidentiary weight based on the number of papers published with findings that support this cause-effect pathway</li>
+<li>The raw number of papers is probably not a good metric, prone to bias so I was thinking of ways to ascribe weight based on quality of journal or authors</li>
+<li>This is not supposed to replace the need to actually read the papers, but purely as an additional source of information</li>
+<li>This recent post on scholar metrics provided some impetus via h-indices
+<a href="http://datascienceplus.com/hindex-gindex-pubmed-rismed/">http://datascienceplus.com/hindex-gindex-pubmed-rismed/</a></li>
+<li>I also think this approach of text mining the abstracts could be useful <a href="http://tuxette.nathalievilla.org/?p=1682">http://tuxette.nathalievilla.org/?p=1682</a></li>
+</ul>
+
+
+<h3>Sanity check of the two options using myself as guinea pig</h3>
+
+<pre><code class="">library(RISmed)
+x &lt;- "hanigan+ic[Author]"
+res &lt;- EUtilsSummary(x, type="esearch", db="pubmed", datetype='pdat', mindate=1900, 
+  maxdate=2015, retmax=500)
+str(res)
+citations1 &lt;- Cited(res)
+citations &lt;- as.data.frame(citations1)
+citations &lt;- citations[order(citations$citations,decreasing=TRUE),]
+citations &lt;- as.data.frame(citations)
+str(citations)
+citations &lt;- cbind(id=rownames(citations),citations)
+citations$id&lt;- as.character(citations$id)
+citations$id&lt;- as.numeric(citations$id)
+hindex &lt;- max(which(citations$id&lt;=citations$citations))
+
+hindex
+# 5
+
+library(scholar)
+myid &lt;- "cGN1P0wAAAAJ"
+y &lt;- scholar::get_publications(myid)
+str(y)
+y[,c("author", "cites")]
+y$id &lt;- as.numeric(row.names(y))
+hindex2 &lt;- max(which(y$id&lt;=y$cites))
+hindex2
+# 15
+</code></pre>
+
+<h3>Clearly the pubmed and google scholar search engines makes a big difference to my score!</h3>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-12-17 00:00:00 +1100">17 Dec 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
 
 <div class="pagination">
   <span class="previous">
@@ -736,10 +725,6 @@ $ git push -u origin master
                 </li>
                 
                 <li>
-                  <a href="/2016/01/dmp-and-data-inventory/" title="Data management plan and data inventory" rel="bookmark">Data management plan and data inventory</a>
-                </li>
-                
-                <li>
                   <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
                 </li>
                 
@@ -749,6 +734,10 @@ $ git push -u origin master
                 
                 <li>
                   <a href="/2015/12/this-is-an-open-notebook-but-selected-content-delayed/" title="This is an open notebook but selected content delayed" rel="bookmark">This is an open notebook but selected content delayed</a>
+                </li>
+                
+                <li>
+                  <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
                 </li>
                 
               </ul>
@@ -776,7 +765,7 @@ $ git push -u origin master
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (44)</a></li>
+                <li><a href="/categories/disentangle">disentangle (43)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -790,7 +779,7 @@ $ git push -u origin master
                 
                 <li><a href="/categories/reproducible research reports">reproducible research reports (3)</a></li>
                 
-                <li><a href="/categories/data management">data management (4)</a></li>
+                <li><a href="/categories/data management">data management (3)</a></li>
                 
                 <li><a href="/categories/data operation">data operation (1)</a></li>
                 

@@ -97,78 +97,6 @@ Repeatability in Ecology. BioScience,
 			</item>
 		
 			<item>
-				<title>Data management plan and data inventory</title>
-				<description>&lt;p&gt;In eco-social epidemiology there is a need for a data management
-plan and a data inventory that enables individual scientists, or
-multidisciplinary teams of scientists, to manage large and
-heterogeneous collections of disparate data sources efficiently.
-Keeping track of all the elements of a linked health, social and
-environmental database is very challenging, despite major improvements
-in data management software, web-portals and virtual laboratories
-&lt;code&gt;r citep(bib[ [ &quot;Fleming2014&quot; ]])&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Effective data management policies and procedures are essential in
-managing data-related risk. Such risks include data loss or
-corruption, technological obsolescence, breaches of privacy or
-copyright, and errors or misuse.  Misuse may be due either to
-unintended user misunderstandings about data attributes (no dataset is
-perfect and self-explanatory, see &lt;code&gt;r citet(bib[ [ &quot;Michener1997&quot; ]])&lt;/code&gt;) or
-intentional mis-use for malicious or selfish reasons (for example the
-misuse of data by Bjorn Lomborg to support the argument that
-environmental health conditions are actually improving.  See
-&lt;code&gt;r citet(bib[ [ &quot;Bodnar2004&quot; ]])&lt;/code&gt; for a discussion on Lomborg\'s misuse
-of data.  There have also been examples of mistakes in climate change
-science &lt;code&gt;r citep(bib[ [ &quot;Cai2010&quot; ]])&lt;/code&gt;.  The careful storage and curation
-of datasets is critical—data from many studies are lost
-&lt;code&gt;r citep(c(bib[ [ &quot;Pullin2010&quot; ]], bib[ [ &quot;Vines2014a&quot; ]]))&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Data management plans are needed for developing procedures and
-processes to keep data safe.  There is an issue when ensuring that all
-relevant data are collected in deciding what is relevant.  Keeping an
-up-to-date data inventory and careful organisation of all folders and
-files helps mitigate these problems.&lt;/p&gt;
-
-&lt;p&gt;Whether data management is the responsibility of the individuals
-collecting or collating it, or of the lead scientist, clarity on how
-and where data are stored and who manages it is vital, as is a
-'succession plan' that sets out the vision of the data collections
-preservation and re-use into the future.&lt;/p&gt;
-
-&lt;h3&gt;Case study 1: Ecological Metadata  Language (EML)&lt;/h3&gt;
-
-&lt;p&gt;For data to be reused in the future, metadata and documentation need to be carefully
-prepared to allow future users (including the original collector) to find and understand the
-data (Michener et al. 1997). Metadata should be associated with the data
-and adhere to a standard schema. This example shows the use of the Ecological Metadata Language (EML).&lt;/p&gt;
-
-&lt;p&gt;Good metadata requires sufficient detail
-to describe the collection process and to record decisions that were made during the
-design phase about the use of different sampling methods. Time and effort may be saved
-by considering metadata requirements at the commencement of a study, rather than trying
-to recall all the details later. If metadata adheres to a standard schema, it can be used in
-catalogues to enable fast searching and retrieval, or in machine-to-machine data queries
-that assist data access and use.&lt;/p&gt;
-
-&lt;p&gt;In EML the elements of any dataset can be seen as a nested hierarchy at three levels:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;The Project level: this is an overarching grouping of data.  It might be indicative of the principal investigator or organisation who provided the data, or a programme of research studies.&lt;/li&gt;
-&lt;li&gt;The Dataset level: this is a distinct grouping of data that might be organised around a particular time period or geographical region.&lt;/li&gt;
-&lt;li&gt;The Entity level: This grouping of data includes data files (such as tables in CSV or Excel, shapefiles and raster images) or documents (such as metadata descriptions or related publications).&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;p&gt;This conceptual framework can be very useful for the organisation of the work constituting a single pipeline, as well as when working with multiple pipelines within several projects.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/EML_project1.png&quot; alt=&quot;/images/EML_project1.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3&gt;An EML based metadata database&lt;/h3&gt;
-</description>
-				<published>2016-01-10 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2016/01/dmp-and-data-inventory/</link>
-			</item>
-		
-			<item>
 				<title>Exemplars of distributing data and code - rOpenSci</title>
 				<description>&lt;p&gt;The practice of distributing data and code has a wide variety of possible approaches.  There are many resources available to be used to post data and code to the internet for dissemination, and it is very easy to access these resources.  It is more difficult to find exemplars of how data and code are easily and effectively distributed.  I am conducting a review of some of the resources that describe procedures for this and present exemplars in this and following notes.&lt;/p&gt;
 
@@ -227,89 +155,89 @@ the pipeline they need to scrutinise.&lt;/p&gt;
 &lt;p&gt;In my own work I have tried a diverse variety of configurations based on
 things I have read and discussions I have had.  Coming to the end of
 my PhD project I have reflected on the framework that I have arrived at and
-present this below as a schematic overview.
-&lt;code&gt;
-    ,*   /home/
-  ,**    /overview.org
-             - summary data_inventory
+present this below as a schematic overview.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;*   /home/
+  **    /overview.org 
+           - summary data_inventory
            - DMP
-    ,**    /worklog.org    
+  **    /worklog.org    
            - YYYY-MM-DD
-    ,**   /projects/
-  ,***      /project1_data_analysis_project_health_research
-                 - index.org
+  **   /projects/
+  ***      /project1_data_analysis_project_health_research
+               - index.org
                - git (local private, gitignore all subfolders)
-                 - workplan
+               - workplan
                - worklog
-                 - workflow
-                   - main.Rmd
-    ,****         /data1_provided
-  ,****         /data2_deriveds
-    ,*****            - workflow script
-  ,****         /code
-    ,****         /results/  (this has all the pathways explored)
-  ,*****            - README.md
-                     - git (public Github)
+               - workflow
+               - main.Rmd
+  ****         /data1_provided
+  ****         /data2_deriveds
+  *****            - workflow script
+  ****         /code
+  ****         /results/  (this has all the pathways explored)
+  *****            - README.md
+                   - git (public Github)
                    /YYYY-MM-DD-shortname (i.e. EDA, prelim, model-selection, sensitivity)
-                         /main.Rmd
+                       /main.Rmd
                        /code/
-                         /data/
-  ,****         /report/
+                       /data/
+  ****         /report/
                      /manuscript.Rmd
                        - main results recomputed in production/publication quality
-                         - supporting_information (but also can refer to github/results)
+                       - supporting_information (but also can refer to github/results)
                    /figures_and_tables/
-                         - png
+                       - png
                        - csv
-    ,*****           /journal_submission/
+  *****           /journal_submission/
                        - cover letter
-                         - approval signatures
+                       - approval signatures
                        - submitted manuscript
-    ,*****           /journal_revision/
+  *****           /journal_revision/
                        - response.org
-    ,***      /project2_data_analysis_project_exposure_assessment
+  ***      /project2_data_analysis_project_exposure_assessment
                - index.org
-                 - git
+               - git
                /data1_provided
-                 /data2_derived
+               /data2_derived 
                    - stored here or
-                     - web2py crud or
+                   - web2py crud or
                    - geoserver
-                 /data1_and_data2_backups
+               /data1_and_data2_backups
                /reports/
-                     - manuscript.Rmd -&amp;gt; publish with the data somehow
+                   - manuscript.Rmd -&amp;gt; publish with the data somehow
                /tools (R package)
-                     - git/master -&amp;gt; Github
+                   - git/master -&amp;gt; Github
            /methods_or_literature_review_project
-    ,**   /tools/
+  **   /tools/
            /web2py
-                 /applications
+               /applications
                    /data_inventory
-                         - holdings
+                       - holdings
                        - prospective
-                     /database_crud
+                   /database_crud
             /disentangle (R package)
-              /pipeline_templates
-  ,**   /data/
-             /postgis_hanigan
+            /pipeline_templates
+  **   /data/
+           /postgis_hanigan
            /postgis_anu_gislibrary
-             /geoserver_anu_gislibrary
-  ,**   /references/
-             - mendeley
+           /geoserver_anu_gislibrary
+  **   /references/
+           - mendeley
            - bib
-             - PDFs annotated
-  ,**   /KeplerData/workflows/MyWorkflows/
-    ,***      /data_analysis_workflow_using_kepler (implemented as an R package)
-  ,****         /inst/doc/A01_load.R
-    ,***      /data_analysis_workflow_using_kepler (implemented as an R LCFD workflow)
+           - PDFs annotated
+  **   /KeplerData/workflows/MyWorkflows/
+  ***      /data_analysis_workflow_using_kepler (implemented as an R package)
+  ****         /inst/doc/A01_load.R
+  ***      /data_analysis_workflow_using_kepler (implemented as an R LCFD workflow)
                - main.Rmd (raw R version)
-                 - main.xml (this is kepler)
-  ,****         /data/
-                     - file1.csv
+               - main.xml (this is kepler)
+  ****         /data/
+                   - file1.csv
                    - file2.csv
-    ,****         /code/
+  ****         /code/
                    - load.R
- &lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 </description>
 				<published>2015-12-22 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/12/my-framework-of-scientific-workflow-and-integration-software-for-holistic-data-analysis/</link>
@@ -821,6 +749,33 @@ List elements can then be ordered so that the groups of things that are similar 
 </description>
 				<published>2015-11-26 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/11/visualisation-tools-for-communicating-data-management-concepts/</link>
+			</item>
+		
+			<item>
+				<title>A picture of the newnode function for workflow visualisation in R</title>
+				<description>&lt;h2&gt;Newnode: An R function for visualising workflows&lt;/h2&gt;
+
+&lt;p&gt;The scientific workflow concept is essentially a pipeline.  The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.&lt;/p&gt;
+
+&lt;p&gt;A simple way to keep track of the steps, inputs and outputs is shown in Table below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CLUSTER ,  STEP       , INPUTS                   , OUTPUTS                   
+A  ,       Step1      , &quot;Input 1, Input 2&quot;       , Output 1                 
+A  ,       Step2      ,  Input 3                 , Output 2                   
+B  ,       Step3      , &quot;Output 1, Output 2&quot;     , Output 3                  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The steps and data listed in this way can be visualised.
+To achieve this an R function was written as part of my PhD project and is distributed in the R package available on Github &lt;a href=&quot;https://github.com/ivanhanigan/disentangle&quot;&gt;https://github.com/ivanhanigan/disentangle&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is the &lt;code&gt;newnode&lt;/code&gt; function.  The function returns a string of text
+written in the &lt;code&gt;dot&lt;/code&gt; language which can be rendered in R using the
+&lt;code&gt;DiagrammeR&lt;/code&gt; package, or the standalone &lt;code&gt;graphviz&lt;/code&gt; package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/steps_basic_rstudio-test.png&quot; alt=&quot;/images/steps_basic_rstudio-test.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>2015-11-17 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2015/11/a-picture-of-the-newnode-function-for-workflow-visualisation-in-r/</link>
 			</item>
 		
 	</channel>
