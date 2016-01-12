@@ -54,6 +54,262 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/09/reproducible-research-and-managing-digital-assets/" title="Reproducible Research And Managing Digital Assets (1 of 3). Scott Long wrote a book and some great tutorial slides" rel="bookmark">Reproducible Research And Managing Digital Assets (1 of 3). Scott Long wrote a book and some great tutorial slides</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This will be a series of three posts that describe some key evidence based best practice methods that have helped me plan and organise files and folders for data analysis.  I have found these via books and on websites.</p>
+
+<ul>
+<li>Scott Long's Workflow for Data Analysis with Stata</li>
+<li>Josh Reich's Least Commonly Fouled up Data analysis (LCFD) framework</li>
+<li>John Myles White's ProjectTemplate</li>
+</ul>
+
+
+<h2>Toward evidence based best-practice data management systems</h2>
+
+<p>It is important for open science to have effective management of digital assets across the different phases of the research pipeline.  The traditional research pipeline moves from steps of hypothesis and design, measured data, analytic data, computational results (for figures, tables and numerical results), and reports (text and formatted manuscript).  Reproducible research pipelines extend traditional research by encoding the steps in code from a computer ‘scripting’ language, and distributing the data and code with publications.</p>
+
+<p>In this research pipeline context there are a large number of potential ways to manage digital assets (documents, data and code).  There are also many different motivating drivers that will affect the way that a scientist or group of scientists choose to manage their data and code.</p>
+
+<p>To deal with in house data management issues before starting and during analysis/reporting is critical for reproducible research.<br/>
+I argue that more effective research pipelines can be achieved if scientists adopt the 'convention over configuration' paradigm and adopt best-practice systems based on evidence.</p>
+
+<h3>Long, S. (2015). Workflow for Reproducible Results.</h3>
+
+<p>For ages I was aware of the book from the Stata statistical program publishers <a href="http://www.indiana.edu/~jslsoc/web_workflow/wf_home.htm">http://www.indiana.edu/~jslsoc/web_workflow/wf_home.htm</a>:</p>
+
+<h4>Citation:</h4>
+
+<pre><code>Long, J. S. (2008). The Workflow of Data Analysis: 
+Principles and Practice. Stata publishing.
+</code></pre>
+
+<p></p>
+
+
+<p>Recently I stumbled across more recent workshop slides and tutorial material which I will discuss briefly.</p>
+
+<h4>Citation:</h4>
+
+<pre><code>Long, S. (2015). Workflow for Reproducible Results. 
+IV : Managing digital assets Workflow for Tools for your WF. 
+</code></pre>
+
+<p></p>
+
+
+<p>Retrieved from <a href="http://txrdc.tamu.edu/documents/WFtxcrdc2014_4-digital.pdf">http://txrdc.tamu.edu/documents/WFtxcrdc2014_4-digital.pdf</a></p>
+
+<p>Long suggests a lot of practical things to do, but I will just focus here on the recommended file and folder structure:</p>
+
+<h4>Recommended project directory structure:</h4>
+
+<pre><code>\ProjectAcronym
+    \- History starting YYYY-MM-DD
+    \- Hold then delete 
+    \Admin
+    \Documentation 
+    \Posted
+         \Paper 1
+             \Correspondence 
+             \Text
+             \Analysis
+    \PrePosted 
+    \Resources 
+    \Write 
+    \Work
+</code></pre>
+
+<p></p>
+
+
+<p></p>
+
+<ul>
+<li>In another workshop report Long provides a useful tool to automatically create this structure on windows</li>
+<li>Long, S. (2012). Principles of Workflow in Data Analysis.
+Retrieved from <a href="http://www.indiana.edu/~wim/docs/2012-long-slides.pdf">http://www.indiana.edu/~wim/docs/2012-long-slides.pdf</a></li>
+<li>a bash version would be useful for linux and mac users, but also the R language can do this on all platforms with the <code>dir.create</code> command</li>
+</ul>
+
+
+<h4>Code: wfsetupsingle.bat</h4>
+
+<pre><code># wfsetupsingle.bat 
+REM workflow talk 2 \ wfsetupsingle.bat jsl 2009-07-12 
+REM directory structure for single person.
+FOR /F "tokens=2,3,4 delims=/- " %%a in ("%DATE%") do set CDATE=%%c-%%a-%%b 
+md "- History starting \%cdate%" 
+md "- Hold then delete " 
+md "- Pre posted " 
+md "- To clean" 
+md "Documentation" 
+md "Posted" 
+md "Resources"
+md "Text\- Versions\" 
+md "Work\- To do"
+</code></pre>
+
+<h2>Critical reflections</h2>
+
+<ul>
+<li>This recommendation is very sensible, especially the suggestion of moving things through the pipeline as they evolve from things being worked on (Write/Work) to later phases when they have been polished to a point that they can be put down while preparations for distrubuting them are made (Preposted) and then once they are sent off into downstream publication phases (Posted) they are locked for ever in a archival state.</li>
+<li>I am not particularly keen on the names that have been chosen (Resources, Write and Work are quite ambiguous terms).</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/reproducible-research-and-managing-digital-assets/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-25 00:00:00 +1000">25 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I use the R package <code>DiagrammeR</code> for creating graphs (the formal kind, connecting nodes with edges)
+- This package is great and I like how it interacts with the Graphviz program
+- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
+- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
+- In my utilities R package <code>github.com/ivanhanigan/disentangle</code> I have written functions that turn this table into a graphiviz DOT language script
+- Recently I have needed to unpack the list for a more itemized view
+- Both these functions are showcased below</p>
+
+<h4>Code: newnode</h4>
+
+<pre><code># First create some test data, each step is a collection of edges 
+# with inputs or outputs simple comma seperated lists
+dat &lt;- read.csv(textConnection('
+cluster ,  step    , inputs                    , outputs                                , description                      
+A  ,  siteIDs      , "GPS, helicopter"          , "spatial, site doco"                 , latitude and longitude of sites  
+A  ,  weather      , BoM                       , exposures                              , weather data from BoM            
+B  ,  trapped      , spatial                   , trapped_no                             , counts of species caught in trap 
+B  ,  biomass      , spatial                   , biomass_g                              ,                                  
+B  ,  correlations , "exposures,trapped_no,biomass_g" , report1                         , A study we published             
+C  ,  paper1       , report1                   , "open access repository, data package" ,                                  
+D  ,  biomass revision, new estimates          , biomass_g                              , this came late
+'), stringsAsFactors = F, strip.white = T)    
+str(dat)
+# dat
+
+# Now run the function and create a graph
+nodes &lt;- newnode(
+  indat = dat,
+  names_col = "step",
+  in_col = "inputs",
+  out_col = "outputs",
+  desc_col = "description",
+  clusters_col = "cluster",
+  nchar_to_snip = 40
+  )  
+sink("Transformations.dot")
+cat(nodes)
+sink()
+#DiagrammeR::grViz("Transformations.dot")
+system("dot -Tpng Transformations.dot -o Transformations.png")
+browseURL("Transformations.png")
+</code></pre>
+
+<p></p>
+
+
+<p></p>
+
+<p>That creates this diagram</p>
+
+<p><img src="/images/Transformations.png" alt="/images/Transformations.png" /></p>
+
+<h2>Now to showcase the tool that itemizes this list of inputs and outputs</h2>
+
+<ul>
+<li>The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs</li>
+<li>To add detail for each we need to unpack each list and create a new table with one row per node</li>
+<li>I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output</li>
+</ul>
+
+
+<h4>Code: newnode_csv</h4>
+
+<pre><code>nodes_graphy &lt;- newnode_csv(
+  indat = dat,
+  names_col = "step",
+  in_col = "inputs",
+  out_col = "outputs",
+  clusters_col = 'cluster'
+  ) 
+# which creates this table
+knitr::kable(nodes_graphy)
+|cluster |name             |in_or_out |value                  |
+|:-------|:----------------|:---------|:----------------------|
+|A       |siteIDs          |input     |GPS                    |
+|A       |siteIDs          |input     |helicopter             |
+|A       |siteIDs          |output    |spatial                |
+|A       |siteIDs          |output    |site doco              |
+|A       |weather          |input     |BoM                    |
+|A       |weather          |output    |exposures              |
+|B       |trapped          |input     |spatial                |
+|B       |trapped          |output    |trapped_no             |
+|B       |biomass          |input     |spatial                |
+|B       |biomass          |output    |biomass_g              |
+|B       |correlations     |input     |exposures              |
+|B       |correlations     |input     |trapped_no             |
+|B       |correlations     |input     |biomass_g              |
+|B       |correlations     |output    |report1                |
+|C       |paper1           |input     |report1                |
+|C       |paper1           |output    |open access repository |
+|C       |paper1           |output    |data package           |
+|D       |biomass revision |input     |new estimates          |
+|D       |biomass revision |output    |biomass_g              |
+</code></pre>
+
+<p></p>
+
+
+<p>This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-23 00:00:00 +1000">23 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/" title="Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity" rel="bookmark">Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</a>
     </h1>
     <div class="entry-content full-content">
@@ -391,314 +647,6 @@ So then I googled a bit and found the solution was simple:</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/" title="Templates are Needed for Reproducible Research Reports (that Look Good)" rel="bookmark">Templates are Needed for Reproducible Research Reports (that Look Good)</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I read with interest the the Transparency and Openness Promotion (TOP) Committee templates for guidelines to enhance transparency in the science that journals publish.</p>
-
-<h4>Citation</h4>
-
-<pre><code>Supplementary Materials for Nosek, B. A., Alter, G., Banks, G. C.,
-Borsboom, D., Bowman, S. D., Breckler, S. J., … Yarkoni,
-T. (2015). Promoting an open research culture. Science, 348(6242),
-1422–1425. doi:10.1126/science.aab2374
-</code></pre>
-
-<p></p>
-
-
-<p>I think though that guidelines like the suggestion to copy-paste bits of the manuscript leave a bit to be desired:</p>
-
-<h4>Quote;</h4>
-
-<pre><code>Authors document compliance by copy-pasting the relevant passages
-in the paper that address the question into the form. For example,
-when indicating how sample size was determined, authors copy paste
-into the form the text in the paper that describes how sample size
-was determined.
-</code></pre>
-
-<p></p>
-
-
-<p>Reproducible Research Reports solve this problem by ensuring that the data preparation and analysis are executed in the same script that produces the manuscript, therefore a one-stop-shop for documentation of the entire study.</p>
-
-<h2>There is a need for Templates of Reproducible Research Reports (that look good!)</h2>
-
-<p>Rstudio provides very easy support for these documents if you use R.  In particular the option of a menu button to create a new report populates that report with the required header information and some example script to work off.  But the easiest option does not look so good.  This is the Rmarkdown option and it is very user friendly in terms of the markup language needed to write the descriptive language around your analysis (mostly plain text with a few simple options for heading styles etc) rather than the Sweave option which leads to the full blown LaTeX markup language that is a lot more complicated.</p>
-
-<h4>Boilerplate Rmarkdown header from Rstudio:</h4>
-
-<pre><code>---
-title: "Untitled"
-author: "Ivan C. Hanigan"
-date: "16 September 2015"
-output: html_document
----
-</code></pre>
-
-<p></p>
-
-
-<p>This is great for quick reporting of work as you go, but I  primarily write for output that will be printed (e.g. pdf docs). More specifically, I need the concept of a page, and to have full control over the placement of table and figure ‘environments’, stuff that is easy in LaTeX (once you figure out some of the esoteric parts of that language).</p>
-
-<p>To achieve a simple writing environment in Markdown but with the powerful layout options of LaTeX I reviewed this guys work but I think it takes it to an uneccessary level of complicated-ness
-<a href="https://github.com/jhollist/manuscriptPackage">https://github.com/jhollist/manuscriptPackage</a>.</p>
-
-<p>So I went back to some of the old Sweave/Latex templates I had put together and ported it into a markdown header.</p>
-
-<h4>Boilerplate Rmarkdown header for pretty report</h4>
-
-<pre><code>---
-title: "Untitled"
-author: "Ivan C. Hanigan"
-date: "16 September 2015"
-header-includes:
-  - \usepackage{graphicx}
-  - \usepackage{fancyhdr} 
-  - \pagestyle{fancy} 
-  - \usepackage{lastpage}
-  - \usepackage{float} 
-  - \floatstyle{boxed} 
-  - \restylefloat{figure} 
-  - \usepackage{url} 
-  - \usepackage{color}
-  - \lhead{Left Header}
-  - \chead{Rmarkdown Rocks}
-  - \rhead{\today}
-  - \lfoot{Left Footer}
-  - \cfoot{Centre Footer}
-  - \rfoot{\thepage\ of \pageref{LastPage}}  
-output: 
-  pdf_document:
-    toc: false
-documentclass: article
-classoption: a4paper
-bibliography: references.bib
----
-</code></pre>
-
-<p></p>
-
-
-<p>Now the layout of tables and figures is done with latex</p>
-
-<h4>Code</h4>
-
-<pre><code>Using the xtable package allows results to be displyed in tables
-and has built in support for some R objects, so summrising the
-linear fit above in ~\ref{ATable}
-
-```{r, results='asis', type = 'tex'}
-library(xtable)    
-print(xtable(fit, caption="Example Table",
-  digits=4,table.placement="ht",label="ATable"), comment = F)    
-```
-
-## A Plot
-
-Plots intergrate most easily if made seperately as can be seen in figure ~\ref{test}
-```{r}
-png("Rmarkdownfig.png")
-plot(x,y,main="Example Plot",xlab="X Variable",ylab="Y Variable")
-abline(fit,col="Red")
-dev.off()
-```
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=.5\textwidth]{Rmarkdownfig.png}
-\end{center}
-\caption{Some Plot}
-\label{test}
-\end{figure}
-\clearpage
-</code></pre>
-
-<p></p>
-
-
-<p>I also realised that if this was to be a full report of a scientific study it would need to include some of the machinery needed for bibliographies.</p>
-
-<h4>Stuff for bibliographies</h4>
-
-<pre><code>```{r, echo=F, results = 'hide', message = F, warning=F}
-library("knitcitations")
-library("bibtex")
-cleanbib()
-cite_options(citation_format = "pandoc", check.entries = FALSE)
-
-bib &lt;- read.bibtex("C:/Users/Ivan/Dropbox/references/library.bib")
-
-```
-
-&lt;!--Put data analysis and reporting here, then at the end of the doc--&gt;
-
-```{r, echo=F, message=F, eval=T}
-write.bibtex(file="references.bib")
-```
-
-# References
-
-&lt;!--The bib will then be written following the final subheading--&gt;
-</code></pre>
-
-<p></p>
-
-
-<h2>Conclusion</h2>
-
-<p>I hope this might help others develop their own templates for RRR that look great.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/reproducible research reports" title="reproducible research reports" rel="category tag">reproducible research reports</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-09-16 00:00:00 +1000">16 Sep 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/09/task-management-like-an-open-science-hacker/" title="task-management-like-an-open-science-hacker" rel="bookmark">task-management-like-an-open-science-hacker</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I just read this impressive paper and it has really given me a push toward making this open lab notebook</p>
-
-<h4>Citation</h4>
-
-<pre><code>Nosek, B. A., et al. (2015). Promoting an open research
-culture. Science, 348(6242), 1422–1425. doi:10.1126/science.aab2374
-</code></pre>
-
-<p></p>
-
-
-<h4>Quote</h4>
-
-<pre><code>The situation is a classic collective action problem. Many individual researchers lack
-strong incentives to be more transparent, even though the credibility of science would 
-benefit if everyone were more transparent.
-</code></pre>
-
-<p></p>
-
-
-<p>So I think I'll try to step up the pace of logging my daily scientific work.
-One super easy thing to do is to publish my daily log from my task management in orgmode.
-Indeed I am also reading at the moment this guy who says</p>
-
-<h4>Quote</h4>
-
-<pre><code>The core of your documentation is the research log.
-
-Long, S. (2015). Reproducible Results and the Workflow of Data Analysis. 
-Retrieved from http://www.indiana.edu/~jslsoc/ftp/WIM/wf wim 2015 2015-08-21@3.pdf
-</code></pre>
-
-<p></p>
-
-
-<p>Finally, I was struck by this reference <a href="http://rich-iannone.github.io/about/2014/10/28/introduction.html">http://rich-iannone.github.io/about/2014/10/28/introduction.html</a> to something about 365+ day GitHub streaks. It was covered earlier by Geoff Greer, and by Dirk Eddelbuettel.</p>
-
-<p>It seems the basic concept is that you can leverage off an obsessive tendency by making sure you do something toward ticking off items from the task list every day.  The impulse to not breaking the chain is supposed to give you inspiration to keep going.  I think this might work well for my temperatment.</p>
-
-<h2>Emacs and orgmode</h2>
-
-<p>The set up of my daily log is pretty simple. After being set up by kjhealy's starter kit.
-Then I modified the org-agenda-files which was set in the main el file that kjhealy provided  and then with the command C-c a a emacs will display my calendar.</p>
-
-<p>When I open emacs in the morning I  open the agenda and this also opens research-log file.  I move to that buffer, then I use this key command to insert a new entry for todays date</p>
-
-<h4>CODE</h4>
-
-<pre><code> (define-skeleton org-journalentry
-   "Template for a journal entry."
-   "project:"
-   "*** " (format-time-string "%Y-%m-%d %a") " \n"
-   "**** TODO-list \n"
-   "***** TODO \n"
-   "**** timesheet\n"
-   "#+begin_src txt :tangle work-log.csv :eval no :padline no\n"
-   (format-time-string "%Y-%m-%d %a") ", " str ", 50\n" 
-   "#+end_src\n"
- )
- (global-set-key [C-S-f5] 'org-journalentry)
-</code></pre>
-
-<p></p>
-
-
-<p>This creates a new date, a stub of a TODO for anything ad hoc and a entry into my timesheet.csv file.</p>
-
-<p>I then select from TODO items from a global list that I keep at the top of the file, and cut/paste them into todays list.</p>
-
-<p><img src="/images/agenda.png" alt="img" /></p>
-
-<p>Great so I just moved this research-log orgmode file into my blog github repo, and with the help of charlie park's bash script I am good to go</p>
-
-<h4>CODE</h4>
-
-<pre><code>alias build_blog="cd ~/projects/ivanhanigan.github.com.raw; jekyll b;
-cp -r ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com;
-cd ~/projects/ivanhanigan.github.com;git add .;git commit -am 'Latest build.';git push"
-alias bb="build_blog"
-</code></pre>
-
-<p></p>
-
-
-<p>So this will put the resulting changes onto my open lab book website here <a href="https://raw.githubusercontent.com/ivanhanigan/ivanhanigan.github.com/master/work-log.org">https://raw.githubusercontent.com/ivanhanigan/ivanhanigan.github.com/master/work-log.org</a></p>
-
-<p>Things to note:</p>
-
-<ul>
-<li>I found this list of tips <a href="http://natashatherobot.com/streak-github-mistakes/">http://natashatherobot.com/streak-github-mistakes/</a></li>
-<li>In particular I realise I need to make my daily push by 4:50 PM in Canberra ACT as this is 11:50 PM the previous day for Github, Pacific Time (PT)</li>
-<li>I also will need to ensure I don't publish sensitive (or embarrasing entries).</li>
-<li>I'll try to keep the identity of my collaborators private as well, so just use their initials rather than names.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/09/task-management-like-an-open-science-hacker/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-09-13 00:00:00 +1000">13 Sep 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -779,6 +727,14 @@ alias bb="build_blog"
               <ul>
                 
                 <li>
+                  <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
+                </li>
+                
+                <li>
+                  <a href="/2016/01/dmp-and-data-inventory/" title="Data management plan and data inventory" rel="bookmark">Data management plan and data inventory</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
                 </li>
                 
@@ -788,14 +744,6 @@ alias bb="build_blog"
                 
                 <li>
                   <a href="/2015/12/this-is-an-open-notebook-but-selected-content-delayed/" title="This is an open notebook but selected content delayed" rel="bookmark">This is an open notebook but selected content delayed</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/my-project-inventory/" title="My project inventory" rel="bookmark">My project inventory</a>
                 </li>
                 
               </ul>
@@ -823,7 +771,7 @@ alias bb="build_blog"
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (42)</a></li>
+                <li><a href="/categories/disentangle">disentangle (44)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -837,7 +785,7 @@ alias bb="build_blog"
                 
                 <li><a href="/categories/reproducible research reports">reproducible research reports (3)</a></li>
                 
-                <li><a href="/categories/data management">data management (3)</a></li>
+                <li><a href="/categories/data management">data management (4)</a></li>
                 
                 <li><a href="/categories/data operation">data operation (1)</a></li>
                 
@@ -852,6 +800,8 @@ alias bb="build_blog"
                 <li><a href="/categories/swish">swish (1)</a></li>
                 
                 <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (1)</a></li>
+                
+                <li><a href="/categories/reproducible research">reproducible research (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

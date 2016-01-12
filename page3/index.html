@@ -54,6 +54,109 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/11/a-picture-of-the-newnode-function-for-workflow-visualisation-in-r/" title="A picture of the newnode function for workflow visualisation in R" rel="bookmark">A picture of the newnode function for workflow visualisation in R</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h2>Newnode: An R function for visualising workflows</h2>
+
+<p>The scientific workflow concept is essentially a pipeline.  The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.</p>
+
+<p>A simple way to keep track of the steps, inputs and outputs is shown in Table below:</p>
+
+<pre><code>CLUSTER ,  STEP       , INPUTS                   , OUTPUTS                   
+A  ,       Step1      , "Input 1, Input 2"       , Output 1                 
+A  ,       Step2      ,  Input 3                 , Output 2                   
+B  ,       Step3      , "Output 1, Output 2"     , Output 3                  
+</code></pre>
+
+<p>The steps and data listed in this way can be visualised.
+To achieve this an R function was written as part of my PhD project and is distributed in the R package available on Github <a href="https://github.com/ivanhanigan/disentangle">https://github.com/ivanhanigan/disentangle</a>.</p>
+
+<p>This is the <code>newnode</code> function.  The function returns a string of text
+written in the <code>dot</code> language which can be rendered in R using the
+<code>DiagrammeR</code> package, or the standalone <code>graphviz</code> package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.</p>
+
+<p><img src="/images/steps_basic_rstudio-test.png" alt="/images/steps_basic_rstudio-test.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/11/a-picture-of-the-newnode-function-for-workflow-visualisation-in-r/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-11-17 00:00:00 +1100">17 Nov 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters/" title="Putting bibtex key into my lit review database needs sanitized latex characters" rel="bookmark">Putting bibtex key into my lit review database needs sanitized latex characters</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:</p>
+
+<pre><code>library(xtable)
+library(rpostgrestools) # my own work
+if(!exists("ch")) ch &lt;- connect2postgres2("data_inventory_hanigan_dev4")
+
+dat &lt;- dbGetQuery(ch,
+"SELECT id, dataset_id, bibtex_key, title,  key_results,background_to_study, 
+       research_question, study_extent, outcomes, exposures,  covariates, method_protocol,
+        general_comments
+  FROM publication
+  where key_results is not null and key_results != '';
+")
+names(dat) &lt;- gsub("_", " ", names(dat))
+tabcode &lt;- xtable(dat[,1:8])
+align(tabcode) &lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7in}','p{1.8in}','p{1.7in}', 'p{1.7in}')
+print(tabcode,  include.rownames = F, table.placement = '!ht',
+      floating.environment='sidewaystable',
+      sanitize.text.function = function(x) x)
+</code></pre>
+
+<p></p>
+
+
+<p>Produces the below table:</p>
+
+<p><img src="/images/bibtable.png" alt="/images/bibtable.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-11-15 00:00:00 +1100">15 Nov 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/11/developing-a-lit-review-database/" title="Developing a lit review database" rel="bookmark">Developing a lit review database</a>
     </h1>
     <div class="entry-content full-content">
@@ -264,357 +367,6 @@ stops if each bullet point is a complete sentence.
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/decisions-to-make-when-modelling-interactions/" title="Decisions to make when modelling interactions" rel="bookmark">Decisions to make when modelling interactions</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>This post focuses on decision making during statistical
-modelling.  The case of investigating effect modification is used as
-an example.  The analyst has several options available to them when
-constructing the model parametrisation for adjustment to explain
-modification effectively.  Unlike confounding (in which the criterion
-of substantial magnitude change of the effect estimate when
-controlling for a third variable can be easily assessed), models
-including effect modification can be hard to interpret.  Taking
-account of effect modification becomes increasingly important when
-modelling complex interactions.</p>
-
-<p>If an effect moderator is present then the relationship between
-exposure and response varies between different levels of the
-moderator. An example is provided by a paper we published, in which the
-relationship between proximity to wetlands and Ross River virus
-infection was found to be different for towns and rural areas, where the
-'urban' variable is the 'effect moderator'.</p>
-
-<p>There are three common ways for data analysts to address this question
-in statistical models:</p>
-
-<ol>
-<li>multiple models for each group,</li>
-<li>interaction terms or</li>
-<li>re-parametrisation to explicitly depict interactions.</li>
-</ol>
-
-
-<p>The first way is
-to split apart the dataset and conduct separate analyses of multiple
-groups. For example, one could run the regression in the urban zone
-and the rural zone seperately and see if there were different exposure
-response functions in the two models.  This was the approach of our paper.
-This approach has the strength that it is simple to do and yeilds
-results that are easy to interpret.  A limitation of this method is
-that by splitting the dataset one loses degrees of freedom and
-therefore statistical power.</p>
-
-<p>The second approach (which removes that limitation of the first option) is to
-fit interaction terms.  The example shown in Figure 1 is a multiplicative interaction model (Brambor 2006).
-This  approach was not taken in the models reported in our paper, but can easily be implemented and shows that the function of distance was
-estimated to have different 'slopes' in each of the dichotomous urban
-groups.</p>
-
-<p>The statistical method can be easily implemented in
-software by including a multiplicative term between two variables,
-however in practice the resulting post estimation regression outputs
-can be difficult to interpret.  For example, say one wants to calculate
-the effect and standard error for exposure X on health outcome Y with
-the interaction of the effect modifier Z.  The form of this model can
-be written as:</p>
-
-<p>$$ Y ~ \beta<em>{1}X + \beta</em>{2}Z + \beta_{3}XZ $$</p>
-
-<p>where B1, B2 and B3 are the regression coefficients estimated and  the term XZ is the interaction between exposure and effect modifier.</p>
-
-<p>The difficulty for interpretation comes when using this method for calculating the marginal effect of X on Y and the conditional standard error.  The specific method described in Brambor et al. is:</p>
-
-<ol>
-<li>Calculate the coefficients and the variance-covariance matrix from the regression model</li>
-<li>The marginal effect is $\beta<em>{1} + \beta</em>{3}XZ$ where Z is the level of the
-modifying factor (0 or 1 in the dichotomous effect modifier case)</li>
-<li>The conditional standard error is:</li>
-</ol>
-
-
-<p>$$\sqrt{var(\beta<em>{1}) + Z<sup>2</sup> var(\beta</em>{3}) + 2Zcov(\beta<em>{1}\beta</em>{3})}$$</p>
-
-<p>Therefore the strengths of this approach is that it does not reduce
-degrees of freedom and is straightforward to specify the model in
-standard statistical software packages. The limitations are related to
-interpretation of the resulting coefficients for both the main effects and the marginal effects, and standard errors for these.</p>
-
-<p>The third approach available to analysts makes it easier to access the
-resulting regression output.  This method was employed in Paper 1 in
-the final modelling phase in which estimates were calculated for the
-different drought exposure-response funcitons in each of the
-sub-groups. In the terms of Figure \ref{fig:effectmod.png} it is simple to:</p>
-
-<ol>
-<li>Calculate X1 = X * Z (i.e = exposure for condition is met, zero otherwise)</li>
-<li>Calculate X0 = X * (1-Z) (i.e. = exposure for NON-condition, zero for condition is TRUE)</li>
-<li>Instead of X, Z and XZ, fit X1, X0 and Z.  This model also contains three parameters and captures the same interactions as it is the same model with a different parametrisation.  The standard errors for the X1 and X0 are calculated directly from the regression.</li>
-</ol>
-
-
-<p>This method is much easier to implement and interpret.  This is also
-considerably more flexible than the other two approaches.  A
-limitation remains for this method in that the pre-processing steps
-required are more complicated, and there are inherently more
-possibilities for the data analyst to make errors in writing their
-code as they make these changes to the analytical data.</p>
-
-<pre><code># Demonstrating this with the data from the paper (available in table 2)
-## the following code shows the different parametrisations for the effect modification by urban
-## we show that the coeffs and se are equivalent but that the psuedo-R
-## squared will be better when including all our data in stratified analysis
-
-# model 0 effect in eastern
-d_eastern
-fit &lt;- glm(cases~ buffer + offset(log(1+pops)),family='poisson', data=d_eastern )
-summa &lt;- summary(fit)
-summa
-## Coefficients:
-##             Estimate Std. Error z value Pr(&gt;|z|)
-## (Intercept) -4.82425    0.14451 -33.382  &lt; 2e-16 ***
-## buffer      -0.24702    0.07921  -3.119  0.00182 **
-
-# model 1 effect in urban
-fit1 &lt;- glm(cases~ buffer + offset(log(1+pops)),family='poisson', data=d_urban )
-summa &lt;- summary(fit1)
-summa
-## Coefficients:
-##             Estimate Std. Error z value Pr(&gt;|z|)
-## (Intercept) -5.52363    0.33354 -16.561   &lt;2e-16 ***
-## buffer       0.03853    0.06352   0.607    0.544
-
-# step 1, combine the urban and rural data
-d_eastern$urban &lt;- 0
-d_urban$urban &lt;- 1
-dat2 &lt;- rbind(d_eastern, d_urban)
-str(dat2)
-dat2
-
-# model 2 is a multiplicative term
-fit2 &lt;- glm(cases ~ buffer * urban + offset(log(1+pops)), family = 'poisson', data = dat2)
-summa &lt;- summary(fit2)
-summa
-## Coefficients:
-##              Estimate Std. Error z value Pr(&gt;|z|)
-## (Intercept)  -4.82425    0.14451 -33.382  &lt; 2e-16 ***
-## buffer       -0.24702    0.07921  -3.119  0.00182 **
-## urban        -0.69938    0.36350  -1.924  0.05435 .
-## buffer:urban  0.28555    0.10153   2.812  0.00492 **
-
-# the coeff on buffer is for urban = 0 is main effect
-# the coeff on buffer:urban is for urban = 1 is the marginal effect
-b1 &lt;- summa$coeff[2,1]
-b3 &lt;- summa$coeff[4,1]
-b1 + b3
-# 0.0385268
-# but what about that p-value?  and the se?
-str(fit2)
-fit2_vcov &lt;- vcov(fit2)
-fit2_vcov
-# now calculate the conditional standard error for the marginal effect of buffer for the value of the modifying variable (Z, urban =1)
-varb1&lt;-fit2_vcov[2,2]
-varb3&lt;-fit2_vcov[4,4]
-covarb1b3&lt;-fit2_vcov[2,4]
-Z&lt;-1
-conditional_se &lt;- sqrt(varb1+varb3*(Z^2)+2*Z*covarb1b3)
-conditional_se
-
-
-
-# model 3 is the re-parametrisation
-dat2$buffer_urban &lt;- dat2$buffer * dat2$urban
-dat2$buffer_eastern &lt;- dat2$buffer * (1-dat2$urban)
-
-fit3 &lt;- glm(cases ~ buffer_urban + buffer_eastern + urban + offset(log(1+pops)), family = 'poisson', data = dat2)
-summa &lt;- summary(fit3)
-summa
-
-## Coefficients:
-##                Estimate Std. Error z value Pr(&gt;|z|)
-## (Intercept)    -4.82425    0.14451 -33.382  &lt; 2e-16 ***
-## buffer_urban    0.03853    0.06352   0.607  0.54416
-## buffer_eastern -0.24702    0.07921  -3.119  0.00182 **
-## urban          -0.69938    0.36350  -1.924  0.05435 .
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/statistical modelling" title="statistical modelling" rel="category tag">statistical modelling</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/decisions-to-make-when-modelling-interactions/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-31 00:00:00 +1100">31 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/show-missingness-in-large-dataframes-v2/" title="Show missingness in large dataframes, version 2" rel="bookmark">Show missingness in large dataframes, version 2</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>UPDATE: the other day I blogged this but I needed to tweak things, so this is a re-post with extra</li>
-<li>UPDATE 2: Today an R blogger has posted a new solution <a href="/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger">/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</a></li>
-</ul>
-
-
-<h2>The old post</h2>
-
-<ul>
-<li>Sometime ago I saw this example of a method for assessing missing data in a large data frame <a href="http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/">http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/</a></li>
-<li>I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:</li>
-</ul>
-
-
-<p><img src="/images/bankstown_traffic_counts_full_listing_june_2014.svg" alt="/images/bankstown_traffic_counts_full_listing_june_2014.svg" /></p>
-
-<h4>Code</h4>
-
-<pre><code>misstable &lt;- function(atable){
- op &lt;- par(bg = "white")
- plot(c(0, 400), c(0, 1000), type = "n", xlab="", ylab="",
-     main = "Missing Data Table")
-
-
- pmin=000
- pmax=400
- stre=pmax-pmin
- lnames=length(atable)
- cstep = (stre/lnames)
- for(titles in 1:lnames){
- text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
- }
-
- gmax=900
- gmin=0
- gstre=gmax-gmin
- rvec = as.vector(atable[ [ 1 ] ])
- dnames=length(rvec)
- step = gstre / dnames
- for(rows in 1:dnames){
- text(30,gmax - (rows-1)*step-step/2,rvec[rows])
- ymax=gmax - (rows-1)*step
- ymin=gmax - (rows)*step
- for(col in 2:lnames-1){
- if(atable[rows,col+1] == F){
- tcolor = "red"
- }
- if(atable[rows,col+1] == T){
- tcolor = "white"
- }
- rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
- ymax,col=tcolor,lty="blank")
- }
- }
-}
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>Now things to note are that the function expects the data to be TRUE if Not NA and  FALSE if is NA</li>
-<li>so might need to massage things a bit first</li>
-<li>here is the small test Grant supplied</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code>require(grDevices)
-
-# Make a quick dataframe with true/false representing data availability
-locs=c("Australia","India","New Zealand","Sri Lanka","Uruguay","Somalia")
-f1=c(T,F,T,T,F,F)
-f2=c(F,F,F,T,F,F)
-f3=c(F,T,T,T,F,T)
-atable=data.frame(locs,f1,f2,f3)
-atable
-#Draw the table.
-misstable(atable)
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>here is the one I worked on today</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code># having defined the input dir and input file tried reading the excel sheet (without head 3 rows)
-#dat &lt;- readxl::read_excel(file.path(indir, infile), skip =3)
-# got lots of warnings()
-## 50: In read_xlsx_(path, sheet, col_names = col_names, col_types = col_types,  ... :
-##   [1278, 4]: expecting date: got '[NULL]'
-# I always worry about using excel connections so open in excel (in windows) 
-# and save as to convert to CSV
-dat &lt;- read.csv(file.path(indir, gsub(".xlsx", ".csv", infile)), skip =3, stringsAsFactor = F)
-str(dat)
-# 'data.frame':     1396 obs. of  167 variables:
-# but most of the cols and a third of the rows are empty!
-# check missings
-dat2 &lt;- data.frame(id = 1:nrow(dat), dat)
-str(dat2)
-# first if they are empty strings
-dat2[dat2 == ""] &lt;- NA
-# now if NA
-dat2[,2:ncol(dat2)] &lt;- !is.na(dat2[,2:ncol(dat2)])
-
-# Truncate the hundreds of empty cols
-str(dat2[,1:18])
-tail(dat2[,1:18])
-svg(file.path(outdir, gsub(".csv", ".svg", outfile))    )
-misstable(dat2[,1:18])
-dev.off()
-browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
-
-# cool, that is an effective way to look at the data
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/exploratory data analysis" title="exploratory data analysis" rel="category tag">exploratory data analysis</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/show-missingness-in-large-dataframes-v2/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-28 00:00:00 +1100">28 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -695,6 +447,14 @@ browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
               <ul>
                 
                 <li>
+                  <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
+                </li>
+                
+                <li>
+                  <a href="/2016/01/dmp-and-data-inventory/" title="Data management plan and data inventory" rel="bookmark">Data management plan and data inventory</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
                 </li>
                 
@@ -704,14 +464,6 @@ browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
                 
                 <li>
                   <a href="/2015/12/this-is-an-open-notebook-but-selected-content-delayed/" title="This is an open notebook but selected content delayed" rel="bookmark">This is an open notebook but selected content delayed</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/my-project-inventory/" title="My project inventory" rel="bookmark">My project inventory</a>
                 </li>
                 
               </ul>
@@ -739,7 +491,7 @@ browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (42)</a></li>
+                <li><a href="/categories/disentangle">disentangle (44)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -753,7 +505,7 @@ browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
                 
                 <li><a href="/categories/reproducible research reports">reproducible research reports (3)</a></li>
                 
-                <li><a href="/categories/data management">data management (3)</a></li>
+                <li><a href="/categories/data management">data management (4)</a></li>
                 
                 <li><a href="/categories/data operation">data operation (1)</a></li>
                 
@@ -768,6 +520,8 @@ browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
                 <li><a href="/categories/swish">swish (1)</a></li>
                 
                 <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (1)</a></li>
+                
+                <li><a href="/categories/reproducible research">reproducible research (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

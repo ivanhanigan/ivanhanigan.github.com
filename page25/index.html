@@ -54,6 +54,78 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/extract-weather-data-from-awap-grids/" title="Daintree Rainforest Observatory Climate Data from AWAP-GRIDS" rel="bookmark">Daintree Rainforest Observatory Climate Data from AWAP-GRIDS</a>
+    </h1>
+    <div class="entry-content full-content">
+      
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/awap grids" title="awap grids" rel="category tag">awap grids</a>
+      
+      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/extract-weather-data-from-awap-grids/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-26 00:00:00 +1100">26 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2013/10/document-first-ask-questions-later/" title="document-first-ask-questions-later" rel="bookmark">document-first-ask-questions-later</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This post is just a short note about something I'm thinking of calling "documentation-driven development".
+It is based on the concept of <a href="http://en.wikipedia.org/wiki/Test-driven_development">"test-driven development"</a>, and more recently:</p>
+
+<ul>
+<li><a href="http://lamages.blogspot.in/2013/04/test-driven-analysis.html">"test-driven analysis"</a></li>
+<li>or even <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">"Evidence-based Data Analysis"</a>).</li>
+<li>It is also a kind of a critique on the paradigm suggested by the BCCVL statement on <a href="http://bccvl.org.au/blog/2013/08/20/just-in-time-metadata/">"Just-In-Time metadata"</a>.</li>
+</ul>
+
+
+<p>Anyway, it is a small thing but hopefully big things will grow.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/document-first-ask-questions-later/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-25 00:00:00 +1100">25 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/challenger-logistic/" title="A Great Intro 2 Logistic Regression" rel="bookmark">A Great Intro 2 Logistic Regression</a>
     </h1>
     <div class="entry-content full-content">
@@ -468,212 +540,6 @@ dirname(fpath)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/dc-uploader-and-ANU-DataCommons/" title="dc-uploader-and-ANU-DataCommons" rel="bookmark">dc-uploader-and-ANU-DataCommons</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>In this post I use the tool produced at the ANU by the DataCommons team.  This requires Python3.</p>
-
-<h1>What does it do?</h1>
-
-<p>The script only creates new collection records. The functionality to edit records didn’t make it into the script as the expectation is that automated ingests will only require creation of new datasets to which files will be uploaded.</p>
-
-<p>Users can feel free to tweak the collection parameter file to their liking in the development environment until happy with the results.</p>
-
-<h1>Create the metadata.txt</h1>
-
-<p>You need to get the python scripts and conf file from the ANU DataCommons team.  Store these somewhere handy and move to that directory.</p>
-
-<p>change the anudc.conf: to test out the scripts by creating some sample records, please uncomment the “host” field in the file that points to dc7-dev2.anu.edu.au:8443 , and comment out the one that points to datacommons.anu.edu.au:8443.</p>
-
-<p>Also you get a different token in dev and prod servers for security reasons you cannot use the same token. Also, storing your username and password in plain text is not recommended and is to be used only for debugging purposes. Also, in my case I had to change the owner group to ‘5’ when creating records in dev. In prod, it’s 6.</p>
-
-<p>You can look int the "Keys.txt" file that contains the full list of values that can be specified in this metadata.txt file.</p>
-
-<h4>Code:</h4>
-
-<pre><code>setwd("~/tools/dcupload")
-sink("metadata.txt")
-cat("
-# This file, referred to as a collection parameter file, consists of
-# data in key=value pairs. This data is sent to the ANU Data Commons
-# to create a collection, establish relations with other records,
-# and/or upload files to those collections.
-
-# The metadata section consists of metadata for use in creation (not
-# for modification) of record metadata in ANU Data Commons. The
-# following fields are required for the creation of a record. The file
-# Keys.txt contains the full list of values that can be specified in
-# this file. Based on this information below, a collection record of
-# type databaset with the title "Test Collection 6/05/2013" will be
-# created owned by Meteorology and Health group.
-[metadata]
-type = Collection
-subType = dataset
-ownerGroup = 5
-# 6 on production, 5 on dev
-name = Civil Status, Gender and Activity Sector
-briefDesc = An example, fictional dataset for Decision Tree Models
-citationCreator = Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006.
-email = ivan.hanigan@anu.edu.au
-anzforSubject = 1601
-
-# The relations section allows you to specify the relation this record
-# has with other records in the system.  Currently relations with NLA
-# identifiers is not supported.
-[relations]
-isOutputOf = anudc:123
-
-# This section contains a line of the form 'pid = anudc:123' once a
-# record has been created so executing the uploader script with the
-# same collection parameter file doesnt create a new record with the
-# same metadata.
-[pid]
-")
-sink()
-
-# run the dcload
-system("python3 dcuploader.py -c metadata.txt")
-</code></pre>
-
-<p></p>
-
-
-<h1>What happened?</h1>
-
-<ul>
-<li>Looking in the metadata.txt file it now has a pid like "pid = test:3527"</li>
-<li>And we have created a new record in our account on the DataCommons server.</li>
-</ul>
-
-
-<h1>go to the website</h1>
-
-<p>Now go to <a href="https://dc7-dev2.anu.edu.au:8443/DataCommons/">the dev site</a> and you can continue editing the record manually in the browser.</p>
-
-<p>Or if we have ironed out the wrinkles you could go straight to the production server at <a href="https://datacommons.anu.edu.au:8443/DataCommons">This Link</a></p>
-
-<h1>Uploading the data</h1>
-
-<p>The dataset gets sent using a Java applet in the browser while you are manually editing the record using the browser.</p>
-
-<h1>Notes</h1>
-
-<ul>
-<li><p>After the records get created, the script tries to relate the record to other records as you’ve specified in the collection parameter file in the relations section. If you’re creating a record in dev2, you cannot relate it to a record in production because that record doesn’t exist in dev2. Remember that IDs for records in dev environments have the prefix “test:” while those in production have “anudc:”.</p></li>
-<li><p>Also, when you ran the script against production the created records were linked with the record with the ID anudc:123. I have now removed those relations. You might want to change that value in your metadata.txt file so the links are established to records that created records actually can be related to. Or for testing purposes, simply delete the entire [relations] section.</p></li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/dc-uploader-and-ANU-DataCommons/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-13 00:00:00 +1100">13 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/reml-and-rfigshare-part-2/" title="reml-and-rfigshare-part-2" rel="bookmark">reml-and-rfigshare-part-2</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>In the last post I explored the functionality of reml.
-This time I will try to send data to figshare.</p>
-
-<ul>
-<li>First follow <a href="https://github.com/ropensci/rfigshare">These Instructions</a> to get rfigshare set up.  In particular store your figshare credentials in ~/.Rprofile</li>
-</ul>
-
-
-<h4>Code:reml-and-rfigshare-part-2</h4>
-
-<pre><code># func
-require(devtools)
-install_github("reml", "ropensci")
-require(reml)
-install_github("rfigshare", "ropensci")
-require(rfigshare)
-install_github("disentangle", "ivanhanigan")
-require(disentangle)
-# load
-fpath &lt;- system.file(file.path("extdata","civst_gend_sector_eml.xml"), package = "disentangle")
-setwd(dirname(fpath))
-obj &lt;- eml_read(fpath)
-# clean
-obj
-# do
-
-## STEP 1: find one of the preset categories
-# available. We can ask the API for
-# a list of all the categories:
-list &lt;- fs_category_list()
-list[grep("Survey", list)]
-
-## STEP 2: PUBLISH TO FIGSHARE
-id &lt;- eml_publish(fname,
-                  description="Example EML
-                    A fictional dataset",
-                  categories = "Survey results",
-                  tags = "EML",
-                  destination="figshare"
-                  )
-# there are several warnings
-# but go to figshare and it has sent the metadata and data OK
-
-# make public using either the figshare web interface, the
-# rfigshare package (using fs_make_public(id)) or just by adding
-# the argument visibility = TRUE to the above eml_publish
-fs_make_public(id)
-</code></pre>
-
-<p></p>
-
-
-<h1>Now these data are on figshare</h1>
-
-<p>Now I have published the data they are visible and have a DOI</p>
-
-<iframe src="http://wl.figshare.com/articles/820158/embed?show_title=1" width="568" height="157" frameborder="0"></iframe>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/reml-and-rfigshare-part-2/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-12 00:00:00 +1100">12 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -754,6 +620,14 @@ fs_make_public(id)
               <ul>
                 
                 <li>
+                  <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
+                </li>
+                
+                <li>
+                  <a href="/2016/01/dmp-and-data-inventory/" title="Data management plan and data inventory" rel="bookmark">Data management plan and data inventory</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
                 </li>
                 
@@ -763,14 +637,6 @@ fs_make_public(id)
                 
                 <li>
                   <a href="/2015/12/this-is-an-open-notebook-but-selected-content-delayed/" title="This is an open notebook but selected content delayed" rel="bookmark">This is an open notebook but selected content delayed</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/my-project-inventory/" title="My project inventory" rel="bookmark">My project inventory</a>
                 </li>
                 
               </ul>
@@ -798,7 +664,7 @@ fs_make_public(id)
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (42)</a></li>
+                <li><a href="/categories/disentangle">disentangle (44)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -812,7 +678,7 @@ fs_make_public(id)
                 
                 <li><a href="/categories/reproducible research reports">reproducible research reports (3)</a></li>
                 
-                <li><a href="/categories/data management">data management (3)</a></li>
+                <li><a href="/categories/data management">data management (4)</a></li>
                 
                 <li><a href="/categories/data operation">data operation (1)</a></li>
                 
@@ -827,6 +693,8 @@ fs_make_public(id)
                 <li><a href="/categories/swish">swish (1)</a></li>
                 
                 <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (1)</a></li>
+                
+                <li><a href="/categories/reproducible research">reproducible research (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

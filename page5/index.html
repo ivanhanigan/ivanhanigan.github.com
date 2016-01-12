@@ -54,6 +54,202 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/" title="Reproducible research pipelines improve description of method steps" rel="bookmark">Reproducible research pipelines improve description of method steps</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Adequately documenting the methods and results of data analysis helps
+safeguard against errors of execution and
+interpretation. It is proposed that
+reproducible research pipelines address the problem of
+adequate documentation of data analysis.</p>
+
+<p>This is because they make it easy to
+check the methods. Assumptions are easy to challenge and results
+verified in new analyses. Reproducible research pipelines extend
+traditional research.  They do this by encoding the steps in a
+computer ‘scripting’ language and distributing the data and code with
+publications.  Traditional research moves through the steps of
+hypothesis and design, measured data, analytic data, computational
+results (for figures, tables and numerical results), and reports (text
+and formatted manuscript).</p>
+
+<h2>Fundamental components of a reproducible research pipeline</h2>
+
+<p>The basic components of a pipeline are:</p>
+
+<ul>
+<li>Data Management Plan and Data Inventory</li>
+<li>Method steps</li>
+<li>Code</li>
+<li>Data storage</li>
+<li>Reports</li>
+<li>Distribution.</li>
+</ul>
+
+
+<h3>Method Steps</h3>
+
+<p>The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.</p>
+
+<p>A simple way to keep track of the steps, inputs and outputs is shown in the Table below.</p>
+
+<pre><code>library(stringr)
+steps &lt;- read.csv(textConnection('
+CLUSTER ,  STEP  , INPUTS                   , OUTPUTS                   
+A  ,  Step1      , "Input 1, Input 2"       , "Output 1"                 
+A  ,  Step2      ,  Input 3                  , Output 2                   
+B  ,  Step3      , "Output 1, Output 2"      , Output 3                  
+'), stringsAsFactors = F, strip.white = T)
+</code></pre>
+
+<p></p>
+
+
+<p>The steps and data listed in the Table above can be visualised.
+To achieve this an R function was written as part of this PhD project and is distributed in my own R package available on Github <a href="https://github.com/ivanhanigan/disentangle">https://github.com/ivanhanigan/disentangle</a>.
+This is the <code>newnode</code> function.  The function returns a string of text
+written in the <code>dot</code> language which can be rendered in R using the
+<code>DiagrammeR</code> package, or the standalone <code>graphviz</code> package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.</p>
+
+<pre><code>library(disentangle); library(stringr)
+nodes &lt;- newnode(indat = steps,   names_col = "STEP", in_col = "INPUTS",
+  out_col = "OUTPUTS", 
+  nchar_to_snip = 40)
+sink("fig-basic.dot");
+cat(nodes);
+sink()
+# or DiagrammeR::grViz(nodes)
+system("dot -Tpdf fig-basic.dot -o fig-basic.pdf")
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/fig-basic.png" alt="/images/fig-basic.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/workflow tools" title="workflow tools" rel="category tag">workflow tools</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-18 00:00:00 +1100">18 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
+      <a href="/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/" title="How To Effectively Implement Electronic Lab Notebooks In Epidemiology" rel="bookmark">How To Effectively Implement Electronic Lab Notebooks In Epidemiology</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>It is often stated in the literature that an electronic lab notebook is a core component of reproducible research</li>
+<li>For example the following is from Buck, S. (2015). Solving reproducibility. Science, 348(6242), 1403–1403. <a href="http://dx.doi.org/10.1126/science.aac8041">http://dx.doi.org/10.1126/science.aac8041</a></li>
+</ul>
+
+
+<pre><code>one of the most effective ways to promote high-quality science 
+is to create free open-source tools that give scientists
+easier and cheaper ways to incorporate transparency
+into their daily workflow: from open lab notebooks, to
+software that tracks every version of a data set, to dynamic 
+document generation.
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>But I have struggled to operationalise the lab notebook in the epidemiology projects I work in</li>
+<li>Here are some notes based on my recent readings and attempts with a new team</li>
+</ul>
+
+
+<h2>Modularised lab notebooks</h2>
+
+<p>There seem to be a small number of components to a lab notebook that can be defined as:</p>
+
+<ul>
+<li>Data management plan</li>
+<li>Workplan</li>
+<li>Worklog</li>
+<li>Workflow</li>
+<li>Distribution</li>
+</ul>
+
+
+<p>One thing I think is important is to have levels of organisation in a hierarchy:</p>
+
+<ul>
+<li>Macro level: The 'Research Programme' level is about the entire breadth of the projects in the group.
+
+<ul>
+<li>Data Management Plan: including managing the computers and a Data Inventory</li>
+<li><em>Personal Workplan and Worklog</em>: this is an overview of things I do, plan to do or learn along the way (this is for the high level things like planning professional development, or a holiday)</li>
+<li>This is operationalised in the blog you are reading right now.</li>
+</ul>
+</li>
+<li>Meso level: the 'Research Project' level is about a single study, or a small group of studies based around a core dataset or Concept
+
+<ul>
+<li>This is the level that you might write up a manuscript for a journal, or report to a client</li>
+<li><em>Project workplan</em>: at this level there may be high level information about the study design, hypotheses, resources and admin for managing relationships with a variety of collaborators</li>
+<li><em>Worklog</em>: WS Noble <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">http://dx.doi.org/10.1371/journal.pcbi.1000424</a> recommends that this be the main lab notebook for the analysts</li>
+<li>He says 'This is a document that resides in the root of the results directory and that records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to de- scribing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work'</li>
+</ul>
+</li>
+<li>Micro level: the 'Experiment Results' level is about work you might do on a single day, or over a week
+
+<ul>
+<li><em>Workflow</em> scripts: At this level each 'experiment' is written up in chronological order, as entries to the Worklog at the meso level</li>
+<li>Noble recommends 'create either a README file, in which I store every command line that I used while performing the experi- ment, or a driver script (I usually call this runall) that carries out the entire experiment automatically'...</li>
+<li>and 'you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details.'</li>
+<li>this is the level I usually think of managing the distribution side of things.  I will want to pack up the results and email to my collaborators, or decide on the one set of tables and figures to write into the manuscript for submission to a journal.  If this is accepted for publication, this is the one combined package of 'analytical data and code' that I would consider putting up online (to github) as supporting information for the paper.</li>
+</ul>
+</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/workflow tools" title="workflow tools" rel="category tag">workflow tools</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-17 00:00:00 +1100">17 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/10/gis-issues-when-r-used-transforming-coordinate-systems/" title="GIS Issues when R is Used for Transforming Coordinate Systems" rel="bookmark">GIS Issues when R is Used for Transforming Coordinate Systems</a>
     </h1>
     <div class="entry-content full-content">
@@ -308,307 +504,6 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/" title="Coming To Grips With Citations In Reproducible Research Reports" rel="bookmark">Coming To Grips With Citations In Reproducible Research Reports</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h1>Introduction</h1>
-
-<p>Earlier this year I was pleased to stumble on to Petr Keil\'s <a href="http://www.petrkeil.com/?p=2401">Simple
-template for scientific manuscripts in
-Rmarkdown</a> and the Github Repo
-<a href="https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template">https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template</a>.</p>
-
-<p>I was already using Rmarkdown effectively for everything I wanted
-except my bibliography, and this helped a lot.  But I eventually
-found I needed to tweak the format of the citation style.  I tried
-out a bunch of other CSL files but none felt just right.  I tried out
-these after downloading from <a href="https://github.com/citation-style-language/styles">https://github.com/citation-style-language/styles</a>:</p>
-
-<pre><code>american-physiological-society.csl
-annals-of-the-association-of-american-geographers.csl
-biomed-central.csl
-ecology.csl
-pnas.csl
-</code></pre>
-
-<p></p>
-
-
-<h1>SO I hacked the CSL file</h1>
-
-<ul>
-<li>I used the <code>american-physiological-society.csl</code> to get stuff I wanted and pasted into the <code>mee.csl</code></li>
-<li>get the files from this link <a href="/rmarkdown_utils/CitationsInRmarkdown.Rmd">/rmarkdown_utils/CitationsInRmarkdown.Rmd</a></li>
-<li>get the files from this link <a href="/rmarkdown_utils/meemodified.csl">/rmarkdown_utils/meemodified.csl</a></li>
-<li>get the files from this link <a href="/rmarkdown_utils/refs.bib">/rmarkdown_utils/refs.bib</a></li>
-</ul>
-
-
-<p>NB also that the csl file in petrkeil's repo is an older version from 2012 of the version in the citation-style repo called <code>methods-in-ecology-and-evolution</code>.  The differences are not large though.</p>
-
-<h3><span class="header-section-number">1.1.1</span> Example 1:</h3>
-
-
-<p>The journal article by <span class="citation">Michener et al. (1997)</span> and another one <span class="citation">(Bodnar <em>et al.</em> 2004)</span> appear with their full URL even though I just want their DOI.</p>
-
-
-<h3><span class="header-section-number">1.1.2</span> Example 2:</h3>
-
-
-<p>Some recent papers <span class="citation">(Open Science Collaboration 2015; Aiken <em>et al.</em> 2015; Davey <em>et al.</em> 2015)</span> don’t have Volume info and I want to say [epub ahead of print].</p>
-
-
-<h3><span class="header-section-number">1.1.3</span> Example 3:</h3>
-
-
-<p>This blog post on ‘evidence based data analysis pipeline’ by <span class="citation">Peng (2013)</span> is one that definitely needs the URL and date accessed.</p>
-
-
-
-
-<h1>References</h1>
-
-
-<p>Aiken, A.M., Davey, C., Hargreaves, J.R. &amp; Hayes, R.J. (2015). Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication. <em>International Journal of Epidemiology</em>, dyv127. Retrieved from <a href="http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv127.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv127" class="uri">http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv127.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv127</a></p>
-
-
-<p>Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp; Smith, K.R. (2004). Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. <em>International journal of hygiene and environmental health</em>, <strong>207</strong>, 57–67. Retrieved from <a href="http://www.sciencedirect.com/science/article/pii/S1438463904702643" class="uri">http://www.sciencedirect.com/science/article/pii/S1438463904702643</a></p>
-
-
-<p>Davey, C., Aiken, A.M., Hayes, R.J. &amp; Hargreaves, J.R. (2015). Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial. <em>International Journal of Epidemiology</em>, dyv128. Retrieved from <a href="http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv128.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv128" class="uri">http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv128.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv128</a></p>
-
-
-<p>Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp; Stafford, S.G. (1997). Nongeospatial metadata for the ecological sciences. <em>Ecological Applications</em>, <strong>7</strong>, 330–342. Retrieved from <a href="http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK" class="uri">http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK</a></p>
-
-
-<p>Open Science Collaboration. (2015). Estimating the reproducibility of psychological science. <em>Science</em>, <strong>349</strong>, aac4716–aac4716. Retrieved from <a href="http://www.sciencemag.org/cgi/doi/10.1126/science.aac4716" class="uri">http://www.sciencemag.org/cgi/doi/10.1126/science.aac4716</a></p>
-
-
-<p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. <em>Simply statistics</em>. Retrieved July 26, 2015, from <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/" class="uri">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a></p>
-
-
-<pre><code># first replace the &lt;macro name="access"&gt;
-# with 
-&lt;macro name="access"&gt;
-  &lt;choose&gt;
-    &lt;if variable="DOI"/&gt;
-    &lt;!--don't use if there is a DOI--&gt;
-    &lt;else&gt;
-      &lt;choose&gt;
-        &lt;if variable="URL"&gt;
-          &lt;group delimiter=" " prefix=" "&gt;
-            &lt;group&gt;
-              &lt;text variable="URL"/&gt;
-            &lt;/group&gt;
-            &lt;group prefix="[" suffix="]" delimiter=" "&gt;
-              &lt;date variable="accessed"&gt;
-                &lt;date-part name="day"/&gt;
-                &lt;date-part name="month" prefix=" " suffix=" " form="short"/&gt;
-                &lt;date-part name="year"/&gt;
-              &lt;/date&gt;
-            &lt;/group&gt;
-          &lt;/group&gt;
-        &lt;/if&gt;
-      &lt;/choose&gt;
-    &lt;/else&gt;
-  &lt;/choose&gt;
-&lt;/macro&gt;
-#### Then add this ####
-&lt;macro name="date"&gt;
-  &lt;choose&gt;
-    &lt;if variable="issued"&gt;
-      &lt;choose&gt;
-        &lt;if type="article-journal"&gt;
-          &lt;date variable="issued"&gt;
-            &lt;date-part name="year"/&gt;
-          &lt;/date&gt;
-        &lt;/if&gt;
-        &lt;else&gt;
-          &lt;date variable="issued"&gt;
-            &lt;date-part name="year"/&gt;
-          &lt;/date&gt;
-        &lt;/else&gt;
-      &lt;/choose&gt;
-    &lt;/if&gt;
-    &lt;else&gt;
-      &lt;text term="no date" prefix="[" suffix="]"/&gt;
-    &lt;/else&gt;
-  &lt;/choose&gt;
-&lt;/macro&gt;
-#### And add this ####
-      &lt;else-if type="article-journal"&gt;
-        &lt;choose&gt;
-          &lt;if variable="issue volume" match="any"&gt;
-            &lt;text macro="title" suffix=" "/&gt;
-            &lt;text variable="container-title" suffix=" " form="short" font-style="italic" strip-periods="true"/&gt;
-            &lt;text variable="volume"/&gt;
-            &lt;text variable="page" prefix=": "/&gt;
-            &lt;text macro="date" prefix=", " suffix="."/&gt;
-          &lt;/if&gt;
-          &lt;else&gt;
-            &lt;choose&gt;
-              &lt;if variable="DOI"&gt;
-                &lt;text macro="title" suffix=" "/&gt;
-                &lt;text variable="container-title" suffix=" " form="short" font-style="italic"/&gt;
-                &lt;group prefix="(" suffix=")."&gt;
-                  &lt;date variable="issued"&gt;
-                    &lt;date-part name="month" prefix=" " suffix=" "/&gt;
-                    &lt;date-part name="day" suffix=", "/&gt;
-                    &lt;date-part name="year"/&gt;
-                  &lt;/date&gt;
-                &lt;/group&gt;
-                &lt;text variable="DOI" prefix=" doi: "/&gt;
-              &lt;/if&gt;
-              &lt;else&gt;
-                &lt;text variable="container-title" suffix=". " form="short" font-style="italic"/&gt;
-              &lt;/else&gt;
-            &lt;/choose&gt;
-          &lt;/else&gt;
-        &lt;/choose&gt;
-      &lt;/else-if&gt;
-</code></pre>
-
-<h2>Now use this modified csl in the header of the RMD file instead of mee.csl</h2>
-
-<h1><span class="header-section-number">1.2</span> NEW References</h1>
-
-
-<p>Aiken, A.M., Davey, C., Hargreaves, J.R. &amp; Hayes, R.J. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication <em>International Journal of Epidemiology</em> (epub ahead of print July 2015). doi: <a href="http://dx.doi.org/10.1093/ije/dyv127">10.1093/ije/dyv127</a></p>
-
-
-<p>Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp; Smith, K.R. (2004).Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. <em>International journal of hygiene and environmental health</em> 207: 57–67, 2004.</p>
-
-
-<p>Davey, C., Aiken, A.M., Hayes, R.J. &amp; Hargreaves, J.R. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial <em>International Journal of Epidemiology</em> (epub ahead of print July 2015). doi: <a href="http://dx.doi.org/10.1093/ije/dyv128">10.1093/ije/dyv128</a></p>
-
-
-<p>Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp; Stafford, S.G. (1997).Nongeospatial metadata for the ecological sciences <em>Ecological Applications</em> 7: 330–342, 1997. <a href="http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK">http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK</a></p>
-
-
-<p>Open Science Collaboration. (2015).Estimating the reproducibility of psychological science <em>Science</em> 349: aac4716–aac4716, 2015.</p>
-
-
-<p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. <em>Simply statistics</em>. <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a> [26 Jul. 2015]</p>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-09 00:00:00 +1100">09 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/" title="A quick review of a quick guide to organizing computational biology projects" rel="bookmark">A quick review of a quick guide to organizing computational biology projects</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>The organisation of material is a particularly vexatious topic.  For a data analysis project it is very important that the set of folders and files is logical and intuitive, as well as being well documented. The oft-heard exhortation by computer scientists to their users to 'Read The F-ing Manual' (RTFM) is perennial and rooted in the fundamental difficulty of readers to have the time required to read and digest the detailed information there-in.</p>
-
-<ul>
-<li>In this post I review a paper that I was referred to by recent activity on the
-Mozillascience studyGroupLesson 'Open Science Utility Belt':
-<a href="https://github.com/mozillascience/studyGroupLessons/issues/7">https://github.com/mozillascience/studyGroupLessons/issues/7</a></li>
-<li>That group also holds a journal club <a href="https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483">https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483</a> and they reviewed this paper:</li>
-<li>Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">http://dx.doi.org/10.1371/journal.pcbi.1000424</a></li>
-</ul>
-
-
-<p>I missed out so I thought I'd put my notes up here for reference:</p>
-
-<ol>
-<li>core guiding principle is simple: Someone unfamiliar with your project should be able to look at your computer files and understand in detail what you did and why</li>
-<li>your future self may find it difficult to understand your current work.</li>
-<li>Noble's law: 'Everything you do, you will probably have to do over again'</li>
-<li>store all of the files relevant to one project in common root directory</li>
-<li>The exception to this rule is data/code that are used in multiple projects, they are standalone projects</li>
-<li>Within a given project, use a top-level organization that is logical first, then chronological  at the next level, and then logical organization next</li>
-<li>Core folders are <code>data</code>, <code>results</code>, <code>doc</code> (versus Berndt Weiss' <code>dat</code>, <code>ana</code>, <code>doc</code>)</li>
-<li>Chronological order?  'tempting to apply a similar, logical organization... this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform'</li>
-</ol>
-
-
-<h3>Recommended folder and file structures <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424.g001">http://dx.doi.org/10.1371/journal.pcbi.1000424.g001</a></h3>
-
-<pre><code class="r">/projectname (eg msms)/
-    /doc/
-        /ms-analysis.html 
-        /paper/
-            /msms.tex
-            /msms.pdf
-    /data/
-        /YYYY-MM-DD/
-            /yeast/
-                /README
-                /yeast.sqt
-            /worm/
-                /README
-                /worm.sqt
-    /src/
-        /ms-analysis.c
-    /bin/
-        /parse-sqt.py
-    /results/
-        /notebook.html 
-        /YYYY-MM-DD-1/
-            /runall
-            /split1/
-            /split2/
-        /YYYY-MM-DD-2/
-            /runall
-</code></pre>
-
-<p></p>
-
-
-<ol>
-<li>Use a driver script to automate creation of a directory structure</li>
-<li>maintain a chronologically organized lab notebook (I have been calling this a work 'log' sensu Scott Long's 2008 'Workflow book')</li>
-<li>create either a README file, or a command line driver script (he calls this <code>runall</code>, but see also <code>main.R</code> sensu the Reichian LCFD model)</li>
-<li>you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details</li>
-<li>Version Control.  'Nuff said! But how to build capacity with Github when all my colleagues seem so confused by it?</li>
-</ol>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-07 00:00:00 +1100">07 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -689,6 +584,14 @@ Mozillascience studyGroupLesson 'Open Science Utility Belt':
               <ul>
                 
                 <li>
+                  <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
+                </li>
+                
+                <li>
+                  <a href="/2016/01/dmp-and-data-inventory/" title="Data management plan and data inventory" rel="bookmark">Data management plan and data inventory</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
                 </li>
                 
@@ -698,14 +601,6 @@ Mozillascience studyGroupLesson 'Open Science Utility Belt':
                 
                 <li>
                   <a href="/2015/12/this-is-an-open-notebook-but-selected-content-delayed/" title="This is an open notebook but selected content delayed" rel="bookmark">This is an open notebook but selected content delayed</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/my-project-inventory/" title="My project inventory" rel="bookmark">My project inventory</a>
                 </li>
                 
               </ul>
@@ -733,7 +628,7 @@ Mozillascience studyGroupLesson 'Open Science Utility Belt':
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (42)</a></li>
+                <li><a href="/categories/disentangle">disentangle (44)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
@@ -747,7 +642,7 @@ Mozillascience studyGroupLesson 'Open Science Utility Belt':
                 
                 <li><a href="/categories/reproducible research reports">reproducible research reports (3)</a></li>
                 
-                <li><a href="/categories/data management">data management (3)</a></li>
+                <li><a href="/categories/data management">data management (4)</a></li>
                 
                 <li><a href="/categories/data operation">data operation (1)</a></li>
                 
@@ -762,6 +657,8 @@ Mozillascience studyGroupLesson 'Open Science Utility Belt':
                 <li><a href="/categories/swish">swish (1)</a></li>
                 
                 <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (1)</a></li>
+                
+                <li><a href="/categories/reproducible research">reproducible research (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
