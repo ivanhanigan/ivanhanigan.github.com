@@ -54,6 +54,44 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/08/morpho-doesnt-respect-quote-encapsulated-strings-in-csv/" title="morpho-doesnt-respect-quote-encapsulated-strings-in-csv" rel="bookmark">morpho-doesnt-respect-quote-encapsulated-strings-in-csv</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>We discovered this known morpho bug when we try to import a textual data to morpho</li>
+<li>Even if you double check that you have selected the correct format for that data. For example, delimited or fixed width, and the correct delimiter.</li>
+<li>see this bug report <a href="https://projects.ecoinformatics.org/ecoinfo/issues/4636">Bug #4636 Morpho should ignore commas inside double-quoted fields (CSV import)</a></li>
+<li>this unwanted Morpho behaviour is due to a comma in the cell and morpho doesn’t respect quote encapsulated strings with commas in them.</li>
+<li>we do not think we can fix Morpho’s bug, and we cannot upgrade Morpho because of our Metacat version. We just need to find a workaround on that.</li>
+</ul>
+
+
+<p><img src="/images/morpho-quote-encapsulated.png" alt="morpho-quote-encapsulated.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/08/morpho-doesnt-respect-quote-encapsulated-strings-in-csv/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-08-20 00:00:00 +1000">20 Aug 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/07/r-eml-pgis-setting-up-the-software-stack/" title="r-eml-pgis-setting-up-the-software-stack" rel="bookmark">r-eml-pgis-setting-up-the-software-stack</a>
     </h1>
     <div class="entry-content full-content">
@@ -568,44 +606,6 @@ Survey"</li>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/06/my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it/" title="my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it" rel="bookmark">my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>I am not sure but I suspect <a href="http://ivanhanigan.github.com/2014/05/using-additional-header-rows-for-metadata.html">this post</a> caused my feedburner xml to become too big and stop the updates to my feedly account</li>
-<li>Found this out by logging in to <a href="http://feedburner.google.com">http://feedburner.google.com</a> and trying to re-sync my feed (under troubleshootize)</li>
-<li>I may have tipped the size over the edge with <a href="http://ivanhanigan.github.com/2014/06/testing-aekos-data-portal.html">this post</a></li>
-<li>the issue is probably due to me starting to use knitr (see <a href="/2014/05/reproducible-research-reports-using-emacs-orgmode-export-to-knitr/">this post</a> ) to produce the HTML reports which encodes the images inline, whereas I used to use the old school orgmode approach of referencing the png in the images directory</li>
-<li>looking at the feed/index.xml I saw that this includes every post I ever wrote</li>
-<li>I fixed it by going back to <a href="http://www.daveperrett.com/articles/2010/09/14/integrating-jekyll-with-feedburner/">the instructions I used to set up the feed</a></li>
-<li>and adding limit:10 to the line of the loop 'for post in site.posts'</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/06/my-feed-filesize-is-larger-than-512k-need-to-reduce-its-size-in-order-for-feedburner-to-process-it/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-06-15 00:00:00 +1000">15 Jun 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -686,6 +686,10 @@ Survey"</li>
               <ul>
                 
                 <li>
+                  <a href="/2016/01/reproducibility-vs-replication-definitional-variations/" title="Reproducibility vs replication - Definitional variations" rel="bookmark">Reproducibility vs replication - Definitional variations</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/validity-of-measurement/" title="Validity of measurement" rel="bookmark">Validity of measurement</a>
                 </li>
                 
@@ -699,10 +703,6 @@ Survey"</li>
                 
                 <li>
                   <a href="/2015/12/my-framework-of-scientific-workflow-and-integration-software-for-holistic-data-analysis/" title="My framework of scientific workflow and integration software for holistic data analysis" rel="bookmark">My framework of scientific workflow and integration software for holistic data analysis</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/this-is-an-open-notebook-but-selected-content-delayed/" title="This is an open notebook but selected content delayed" rel="bookmark">This is an open notebook but selected content delayed</a>
                 </li>
                 
               </ul>
@@ -730,7 +730,7 @@ Survey"</li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (44)</a></li>
+                <li><a href="/categories/disentangle">disentangle (45)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
