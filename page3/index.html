@@ -54,6 +54,173 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/" title="Notes from Dr Climate Re data reference syntax models for file organisation and naming" rel="bookmark">Notes from Dr Climate Re data reference syntax models for file organisation and naming</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>This is an excellent explanation of the Australian Integrated Marine Observing System (IMOS) Data Reference Syntax by Damien Irving on the Dr Climate blog  <a href="https://drclimate.wordpress.com/2015/09/04/managing-your-data/">https://drclimate.wordpress.com/2015/09/04/managing-your-data/</a></li>
+<li>A Data Reference Syntax (DRS) – a convention for naming your files</li>
+</ul>
+
+
+<pre><code>&lt;computer&gt;/&lt;project&gt;/&lt;organisation&gt;/&lt;collection&gt;/&lt;facility&gt;/&lt;data-type&gt;/&lt;site-code&gt;/&lt;year&gt;/
+
+The data type has a sub-DRS of its own, which tells us that the data
+represents the 1-hourly average surface current for a single month
+(October 2012), and that it is archived on a regularly spaced spatial
+grid and has not been quality controlled.
+
+Just in case the file gets separated from this informative directory
+structure, much of the information is repeated in the file name
+itself, along with some more detailed information about the start and
+end time of the data, and the last time the file was modified:
+
+&lt;project&gt;_&lt;facility&gt;_V_&lt;time-start&gt;_&lt;site-code&gt;_FV00_&lt;data-type&gt;_&lt;time-end&gt;_&lt;modified&gt;.nc.gz
+
+In the first instance this level of detail seems like a bit of
+overkill... 
+
+Since the data are so well labelled,
+locating all monthly timescale ACORN data from the Turquoise Coast and
+Rottnest Shelf sites (which represents hundreds of files) would be as
+simple as typing the following at the command line:
+
+$ ls */ACORN/monthly_*/{TURQ,ROT}/*/*.nc
+</code></pre>
+
+<p></p>
+
+
+<h2>Damien's personalised DRS</h2>
+
+<ul>
+<li>It is worthwhile thinking through these ideas and incorporating them in ones data management system as early as possible</li>
+<li>Damien has also helpfully openly shared his own DRS at <a href="https://github.com/DamienIrving/climate-analysis/blob/master/data_reference_syntax.md">https://github.com/DamienIrving/climate-analysis/blob/master/data_reference_syntax.md</a></li>
+<li>Here is a summary of some key items I'm going to implement versions of for my own work</li>
+</ul>
+
+
+<p>Basic data files</p>
+
+<p><code>&lt;var&gt;_&lt;dataset&gt;_&lt;level&gt;_&lt;time&gt;_&lt;spatial&gt;.nc</code></p>
+
+<p>Sub-categories:</p>
+
+<ul>
+<li><code>&lt;time&gt;</code>: <code>&lt;tstep&gt;-&lt;aggregation&gt;-&lt;season&gt;</code></li>
+<li><code>&lt;spatial&gt;</code>: <code>&lt;grid&gt;-&lt;region&gt;-&lt;bounds&gt;-&lt;np&gt;</code></li>
+</ul>
+
+
+<p>Where:</p>
+
+<ul>
+<li><code>&lt;tstep&gt;</code>: <code>daily</code>, <code>monthly</code></li>
+<li><code>&lt;aggregation&gt;</code>: <code>030day-runmean</code>, <code>anom-wrt-1979-2011</code>, <code>anom-wrt-all</code></li>
+<li><code>&lt;season&gt;</code>: <code>JJA</code>, <code>MJJASO</code></li>
+<li><code>&lt;grid&gt;</code>: <code>native</code> or something like <code>y181x360</code>, which describes the number of latitude (181) and longitude (360) points (in this case it is a 1 by 1 degree horizontal grid).</li>
+<li><code>&lt;region&gt;</code>: Region names are defined in <code>netcdf_io.py</code></li>
+<li><code>&lt;bounds&gt;</code>: e.g. <code>lon225E335E-lat10S10N</code> or <code>mermax</code>, <code>zonal-anom</code></li>
+<li><code>&lt;np&gt;</code>: North pole location, e.g. <code>np20N260E</code></li>
+</ul>
+
+
+<p>Examples include:<br/>
+<code>psl_Merra_surface_daily_y181x360.nc</code></p>
+
+<p>More complex file names</p>
+
+<p><code>&lt;inside&gt;_&lt;filters&gt;_&lt;prev-var&gt;_&lt;dataset&gt;_&lt;level&gt;_&lt;time&gt;_&lt;spatial&gt;.nc</code></p>
+
+<p>Sub-categories:</p>
+
+<ul>
+<li><code>&lt;inside&gt;</code>: The variable inside the file. e.g. <code>tas-composite</code>, <code>datelist</code></li>
+<li><code>&lt;filters&gt;</code>: e.g. <code>samgt90pct</code> (<code>gt</code> and <code>lt</code> and used for greater and less than, <code>pct</code> for percentile)</li>
+<li><code>&lt;prev-var&gt;</code>: if it's not obvious what variable <code>&lt;inside&gt;</code> was created from, include the previous variable/s</li>
+</ul>
+
+
+<p>Examples:<br/>
+<code>tas-composite_pwigt90pct_ERAInterim_500hPa_030day-runmean-anom-wrt-all_native-sh.png</code></p>
+
+<h3>Principles of Tidy Data</h3>
+
+<p>In the words of Hadley Wickham the order that data should be
+arranged in follows some generic principles:</p>
+
+<pre><code>'A good ordering makes it easier to scan the raw values. One way of
+organizing variables is by their role in the analysis: are values
+fixed by the design of the data collection, or are they measured
+during the course of the experiment? Fixed variables describe the
+experimental design and are known in advance. Computer scientists
+often call fixed variables dimensions, and statisticians usually
+denote them with subscripts on random variables. Measured variables
+are what we actually measure in the study. Fixed variables should come
+first, followed by measured variables, each ordered so that related
+variables are contiguous. Rows can then be ordered by the first
+variable, breaking ties with the second and subsequent (fixed)
+variables.'
+</code></pre>
+
+<p></p>
+
+
+<h3>An exemplar</h3>
+
+<p>In my last project the protocol we developed (for an ecology and biodiversity database) had a naming convention which relied heavily on a sequence of information being used to order the names of folders, subfolders and files.  This is:</p>
+
+<ol>
+<li>The project name (and optional sub-project name)</li>
+<li>Data type (such as experimental unit, observational unit, and/or measurement methods)</li>
+<li>Geographic location (locality name, State, Country)</li>
+<li>Temporal frequency and coverage (such as annual or seasonal tranches).</li>
+</ol>
+
+
+<h3>The concepts of slow moving dimensions and fast moving variables</h3>
+
+<p>The concept of dimensions and variables can be useful here, and especially for deciding on filenames.  Dimensions are fixed or change slowly while variables change more quickly.  By 'change', this  means that there are more of them. For example the project name is 'fixed', that is it does not change across the files, but the sub-project name does change, just more slowly (say there may be 2-3 different sub-projects within a project). Then there may be a set of data types, and these 'change' more quickly than the sub-project name.  Then the geographic and temporal variables might change quickest of all.</p>
+
+<p>So a general rule for the order of things can be stated. The fixed and slowly changing variables should come first (those things that don't change, or don't change much),
+followed by the more fluid variables (or things that change more across the project).
+List elements can then be ordered so that the groups of things that are similar will always be contiguous, and vary sequentially within clusters.</p>
+
+<p>So the only thing I disagree with Damien about is his decision to put space after time:</p>
+
+<p><code>&lt;var&gt;_&lt;dataset&gt;_&lt;level&gt;_&lt;time&gt;_&lt;spatial&gt;.nc</code></p>
+
+<p></p>
+
+
+<p>This is  because I think that the geography is more stable than the time period for a data collection, and as most of my studies look at changes of variables measured at a location over time I generally want to compare the same spot at multiple times.  There are pros and cons of each approach such as if the analyst wants to make maps of a variable measured at several locations at a single point in time then having the data arranged by time first and then location may make that job simpler.</p>
+
+<p>I also notice however that the IMOS syntax puts the site spatial location before the year.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/11/notes-from-dr-climate-re-data-reference-syntax-models-for-file-organisation-and-naming/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-11-29 00:00:00 +1100">29 Nov 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/11/visualisation-tools-for-communicating-data-management-concepts/" title="Visualisation tools for communicating data management concepts" rel="bookmark">Visualisation tools for communicating data management concepts</a>
     </h1>
     <div class="entry-content full-content">
@@ -279,93 +446,6 @@ So in my new schema the following is possible</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/11/judging-the-evidence-using-a-literature-review-database/" title="Judging the evidence using a literature review database" rel="bookmark">Judging the evidence using a literature review database</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I recently read through a lecture slide deck called 'Judging the Evidence' by  Adrian Sleigh for a course PUBH7001 Introduction to Epidemiology, April 30, 2001.</p>
-
-<p>It had a lot of great material in it but I especially liked the section 'CRITIQUE OF AN EPIDEMIOLOGIC STUDY' and slide 11 'Quantity of data, duplication' which says:</p>
-
-<pre><code>Set clear criteria for admission of studies to your ‘judgement of evidence’
-Devise ways to tabulate the information
-‘Evidence tables’ show key features of design 
-  (source, sample and study pop, N)
-  exposures-outcomes measured
-  observation methods
-  confounding
-  key results
-</code></pre>
-
-<p></p>
-
-
-<p>I thought this was a great idea, to build a database for keeping 'evidence tables' for each study I read.</p>
-
-<p>I then read through all the slides.  There is a lot of great information here, but it was spread out across the narrative.  I realised I wanted to collate these into a 'evidence table'. I also compared this with my understanding of the Ecological Metadata Language (EML) schema and the 'ANU Data Analysis Plan Template' and have put together a bit of a 'cross-walk' that lets me combine all this info and create a evidence table (database).</p>
-
-<p>I have started to use the database I built which uses EML concepts heavily and I include some these other ideas into my free <code>data_inventory</code> application for a web2py database <a href="https://github.com/ivanhanigan/data_inventory">https://github.com/ivanhanigan/data_inventory</a>.</p>
-
-<p>It is a webform style data entry interface, and I think good for these 'evidence tables'.
-In the first instance I piggy back a lot of the elements into single EML tags, especially the abstract.
-This may make it hard to parse.  The simple solution is to try to keep each element on a seperate line of the absract.</p>
-
-<h2>The key info for an evidence table entry per study</h2>
-
-<table border=1>
-<tr> <th> EML </th> <th> ANU </th> <th> Adrian_Sleigh </th>  </tr>
-  <tr> <td> dataset/title </td> <td>  Study name </td> <td>   </td> </tr>
-  <tr> <td> dataset/creator </td> <td>  Person conducting analysis </td> <td>   </td> </tr>
-  <tr> <td> project/personnel/[data_owner or orginator] </td> <td>  Chief investigator </td> <td>   </td> </tr>
-  <tr> <td> dataset/abstract </td> <td>  Background to the study </td> <td>  Purpose of Study </td> </tr>
-  <tr> <td>          </td> <td>   Study research question  </td> <td>  </td> </tr>
-  <tr> <td>          </td> <td>   Specific hypothesis under study </td> <td>   </td> </tr>
-  <tr> <td>          </td> <td>  outcomes of interest/ Exposure variables /Covariates </td> <td>  exposures-outcomes measured </td> </tr>
-  <tr> <td>          </td> <td>   </td> <td>  key results </td> </tr>
-  <tr> <td> dataset/studyextent </td> <td>  Study population </td> <td>  Study Setting </td> </tr>
-  <tr> <td>                     </td> <td>                   </td> <td>  source / sample and study pop </td> </tr>
-  <tr> <td> dataset/temporalcoverage </td> <td>  Duration of study </td> <td>   </td> </tr>
-  <tr> <td> dataset/methods_protocol </td> <td>  Study Type </td> <td>  Type of study </td> </tr>
-  <tr> <td> dataset/sampling_desc </td> <td>    </td> <td>  Subject Selection </td> </tr>
-  <tr> <td> dataset/methods_steps </td> <td>  analytical strategy </td> <td>  Statistical procedures </td> </tr>
-  <tr> <td>                       </td> <td>  exposures/ potential confounders or effect modifiers </td> <td>  Confounding </td> </tr>
-  <tr> <td> entity/numberOfRecords </td> <td>  Number study subjects </td> <td>  N </td> </tr>
-  <tr> <td> dataset/distribution_methods </td> <td>  dissemination strategy </td> <td>    </td> </tr>
-   </table>
-
-
-
-
-<p></p>
-
-
-<h2>Here is a screen shot of my data inventory data entry form</h2>
-
-<p><img src="/images/datinv_entry.png" alt="/images/datinv_entry.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/11/judging-the-evidence-using-a-literature-review-database/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-11-13 00:00:00 +1100">13 Nov 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -446,6 +526,10 @@ This may make it hard to parse.  The simple solution is to try to keep each elem
               <ul>
                 
                 <li>
+                  <a href="/2016/01/repeatability-vs-replication-definitional-variations/" title="Repeatability vs replication - Definitional variations" rel="bookmark">Repeatability vs replication - Definitional variations</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/reproducibility-vs-replication-definitional-variations/" title="Reproducibility vs replication - Definitional variations" rel="bookmark">Reproducibility vs replication - Definitional variations</a>
                 </li>
                 
@@ -459,10 +543,6 @@ This may make it hard to parse.  The simple solution is to try to keep each elem
                 
                 <li>
                   <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
-                </li>
-                
-                <li>
-                  <a href="/2015/12/my-framework-of-scientific-workflow-and-integration-software-for-holistic-data-analysis/" title="My framework of scientific workflow and integration software for holistic data analysis" rel="bookmark">My framework of scientific workflow and integration software for holistic data analysis</a>
                 </li>
                 
               </ul>
@@ -490,7 +570,7 @@ This may make it hard to parse.  The simple solution is to try to keep each elem
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (45)</a></li>
+                <li><a href="/categories/disentangle">disentangle (46)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
