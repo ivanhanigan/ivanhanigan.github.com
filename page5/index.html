@@ -54,6 +54,94 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/10/show-missingness-in-large-dataframes/" title="show-missingness-in-large-dataframes" rel="bookmark">show-missingness-in-large-dataframes</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Sometime ago I saw this example of a method for assessing missing data in a large data frame <a href="http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/">http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/</a></p>
+
+<p>I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:</p>
+
+<p><img src="/images/misstable.png" alt="/images/misstable.png" /></p>
+
+<h4>Code</h4>
+
+<pre><code>misstable &lt;- function(atable){
+ op &lt;- par(bg = "white")
+ plot(c(0, 400), c(0, 1000), type = "n", xlab="", ylab="",
+     main = "Missing Data Table")
+
+
+ pmin=000
+ pmax=400
+ stre=pmax-pmin
+ lnames=length(atable)
+ cstep = (stre/lnames)
+ for(titles in 1:lnames){
+ text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
+ }
+
+ gmax=900
+ gmin=0
+ gstre=gmax-gmin
+ rvec = as.vector(atable[ [ 1 ] ])
+ dnames=length(rvec)
+ step = gstre / dnames
+ for(rows in 1:dnames){
+ text(30,gmax - (rows-1)*step-step/2,rvec[rows])
+ ymax=gmax - (rows-1)*step
+ ymin=gmax - (rows)*step
+ for(col in 2:lnames-1){
+ if(atable[rows,col+1] == F){
+ tcolor = "red"
+ }
+ if(atable[rows,col+1] == T){
+ tcolor = "white"
+ }
+ rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
+ ymax,col=tcolor,lty="blank")
+ }
+ }
+}
+
+require(grDevices)
+
+# Make a quick dataframe with true/false representing data availability
+locs=c("Australia","India","New Zealand","Sri Lanka","Uruguay","Somalia")
+f1=c(T,F,T,T,F,F)
+f2=c(F,F,F,T,F,F)
+f3=c(F,T,T,T,F,T)
+atable=data.frame(locs,f1,f2,f3)
+atable
+#Draw the table.
+misstable(atable)
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/exploratory data analysis" title="exploratory data analysis" rel="category tag">exploratory data analysis</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/show-missingness-in-large-dataframes/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-26 00:00:00 +1100">26 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/10/sanitize-mendeley-references-in-r-markdown-reporting/" title="Sanitize mendeley references in r markdown reporting" rel="bookmark">Sanitize mendeley references in r markdown reporting</a>
     </h1>
     <div class="entry-content full-content">
@@ -493,112 +581,6 @@ document generation.
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/gis-issues-when-r-used-transforming-coordinate-systems/" title="GIS Issues when R is Used for Transforming Coordinate Systems" rel="bookmark">GIS Issues when R is Used for Transforming Coordinate Systems</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>I have been using RGDAL to transform and write out spatial data in GDA94</li>
-<li>It is a problem to know what I need to do to create the right prj file for ArcGIS to read without complaining</li>
-<li>I have an example of code below, that I used on a dataset I knew was in GDA94 when I read it in.  I want to do this mostly for when I have to convert from one to another, but I have done the manual hack a couple of times now and thought I better just check with an expert.</li>
-</ul>
-
-
-<h4>R Code:</h4>
-
-<pre><code>infile &lt;- "ap_map"
-outfile &lt;- gsub("map", "map_GDA94.shp", infile)
-outfile
-setwd(indir)
-shp &lt;- readOGR(".", infile)
-setwd(projdir)
-plot(shp, add = T)
-#str(shp)
-shp@proj4string@projargs
-#[1] "+proj=longlat +ellps=GRS80 +no_defs"
-# confirm this is GDA94
-epsg &lt;- make_EPSG()
-str(epsg)
-epsg[grep(4283, epsg$code),]
-#     code    note                                                       prj4
-# 212 4283 # GDA94   +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
-# Arcmap sees this as GRS 1980(IUGG, 1980) which I think is the same thing
-# to be on the safe side I will force it to refer to GDA94
-shp2 &lt;- spTransform(shp, CRS("+init=epsg:4283"))
-shp2@proj4string@projargs
-#now write
-setwd(outdir)
-dir()
-writeOGR(shp2,  outfile, gsub(".shp", "", outfile), driver = "ESRI Shapefile")
-setwd(projdir)
-# Checking this shows it did not write the correct prj file, but I believe that this is because the GDA94 definition is not different to the WGS80 params.
-# one other option is to manually replace that prj file with the correct text found at http://spatialreference.org/ref/epsg/4283/
-# SO I did this to avoid any future confusions
-# OLD GEOGCS["GRS 1980(IUGG, 1980)",DATUM["D_unknown",SPHEROID["GRS80",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]
-# NEW GEOGCS["GDA94",DATUM["D_GDA_1994",SPHEROID["GRS_1980",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]
-# checked with ArcMap and they align ok
-</code></pre>
-
-<p></p>
-
-
-<h2>I asked on of my colleagues and here is his reply</h2>
-
-<ul>
-<li>I usually use the sp and maptools library, rather than the readOGR and writeOGR functions.  Generally my workflow, as an example of projecting a GDA94 zone 55 file to WGS84, would be something like:</li>
-</ul>
-
-
-<h4>R Code:</h4>
-
-<pre><code>shp &lt;- readShapePoly("myfile.shp")
-proj4string(shp) &lt;- "+proj=utm +zone=55 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-shp2 &lt;- spTransform(shp, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))
-writePolyShape(shp2,"myfile_p.shp",proj4string=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li><p>I've never <em>noticed</em> any problems doing this, the projection file is generated and I've never noticed any alignment problems in ArcMap.  It's true that I recall ArcMap sometimes displays an incorrect plaintext projection description, but things seem to be in the right place.</p></li>
-<li><p>Also, I don't really ever rely on EPSG numbers in R - I just grab the proj4 strings and try to use them directly.</p></li>
-</ul>
-
-
-<h2>TODO, see if PostGIS handles this OK</h2>
-
-<ul>
-<li>I wonder if my FOSS GIS stack should still pass things through PostGIS as I suspect it does these things better.</li>
-<li>I might check the output if I run it through the DB use st_transform and then extract to shapefile.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data operation" title="data operation" rel="category tag">data operation</a>
-      
-      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/gis-issues-when-r-used-transforming-coordinate-systems/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-16 00:00:00 +1100">16 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -679,6 +661,10 @@ writePolyShape(shp2,"myfile_p.shp",proj4string=CRS("+proj=longlat +ellps=WGS84 +
               <ul>
                 
                 <li>
+                  <a href="/2016/01/release-checklist-references/" title="Release checklist references" rel="bookmark">Release checklist references</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/repeatability-vs-replication-definitional-variations/" title="Repeatability vs replication - Definitional variations" rel="bookmark">Repeatability vs replication - Definitional variations</a>
                 </li>
                 
@@ -692,10 +678,6 @@ writePolyShape(shp2,"myfile_p.shp",proj4string=CRS("+proj=longlat +ellps=WGS84 +
                 
                 <li>
                   <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
                 </li>
                 
               </ul>
@@ -723,7 +705,7 @@ writePolyShape(shp2,"myfile_p.shp",proj4string=CRS("+proj=longlat +ellps=WGS84 +
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (46)</a></li>
+                <li><a href="/categories/disentangle">disentangle (47)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 

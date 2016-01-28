@@ -54,6 +54,51 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>The practice of distributing data and code has a wide variety of possible approaches.  There are many resources available to be used to post data and code to the internet for dissemination, and it is very easy to access these resources.  It is more difficult to find exemplars of how data and code are easily and effectively distributed.  I am conducting a review of some of the resources that describe procedures for this and present exemplars in this and following notes.</p>
+
+<p>A paper that describes the rOpenSci project's approach is <a href="http://dx.doi.org/10.5334/jors.bu">http://dx.doi.org/10.5334/jors.bu</a>:</p>
+
+<pre><code class="">Boettiger, C., Chamberlain, S., Hart, E., &amp; Ram,
+K. (2015). Building Software, Building Community: Lessons from the
+rOpenSci Project. Journal of Open Research Software,
+3(1). 
+</code></pre>
+
+<p>This paper is focused on the way the community development and capacity building part of the project was conducted.  The diagram shown below is introduced as an example of the style that rOpenSci recommend a data analysis workflow be constructed.</p>
+
+<p><img src="/images/workflow-ropensci.png" alt="/images/workflow-ropensci.png" /></p>
+
+<p>The focus on publishing data to a public repository so early in the project (prior to final analysis and manuscript) seems premature to me. But then, I do feel that I am somewhat more concerned with vexatious activity by climate skeptics than the rOpenSci team.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/reproducible research pipelines" title="reproducible research pipelines" rel="category tag">reproducible research pipelines</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2016/01/exemplars-of-distributing-data-and-code-ropensci/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2016-01-03 00:00:00 +1100">03 Jan 2016</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/12/my-framework-of-scientific-workflow-and-integration-software-for-holistic-data-analysis/" title="My framework of scientific workflow and integration software for holistic data analysis" rel="bookmark">My framework of scientific workflow and integration software for holistic data analysis</a>
     </h1>
     <div class="entry-content full-content">
@@ -557,79 +602,6 @@ hindex2
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger/" title="show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger" rel="bookmark">show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>This is a revision of my post <a href="/2015/10/show-missingness-in-large-dataframes-v2">/2015/10/show-missingness-in-large-dataframes-v2</a></li>
-<li>This guy posted <a href="http://www.njtierney.com/r/missing%20data/rbloggers/2015/12/01/ggplot-missing-data/">http://www.njtierney.com/r/missing%20data/rbloggers/2015/12/01/ggplot-missing-data/</a></li>
-</ul>
-
-
-<h3>Let's try it out!</h3>
-
-<pre><code>library(devtools)
-# depends
-install.packages("gbm")
-install_github("tierneyn/neato")
-library(neato)
-# small eg
-locs=c("Australia","India","New Zealand","Sri Lanka","Uruguay","Somalia")
-f1=c(T,F,T,T,F,F)
-f2=c(F,F,F,T,F,F)
-f3=c(F,T,T,T,F,T)
-atable=data.frame(locs,f1,f2,f3)
-atable[atable == FALSE] &lt;- NA
-atable
-png("ggplotmissing.png")
-ggplot_missing(atable)
-dev.off()
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/ggplotmissing.png" alt="/images/ggplotmissing.png" /></p>
-
-<ul>
-<li>The one I had problems with because too large is:</li>
-</ul>
-
-
-<pre><code># Cool but what about a big one?
-dat &lt;- read.csv("~/path/to/file.csv")
-str(dat)
-png("ggplotmissing2.png", height=1800, width = 3000, res = 200)
-ggplot_missing(dat)
-dev.off()
-</code></pre>
-
-<p><img src="/images/ggplotmissing2.png" alt="/images/ggplotmissing2.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-12-02 00:00:00 +1100">02 Dec 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -710,6 +682,10 @@ dev.off()
               <ul>
                 
                 <li>
+                  <a href="/2016/01/release-checklist-references/" title="Release checklist references" rel="bookmark">Release checklist references</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/repeatability-vs-replication-definitional-variations/" title="Repeatability vs replication - Definitional variations" rel="bookmark">Repeatability vs replication - Definitional variations</a>
                 </li>
                 
@@ -723,10 +699,6 @@ dev.off()
                 
                 <li>
                   <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/01/exemplars-of-distributing-data-and-code-ropensci/" title="Exemplars of distributing data and code - rOpenSci" rel="bookmark">Exemplars of distributing data and code - rOpenSci</a>
                 </li>
                 
               </ul>
@@ -754,7 +726,7 @@ dev.off()
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
-                <li><a href="/categories/disentangle">disentangle (46)</a></li>
+                <li><a href="/categories/disentangle">disentangle (47)</a></li>
                 
                 <li><a href="/categories/project management">project management (3)</a></li>
                 
