@@ -6,6 +6,43 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;UPDATE to post &lt;a href=&quot;http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems&quot;&gt;http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Recall that RGDAL transforms and write out spatial data in GDA94 with a problem in that ArcGIS does not like the prj file and complains&lt;/li&gt;
+&lt;li&gt;This seems an ok workaround&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;infile &amp;lt;- &quot;western_sydney_passive_samplers_site_details.csv&quot;
+indir &amp;lt;- &quot;data_derived&quot;
+
+outdir &amp;lt;- indir
+outfile &amp;lt;- file.path(outdir, gsub(&quot;.csv&quot;,&quot;.shp&quot;,infile))
+
+dat &amp;lt;- read.csv(file.path(indir, infile), as.is=T)
+str(dat)
+
+dat2 &amp;lt;- SpatialPointsDataFrame(data.frame(x=dat$long, y=dat$lat), dat,
+                                proj4string=CRS(epsg$prj4[epsg$code %in% '4283'])
+                                )
+
+writeOGR(dat2, outfile,
+         outdir, driver='ESRI Shapefile'
+         )
+# fix the prj file 
+download.file(&quot;http://spatialreference.org/ref/epsg/4283/prj/&quot;,
+              gsub(&quot;.shp&quot;, &quot;.prj&quot;, outfile), mode = &quot;wb&quot;
+              )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/samplers_sydney.png&quot; alt=&quot;/images/samplers_sydney.png&quot; /&gt;&lt;/p&gt;
+</description>
+				<published>2016-01-29 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/</link>
+			</item>
+		
+			<item>
 				<title>Release checklist references</title>
 				<description>&lt;h2&gt;Some good reading and best-practice advice&lt;/h2&gt;
 
@@ -708,50 +745,6 @@ hindex2
 </description>
 				<published>2015-12-17 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/</link>
-			</item>
-		
-			<item>
-				<title>My project inventory</title>
-				<description>&lt;h3&gt;Auditing and inventorising&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I just completed an audit of my project files and updated the list on my website &lt;a href=&quot;/projects.html&quot;&gt;http://ivanhanigan.github.com/projects.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;This was enabled by the work I have been doing on a data inventory web2py app &lt;a href=&quot;https://github.com/ivanhanigan/data_inventory&quot;&gt;https://github.com/ivanhanigan/data_inventory&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;The list shows some of the project data collections I have amassed during my research over the last 15 years&lt;/li&gt;
-&lt;li&gt;Some of these are data collections I have developed, others are derivatives of collections originated by others&lt;/li&gt;
-&lt;li&gt;Many of these are areas of active research, but others are dormant&lt;/li&gt;
-&lt;li&gt;This list will be updated as time permits.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h3&gt;Projects&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;1 Air pollution&lt;/li&gt;
-&lt;li&gt;2 Australian health&lt;/li&gt;
-&lt;li&gt;3 Australian population&lt;/li&gt;
-&lt;li&gt;4 Biodiversity and environmental change&lt;/li&gt;
-&lt;li&gt;5 Bioregions&lt;/li&gt;
-&lt;li&gt;6 Cardio-respiratory disease, biomass smoke, dust and heatwaves&lt;/li&gt;
-&lt;li&gt;7 Climate Change&lt;/li&gt;
-&lt;li&gt;8 Eco-social observatories&lt;/li&gt;
-&lt;li&gt;9 Extreme Weather Events&lt;/li&gt;
-&lt;li&gt;10 GIS&lt;/li&gt;
-&lt;li&gt;11 Infectious diseases and local habitat&lt;/li&gt;
-&lt;li&gt;12 Mental health and drought&lt;/li&gt;
-&lt;li&gt;13 Mortality and morbidity effects from weather&lt;/li&gt;
-&lt;li&gt;14 Reproducible research pipelines&lt;/li&gt;
-&lt;li&gt;15 Medical geography theory and tools&lt;/li&gt;
-&lt;li&gt;16 Roads and places&lt;/li&gt;
-&lt;li&gt;17 Transformational adaptation&lt;/li&gt;
-&lt;li&gt;18 Ultraviolet radiation&lt;/li&gt;
-&lt;li&gt;19 Water&lt;/li&gt;
-&lt;li&gt;20 Weather&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<published>2015-12-07 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/12/my-project-inventory/</link>
 			</item>
 		
 	</channel>

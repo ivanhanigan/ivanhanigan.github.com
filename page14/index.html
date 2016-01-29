@@ -54,6 +54,107 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/" title="morpho-has-an-issue-with-zero-length-strings-as-missing-data" rel="bookmark">morpho-has-an-issue-with-zero-length-strings-as-missing-data</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>We encountered a strange issue Morpho 1.8 has when ingesting a CSV with zero length strings as missing data.  An example of what this looks like is given below in the mulgara example dataset I;ve shown before.  I have added some rows with missing data as zero length strings (these are the ",," after the fictional value Treat = 0.5).</p>
+
+<h4>R Code:</h4>
+
+<pre><code>datatext &lt;- 'Treat, Before, After1, After2
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+a,,-9999,9999
+0,  2.833213344,    1.609437912,    2.48490665
+0,  1.791759469,    2.197224577,    2.079441542
+0,  3.044522438,    2.708050201,    3.135494216
+0,  2.772588722,    1.791759469,    2.197224577
+0,  1.098612289,    1.609437912,    2.63905733
+1,  2.944438979,    0.693147181,    1.791759469
+1,  2.564949357,    0.693147181,    1.791759469
+1,  2.564949357,    1.609437912,    1.609437912
+1,  0.693147181,    1.098612289,    1.098612289
+1,  1.609437912,    0,      1.098612289'
+analyte &lt;- read.csv(textConnection(datatext))
+write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= "", quote=F)
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>Unfortunately for this blog entry, the example above doesn;t exhibit the problem!</li>
+<li>you can see what happens by selecting the "treat consecutive delimiters as as one" option</li>
+<li>showing that the data from the 3rd and 4th cols shifts to the right</li>
+<li>this is what happened to us but we were not able to modify this behaviour by changing that option!</li>
+<li>The problem only occurred when we had a file big file (200+ columns)</li>
+<li>the problem occured at col 23, shown in the image below</li>
+</ul>
+
+
+<p><img src="/images/morpho-bug-empty-na3.png" alt="morpho-bug-empty-na3.png" /></p>
+
+<ul>
+<li>this column is ftyp[12] which has 62 rows of missing and then some text codes.</li>
+<li>the next 24th column is  aerial[10] and it is this one that is then read incorrectly by morpho.  The importer makes the error of reading blanks for the first few rows and then *, even though in reality it is * and then date 1/06/2006 (shown in the image below)</li>
+</ul>
+
+
+<p><img src="/images/morpho-bug-empty-na2.1.png" alt="morpho-bug-empty-na2.1.png" /></p>
+
+<ul>
+<li>and finally col 25 fire[13] now appears as * and the date 1/06/2006 but it should be a different number of *s and the date 2/04/2007 further down</li>
+</ul>
+
+
+<p><img src="/images/morpho-bug-empty-na2.png" alt="morpho-bug-empty-na2.png" /></p>
+
+<h3>Workaround</h3>
+
+<ul>
+<li>to deal with this in this case we replaced all zero length strings as "NA"</li>
+<li>this is probably a good idea in most cases, except when NA is not an appropriate value and so in those cases we replaced with the word "blank"</li>
+</ul>
+
+
+<h3>Conclusions</h3>
+
+<ul>
+<li>This issue is probably rare and might be fixed in the newer version of Morpho</li>
+<li>We don;t use new morpho because we are still using the old metacat</li>
+<li>I thought it worth reporting here</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/05/morpho-has-an-issue-with-zero-length-strings-as-missing-data/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-05-02 00:00:00 +1000">02 May 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/04/workaround-for-installing-morpho-on-a-windows-network/" title="workaround-for-installing-morpho-on-a-windows-network" rel="bookmark">workaround-for-installing-morpho-on-a-windows-network</a>
     </h1>
     <div class="entry-content full-content">
@@ -613,82 +714,6 @@ write.csv(dat, filename, row.names =F, quote=F)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/04/linking-eml-packages-by-umbrella-project-info/" title="linking-eml-packages-by-umbrella-project-info" rel="bookmark">linking-eml-packages-by-umbrella-project-info</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>In Eml the optional "project" module provides an overall description
-of the larger-scale project or research context with which that
-dataset is associated. For the examples in our work the "project" will
-most often be an LTER (Longterm Ecological Research Network) site that
-directed the research.  Accordingly, the "title" here consists of the
-name of the LTER site. The "personnel" group contains the same
-elements as "creator" and "contact", with the addition of a mandatory
-"role" element, and it is used to identify the lead PI and/or
-information manager on the site. Other optional elements in the
-"project" module include "abstract", "funding",
-"studyAreaDescription", and "designDescription", each of which can be
-used to provide a richer textual description of the LTER site
-responsible for the research project being documented.  If used, the
-"abstract" includes basic information about the LTER site, such as its
-general history and administration, while "studyAreaDescription" is
-more of a physical description of the area where the site is
-located. This description may also include the "coverage" module,
-which is fully discussed on page XX of this handbook, or the
-"citation" module, covered on page XX. The "funding" tag is textual
-and self-explanatory, but "designDescription" is best used for a
-description of the site’s database information and availability.</p>
-
-<p>Morpho doesn't give all these options so you need to go to the EML file found in the "~/.morpho/..." directory and edit this with a text editor
-I think the order of the tags here might make a difference so I always put thye "abstract" tag after the "/personnel" tag.  I also think you might need this "para" tag:</p>
-
-<h4>Code:linking-eml-packages-by-umbrella-project-inf</h4>
-
-<pre><code>&lt;abstract&gt; 
-  &lt;para&gt;Prof McMichael set up this group to develop new methods of researching Environmental (especially Climate Change) and Health
-  &lt;/para&gt;
-&lt;/abstract&gt;
-</code></pre>
-
-<p></p>
-
-
-<p>So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an "additionalLinks" node at the bottom of the EML:</p>
-
-<h4>Code:linking-eml-packages-by-umbrella-project-info</h4>
-
-<pre><code>&lt;additionalMetadata&gt;
-  &lt;metadata&gt;
-    &lt;additionalLinks&gt;
-      &lt;url name="The name of the homepage"&gt;http://...&lt;/url&gt;
-    &lt;/additionalLinks&gt;
-  &lt;/metadata&gt;
-&lt;/additionalMetadata&gt;
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/04/linking-eml-packages-by-umbrella-project-info/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-04-21 00:00:00 +1000">21 Apr 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -769,6 +794,10 @@ I think the order of the tags here might make a difference so I always put thye 
               <ul>
                 
                 <li>
+                  <a href="/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/" title="UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'" rel="bookmark">UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/release-checklist-references/" title="Release checklist references" rel="bookmark">Release checklist references</a>
                 </li>
                 
@@ -784,10 +813,6 @@ I think the order of the tags here might make a difference so I always put thye 
                   <a href="/2016/01/validity-of-measurement/" title="Validity of measurement" rel="bookmark">Validity of measurement</a>
                 </li>
                 
-                <li>
-                  <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Categories</h2>
               <ul>
@@ -801,7 +826,7 @@ I think the order of the tags here might make a difference so I always put thye 
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (7)</a></li>
+                <li><a href="/categories/spatial">spatial (8)</a></li>
                 
                 <li><a href="/categories/extreme weather events">extreme weather events (11)</a></li>
                 
@@ -829,7 +854,7 @@ I think the order of the tags here might make a difference so I always put thye 
                 
                 <li><a href="/categories/data management">data management (3)</a></li>
                 
-                <li><a href="/categories/data operation">data operation (1)</a></li>
+                <li><a href="/categories/data operation">data operation (2)</a></li>
                 
                 <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
                 

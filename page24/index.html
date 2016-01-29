@@ -54,6 +54,71 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>R is generally very good for handling many different data types but</p>
+
+<h3>R has problems with survey data</h3>
+
+<p>This post is a stub about what packages Ive found with methods allowing to handle efficiently survey data: handle variable labels, values labels, and retrieve information about missing values</p>
+
+<h4>Base R:</h4>
+
+<pre><code>## Not run:
+require(foreign)
+analyte  &lt;- read.spss(filename, to.data.frame=T) 
+varslist &lt;- as.data.frame(attributes(analyte)$variable.labels)
+# this gives a pretty useful thing to use
+</code></pre>
+
+<p></p>
+
+
+<p>While I was digging around in <a href="http://mephisto.unige.ch/traminer">TraMineR</a> I found this link to Dataset, Emmanuel Rousseaux's package for handling, documenting and describing data sets of survey data.</p>
+
+<h4>Code:Dataset, a package for handling-survey-data-with-r</h4>
+
+<pre><code>if(!require(Dataset)) install.packages("Dataset", repos="http://R-Forge.R-project.org");
+require(Dataset)
+data(dds)
+str(dds)
+# cool
+description(dds$sexe)
+# excellent!
+</code></pre>
+
+<p></p>
+
+
+<h3>Conclusions</h3>
+
+<p>I'm sure there are plenty of other approaches.  I'll add them as I find them'</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/data documentation" title="data documentation" rel="category tag">data documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/handling-survey-data-with-r/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-11-06 00:00:00 +1100">06 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/github-and-reproducible-research-report-casestudy-hutchinson-drought-index/" title="Github And Reproducible Research Report Casestudy Hutchinson Drought Index" rel="bookmark">Github And Reproducible Research Report Casestudy Hutchinson Drought Index</a>
     </h1>
     <div class="entry-content full-content">
@@ -487,184 +552,6 @@ dbSendQuery(ch, sql)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/if-disease-incidence-varies-with-age-control-for-it/" title="if-disease-incidence-varies-with-age-control-for-it" rel="bookmark">if-disease-incidence-varies-with-age-control-for-it</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>today I was in a meeting where the discussion turned to maps of crude incidence rates, age-standardised rates and regression models controlling for age</li>
-<li>If disease incidence does not vary with age then there is not much point in controlling for this,</li>
-<li>apart from the work done in exploratory data analysis to ascertain whether or not this is the case</li>
-<li>I proposed that if you've done all the work on age-specific rates needed to test if incidence varies with age, then you might as well present age adjusted rates seeing as you've already done the work anyway</li>
-</ul>
-
-
-<h3>An example</h3>
-
-<ul>
-<li>The project is highly confidential due to the nature of the data</li>
-<li>We;ll call the study location South Kingsland to protect the identity</li>
-</ul>
-
-
-<h4>R Code:</h4>
-
-<pre><code># get spatial data
-require(swishdbtools) # github package, under
-                      # swish-climate-impact-assessment
-
-Tab1 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
-Tab1 &lt;- as.data.frame(table(Tab1$SLA))
-nrow(Tab1)
-write.csv(Tab1, "data/SLA.csv", row.names = F)
-load2postgres("data/SLA.csv", schema="ivan_hanigan", tablename="sla", ip = "brawn.anu.edu.au",
-              db = "gislibrary", pguser = "ivan_hanigan", printcopy = F)
-
-
-ch  &lt;- connect2postgres2("gislibrary")
-sql_subset(ch, "ivan_hanigan.sla", eval = T, limit = 10)
-
-
-sql_subset(ch, "abs_sla.qldsla01", select =  "sla_name, st_y(st_centroid(geom))", eval = T, limit = 10)
-dbSendQuery(ch,
-  "select sla_name, geom
-  into southkingsland
-  from abs_sla.qldsla01 t1
-  join
-  sla t2
-  on t1.sla_name = t2.var1;
-  alter table southkingsland add column gid serial primary key;
-  ")
-# these are missing from spatial data
-## 42                      West End                          &lt;NA&gt;
-## 43                OVERSEAS-OTHER                          &lt;NA&gt;
-## 44                  Yarrabah (S)                          &lt;NA&gt;
-## 45     Rowes Bay-Belgian gardens                          &lt;NA&gt;
-</code></pre>
-
-<p></p>
-
-
-<h3>visualise with QGIS</h3>
-
-<p><img src="/images/southkingsland.png" alt="southkingsland.png" /></p>
-
-<h4>R Code:</h4>
-
-<pre><code># func
-require(plyr)
-
-# load
-Tab2 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
-names(Tab2)
-# [1] "SLA"       "agegrp"    "Sex"       "district"  "dm"        "ninf"     
-# [7] "popSLA"    "Month"     "Year"      "groupyear"
-test_sla  &lt;- names(table(Tab2$SLA)[1])
-subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "MALE")
-subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "FEMALE")
-
-# clean
-summary(Tab2)
-## remove any SLA with NA populations
-Tab2 &lt;- Tab2[which(!is.na(Tab2$popSLA)),]     
-
-# do
-## first total cases by annualised pop
-analyte  &lt;- ddply(Tab2, c("SLA", "Year", "agegrp", "Sex"), summarise,
-                  ninf=sum(ninf),
-                  popSLA=mean(popSLA)
-                  )
-#str(analyte)
-
-#subset(analyte, SLA == test_sla)
-subset(analyte, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1)
-
-## now annual totals for study region
-analyte2  &lt;- ddply(analyte, c("Year", "agegrp"), summarise,
-                  ninf=sum(ninf),
-                  popSLA=sum(popSLA)
-                  )
-str(analyte2)
-
-qc &lt;- subset(analyte2,  Year == 2001)
-qc
-sum(qc$popSLA)
-
-## now totals
-qc  &lt;- ddply(analyte2, c("Year"), summarise,
-             ninf=sum(ninf),
-             popSLA=sum(popSLA)
-             )
-qc
-sum(qc$ninf)
-mean(qc$popSLA)
-
-## totals by age
-subset(analyte2,  agegrp == 1)
-analyte3  &lt;- ddply(analyte2, c("agegrp"), summarise,
-                  ninf=sum(ninf),
-                  popSLA=mean(popSLA)
-                  )
-analyte3
-sum(analyte3$popSLA)
-analyte3$asr  &lt;- (analyte3$ninf / analyte3$popSLA) * 1000
-analyte3
-
-png("graphs/south-kingsland-age-specific-rates.png") 
-mp &lt;- barplot(analyte3$asr, names.arg = analyte3$agegrp)
-box()
-dev.off()
-</code></pre>
-
-<p></p>
-
-
-<h3>Plot Age Specific Rates</h3>
-
-<p>Great so with that bit of work we should have an idea of the variation of incidence by age</p>
-
-<p><img src="/images/south-kingsland-age-specific-rates.png" alt="south-kingsland-age-specific-rates.png" /></p>
-
-<h1>Results and Discussion</h1>
-
-<ul>
-<li>It looks like the incidence does vary with age</li>
-<li>TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)</li>
-<li>TODO make graphs by city, by sex</li>
-<li>age-standardised rates probably need different age categories, only 4 or 5?</li>
-<li>worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)</li>
-</ul>
-
-
-<h4>Clean up database!</h4>
-
-<pre><code>dbSendQuery(ch, "drop table sla")
-dbSendQuery(ch, "drop table southkingsland")
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/if-disease-incidence-varies-with-age-control-for-it/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -745,6 +632,10 @@ dbSendQuery(ch, "drop table southkingsland")
               <ul>
                 
                 <li>
+                  <a href="/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/" title="UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'" rel="bookmark">UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'</a>
+                </li>
+                
+                <li>
                   <a href="/2016/01/release-checklist-references/" title="Release checklist references" rel="bookmark">Release checklist references</a>
                 </li>
                 
@@ -760,10 +651,6 @@ dbSendQuery(ch, "drop table southkingsland")
                   <a href="/2016/01/validity-of-measurement/" title="Validity of measurement" rel="bookmark">Validity of measurement</a>
                 </li>
                 
-                <li>
-                  <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Categories</h2>
               <ul>
@@ -777,7 +664,7 @@ dbSendQuery(ch, "drop table southkingsland")
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (7)</a></li>
+                <li><a href="/categories/spatial">spatial (8)</a></li>
                 
                 <li><a href="/categories/extreme weather events">extreme weather events (11)</a></li>
                 
@@ -805,7 +692,7 @@ dbSendQuery(ch, "drop table southkingsland")
                 
                 <li><a href="/categories/data management">data management (3)</a></li>
                 
-                <li><a href="/categories/data operation">data operation (1)</a></li>
+                <li><a href="/categories/data operation">data operation (2)</a></li>
                 
                 <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
                 
