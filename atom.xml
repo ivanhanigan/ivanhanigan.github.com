@@ -4,13 +4,271 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2016-02-01T17:03:58+11:00</updated>
+ <updated>2016-02-02T21:20:08+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Climate grids thredds European data</title>
+   <link href="http://schamberlain.github.com/2016/02/climate-grids-thredds-european-data/"/>
+   <updated>2016-02-02T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2016/02/climate-grids-thredds-european-data</id>
+   <content type="html">&lt;p&gt;I've got netCDF data regarding temperature calculated from the daily E-OBS gridded dataset which is based on observational data with a spatial resolution of 0.22° on a
+rotated pole grid, with the north pole at 39.25N, 162W.  &lt;a href=&quot;http://www.ecad.eu&quot;&gt;http://www.ecad.eu&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The rotated grid is the same as used in many ENSEMBLES Regional Climate Models.  But I've never worked with the rotated grid projection before and so here is what I learnt.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;{r}&quot;&gt;#library(ncdf4)
+library(ncdf)
+library(raster)
+projdir &amp;lt;- &quot;~/projects/weather_european_eobs/eobs_temperature_tg_dataset&quot;
+outdir &amp;lt;- &quot;data_provided&quot;
+outdir &amp;lt;- file.path(projdir, outdir)
+#dir.create(outdir, recursive = T)
+setwd(projdir)
+dir()
+# The URL below will get you the data, but the ECAD group do request you register your email address 
+# they probably use this information to report some usage stats to their funders, so 
+# Please do consider going to this webpage (http://www.ecad.eu/download/ensembles/ensembles.php)
+# and register yourself.  Thanks!
+webroot &amp;lt;- &quot;http://www.ecad.eu/download/ensembles/data/Grid_0.22deg_rot&quot;
+# Create a list of netcdf files to download, we can loop over it
+file_list &amp;lt;- c(&quot;tg_0.22deg_rot_1950-1964_v12.0.nc.gz&quot;,&quot;tg_0.22deg_rot_1965-1979_v12.0.nc.gz&quot;)
+
+# only download if not already done
+setwd(outdir)
+for(i in 1:length(file_list))
+    {
+    dl &amp;lt;- file.path(webroot, file_list[i])
+    dl
+    infile &amp;lt;- basename(dl)
+    exists  &amp;lt;- dir(pattern= infile)
+    if(
+      !exists(&quot;exists&quot;)
+       )
+    {
+    download.file(dl, destfile = infile, mode = &quot;wb&quot;)
+    system(sprintf(&quot;gunzip %s&quot;, infile))
+    }
+    &quot; (250MB)&quot;
+    }
+setwd(projdir)
+
+# now we can go through all days, I set this up as a loop over ncdf files then days, 
+# but I'll probably try to set this up to directly use the netCDF aggregation functions available and avoid looping 
+# for(j in 1:length(file_list))
+  #{
+    j = 1
+    infile &amp;lt;- file.path(outdir, gsub(&quot;.gz&quot;, &quot;&quot;, file_list[j]))
+    nc &amp;lt;- open.ncdf(infile)
+    #str(nc)
+    print(nc)
+    #?get.var.ncdf, following the example in the help file
+    print(paste(&quot;The file has&quot;,nc$nvars,&quot;variables&quot;))
+    var_i      &amp;lt;- nc$var[[4]]
+    #var_i
+    varsize &amp;lt;- var_i$varsize
+    ndims   &amp;lt;- var_i$ndims
+    nt      &amp;lt;- varsize[ndims]  # Remember timelike dim is always the LAST dimension!
+    #nt 
+    # we will set up to do a loop over days, I want to
+    # a) read in the day grid
+    # b) make a spatial points file with the appropriate projection
+    # c) convert to geotiff and save to disk
+    #for(i in 1:nt)
+    #  {
+        i = 1
+       # Initialize start and count to read one timestep of the variable.
+       start &amp;lt;- rep(1,ndims)   # begin with start=(1,1,1,...,1)
+       start[ndims] &amp;lt;- i       # change to start=(1,1,1,...,i) to read timestep i
+       count &amp;lt;- varsize        # begin w/count=(nx,ny,nz,...,nt), reads entire var
+       count[ndims] &amp;lt;- 1       # change to count=(nx,ny,nz,...,1) to read 1 tstep
+       data3 &amp;lt;- get.var.ncdf( nc, var_i, start=start, count=count )
+
+       # Now read in the value of the timelike dimension
+       timeval &amp;lt;- get.var.ncdf( nc, var_i$dim[[ndims]]$name, start=i, count=1 )
+
+       print(paste(&quot;Data for variable&quot;,var_i$name,&quot;at timestep&quot;,i,
+               &quot; (time value=&quot;,timeval,var_i$dim[[ndims]]$units,&quot;):&quot;))
+       # [1] &quot;Data for variable tg at timestep 1  (time value= 0 days since 1950-01-01 00:00 ):&quot;      
+       #print(data3)
+       #image(data3)
+       dat1 &amp;lt;- list()
+       dat1$x &amp;lt;- get.var.ncdf(nc, varid=&quot;Actual_longitude&quot;)
+       #dat1$x &amp;lt;- dat1$x[,1]       
+       dat1$y &amp;lt;- get.var.ncdf(nc, varid=&quot;Actual_latitude&quot;)
+       #dat1$y &amp;lt;- dat1$y[1,]              
+       dat1$z &amp;lt;- get.var.ncdf(nc, var_i, start=start, count=count )
+       str(dat1$z)
+       #image(dat1$z)
+       #map(&quot;world&quot;, xlim = c(xmin, xmax), ylim = c(ymin, ymax))
+       #with(dat1, points(x, y, cex = .1, pch = 16))
+       dat2 &amp;lt;- data.frame(
+         x = as.vector(dat1$x),
+         y = as.vector(dat1$y),
+         z = as.vector(dat1$z)
+         )
+       #str(dat2)  
+       #getwd()
+       # I had the idea to save each day out to a file for looping over again and extracting spatially located data
+       # say for a pixel, but I decided to try out the netCDF aggregation tools at a next step
+       # save(dat2, file = sprintf(&quot;data_derived/eobs_tg_%s.RData&quot;,i))           
+       #load(sprintf(&quot;eobs_tg_%s.RData&quot;,i))
+       #This seemed like a good idea, but RData is more compressed
+       # write.csv(dat2, sprintf(&quot;eobs_tg.csv&quot;,i), row.names = F, na = &quot;&quot;)       
+       #}
+#}
+
+# load the data for a specific day as example
+dir(&quot;data_derived&quot;)
+infile  &amp;lt;- &quot;eobs_tg_1.RData&quot;
+load(file.path(&quot;data_derived/&quot;, infile))
+ls()
+# Now this is able to be mapped, but have make sure of the projection
+library(maptools)
+library(scales) 
+library(RColorBrewer)
+library(rgdal)
+# the following code was adapted from
+
+# Bedia, J. (2012). R practice using data from the ENSEMBLES
+# Project. Retrieved from
+# http://www.value-cost.eu/sites/default/files/VALUE_TS1_D02_RIntro.pdf
+
+data(wrld_simpl)
+# loads the world map dataset 
+wrl  &amp;lt;- as(wrld_simpl,&quot;SpatialLines&quot;) 
+l1 &amp;lt;- list(&quot;sp.lines&quot;,wrl)
+#x &amp;lt;- get.var.ncdf(nc, varid=&quot;Actual_longitude&quot;)
+str(x)
+x &amp;lt;- as.vector(x)
+#y &amp;lt;- get.var.ncdf(nc, varid=&quot;Actual_latitude&quot;)
+str(y)
+y  &amp;lt;- as.vector(y)
+
+
+coords &amp;lt;- cbind(x, y)
+str(coords)
+head(coords)
+# so the actual lat lons are not regular grid in degrees
+png(&quot;figures_and_tables/qc_actual_xy.png&quot;)
+plot(coords, asp=1, cex=.4, col=&quot;grey&quot;, 
+  pch=&quot;+&quot;, main=(&quot;actual lon-lat grid&quot;))
+lines(wrl)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;This is the first graphic, it shows a kind of fan of locations&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qc_actual_xy.png&quot; alt=&quot;/images/qc_actual_xy.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;{r}&quot;&gt;# so what does the rotated grid look like in its own universe?
+str(dat1$z)
+png(&quot;figures_and_tables/qc_rotated.png&quot;)
+image(dat1$z)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;This is how it looks on rotated grid&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qc_rotated.png&quot; alt=&quot;images/qc_rotated.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;{r}&quot;&gt;# so now add in the temperatures, use the wgs latlongs
+t &amp;lt;- as.vector(dat1$z)
+dat3 &amp;lt;- cbind.data.frame(coords, t)
+summary(dat3)
+coordinates(dat3) &amp;lt;- c(1,2)
+#names(dat3@data)  &amp;lt;- c(&quot;z&quot;)
+str(dat3)
+summary(dat3@data)
+color.palette &amp;lt;- rev(brewer.pal(11,&quot;Spectral&quot;))
+getwd()
+dir()
+png(&quot;figures_and_tables/qc_tempmap_wgs.png&quot;)
+spplot(dat3, scales=list(draw=TRUE), sp.layout=list(l1), 
+       col.regions=alpha(color.palette,.2), cuts=10, 
+       main=&quot;tg&quot;)
+dev.off()
+
+# write out the data to a shapefile
+# we first have to make sure that the proj4 string is ok
+str(dat3)
+proj4string(dat3) &amp;lt;- &quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0&quot;
+setwd(file.path(projdir, &quot;data_derived&quot;))
+writeOGR(dat3, &quot;out2.shp&quot;, &quot;out2&quot;, &quot;ESRI Shapefile&quot;)
+setwd(projdir)
+
+# to look at the rotated project do the following
+# need to look at the website to get this info
+# http://opendap.knmi.nl/knmi/thredds/dodsC/e-obs_0.22rotated/tg_0.22deg_rot_v12.0.nc.html
+print(nc)
+# it doesn't seem like there is this info in the ncdf file?
+get.var.ncdf(nc, &quot;projection&quot;)
+rcm.lonlat.grid &amp;lt;- SpatialPoints(coords)
+# now set this to wgs84
+proj4string(rcm.lonlat.grid) &amp;lt;-&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0&quot;
+
+# this is the proj from website
+# +proj=ob_tran +o_proj=longlat +lon_0=18 +o_lat_p=39.25 +a=6367470 +e=0
+rcm.lambert.proj4 &amp;lt;- CRS(&quot;+proj=ob_tran +o_proj=longlat +lon_0=18 +o_lat_p=39.25 +a=6367470 +e=0&quot;)
+# do the transform
+spTransform(rcm.lonlat.grid, rcm.lambert.proj4) -&amp;gt; rcm.lambert.grid
+summary(rcm.lambert.grid)
+
+world.trans &amp;lt;- spTransform(wrl, rcm.lambert.proj4)
+
+png(&quot;figures_and_tables/qc_rotated_grid_and_countries.png&quot;)
+plot(rcm.lambert.grid@coords, cex=.2, pch=3, asp=1, col=&quot;grey&quot;, 
+  main=&quot;Projected RCM Grid - Lambert Conical Conformal&quot;)
+lines(world.trans, col=&quot;red&quot;)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;This shows the rotated world countries&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qc_rotated_grid_and_countries.png&quot; alt=&quot;images/qc_rotated_grid_and_countries.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;{r&quot;&gt;pr.df &amp;lt;- cbind.data.frame(coordinates(rcm.lambert.grid), dat3@data)
+coordinates(pr.df) &amp;lt;- c(1,2) 
+l1  &amp;lt;- list(&quot;sp.lines&quot;, world.trans)
+color.palette &amp;lt;- colorRampPalette(c(&quot;yellow&quot;,&quot;cyan&quot;, &quot;blue&quot;,&quot;purple&quot;))
+
+# This graph shows this with temp
+png(&quot;figures_and_tables/qc_rotated_grid_and_countries2.png&quot;)
+spplot(pr.df, sp.layout=list(l1), cuts=7, cex=1.5, 
+  col.regions=alpha(color.palette(7),.15), pch=rep(15,7),
+  main=&quot;Temp&quot;)
+dev.off()
+# not much point writing this to shapefile?
+#proj4string(pr.df)  &amp;lt;- rcm.lambert.proj4
+#str(pr.df)
+#setwd(file.path(projdir, &quot;data_derived&quot;))
+#dir()
+# writeOGR(pr.df, &quot;out.shp&quot;, &quot;out&quot;, &quot;ESRI Shapefile&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;this one has temperatures too&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qc_rotated_grid_and_countries2.png&quot; alt=&quot;images/qc_rotated_grid_and_countries2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;acknowledgement and citations.&lt;/h2&gt;
+
+&lt;p&gt;E-OBS temperature and precipitation:&lt;/p&gt;
+
+&lt;p&gt;We acknowledge the E-OBS dataset from the EU-FP6 project ENSEMBLES
+(http://ensembles-eu.metoffice.com) and the data providers in the
+ECA&amp;amp;D project (http://www.ecad.eu)&lt;/p&gt;
+
+&lt;p&gt;Haylock, M.R., N. Hofstra, A.M.G. Klein Tank, E.J. Klok, P.D. Jones,
+M. New. 2008: A European daily high-resolution gridded dataset of
+surface temperature and precipitation. J. Geophys. Res (Atmospheres),
+113, D20119, doi:10.1029/2008JD10201&quot;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>The perfect is the enemy of the good</title>
@@ -5247,153 +5505,6 @@ implications of climate change. The requirement to adequately convey
 the methods and results of this research was problematic and motivated
 the work on effective use of reproducible research techniques and data
 analysis pipelines.&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Web Data, Climate Grids and THREDDS UPDATE</title>
-   <link href="http://schamberlain.github.com/2015/07/climate-grids-and-thredds-server-experimenting-update/"/>
-   <updated>2015-07-27T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2015/07/climate-grids-and-thredds-server-experimenting-update</id>
-   <content type="html">&lt;h1&gt;Update&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This is an update to my previous post:  &lt;a href=&quot;http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/&quot;&gt;http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;I was worried about the available metadata with those netcdf data I was working with so contacted Dr Brad Evans at EMAST who set me straight:&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;QUOTE:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&quot;you need to use ncdf4  - not ncdf  ...
-because they are netcdf4 files and not netcdf3 files. 
-This is poorly explained in the R community.
-All of the netcdf files from Australian providers (AusCover, BoM, etc...) 
-have been in netcdf4 for a couple of years now.&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1&gt;So here is the revised code using ncdf4 library:&lt;/h1&gt;
-
-&lt;h4&gt;CODE&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# sudo apt-get install r-cran-ncdf4 
-library(ncdf4)
-library(raster)
-strt &amp;lt;-'2012-01-01'
-end &amp;lt;- '2012-01-04'
-dates &amp;lt;- seq(as.Date(strt),as.Date(end),1)          
-dates
-par(mfrow = c(2,2))
-for(i in 1:length(dates)){
- # i=1
-  date_i &amp;lt;- dates[i]
-  infile &amp;lt;- sprintf(&quot;http://dapds00.nci.org.au/thredds/dodsC/rr9/Climate/eMAST/ANUClimate/0_01deg/v1m0_aus/day/land/tmin/e_01/2012/eMAST_ANUClimate_day_tmin_v1m0_%s.nc&quot;, gsub(&quot;-&quot;, &quot;&quot;, date_i))
-
-  nc &amp;lt;- nc_open(infile)
-  str(nc)
-  print(nc)
-  vals &amp;lt;- ncvar_get(nc, varid=&quot;air_temperature&quot;)
-  str(vals)
-  nc.att &amp;lt;-    nc$var$air_temperature
-  xmin &amp;lt;- min(nc.att$dim[[1]]$vals)
-  xmax &amp;lt;- max(nc.att$dim[[1]]$vals)
-  ymin &amp;lt;- min(nc.att$dim[[2]]$vals)
-  ymax &amp;lt;- max(nc.att$dim[[2]]$vals)
-
-  print(c(xmin,xmax))
-  print(c(ymin,ymax))
-
-  r &amp;lt;- raster(t(vals),
-              xmn=xmin, xmx=xmax,
-              ymn=ymin, ymx=ymax)
-  #str(r)
-  plot(r)
-  nc_close(nc)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;RESULTS 1: METADATA&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the result is I now have a lot more metdata returned to my R workspace&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;EXERPT&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;[...]
-[1] &quot;        licence_copyright: Copyright 2009-2013 ANU. Rights owned by The Australian National University (ANU). Rights licensed subject to TERN  Attribution (TERN-BY).&quot;
-[1] &quot;        short_desc: Australian coverage, ANUClimate 1.0, 0.01 degree grid, 1970-2012&quot;
-[1] &quot;        summary: Minimum daily temperature, for the Australian continent between 1970-2012. Daily temperature regulates rates of plant growth and determines critical conditions such as frost on flowering and fruiting. Modelled by expressing each daily value as a difference anomaly with respect to the gridded 1976-2005 mean daily minimum temperature for each month as provided by eMAST_ANUClimate_mmn_tmin_v1m0_1976_2005. The daily anomalies were interpolated by trivariate thin plate smoothing spline functions of longitude, latitude and vertically exaggerated elevation using ANUSPLIN Version 4.5. There was an average of 671 Bureau of Meteorology data points available for each day between 1970 and 2012. Automated quality assessment rejected on average 3 data values per day with extreme studentised residuals. These were commonly associated with days following missing observations. The root mean square of all individual cross validation residuals provided by the spline analysis is 1.5 degrees Celsius. A comprehensive assessment of the analysis and the factors contributing to the quality of the final interpolated daily minimum temperature grids is in preparation.&quot;
-[1] &quot;        long_name: Daily minimum temperature&quot;
-[1] &quot;        contact: Michael Hutchinson, Professor of spatial and temporal analysis, 3.23A, Fenner School of Environment &amp;amp; Society, College of Medicine, Biology &amp;amp; Environment, Frank Fenner Building 141, Australian National University, Canberra, Australian Capital Territory, 200, Australia, (+61) 2 6125 4783, Michael.Hutchinson@anu.edu.au, http://orcid.org/0000-0001-8205-6689&quot;
-[1] &quot;        references: 1. Hutchinson, M.F., Mckenney, D.W., Lawrence, K., Pedlar, J., Hopkinson, R., Milewska, E. and Papadopol, P. 2009. Development and testing of Canada-wide interpolated spatial models of daily minimum/maximum temperature and precipitation for 1961-2003. Journal of Applied Meteorology and Climatology 48: 725�741. http://dx.doi.org/10.1175/2008JAMC1979.1 2. Hutchinson, M.F. and Xu, T. 2013. ANUSPLIN version 4.4 User Guide. Fenner School of Environment and Society, Australian National University, Canberra http://fennerschool.anu.edu.au/files/anusplin44.pdf&quot;
-[1] &quot;        source: ANUClimate 1.0&quot;
-[1] &quot;        keywords: EARTH SCIENCE &amp;gt; ATMOSPHERE &amp;gt; ATMOSPHERIC TEMPERATURE &amp;gt; MAXIMUM/MINIMUM TEMPERATURE&quot;
-[1] &quot;        Conventions: CF-1.6&quot;
-[1] &quot;        institution: Australian National University&quot;
-[1] &quot;        geospatial_lat_min: -43.74&quot;
-[1] &quot;        geospatial_lat_max: -9&quot;
-[1] &quot;        geospatial_lat_units: degrees_north&quot;
-[1] &quot;        geospatial_lat_resolution: -0.01&quot;
-[1] &quot;        geospatial_lon_min: 112.9&quot;
-[1] &quot;        geospatial_lon_max: 154&quot;
-[1] &quot;        geospatial_lon_units: degrees_east&quot;
-[1] &quot;        geospatial_lon_resolution: 0.01&quot;
-[1] &quot;        keywords_vocabulary: Global Change Master Directory (http://gcmd.nasa.gov)&quot;
-[1] &quot;        metadata_link: http://datamgt.nci.org.au:8080/geonetwork&quot;
-[1] &quot;        standard_name_vocabulary: Climate and Forecast(CF) convention standard names (http://cf-pcmdi.llnl.gov/documents/cf-standard-names)&quot;
-[1] &quot;        id: eMAST_ANUClimate_day_tmin_v1m0_1970_2012&quot;
-[1] &quot;        DOI: To be added&quot;
-[1] &quot;        cdm_data_type: grid&quot;
-[1] &quot;        contributor_name: Michael Hutchinson, Jennnifer Kesteven, Tingbao Xu&quot;
-[1] &quot;        contributor_role: principalInvestigator, author, author&quot;
-[1] &quot;        creator_email: eMAST.data@mq.edu.au&quot;
-[1] &quot;        creator_name: eMAST data manager&quot;
-[1] &quot;        creator_url: http://www.emast.org.au/&quot;
-[1] &quot;        Metadata_Conventions: Unidata Dataset Discovery v1.0&quot;
-[1] &quot;        publisher_name: Ecosystem Modelling and Scaling Infrastructure (eMAST) Facility: Macquarie University&quot;
-[1] &quot;        publisher_email: eMAST.data@mq.edu.au&quot;
-[1] &quot;        publisher_url: http://www.emast.org.au/&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1&gt;RESULTS 2: Grid data&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I still get lots of good data&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/thredds2.png&quot; alt=&quot;/images/thredds2.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h1&gt;NOTE I still need that weird transpose&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I note that the weird hacky transpose is still required&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;CODE&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# NB weird hacky transpose still required or else you get this
-r &amp;lt;- raster(vals,
-            xmn=xmin, xmx=xmax,
-            ymn=ymin, ymx=ymax)
-
-#str(r)
-plot(r)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;/images/thredds2raw.png&quot; alt=&quot;/images/thredds2raw.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  

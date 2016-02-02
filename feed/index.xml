@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2016-02-01T17:03:58+11:00</updated>
+ <updated>2016-02-02T21:20:08+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,41 +13,260 @@
 
  
  <entry>
-   <title>The perfect is the enemy of the good</title>
-   <link href="http://ivanhanigan.github.com/2016/01/the-perfect-is-the-enemy-of-the-good/"/>
-   <updated>2016-01-31T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2016/01/the-perfect-is-the-enemy-of-the-good</id>
-   <content type="html">&lt;p&gt;According to Wikipedia &lt;a href=&quot;https://en.wikipedia.org/wiki/Perfect_is_the_enemy_of_good&quot;&gt;https://en.wikipedia.org/wiki/Perfect_is_the_enemy_of_good&lt;/a&gt;
-this phrase was popularised by Voltaire, and Shakespeare via King Lear: &quot;striving to better, oft we mar what's well&quot;&lt;/p&gt;
+   <title>Climate grids thredds European data</title>
+   <link href="http://ivanhanigan.github.com/2016/02/climate-grids-thredds-european-data/"/>
+   <updated>2016-02-02T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2016/02/climate-grids-thredds-european-data</id>
+   <content type="html">&lt;p&gt;I've got netCDF data regarding temperature calculated from the daily E-OBS gridded dataset which is based on observational data with a spatial resolution of 0.22° on a
+rotated pole grid, with the north pole at 39.25N, 162W.  &lt;a href=&quot;http://www.ecad.eu&quot;&gt;http://www.ecad.eu&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;This phrase is a favourite of several people I respect and admire.  On the other hand it has always vaguely troubled me.
-I think there may be two dimensions of this phrase that are worth pondering.&lt;/p&gt;
+&lt;p&gt;The rotated grid is the same as used in many ENSEMBLES Regional Climate Models.  But I've never worked with the rotated grid projection before and so here is what I learnt.&lt;/p&gt;
 
-&lt;h2&gt;One: &quot;the good&quot; is a quality of the work&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;{r}&quot;&gt;#library(ncdf4)
+library(ncdf)
+library(raster)
+projdir &amp;lt;- &quot;~/projects/weather_european_eobs/eobs_temperature_tg_dataset&quot;
+outdir &amp;lt;- &quot;data_provided&quot;
+outdir &amp;lt;- file.path(projdir, outdir)
+#dir.create(outdir, recursive = T)
+setwd(projdir)
+dir()
+# The URL below will get you the data, but the ECAD group do request you register your email address 
+# they probably use this information to report some usage stats to their funders, so 
+# Please do consider going to this webpage (http://www.ecad.eu/download/ensembles/ensembles.php)
+# and register yourself.  Thanks!
+webroot &amp;lt;- &quot;http://www.ecad.eu/download/ensembles/data/Grid_0.22deg_rot&quot;
+# Create a list of netcdf files to download, we can loop over it
+file_list &amp;lt;- c(&quot;tg_0.22deg_rot_1950-1964_v12.0.nc.gz&quot;,&quot;tg_0.22deg_rot_1965-1979_v12.0.nc.gz&quot;)
 
-&lt;p&gt;The first dimension is better expressed in King Lear, and on the wiki page where it is suggested the meaning is &quot;that we might never complete a task if we have decided not to stop until it is perfect.&quot;
-This is correct, however not an absolutely faithful interpretation of the phrase &quot;striving to better&quot;.  To my mind this does not necessarily lead to the position &quot;will not stop until perfect&quot;.
-If one strives for perfection but admits that this is beyond the scope of one's ambition then one will eventually stop when &quot;it&quot; is &quot;good enough&quot;, and that state will be better if one were striving for perfection than if one where aiming for &quot;satisfactory&quot;.&lt;/p&gt;
+# only download if not already done
+setwd(outdir)
+for(i in 1:length(file_list))
+    {
+    dl &amp;lt;- file.path(webroot, file_list[i])
+    dl
+    infile &amp;lt;- basename(dl)
+    exists  &amp;lt;- dir(pattern= infile)
+    if(
+      !exists(&quot;exists&quot;)
+       )
+    {
+    download.file(dl, destfile = infile, mode = &quot;wb&quot;)
+    system(sprintf(&quot;gunzip %s&quot;, infile))
+    }
+    &quot; (250MB)&quot;
+    }
+setwd(projdir)
 
-&lt;h2&gt;Two: &quot;the good&quot; is the impact the work may have on the world around us&lt;/h2&gt;
+# now we can go through all days, I set this up as a loop over ncdf files then days, 
+# but I'll probably try to set this up to directly use the netCDF aggregation functions available and avoid looping 
+# for(j in 1:length(file_list))
+  #{
+    j = 1
+    infile &amp;lt;- file.path(outdir, gsub(&quot;.gz&quot;, &quot;&quot;, file_list[j]))
+    nc &amp;lt;- open.ncdf(infile)
+    #str(nc)
+    print(nc)
+    #?get.var.ncdf, following the example in the help file
+    print(paste(&quot;The file has&quot;,nc$nvars,&quot;variables&quot;))
+    var_i      &amp;lt;- nc$var[[4]]
+    #var_i
+    varsize &amp;lt;- var_i$varsize
+    ndims   &amp;lt;- var_i$ndims
+    nt      &amp;lt;- varsize[ndims]  # Remember timelike dim is always the LAST dimension!
+    #nt 
+    # we will set up to do a loop over days, I want to
+    # a) read in the day grid
+    # b) make a spatial points file with the appropriate projection
+    # c) convert to geotiff and save to disk
+    #for(i in 1:nt)
+    #  {
+        i = 1
+       # Initialize start and count to read one timestep of the variable.
+       start &amp;lt;- rep(1,ndims)   # begin with start=(1,1,1,...,1)
+       start[ndims] &amp;lt;- i       # change to start=(1,1,1,...,i) to read timestep i
+       count &amp;lt;- varsize        # begin w/count=(nx,ny,nz,...,nt), reads entire var
+       count[ndims] &amp;lt;- 1       # change to count=(nx,ny,nz,...,1) to read 1 tstep
+       data3 &amp;lt;- get.var.ncdf( nc, var_i, start=start, count=count )
 
-&lt;p&gt;The second dimension resonates more clearly with me and that is that &quot;the good&quot; is a public good, an impact that we feel would make the world a better place.
-To aim for a satisfactory action or intervention on the world around is would then be the goal, and we should try to achieve this as soon as possible, without delaying our work with minutia or trivia that might be that extra 1 percent that we would hope elevates our work further than satisfactory.  One extra rung up the ladder toward perfection.&lt;/p&gt;
+       # Now read in the value of the timelike dimension
+       timeval &amp;lt;- get.var.ncdf( nc, var_i$dim[[ndims]]$name, start=i, count=1 )
 
-&lt;h2&gt;Stirzaker's &quot;simplicity cycle&quot;&lt;/h2&gt;
+       print(paste(&quot;Data for variable&quot;,var_i$name,&quot;at timestep&quot;,i,
+               &quot; (time value=&quot;,timeval,var_i$dim[[ndims]]$units,&quot;):&quot;))
+       # [1] &quot;Data for variable tg at timestep 1  (time value= 0 days since 1950-01-01 00:00 ):&quot;      
+       #print(data3)
+       #image(data3)
+       dat1 &amp;lt;- list()
+       dat1$x &amp;lt;- get.var.ncdf(nc, varid=&quot;Actual_longitude&quot;)
+       #dat1$x &amp;lt;- dat1$x[,1]       
+       dat1$y &amp;lt;- get.var.ncdf(nc, varid=&quot;Actual_latitude&quot;)
+       #dat1$y &amp;lt;- dat1$y[1,]              
+       dat1$z &amp;lt;- get.var.ncdf(nc, var_i, start=start, count=count )
+       str(dat1$z)
+       #image(dat1$z)
+       #map(&quot;world&quot;, xlim = c(xmin, xmax), ylim = c(ymin, ymax))
+       #with(dat1, points(x, y, cex = .1, pch = 16))
+       dat2 &amp;lt;- data.frame(
+         x = as.vector(dat1$x),
+         y = as.vector(dat1$y),
+         z = as.vector(dat1$z)
+         )
+       #str(dat2)  
+       #getwd()
+       # I had the idea to save each day out to a file for looping over again and extracting spatially located data
+       # say for a pixel, but I decided to try out the netCDF aggregation tools at a next step
+       # save(dat2, file = sprintf(&quot;data_derived/eobs_tg_%s.RData&quot;,i))           
+       #load(sprintf(&quot;eobs_tg_%s.RData&quot;,i))
+       #This seemed like a good idea, but RData is more compressed
+       # write.csv(dat2, sprintf(&quot;eobs_tg.csv&quot;,i), row.names = F, na = &quot;&quot;)       
+       #}
+#}
 
-&lt;p&gt;On page 175 of Stirzaker, R. (2010). Out of the scientists garden: A story of water and food. Canberra, Australia: CSIRO.
-I copied the image and show it below, but I have flipped it around so the axis are reversed from his original.
-This shows a couple of trajectories we can head along in terms of striving for enhancements, and the effect this has on how &quot;good&quot; the results are.&lt;/p&gt;
+# load the data for a specific day as example
+dir(&quot;data_derived&quot;)
+infile  &amp;lt;- &quot;eobs_tg_1.RData&quot;
+load(file.path(&quot;data_derived/&quot;, infile))
+ls()
+# Now this is able to be mapped, but have make sure of the projection
+library(maptools)
+library(scales) 
+library(RColorBrewer)
+library(rgdal)
+# the following code was adapted from
 
-&lt;p&gt;&lt;img src=&quot;/images/stirzacker.jpg&quot; alt=&quot;/images/stirzacker.jpg&quot; /&gt;&lt;/p&gt;
+# Bedia, J. (2012). R practice using data from the ENSEMBLES
+# Project. Retrieved from
+# http://www.value-cost.eu/sites/default/files/VALUE_TS1_D02_RIntro.pdf
 
-&lt;h2&gt;Seriousness aside&lt;/h2&gt;
+data(wrld_simpl)
+# loads the world map dataset 
+wrl  &amp;lt;- as(wrld_simpl,&quot;SpatialLines&quot;) 
+l1 &amp;lt;- list(&quot;sp.lines&quot;,wrl)
+#x &amp;lt;- get.var.ncdf(nc, varid=&quot;Actual_longitude&quot;)
+str(x)
+x &amp;lt;- as.vector(x)
+#y &amp;lt;- get.var.ncdf(nc, varid=&quot;Actual_latitude&quot;)
+str(y)
+y  &amp;lt;- as.vector(y)
 
-&lt;p&gt;I used this image in my last project as a rallying call to the team to focus on both striving for the perfection while also balancing our aims to impact on the good.
-My colleagues pointed out that the flipped over version is easily turned into a stickman, a la XKCD!&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/stirzacker2.jpg&quot; alt=&quot;/images/stirzacker2.jpg&quot; /&gt;&lt;/p&gt;
+coords &amp;lt;- cbind(x, y)
+str(coords)
+head(coords)
+# so the actual lat lons are not regular grid in degrees
+png(&quot;figures_and_tables/qc_actual_xy.png&quot;)
+plot(coords, asp=1, cex=.4, col=&quot;grey&quot;, 
+  pch=&quot;+&quot;, main=(&quot;actual lon-lat grid&quot;))
+lines(wrl)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;This is the first graphic, it shows a kind of fan of locations&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qc_actual_xy.png&quot; alt=&quot;/images/qc_actual_xy.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;{r}&quot;&gt;# so what does the rotated grid look like in its own universe?
+str(dat1$z)
+png(&quot;figures_and_tables/qc_rotated.png&quot;)
+image(dat1$z)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;This is how it looks on rotated grid&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qc_rotated.png&quot; alt=&quot;images/qc_rotated.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;{r}&quot;&gt;# so now add in the temperatures, use the wgs latlongs
+t &amp;lt;- as.vector(dat1$z)
+dat3 &amp;lt;- cbind.data.frame(coords, t)
+summary(dat3)
+coordinates(dat3) &amp;lt;- c(1,2)
+#names(dat3@data)  &amp;lt;- c(&quot;z&quot;)
+str(dat3)
+summary(dat3@data)
+color.palette &amp;lt;- rev(brewer.pal(11,&quot;Spectral&quot;))
+getwd()
+dir()
+png(&quot;figures_and_tables/qc_tempmap_wgs.png&quot;)
+spplot(dat3, scales=list(draw=TRUE), sp.layout=list(l1), 
+       col.regions=alpha(color.palette,.2), cuts=10, 
+       main=&quot;tg&quot;)
+dev.off()
+
+# write out the data to a shapefile
+# we first have to make sure that the proj4 string is ok
+str(dat3)
+proj4string(dat3) &amp;lt;- &quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0&quot;
+setwd(file.path(projdir, &quot;data_derived&quot;))
+writeOGR(dat3, &quot;out2.shp&quot;, &quot;out2&quot;, &quot;ESRI Shapefile&quot;)
+setwd(projdir)
+
+# to look at the rotated project do the following
+# need to look at the website to get this info
+# http://opendap.knmi.nl/knmi/thredds/dodsC/e-obs_0.22rotated/tg_0.22deg_rot_v12.0.nc.html
+print(nc)
+# it doesn't seem like there is this info in the ncdf file?
+get.var.ncdf(nc, &quot;projection&quot;)
+rcm.lonlat.grid &amp;lt;- SpatialPoints(coords)
+# now set this to wgs84
+proj4string(rcm.lonlat.grid) &amp;lt;-&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0&quot;
+
+# this is the proj from website
+# +proj=ob_tran +o_proj=longlat +lon_0=18 +o_lat_p=39.25 +a=6367470 +e=0
+rcm.lambert.proj4 &amp;lt;- CRS(&quot;+proj=ob_tran +o_proj=longlat +lon_0=18 +o_lat_p=39.25 +a=6367470 +e=0&quot;)
+# do the transform
+spTransform(rcm.lonlat.grid, rcm.lambert.proj4) -&amp;gt; rcm.lambert.grid
+summary(rcm.lambert.grid)
+
+world.trans &amp;lt;- spTransform(wrl, rcm.lambert.proj4)
+
+png(&quot;figures_and_tables/qc_rotated_grid_and_countries.png&quot;)
+plot(rcm.lambert.grid@coords, cex=.2, pch=3, asp=1, col=&quot;grey&quot;, 
+  main=&quot;Projected RCM Grid - Lambert Conical Conformal&quot;)
+lines(world.trans, col=&quot;red&quot;)
+dev.off()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;This shows the rotated world countries&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qc_rotated_grid_and_countries.png&quot; alt=&quot;images/qc_rotated_grid_and_countries.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;{r&quot;&gt;pr.df &amp;lt;- cbind.data.frame(coordinates(rcm.lambert.grid), dat3@data)
+coordinates(pr.df) &amp;lt;- c(1,2) 
+l1  &amp;lt;- list(&quot;sp.lines&quot;, world.trans)
+color.palette &amp;lt;- colorRampPalette(c(&quot;yellow&quot;,&quot;cyan&quot;, &quot;blue&quot;,&quot;purple&quot;))
+
+# This graph shows this with temp
+png(&quot;figures_and_tables/qc_rotated_grid_and_countries2.png&quot;)
+spplot(pr.df, sp.layout=list(l1), cuts=7, cex=1.5, 
+  col.regions=alpha(color.palette(7),.15), pch=rep(15,7),
+  main=&quot;Temp&quot;)
+dev.off()
+# not much point writing this to shapefile?
+#proj4string(pr.df)  &amp;lt;- rcm.lambert.proj4
+#str(pr.df)
+#setwd(file.path(projdir, &quot;data_derived&quot;))
+#dir()
+# writeOGR(pr.df, &quot;out.shp&quot;, &quot;out&quot;, &quot;ESRI Shapefile&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;this one has temperatures too&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qc_rotated_grid_and_countries2.png&quot; alt=&quot;images/qc_rotated_grid_and_countries2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;acknowledgement and citations.&lt;/h2&gt;
+
+&lt;p&gt;E-OBS temperature and precipitation:&lt;/p&gt;
+
+&lt;p&gt;We acknowledge the E-OBS dataset from the EU-FP6 project ENSEMBLES
+(http://ensembles-eu.metoffice.com) and the data providers in the
+ECA&amp;amp;D project (http://www.ecad.eu)&lt;/p&gt;
+
+&lt;p&gt;Haylock, M.R., N. Hofstra, A.M.G. Klein Tank, E.J. Klok, P.D. Jones,
+M. New. 2008: A European daily high-resolution gridded dataset of
+surface temperature and precipitation. J. Geophys. Res (Atmospheres),
+113, D20119, doi:10.1029/2008JD10201&quot;&lt;/p&gt;
 </content>
  </entry>
  
