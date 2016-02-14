@@ -4,13 +4,61 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2016-02-12T16:29:26+11:00</updated>
+ <updated>2016-02-14T15:36:52+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>r-syntax-highlights-for-my-jekyll-powered-blog.md</title>
+   <link href="http://schamberlain.github.com/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/"/>
+   <updated>2016-02-14T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog</id>
+   <content type="html">&lt;h2&gt;Syntax Highlights&lt;/h2&gt;
+
+&lt;p&gt;Until today I had no idea how to make code pretty in my blog posts which go to github after being first rendered locally so I can get the categories and tags.&lt;/p&gt;
+
+&lt;p&gt;Because github disables any plugins when it processes your blog I took Charlie Park's advice. &lt;a href=&quot;http://charliepark.org/jekyll-with-plugins/&quot;&gt;http://charliepark.org/jekyll-with-plugins/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This blog post solved it for me &lt;a href=&quot;http://tuxette.nathalievilla.org/?p=1574&quot;&gt;http://tuxette.nathalievilla.org/?p=1574&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The trick is to write &lt;code&gt;highlighter:      pygments&lt;/code&gt; into the &lt;code&gt;_config.yml&lt;/code&gt; and then:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;% highlight r % # with curly braces
+data(&quot;iris&quot;)
+plot(iris$Sepal.Length ~ iris$Sepal.Width)
+dat &amp;lt;- rnorm(1000,1,2)
+% endhighlight % # with curly braces
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Will render as:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;data&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;iris&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;iris&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;Sepal.Length &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; iris&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;Sepal.Width&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+dat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; rnorm&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But I also pushed this to another site that I do use gh-pages to build and it sent me an email complaining:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;You are attempting to use the 'pygments' highlighter, 
+which is currently unsupported on GitHub Pages. 
+Your site will use 'rouge' for highlighting instead. 
+To suppress this warning, change the 'highlighter' value to 
+'rouge' in your '_config.yml'. 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So there.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Climate grids thredds European data</title>
@@ -5461,52 +5509,6 @@ environmental and social causes is nevertheless valuable.
 
 &lt;p&gt;&lt;/p&gt;
 
-</content>
- </entry>
- 
- <entry>
-   <title>tracking-a-data-analysis-pipeline</title>
-   <link href="http://schamberlain.github.com/2015/08/tracking-a-data-analysis-pipeline/"/>
-   <updated>2015-08-28T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2015/08/tracking-a-data-analysis-pipeline</id>
-   <content type="html">&lt;p&gt;I have just uploaded a new version of the windows build for my 'disentangle' package.  The blurb of the  draft vignette is below.&lt;/p&gt;
-
-&lt;h1&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;It can be much easier to conceptually understand a complicated data
-analysis pipeline than it is to implement that pipeline effectively.
-This report outlines the use of the 'disentangle' R package, available from &lt;a href=&quot;http://ivanhanigan.github.io/projects.html&quot;&gt;http://ivanhanigan.github.io/projects.html&lt;/a&gt;.  This package contains functions that were developed to aid data
-analysts to map out all the aspects of their work when planning and
-conducting complicated data analyses using the pipeline concept.    There are often many steps in the design and analysis of a study and
-when these are put together as a data analysis pipeline this addresses
-the challenge of reproducibility (Peng 2006).  The
-credibility of data analyses requires that every step is able to be
-scrutinised (Leek 2015).&lt;/p&gt;
-
-&lt;h2&gt;Motivating scientific questions&lt;/h2&gt;
-
-&lt;p&gt;The type of data analysis that is
-the focus of this work is more complicated than simply loading some
-data that are already cleaned, fitting some models and reporting some
-output.  Typically the type of data analysis projects that these tools
-are aimed at involve attempts to control for a large number
-of inter-relationships and associations between variables. It is
-especially problematic that these variables need to have been selected
-by the scientists from a multitude of possible variables and a
-plethora of possible data sources, during a long process of data
-collection, cleaning, exploration and decision making in preparation
-for data analysis. There are also a multitude of steps and decision
-points in the process of model building and model checking. The use of
-statistical models involving many entangled environmental and social
-variables can easily result in spurious association that may be
-mistakenly interpreted as causation.  Projects that the author has
-been involved in include explorations of hypotheses about health effects from
-droughts, bushfire smoke, heat-waves and dust-storms which produced
-novel findings, and informed controversial debates about the
-implications of climate change. The requirement to adequately convey
-the methods and results of this research was problematic and motivated
-the work on effective use of reproducible research techniques and data
-analysis pipelines.&lt;/p&gt;
 </content>
  </entry>
  

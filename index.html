@@ -54,6 +54,72 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/" title="r-syntax-highlights-for-my-jekyll-powered-blog.md" rel="bookmark">r-syntax-highlights-for-my-jekyll-powered-blog.md</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h2>Syntax Highlights</h2>
+
+<p>Until today I had no idea how to make code pretty in my blog posts which go to github after being first rendered locally so I can get the categories and tags.</p>
+
+<p>Because github disables any plugins when it processes your blog I took Charlie Park's advice. <a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a></p>
+
+<p>This blog post solved it for me <a href="http://tuxette.nathalievilla.org/?p=1574">http://tuxette.nathalievilla.org/?p=1574</a></p>
+
+<p>The trick is to write <code>highlighter:      pygments</code> into the <code>_config.yml</code> and then:</p>
+
+<pre><code>% highlight r % # with curly braces
+data("iris")
+plot(iris$Sepal.Length ~ iris$Sepal.Width)
+dat &lt;- rnorm(1000,1,2)
+% endhighlight % # with curly braces
+</code></pre>
+
+<p></p>
+
+
+<p>Will render as:</p>
+
+<div class="highlight"><pre><code class="language-r" data-lang="r">data<span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+plot<span class="p">(</span>iris<span class="o">$</span>Sepal.Length <span class="o">~</span> iris<span class="o">$</span>Sepal.Width<span class="p">)</span>
+dat <span class="o">&lt;-</span> rnorm<span class="p">(</span><span class="m">1000</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">)</span></code></pre></div>
+
+
+<p>But I also pushed this to another site that I do use gh-pages to build and it sent me an email complaining:</p>
+
+<pre><code>You are attempting to use the 'pygments' highlighter, 
+which is currently unsupported on GitHub Pages. 
+Your site will use 'rouge' for highlighting instead. 
+To suppress this warning, change the 'highlighter' value to 
+'rouge' in your '_config.yml'. 
+</code></pre>
+
+<p></p>
+
+
+<p>So there.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2016-02-14 00:00:00 +1100">14 Feb 2016</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2016/02/climate-grids-thredds-european-data/" title="Climate grids thredds European data" rel="bookmark">Climate grids thredds European data</a>
     </h1>
     <div class="entry-content full-content">
@@ -508,120 +574,6 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2016/01/repeatability-vs-replication-definitional-variations/" title="Repeatability vs replication - Definitional variations" rel="bookmark">Repeatability vs replication - Definitional variations</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>In my previous post I bemoaned the variability in definitions of reproducibility and replication.<br/>
-The definition of reproducibility in particular concerns me as I finalise my thesis on 'Reproducible Research Pipelines'.  However I also have noticed a confusion of Repeatability and Replication that is worth noting.  In various author's definitions.  In CASSEY, P., &amp; BLACKBURN, T. M. (2006). Reproducibility and Repeatability in Ecology. BioScience, 56(12), 958. <a href="http://bioscience.oxfordjournals.org/content/56/12/958.full">http://bioscience.oxfordjournals.org/content/56/12/958.full</a> they agree with the definition of Peng 2011 that Reproducibility is to re-calculate the same result from the same data and they use Repeatability as a synonym for Peng's Replication.</p>
-
-<p>According to Cassey and Blackburn (2006), reproducibility is the case that:</p>
-
-<pre><code>from the information presented in the study, a third party could
-replicate (sic) the reported results identically.
-</code></pre>
-
-<p></p>
-
-
-<p>This definition distinguishes reproducibility from repeatability which is when</p>
-
-<pre><code>a third party must be able to perform a study using identical methodological protocols 
-and analyze the resulting data in an identical manner
-</code></pre>
-
-<p></p>
-
-
-<p>Which is what Peng terms 'replicability'.  This leads me to conclude that:</p>
-
-<h3>Cassey and Blackburn conflate Repeatability with Replicability.</h3>
-
-<p>However another author gives a very confused and overlapping view Ellison, A. (2010). Repeatability and Transparency in Ecological Research. Ecology.  <a href="https://dash.harvard.edu/bitstream/handle/1/3123279/Ellison_Repeatability.pdf?sequence=2">https://dash.harvard.edu/bitstream/handle/1/3123279/Ellison_Repeatability.pdf?sequence=2</a> Accessed 12 Jan 2016.</p>
-
-<p>To add further confusion I have dug up the latest dictionary of epidemiology and find that whilst this agrees with Reproducibility and Replication, it treates Repeatability as a synonym of Reproducibility!</p>
-
-<ul>
-<li>Porta, Miquel S. Dictionary of Epidemiology (6th Edition). New York, NY, USA: Oxford University Press, USA, 2014. ProQuest ebrary. Web. 24 January 2016.
-Copyright © 2014. Oxford University Press, USA. All rights reserved.</li>
-</ul>
-
-
-<pre><code>
-Repeatability (Syn: reproducibility): The value below which the
-absolute difference between two single test results may be expected to
-lie with a probability of 95%, when the results are obtained by the
-same method and equipment from identical test material in the same
-setting by the same operator within short intervals of time. A test or
-measurement is repeatable if the results are identical or closely
-similar each time it is conducted. 1-3,5-9,91 See also measurement,
-terminology of; reliability.
-
-Replication: The execution of an observational or experimental study
-more than once so as to confirm the findings, increase precision, and
-obtain a closer estimation of sampling error. Exact replication should
-be distinguished from consistency of results on replication. Exact
-replication is often possible in the physical sciences, but in the
-health, life, and social sciences consistency of results on
-replication is often the best that can be
-attained. 1,2,6,25,39,42,91,206-208,270,273,533 Consistency of results
-on replication is perhaps the most important consideration in
-judgements of CAUSALITY.
-
-Reproducibility: see REPEATABILITY.
-</code></pre>
-
-<p></p>
-
-
-<h2>Whatever happens, never cite Drummond 2009!</h2>
-
-<p>It is unclear whether Drummond's self-published conference paper was peer reviewed (or reviewed by the conference committee) but the following quote is unsupported assertion and should be ignored.</p>
-
-<pre><code>Reproducibility requires changes; replicability avoids them.
-</code></pre>
-
-<p></p>
-
-
-<p>Drummond, C. (2009). Replicability is not Reproducibility: Nor is it Good Science. Proceedings of the Evaluation Methods for Machine Learning Workshop 26th International Conference for Machine Learning. Retrieved January 25, 2016, from <a href="http://cogprints.org/7691/7/icmlws09.pdf">http://cogprints.org/7691/7/icmlws09.pdf</a></p>
-
-<p>Indeed in 2012 Drummond (in another self-published, working paper without evidence of peer review) did a backflip and said:</p>
-
-<pre><code>Reproducibility requires that the experiment originally carried out be duplicated 
-as far as is reasonably possible. The aim is to minimize the difference from 
-the first experiment including its flaws, to produce
-independent verification of the result as reported
-</code></pre>
-
-<p></p>
-
-
-<p>Drummond, C. (2012). Reproducible research: A dissenting opinion. Unpublished draft. Retrieved October 9, 2015, from <a href="http://cogprints.org/8675/">http://cogprints.org/8675/</a></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2016/01/repeatability-vs-replication-definitional-variations/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2016-01-25 00:00:00 +1100">25 Jan 2016</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -695,6 +647,10 @@ independent verification of the result as reported
               <ul>
                 
                 <li>
+                  <a href="/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/" title="r-syntax-highlights-for-my-jekyll-powered-blog.md" rel="bookmark">r-syntax-highlights-for-my-jekyll-powered-blog.md</a>
+                </li>
+                
+                <li>
                   <a href="/2016/02/climate-grids-thredds-european-data/" title="Climate grids thredds European data" rel="bookmark">Climate grids thredds European data</a>
                 </li>
                 
@@ -708,10 +664,6 @@ independent verification of the result as reported
                 
                 <li>
                   <a href="/2016/01/release-checklist-references/" title="Release checklist references" rel="bookmark">Release checklist references</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/01/repeatability-vs-replication-definitional-variations/" title="Repeatability vs replication - Definitional variations" rel="bookmark">Repeatability vs replication - Definitional variations</a>
                 </li>
                 
               </ul>

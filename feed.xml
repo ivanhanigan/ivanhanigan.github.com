@@ -6,6 +6,53 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>r-syntax-highlights-for-my-jekyll-powered-blog.md</title>
+				<description>&lt;h2&gt;Syntax Highlights&lt;/h2&gt;
+
+&lt;p&gt;Until today I had no idea how to make code pretty in my blog posts which go to github after being first rendered locally so I can get the categories and tags.&lt;/p&gt;
+
+&lt;p&gt;Because github disables any plugins when it processes your blog I took Charlie Park's advice. &lt;a href=&quot;http://charliepark.org/jekyll-with-plugins/&quot;&gt;http://charliepark.org/jekyll-with-plugins/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This blog post solved it for me &lt;a href=&quot;http://tuxette.nathalievilla.org/?p=1574&quot;&gt;http://tuxette.nathalievilla.org/?p=1574&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The trick is to write &lt;code&gt;highlighter:      pygments&lt;/code&gt; into the &lt;code&gt;_config.yml&lt;/code&gt; and then:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;% highlight r % # with curly braces
+data(&quot;iris&quot;)
+plot(iris$Sepal.Length ~ iris$Sepal.Width)
+dat &amp;lt;- rnorm(1000,1,2)
+% endhighlight % # with curly braces
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;Will render as:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;data&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;iris&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;iris&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;Sepal.Length &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; iris&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;Sepal.Width&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+dat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; rnorm&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But I also pushed this to another site that I do use gh-pages to build and it sent me an email complaining:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;You are attempting to use the 'pygments' highlighter, 
+which is currently unsupported on GitHub Pages. 
+Your site will use 'rouge' for highlighting instead. 
+To suppress this warning, change the 'highlighter' value to 
+'rouge' in your '_config.yml'. 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;So there.&lt;/p&gt;
+</description>
+				<published>2016-02-14 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/</link>
+			</item>
+		
+			<item>
 				<title>Climate grids thredds European data</title>
 				<description>&lt;p&gt;I've got netCDF data regarding temperature calculated from the daily E-OBS gridded dataset which is based on observational data with a spatial resolution of 0.22° on a
 rotated pole grid, with the north pole at 39.25N, 162W.  &lt;a href=&quot;http://www.ecad.eu&quot;&gt;http://www.ecad.eu&lt;/a&gt;.&lt;/p&gt;
@@ -667,137 +714,6 @@ rOpenSci Project. Journal of Open Research Software,
 </description>
 				<published>2016-01-03 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2016/01/exemplars-of-distributing-data-and-code-ropensci/</link>
-			</item>
-		
-			<item>
-				<title>My framework of scientific workflow and integration software for holistic data analysis</title>
-				<description>&lt;p&gt;Scientific workflow and integration software for holistic data analysis (SWISH) is a
-title I have given to describe the area of my research that focuses on the tools and techniques
-of reproducible data analysis.&lt;/p&gt;
-
-&lt;p&gt;Reproducibility is the ability to recompute the results of a data
-analysis with the original data.  It is possible to have analyses that
-are reproducible with varying degrees of difficulty. A data
-analysis might be reproducible but require thousands of hours of work to
-piece together the datasets, transformations, manipulations, calculations and interpretations of computational results.
-A primary challenge to reproducible data analysis is to make analyses
-that are &lt;em&gt;easy&lt;/em&gt; to reproduce.&lt;/p&gt;
-
-&lt;p&gt;To achieve this, a guiding principle is that analysts should
-effectively implement 'pipelines' of method steps and tools.  Data
-analysts should employ standardised and evidence-based methods based
-on conventions developed from many data analysts approaching the
-problems in a similar way, rather than each analyst configuring
-pipelines to suit particular individual or domain-specific
-preferences.&lt;/p&gt;
-
-&lt;h2&gt;Planning and implementing a pipeline&lt;/h2&gt;
-
-&lt;p&gt;It can be much easier to conceptualise a complicated data analysis
-method than to implement this as a reproducible research pipeline. The
-most effective way to implement a pipeline is by methodically tracking
-each of the steps taken, the data inputs needed and all the outputs of
-the step.  If done in a disciplined way then the analyst or some other
-person could 'audit' the procedure easily and access the details of
-the pipeline they need to scrutinise.&lt;/p&gt;
-
-&lt;h3&gt;Toward a standardised data analysis pipeline framework&lt;/h3&gt;
-
-&lt;p&gt;In my own work I have tried a diverse variety of configurations based on
-things I have read and discussions I have had.  Coming to the end of
-my PhD project I have reflected on the framework that I have arrived at and
-present this below as a schematic overview.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;*   /home/
-**    /overview.org 
-           - summary data_inventory
-           - DMP
-**    /worklog.org    
-           - YYYY-MM-DD
-*   /projects/
-**    /project1_data_analysis_project_health_research
-***       /dataset1_merged_health_outcomes_and_exposures
-             - index.org
-             - git (local private, gitignore all subfolders)
-             - workplan
-             - worklog
-             - workflow
-             - main.Rmd
-****         /data1_provided
-****         /data2_derived
-*****            - workflow script
-****         /code
-****         /results/  (this has all the pathways explored)
-*****           - README.md
-                 - git (public Github)
-                 /YYYY-MM-DD-shortname (i.e. EDA, prelim, model-selection, sensitivity)
-                     /main.Rmd
-                     /code/
-                     /data/
-****         /report/
-                   /manuscript.Rmd
-                     - main results recomputed in production/publication quality
-                     - supporting_information (but also can refer to github/results)
-                 /figures_and_tables/
-                     - png
-                     - csv
-*****           /journal_submission/
-                     - cover letter
-                     - approval signatures
-                     - submitted manuscript
-*****           /journal_revision/
-                     - response.org
-**    /project2_data_analysis_project_exposure_assessment
-           - index.org
-           - git
-***       /dataset2.1_monitored_data
-              - workplan
-              - worklog
-              - workflow
-****         /data1_provided
-****         /data2_derived 
-                 - stored here or
-                 - web2py crud or
-                 - geoserver
-              /data1_and_data2_backups
-              /reports/
-                 - manuscript.Rmd -&amp;gt; publish with the data somehow
-              /tools (R package)
-                 - git/master -&amp;gt; Github
-****      /dataset2.2_GIS_layers 
-**    /methods_or_literature_review_project
-*  /tools/
-         /web2py
-             /applications
-                 /data_inventory
-                     - holdings
-                     - prospective
-                 /database_crud
-          /disentangle (R package)
-          /pipeline_templates
-**   /data/
-         /postgis_hanigan
-         /postgis_anu_gislibrary
-         /geoserver_anu_gislibrary
-**   /references/
-         - mendeley
-         - bib
-         - PDFs annotated
-**   /KeplerData/workflows/MyWorkflows/
-***      /data_analysis_workflow_using_kepler (implemented as an R package)
-****         /inst/doc/A01_load.R
-***      /data_analysis_workflow_using_kepler (implemented as an R LCFD workflow)
-             - main.Rmd (raw R version)
-             - main.xml (this is kepler)
-****         /data/
-                 - file1.csv
-                 - file2.csv
-****         /code/
-                 - load.R
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-				<published>2015-12-22 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2015/12/my-framework-of-scientific-workflow-and-integration-software-for-holistic-data-analysis/</link>
 			</item>
 		
 	</channel>
