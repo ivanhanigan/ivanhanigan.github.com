@@ -6,6 +6,62 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>R base graphics are fine except barplot</title>
+				<description>&lt;p&gt;I concur with Jeff Leek that once spent time learning base graphics in R there is less incentive to learn ggplot2 &lt;a href=&quot;http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/&quot;&gt;http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;However I always hate the way &lt;code&gt;barplot&lt;/code&gt; works.  Here is an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;qc &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;textConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;id,  OnlinePaper, Q, freq, totals,       prop&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;1,      Online,         ,1768,   9950, 0.17768844&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;2,      Online,      No ,4022,   9950, 0.40422111&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;3,      Online,     Yes ,4160,   9950, 0.41809045&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;4,       Paper,         , 256,   3355, 0.07630402&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;5,       Paper,      No , 979,   3355, 0.29180328&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;6,       Paper,     Yes ,2120,   3355, 0.63189270&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+qc1 &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; cast&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;qc&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; OnlinePaper &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; Q74 &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; value &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;prop&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+qc1
+barplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;as.matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;qc1&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; beside &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; legend.text &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; qc1&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; ylim &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/barplot_base.png&quot; alt=&quot;/images/barplot_base.png&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;ggplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;qc&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; aes&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Q&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;prop&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; fill&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;OnlinePaper&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+    geom_bar&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;stat&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;identity&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; position&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;position_dodge&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/barplot_gg.png&quot; alt=&quot;/images/barplot_gg.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Going to extremes&lt;/h4&gt;
+
+&lt;p&gt;I should say though that I have found barplot can produce very customised graphs that serve a specific purpose such as that below (I have de-identified the content as this is unpublished research)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/barplot-gonuts.png&quot; alt=&quot;/images/barplot-gonuts.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This made heavy use of the following approach&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# original by Joseph Guillaume 2009&lt;/span&gt;
+SideBySideBarPlot2 &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  par&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mar&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  bp&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;barplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+              horiz&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+              col&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;gray.colors&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+              las&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; axisnames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  labels &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  text&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;bp&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; par&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;usr&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; labels &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; srt &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+       adj &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; xpd &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; cex&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;.9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;bp&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# with width = xvar (proportions)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+</description>
+				<published>2016-02-19 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2016/02/r-base-graphics-are-fine-except-barplot/</link>
+			</item>
+		
+			<item>
 				<title>r-syntax-highlights-for-my-jekyll-powered-blog.md</title>
 				<description>&lt;h2&gt;Syntax Highlights&lt;/h2&gt;
 
@@ -692,28 +748,6 @@ Repeatability in Ecology. BioScience,
 </description>
 				<published>2016-01-12 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/</link>
-			</item>
-		
-			<item>
-				<title>Exemplars of distributing data and code - rOpenSci</title>
-				<description>&lt;p&gt;The practice of distributing data and code has a wide variety of possible approaches.  There are many resources available to be used to post data and code to the internet for dissemination, and it is very easy to access these resources.  It is more difficult to find exemplars of how data and code are easily and effectively distributed.  I am conducting a review of some of the resources that describe procedures for this and present exemplars in this and following notes.&lt;/p&gt;
-
-&lt;p&gt;A paper that describes the rOpenSci project's approach is &lt;a href=&quot;http://dx.doi.org/10.5334/jors.bu&quot;&gt;http://dx.doi.org/10.5334/jors.bu&lt;/a&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;&quot;&gt;Boettiger, C., Chamberlain, S., Hart, E., &amp;amp; Ram,
-K. (2015). Building Software, Building Community: Lessons from the
-rOpenSci Project. Journal of Open Research Software,
-3(1). 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This paper is focused on the way the community development and capacity building part of the project was conducted.  The diagram shown below is introduced as an example of the style that rOpenSci recommend a data analysis workflow be constructed.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/workflow-ropensci.png&quot; alt=&quot;/images/workflow-ropensci.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The focus on publishing data to a public repository so early in the project (prior to final analysis and manuscript) seems premature to me. But then, I do feel that I am somewhat more concerned with vexatious activity by climate skeptics than the rOpenSci team.&lt;/p&gt;
-</description>
-				<published>2016-01-03 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2016/01/exemplars-of-distributing-data-and-code-ropensci/</link>
 			</item>
 		
 	</channel>

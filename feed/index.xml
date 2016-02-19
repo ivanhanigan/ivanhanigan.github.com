@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2016-02-17T21:23:18+11:00</updated>
+ <updated>2016-02-19T16:11:58+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,50 +13,59 @@
 
  
  <entry>
-   <title>r-syntax-highlights-for-my-jekyll-powered-blog.md</title>
-   <link href="http://ivanhanigan.github.com/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/"/>
-   <updated>2016-02-14T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog</id>
-   <content type="html">&lt;h2&gt;Syntax Highlights&lt;/h2&gt;
+   <title>R base graphics are fine except barplot</title>
+   <link href="http://ivanhanigan.github.com/2016/02/r-base-graphics-are-fine-except-barplot/"/>
+   <updated>2016-02-19T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2016/02/r-base-graphics-are-fine-except-barplot</id>
+   <content type="html">&lt;p&gt;I concur with Jeff Leek that once spent time learning base graphics in R there is less incentive to learn ggplot2 &lt;a href=&quot;http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/&quot;&gt;http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Until today I had no idea how to make code pretty in my blog posts which go to github after being first rendered locally so I can get the categories and tags.&lt;/p&gt;
+&lt;p&gt;However I always hate the way &lt;code&gt;barplot&lt;/code&gt; works.  Here is an example:&lt;/p&gt;
 
-&lt;p&gt;Because github disables any plugins when it processes your blog I took Charlie Park's advice. &lt;a href=&quot;http://charliepark.org/jekyll-with-plugins/&quot;&gt;http://charliepark.org/jekyll-with-plugins/&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;qc &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;textConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;id,  OnlinePaper, Q, freq, totals,       prop&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;1,      Online,         ,1768,   9950, 0.17768844&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;2,      Online,      No ,4022,   9950, 0.40422111&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;3,      Online,     Yes ,4160,   9950, 0.41809045&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;4,       Paper,         , 256,   3355, 0.07630402&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;5,       Paper,      No , 979,   3355, 0.29180328&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;6,       Paper,     Yes ,2120,   3355, 0.63189270&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 
-&lt;p&gt;This blog post solved it for me &lt;a href=&quot;http://tuxette.nathalievilla.org/?p=1574&quot;&gt;http://tuxette.nathalievilla.org/?p=1574&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;The trick is to write &lt;code&gt;highlighter:      pygments&lt;/code&gt; into the &lt;code&gt;_config.yml&lt;/code&gt; and then:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;% highlight r % # with curly braces
-data(&quot;iris&quot;)
-plot(iris$Sepal.Length ~ iris$Sepal.Width)
-dat &amp;lt;- rnorm(1000,1,2)
-% endhighlight % # with curly braces
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
+qc1 &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; cast&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;qc&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; OnlinePaper &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; Q74 &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; value &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;prop&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+qc1
+barplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;as.matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;qc1&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; beside &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; legend.text &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; qc1&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; ylim &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Will render as:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/barplot_base.png&quot; alt=&quot;/images/barplot_base.png&quot; /&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;data&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;iris&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;iris&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;Sepal.Length &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; iris&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;Sepal.Width&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-dat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; rnorm&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;But I also pushed this to another site that I do use gh-pages to build and it sent me an email complaining:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;You are attempting to use the 'pygments' highlighter, 
-which is currently unsupported on GitHub Pages. 
-Your site will use 'rouge' for highlighting instead. 
-To suppress this warning, change the 'highlighter' value to 
-'rouge' in your '_config.yml'. 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;ggplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;qc&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; aes&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Q&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;prop&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; fill&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;OnlinePaper&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+    geom_bar&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;stat&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;identity&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; position&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;position_dodge&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;So there.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/barplot_gg.png&quot; alt=&quot;/images/barplot_gg.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Going to extremes&lt;/h4&gt;
+
+&lt;p&gt;I should say though that I have found barplot can produce very customised graphs that serve a specific purpose such as that below (I have de-identified the content as this is unpublished research)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/barplot-gonuts.png&quot; alt=&quot;/images/barplot-gonuts.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This made heavy use of the following approach&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# original by Joseph Guillaume 2009&lt;/span&gt;
+SideBySideBarPlot2 &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  par&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mar&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  bp&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;barplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+              horiz&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+              col&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;gray.colors&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+              las&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; axisnames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  labels &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  text&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;bp&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; par&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;usr&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; labels &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; srt &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+       adj &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; xpd &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; cex&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;.9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;bp&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# with width = xvar (proportions)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
 </content>
  </entry>
  

@@ -4,13 +4,70 @@
  <title>Scott Chamberlain</title>
  <link href="http://schamberlain.github.com/atom.xml" rel="self"/>
  <link href="http://schamberlain.github.com/"/>
- <updated>2016-02-17T21:23:18+11:00</updated>
+ <updated>2016-02-19T16:11:58+11:00</updated>
  <id>http://schamberlain.github.com/</id>
  <author>
    <name>Scott Chamberlain</name>
    <email>myrmecocystus@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>R base graphics are fine except barplot</title>
+   <link href="http://schamberlain.github.com/2016/02/r-base-graphics-are-fine-except-barplot/"/>
+   <updated>2016-02-19T00:00:00+11:00</updated>
+   <id>http://schamberlain.github.com/2016/02/r-base-graphics-are-fine-except-barplot</id>
+   <content type="html">&lt;p&gt;I concur with Jeff Leek that once spent time learning base graphics in R there is less incentive to learn ggplot2 &lt;a href=&quot;http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/&quot;&gt;http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;However I always hate the way &lt;code&gt;barplot&lt;/code&gt; works.  Here is an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;qc &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; read.csv&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;textConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;id,  OnlinePaper, Q, freq, totals,       prop&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;1,      Online,         ,1768,   9950, 0.17768844&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;2,      Online,      No ,4022,   9950, 0.40422111&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;3,      Online,     Yes ,4160,   9950, 0.41809045&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;4,       Paper,         , 256,   3355, 0.07630402&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;5,       Paper,      No , 979,   3355, 0.29180328&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;6,       Paper,     Yes ,2120,   3355, 0.63189270&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+qc1 &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; cast&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;qc&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; OnlinePaper &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; Q74 &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; value &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;prop&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+qc1
+barplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;as.matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;qc1&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; beside &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; legend.text &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; qc1&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; ylim &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/barplot_base.png&quot; alt=&quot;/images/barplot_base.png&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;ggplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;qc&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; aes&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Q&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;prop&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; fill&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;OnlinePaper&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+    geom_bar&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;stat&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;identity&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; position&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;position_dodge&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/barplot_gg.png&quot; alt=&quot;/images/barplot_gg.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;Going to extremes&lt;/h4&gt;
+
+&lt;p&gt;I should say though that I have found barplot can produce very customised graphs that serve a specific purpose such as that below (I have de-identified the content as this is unpublished research)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/barplot-gonuts.png&quot; alt=&quot;/images/barplot-gonuts.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This made heavy use of the following approach&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# original by Joseph Guillaume 2009&lt;/span&gt;
+SideBySideBarPlot2 &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  par&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mar&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  bp&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;barplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+              horiz&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+              col&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;gray.colors&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+              las&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; axisnames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  labels &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aggAllData&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  text&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;bp&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; par&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;usr&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; labels &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; srt &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+       adj &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; xpd &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; cex&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;.9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;bp&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# with width = xvar (proportions)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+</content>
+ </entry>
  
  <entry>
    <title>r-syntax-highlights-for-my-jekyll-powered-blog.md</title>
@@ -5466,48 +5523,6 @@ alias bb=&quot;build_blog&quot;
 &lt;li&gt;I also will need to ensure I don't publish sensitive (or embarrasing entries).&lt;/li&gt;
 &lt;li&gt;I'll try to keep the identity of my collaborators private as well, so just use their initials rather than names.&lt;/li&gt;
 &lt;/ul&gt;
-
-</content>
- </entry>
- 
- <entry>
-   <title>how-to-say-why-before-what</title>
-   <link href="http://schamberlain.github.com/2015/09/how-to-say-why-before-what/"/>
-   <updated>2015-09-03T00:00:00+10:00</updated>
-   <id>http://schamberlain.github.com/2015/09/how-to-say-why-before-what</id>
-   <content type="html">&lt;p&gt;I have discovered a flaw in my writing style.&lt;br/&gt;
-I often say what it it before I say why it is important.&lt;/p&gt;
-
-&lt;h4&gt;Example&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Disentangling health effects of environmental from social factors
-is difficult for a variety of reasons. The effort to examine and
-to separate environmental and social causes is nevertheless
-valuable. [WHY IS IT VALUABLE?] This is especially important to
-policy makers and to others who seek to maximise the public
-good. A greater understanding of their respective contributions
-will lead to more rational, deep-seated, lasting and effective
-interventions.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;The caps question is from someone reading my draft.  I need to start with the why.
-Perhaps just turn the paragraph on its head?&lt;/p&gt;
-
-&lt;h4&gt;Example&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;A greater understanding of the respective contributions from
-environmental and social factors will lead to more rational,
-deep-seated, lasting and effective interventions by policy makers
-and to others who seek to maximise the public good.  Disentangling
-health effects of environmental from social factors is difficult
-for a variety of reasons. The effort to examine and to separate
-environmental and social causes is nevertheless valuable.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 </content>
  </entry>
