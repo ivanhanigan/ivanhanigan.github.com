@@ -54,6 +54,61 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters/" title="Putting bibtex key into my lit review database needs sanitized latex characters" rel="bookmark">Putting bibtex key into my lit review database needs sanitized latex characters</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:</p>
+
+<pre><code>library(xtable)
+library(rpostgrestools) # my own work
+if(!exists("ch")) ch &lt;- connect2postgres2("data_inventory_hanigan_dev4")
+
+dat &lt;- dbGetQuery(ch,
+"SELECT id, dataset_id, bibtex_key, title,  key_results,background_to_study, 
+       research_question, study_extent, outcomes, exposures,  covariates, method_protocol,
+        general_comments
+  FROM publication
+  where key_results is not null and key_results != '';
+")
+names(dat) &lt;- gsub("_", " ", names(dat))
+tabcode &lt;- xtable(dat[,1:8])
+align(tabcode) &lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7in}','p{1.8in}','p{1.7in}', 'p{1.7in}')
+print(tabcode,  include.rownames = F, table.placement = '!ht',
+      floating.environment='sidewaystable',
+      sanitize.text.function = function(x) x)
+</code></pre>
+
+<p></p>
+
+
+<p>Produces the below table:</p>
+
+<p><img src="/images/bibtable.png" alt="/images/bibtable.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-11-15 00:00:00 +1100">15 Nov 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/11/developing-a-lit-review-database/" title="Developing a lit review database" rel="bookmark">Developing a lit review database</a>
     </h1>
     <div class="entry-content full-content">
@@ -464,157 +519,6 @@ summa
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/show-missingness-in-large-dataframes-v2/" title="Show missingness in large dataframes, version 2" rel="bookmark">Show missingness in large dataframes, version 2</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>UPDATE: the other day I blogged this but I needed to tweak things, so this is a re-post with extra</li>
-<li>UPDATE 2: Today an R blogger has posted a new solution <a href="/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger">/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</a></li>
-</ul>
-
-
-<h2>The old post</h2>
-
-<ul>
-<li>Sometime ago I saw this example of a method for assessing missing data in a large data frame <a href="http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/">http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/</a></li>
-<li>I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:</li>
-</ul>
-
-
-<p><img src="/images/bankstown_traffic_counts_full_listing_june_2014.svg" alt="/images/bankstown_traffic_counts_full_listing_june_2014.svg" /></p>
-
-<h4>Code</h4>
-
-<pre><code>misstable &lt;- function(atable){
- op &lt;- par(bg = "white")
- plot(c(0, 400), c(0, 1000), type = "n", xlab="", ylab="",
-     main = "Missing Data Table")
-
-
- pmin=000
- pmax=400
- stre=pmax-pmin
- lnames=length(atable)
- cstep = (stre/lnames)
- for(titles in 1:lnames){
- text((titles-1) * cstep+pmin+cstep/2,1000,colnames(atable)[titles])
- }
-
- gmax=900
- gmin=0
- gstre=gmax-gmin
- rvec = as.vector(atable[ [ 1 ] ])
- dnames=length(rvec)
- step = gstre / dnames
- for(rows in 1:dnames){
- text(30,gmax - (rows-1)*step-step/2,rvec[rows])
- ymax=gmax - (rows-1)*step
- ymin=gmax - (rows)*step
- for(col in 2:lnames-1){
- if(atable[rows,col+1] == F){
- tcolor = "red"
- }
- if(atable[rows,col+1] == T){
- tcolor = "white"
- }
- rect((col) * (stre/lnames)+pmin, ymin, (col+1) * (stre/lnames)+pmin,
- ymax,col=tcolor,lty="blank")
- }
- }
-}
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>Now things to note are that the function expects the data to be TRUE if Not NA and  FALSE if is NA</li>
-<li>so might need to massage things a bit first</li>
-<li>here is the small test Grant supplied</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code>require(grDevices)
-
-# Make a quick dataframe with true/false representing data availability
-locs=c("Australia","India","New Zealand","Sri Lanka","Uruguay","Somalia")
-f1=c(T,F,T,T,F,F)
-f2=c(F,F,F,T,F,F)
-f3=c(F,T,T,T,F,T)
-atable=data.frame(locs,f1,f2,f3)
-atable
-#Draw the table.
-misstable(atable)
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>here is the one I worked on today</li>
-</ul>
-
-
-<h4>Code</h4>
-
-<pre><code># having defined the input dir and input file tried reading the excel sheet (without head 3 rows)
-#dat &lt;- readxl::read_excel(file.path(indir, infile), skip =3)
-# got lots of warnings()
-## 50: In read_xlsx_(path, sheet, col_names = col_names, col_types = col_types,  ... :
-##   [1278, 4]: expecting date: got '[NULL]'
-# I always worry about using excel connections so open in excel (in windows) 
-# and save as to convert to CSV
-dat &lt;- read.csv(file.path(indir, gsub(".xlsx", ".csv", infile)), skip =3, stringsAsFactor = F)
-str(dat)
-# 'data.frame':     1396 obs. of  167 variables:
-# but most of the cols and a third of the rows are empty!
-# check missings
-dat2 &lt;- data.frame(id = 1:nrow(dat), dat)
-str(dat2)
-# first if they are empty strings
-dat2[dat2 == ""] &lt;- NA
-# now if NA
-dat2[,2:ncol(dat2)] &lt;- !is.na(dat2[,2:ncol(dat2)])
-
-# Truncate the hundreds of empty cols
-str(dat2[,1:18])
-tail(dat2[,1:18])
-svg(file.path(outdir, gsub(".csv", ".svg", outfile))    )
-misstable(dat2[,1:18])
-dev.off()
-browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
-
-# cool, that is an effective way to look at the data
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/exploratory data analysis" title="exploratory data analysis" rel="category tag">exploratory data analysis</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/show-missingness-in-large-dataframes-v2/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-28 00:00:00 +1100">28 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -692,6 +596,10 @@ browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
               <ul>
                 
                 <li>
+                  <a href="/2016/05/judging-the-evidence-part2/" title="Judging the evidence part 2" rel="bookmark">Judging the evidence part 2</a>
+                </li>
+                
+                <li>
                   <a href="/2016/02/r-base-graphics-are-fine-except-barplot/" title="R base graphics are fine except barplot" rel="bookmark">R base graphics are fine except barplot</a>
                 </li>
                 
@@ -705,10 +613,6 @@ browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
                 
                 <li>
                   <a href="/2016/01/the-perfect-is-the-enemy-of-the-good/" title="The perfect is the enemy of the good" rel="bookmark">The perfect is the enemy of the good</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/" title="UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'" rel="bookmark">UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'</a>
                 </li>
                 
               </ul>
@@ -771,6 +675,8 @@ browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
                 <li><a href="/categories/writing">writing (1)</a></li>
                 
                 <li><a href="/categories/climate data">climate data (1)</a></li>
+                
+                <li><a href="/categories/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

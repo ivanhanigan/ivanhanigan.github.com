@@ -54,6 +54,128 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/03/tuftes-gantt-alternative-for-detail-within-context/" title="tuftes-gantt-alternative-for-detail-within-context" rel="bookmark">tuftes-gantt-alternative-for-detail-within-context</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>During the end of 2014 I found that the Gantt Chart by TaskJuggler was a struggle to really achieve any decent task management with (fine for higher level overviews though).</li>
+<li>I had been following the approach described at <a href="http://orgmode.org/worg/org-tutorials/org-taskjuggler.html">this link</a></li>
+<li>I decided to code up an alternative based on the theory explained on <a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=000076">this link</a></li>
+</ul>
+
+
+<h4>Project Management Graphics (or Gantt Charts), by Edward Tufte</h4>
+
+<pre><code>Computer screens are generally too small for an overview of big
+serious projects. Horizontal and vertical scrolling are necessary to
+see more than about 40 horizontal time lines for a reasonable period
+of time. Thus, for large projects, print out the sequence on a big
+roll of paper and put it up on a wall.
+
+The chart might be retrospective as well as prospective. That is, the
+chart should show actualdates of achieved goals, evidence which will
+continuously reinforce a reality principle on the mythical future
+dates of goal achievement.
+
+Most of the Gantt charts are analytically thin, too simple, and lack
+substantive detail. The charts should be more intense. At a minimum,
+the charts should be annotated--for example, with to-do lists at
+particular points on the grid. Costs might also be included in
+appropriate cells of the table.
+
+About half the charts show their thin data in heavy grid prisons. For
+these charts the main visual statement is the administrative grid
+prison, not the actual tasks contained by the grid. No explicitly
+expressed grid is necessary--or use the ghost-grid graph
+paper. Degrid!
+</code></pre>
+
+<h4>The Results:</h4>
+
+<p>I used the example for a fictional Journal Paper submission from my favourite reference for anything to do with Project Management:</p>
+
+<pre><code>Aragon, T., Mier, H. M., Payauys, T., &amp; Siador, C. (2012). 
+Project Management for Health Professionals.
+</code></pre>
+
+<p>  <a href="http://www.academia.edu/1746564/Project_Management_for_Health_Professionals">http://www.academia.edu/1746564/Project_Management_for_Health_Professionals</a></p>
+
+<p></p>
+
+
+<p>With the following results (PS SVG format allows you to zoom in).</p>
+
+<p><img src="/images/gantt_tufte_test.svg" alt="alttext2" /></p>
+
+<h4>The codes:</h4>
+
+<pre><code>library(disentangle)
+library(sqldf)
+library(lubridate)
+
+datin  &lt;- read.csv(
+textConnection("
+container_task_title  , task_id                      , allocated , fte , blocker               ,       start_date , effort , status , notes 
+01 Start              , Start                        , ivan      ,   1 , NA                    ,       2015-03-15 ,     1d , DONE   , NA    
+02 Update Lit Review  , Repeat MEDLINE search        , ivan      ,   1 , Start                 ,       2015-03-16 ,     5d , DONE   , NA    
+02 Update Lit Review  , Retrieve articles            , ivan      ,   1 , Repeat MEDLINE search ,               NA ,     5d , DONE   , NA    
+02 Update Lit Review  , Read articles                , ivan      ,   1 ,                       ,       2015-03-26 ,    11d , DONE   ,       
+02 Update Lit Review  , Summarize articles           , ivan      ,   1 ,                       ,       2015-04-06 ,     9d , TODO   ,       
+03 Write Draft        , Write introduction           , ivan      ,   1 ,                       ,       2015-04-09 ,     6d , TODO   ,       
+03 Write Draft        , Write methods                , ivan      ,   1 , Start                 ,                  ,    15d , TODO   ,       
+03 Write Draft        , Write results                , ivan      ,   1 ,                       ,       2015-03-30 ,    10d , TODO   ,       
+03 Write Draft        , Write discussion             , ivan      ,   1 ,                       ,       2015-04-15 ,    10d , TODO   ,       
+04 Internal Review    , Send to co-author for review , ivan      ,   1 , Write discussion      ,                  ,     2d , TODO   ,        
+04 Internal Review    , Revise draft 1               , ivan      ,   1 ,                       ,       2015-04-19 ,    10d , TODO   ,       
+05 Peer Review        , Submit article 1             , ivan      ,   1 , Revise draft 1        ,                  ,     5d , TODO   ,       
+06 Revise and Resubmit, Revise draft 2               , ivan      ,   1 ,                       ,       2015-04-30 ,    10d , TODO   ,       
+06 Revise and Resubmit, Submit article 2             , ivan      ,   1 , Revise draft 2        ,                  ,     5d , TODO   ,       
+07 End                , Accepted                     , ivan      ,   1 ,                       ,       2015-05-15 ,     1d , TODO   ,       
+"),
+stringsAsFactor = F, strip.white = T)
+# or 
+# datin &lt;- get_gantt_data("gantt_todo", test_data = T) # need to
+# adjust min_context_xrange to 2015-01-01 or something
+datin$start_date  &lt;- as.Date(datin$start_date)
+str(datin)
+datin
+
+dat_out &lt;- gantt_data_prep(dat_in = datin)
+str(dat_out)
+dat_out
+svg("tests/gantt_tufte_test.svg",height=10,width=8)
+gantt_tufte(dat_out, focal_date = "2015-04-13", time_box = 3*7,
+            min_context_xrange = "2015-03-16",
+            cex_context_ylab = 0.65, cex_context_xlab = .7,
+            cex_detail_ylab = 0.9,  cex_detail_xlab = .4,
+            show_today = F)
+dev.off()
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/project management" title="project management" rel="category tag">project management</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/03/tuftes-gantt-alternative-for-detail-within-context/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-03-15 00:00:00 +1100">15 Mar 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/12/climate-grids-and-thredds-server-experimenting/" title="climate-grids-and-thredds-server-experimenting" rel="bookmark">climate-grids-and-thredds-server-experimenting</a>
     </h1>
     <div class="entry-content full-content">
@@ -824,48 +946,6 @@ dbSendQuery(ch,
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/06/data-dictionary-function-needed-further-upgrades-to-my-misc-package/" title="data-dictionary-function-needed-further-upgrades-to-my-misc-package" rel="bookmark">data-dictionary-function-needed-further-upgrades-to-my-misc-package</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>I've been enjoying summarising datasets with my data_dictionary function</li>
-<li>There was a bug when a date variable had any missings.</li>
-<li>I have modified the function to cope with these so have released version 1.2</li>
-<li><a href="http://ivanhanigan.github.io/disentangle/lib/disentangle_1.2.zip">Windows Version is Downloadable Here</a></li>
-<li>Linux and Mac users can just run this R code</li>
-</ul>
-
-
-<h4>R Code:</h4>
-
-<pre><code>require(devtools)
-install_github("disentangle", "ivanhanigan")
-</code></pre>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/06/data-dictionary-function-needed-further-upgrades-to-my-misc-package/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-06-24 00:00:00 +1000">24 Jun 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -943,6 +1023,10 @@ install_github("disentangle", "ivanhanigan")
               <ul>
                 
                 <li>
+                  <a href="/2016/05/judging-the-evidence-part2/" title="Judging the evidence part 2" rel="bookmark">Judging the evidence part 2</a>
+                </li>
+                
+                <li>
                   <a href="/2016/02/r-base-graphics-are-fine-except-barplot/" title="R base graphics are fine except barplot" rel="bookmark">R base graphics are fine except barplot</a>
                 </li>
                 
@@ -956,10 +1040,6 @@ install_github("disentangle", "ivanhanigan")
                 
                 <li>
                   <a href="/2016/01/the-perfect-is-the-enemy-of-the-good/" title="The perfect is the enemy of the good" rel="bookmark">The perfect is the enemy of the good</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/" title="UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'" rel="bookmark">UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'</a>
                 </li>
                 
               </ul>
@@ -1022,6 +1102,8 @@ install_github("disentangle", "ivanhanigan")
                 <li><a href="/categories/writing">writing (1)</a></li>
                 
                 <li><a href="/categories/climate data">climate data (1)</a></li>
+                
+                <li><a href="/categories/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
