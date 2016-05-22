@@ -54,6 +54,90 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I've been thinking alot recently about an approach used in this recent systematic review</li>
+</ul>
+
+
+<pre><code>Vins, H., Bell, J., Saha, S., &amp; Hess, J. (2015). The mental health
+outcomes of drought: A systematic review and causal process
+diagram. International Journal of Environmental Research and Public
+Health, 12(10), 13251–13275. doi:10.3390/ijerph121013251
+</code></pre>
+
+<p></p>
+
+
+<ul>
+<li>They identify causal pathways from papers and ascribe the supporting evidentiary weight based on the number of papers published with findings that support this cause-effect pathway</li>
+<li>The raw number of papers is probably not a good metric, prone to bias so I was thinking of ways to ascribe weight based on quality of journal or authors</li>
+<li>This is not supposed to replace the need to actually read the papers, but purely as an additional source of information</li>
+<li>This recent post on scholar metrics provided some impetus via h-indices
+<a href="http://datascienceplus.com/hindex-gindex-pubmed-rismed/">http://datascienceplus.com/hindex-gindex-pubmed-rismed/</a></li>
+<li>I also think this approach of text mining the abstracts could be useful <a href="http://tuxette.nathalievilla.org/?p=1682">http://tuxette.nathalievilla.org/?p=1682</a></li>
+</ul>
+
+
+<h3>Sanity check of the two options using myself as guinea pig</h3>
+
+<pre><code class="">library(RISmed)
+x &lt;- "hanigan+ic[Author]"
+res &lt;- EUtilsSummary(x, type="esearch", db="pubmed", datetype='pdat', mindate=1900, 
+  maxdate=2015, retmax=500)
+str(res)
+citations1 &lt;- Cited(res)
+citations &lt;- as.data.frame(citations1)
+citations &lt;- citations[order(citations$citations,decreasing=TRUE),]
+citations &lt;- as.data.frame(citations)
+str(citations)
+citations &lt;- cbind(id=rownames(citations),citations)
+citations$id&lt;- as.character(citations$id)
+citations$id&lt;- as.numeric(citations$id)
+hindex &lt;- max(which(citations$id&lt;=citations$citations))
+
+hindex
+# 5
+
+library(scholar)
+myid &lt;- "cGN1P0wAAAAJ"
+y &lt;- scholar::get_publications(myid)
+str(y)
+y[,c("author", "cites")]
+y$id &lt;- as.numeric(row.names(y))
+hindex2 &lt;- max(which(y$id&lt;=y$cites))
+hindex2
+# 15
+</code></pre>
+
+<h3>Clearly the pubmed and google scholar search engines makes a big difference to my score!</h3>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-12-17 00:00:00 +1100">17 Dec 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/12/my-project-inventory/" title="My project inventory" rel="bookmark">My project inventory</a>
     </h1>
     <div class="entry-content full-content">
@@ -400,54 +484,6 @@ List elements can then be ordered so that the groups of things that are similar 
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/11/a-picture-of-the-newnode-function-for-workflow-visualisation-in-r/" title="A picture of the newnode function for workflow visualisation in R" rel="bookmark">A picture of the newnode function for workflow visualisation in R</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>Newnode: An R function for visualising workflows</h2>
-
-<p>The scientific workflow concept is essentially a pipeline.  The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.</p>
-
-<p>A simple way to keep track of the steps, inputs and outputs is shown in Table below:</p>
-
-<pre><code>CLUSTER ,  STEP       , INPUTS                   , OUTPUTS                   
-A  ,       Step1      , "Input 1, Input 2"       , Output 1                 
-A  ,       Step2      ,  Input 3                 , Output 2                   
-B  ,       Step3      , "Output 1, Output 2"     , Output 3                  
-</code></pre>
-
-<p>The steps and data listed in this way can be visualised.
-To achieve this an R function was written as part of my PhD project and is distributed in the R package available on Github <a href="https://github.com/ivanhanigan/disentangle">https://github.com/ivanhanigan/disentangle</a>.</p>
-
-<p>This is the <code>newnode</code> function.  The function returns a string of text
-written in the <code>dot</code> language which can be rendered in R using the
-<code>DiagrammeR</code> package, or the standalone <code>graphviz</code> package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.</p>
-
-<p><img src="/images/steps_basic_rstudio-test.png" alt="/images/steps_basic_rstudio-test.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/11/a-picture-of-the-newnode-function-for-workflow-visualisation-in-r/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-11-17 00:00:00 +1100">17 Nov 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -525,6 +561,10 @@ written in the <code>dot</code> language which can be rendered in R using the
               <ul>
                 
                 <li>
+                  <a href="/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE/" title="spatial-lag-and-timeseries-model-with-nmmaps-UPDATE" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</a>
+                </li>
+                
+                <li>
                   <a href="/2016/05/judging-the-evidence-part2/" title="Judging the evidence part 2" rel="bookmark">Judging the evidence part 2</a>
                 </li>
                 
@@ -538,10 +578,6 @@ written in the <code>dot</code> language which can be rendered in R using the
                 
                 <li>
                   <a href="/2016/02/climate-grids-thredds-european-data/" title="Climate grids thredds European data" rel="bookmark">Climate grids thredds European data</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/01/the-perfect-is-the-enemy-of-the-good/" title="The perfect is the enemy of the good" rel="bookmark">The perfect is the enemy of the good</a>
                 </li>
                 
               </ul>
@@ -561,7 +597,7 @@ written in the <code>dot</code> language which can be rendered in R using the
                 
                 <li><a href="/categories/extreme weather events">extreme weather events (11)</a></li>
                 
-                <li><a href="/categories/spatial dependence">spatial dependence (9)</a></li>
+                <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
                 <li><a href="/categories/data documentation">data documentation (32)</a></li>
                 

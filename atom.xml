@@ -4,13 +4,29 @@
  <title>Ivan Hanigan</title>
  <link href="http://ivanhanigan.github.com/atom.xml" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2016-05-10T23:23:48+10:00</updated>
+ <updated>2016-05-22T15:55:54+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>Ivan Hanigan</name>
    <email>ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</title>
+   <link href="http://ivanhanigan.github.com/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE/"/>
+   <updated>2016-05-22T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;Re my old post: &lt;a href=&quot;/2013/10/spatial-lag-and-timeseries-model-with-nmmaps&quot;&gt;/2013/10/spatial-lag-and-timeseries-model-with-nmmaps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Today I updated my repo from just looking at spatiotemporal regression to now also look at multilevel (aka mixed-effects/random-effects) models&lt;/li&gt;
+&lt;li&gt;The new site is based on the minimal theme by orderedlist: &lt;a href=&quot;http://ivanhanigan.github.io/spatiotemporal-multilevel-models&quot;&gt;http://ivanhanigan.github.io/spatiotemporal-multilevel-models&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;That also means I've had to move some of my old codes to the now location&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/spatiotemporal-multilevel-models/spatiotemporal-multilevel-models.html&quot;&gt;http://ivanhanigan.github.io/spatiotemporal-multilevel-models/spatiotemporal-multilevel-models.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Judging the evidence part 2</title>
@@ -5338,168 +5354,6 @@ So then I googled a bit and found the solution was simple:&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
-</content>
- </entry>
- 
- <entry>
-   <title>Templates are Needed for Reproducible Research Reports (that Look Good)</title>
-   <link href="http://ivanhanigan.github.com/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/"/>
-   <updated>2015-09-16T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/09/templates-needed-for-reproducible-research-reports-that-look-good</id>
-   <content type="html">&lt;p&gt;I read with interest the the Transparency and Openness Promotion (TOP) Committee templates for guidelines to enhance transparency in the science that journals publish.&lt;/p&gt;
-
-&lt;h4&gt;Citation&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Supplementary Materials for Nosek, B. A., Alter, G., Banks, G. C.,
-Borsboom, D., Bowman, S. D., Breckler, S. J., … Yarkoni,
-T. (2015). Promoting an open research culture. Science, 348(6242),
-1422–1425. doi:10.1126/science.aab2374
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;I think though that guidelines like the suggestion to copy-paste bits of the manuscript leave a bit to be desired:&lt;/p&gt;
-
-&lt;h4&gt;Quote;&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Authors document compliance by copy-pasting the relevant passages
-in the paper that address the question into the form. For example,
-when indicating how sample size was determined, authors copy paste
-into the form the text in the paper that describes how sample size
-was determined.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Reproducible Research Reports solve this problem by ensuring that the data preparation and analysis are executed in the same script that produces the manuscript, therefore a one-stop-shop for documentation of the entire study.&lt;/p&gt;
-
-&lt;h2&gt;There is a need for Templates of Reproducible Research Reports (that look good!)&lt;/h2&gt;
-
-&lt;p&gt;Rstudio provides very easy support for these documents if you use R.  In particular the option of a menu button to create a new report populates that report with the required header information and some example script to work off.  But the easiest option does not look so good.  This is the Rmarkdown option and it is very user friendly in terms of the markup language needed to write the descriptive language around your analysis (mostly plain text with a few simple options for heading styles etc) rather than the Sweave option which leads to the full blown LaTeX markup language that is a lot more complicated.&lt;/p&gt;
-
-&lt;h4&gt;Boilerplate Rmarkdown header from Rstudio:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;---
-title: &quot;Untitled&quot;
-author: &quot;Ivan C. Hanigan&quot;
-date: &quot;16 September 2015&quot;
-output: html_document
----
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;This is great for quick reporting of work as you go, but I  primarily write for output that will be printed (e.g. pdf docs). More specifically, I need the concept of a page, and to have full control over the placement of table and figure ‘environments’, stuff that is easy in LaTeX (once you figure out some of the esoteric parts of that language).&lt;/p&gt;
-
-&lt;p&gt;To achieve a simple writing environment in Markdown but with the powerful layout options of LaTeX I reviewed this guys work but I think it takes it to an uneccessary level of complicated-ness
-&lt;a href=&quot;https://github.com/jhollist/manuscriptPackage&quot;&gt;https://github.com/jhollist/manuscriptPackage&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;So I went back to some of the old Sweave/Latex templates I had put together and ported it into a markdown header.&lt;/p&gt;
-
-&lt;h4&gt;Boilerplate Rmarkdown header for pretty report&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;---
-title: &quot;Untitled&quot;
-author: &quot;Ivan C. Hanigan&quot;
-date: &quot;16 September 2015&quot;
-header-includes:
-  - \usepackage{graphicx}
-  - \usepackage{fancyhdr} 
-  - \pagestyle{fancy} 
-  - \usepackage{lastpage}
-  - \usepackage{float} 
-  - \floatstyle{boxed} 
-  - \restylefloat{figure} 
-  - \usepackage{url} 
-  - \usepackage{color}
-  - \lhead{Left Header}
-  - \chead{Rmarkdown Rocks}
-  - \rhead{\today}
-  - \lfoot{Left Footer}
-  - \cfoot{Centre Footer}
-  - \rfoot{\thepage\ of \pageref{LastPage}}  
-output: 
-  pdf_document:
-    toc: false
-documentclass: article
-classoption: a4paper
-bibliography: references.bib
----
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;Now the layout of tables and figures is done with latex&lt;/p&gt;
-
-&lt;h4&gt;Code&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Using the xtable package allows results to be displyed in tables
-and has built in support for some R objects, so summrising the
-linear fit above in ~\ref{ATable}
-
-```{r, results='asis', type = 'tex'}
-library(xtable)    
-print(xtable(fit, caption=&quot;Example Table&quot;,
-  digits=4,table.placement=&quot;ht&quot;,label=&quot;ATable&quot;), comment = F)    
-```
-
-## A Plot
-
-Plots intergrate most easily if made seperately as can be seen in figure ~\ref{test}
-```{r}
-png(&quot;Rmarkdownfig.png&quot;)
-plot(x,y,main=&quot;Example Plot&quot;,xlab=&quot;X Variable&quot;,ylab=&quot;Y Variable&quot;)
-abline(fit,col=&quot;Red&quot;)
-dev.off()
-```
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=.5\textwidth]{Rmarkdownfig.png}
-\end{center}
-\caption{Some Plot}
-\label{test}
-\end{figure}
-\clearpage
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;I also realised that if this was to be a full report of a scientific study it would need to include some of the machinery needed for bibliographies.&lt;/p&gt;
-
-&lt;h4&gt;Stuff for bibliographies&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;```{r, echo=F, results = 'hide', message = F, warning=F}
-library(&quot;knitcitations&quot;)
-library(&quot;bibtex&quot;)
-cleanbib()
-cite_options(citation_format = &quot;pandoc&quot;, check.entries = FALSE)
-
-bib &amp;lt;- read.bibtex(&quot;C:/Users/Ivan/Dropbox/references/library.bib&quot;)
-
-```
-
-&amp;lt;!--Put data analysis and reporting here, then at the end of the doc--&amp;gt;
-
-```{r, echo=F, message=F, eval=T}
-write.bibtex(file=&quot;references.bib&quot;)
-```
-
-# References
-
-&amp;lt;!--The bib will then be written following the final subheading--&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;I hope this might help others develop their own templates for RRR that look great.&lt;/p&gt;
 </content>
  </entry>
  
