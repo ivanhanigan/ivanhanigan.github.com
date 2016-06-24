@@ -54,6 +54,76 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/" title="Australian Postal Areas In Geographical Vs Projected Coordinates" rel="bookmark">Australian Postal Areas In Geographical Vs Projected Coordinates</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>Notes re an old project "POA2006_centroids transformations 2010-08-06"</li>
+<li><a href="https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html">https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html</a></li>
+<li>compared population weighted centroids with Geographic POA centroids</li>
+<li>Postal Areas (POA) are not the same as Postcodes!  See <a href="http://www.abs.gov.au/websitedbs/D3310114.nsf/4a256353001af3ed4b2562bb00121564/6b6e07234c98365aca25792d0010d730/$FILE/Postcodes%20&amp;%20Postal%20Areas%20-%20Fact%20Sheet.pdf">this fact sheet</a></li>
+<li>But my old work gives the total areas as 695.6 square decimal degrees</li>
+<li>This compares with the area of Australia at 7.692 million sq kms.</li>
+<li>So this update uses Geoscience Australia Lambert to avoid distorting the area</li>
+<li><a href="http://spatialreference.org/ref/epsg/3112/">http://spatialreference.org/ref/epsg/3112/</a></li>
+</ul>
+
+
+<h1>Download</h1>
+
+<ul>
+<li><a href="data/auspoa06_geocentroids_lambert_20160624.csv">auspoa06_geocentroids_lambert_20160624.csv</a></li>
+</ul>
+
+
+<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="s">&#39;name:poa06-area-lambert&#39;</span>
+<span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/projects/POA_centroids/POA2006_centroids&quot;</span><span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>swishdbtools<span class="p">)</span>
+ch <span class="o">&lt;-</span> connect2postgres2<span class="p">(</span><span class="s">&quot;delphe&quot;</span><span class="p">)</span>
+
+fout_geo<span class="o">=</span>dbGetQuery<span class="p">(</span>ch<span class="p">,</span>
+<span class="s">&#39;select poa_2006,</span>
+<span class="s">  st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,</span>
+<span class="s">st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,</span>
+<span class="s">st_y(st_centroid(st_transform(the_geom,3112))) as geocenty</span>
+<span class="s">from abs_poa.auspoa06&#39;</span><span class="p">)</span>
+str<span class="p">(</span>fout_geo<span class="p">)</span>
+<span class="kp">sum</span><span class="p">(</span>fout_geo<span class="o">$</span>geoscience_australia_lambert_area_km2<span class="p">)</span>
+write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="s">&#39;data_derived/auspoa06_geocentroids_lambert_20160624.csv&#39;</span><span class="p">,</span>
+            row.names<span class="o">=</span><span class="bp">F</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+
+plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</span><span class="o">:</span><span class="m">4</span><span class="p">])</span>
+<span class="kp">head</span><span class="p">(</span>fout_geo<span class="p">)</span>
+<span class="kp">nrow</span><span class="p">(</span>fout_geo<span class="p">)</span>
+<span class="m">2507</span></code></pre></div>
+
+
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2016-06-24 00:00:00 +1000">24 Jun 2016</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE/" title="spatial-lag-and-timeseries-model-with-nmmaps-UPDATE" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</a>
     </h1>
     <div class="entry-content full-content">
@@ -331,288 +401,6 @@ To suppress this warning, change the 'highlighter' value to
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2016/02/climate-grids-thredds-european-data/" title="Climate grids thredds European data" rel="bookmark">Climate grids thredds European data</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I've got netCDF data regarding temperature calculated from the daily E-OBS gridded dataset which is based on observational data with a spatial resolution of 0.22° on a
-rotated pole grid, with the north pole at 39.25N, 162W.  <a href="http://www.ecad.eu">http://www.ecad.eu</a>.</p>
-
-<p>The rotated grid is the same as used in many ENSEMBLES Regional Climate Models.  But I've never worked with the rotated grid projection before and so here is what I learnt.</p>
-
-<h2>This is the actual geographic points, it shows a kind of fan of locations</h2>
-
-<p><img src="/images/qc_actual_xy.png" alt="/images/qc_actual_xy.png" /></p>
-
-<pre><code class="{r}">#library(ncdf4)
-library(ncdf)
-library(raster)
-projdir &lt;- "~/projects/weather_european_eobs/eobs_temperature_tg_dataset"
-outdir &lt;- "data_provided"
-outdir &lt;- file.path(projdir, outdir)
-#dir.create(outdir, recursive = T)
-setwd(projdir)
-dir()
-# The URL below will get you the data, but the ECAD group do request you register your email address 
-# they probably use this information to report some usage stats to their funders, so 
-# Please do consider going to this webpage (http://www.ecad.eu/download/ensembles/ensembles.php)
-# and register yourself.  Thanks!
-webroot &lt;- "http://www.ecad.eu/download/ensembles/data/Grid_0.22deg_rot"
-# Create a list of netcdf files to download, we can loop over it
-file_list &lt;- c("tg_0.22deg_rot_1950-1964_v12.0.nc.gz","tg_0.22deg_rot_1965-1979_v12.0.nc.gz")
-
-# only download if not already done
-setwd(outdir)
-for(i in 1:length(file_list))
-    {
-    dl &lt;- file.path(webroot, file_list[i])
-    dl
-    infile &lt;- basename(dl)
-    exists  &lt;- dir(pattern= infile)
-    if(
-      !exists("exists")
-       )
-    {
-    download.file(dl, destfile = infile, mode = "wb")
-    system(sprintf("gunzip %s", infile))
-    }
-    " (250MB)"
-    }
-setwd(projdir)
-
-# now we can go through all days, I set this up as a loop over ncdf files then days, 
-# but I'll probably try to set this up to directly use the netCDF aggregation functions available and avoid looping 
-# for(j in 1:length(file_list))
-  #{
-    j = 1
-    infile &lt;- file.path(outdir, gsub(".gz", "", file_list[j]))
-    nc &lt;- open.ncdf(infile)
-    #str(nc)
-    print(nc)
-    #?get.var.ncdf, following the example in the help file
-    print(paste("The file has",nc$nvars,"variables"))
-    var_i      &lt;- nc$var[[4]]
-    #var_i
-    varsize &lt;- var_i$varsize
-    ndims   &lt;- var_i$ndims
-    nt      &lt;- varsize[ndims]  # Remember timelike dim is always the LAST dimension!
-    #nt 
-    # we will set up to do a loop over days, I want to
-    # a) read in the day grid
-    # b) make a spatial points file with the appropriate projection
-    # c) convert to geotiff and save to disk
-    #for(i in 1:nt)
-    #  {
-        i = 1
-       # Initialize start and count to read one timestep of the variable.
-       start &lt;- rep(1,ndims)   # begin with start=(1,1,1,...,1)
-       start[ndims] &lt;- i       # change to start=(1,1,1,...,i) to read timestep i
-       count &lt;- varsize        # begin w/count=(nx,ny,nz,...,nt), reads entire var
-       count[ndims] &lt;- 1       # change to count=(nx,ny,nz,...,1) to read 1 tstep
-       data3 &lt;- get.var.ncdf( nc, var_i, start=start, count=count )
-
-       # Now read in the value of the timelike dimension
-       timeval &lt;- get.var.ncdf( nc, var_i$dim[[ndims]]$name, start=i, count=1 )
-
-       print(paste("Data for variable",var_i$name,"at timestep",i,
-               " (time value=",timeval,var_i$dim[[ndims]]$units,"):"))
-       # [1] "Data for variable tg at timestep 1  (time value= 0 days since 1950-01-01 00:00 ):"      
-       #print(data3)
-       #image(data3)
-       dat1 &lt;- list()
-       dat1$x &lt;- get.var.ncdf(nc, varid="Actual_longitude")
-       #dat1$x &lt;- dat1$x[,1]       
-       dat1$y &lt;- get.var.ncdf(nc, varid="Actual_latitude")
-       #dat1$y &lt;- dat1$y[1,]              
-       dat1$z &lt;- get.var.ncdf(nc, var_i, start=start, count=count )
-       str(dat1$z)
-       #image(dat1$z)
-       #map("world", xlim = c(xmin, xmax), ylim = c(ymin, ymax))
-       #with(dat1, points(x, y, cex = .1, pch = 16))
-       dat2 &lt;- data.frame(
-         x = as.vector(dat1$x),
-         y = as.vector(dat1$y),
-         z = as.vector(dat1$z)
-         )
-       #str(dat2)  
-       #getwd()
-       # I had the idea to save each day out to a file for looping over again and extracting spatially located data
-       # say for a pixel, but I decided to try out the netCDF aggregation tools at a next step
-       # save(dat2, file = sprintf("data_derived/eobs_tg_%s.RData",i))           
-       #load(sprintf("eobs_tg_%s.RData",i))
-       #This seemed like a good idea, but RData is more compressed
-       # write.csv(dat2, sprintf("eobs_tg.csv",i), row.names = F, na = "")       
-       #}
-#}
-
-# load the data for a specific day as example
-dir("data_derived")
-infile  &lt;- "eobs_tg_1.RData"
-load(file.path("data_derived/", infile))
-ls()
-# Now this is able to be mapped, but have make sure of the projection
-library(maptools)
-library(scales) 
-library(RColorBrewer)
-library(rgdal)
-# the following code was adapted from
-
-# Bedia, J. (2012). R practice using data from the ENSEMBLES
-# Project. Retrieved from
-# http://www.value-cost.eu/sites/default/files/VALUE_TS1_D02_RIntro.pdf
-
-data(wrld_simpl)
-# loads the world map dataset 
-wrl  &lt;- as(wrld_simpl,"SpatialLines") 
-l1 &lt;- list("sp.lines",wrl)
-#x &lt;- get.var.ncdf(nc, varid="Actual_longitude")
-str(x)
-x &lt;- as.vector(x)
-#y &lt;- get.var.ncdf(nc, varid="Actual_latitude")
-str(y)
-y  &lt;- as.vector(y)
-
-
-coords &lt;- cbind(x, y)
-str(coords)
-head(coords)
-# so the actual lat lons are not regular grid in degrees
-png("figures_and_tables/qc_actual_xy.png")
-plot(coords, asp=1, cex=.4, col="grey", 
-  pch="+", main=("actual lon-lat grid"))
-lines(wrl)
-dev.off()
-</code></pre>
-
-<h2>This is the first graphic shown above, it shows a kind of fan of locations</h2>
-
-<pre><code class="{r}"># so what does the rotated grid look like in its own universe?
-str(dat1$z)
-png("figures_and_tables/qc_rotated.png")
-image(dat1$z)
-dev.off()
-</code></pre>
-
-<h2>This is how it looks on rotated grid</h2>
-
-<p><img src="/images/qc_rotated.png" alt="images/qc_rotated.png" /></p>
-
-<pre><code class="{r}"># so now add in the temperatures, use the wgs latlongs
-t &lt;- as.vector(dat1$z)
-dat3 &lt;- cbind.data.frame(coords, t)
-summary(dat3)
-coordinates(dat3) &lt;- c(1,2)
-#names(dat3@data)  &lt;- c("z")
-str(dat3)
-summary(dat3@data)
-color.palette &lt;- rev(brewer.pal(11,"Spectral"))
-getwd()
-dir()
-png("figures_and_tables/qc_tempmap_wgs.png")
-spplot(dat3, scales=list(draw=TRUE), sp.layout=list(l1), 
-       col.regions=alpha(color.palette,.2), cuts=10, 
-       main="tg")
-dev.off()
-
-# write out the data to a shapefile
-# we first have to make sure that the proj4 string is ok
-str(dat3)
-proj4string(dat3) &lt;- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
-setwd(file.path(projdir, "data_derived"))
-writeOGR(dat3, "out2.shp", "out2", "ESRI Shapefile")
-setwd(projdir)
-
-# to look at the rotated project do the following
-# need to look at the website to get this info
-# http://opendap.knmi.nl/knmi/thredds/dodsC/e-obs_0.22rotated/tg_0.22deg_rot_v12.0.nc.html
-print(nc)
-# it doesn't seem like there is this info in the ncdf file?
-get.var.ncdf(nc, "projection")
-rcm.lonlat.grid &lt;- SpatialPoints(coords)
-# now set this to wgs84
-proj4string(rcm.lonlat.grid) &lt;-"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
-
-# this is the proj from website
-# +proj=ob_tran +o_proj=longlat +lon_0=18 +o_lat_p=39.25 +a=6367470 +e=0
-rcm.lambert.proj4 &lt;- CRS("+proj=ob_tran +o_proj=longlat +lon_0=18 +o_lat_p=39.25 +a=6367470 +e=0")
-# do the transform
-spTransform(rcm.lonlat.grid, rcm.lambert.proj4) -&gt; rcm.lambert.grid
-summary(rcm.lambert.grid)
-
-world.trans &lt;- spTransform(wrl, rcm.lambert.proj4)
-
-png("figures_and_tables/qc_rotated_grid_and_countries.png")
-plot(rcm.lambert.grid@coords, cex=.2, pch=3, asp=1, col="grey", 
-  main="Projected RCM Grid - Lambert Conical Conformal")
-lines(world.trans, col="red")
-dev.off()
-</code></pre>
-
-<h2>This shows the rotated world countries</h2>
-
-<p><img src="/images/qc_rotated_grid_and_countries.png" alt="images/qc_rotated_grid_and_countries.png" /></p>
-
-<pre><code class="{r">pr.df &lt;- cbind.data.frame(coordinates(rcm.lambert.grid), dat3@data)
-coordinates(pr.df) &lt;- c(1,2) 
-l1  &lt;- list("sp.lines", world.trans)
-color.palette &lt;- colorRampPalette(c("yellow","cyan", "blue","purple"))
-
-# This graph shows this with temp
-png("figures_and_tables/qc_rotated_grid_and_countries2.png")
-spplot(pr.df, sp.layout=list(l1), cuts=7, cex=1.5, 
-  col.regions=alpha(color.palette(7),.15), pch=rep(15,7),
-  main="Temp")
-dev.off()
-# not much point writing this to shapefile?
-#proj4string(pr.df)  &lt;- rcm.lambert.proj4
-#str(pr.df)
-#setwd(file.path(projdir, "data_derived"))
-#dir()
-# writeOGR(pr.df, "out.shp", "out", "ESRI Shapefile")
-</code></pre>
-
-<h2>this one has temperatures too</h2>
-
-<p><img src="/images/qc_rotated_grid_and_countries2.png" alt="images/qc_rotated_grid_and_countries2.png" /></p>
-
-<h2>acknowledgement and citations.</h2>
-
-<p>E-OBS temperature and precipitation:</p>
-
-<p>We acknowledge the E-OBS dataset from the EU-FP6 project ENSEMBLES
-(http://ensembles-eu.metoffice.com) and the data providers in the
-ECA&amp;D project (http://www.ecad.eu)</p>
-
-<p>Haylock, M.R., N. Hofstra, A.M.G. Klein Tank, E.J. Klok, P.D. Jones,
-M. New. 2008: A European daily high-resolution gridded dataset of
-surface temperature and precipitation. J. Geophys. Res (Atmospheres),
-113, D20119, doi:10.1029/2008JD10201"</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/climate data" title="climate data" rel="category tag">climate data</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2016/02/climate-grids-thredds-european-data/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2016-02-02 00:00:00 +1100">02 Feb 2016</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -686,6 +474,10 @@ surface temperature and precipitation. J. Geophys. Res (Atmospheres),
               <ul>
                 
                 <li>
+                  <a href="/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/" title="Australian Postal Areas In Geographical Vs Projected Coordinates" rel="bookmark">Australian Postal Areas In Geographical Vs Projected Coordinates</a>
+                </li>
+                
+                <li>
                   <a href="/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE/" title="spatial-lag-and-timeseries-model-with-nmmaps-UPDATE" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</a>
                 </li>
                 
@@ -701,10 +493,6 @@ surface temperature and precipitation. J. Geophys. Res (Atmospheres),
                   <a href="/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/" title="r-syntax-highlights-for-my-jekyll-powered-blog.md" rel="bookmark">r-syntax-highlights-for-my-jekyll-powered-blog.md</a>
                 </li>
                 
-                <li>
-                  <a href="/2016/02/climate-grids-thredds-european-data/" title="Climate grids thredds European data" rel="bookmark">Climate grids thredds European data</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Categories</h2>
               <ul>
@@ -718,7 +506,7 @@ surface temperature and precipitation. J. Geophys. Res (Atmospheres),
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
-                <li><a href="/categories/spatial">spatial (8)</a></li>
+                <li><a href="/categories/spatial">spatial (9)</a></li>
                 
                 <li><a href="/categories/extreme weather events">extreme weather events (11)</a></li>
                 

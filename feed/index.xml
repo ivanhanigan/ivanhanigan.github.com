@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2016-05-22T15:55:54+10:00</updated>
+ <updated>2016-06-24T15:50:57+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,17 +13,51 @@
 
  
  <entry>
-   <title>spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</title>
-   <link href="http://ivanhanigan.github.com/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE/"/>
-   <updated>2016-05-22T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</id>
+   <title>Australian Postal Areas In Geographical Vs Projected Coordinates</title>
+   <link href="http://ivanhanigan.github.com/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/"/>
+   <updated>2016-06-24T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates</id>
    <content type="html">&lt;ul&gt;
-&lt;li&gt;Re my old post: &lt;a href=&quot;/2013/10/spatial-lag-and-timeseries-model-with-nmmaps&quot;&gt;/2013/10/spatial-lag-and-timeseries-model-with-nmmaps&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Today I updated my repo from just looking at spatiotemporal regression to now also look at multilevel (aka mixed-effects/random-effects) models&lt;/li&gt;
-&lt;li&gt;The new site is based on the minimal theme by orderedlist: &lt;a href=&quot;http://ivanhanigan.github.io/spatiotemporal-multilevel-models&quot;&gt;http://ivanhanigan.github.io/spatiotemporal-multilevel-models&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;That also means I've had to move some of my old codes to the now location&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://ivanhanigan.github.io/spatiotemporal-multilevel-models/spatiotemporal-multilevel-models.html&quot;&gt;http://ivanhanigan.github.io/spatiotemporal-multilevel-models/spatiotemporal-multilevel-models.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Notes re an old project &quot;POA2006_centroids transformations 2010-08-06&quot;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html&quot;&gt;https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;compared population weighted centroids with Geographic POA centroids&lt;/li&gt;
+&lt;li&gt;Postal Areas (POA) are not the same as Postcodes!  See &lt;a href=&quot;http://www.abs.gov.au/websitedbs/D3310114.nsf/4a256353001af3ed4b2562bb00121564/6b6e07234c98365aca25792d0010d730/$FILE/Postcodes%20&amp;amp;%20Postal%20Areas%20-%20Fact%20Sheet.pdf&quot;&gt;this fact sheet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;But my old work gives the total areas as 695.6 square decimal degrees&lt;/li&gt;
+&lt;li&gt;This compares with the area of Australia at 7.692 million sq kms.&lt;/li&gt;
+&lt;li&gt;So this update uses Geoscience Australia Lambert to avoid distorting the area&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://spatialreference.org/ref/epsg/3112/&quot;&gt;http://spatialreference.org/ref/epsg/3112/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+
+&lt;h1&gt;Download&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;data/auspoa06_geocentroids_lambert_20160624.csv&quot;&gt;auspoa06_geocentroids_lambert_20160624.csv&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;name:poa06-area-lambert&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;setwd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;~/projects/POA_centroids/POA2006_centroids&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;swishdbtools&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ch &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; connect2postgres2&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;delphe&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+fout_geo&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;dbGetQuery&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;ch&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;&amp;#39;select poa_2006,&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;  st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;st_y(st_centroid(st_transform(the_geom,3112))) as geocenty&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;from abs_poa.auspoa06&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+str&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;geoscience_australia_lambert_area_km2&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+write.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;data_derived/auspoa06_geocentroids_lambert_20160624.csv&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            row.names&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;2507&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
 
 </content>
  </entry>
