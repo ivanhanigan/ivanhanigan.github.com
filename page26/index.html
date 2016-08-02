@@ -54,6 +54,103 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/climatic-drought-guestpost-by-luciana-porfirio/" title="climatic-drought-guestpost-by-luciana-porfirio" rel="bookmark">climatic-drought-guestpost-by-luciana-porfirio</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h3>Guest post by Luciana Porfirio with code contributions by Francis Markham</h3>
+
+<ul>
+<li>Recently I encountered a student doing an analysis who was doing everything in excel, and I couldn't contain my mouth and say R would be better... but it isn't a simple task. So any here are some tips.</li>
+<li>There is a table with 62 years * 12 months of rain data in mm. We calculated the cumulative distribution using ecdf: empirical cumulative distribution function. So the table looks like this: Year Jan Feb Mach (...) each cell contains the cum dist.</li>
+<li>We also got the number of months per year with less than X mm of rain. But he needs to know how many months  are between the drought months, regardless the year. So, I thought that converting the data into a ts was going to facilitate the task, but it doesn't, because now I don't' have columns and rows any longer.</li>
+<li>But I struggled to handle a ts object to do for example an ifelse.</li>
+<li>Luckily there are many many tricks about R, and with the code below we solved all his problems (and many months of work in excel).</li>
+<li><a href="/data/raj_rain_data.csv">Get the example data here</a></li>
+<li>This is how it looks like:</li>
+</ul>
+
+
+<h4>R Code:</h4>
+
+<pre><code>###############################################
+require(reshape2)
+
+###############################################
+#read csv file with rain BoM data
+dat = read.csv('raj_rain_data.csv')
+
+fn &lt;- apply(dat[,2:13], 2, ecdf) # equivalent to Excel's percentrank function, only for cols 2 to 13 but you need to apply the function to each month
+
+#this fun does all the months at once
+fn2 = data.frame(t(do.call("rbind", sapply(1:12, FUN = function(i) fn[[i]](dat[,i+1]), simplify = FALSE))))
+colnames(fn2) = colnames(dat[,2:13])
+fn2$year = dat$Year
+
+#if the value is lower than 0.4, retrieves a 1, otherwise 0
+fn2$drought = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &lt; 0.4)==TRUE, 1,0))
+
+#if the value is lower than 0.1, retrieves a 1, otherwise 0
+fn2$extreme = rowSums(ifelse(apply(fn2[,1:12], 2, FUN= function (x) x &lt; 0.1)==TRUE, 1,0))
+
+str(fn2)
+names(fn2)
+
+#ts didn't work - Francis suggested to melt the data.frame # Melt
+#fn2 to tall data set
+fn2.tall &lt;- melt(fn2, id.vars="year")
+
+# Get the year-month into date format
+fn2.tall$date &lt;- with(fn2.tall,
+                             as.Date(paste("1", variable, year), "%d %b %Y"))
+
+# Convert dates into months since 0 BC/AD (arbitrary, but doesn't
+# matter)
+#I'm not using the month.idx with Ivan's solution (remove)
+fn2.tall$mnth.idx &lt;- sapply(fn2.tall$date, function(x){
+  12*as.integer(format(x, "%Y")) + (as.integer(format(x, "%m")) - 1)
+})
+
+# Sort by date
+fn2.tall &lt;- fn2.tall[order(fn2.tall$date),]
+
+
+#Ivan's solution
+
+x&lt;-fn2.tall$value&lt;0.4
+xx &lt;- (cumsum(!x) + 1) * x
+x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
+fn2.tall$count&lt;-x2
+
+#counts the number of cases of drought
+as.data.frame(table(fn2.tall$count))
+###############################################
+###############################################
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/climatic-drought-guestpost-by-luciana-porfirio/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-11-01 00:00:00 +1100">01 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
     </h1>
     <div class="entry-content full-content">
@@ -818,108 +915,6 @@ dir(<span style="color: #2aa198;">"data"</span>)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/counting-number-of-consecutive-months-in-drought/" title="counting-number-of-consecutive-months-in-drought" rel="bookmark">counting-number-of-consecutive-months-in-drought</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I got this question today from a Drought researcher:</p>
-
-<h4>Question:</h4>
-
-<pre><code>There a table with 62 years * 12 months of rain data in mm. We
-calculated the cumulative distribution using ecdf: empirical
-cumulative distribution function. So the table looks like this:
-Year Jan Feb Mach (…) each cell contains the cum dist.
-
-We also got the number of months per year with less than X mm of
-rain. But he needs to know how many months are between the
-drought months, regardless the year. So, I thought that
-converting the data into a ts was going to facilitate the task,
-but it doesn’t, because now I don’t’ have columns and rows any
-longer.
-
-How do I handle a ts object to do for example an ifelse?
-</code></pre>
-
-<p></p>
-
-
-<p>I answered:</p>
-
-<p>This looks a lot like the Hutchinson Drought Index which I've coded up here</p>
-
-<ul>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
-<li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
-</ul>
-
-
-<p>This is the key bit for counting consecutive months below a threshold</p>
-
-<h4>R Code:</h4>
-
-<pre><code>x&lt;-data$index&lt;=-1
-xx &lt;- (cumsum(!x) + 1) * x
-x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
-data$count&lt;-x2
-</code></pre>
-
-<p></p>
-
-
-<p>
-I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
-and looked in wonder at the structure and am amazed it works.</p>
-
-<p>I also really like the cumulative summing version a lot</p>
-
-<h4>R Code:</h4>
-
-<pre><code>data$sums&lt;-as.numeric(0)
-y &lt;- ifelse(data$index &gt;= -1, 0, data$index)
-f &lt;- data$index &lt; -1
-f &lt;- (cumsum(!f) + 1) * f
-z &lt;- unsplit(lapply(split(y,f),cumsum),f)
-data$sums &lt;- z
-</code></pre>
-
-<p></p>
-
-
-<p>
-Several things I'd like to change.</p>
-
-<ul>
-<li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
-<li>I'd like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
-<li>I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/extreme weather events" title="extreme weather events" rel="category tag">extreme weather events</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/counting-number-of-consecutive-months-in-drought/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-29 00:00:00 +1100">29 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -997,6 +992,10 @@ Several things I'd like to change.</p>
               <ul>
                 
                 <li>
+                  <a href="/2016/08/colours-to-use-for-maps/" title="colours-to-use-for-maps" rel="bookmark">colours-to-use-for-maps</a>
+                </li>
+                
+                <li>
                   <a href="/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/" title="Australian Postal Areas In Geographical Vs Projected Coordinates" rel="bookmark">Australian Postal Areas In Geographical Vs Projected Coordinates</a>
                 </li>
                 
@@ -1010,10 +1009,6 @@ Several things I'd like to change.</p>
                 
                 <li>
                   <a href="/2016/02/r-base-graphics-are-fine-except-barplot/" title="R base graphics are fine except barplot" rel="bookmark">R base graphics are fine except barplot</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/" title="r-syntax-highlights-for-my-jekyll-powered-blog.md" rel="bookmark">r-syntax-highlights-for-my-jekyll-powered-blog.md</a>
                 </li>
                 
               </ul>
@@ -1061,7 +1056,7 @@ Several things I'd like to change.</p>
                 
                 <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
                 
-                <li><a href="/categories/exploratory data analysis">exploratory data analysis (3)</a></li>
+                <li><a href="/categories/exploratory data analysis">exploratory data analysis (4)</a></li>
                 
                 <li><a href="/categories/statistical modelling">statistical modelling (2)</a></li>
                 

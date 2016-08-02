@@ -54,6 +54,93 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/11/judging-the-evidence-using-a-literature-review-database/" title="Judging the evidence using a literature review database" rel="bookmark">Judging the evidence using a literature review database</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I recently read through a lecture slide deck called 'Judging the Evidence' by  Adrian Sleigh for a course PUBH7001 Introduction to Epidemiology, April 30, 2001.</p>
+
+<p>It had a lot of great material in it but I especially liked the section 'CRITIQUE OF AN EPIDEMIOLOGIC STUDY' and slide 11 'Quantity of data, duplication' which says:</p>
+
+<pre><code>Set clear criteria for admission of studies to your ‘judgement of evidence’
+Devise ways to tabulate the information
+‘Evidence tables’ show key features of design 
+  (source, sample and study pop, N)
+  exposures-outcomes measured
+  observation methods
+  confounding
+  key results
+</code></pre>
+
+<p></p>
+
+
+<p>I thought this was a great idea, to build a database for keeping 'evidence tables' for each study I read.</p>
+
+<p>I then read through all the slides.  There is a lot of great information here, but it was spread out across the narrative.  I realised I wanted to collate these into a 'evidence table'. I also compared this with my understanding of the Ecological Metadata Language (EML) schema and the 'ANU Data Analysis Plan Template' and have put together a bit of a 'cross-walk' that lets me combine all this info and create a evidence table (database).</p>
+
+<p>I have started to use the database I built which uses EML concepts heavily and I include some these other ideas into my free <code>data_inventory</code> application for a web2py database <a href="https://github.com/ivanhanigan/data_inventory">https://github.com/ivanhanigan/data_inventory</a>.</p>
+
+<p>It is a webform style data entry interface, and I think good for these 'evidence tables'.
+In the first instance I piggy back a lot of the elements into single EML tags, especially the abstract.
+This may make it hard to parse.  The simple solution is to try to keep each element on a seperate line of the absract.</p>
+
+<h2>The key info for an evidence table entry per study</h2>
+
+<table border=1>
+<tr> <th> EML </th> <th> ANU </th> <th> Adrian_Sleigh </th>  </tr>
+  <tr> <td> dataset/title </td> <td>  Study name </td> <td>   </td> </tr>
+  <tr> <td> dataset/creator </td> <td>  Person conducting analysis </td> <td>   </td> </tr>
+  <tr> <td> project/personnel/[data_owner or orginator] </td> <td>  Chief investigator </td> <td>   </td> </tr>
+  <tr> <td> dataset/abstract </td> <td>  Background to the study </td> <td>  Purpose of Study </td> </tr>
+  <tr> <td>          </td> <td>   Study research question  </td> <td>  </td> </tr>
+  <tr> <td>          </td> <td>   Specific hypothesis under study </td> <td>   </td> </tr>
+  <tr> <td>          </td> <td>  outcomes of interest/ Exposure variables /Covariates </td> <td>  exposures-outcomes measured </td> </tr>
+  <tr> <td>          </td> <td>   </td> <td>  key results </td> </tr>
+  <tr> <td> dataset/studyextent </td> <td>  Study population </td> <td>  Study Setting </td> </tr>
+  <tr> <td>                     </td> <td>                   </td> <td>  source / sample and study pop </td> </tr>
+  <tr> <td> dataset/temporalcoverage </td> <td>  Duration of study </td> <td>   </td> </tr>
+  <tr> <td> dataset/methods_protocol </td> <td>  Study Type </td> <td>  Type of study </td> </tr>
+  <tr> <td> dataset/sampling_desc </td> <td>    </td> <td>  Subject Selection </td> </tr>
+  <tr> <td> dataset/methods_steps </td> <td>  analytical strategy </td> <td>  Statistical procedures </td> </tr>
+  <tr> <td>                       </td> <td>  exposures/ potential confounders or effect modifiers </td> <td>  Confounding </td> </tr>
+  <tr> <td> entity/numberOfRecords </td> <td>  Number study subjects </td> <td>  N </td> </tr>
+  <tr> <td> dataset/distribution_methods </td> <td>  dissemination strategy </td> <td>    </td> </tr>
+   </table>
+
+
+
+
+<p></p>
+
+
+<h2>Here is a screen shot of my data inventory data entry form</h2>
+
+<p><img src="/images/datinv_entry.png" alt="/images/datinv_entry.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/11/judging-the-evidence-using-a-literature-review-database/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-11-13 00:00:00 +1100">13 Nov 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/11/adopting-a-bullet-point-style/" title="Adopting a bullet point style" rel="bookmark">Adopting a bullet point style</a>
     </h1>
     <div class="entry-content full-content">
@@ -535,86 +622,6 @@ misstable(atable)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/sanitize-mendeley-references-in-r-markdown-reporting/" title="Sanitize mendeley references in r markdown reporting" rel="bookmark">Sanitize mendeley references in r markdown reporting</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>A key challenge for Reproducible Research Reports in Rmarkdown remains adequate scholarly citation management; the machinery of scholarly citations and references.</p>
-
-<p>The <code>knitcitations</code> R package does a great job of working with bibtex bibliography files, however the bibtex manager that I use is Mendeley and it has implemented some rules on the way it handles special characters that forces the bibtex references into a state with some 'escaped' elements that breaks their presentation via <code>knitcitations</code>.</p>
-
-<p>This is a post from my open notebook that shows the workaround I am using for sanitizing the Mendeley escaped underscores in URLS.</p>
-
-<p>Here is an example:</p>
-
-<p>There is considerable public health impact from the effects on mental of drought <span class="citation">(<span>Sarathi Biswas</span> 2012)</span>. It is proposed that the best method to disentangle the multifactorial nature of this causal mechanism is the ‘five-capitals’ framework, indeed this method may even enable understanding the human carrying capacity of ecosystems <span class="citation">(McMichael &amp; Butler 2002)</span>.</p>
-
-
-
-
-<p>McMichael, A.J. &amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. <em>International Union for the Scientific Study of Population Committee on Emerging Health Threats</em>. <a href="http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf">http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf</a> [21 Sep. 2003]</p>
-
-
-<p><span>Sarathi Biswas</span>, P. (2012). Alcohol, drought lead to farmer’s suicide. <em>Daily News and Analysis</em>. <a href="http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976">http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976</a> [17 May 2012]</p>
-
-
-
-
-<p></p>
-
-
-<h2>See those pesky curly braces <code>{</code> and <code>}</code> around the underscores?</h2>
-
-<h2>The fix</h2>
-
-<p>The fix I am using is to sanitize each record where this is an issue as I build my document, so the mendeley version stays as-is, while the R version has been sanitized by removing the escape characters.</p>
-
-<pre><code># read mendeley bibtex file
-bib &lt;- read.bibtex("~/references/library.bib")
-# ad hoc fix
-for(bibkey in c("SarathiBiswas2012", "Mcmichael2002a")){
-  bib[ [ bibkey ] ]$url &lt;- gsub("\\{\\\\_\\}","_", bib[ [ bibkey ] ]$url)
-}
-</code></pre>
-
-<p>This is the result:</p>
-
-<p>McMichael, A.J. &amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. <em>International Union for the Scientific Study of Population Committee on Emerging Health Threats</em>. <a href="http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf">http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf</a> [21 Sep. 2003]</p>
-
-
-<p><span>Sarathi Biswas</span>, P. (2012). Alcohol, drought lead to farmer’s suicide. <em>Daily News and Analysis</em>. <a href="http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976">http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976</a> [17 May 2012]</p>
-
-
-
-
-<p></p>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/reproducible research reports" title="reproducible research reports" rel="category tag">reproducible research reports</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/sanitize-mendeley-references-in-r-markdown-reporting/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-24 00:00:00 +1100">24 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -692,6 +699,10 @@ for(bibkey in c("SarathiBiswas2012", "Mcmichael2002a")){
               <ul>
                 
                 <li>
+                  <a href="/2016/08/colours-to-use-for-maps/" title="colours-to-use-for-maps" rel="bookmark">colours-to-use-for-maps</a>
+                </li>
+                
+                <li>
                   <a href="/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/" title="Australian Postal Areas In Geographical Vs Projected Coordinates" rel="bookmark">Australian Postal Areas In Geographical Vs Projected Coordinates</a>
                 </li>
                 
@@ -705,10 +716,6 @@ for(bibkey in c("SarathiBiswas2012", "Mcmichael2002a")){
                 
                 <li>
                   <a href="/2016/02/r-base-graphics-are-fine-except-barplot/" title="R base graphics are fine except barplot" rel="bookmark">R base graphics are fine except barplot</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/" title="r-syntax-highlights-for-my-jekyll-powered-blog.md" rel="bookmark">r-syntax-highlights-for-my-jekyll-powered-blog.md</a>
                 </li>
                 
               </ul>
@@ -756,7 +763,7 @@ for(bibkey in c("SarathiBiswas2012", "Mcmichael2002a")){
                 
                 <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
                 
-                <li><a href="/categories/exploratory data analysis">exploratory data analysis (3)</a></li>
+                <li><a href="/categories/exploratory data analysis">exploratory data analysis (4)</a></li>
                 
                 <li><a href="/categories/statistical modelling">statistical modelling (2)</a></li>
                 
