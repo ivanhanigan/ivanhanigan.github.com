@@ -54,6 +54,64 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2016/08/drought-awap-grids-notes-re-extract-point/" title="drought-awap-grids-notes-re-extract-point" rel="bookmark">drought-awap-grids-notes-re-extract-point</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h2>Background</h2>
+
+<ul>
+<li>The old DROUGHT-BOM-GRIDS data came from a Barnes IDW algorithm, at 25km (actually 0.25 decimal degrees) resolution</li>
+<li>1890-2008</li>
+<li>Going forward the AWAP grids are Preferred</li>
+<li>this is a quick and dirty approach</li>
+</ul>
+
+
+<h2>Methods</h2>
+
+<ul>
+<li>AWAP grids are 5km (0.05 dd) but this will take longer to process and is probably overkill for monthly total rainfall when focus is on drought</li>
+<li>For the centroid point of each 0.25 dd extract the data value (might be better to take mean of sub-cells within each, plan for future)</li>
+<li>compare this with old BOM GRIDS</li>
+</ul>
+
+
+<h2>Results</h2>
+
+<p><img src="images/qc_awap_totals_200001.png" alt="images/qc_awap_totals_200001.png" /></p>
+
+<h3>compare with bom grids for Jan 2000</h3>
+
+<p><img src="images/qc_awap_200001_vs_bomgrids.png" alt="images/qc_awap_200001_vs_bomgrids.png" /></p>
+
+<h3>For a pixel (west wyalong my old home town)</h3>
+
+<p><img src="images/qc_awap_1900_1908_vs_bomgrids_west_wyalong.png" alt="images/qc_awap_1900_1908_vs_bomgrids_west_wyalong.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/drought awap grids" title="drought awap grids" rel="category tag">drought awap grids</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2016/08/drought-awap-grids-notes-re-extract-point/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2016-08-27 00:00:00 +1000">27 Aug 2016</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2016/08/colours-to-use-for-maps/" title="colours-to-use-for-maps" rel="bookmark">colours-to-use-for-maps</a>
     </h1>
     <div class="entry-content full-content">
@@ -447,83 +505,6 @@ The source population may be defined directly, as a matter of defining its membe
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2016/02/r-base-graphics-are-fine-except-barplot/" title="R base graphics are fine except barplot" rel="bookmark">R base graphics are fine except barplot</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I concur with Jeff Leek that once spent time learning base graphics in R there is less incentive to learn ggplot2 <a href="http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/">http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/</a></p>
-
-<p>However I always hate the way <code>barplot</code> works.  Here is an example:</p>
-
-<div class="highlight"><pre><code class="language-r" data-lang="r">qc <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="kp">textConnection</span><span class="p">(</span><span class="s">&quot;id,  OnlinePaper, Q, freq, totals,       prop</span>
-<span class="s">1,      Online,         ,1768,   9950, 0.17768844</span>
-<span class="s">2,      Online,      No ,4022,   9950, 0.40422111</span>
-<span class="s">3,      Online,     Yes ,4160,   9950, 0.41809045</span>
-<span class="s">4,       Paper,         , 256,   3355, 0.07630402</span>
-<span class="s">5,       Paper,      No , 979,   3355, 0.29180328</span>
-<span class="s">6,       Paper,     Yes ,2120,   3355, 0.63189270&quot;</span><span class="p">))</span>
-
-qc1 <span class="o">&lt;-</span> cast<span class="p">(</span>qc<span class="p">,</span> OnlinePaper <span class="o">~</span> Q74 <span class="p">,</span> value <span class="o">=</span> <span class="s">&quot;prop&quot;</span><span class="p">)</span>
-qc1
-barplot<span class="p">(</span><span class="kp">as.matrix</span><span class="p">(</span>qc1<span class="p">),</span> beside <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> legend.text <span class="o">=</span> qc1<span class="p">[,</span><span class="m">1</span><span class="p">],</span> ylim <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span></code></pre></div>
-
-
-<p><img src="/images/barplot_base.png" alt="/images/barplot_base.png" /></p>
-
-<div class="highlight"><pre><code class="language-r" data-lang="r">ggplot<span class="p">(</span>data<span class="o">=</span>qc<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Q<span class="p">,</span> y<span class="o">=</span>prop<span class="p">,</span> fill<span class="o">=</span>OnlinePaper<span class="p">))</span> <span class="o">+</span>
-    geom_bar<span class="p">(</span>stat<span class="o">=</span><span class="s">&quot;identity&quot;</span><span class="p">,</span> position<span class="o">=</span>position_dodge<span class="p">())</span></code></pre></div>
-
-
-<p><img src="/images/barplot_gg.png" alt="/images/barplot_gg.png" /></p>
-
-<h4>Going to extremes</h4>
-
-<p>I should say though that I have found barplot can produce very customised graphs that serve a specific purpose such as that below (I have de-identified the content as this is unpublished research)</p>
-
-<p><img src="/images/barplot-gonuts.png" alt="/images/barplot-gonuts.png" /></p>
-
-<p>This made heavy use of the following approach</p>
-
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1"># original by Joseph Guillaume 2009</span>
-SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>aggAllData<span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
-  par<span class="p">(</span>mar<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">8</span><span class="p">,</span><span class="m">7</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
-  bp<span class="o">&lt;-</span>barplot<span class="p">(</span>aggAllData<span class="p">,</span>
-              horiz<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span>
-              col<span class="o">=</span>gray.colors<span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>aggAllData<span class="p">)),</span>
-              las<span class="o">=</span><span class="m">1</span><span class="p">,</span> axisnames <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
-  labels <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span><span class="kp">as.data.frame</span><span class="p">(</span>aggAllData<span class="p">))</span>
-  text<span class="p">(</span>bp<span class="p">,</span> par<span class="p">(</span><span class="s">&#39;usr&#39;</span><span class="p">)[</span><span class="m">3</span><span class="p">],</span> labels <span class="o">=</span> <span class="kp">labels</span><span class="p">,</span> srt <span class="o">=</span> <span class="m">45</span><span class="p">,</span> 
-       adj <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">1.1</span><span class="p">,</span><span class="m">1.1</span><span class="p">),</span> xpd <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> cex<span class="o">=</span><span class="m">.9</span><span class="p">)</span>
-    <span class="kr">return</span><span class="p">(</span>bp<span class="p">)</span>
-<span class="p">}</span>
-<span class="c1"># with width = xvar (proportions)</span></code></pre></div>
-
-
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/exploratory data analysis" title="exploratory data analysis" rel="category tag">exploratory data analysis</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2016/02/r-base-graphics-are-fine-except-barplot/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2016-02-19 00:00:00 +1100">19 Feb 2016</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -597,6 +578,10 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
               <ul>
                 
                 <li>
+                  <a href="/2016/08/drought-awap-grids-notes-re-extract-point/" title="drought-awap-grids-notes-re-extract-point" rel="bookmark">drought-awap-grids-notes-re-extract-point</a>
+                </li>
+                
+                <li>
                   <a href="/2016/08/colours-to-use-for-maps/" title="colours-to-use-for-maps" rel="bookmark">colours-to-use-for-maps</a>
                 </li>
                 
@@ -610,10 +595,6 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
                 
                 <li>
                   <a href="/2016/05/judging-the-evidence-part2/" title="Judging the evidence part 2" rel="bookmark">Judging the evidence part 2</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/02/r-base-graphics-are-fine-except-barplot/" title="R base graphics are fine except barplot" rel="bookmark">R base graphics are fine except barplot</a>
                 </li>
                 
               </ul>
@@ -678,6 +659,8 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
                 <li><a href="/categories/climate data">climate data (1)</a></li>
                 
                 <li><a href="/categories/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li>
+                
+                <li><a href="/categories/drought awap grids">drought awap grids (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

@@ -4,13 +4,51 @@
  <title>Ivan Hanigan</title>
  <link href="http://ivanhanigan.github.com/atom.xml" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2016-08-03T09:43:17+10:00</updated>
+ <updated>2016-08-27T10:59:52+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>Ivan Hanigan</name>
    <email>ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>drought-awap-grids-notes-re-extract-point</title>
+   <link href="http://ivanhanigan.github.com/2016/08/drought-awap-grids-notes-re-extract-point/"/>
+   <updated>2016-08-27T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2016/08/drought-awap-grids-notes-re-extract-point</id>
+   <content type="html">&lt;h2&gt;Background&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The old DROUGHT-BOM-GRIDS data came from a Barnes IDW algorithm, at 25km (actually 0.25 decimal degrees) resolution&lt;/li&gt;
+&lt;li&gt;1890-2008&lt;/li&gt;
+&lt;li&gt;Going forward the AWAP grids are Preferred&lt;/li&gt;
+&lt;li&gt;this is a quick and dirty approach&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Methods&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AWAP grids are 5km (0.05 dd) but this will take longer to process and is probably overkill for monthly total rainfall when focus is on drought&lt;/li&gt;
+&lt;li&gt;For the centroid point of each 0.25 dd extract the data value (might be better to take mean of sub-cells within each, plan for future)&lt;/li&gt;
+&lt;li&gt;compare this with old BOM GRIDS&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Results&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/qc_awap_totals_200001.png&quot; alt=&quot;images/qc_awap_totals_200001.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;compare with bom grids for Jan 2000&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/qc_awap_200001_vs_bomgrids.png&quot; alt=&quot;images/qc_awap_200001_vs_bomgrids.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;For a pixel (west wyalong my old home town)&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/qc_awap_1900_1908_vs_bomgrids_west_wyalong.png&quot; alt=&quot;images/qc_awap_1900_1908_vs_bomgrids_west_wyalong.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>colours-to-use-for-maps</title>
@@ -5294,83 +5332,6 @@ knitr::kable(nodes_graphy)
 
 
 &lt;p&gt;This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</title>
-   <link href="http://ivanhanigan.github.com/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/"/>
-   <updated>2015-09-22T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity</id>
-   <content type="html">&lt;p&gt;The other day I reported that I've implemented a new open science task management regime &lt;a href=&quot;http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/&quot;&gt;http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;This was instigated by my renewed enthusiasm for open science after a few high profile papers have come out in the last few months imploring scientists to take action on shonky statistics and the &quot;morass of poorly conducted data analyses, with errors ranging from trivial and strange to devastating&quot; (Peng 2015) &lt;a href=&quot;http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x&quot;&gt;http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I believe that making ones electronic notebook open is one of the most obvious and easily achieved things to do toward that ambition.  I also think that keeping the TODO-list in the forefront of ones mind and continuously checking things off the list is a great boost for productivity and keeping on track.  This culminates in the advice to keep momentum by doing something toward the plan on a daily basis, no matter how trivial.  This is sometimes called Jerry Seinfeld's secret to productivity: Just keep at it. Don't break the streak. &lt;a href=&quot;http://dirk.eddelbuettel.com/blog/2014/10/12/&quot;&gt;http://dirk.eddelbuettel.com/blog/2014/10/12/&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;So what was holding me back from a really useful daily publication of my open notebook?  I showed last post how I manage tasks in Emac Orgmode (a task organiser and calendar/agenda rolled up with code execution for running R scripts etc).  I also write my blog posts in orgmode.&lt;/p&gt;
-
-&lt;p&gt;The only problem with that set up was that I was still using the code from Charlie Park &lt;a href=&quot;http://charliepark.org/jekyll-with-plugins/&quot;&gt;http://charliepark.org/jekyll-with-plugins/&lt;/a&gt; which adds the inadequate commit description '&lt;code&gt;Latest build&lt;/code&gt;' every time.  What I needed was a way to actually log a summary of work each day, so I can look back over the history and know I actually did something everyday and was not just gaming the system by committing random little non-work additions (I want to balance this by doing &lt;em&gt;some&lt;/em&gt; work every day, but also take time off to read, exercise, socialize, and generally have fun).&lt;/p&gt;
-
-&lt;p&gt;So anyway, the point of this post is to describe my revision to Charlie Park's code for building a jekyll blog:&lt;/p&gt;
-
-&lt;h4&gt;Code: put in ~/.bash_profile&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;function bb() {
-  cd ~/projects/ivanhanigan.github.com.raw &amp;amp;&amp;amp; jekyll b &amp;amp;&amp;amp; cp -r    
-  ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com &amp;amp;&amp;amp; 
-  cd ~/projects/ivanhanigan.github.com &amp;amp;&amp;amp; git add . -A  &amp;amp;&amp;amp; 
-  git commit -m &quot;$*&quot; &amp;amp;&amp;amp; 
-  git push
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;That bit about &lt;code&gt;$*&lt;/code&gt; was a bit difficult for me to get working as this is the first time I have written a bash script in anger.  The alternative was to use &lt;code&gt;$1&lt;/code&gt; and require the git commit message to be passed within quotes, which also makes sense but I did not do that.&lt;/li&gt;
-&lt;li&gt;I also needed to change the terminal settings so that it always loads the bash_profile&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Bash terminal&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Edit &amp;gt; Profile preferences
-Title and Command &amp;gt; Run command as a login shell 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;And so now I just have to deposit a markdown blog post into the jekyll &lt;code&gt;_posts&lt;/code&gt; folder and then&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Bash&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;bb Add a meaningful commit message about todays progress
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;There you have it, a meaningful message regarding what I have been doing towards my scientific output every day.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/seinfeld-streak-day9-1.png&quot; alt=&quot;/images/seinfeld-streak-day9.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/seinfeld-streak-day9.png&quot; alt=&quot;/images/seinfeld-streak-day9.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h4&gt;References&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;Peng, R. (2015). The reproducibility crisis in science: 
-A statistical counterattack. Significance, 12(3), 30–32. 
-doi:10.1111/j.1740-9713.2015.00827.x
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
 </content>
  </entry>
  
