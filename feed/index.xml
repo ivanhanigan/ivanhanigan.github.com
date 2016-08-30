@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2016-08-27T10:59:52+10:00</updated>
+ <updated>2016-08-30T12:56:30+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,40 +13,92 @@
 
  
  <entry>
-   <title>drought-awap-grids-notes-re-extract-point</title>
-   <link href="http://ivanhanigan.github.com/2016/08/drought-awap-grids-notes-re-extract-point/"/>
-   <updated>2016-08-27T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2016/08/drought-awap-grids-notes-re-extract-point</id>
-   <content type="html">&lt;h2&gt;Background&lt;/h2&gt;
+   <title>Ripping data from georeferenced images with QGIS</title>
+   <link href="http://ivanhanigan.github.com/2016/08/ripping-data-from-georeferenced-images-with-qgis/"/>
+   <updated>2016-08-30T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2016/08/ripping-data-from-georeferenced-images-with-qgis</id>
+   <content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Drought Declarations are made by government in Australia to determine when and where a drought is occuring.
+The Declarations are linked to agricultural and social support policies. We are working on a climatic drought index that should correlate with these Drought Declarations.  The New South Wales Government has provided us with spatial data from 1986 but they also have a graphical visualisation available for earlier times, especially noteworthy is the extreme 1982-1983 drought.
+This post is a document of the process I will try to derive spatial data from the image.&lt;/p&gt;
+
+&lt;h1&gt;Methods&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;The old DROUGHT-BOM-GRIDS data came from a Barnes IDW algorithm, at 25km (actually 0.25 decimal degrees) resolution&lt;/li&gt;
-&lt;li&gt;1890-2008&lt;/li&gt;
-&lt;li&gt;Going forward the AWAP grids are Preferred&lt;/li&gt;
-&lt;li&gt;this is a quick and dirty approach&lt;/li&gt;
+&lt;li&gt;Follow instructions on this website &lt;a href=&quot;http://www.qgistutorials.com/en/docs/advanced_georeferencing.html&quot;&gt;http://www.qgistutorials.com/en/docs/advanced_georeferencing.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Try out the method on a month that is already available as spatial data, to assess precision.&lt;/li&gt;
+&lt;li&gt;Then start mapping earlier data with no correlates.&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h2&gt;Methods&lt;/h2&gt;
+&lt;h1&gt;Data&lt;/h1&gt;
+
+&lt;p&gt;Download the drought maps. The current maps are at:
+&lt;a href=&quot;http://www.dpi.nsw.gov.au/content/agriculture/emergency/drought/planning-archive/climate/advance-retreat&quot;&gt;http://www.dpi.nsw.gov.au/content/agriculture/emergency/drought/planning-archive/climate/advance-retreat&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;But there is a higher resolution map archived at:
+&lt;a href=&quot;http://pandora.nla.gov.au/pan/120345/20120529-0000/advance-retreat-drought-map-april-2011.pdf&quot;&gt;http://pandora.nla.gov.au/pan/120345/20120529-0000/advance-retreat-drought-map-april-2011.pdf&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt-nswdpi-raw.png&quot; alt=&quot;drt-nswdpi-raw&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Results&lt;/h1&gt;
+
+&lt;h2&gt;Step 1 - load the reference layer&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;AWAP grids are 5km (0.05 dd) but this will take longer to process and is probably overkill for monthly total rainfall when focus is on drought&lt;/li&gt;
-&lt;li&gt;For the centroid point of each 0.25 dd extract the data value (might be better to take mean of sub-cells within each, plan for future)&lt;/li&gt;
-&lt;li&gt;compare this with old BOM GRIDS&lt;/li&gt;
+&lt;li&gt;Load up the NSW boundaries by selecting &quot;Add PostGIS Layers&quot; &gt; Connect &gt; gislibrary&lt;/li&gt;
+&lt;li&gt;Then select a map layer of NSW&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;h2&gt;Results&lt;/h2&gt;
+&lt;h2&gt;Step 2 - set up the raster data into the Georeferencer&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/qc_awap_totals_200001.png&quot; alt=&quot;images/qc_awap_totals_200001.png&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Launch the Georeferencer from Raster &gt; Georeferencer &gt; Georeferencer.&lt;/li&gt;
+&lt;li&gt;If you do not see that menu item, you will need to enable the Georeferencer GDAL plugin from Plugins &gt; Manage and install Plugins &gt; Installed.&lt;/li&gt;
+&lt;li&gt;Zoom in on the month of interest&lt;/li&gt;
+&lt;li&gt;Now click on the Add Point button on the toolbar and select an easily identifiable location on the image. Corners, intersections, poles etc. make good control points.&lt;/li&gt;
+&lt;li&gt;Once you click on the image at a control point location, you will see a pop-up asking you to enter map coordinates. Click the button From map canvas.&lt;/li&gt;
+&lt;li&gt;Find the same location in your reference layer and click there. The coordinates are auto-populated from your click on the map canvas. Click Ok. Similarly, choose at least 4 points on the image and add their coordinates from the reference layer.&lt;/li&gt;
+&lt;li&gt;Now go to Settings &gt; Transformation settings (yellow cog wheel).&lt;/li&gt;
+&lt;li&gt;Choose the settings as shown below.&lt;/li&gt;
+&lt;li&gt;Transformation type = Thin Plate Spline&lt;/li&gt;
+&lt;li&gt;output raster = someting&lt;/li&gt;
+&lt;li&gt;target EPS = 4283 (match what your reference layer is)&lt;/li&gt;
+&lt;li&gt;Make sure the Load in QGIS when done button is checked. Click OK.&lt;/li&gt;
+&lt;li&gt;Back in the Georeferencer window, go to File &gt; Start georeferencing. This will start the process of warping the image using the GCPs and creating the target raster.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;h3&gt;compare with bom grids for Jan 2000&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/qc_awap_200001_vs_bomgrids.png&quot; alt=&quot;images/qc_awap_200001_vs_bomgrids.png&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;Step 3 - rip the data to a shapefile&lt;/h2&gt;
 
-&lt;h3&gt;For a pixel (west wyalong my old home town)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;create a new shp (Layer &gt; New)&lt;/li&gt;
+&lt;li&gt;type = ploygon&lt;/li&gt;
+&lt;li&gt;Specify CRS = EPSG:4283&lt;/li&gt;
+&lt;li&gt;attribute = drought, text&lt;/li&gt;
+&lt;li&gt;save to a shp like 'drt198610rip' and OK&lt;/li&gt;
+&lt;li&gt;right-click, toggle editing, add new feature&lt;/li&gt;
+&lt;li&gt;save layer edits&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/qc_awap_1900_1908_vs_bomgrids_west_wyalong.png&quot; alt=&quot;images/qc_awap_1900_1908_vs_bomgrids_west_wyalong.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt-edit-shapefile.png&quot; alt=&quot;drt-edit-shapefile&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Results&lt;/h1&gt;
+
+&lt;h2&gt;This work&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt198610rip.png&quot; alt=&quot;drt198610rip&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Compared to NSW DPI drought declarations data&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt198610rip2.png&quot; alt=&quot;drt198610rip2&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;The process produces data that is very prone to imprecision.  We may be able to use some extra data from before 1986 though.&lt;/p&gt;
 </content>
  </entry>
  

@@ -6,6 +6,95 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Ripping data from georeferenced images with QGIS</title>
+				<description>&lt;h1&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Drought Declarations are made by government in Australia to determine when and where a drought is occuring.
+The Declarations are linked to agricultural and social support policies. We are working on a climatic drought index that should correlate with these Drought Declarations.  The New South Wales Government has provided us with spatial data from 1986 but they also have a graphical visualisation available for earlier times, especially noteworthy is the extreme 1982-1983 drought.
+This post is a document of the process I will try to derive spatial data from the image.&lt;/p&gt;
+
+&lt;h1&gt;Methods&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Follow instructions on this website &lt;a href=&quot;http://www.qgistutorials.com/en/docs/advanced_georeferencing.html&quot;&gt;http://www.qgistutorials.com/en/docs/advanced_georeferencing.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Try out the method on a month that is already available as spatial data, to assess precision.&lt;/li&gt;
+&lt;li&gt;Then start mapping earlier data with no correlates.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Data&lt;/h1&gt;
+
+&lt;p&gt;Download the drought maps. The current maps are at:
+&lt;a href=&quot;http://www.dpi.nsw.gov.au/content/agriculture/emergency/drought/planning-archive/climate/advance-retreat&quot;&gt;http://www.dpi.nsw.gov.au/content/agriculture/emergency/drought/planning-archive/climate/advance-retreat&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;But there is a higher resolution map archived at:
+&lt;a href=&quot;http://pandora.nla.gov.au/pan/120345/20120529-0000/advance-retreat-drought-map-april-2011.pdf&quot;&gt;http://pandora.nla.gov.au/pan/120345/20120529-0000/advance-retreat-drought-map-april-2011.pdf&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt-nswdpi-raw.png&quot; alt=&quot;drt-nswdpi-raw&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Results&lt;/h1&gt;
+
+&lt;h2&gt;Step 1 - load the reference layer&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Load up the NSW boundaries by selecting &quot;Add PostGIS Layers&quot; &gt; Connect &gt; gislibrary&lt;/li&gt;
+&lt;li&gt;Then select a map layer of NSW&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Step 2 - set up the raster data into the Georeferencer&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Launch the Georeferencer from Raster &gt; Georeferencer &gt; Georeferencer.&lt;/li&gt;
+&lt;li&gt;If you do not see that menu item, you will need to enable the Georeferencer GDAL plugin from Plugins &gt; Manage and install Plugins &gt; Installed.&lt;/li&gt;
+&lt;li&gt;Zoom in on the month of interest&lt;/li&gt;
+&lt;li&gt;Now click on the Add Point button on the toolbar and select an easily identifiable location on the image. Corners, intersections, poles etc. make good control points.&lt;/li&gt;
+&lt;li&gt;Once you click on the image at a control point location, you will see a pop-up asking you to enter map coordinates. Click the button From map canvas.&lt;/li&gt;
+&lt;li&gt;Find the same location in your reference layer and click there. The coordinates are auto-populated from your click on the map canvas. Click Ok. Similarly, choose at least 4 points on the image and add their coordinates from the reference layer.&lt;/li&gt;
+&lt;li&gt;Now go to Settings &gt; Transformation settings (yellow cog wheel).&lt;/li&gt;
+&lt;li&gt;Choose the settings as shown below.&lt;/li&gt;
+&lt;li&gt;Transformation type = Thin Plate Spline&lt;/li&gt;
+&lt;li&gt;output raster = someting&lt;/li&gt;
+&lt;li&gt;target EPS = 4283 (match what your reference layer is)&lt;/li&gt;
+&lt;li&gt;Make sure the Load in QGIS when done button is checked. Click OK.&lt;/li&gt;
+&lt;li&gt;Back in the Georeferencer window, go to File &gt; Start georeferencing. This will start the process of warping the image using the GCPs and creating the target raster.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Step 3 - rip the data to a shapefile&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;create a new shp (Layer &gt; New)&lt;/li&gt;
+&lt;li&gt;type = ploygon&lt;/li&gt;
+&lt;li&gt;Specify CRS = EPSG:4283&lt;/li&gt;
+&lt;li&gt;attribute = drought, text&lt;/li&gt;
+&lt;li&gt;save to a shp like 'drt198610rip' and OK&lt;/li&gt;
+&lt;li&gt;right-click, toggle editing, add new feature&lt;/li&gt;
+&lt;li&gt;save layer edits&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;images/drt-edit-shapefile.png&quot; alt=&quot;drt-edit-shapefile&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Results&lt;/h1&gt;
+
+&lt;h2&gt;This work&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt198610rip.png&quot; alt=&quot;drt198610rip&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Compared to NSW DPI drought declarations data&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt198610rip2.png&quot; alt=&quot;drt198610rip2&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;The process produces data that is very prone to imprecision.  We may be able to use some extra data from before 1986 though.&lt;/p&gt;
+</description>
+				<published>2016-08-30 00:00:00 +1000</published>
+				<link>http://ivanhanigan.github.com/2016/08/ripping-data-from-georeferenced-images-with-qgis/</link>
+			</item>
+		
+			<item>
 				<title>drought-awap-grids-notes-re-extract-point</title>
 				<description>&lt;h2&gt;Background&lt;/h2&gt;
 
@@ -751,43 +840,6 @@ My colleagues pointed out that the flipped over version is easily turned into a 
 </description>
 				<published>2016-01-31 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2016/01/the-perfect-is-the-enemy-of-the-good/</link>
-			</item>
-		
-			<item>
-				<title>UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;UPDATE to post &lt;a href=&quot;http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems&quot;&gt;http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Recall that RGDAL transforms and write out spatial data in GDA94 with a problem in that ArcGIS does not like the prj file and complains&lt;/li&gt;
-&lt;li&gt;This seems an ok workaround&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;pre&gt;&lt;code&gt;infile &amp;lt;- &quot;western_sydney_passive_samplers_site_details.csv&quot;
-indir &amp;lt;- &quot;data_derived&quot;
-
-outdir &amp;lt;- indir
-outfile &amp;lt;- file.path(outdir, gsub(&quot;.csv&quot;,&quot;.shp&quot;,infile))
-
-dat &amp;lt;- read.csv(file.path(indir, infile), as.is=T)
-str(dat)
-
-dat2 &amp;lt;- SpatialPointsDataFrame(data.frame(x=dat$long, y=dat$lat), dat,
-                                proj4string=CRS(epsg$prj4[epsg$code %in% '4283'])
-                                )
-
-writeOGR(dat2, outfile,
-         outdir, driver='ESRI Shapefile'
-         )
-# fix the prj file 
-download.file(&quot;http://spatialreference.org/ref/epsg/4283/prj/&quot;,
-              gsub(&quot;.shp&quot;, &quot;.prj&quot;, outfile), mode = &quot;wb&quot;
-              )
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/samplers_sydney.png&quot; alt=&quot;/images/samplers_sydney.png&quot; /&gt;&lt;/p&gt;
-</description>
-				<published>2016-01-29 00:00:00 +1100</published>
-				<link>http://ivanhanigan.github.com/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/</link>
 			</item>
 		
 	</channel>

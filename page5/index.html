@@ -54,6 +54,71 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/12/my-project-inventory/" title="My project inventory" rel="bookmark">My project inventory</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h3>Auditing and inventorising</h3>
+
+<ul>
+<li>I just completed an audit of my project files and updated the list on my website <a href="/projects.html">http://ivanhanigan.github.com/projects.html</a></li>
+<li>This was enabled by the work I have been doing on a data inventory web2py app <a href="https://github.com/ivanhanigan/data_inventory">https://github.com/ivanhanigan/data_inventory</a></li>
+<li>The list shows some of the project data collections I have amassed during my research over the last 15 years</li>
+<li>Some of these are data collections I have developed, others are derivatives of collections originated by others</li>
+<li>Many of these are areas of active research, but others are dormant</li>
+<li>This list will be updated as time permits.</li>
+</ul>
+
+
+<h3>Projects</h3>
+
+<ul>
+<li>1 Air pollution</li>
+<li>2 Australian health</li>
+<li>3 Australian population</li>
+<li>4 Biodiversity and environmental change</li>
+<li>5 Bioregions</li>
+<li>6 Cardio-respiratory disease, biomass smoke, dust and heatwaves</li>
+<li>7 Climate Change</li>
+<li>8 Eco-social observatories</li>
+<li>9 Extreme Weather Events</li>
+<li>10 GIS</li>
+<li>11 Infectious diseases and local habitat</li>
+<li>12 Mental health and drought</li>
+<li>13 Mortality and morbidity effects from weather</li>
+<li>14 Reproducible research pipelines</li>
+<li>15 Medical geography theory and tools</li>
+<li>16 Roads and places</li>
+<li>17 Transformational adaptation</li>
+<li>18 Ultraviolet radiation</li>
+<li>19 Water</li>
+<li>20 Weather</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/blog home" title="blog home" rel="category tag">blog home</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/12/my-project-inventory/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-12-07 00:00:00 +1100">07 Dec 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger/" title="show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger" rel="bookmark">show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</a>
     </h1>
     <div class="entry-content full-content">
@@ -383,61 +448,6 @@ written in the <code>dot</code> language which can be rendered in R using the
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters/" title="Putting bibtex key into my lit review database needs sanitized latex characters" rel="bookmark">Putting bibtex key into my lit review database needs sanitized latex characters</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:</p>
-
-<pre><code>library(xtable)
-library(rpostgrestools) # my own work
-if(!exists("ch")) ch &lt;- connect2postgres2("data_inventory_hanigan_dev4")
-
-dat &lt;- dbGetQuery(ch,
-"SELECT id, dataset_id, bibtex_key, title,  key_results,background_to_study, 
-       research_question, study_extent, outcomes, exposures,  covariates, method_protocol,
-        general_comments
-  FROM publication
-  where key_results is not null and key_results != '';
-")
-names(dat) &lt;- gsub("_", " ", names(dat))
-tabcode &lt;- xtable(dat[,1:8])
-align(tabcode) &lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7in}','p{1.8in}','p{1.7in}', 'p{1.7in}')
-print(tabcode,  include.rownames = F, table.placement = '!ht',
-      floating.environment='sidewaystable',
-      sanitize.text.function = function(x) x)
-</code></pre>
-
-<p></p>
-
-
-<p>Produces the below table:</p>
-
-<p><img src="/images/bibtable.png" alt="/images/bibtable.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/11/putting-bibtex-key-into-my-lit-review-database-needs-sanitized-latex-characters/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-11-15 00:00:00 +1100">15 Nov 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -515,6 +525,10 @@ print(tabcode,  include.rownames = F, table.placement = '!ht',
               <ul>
                 
                 <li>
+                  <a href="/2016/08/ripping-data-from-georeferenced-images-with-qgis/" title="Ripping data from georeferenced images with QGIS" rel="bookmark">Ripping data from georeferenced images with QGIS</a>
+                </li>
+                
+                <li>
                   <a href="/2016/08/drought-awap-grids-notes-re-extract-point/" title="drought-awap-grids-notes-re-extract-point" rel="bookmark">drought-awap-grids-notes-re-extract-point</a>
                 </li>
                 
@@ -528,10 +542,6 @@ print(tabcode,  include.rownames = F, table.placement = '!ht',
                 
                 <li>
                   <a href="/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE/" title="spatial-lag-and-timeseries-model-with-nmmaps-UPDATE" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/05/judging-the-evidence-part2/" title="Judging the evidence part 2" rel="bookmark">Judging the evidence part 2</a>
                 </li>
                 
               </ul>
@@ -555,7 +565,7 @@ print(tabcode,  include.rownames = F, table.placement = '!ht',
                 
                 <li><a href="/categories/data documentation">data documentation (32)</a></li>
                 
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                <li><a href="/categories/awap grids">awap grids (2)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
@@ -567,7 +577,7 @@ print(tabcode,  include.rownames = F, table.placement = '!ht',
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/drought">drought (1)</a></li>
+                <li><a href="/categories/drought">drought (2)</a></li>
                 
                 <li><a href="/categories/morpho">morpho (1)</a></li>
                 
@@ -575,7 +585,7 @@ print(tabcode,  include.rownames = F, table.placement = '!ht',
                 
                 <li><a href="/categories/data management">data management (3)</a></li>
                 
-                <li><a href="/categories/data operation">data operation (2)</a></li>
+                <li><a href="/categories/data operation">data operation (3)</a></li>
                 
                 <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
                 

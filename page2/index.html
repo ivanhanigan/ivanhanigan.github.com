@@ -54,6 +54,106 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2016/05/judging-the-evidence-part2/" title="Judging the evidence part 2" rel="bookmark">Judging the evidence part 2</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I previously reported on a lecture slide deck called 'Judging the Evidence' by  Adrian Sleigh for a course PUBH7001 Introduction to Epidemiology, April 30, 2001.  <a href="http://ivanhanigan.github.com/2015/11/judging-the-evidence-using-a-literature-review-database">http://ivanhanigan.github.com/2015/11/judging-the-evidence-using-a-literature-review-database</a></p>
+
+<p>I have also now extracted several slides into a template outline for reviewing epidemiological and other research.</p>
+
+<h4>Adrian Sleigh's Protocol</h4>
+
+<h5>Object of Study, Hypotheses or Research Questions</h5>
+
+<ol>
+<li>Purpose of Study:  Objectives of study; why was it done?</li>
+<li>Reference Population:
+
+<ul>
+<li>To whom do authors generalize results?</li>
+<li>To whom should the findings be generalized?</li>
+</ul>
+</li>
+</ol>
+
+
+<h5>Sampling</h5>
+
+<p>From the Reference Pop (target population) -></p>
+
+<p>Source Pop -> Eligible population</p>
+
+<p><code>
+The source population may be defined directly, as a matter of defining its membership criteria; or the definition may be indirect, as the catchment population of a defined way of identifying cases of the illness. The catchment population is, at any given time, the totality of those in the ‘were-would’ state of:  were the illness now to occur, it would be ‘caught’ by that case identification scheme Source: Miettinen OS, 2007 [http://www.teachepi.org/documents/courses/fundamentals/Pai_Lecture6_Selection%20bias.pdf](http://www.teachepi.org/documents/courses/fundamentals/Pai_Lecture6_Selection%20bias.pdf)
+</code></p>
+
+<h5>Sample Pop:</h5>
+
+<ol>
+<li>Refusals, Dropouts</li>
+<li>Participants  ->  Study Pop</li>
+</ol>
+
+
+<h5>Design of study</h5>
+
+<ol>
+<li>Study setting: Where and when was the study done?  What were the circumstances?  Ethics?</li>
+<li>Type of study: Experimental vs natural, descriptive vs analytical (trial, cohort, case-control, prevalence, ecological, case-report, etc).  If case-control or cohort, was the timing of data collection retrospective or prospective?</li>
+<li>Subjects: Who (number, age, sex, etc.)?  How were they selected?</li>
+<li>Comparison groups: What control group or standard of comparison?  How appropriate?</li>
+<li>Study size: Was the sample size adequate to give you confidence in the finding of "no association</li>
+<li>Bias and Confounding
+
+<ul>
+<li>a) Selection bias: Were groups comparable for subjects who entered and stayed in study?  Selection influenced by exposure (c-c) or effect (cohort) under study?  Drop-outs?</li>
+<li>b) Confounding: Control of potential confounding variables in design of the study - matching or subject restriction?</li>
+</ul>
+</li>
+</ol>
+
+
+<h5>Observations</h5>
+
+<ol>
+<li>Procedure: How are the variables in the study defined and measured, ie how were data collected?</li>
+<li>Definition of terms: Are definitions of diagnostic criteria, measurements and outcome unambiguous?  Could be reproduced?</li>
+<li>Bias and Confounding
+
+<ul>
+<li>a) Observation bias: Were study groups comparable for measurements or mode of observation?  Mis-classification in determining exposure or disease categories? Differential between groups, or 'random'?</li>
+<li>b) Confounding: Information recorded on variables that could confound the association under study (to permit adjustment in the analysis)?</li>
+</ul>
+</li>
+</ol>
+
+
+<h3>THANKS Prof Sleigh!</h3>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/bibliometrics and literature reviewing" title="bibliometrics and literature reviewing" rel="category tag">bibliometrics and literature reviewing</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2016/05/judging-the-evidence-part2/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2016-05-10 00:00:00 +1000">10 May 2016</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2016/02/r-base-graphics-are-fine-except-barplot/" title="R base graphics are fine except barplot" rel="bookmark">R base graphics are fine except barplot</a>
     </h1>
     <div class="entry-content full-content">
@@ -538,66 +638,6 @@ My colleagues pointed out that the flipped over version is easily turned into a 
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/" title="UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'" rel="bookmark">UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>UPDATE to post <a href="http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems">http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems</a></li>
-<li>Recall that RGDAL transforms and write out spatial data in GDA94 with a problem in that ArcGIS does not like the prj file and complains</li>
-<li>This seems an ok workaround</li>
-</ul>
-
-
-<pre><code>infile &lt;- "western_sydney_passive_samplers_site_details.csv"
-indir &lt;- "data_derived"
-
-outdir &lt;- indir
-outfile &lt;- file.path(outdir, gsub(".csv",".shp",infile))
-
-dat &lt;- read.csv(file.path(indir, infile), as.is=T)
-str(dat)
-
-dat2 &lt;- SpatialPointsDataFrame(data.frame(x=dat$long, y=dat$lat), dat,
-                                proj4string=CRS(epsg$prj4[epsg$code %in% '4283'])
-                                )
-
-writeOGR(dat2, outfile,
-         outdir, driver='ESRI Shapefile'
-         )
-# fix the prj file 
-download.file("http://spatialreference.org/ref/epsg/4283/prj/",
-              gsub(".shp", ".prj", outfile), mode = "wb"
-              )
-</code></pre>
-
-<p><img src="/images/samplers_sydney.png" alt="/images/samplers_sydney.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/data operation" title="data operation" rel="category tag">data operation</a>
-      
-      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2016-01-29 00:00:00 +1100">29 Jan 2016</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -675,6 +715,10 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
               <ul>
                 
                 <li>
+                  <a href="/2016/08/ripping-data-from-georeferenced-images-with-qgis/" title="Ripping data from georeferenced images with QGIS" rel="bookmark">Ripping data from georeferenced images with QGIS</a>
+                </li>
+                
+                <li>
                   <a href="/2016/08/drought-awap-grids-notes-re-extract-point/" title="drought-awap-grids-notes-re-extract-point" rel="bookmark">drought-awap-grids-notes-re-extract-point</a>
                 </li>
                 
@@ -688,10 +732,6 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
                 
                 <li>
                   <a href="/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE/" title="spatial-lag-and-timeseries-model-with-nmmaps-UPDATE" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/05/judging-the-evidence-part2/" title="Judging the evidence part 2" rel="bookmark">Judging the evidence part 2</a>
                 </li>
                 
               </ul>
@@ -715,7 +755,7 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
                 
                 <li><a href="/categories/data documentation">data documentation (32)</a></li>
                 
-                <li><a href="/categories/awap grids">awap grids (1)</a></li>
+                <li><a href="/categories/awap grids">awap grids (2)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
@@ -727,7 +767,7 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/drought">drought (1)</a></li>
+                <li><a href="/categories/drought">drought (2)</a></li>
                 
                 <li><a href="/categories/morpho">morpho (1)</a></li>
                 
@@ -735,7 +775,7 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
                 
                 <li><a href="/categories/data management">data management (3)</a></li>
                 
-                <li><a href="/categories/data operation">data operation (2)</a></li>
+                <li><a href="/categories/data operation">data operation (3)</a></li>
                 
                 <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
                 

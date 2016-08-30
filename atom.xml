@@ -4,13 +4,103 @@
  <title>Ivan Hanigan</title>
  <link href="http://ivanhanigan.github.com/atom.xml" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2016-08-27T10:59:52+10:00</updated>
+ <updated>2016-08-30T12:56:30+10:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>Ivan Hanigan</name>
    <email>ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Ripping data from georeferenced images with QGIS</title>
+   <link href="http://ivanhanigan.github.com/2016/08/ripping-data-from-georeferenced-images-with-qgis/"/>
+   <updated>2016-08-30T00:00:00+10:00</updated>
+   <id>http://ivanhanigan.github.com/2016/08/ripping-data-from-georeferenced-images-with-qgis</id>
+   <content type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Drought Declarations are made by government in Australia to determine when and where a drought is occuring.
+The Declarations are linked to agricultural and social support policies. We are working on a climatic drought index that should correlate with these Drought Declarations.  The New South Wales Government has provided us with spatial data from 1986 but they also have a graphical visualisation available for earlier times, especially noteworthy is the extreme 1982-1983 drought.
+This post is a document of the process I will try to derive spatial data from the image.&lt;/p&gt;
+
+&lt;h1&gt;Methods&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Follow instructions on this website &lt;a href=&quot;http://www.qgistutorials.com/en/docs/advanced_georeferencing.html&quot;&gt;http://www.qgistutorials.com/en/docs/advanced_georeferencing.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Try out the method on a month that is already available as spatial data, to assess precision.&lt;/li&gt;
+&lt;li&gt;Then start mapping earlier data with no correlates.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h1&gt;Data&lt;/h1&gt;
+
+&lt;p&gt;Download the drought maps. The current maps are at:
+&lt;a href=&quot;http://www.dpi.nsw.gov.au/content/agriculture/emergency/drought/planning-archive/climate/advance-retreat&quot;&gt;http://www.dpi.nsw.gov.au/content/agriculture/emergency/drought/planning-archive/climate/advance-retreat&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;But there is a higher resolution map archived at:
+&lt;a href=&quot;http://pandora.nla.gov.au/pan/120345/20120529-0000/advance-retreat-drought-map-april-2011.pdf&quot;&gt;http://pandora.nla.gov.au/pan/120345/20120529-0000/advance-retreat-drought-map-april-2011.pdf&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt-nswdpi-raw.png&quot; alt=&quot;drt-nswdpi-raw&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Results&lt;/h1&gt;
+
+&lt;h2&gt;Step 1 - load the reference layer&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Load up the NSW boundaries by selecting &quot;Add PostGIS Layers&quot; &gt; Connect &gt; gislibrary&lt;/li&gt;
+&lt;li&gt;Then select a map layer of NSW&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Step 2 - set up the raster data into the Georeferencer&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Launch the Georeferencer from Raster &gt; Georeferencer &gt; Georeferencer.&lt;/li&gt;
+&lt;li&gt;If you do not see that menu item, you will need to enable the Georeferencer GDAL plugin from Plugins &gt; Manage and install Plugins &gt; Installed.&lt;/li&gt;
+&lt;li&gt;Zoom in on the month of interest&lt;/li&gt;
+&lt;li&gt;Now click on the Add Point button on the toolbar and select an easily identifiable location on the image. Corners, intersections, poles etc. make good control points.&lt;/li&gt;
+&lt;li&gt;Once you click on the image at a control point location, you will see a pop-up asking you to enter map coordinates. Click the button From map canvas.&lt;/li&gt;
+&lt;li&gt;Find the same location in your reference layer and click there. The coordinates are auto-populated from your click on the map canvas. Click Ok. Similarly, choose at least 4 points on the image and add their coordinates from the reference layer.&lt;/li&gt;
+&lt;li&gt;Now go to Settings &gt; Transformation settings (yellow cog wheel).&lt;/li&gt;
+&lt;li&gt;Choose the settings as shown below.&lt;/li&gt;
+&lt;li&gt;Transformation type = Thin Plate Spline&lt;/li&gt;
+&lt;li&gt;output raster = someting&lt;/li&gt;
+&lt;li&gt;target EPS = 4283 (match what your reference layer is)&lt;/li&gt;
+&lt;li&gt;Make sure the Load in QGIS when done button is checked. Click OK.&lt;/li&gt;
+&lt;li&gt;Back in the Georeferencer window, go to File &gt; Start georeferencing. This will start the process of warping the image using the GCPs and creating the target raster.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Step 3 - rip the data to a shapefile&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;create a new shp (Layer &gt; New)&lt;/li&gt;
+&lt;li&gt;type = ploygon&lt;/li&gt;
+&lt;li&gt;Specify CRS = EPSG:4283&lt;/li&gt;
+&lt;li&gt;attribute = drought, text&lt;/li&gt;
+&lt;li&gt;save to a shp like 'drt198610rip' and OK&lt;/li&gt;
+&lt;li&gt;right-click, toggle editing, add new feature&lt;/li&gt;
+&lt;li&gt;save layer edits&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;images/drt-edit-shapefile.png&quot; alt=&quot;drt-edit-shapefile&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Results&lt;/h1&gt;
+
+&lt;h2&gt;This work&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt198610rip.png&quot; alt=&quot;drt198610rip&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Compared to NSW DPI drought declarations data&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/drt198610rip2.png&quot; alt=&quot;drt198610rip2&quot; /&gt;&lt;/p&gt;
+
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;The process produces data that is very prone to imprecision.  We may be able to use some extra data from before 1986 though.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>drought-awap-grids-notes-re-extract-point</title>
@@ -5225,113 +5315,6 @@ md &quot;Work\- To do&quot;
 &lt;li&gt;I am not particularly keen on the names that have been chosen (Resources, Write and Work are quite ambiguous terms).&lt;/li&gt;
 &lt;/ul&gt;
 
-</content>
- </entry>
- 
- <entry>
-   <title>Organising Graph Nodes And Edges In A Dataframe</title>
-   <link href="http://ivanhanigan.github.com/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/"/>
-   <updated>2015-09-23T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/09/organising-graph-nodes-and-edges-in-a-dataframe</id>
-   <content type="html">&lt;p&gt;I use the R package &lt;code&gt;DiagrammeR&lt;/code&gt; for creating graphs (the formal kind, connecting nodes with edges)
-- This package is great and I like how it interacts with the Graphviz program
-- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
-- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
-- In my utilities R package &lt;code&gt;github.com/ivanhanigan/disentangle&lt;/code&gt; I have written functions that turn this table into a graphiviz DOT language script
-- Recently I have needed to unpack the list for a more itemized view
-- Both these functions are showcased below&lt;/p&gt;
-
-&lt;h4&gt;Code: newnode&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# First create some test data, each step is a collection of edges 
-# with inputs or outputs simple comma seperated lists
-dat &amp;lt;- read.csv(textConnection('
-cluster ,  step    , inputs                    , outputs                                , description                      
-A  ,  siteIDs      , &quot;GPS, helicopter&quot;          , &quot;spatial, site doco&quot;                 , latitude and longitude of sites  
-A  ,  weather      , BoM                       , exposures                              , weather data from BoM            
-B  ,  trapped      , spatial                   , trapped_no                             , counts of species caught in trap 
-B  ,  biomass      , spatial                   , biomass_g                              ,                                  
-B  ,  correlations , &quot;exposures,trapped_no,biomass_g&quot; , report1                         , A study we published             
-C  ,  paper1       , report1                   , &quot;open access repository, data package&quot; ,                                  
-D  ,  biomass revision, new estimates          , biomass_g                              , this came late
-'), stringsAsFactors = F, strip.white = T)    
-str(dat)
-# dat
-
-# Now run the function and create a graph
-nodes &amp;lt;- newnode(
-  indat = dat,
-  names_col = &quot;step&quot;,
-  in_col = &quot;inputs&quot;,
-  out_col = &quot;outputs&quot;,
-  desc_col = &quot;description&quot;,
-  clusters_col = &quot;cluster&quot;,
-  nchar_to_snip = 40
-  )  
-sink(&quot;Transformations.dot&quot;)
-cat(nodes)
-sink()
-#DiagrammeR::grViz(&quot;Transformations.dot&quot;)
-system(&quot;dot -Tpng Transformations.dot -o Transformations.png&quot;)
-browseURL(&quot;Transformations.png&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;That creates this diagram&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/Transformations.png&quot; alt=&quot;/images/Transformations.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Now to showcase the tool that itemizes this list of inputs and outputs&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs&lt;/li&gt;
-&lt;li&gt;To add detail for each we need to unpack each list and create a new table with one row per node&lt;/li&gt;
-&lt;li&gt;I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code: newnode_csv&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;nodes_graphy &amp;lt;- newnode_csv(
-  indat = dat,
-  names_col = &quot;step&quot;,
-  in_col = &quot;inputs&quot;,
-  out_col = &quot;outputs&quot;,
-  clusters_col = 'cluster'
-  ) 
-# which creates this table
-knitr::kable(nodes_graphy)
-|cluster |name             |in_or_out |value                  |
-|:-------|:----------------|:---------|:----------------------|
-|A       |siteIDs          |input     |GPS                    |
-|A       |siteIDs          |input     |helicopter             |
-|A       |siteIDs          |output    |spatial                |
-|A       |siteIDs          |output    |site doco              |
-|A       |weather          |input     |BoM                    |
-|A       |weather          |output    |exposures              |
-|B       |trapped          |input     |spatial                |
-|B       |trapped          |output    |trapped_no             |
-|B       |biomass          |input     |spatial                |
-|B       |biomass          |output    |biomass_g              |
-|B       |correlations     |input     |exposures              |
-|B       |correlations     |input     |trapped_no             |
-|B       |correlations     |input     |biomass_g              |
-|B       |correlations     |output    |report1                |
-|C       |paper1           |input     |report1                |
-|C       |paper1           |output    |open access repository |
-|C       |paper1           |output    |data package           |
-|D       |biomass revision |input     |new estimates          |
-|D       |biomass revision |output    |biomass_g              |
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.&lt;/p&gt;
 </content>
  </entry>
  
