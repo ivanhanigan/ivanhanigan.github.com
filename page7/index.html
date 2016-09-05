@@ -54,6 +54,206 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/10/decisions-to-make-when-modelling-interactions/" title="Decisions to make when modelling interactions" rel="bookmark">Decisions to make when modelling interactions</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This post focuses on decision making during statistical
+modelling.  The case of investigating effect modification is used as
+an example.  The analyst has several options available to them when
+constructing the model parametrisation for adjustment to explain
+modification effectively.  Unlike confounding (in which the criterion
+of substantial magnitude change of the effect estimate when
+controlling for a third variable can be easily assessed), models
+including effect modification can be hard to interpret.  Taking
+account of effect modification becomes increasingly important when
+modelling complex interactions.</p>
+
+<p>If an effect moderator is present then the relationship between
+exposure and response varies between different levels of the
+moderator. An example is provided by a paper we published, in which the
+relationship between proximity to wetlands and Ross River virus
+infection was found to be different for towns and rural areas, where the
+'urban' variable is the 'effect moderator'.</p>
+
+<p>There are three common ways for data analysts to address this question
+in statistical models:</p>
+
+<ol>
+<li>multiple models for each group,</li>
+<li>interaction terms or</li>
+<li>re-parametrisation to explicitly depict interactions.</li>
+</ol>
+
+
+<p>The first way is
+to split apart the dataset and conduct separate analyses of multiple
+groups. For example, one could run the regression in the urban zone
+and the rural zone seperately and see if there were different exposure
+response functions in the two models.  This was the approach of our paper.
+This approach has the strength that it is simple to do and yeilds
+results that are easy to interpret.  A limitation of this method is
+that by splitting the dataset one loses degrees of freedom and
+therefore statistical power.</p>
+
+<p>The second approach (which removes that limitation of the first option) is to
+fit interaction terms.  The example shown in Figure 1 is a multiplicative interaction model (Brambor 2006).
+This  approach was not taken in the models reported in our paper, but can easily be implemented and shows that the function of distance was
+estimated to have different 'slopes' in each of the dichotomous urban
+groups.</p>
+
+<p>The statistical method can be easily implemented in
+software by including a multiplicative term between two variables,
+however in practice the resulting post estimation regression outputs
+can be difficult to interpret.  For example, say one wants to calculate
+the effect and standard error for exposure X on health outcome Y with
+the interaction of the effect modifier Z.  The form of this model can
+be written as:</p>
+
+<p>$$ Y ~ \beta<em>{1}X + \beta</em>{2}Z + \beta_{3}XZ $$</p>
+
+<p>where B1, B2 and B3 are the regression coefficients estimated and  the term XZ is the interaction between exposure and effect modifier.</p>
+
+<p>The difficulty for interpretation comes when using this method for calculating the marginal effect of X on Y and the conditional standard error.  The specific method described in Brambor et al. is:</p>
+
+<ol>
+<li>Calculate the coefficients and the variance-covariance matrix from the regression model</li>
+<li>The marginal effect is $\beta<em>{1} + \beta</em>{3}XZ$ where Z is the level of the
+modifying factor (0 or 1 in the dichotomous effect modifier case)</li>
+<li>The conditional standard error is:</li>
+</ol>
+
+
+<p>$$\sqrt{var(\beta<em>{1}) + Z<sup>2</sup> var(\beta</em>{3}) + 2Zcov(\beta<em>{1}\beta</em>{3})}$$</p>
+
+<p>Therefore the strengths of this approach is that it does not reduce
+degrees of freedom and is straightforward to specify the model in
+standard statistical software packages. The limitations are related to
+interpretation of the resulting coefficients for both the main effects and the marginal effects, and standard errors for these.</p>
+
+<p>The third approach available to analysts makes it easier to access the
+resulting regression output.  This method was employed in Paper 1 in
+the final modelling phase in which estimates were calculated for the
+different drought exposure-response funcitons in each of the
+sub-groups. In the terms of Figure \ref{fig:effectmod.png} it is simple to:</p>
+
+<ol>
+<li>Calculate X1 = X * Z (i.e = exposure for condition is met, zero otherwise)</li>
+<li>Calculate X0 = X * (1-Z) (i.e. = exposure for NON-condition, zero for condition is TRUE)</li>
+<li>Instead of X, Z and XZ, fit X1, X0 and Z.  This model also contains three parameters and captures the same interactions as it is the same model with a different parametrisation.  The standard errors for the X1 and X0 are calculated directly from the regression.</li>
+</ol>
+
+
+<p>This method is much easier to implement and interpret.  This is also
+considerably more flexible than the other two approaches.  A
+limitation remains for this method in that the pre-processing steps
+required are more complicated, and there are inherently more
+possibilities for the data analyst to make errors in writing their
+code as they make these changes to the analytical data.</p>
+
+<pre><code># Demonstrating this with the data from the paper (available in table 2)
+## the following code shows the different parametrisations for the effect modification by urban
+## we show that the coeffs and se are equivalent but that the psuedo-R
+## squared will be better when including all our data in stratified analysis
+
+# model 0 effect in eastern
+d_eastern
+fit &lt;- glm(cases~ buffer + offset(log(1+pops)),family='poisson', data=d_eastern )
+summa &lt;- summary(fit)
+summa
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -4.82425    0.14451 -33.382  &lt; 2e-16 ***
+## buffer      -0.24702    0.07921  -3.119  0.00182 **
+
+# model 1 effect in urban
+fit1 &lt;- glm(cases~ buffer + offset(log(1+pops)),family='poisson', data=d_urban )
+summa &lt;- summary(fit1)
+summa
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -5.52363    0.33354 -16.561   &lt;2e-16 ***
+## buffer       0.03853    0.06352   0.607    0.544
+
+# step 1, combine the urban and rural data
+d_eastern$urban &lt;- 0
+d_urban$urban &lt;- 1
+dat2 &lt;- rbind(d_eastern, d_urban)
+str(dat2)
+dat2
+
+# model 2 is a multiplicative term
+fit2 &lt;- glm(cases ~ buffer * urban + offset(log(1+pops)), family = 'poisson', data = dat2)
+summa &lt;- summary(fit2)
+summa
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept)  -4.82425    0.14451 -33.382  &lt; 2e-16 ***
+## buffer       -0.24702    0.07921  -3.119  0.00182 **
+## urban        -0.69938    0.36350  -1.924  0.05435 .
+## buffer:urban  0.28555    0.10153   2.812  0.00492 **
+
+# the coeff on buffer is for urban = 0 is main effect
+# the coeff on buffer:urban is for urban = 1 is the marginal effect
+b1 &lt;- summa$coeff[2,1]
+b3 &lt;- summa$coeff[4,1]
+b1 + b3
+# 0.0385268
+# but what about that p-value?  and the se?
+str(fit2)
+fit2_vcov &lt;- vcov(fit2)
+fit2_vcov
+# now calculate the conditional standard error for the marginal effect of buffer for the value of the modifying variable (Z, urban =1)
+varb1&lt;-fit2_vcov[2,2]
+varb3&lt;-fit2_vcov[4,4]
+covarb1b3&lt;-fit2_vcov[2,4]
+Z&lt;-1
+conditional_se &lt;- sqrt(varb1+varb3*(Z^2)+2*Z*covarb1b3)
+conditional_se
+
+
+
+# model 3 is the re-parametrisation
+dat2$buffer_urban &lt;- dat2$buffer * dat2$urban
+dat2$buffer_eastern &lt;- dat2$buffer * (1-dat2$urban)
+
+fit3 &lt;- glm(cases ~ buffer_urban + buffer_eastern + urban + offset(log(1+pops)), family = 'poisson', data = dat2)
+summa &lt;- summary(fit3)
+summa
+
+## Coefficients:
+##                Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept)    -4.82425    0.14451 -33.382  &lt; 2e-16 ***
+## buffer_urban    0.03853    0.06352   0.607  0.54416
+## buffer_eastern -0.24702    0.07921  -3.119  0.00182 **
+## urban          -0.69938    0.36350  -1.924  0.05435 .
+</code></pre>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/statistical modelling" title="statistical modelling" rel="category tag">statistical modelling</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/decisions-to-make-when-modelling-interactions/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-31 00:00:00 +1100">31 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/10/show-missingness-in-large-dataframes-v2/" title="Show missingness in large dataframes, version 2" rel="bookmark">Show missingness in large dataframes, version 2</a>
     </h1>
     <div class="entry-content full-content">
@@ -536,105 +736,6 @@ Complete ...
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/" title="Reproducible research pipelines improve description of method steps" rel="bookmark">Reproducible research pipelines improve description of method steps</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>Adequately documenting the methods and results of data analysis helps
-safeguard against errors of execution and
-interpretation. It is proposed that
-reproducible research pipelines address the problem of
-adequate documentation of data analysis.</p>
-
-<p>This is because they make it easy to
-check the methods. Assumptions are easy to challenge and results
-verified in new analyses. Reproducible research pipelines extend
-traditional research.  They do this by encoding the steps in a
-computer ‘scripting’ language and distributing the data and code with
-publications.  Traditional research moves through the steps of
-hypothesis and design, measured data, analytic data, computational
-results (for figures, tables and numerical results), and reports (text
-and formatted manuscript).</p>
-
-<h2>Fundamental components of a reproducible research pipeline</h2>
-
-<p>The basic components of a pipeline are:</p>
-
-<ul>
-<li>Data Management Plan and Data Inventory</li>
-<li>Method steps</li>
-<li>Code</li>
-<li>Data storage</li>
-<li>Reports</li>
-<li>Distribution.</li>
-</ul>
-
-
-<h3>Method Steps</h3>
-
-<p>The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.</p>
-
-<p>A simple way to keep track of the steps, inputs and outputs is shown in the Table below.</p>
-
-<pre><code>library(stringr)
-steps &lt;- read.csv(textConnection('
-CLUSTER ,  STEP  , INPUTS                   , OUTPUTS                   
-A  ,  Step1      , "Input 1, Input 2"       , "Output 1"                 
-A  ,  Step2      ,  Input 3                  , Output 2                   
-B  ,  Step3      , "Output 1, Output 2"      , Output 3                  
-'), stringsAsFactors = F, strip.white = T)
-</code></pre>
-
-<p></p>
-
-
-<p>The steps and data listed in the Table above can be visualised.
-To achieve this an R function was written as part of this PhD project and is distributed in my own R package available on Github <a href="https://github.com/ivanhanigan/disentangle">https://github.com/ivanhanigan/disentangle</a>.
-This is the <code>newnode</code> function.  The function returns a string of text
-written in the <code>dot</code> language which can be rendered in R using the
-<code>DiagrammeR</code> package, or the standalone <code>graphviz</code> package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.</p>
-
-<pre><code>library(disentangle); library(stringr)
-nodes &lt;- newnode(indat = steps,   names_col = "STEP", in_col = "INPUTS",
-  out_col = "OUTPUTS", 
-  nchar_to_snip = 40)
-sink("fig-basic.dot");
-cat(nodes);
-sink()
-# or DiagrammeR::grViz(nodes)
-system("dot -Tpdf fig-basic.dot -o fig-basic.pdf")
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/fig-basic.png" alt="/images/fig-basic.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/workflow tools" title="workflow tools" rel="category tag">workflow tools</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-10-18 00:00:00 +1100">18 Oct 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -712,6 +813,10 @@ system("dot -Tpdf fig-basic.dot -o fig-basic.pdf")
               <ul>
                 
                 <li>
+                  <a href="/2016/09/update-ripping-data-from-georeferenced-images-with-qgis/" title="UPDATE re Ripping data from georeferenced images with QGIS" rel="bookmark">UPDATE re Ripping data from georeferenced images with QGIS</a>
+                </li>
+                
+                <li>
                   <a href="/2016/08/ripping-data-from-georeferenced-images-with-qgis/" title="Ripping data from georeferenced images with QGIS" rel="bookmark">Ripping data from georeferenced images with QGIS</a>
                 </li>
                 
@@ -725,10 +830,6 @@ system("dot -Tpdf fig-basic.dot -o fig-basic.pdf")
                 
                 <li>
                   <a href="/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/" title="Australian Postal Areas In Geographical Vs Projected Coordinates" rel="bookmark">Australian Postal Areas In Geographical Vs Projected Coordinates</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE/" title="spatial-lag-and-timeseries-model-with-nmmaps-UPDATE" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</a>
                 </li>
                 
               </ul>
@@ -746,13 +847,15 @@ system("dot -Tpdf fig-basic.dot -o fig-basic.pdf")
                 
                 <li><a href="/categories/spatial">spatial (9)</a></li>
                 
-                <li><a href="/categories/extreme weather events">extreme weather events (11)</a></li>
+                <li><a href="/categories/extreme weather events">extreme weather events (8)</a></li>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
                 <li><a href="/categories/data documentation">data documentation (32)</a></li>
                 
-                <li><a href="/categories/awap grids">awap grids (2)</a></li>
+                <li><a href="/categories/awap grids">awap grids (3)</a></li>
+                
+                <li><a href="/categories/climatic and agricultural drought">climatic and agricultural drought (3)</a></li>
                 
                 <li><a href="/categories/cloud building">cloud building (2)</a></li>
                 
@@ -764,7 +867,7 @@ system("dot -Tpdf fig-basic.dot -o fig-basic.pdf")
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/drought">drought (2)</a></li>
+                <li><a href="/categories/drought">drought (3)</a></li>
                 
                 <li><a href="/categories/morpho">morpho (1)</a></li>
                 
@@ -772,7 +875,7 @@ system("dot -Tpdf fig-basic.dot -o fig-basic.pdf")
                 
                 <li><a href="/categories/data management">data management (3)</a></li>
                 
-                <li><a href="/categories/data operation">data operation (3)</a></li>
+                <li><a href="/categories/data operation">data operation (4)</a></li>
                 
                 <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
                 
