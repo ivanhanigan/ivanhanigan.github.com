@@ -54,6 +54,320 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/12/animation-illustrating-catastrophic-regime-shifts/" title="Animation Illustrating Catastrophic Regime Shifts" rel="bookmark">Animation Illustrating Catastrophic Regime Shifts</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p><head>
+<title>Trends and Triggers Figure </title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Trends and Triggers Figure "/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-12-20T00:18+1100"/>
+<meta name="author" content="Ivan Hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
+
+
+
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+
+<p></head>
+<body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<h1 class="title">Trends and Triggers Figure </h1>
+
+
+<hr/>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Introduction</a></li>
+<li><a href="#sec-2">2 The History</a></li>
+<li><a href="#sec-3">3 3D surface</a>
+<ul>
+<li><a href="#sec-3-1">3.1 figure</a></li>
+<li><a href="#sec-3-2">3.2 code</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 Try an animation</a>
+<ul>
+<li><a href="#sec-4-1">4.1 figure</a></li>
+<li><a href="#sec-4-2">4.2 code</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 Next Steps</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>This work toward a enhanced figure that might be used to tell a detailed story about the mixture of trend, triggers and wiggles.
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> The History</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>The original image I base my imagination on is:
+</p>
+<ul>
+<li>Scheffer, M., &amp; Carpenter, S. R. (2003). Catastrophic regime shifts in ecosystems: linking theory to observation [Review]. TRENDS in Ecology and Evolution, 18(12), 648–656. Retrieved from <a href="http://eaton.math.rpi.edu/csums/papers/Ecostability/scheffercatastrophe.pdf">http://eaton.math.rpi.edu/csums/papers/Ecostability/scheffercatastrophe.pdf</a>
+</li>
+</ul>
+
+
+<p>
+Which was based on 
+</p>
+<ul>
+<li>Scheffer, M., Carpenter, S., Foley, J. a, Folke, C., &amp; Walker, B. (2001). Catastrophic shifts in ecosystems. Nature, 413(6856), 591–6. <i>&lt;doi:10.1038/35098000&gt;</i>
+</li>
+</ul>
+
+
+<p>
+<img src="/images/catastrophe.png"  alt="/images/catastrophe.png" />
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 3D surface</h2>
+<div class="outline-text-2" id="text-3">
+
+<p>First I want to generate a 3d computer image to play with perspective and shading.
+</p>
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> figure</h3>
+<div class="outline-text-3" id="text-3-1">
+
+
+<p>
+<img src="/images/TrendsAndTriggers-v2.png"  alt="/images/TrendsAndTriggers-v2.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> code</h3>
+<div class="outline-text-3" id="text-3-2">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;">#### </span><span style="color: #586e75;">name:generate-surface ####</span>
+x <span style="color: #268bd2; font-weight: bold;">&lt;-</span> seq(from=-2.5, to=2.5, by=0.1)
+zid <span style="color: #268bd2; font-weight: bold;">&lt;-</span> .1
+<span style="color: #859900; font-weight: bold;">for</span>(y <span style="color: #859900; font-weight: bold;">in</span> 1:10)
+{    
+  z <span style="color: #268bd2; font-weight: bold;">&lt;-</span> x^4 - zid * x^3 - 7 * x^2 + x + 6
+  <span style="color: #859900; font-weight: bold;">if</span>(y == 1)
+  {
+    data_out <span style="color: #268bd2; font-weight: bold;">&lt;-</span> cbind(x,y,z)  
+  } <span style="color: #859900; font-weight: bold;">else</span> {
+    data_out <span style="color: #268bd2; font-weight: bold;">&lt;-</span> rbind(data_out, cbind(x,y,z))
+  }
+  zid <span style="color: #268bd2; font-weight: bold;">&lt;-</span> zid + 0.1
+}
+
+data_out <span style="color: #268bd2; font-weight: bold;">&lt;-</span> as.data.frame(data_out)
+write.csv(data_out, <span style="color: #2aa198;">"TrendsAndTriggers-v2.csv"</span>, row.names = F)
+
+png(<span style="color: #2aa198;">"/images/TrendsAndTriggers-v2.png"</span>)
+persp(x, 1:10, matrix(data_out$z, ncol = 10, nrow = length(x)), ylab= <span style="color: #2aa198;">""</span>,  xlab= <span style="color: #2aa198;">""</span>, zlab = <span style="color: #2aa198;">""</span>,  
+      theta = 140, 
+      phi = 42, 
+      expand = 0.5, col = <span style="color: #2aa198;">"lightgrey"</span>)
+dev.off()
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Try an animation</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>I'd like to move the ball through the surface.  First need to calculate the path.
+</p>
+</div>
+
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> figure</h3>
+<div class="outline-text-3" id="text-4-1">
+
+<p><img src="/images/animation.gif"  alt="/images/animation.gif" />
+</p></div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> code</h3>
+<div class="outline-text-3" id="text-4-2">
+
+
+
+
+<pre class="src src-R"><span style="color: #586e75;"># </span><span style="color: #586e75;">functions</span>
+<span style="color: #859900; font-weight: bold;">if</span>(!<span style="color: #268bd2; font-weight: bold;">require</span>(animation)) install.packages(<span style="color: #2aa198;">"animation"</span>);
+<span style="color: #268bd2; font-weight: bold;">require</span>(animation)
+
+<span style="color: #586e75;"># </span><span style="color: #586e75;">load</span>
+data_out <span style="color: #268bd2; font-weight: bold;">&lt;-</span> read.csv(<span style="color: #2aa198;">"TrendsAndTriggers-v2.csv"</span>)
+
+<span style="color: #586e75;">## </span><span style="color: #586e75;">do</span>
+setwd(<span style="color: #2aa198;">"images"</span>)
+saveGIF(
+{
+  ani.options(interval = 0.2)
+  xindex  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> c(0, -1, rep(-1.9, 6), -1, 0, 1, rep(2, 6), 1, 0 , 0)
+  j  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> 1
+  xind  <span style="color: #268bd2; font-weight: bold;">&lt;-</span> xindex[j]
+  <span style="color: #859900; font-weight: bold;">for</span>(index <span style="color: #859900; font-weight: bold;">in</span> c(1:10, 9:1)){
+  with(subset(data_out, y == index),
+       plot(x, z, type = <span style="color: #2aa198;">"l"</span>, ylim = c(-15,15))
+       )
+  with(subset(data_out, y == index &amp; x == xind),
+       points(x,z,pch=16,cex = 3)
+       )
+  j <span style="color: #268bd2; font-weight: bold;">&lt;-</span> j + 1
+  xind <span style="color: #268bd2; font-weight: bold;">&lt;-</span> xindex[j]
+  }
+},
+outdir = getwd()
+)
+setwd(<span style="color: #2aa198;">".."</span>)
+</pre>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Next Steps</h2>
+<div class="outline-text-2" id="text-5">
+
+<ul>
+<li>the polynomials should move up and down to give the height of originals
+</li>
+<li>the hump in the middle needs to change, so the ball flips more easily
+</li>
+<li>I'd like the ball to wiggle, add a random walk 
+</li>
+<li>the time series dimension needs to be shown
+</li>
+<li>It'd be great to combine this with 2D line plots as well
+</li>
+</ul>
+
+
+
+
+
+</div>
+</div>
+</div>
+
+
+<p></body></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/ecosocial tipping points" title="ecosocial tipping points" rel="category tag">ecosocial tipping points</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/12/animation-illustrating-catastrophic-regime-shifts/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-12-20 00:00:00 +1100">20 Dec 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/12/marco-fahmi-farewell-from-asn-ltern-data-portal-team/" title="Marco Fahmi Farewell From ASN-LTERN Data Portal Team" rel="bookmark">Marco Fahmi Farewell From ASN-LTERN Data Portal Team</a>
     </h1>
     <div class="entry-content full-content">
@@ -326,88 +640,6 @@ outdir = getwd()
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>I really like the idea of using github or bitbucket for a dual code repository and project website</li>
-<li>in Github I set up the master branch with the R package code</li>
-<li>and set up the website using the gh-pages branch</li>
-<li>it has to be called gh-pages, and add an index.html, it will appear at your-username.github.com/repo-name</li>
-</ul>
-
-
-<h4>Github</h4>
-
-<ul>
-<li>The best bit about doing this on github is that the R package "devtools" can be used to install the package (so long as you can compile the package)</li>
-<li>on windows you may need to install Rtools and configure the path</li>
-</ul>
-
-
-<h4>R Code: install_github</h4>
-
-<pre><code>require(devtools)
-install_github("repo-name", "github-account-name")
-</code></pre>
-
-<h4>Bitbucket</h4>
-
-<ul>
-<li>I recently took these notes about setting up a website on Bitbucket</li>
-<li>I am not sure about how this would work for R packages (the devtools installer mentioned above is a great tool for developing)</li>
-<li>but with unlimited private repositories this seems like a good platform for my "open notebook - selected content" (I need to be selective about what I share and what I keep restricted access only)</li>
-<li>the page is available for "your-account".bitbucket.org</li>
-<li>create a new repo on the web UI</li>
-<li>I kept the repo private, but the pages will be public,</li>
-<li>added issue tracking and Wiki</li>
-</ul>
-
-
-<h4>using git shell</h4>
-
-<pre><code>mkdir ~/projects/your-account.bitbucket.org
-cd ~/projects/your-account.bitbucket.org
-git init
-git remote add origin ssh://git@bitbucket.org/your-account/your-account.bitbucket.org.git
-touch index.org
-# use emacs to make changes and publish the html (C-c C-e h)
-
-git commit -m "First commit"
-git push -u origin master
-</code></pre>
-
-<ul>
-<li><p>now it is online at http://your-account.bitbucket.org/</p></li>
-<li><p>More info at:
-<a href="https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket">https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket</a></p></li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/12/dual-code-repository-and-project-website/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-12-09 00:00:00 +1100">09 Dec 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -485,6 +717,10 @@ git push -u origin master
               <ul>
                 
                 <li>
+                  <a href="/2016/12/one-health-ecohealth-conference-melbourne-dec-2016/" title="One Health Ecohealth Conference Melbourne Dec 2016" rel="bookmark">One Health Ecohealth Conference Melbourne Dec 2016</a>
+                </li>
+                
+                <li>
                   <a href="/2016/09/update-ripping-data-from-georeferenced-images-with-qgis/" title="UPDATE re Ripping data from georeferenced images with QGIS" rel="bookmark">UPDATE re Ripping data from georeferenced images with QGIS</a>
                 </li>
                 
@@ -498,10 +734,6 @@ git push -u origin master
                 
                 <li>
                   <a href="/2016/08/colours-to-use-for-maps/" title="colours-to-use-for-maps" rel="bookmark">colours-to-use-for-maps</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/" title="Australian Postal Areas In Geographical Vs Projected Coordinates" rel="bookmark">Australian Postal Areas In Geographical Vs Projected Coordinates</a>
                 </li>
                 
               </ul>
@@ -570,6 +802,8 @@ git push -u origin master
                 <li><a href="/categories/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li>
                 
                 <li><a href="/categories/drought awap grids">drought awap grids (1)</a></li>
+                
+                <li><a href="/categories/training">training (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

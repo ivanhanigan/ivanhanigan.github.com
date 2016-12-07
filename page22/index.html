@@ -54,6 +54,88 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/12/dual-code-repository-and-project-website/" title="dual-code-repository-and-project-website" rel="bookmark">dual-code-repository-and-project-website</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+<li>I really like the idea of using github or bitbucket for a dual code repository and project website</li>
+<li>in Github I set up the master branch with the R package code</li>
+<li>and set up the website using the gh-pages branch</li>
+<li>it has to be called gh-pages, and add an index.html, it will appear at your-username.github.com/repo-name</li>
+</ul>
+
+
+<h4>Github</h4>
+
+<ul>
+<li>The best bit about doing this on github is that the R package "devtools" can be used to install the package (so long as you can compile the package)</li>
+<li>on windows you may need to install Rtools and configure the path</li>
+</ul>
+
+
+<h4>R Code: install_github</h4>
+
+<pre><code>require(devtools)
+install_github("repo-name", "github-account-name")
+</code></pre>
+
+<h4>Bitbucket</h4>
+
+<ul>
+<li>I recently took these notes about setting up a website on Bitbucket</li>
+<li>I am not sure about how this would work for R packages (the devtools installer mentioned above is a great tool for developing)</li>
+<li>but with unlimited private repositories this seems like a good platform for my "open notebook - selected content" (I need to be selective about what I share and what I keep restricted access only)</li>
+<li>the page is available for "your-account".bitbucket.org</li>
+<li>create a new repo on the web UI</li>
+<li>I kept the repo private, but the pages will be public,</li>
+<li>added issue tracking and Wiki</li>
+</ul>
+
+
+<h4>using git shell</h4>
+
+<pre><code>mkdir ~/projects/your-account.bitbucket.org
+cd ~/projects/your-account.bitbucket.org
+git init
+git remote add origin ssh://git@bitbucket.org/your-account/your-account.bitbucket.org.git
+touch index.org
+# use emacs to make changes and publish the html (C-c C-e h)
+
+git commit -m "First commit"
+git push -u origin master
+</code></pre>
+
+<ul>
+<li><p>now it is online at http://your-account.bitbucket.org/</p></li>
+<li><p>More info at:
+<a href="https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket">https://confluence.atlassian.com/display/BITBUCKET/Publishing+a+Website+on+Bitbucket</a></p></li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/12/dual-code-repository-and-project-website/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-12-09 00:00:00 +1100">09 Dec 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/12/bitbucket-has-unlimited-private-git-repositories-for-universities/" title="bitbucket-has-unlimited-private-git-repositories-for-universities" rel="bookmark">bitbucket-has-unlimited-private-git-repositories-for-universities</a>
     </h1>
     <div class="entry-content full-content">
@@ -907,65 +989,6 @@ model such as this:
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/12/research-protocol-we-used-for-our-bushfire-project/" title="research-protocol-we-used-for-our-bushfire-project" rel="bookmark">research-protocol-we-used-for-our-bushfire-project</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>For a three year project on Bushfire smoke and Health we used the following structure in a wiki</li>
-</ul>
-
-
-<h4>Sections:</h4>
-
-<pre><code>A.Background        
-B.Proposals         
-C.Approvals         
-D.Budget    
-E.Datasets  
-F.Analysis  
-G.Literature        
-H.Communication     
-I.Correspondance    
-J.Meetings  
-K.Completion        
-ContactDetails      
-README
-TODO        
-</code></pre>
-
-<h4>Conclusion</h4>
-
-<ul>
-<li>it worked quite well in the first year.</li>
-<li>we didn't use it much after that.</li>
-<li>it is still on the ANU webserver.  I sometimes refer back to it now, a couple of years later.</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/12/research-protocol-we-used-for-our-bushfire-project/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-12-02 00:00:00 +1100">02 Dec 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1043,6 +1066,10 @@ TODO
               <ul>
                 
                 <li>
+                  <a href="/2016/12/one-health-ecohealth-conference-melbourne-dec-2016/" title="One Health Ecohealth Conference Melbourne Dec 2016" rel="bookmark">One Health Ecohealth Conference Melbourne Dec 2016</a>
+                </li>
+                
+                <li>
                   <a href="/2016/09/update-ripping-data-from-georeferenced-images-with-qgis/" title="UPDATE re Ripping data from georeferenced images with QGIS" rel="bookmark">UPDATE re Ripping data from georeferenced images with QGIS</a>
                 </li>
                 
@@ -1056,10 +1083,6 @@ TODO
                 
                 <li>
                   <a href="/2016/08/colours-to-use-for-maps/" title="colours-to-use-for-maps" rel="bookmark">colours-to-use-for-maps</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/" title="Australian Postal Areas In Geographical Vs Projected Coordinates" rel="bookmark">Australian Postal Areas In Geographical Vs Projected Coordinates</a>
                 </li>
                 
               </ul>
@@ -1128,6 +1151,8 @@ TODO
                 <li><a href="/categories/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li>
                 
                 <li><a href="/categories/drought awap grids">drought awap grids (1)</a></li>
+                
+                <li><a href="/categories/training">training (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

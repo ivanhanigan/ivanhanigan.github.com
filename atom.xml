@@ -4,13 +4,40 @@
  <title>Ivan Hanigan</title>
  <link href="http://ivanhanigan.github.com/atom.xml" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2016-09-05T11:35:05+10:00</updated>
+ <updated>2016-12-08T08:49:10+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>Ivan Hanigan</name>
    <email>ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>One Health Ecohealth Conference Melbourne Dec 2016</title>
+   <link href="http://ivanhanigan.github.com/2016/12/one-health-ecohealth-conference-melbourne-dec-2016/"/>
+   <updated>2016-12-08T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2016/12/one-health-ecohealth-conference-melbourne-dec-2016</id>
+   <content type="html">&lt;p&gt;I've just come out of an amazing 5 day conference on One Health (where animal health science meets human health science, and a whole lot of ecological thinking).&lt;/p&gt;
+
+&lt;p&gt;It was truly terrifying to hear about the cascading risks to health from environmental change.  I was deeply affected by the story of monitoring worm infestation rates in children working in mines in the DRCongo, and saddened by the mass death of coral this year on the barrier reef (among many other tragic stories).&lt;/p&gt;
+
+&lt;p&gt;There was good news too:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Pepper and cinnamon fed to broiler chickens in India has been found to have antimicrobial properties&lt;/li&gt;
+&lt;li&gt;Bhutan have made progress with rabies&lt;/li&gt;
+&lt;li&gt;Yanks working with Ozzies are making progress on Hendra antibodies/vaccine for horses and humans&lt;/li&gt;
+&lt;li&gt;I met some very inspiring early career researchers and students&lt;/li&gt;
+&lt;li&gt;I met some equally inspiring senior scientists&lt;/li&gt;
+&lt;li&gt;My drought index/Government Drought Declarations poster was viewed by the former head of the Gov. Department who was in charge of the drought declarations (we agreed that the underlying governmental decision rules are vague and multipurpose, and a climate index has great value when looking at human ecology)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;I also gathered some AVA CPD points (whatever they are!) as alerted by this certificate they sent me.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ecohealth_cert.png&quot; alt=&quot;/images/ecohealth_cert.png&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>UPDATE re Ripping data from georeferenced images with QGIS</title>
@@ -5125,101 +5152,6 @@ analysisTemplate()
 
 
 &lt;p&gt;&lt;/body&gt;&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Reproducible Research And Managing Digital Assets Part 2 of 3. makeProject is simple</title>
-   <link href="http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets-part-2/"/>
-   <updated>2015-09-26T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets-part-2</id>
-   <content type="html">&lt;p&gt;This post is about an effective and simple data management framework for analysis projects.
-This post introduces Josh Reich's LCFD framework, originally introduced in this answer on the stack overflow website here &lt;a href=&quot;http://stackoverflow.com/a/1434424&quot;&gt;http://stackoverflow.com/a/1434424&lt;/a&gt;, and encoded into the makeProject R package &lt;a href=&quot;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&quot;&gt;http://cran.r-project.org/web/packages/makeProject/makeProject.pdf&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Literature Review Approach&lt;/h2&gt;
-
-&lt;p&gt;This series of three posts is a summary of some of the most useful advice I have found based on my experience having implemented in my own work.&lt;/p&gt;
-
-&lt;p&gt;This is the second post in a series of three entries regarding some evidence-based best practice approaches I have reviewed.  I have read many website articles and blog posts on a variety of approaches to the organisation of digital assets in a reporoducible research pipeline.
-The material I've gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.&lt;/p&gt;
-
-&lt;h2&gt;Digital Assets Management for Reproducible Research&lt;/h2&gt;
-
-&lt;p&gt;The digital assets in a reproducible research pipeline include:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Publication material (documents, figures, tables, literature)&lt;/li&gt;
-&lt;li&gt;Data (raw measurements, data provided, data derived)&lt;/li&gt;
-&lt;li&gt;Code (pre-processing, analysis and presentation)&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h2&gt;How to use the &lt;code&gt;makeProject&lt;/code&gt; package&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The &lt;code&gt;makeProject&lt;/code&gt; R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.&lt;/li&gt;
-&lt;li&gt;The theory is very similar to the approach described in the previous post about Scott Long's batch script: wfsetupsingle.bat &lt;a href=&quot;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&quot;&gt;https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# choose your project dir
-setwd(&quot;~/projects&quot;)   
-library(makeProject)
-makeProject(&quot;makeProjectDemo&quot;)
-#returns
-&quot;Creating Directories ...
-Creating Code Files ...
-Complete ...&quot;
-matrix(dir(&quot;makeProjectDemo&quot;))
-#[1,] &quot;code&quot;       
-#[2,] &quot;data&quot;       
-#[3,] &quot;DESCRIPTION&quot;
-#[4,] &quot;main.R&quot;     
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;This has set up some simple and sensible tools for a data analysis.&lt;/li&gt;
-&lt;li&gt;Let's have a look at the &lt;code&gt;main.R&lt;/code&gt; script. This is the one file that is used to run all the modules of the project, found in the R scripts in the &lt;code&gt;code&lt;/code&gt; folder.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;Code:&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;# Project: makeProjectDemo
-# Author: Your Name
-# Maintainer: Who to complain to &amp;lt;yourfault@somewhere.net&amp;gt;
-
-# This is the main file for the project
-# It should do very little except call the other files
-
-### Set the working directory
-setwd(&quot;/home/ivan_hanigan/projects/makeProjectDemo&quot;)
-
-
-### Set any global variables here
-####################
-
-
-
-####################
-
-
-### Run the code
-source(&quot;code/load.R&quot;)
-source(&quot;code/clean.R&quot;)
-source(&quot;code/func.R&quot;)
-source(&quot;code/do.R&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-
-&lt;p&gt;I think that is very self-explanatory, but it does need some demonstration.  The next instalment in this three part blog post will describe the ProjectTemplate approach.  After that I will demonstrate ways that each of the three approaches can be used.&lt;/p&gt;
 </content>
  </entry>
  
