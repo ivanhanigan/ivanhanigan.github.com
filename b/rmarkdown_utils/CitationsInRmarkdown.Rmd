@@ -1,0 +1,96 @@
+
+---
+title: "Coming to grips with citations in Rmarkdown"
+author: Ivan C. Hanigan
+output:
+  html_document:
+    toc: true
+    theme: united
+    number_sections: yes    
+    toc_depth: 2
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    highlight: zenburn
+    keep_tex: true
+    number_sections: no        
+documentclass: article
+classoption: a4paper
+csl: meemodified.csl
+bibliography: refs.bib
+---
+
+```{r, echo=F, eval = F}
+
+# func
+setwd("~/tools/disentangle")
+library(rmarkdown)
+library(knitr)
+library(knitcitations)
+library(bibtex)
+cleanbib()
+#rm("bib")
+#options("cite_format"="pandoc")
+cite_options(citation_format = "pandoc", check.entries=FALSE)
+rmarkdown::render("~/projects/ivanhanigan.github.com.raw/rmarkdown_utils/CitationsInRmarkdown.Rmd", "html_document")
+#browseURL("CitationsInRmarkdown.html")  
+#rmarkdown::render("~/projects/ivanhanigan.github.com.raw/rmarkdown_utils/CitationsInRmarkdown.Rmd", "pdf_document")
+#browseURL("CitationsInRmarkdown.pdf")
+
+```
+
+```{r, echo = F, results = 'hide'}
+# load my main bib file, generated from Mendeley
+if(!exists("bib")){
+bib <- read.bibtex("~/references/library.bib")
+}
+```
+
+# Introduction
+Earlier this year I was pleased to stumble on to Petr Keil\'s [Simple
+template for scientific manuscripts in
+Rmarkdown](http://www.petrkeil.com/?p=2401) and the Github Repo
+[https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template](https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template).
+  
+
+I was already using Rmarkdown effectively for everything I wanted
+except my bibliography, and this helped a lot.  But I eventually
+found I needed to tweak the format of the citation style.  I tried
+out a bunch of other CSL files but none felt just right.  I tried out
+these after downloading from [https://github.com/citation-style-language/styles](https://github.com/citation-style-language/styles):
+  
+```
+american-physiological-society.csl
+annals-of-the-association-of-american-geographers.csl
+biomed-central.csl
+ecology.csl
+pnas.csl
+```
+
+NB also that the csl file in petrkeil's repo is an older version from 2012 of the version in the citation-style repo called `methods-in-ecology-and-evolution`.  The differences are not large though.
+  
+## The problems
+  
+- Every journal paper has a URL 
+- I wanted to cite the electronic version of an article before it later appears in print, called epub ahead of print, like in PubMed.
+- I wanted to cite blog posts (very modern hey? next it will be tweets)
+  
+## Here are some example citations
+  
+### Example 1:
+
+The journal article by `r citet(bib[["Michener1997"]])` and another one `r citep(bib[["Bodnar2004"]])` appear with their full URL even though I just want their DOI.
+
+### Example 2:
+
+Some recent papers `r citep(c(bib[["OpenScienceCollaboration2015"]],bib[["Davey2015"]], bib[["Aiken2015"]]))` don't have Volume info and I want to say [epub ahead of print].
+
+### Example 3:
+
+This blog post on 'evidence based data analysis pipeline' by `r citet(bib[["Peng2013"]])` is one that definitely needs the URL and date accessed.      
+
+
+```{r, echo=FALSE, message=FALSE, eval = T}
+write.bibtex(file="refs.bib")
+```
+# References

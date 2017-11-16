@@ -59,24 +59,22 @@
 
 <p>However I always hate the way <code>barplot</code> works.  Here is an example:</p>
 
-<div class="highlight"><pre><code class="language-r" data-lang="r">qc <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="kp">textConnection</span><span class="p">(</span><span class="s">&quot;id,  OnlinePaper, Q, freq, totals,       prop</span>
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>qc <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="kp">textConnection</span><span class="p">(</span><span class="s">&quot;id,  OnlinePaper, Q, freq, totals,       prop</span>
 <span class="s">1,      Online,         ,1768,   9950, 0.17768844</span>
 <span class="s">2,      Online,      No ,4022,   9950, 0.40422111</span>
 <span class="s">3,      Online,     Yes ,4160,   9950, 0.41809045</span>
 <span class="s">4,       Paper,         , 256,   3355, 0.07630402</span>
 <span class="s">5,       Paper,      No , 979,   3355, 0.29180328</span>
-<span class="s">6,       Paper,     Yes ,2120,   3355, 0.63189270&quot;</span><span class="p">))</span>
+<span class="s">6,       Paper,     Yes ,2120,   3355, 0.63189270&quot;</span><span class="p">))</span></p>
 
-qc1 <span class="o">&lt;-</span> cast<span class="p">(</span>qc<span class="p">,</span> OnlinePaper <span class="o">~</span> Q74 <span class="p">,</span> value <span class="o">=</span> <span class="s">&quot;prop&quot;</span><span class="p">)</span>
+<p>qc1 <span class="o">&lt;-</span> cast<span class="p">(</span>qc<span class="p">,</span> OnlinePaper <span class="o">~</span> Q74 <span class="p">,</span> value <span class="o">=</span> <span class="s">&quot;prop&quot;</span><span class="p">)</span>
 qc1
-barplot<span class="p">(</span><span class="kp">as.matrix</span><span class="p">(</span>qc1<span class="p">),</span> beside <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> legend.text <span class="o">=</span> qc1<span class="p">[,</span><span class="m">1</span><span class="p">],</span> ylim <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span></code></pre></div>
-
+barplot<span class="p">(</span><span class="kp">as.matrix</span><span class="p">(</span>qc1<span class="p">),</span> beside <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> legend.text <span class="o">=</span> qc1<span class="p">[,</span><span class="m">1</span><span class="p">],</span> ylim <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span></code></pre></figure></p>
 
 <p><img src="/images/barplot_base.png" alt="/images/barplot_base.png" /></p>
 
-<div class="highlight"><pre><code class="language-r" data-lang="r">ggplot<span class="p">(</span>data<span class="o">=</span>qc<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Q<span class="p">,</span> y<span class="o">=</span>prop<span class="p">,</span> fill<span class="o">=</span>OnlinePaper<span class="p">))</span> <span class="o">+</span>
-    geom_bar<span class="p">(</span>stat<span class="o">=</span><span class="s">&quot;identity&quot;</span><span class="p">,</span> position<span class="o">=</span>position_dodge<span class="p">())</span></code></pre></div>
-
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>ggplot<span class="p">(</span>data<span class="o">=</span>qc<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Q<span class="p">,</span> y<span class="o">=</span>prop<span class="p">,</span> fill<span class="o">=</span>OnlinePaper<span class="p">))</span> <span class="o">+</span>
+    geom_bar<span class="p">(</span>stat<span class="o">=</span><span class="s">&quot;identity&quot;</span><span class="p">,</span> position<span class="o">=</span>position_dodge<span class="p">())</span></code></pre></figure></p>
 
 <p><img src="/images/barplot_gg.png" alt="/images/barplot_gg.png" /></p>
 
@@ -88,7 +86,7 @@ barplot<span class="p">(</span><span class="kp">as.matrix</span><span class="p">
 
 <p>This made heavy use of the following approach</p>
 
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1"># original by Joseph Guillaume 2009</span>
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># original by Joseph Guillaume 2009</span>
 SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>aggAllData<span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
   par<span class="p">(</span>mar<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">8</span><span class="p">,</span><span class="m">7</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
   bp<span class="o">&lt;-</span>barplot<span class="p">(</span>aggAllData<span class="p">,</span>
@@ -96,14 +94,11 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
               col<span class="o">=</span>gray.colors<span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>aggAllData<span class="p">)),</span>
               las<span class="o">=</span><span class="m">1</span><span class="p">,</span> axisnames <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
   labels <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span><span class="kp">as.data.frame</span><span class="p">(</span>aggAllData<span class="p">))</span>
-  text<span class="p">(</span>bp<span class="p">,</span> par<span class="p">(</span><span class="s">&#39;usr&#39;</span><span class="p">)[</span><span class="m">3</span><span class="p">],</span> labels <span class="o">=</span> <span class="kp">labels</span><span class="p">,</span> srt <span class="o">=</span> <span class="m">45</span><span class="p">,</span> 
+  text<span class="p">(</span>bp<span class="p">,</span> par<span class="p">(</span><span class="s">&#39;usr&#39;</span><span class="p">)[</span><span class="m">3</span><span class="p">],</span> labels <span class="o">=</span> <span class="kp">labels</span><span class="p">,</span> srt <span class="o">=</span> <span class="m">45</span><span class="p">,</span>
        adj <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">1.1</span><span class="p">,</span><span class="m">1.1</span><span class="p">),</span> xpd <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> cex<span class="o">=</span><span class="m">.9</span><span class="p">)</span>
     <span class="kr">return</span><span class="p">(</span>bp<span class="p">)</span>
 <span class="p">}</span>
-<span class="c1"># with width = xvar (proportions)</span></code></pre></div>
-
-
-
+<span class="c1"># with width = xvar (proportions)</span></code></pre></figure></p>
 
     <div class="clear"></div>
   </div>
@@ -209,6 +204,10 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
               <ul>
                 
                 <li>
+                  <a href="/2017/11/new-paper-on-neighbourhood-level-air-pollution-for-health-research/" title="New paper on neighbourhood level air pollution for health research" rel="bookmark">New paper on neighbourhood level air pollution for health research</a>
+                </li>
+                
+                <li>
                   <a href="/2017/01/reproducible-ecosystem-risk-assessment-as-virtual-desktop-case-study/" title="Reproducible ecosystem risk assessment as virtual desktop case study" rel="bookmark">Reproducible ecosystem risk assessment as virtual desktop case study</a>
                 </li>
                 
@@ -222,10 +221,6 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
                 
                 <li>
                   <a href="/2016/08/ripping-data-from-georeferenced-images-with-qgis/" title="Ripping data from georeferenced images with QGIS" rel="bookmark">Ripping data from georeferenced images with QGIS</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/08/drought-awap-grids-notes-re-extract-point/" title="drought-awap-grids-notes-re-extract-point" rel="bookmark">drought-awap-grids-notes-re-extract-point</a>
                 </li>
                 
               </ul>
@@ -247,7 +242,7 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
-                <li><a href="/categories/data documentation">data documentation (32)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (31)</a></li>
                 
                 <li><a href="/categories/awap grids">awap grids (3)</a></li>
                 
@@ -257,31 +252,39 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
                 
                 <li><a href="/categories/disentangle">disentangle (49)</a></li>
                 
-                <li><a href="/categories/project management">project management (3)</a></li>
+                <li><a href="/categories/Project Management">Project Management (2)</a></li>
                 
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/drought">drought (3)</a></li>
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/project management">project management (1)</a></li>
                 
                 <li><a href="/categories/morpho">morpho (1)</a></li>
                 
-                <li><a href="/categories/reproducible research reports">reproducible research reports (4)</a></li>
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
                 
-                <li><a href="/categories/data management">data management (3)</a></li>
+                <li><a href="/categories/reproducible research reports">reproducible research reports (2)</a></li>
                 
-                <li><a href="/categories/data operation">data operation (4)</a></li>
+                <li><a href="/categories/Data Management">Data Management (2)</a></li>
                 
-                <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
+                <li><a href="/categories/Reproducible Research Reports">Reproducible Research Reports (2)</a></li>
                 
-                <li><a href="/categories/exploratory data analysis">exploratory data analysis (4)</a></li>
+                <li><a href="/categories/Data Operation">Data Operation (2)</a></li>
+                
+                <li><a href="/categories/Workflow tools">Workflow tools (3)</a></li>
+                
+                <li><a href="/categories/Exploratory Data Analysis">Exploratory Data Analysis (2)</a></li>
                 
                 <li><a href="/categories/statistical modelling">statistical modelling (2)</a></li>
                 
                 <li><a href="/categories/blog home">blog home (1)</a></li>
                 
-                <li><a href="/categories/swish">swish (1)</a></li>
+                <li><a href="/categories/data management">data management (1)</a></li>
+                
+                <li><a href="/categories/swish">swish (2)</a></li>
                 
                 <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (2)</a></li>
                 
@@ -291,9 +294,15 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
                 
                 <li><a href="/categories/climate data">climate data (1)</a></li>
                 
+                <li><a href="/categories/exploratory data analysis">exploratory data analysis (2)</a></li>
+                
                 <li><a href="/categories/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li>
                 
                 <li><a href="/categories/drought awap grids">drought awap grids (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/data operation">data operation (2)</a></li>
                 
                 <li><a href="/categories/training">training (1)</a></li>
                 

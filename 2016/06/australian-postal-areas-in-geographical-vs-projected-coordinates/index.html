@@ -74,12 +74,12 @@
 </ul>
 
 
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="s">&#39;name:poa06-area-lambert&#39;</span>
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="s">&#39;name:poa06-area-lambert&#39;</span>
 <span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/projects/POA_centroids/POA2006_centroids&quot;</span><span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>swishdbtools<span class="p">)</span>
-ch <span class="o">&lt;-</span> connect2postgres2<span class="p">(</span><span class="s">&quot;delphe&quot;</span><span class="p">)</span>
+ch <span class="o">&lt;-</span> connect2postgres2<span class="p">(</span><span class="s">&quot;delphe&quot;</span><span class="p">)</span></p>
 
-fout_geo<span class="o">=</span>dbGetQuery<span class="p">(</span>ch<span class="p">,</span>
+<p>fout_geo<span class="o">=</span>dbGetQuery<span class="p">(</span>ch<span class="p">,</span>
 <span class="s">&#39;select poa_2006,</span>
 <span class="s">  st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,</span>
 <span class="s">st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,</span>
@@ -88,15 +88,12 @@ fout_geo<span class="o">=</span>dbGetQuery<span class="p">(</span>ch<span class=
 str<span class="p">(</span>fout_geo<span class="p">)</span>
 <span class="kp">sum</span><span class="p">(</span>fout_geo<span class="o">$</span>geoscience_australia_lambert_area_km2<span class="p">)</span>
 write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="s">&#39;data_derived/auspoa06_geocentroids_lambert_20160624.csv&#39;</span><span class="p">,</span>
-            row.names<span class="o">=</span><span class="bp">F</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+            row.names<span class="o">=</span><span class="bp">F</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;,&#39;</span><span class="p">)</span></p>
 
-plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</span><span class="o">:</span><span class="m">4</span><span class="p">])</span>
+<p>plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</span><span class="o">:</span><span class="m">4</span><span class="p">])</span>
 <span class="kp">head</span><span class="p">(</span>fout_geo<span class="p">)</span>
 <span class="kp">nrow</span><span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="m">2507</span></code></pre></div>
-
-
-
+<span class="m">2507</span></code></pre></figure></p>
 
     <div class="clear"></div>
   </div>
@@ -202,6 +199,10 @@ plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</
               <ul>
                 
                 <li>
+                  <a href="/2017/11/new-paper-on-neighbourhood-level-air-pollution-for-health-research/" title="New paper on neighbourhood level air pollution for health research" rel="bookmark">New paper on neighbourhood level air pollution for health research</a>
+                </li>
+                
+                <li>
                   <a href="/2017/01/reproducible-ecosystem-risk-assessment-as-virtual-desktop-case-study/" title="Reproducible ecosystem risk assessment as virtual desktop case study" rel="bookmark">Reproducible ecosystem risk assessment as virtual desktop case study</a>
                 </li>
                 
@@ -215,10 +216,6 @@ plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</
                 
                 <li>
                   <a href="/2016/08/ripping-data-from-georeferenced-images-with-qgis/" title="Ripping data from georeferenced images with QGIS" rel="bookmark">Ripping data from georeferenced images with QGIS</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/08/drought-awap-grids-notes-re-extract-point/" title="drought-awap-grids-notes-re-extract-point" rel="bookmark">drought-awap-grids-notes-re-extract-point</a>
                 </li>
                 
               </ul>
@@ -240,7 +237,7 @@ plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</
                 
                 <li><a href="/categories/spatial dependence">spatial dependence (10)</a></li>
                 
-                <li><a href="/categories/data documentation">data documentation (32)</a></li>
+                <li><a href="/categories/Data Documentation">Data Documentation (31)</a></li>
                 
                 <li><a href="/categories/awap grids">awap grids (3)</a></li>
                 
@@ -250,31 +247,39 @@ plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</
                 
                 <li><a href="/categories/disentangle">disentangle (49)</a></li>
                 
-                <li><a href="/categories/project management">project management (3)</a></li>
+                <li><a href="/categories/Project Management">Project Management (2)</a></li>
                 
                 <li><a href="/categories/e-collaboration">e-collaboration (1)</a></li>
                 
                 <li><a href="/categories/ecosocial tipping points">ecosocial tipping points (2)</a></li>
                 
-                <li><a href="/categories/drought">drought (3)</a></li>
+                <li><a href="/categories/Drought">Drought (1)</a></li>
+                
+                <li><a href="/categories/project management">project management (1)</a></li>
                 
                 <li><a href="/categories/morpho">morpho (1)</a></li>
                 
-                <li><a href="/categories/reproducible research reports">reproducible research reports (4)</a></li>
+                <li><a href="/categories/data documentation">data documentation (1)</a></li>
                 
-                <li><a href="/categories/data management">data management (3)</a></li>
+                <li><a href="/categories/reproducible research reports">reproducible research reports (2)</a></li>
                 
-                <li><a href="/categories/data operation">data operation (4)</a></li>
+                <li><a href="/categories/Data Management">Data Management (2)</a></li>
                 
-                <li><a href="/categories/workflow tools">workflow tools (3)</a></li>
+                <li><a href="/categories/Reproducible Research Reports">Reproducible Research Reports (2)</a></li>
                 
-                <li><a href="/categories/exploratory data analysis">exploratory data analysis (4)</a></li>
+                <li><a href="/categories/Data Operation">Data Operation (2)</a></li>
+                
+                <li><a href="/categories/Workflow tools">Workflow tools (3)</a></li>
+                
+                <li><a href="/categories/Exploratory Data Analysis">Exploratory Data Analysis (2)</a></li>
                 
                 <li><a href="/categories/statistical modelling">statistical modelling (2)</a></li>
                 
                 <li><a href="/categories/blog home">blog home (1)</a></li>
                 
-                <li><a href="/categories/swish">swish (1)</a></li>
+                <li><a href="/categories/data management">data management (1)</a></li>
+                
+                <li><a href="/categories/swish">swish (2)</a></li>
                 
                 <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (2)</a></li>
                 
@@ -284,9 +289,15 @@ plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</
                 
                 <li><a href="/categories/climate data">climate data (1)</a></li>
                 
+                <li><a href="/categories/exploratory data analysis">exploratory data analysis (2)</a></li>
+                
                 <li><a href="/categories/bibliometrics and literature reviewing">bibliometrics and literature reviewing (1)</a></li>
                 
                 <li><a href="/categories/drought awap grids">drought awap grids (1)</a></li>
+                
+                <li><a href="/categories/drought">drought (2)</a></li>
+                
+                <li><a href="/categories/data operation">data operation (2)</a></li>
                 
                 <li><a href="/categories/training">training (1)</a></li>
                 
