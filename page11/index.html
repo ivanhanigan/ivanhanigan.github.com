@@ -54,6 +54,98 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/10/reproducible-research-pipelines-in-epidemiology/" title="Reproducible Research Pipelines In Epidemiology" rel="bookmark">Reproducible Research Pipelines In Epidemiology</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>The scientific questions motivating my work explore the health
+effects of environmental changes.  These include droughts, bushfires,
+woodsmoke, dust storms, heat waves and local environmental
+conditions. The research needed to disentangle health effects of
+environmental changes from social factors. Some of the findings were
+novel and unexpected. Adequate documentation of the methods was
+problematic because of the many steps of data processing and
+analysis. Reproducible research pipelines address the problem of
+documenting data analyses by distributing data and code with
+publications.</p>
+
+<p>Reproducibility is needed to improve credibility.  It is often
+asserted in the literature that much research is not easy to
+reproduce. It is not clear what an effective way to implement these
+techniques is. The thesis asks how pipelines can be effectively
+implemented in epidemiology. It describes methods for reproducible
+research pipelines. It also demonstrates several applications of these
+methods in environmental epidemiology.</p>
+
+<p>Environmental epidemiology requires us to study multifactorial
+pathogenesis.  All diseases have multiple causal factors. To
+understand the many factors affecting health, epidemiologists must
+disentangle strands of a web of causal influences. Isolating factors
+is difficult and risks being overly reductionist. These determinants
+can interact in complex ways. Environmental epidemiologists often
+narrow the focus to a single environmental cause and health effect. A
+simple example is bushfire smoke and direct effects on
+cardio-respiratory disease.  A more complex example is drought and
+suicide where the effects are indirect. The focus is on a chain
+of intermediary causal factors. These questions are usually explored
+in the context of many other factors that describe human biological
+variables and the socio-economic milieu.</p>
+
+<p>While there is greater weight given to evidence from experimental than
+observational studies, experiments are difficult in environmental
+health.  Analysis of observational data is often used instead. There
+are problems inherent in observational studies that pertain to
+variables that are confounders and effect modifiers.  Observational
+studies face the principal problem of a large number of
+inter-relationships between variables. These can confound or modify
+effects.  It is vital to a valid analysis and meaningful
+interpretation that we include these. It is problematic that
+scientists select variables from a multitude of possibilities found in
+the literature. Scientists also gather variables from a plethora of
+possible data sources. There is a long process of hypothesising, study
+design, data collection, cleaning, exploration, decision making,
+preparation, data analysis, model building and model checking.  This
+process has been described as a vast ‘garden of forking paths’ which
+connect steps and decisions the analyst must make, but they could have
+made others. These issues might result in mere
+correlation interpreted as causation.</p>
+
+<p>Adequately documenting the methods and results of data analysis helps
+safeguard against such mistakes. This thesis proposes that
+reproducible research pipelines address the problem of adequate
+documentation of data analysis.  This is because they make it easy to
+check the methods. Assumptions are easy to challenge and results
+verified in new analyses. Reproducible research pipelines extend
+traditional research.  They do this by encoding the steps in a
+computer ‘scripting’ language and distributing the data and code with
+publications.  Traditional research moves through the steps of
+hypothesis and design, measured data, analytic data, computational
+results (for figures, tables and numerical results), and reports (text
+and formatted manuscript).</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/10/reproducible-research-pipelines-in-epidemiology/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-10-01 00:00:00 +1000">01 Oct 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/the-best-thing-about-reproducibility-is-not-reproducibility-but-transparency-and-rigour/" title="The Best Thing About Reproducibility Is Not Reproducibility, It Is Transparency And Rigour" rel="bookmark">The Best Thing About Reproducibility Is Not Reproducibility, It Is Transparency And Rigour</a>
     </h1>
     <div class="entry-content full-content">
@@ -1134,133 +1226,6 @@ md "Work\- To do"
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I use the R package <code>DiagrammeR</code> for creating graphs (the formal kind, connecting nodes with edges)
-- This package is great and I like how it interacts with the Graphviz program
-- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
-- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
-- In my utilities R package <code>github.com/ivanhanigan/disentangle</code> I have written functions that turn this table into a graphiviz DOT language script
-- Recently I have needed to unpack the list for a more itemized view
-- Both these functions are showcased below</p>
-
-<h4>Code: newnode</h4>
-
-<pre><code># First create some test data, each step is a collection of edges 
-# with inputs or outputs simple comma seperated lists
-dat &lt;- read.csv(textConnection('
-cluster ,  step    , inputs                    , outputs                                , description                      
-A  ,  siteIDs      , "GPS, helicopter"          , "spatial, site doco"                 , latitude and longitude of sites  
-A  ,  weather      , BoM                       , exposures                              , weather data from BoM            
-B  ,  trapped      , spatial                   , trapped_no                             , counts of species caught in trap 
-B  ,  biomass      , spatial                   , biomass_g                              ,                                  
-B  ,  correlations , "exposures,trapped_no,biomass_g" , report1                         , A study we published             
-C  ,  paper1       , report1                   , "open access repository, data package" ,                                  
-D  ,  biomass revision, new estimates          , biomass_g                              , this came late
-'), stringsAsFactors = F, strip.white = T)    
-str(dat)
-# dat
-
-# Now run the function and create a graph
-nodes &lt;- newnode(
-  indat = dat,
-  names_col = "step",
-  in_col = "inputs",
-  out_col = "outputs",
-  desc_col = "description",
-  clusters_col = "cluster",
-  nchar_to_snip = 40
-  )  
-sink("Transformations.dot")
-cat(nodes)
-sink()
-#DiagrammeR::grViz("Transformations.dot")
-system("dot -Tpng Transformations.dot -o Transformations.png")
-browseURL("Transformations.png")
-</code></pre>
-
-<p></p>
-
-
-<p></p>
-
-<p>That creates this diagram</p>
-
-<p><img src="/images/Transformations.png" alt="/images/Transformations.png" /></p>
-
-<h2>Now to showcase the tool that itemizes this list of inputs and outputs</h2>
-
-<ul>
-<li>The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs</li>
-<li>To add detail for each we need to unpack each list and create a new table with one row per node</li>
-<li>I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output</li>
-</ul>
-
-
-<h4>Code: newnode_csv</h4>
-
-<pre><code>nodes_graphy &lt;- newnode_csv(
-  indat = dat,
-  names_col = "step",
-  in_col = "inputs",
-  out_col = "outputs",
-  clusters_col = 'cluster'
-  ) 
-# which creates this table
-knitr::kable(nodes_graphy)
-|cluster |name             |in_or_out |value                  |
-|:-------|:----------------|:---------|:----------------------|
-|A       |siteIDs          |input     |GPS                    |
-|A       |siteIDs          |input     |helicopter             |
-|A       |siteIDs          |output    |spatial                |
-|A       |siteIDs          |output    |site doco              |
-|A       |weather          |input     |BoM                    |
-|A       |weather          |output    |exposures              |
-|B       |trapped          |input     |spatial                |
-|B       |trapped          |output    |trapped_no             |
-|B       |biomass          |input     |spatial                |
-|B       |biomass          |output    |biomass_g              |
-|B       |correlations     |input     |exposures              |
-|B       |correlations     |input     |trapped_no             |
-|B       |correlations     |input     |biomass_g              |
-|B       |correlations     |output    |report1                |
-|C       |paper1           |input     |report1                |
-|C       |paper1           |output    |open access repository |
-|C       |paper1           |output    |data package           |
-|D       |biomass revision |input     |new estimates          |
-|D       |biomass revision |output    |biomass_g              |
-</code></pre>
-
-<p></p>
-
-
-<p>This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-09-23 00:00:00 +1000">23 Sep 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -1338,6 +1303,10 @@ knitr::kable(nodes_graphy)
               <ul>
                 
                 <li>
+                  <a href="/2017/11/the-impact-of-scale/" title="The impact of scale on associations between disadvantage and hospitalization for heart diseases" rel="bookmark">The impact of scale on associations between disadvantage and hospitalization for heart diseases</a>
+                </li>
+                
+                <li>
                   <a href="/2017/11/new-paper-on-neighbourhood-level-air-pollution-for-health-research/" title="New paper on neighbourhood level air pollution for health research" rel="bookmark">New paper on neighbourhood level air pollution for health research</a>
                 </li>
                 
@@ -1351,10 +1320,6 @@ knitr::kable(nodes_graphy)
                 
                 <li>
                   <a href="/2016/09/update-ripping-data-from-georeferenced-images-with-qgis/" title="UPDATE re Ripping data from georeferenced images with QGIS" rel="bookmark">UPDATE re Ripping data from georeferenced images with QGIS</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/08/ripping-data-from-georeferenced-images-with-qgis/" title="Ripping data from georeferenced images with QGIS" rel="bookmark">Ripping data from georeferenced images with QGIS</a>
                 </li>
                 
               </ul>
@@ -1418,7 +1383,7 @@ knitr::kable(nodes_graphy)
                 
                 <li><a href="/categories/data management">data management (1)</a></li>
                 
-                <li><a href="/categories/swish">swish (2)</a></li>
+                <li><a href="/categories/swish">swish (3)</a></li>
                 
                 <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (2)</a></li>
                 
