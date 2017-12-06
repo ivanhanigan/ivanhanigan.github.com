@@ -54,6 +54,122 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I stumbled on these posts about python and IPython Notebook by "Data Scientist Training for Librarians":</p>
+
+<ul>
+<li><a href="http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/">http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/</a></li>
+<li><a href="http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/">http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/</a></li>
+</ul>
+
+
+<p>I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.  You can get my ipython notebook file for this here: <a href="/data/olive.ipynb">olive.ipynb</a>, but first run the following R code snippet to get the replication dataset 'olive.csv' into your home directory.</p>
+
+<h4>R Code: get the olive oil dataset</h4>
+
+<pre><code>install.packages("pgmm")
+require(pgmm)
+data(olive)
+names(olive) &lt;- tolower(names(olive))
+str(olive)
+write.csv(olive, "olive.csv", row.names = F)
+# actualy home might be easier for ipython to access
+write.csv(olive, "~/olive.csv", row.names = F)
+</code></pre>
+
+<p></p>
+
+
+<h3>OK now reproduce the example</h3>
+
+<p>I quite like the histograms from the second example.  Here is the raw code extracted from the ipynb</p>
+
+<h4>Code:</h4>
+
+<pre><code>%pylab inline
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import matplotlib.colors as colors
+
+acidlist=['palmitic', 'palmitoleic', 'stearic', 'oleic', 'linoleic', 'linolenic', 'arachidic', 'eicosenoic']
+dfsub=df[acidlist].apply(lambda x: x/100.0)
+dfsub.head()
+
+rkeys=[1,2,3]
+rvals=['South','Sardinia','North']
+rmap={e[0]:e[1] for e in zip(rkeys,rvals)}
+rmap
+
+fig, axes=plt.subplots(figsize=(10,20), nrows=len(acidlist), ncols=1) # sets up the framework for the graphs. Acidlist is defined elsewhere, and is a list of the acids we’re interested in.
+i=0 # Sets a counter to 0
+
+for ax in axes.flatten(): # Starts a loop to go through our plot and render each row
+
+    acid=acidlist[i]
+    seriesacid=df[acid] # creates seriesacid and sets it to df[acid], a list of the percent composition of the acid in the current iteration that’s in each olive oil.
+
+    minmax=[seriesacid.min(), seriesacid.max()] # the minimum and maximum values plotted will be the minimum and maximum percentages that we find in the data
+
+    for k,g in df.groupby('region'):  # starts a loop in the loop to plot the values by region
+        style = {'histtype':'stepfilled', 'alpha':0.5, 'label':rmap[k], 'ax':ax}
+        g[acid].hist(**style)
+
+        ax.set_xlim(minmax)
+
+        ax.set_title(acid)
+
+        ax.grid(False)
+
+        #construct legend
+        ax.legend()
+    i=i+1 # increments the counter, to move the loop on to the next acid.
+
+    fig.tight_layout()
+</code></pre>
+
+<p></p>
+
+
+<p><img src="/images/acid.png" alt="acid.png" /></p>
+
+<h3>Conclusions</h3>
+
+<ul>
+<li>I am not sure how to do the transparency but the rest of it would make more sense to me with R</li>
+<li>Will try to reproduce in R for head-to-head shoot out.</li>
+<li>I also plan to look into the new <a href="http://trestletechnology.net/2013/11/ace-code-editor-in-shiny-shinyace/">shinyAce browser based R editor</a> for similar work</li>
+<li>I'm still really enjoying Emacs Orgmode for this kind of functionality though and thoroughly recommend <a href="http://kieranhealy.org/resources/emacs-starter-kit.html">KJ Healy's starter kit</a></li>
+<li>(I've installed and config thison Ubuntu, Windoze and Mac, but LaTeX and exporting R code can be tricky)</li>
+</ul>
+
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/librarians-and-python/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-11-06 00:00:00 +1100">06 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/handling-survey-data-with-r/" title="handling-survey-data-with-r" rel="bookmark">handling-survey-data-with-r</a>
     </h1>
     <div class="entry-content full-content">
@@ -478,80 +594,6 @@ dbSendQuery(ch, sql)
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
-<li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
-<li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
-<li>The beta coefficient itself shouldn't be affected.</li>
-<li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
-<li>To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
-<li>I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
-<li>So I asked Sarunya for a discussion about her research</li>
-</ul>
-
-
-<h3>Sarunya's model is essentially like this</h3>
-
-<h4>R Code:</h4>
-
-<pre><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
-       ns(temp, df) + ns(humidity, df) +
-       ns(time, df = 7*numYears) +
-       SLA * ns(time, df = 2),
-       data = analyte, family = poisson
-       )
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
-<li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
-<li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
-<li>therefore this study avoids the issue by it's intentional design to compare betas not se</li>
-<li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
-<li>this is fascinating in itself, but a separate issue for another post</li>
-</ul>
-
-
-<h3>Conclusions</h3>
-
-<ul>
-<li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
-<li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
-</ul>
-
-
-<p>THANKS Sarunya!</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -629,6 +671,10 @@ dbSendQuery(ch, sql)
               <ul>
                 
                 <li>
+                  <a href="/2017/12/my-view-of-the-research-data-analysis-pipeline/" title="My view of the research data analysis pipeline" rel="bookmark">My view of the research data analysis pipeline</a>
+                </li>
+                
+                <li>
                   <a href="/2017/11/the-impact-of-scale/" title="The impact of scale on associations between disadvantage and hospitalization for heart diseases" rel="bookmark">The impact of scale on associations between disadvantage and hospitalization for heart diseases</a>
                 </li>
                 
@@ -642,10 +688,6 @@ dbSendQuery(ch, sql)
                 
                 <li>
                   <a href="/2016/12/one-health-ecohealth-conference-melbourne-dec-2016/" title="One Health Ecohealth Conference Melbourne Dec 2016" rel="bookmark">One Health Ecohealth Conference Melbourne Dec 2016</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/09/update-ripping-data-from-georeferenced-images-with-qgis/" title="UPDATE re Ripping data from georeferenced images with QGIS" rel="bookmark">UPDATE re Ripping data from georeferenced images with QGIS</a>
                 </li>
                 
               </ul>
@@ -709,7 +751,7 @@ dbSendQuery(ch, sql)
                 
                 <li><a href="/categories/data management">data management (1)</a></li>
                 
-                <li><a href="/categories/swish">swish (3)</a></li>
+                <li><a href="/categories/swish">swish (4)</a></li>
                 
                 <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (2)</a></li>
                 

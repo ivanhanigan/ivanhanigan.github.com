@@ -54,6 +54,70 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/11/nectar-cloud-pumilio-build-got-bogged-down/" title="nectar cloud pumilio build got bogged down" rel="bookmark">nectar cloud pumilio build got bogged down</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I've been trying to build pumilio bioacoustics server on a Aust Nectar Research Cloud VM, but hit various roadblocks.</p>
+
+<ul>
+<li>built with NeCTAR Ubuntu 12.04.2 (Precise)</li>
+<li>these issues (especially the apt-get install r-cran-mysql etc ) might not occure with later Ubuntu?</li>
+<li>test NeCTAR Ubuntu 12.10 (Quantal) or</li>
+<li>NeCTAR Ubuntu 13.04 (Raring) ??</li>
+<li>TODO FIX issues with python audio lab</li>
+<li>TODO swapfile</li>
+<li>TODO Mount the larger storage</li>
+<li>TODO add swapfile</li>
+<li>TODO fix R install etc</li>
+</ul>
+
+
+<p>The Github code (in the gh-pages branch) and published as <a href="http://ivanhanigan.github.io/pumilio-bushfm/">a report at this link</a>.  The Source Code is available to Clone or Fork at <a href="https://github.com/ivanhanigan/pumilio-bushfm">This Github Repo</a> and is at a stage that most of the installation and configuration is documented to a point where a test sound file has successfully been uploaded.</p>
+
+<h4>HELP WANTED</h4>
+
+<ul>
+<li>Any researcher at an Australia university could follow the instructions on their own Nectar Cloud VM.</li>
+<li>If anybody out there is interested in bioacoustics, R, Linux or web data archives please help</li>
+</ul>
+
+
+<h4>Background to pumilio, bushfm and this project</h4>
+
+<p><img src="/images/birdcombined.png" alt="birdcombined.png" /></p>
+
+<ul>
+<li>The <a href="pumilio%20project">http://pumilio.sourceforge.net/</a> is by Luis J. Villanueva-Rivera and Bryan C. Pijanowski. (2012. Pumilio: A Web-Based Management System for Ecological Recordings. Bulletin of the Ecological Society of America 93: 71-81. doi: 10.1890/0012-9623-93.1.71)</li>
+<li>The <a href="Bush-fm%20project">http://www.bush.fm/</a> aims to provide the research community with a portal to national scale acoustic sensor data repositories, and a suite of tools to perform analysis and reporting on these data.</li>
+</ul>
+
+
+<p>(Images from http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000M4)</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/cloud building" title="cloud building" rel="category tag">cloud building</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/11/nectar-cloud-pumilio-build-got-bogged-down/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-11-18 00:00:00 +1100">18 Nov 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/11/really-useful-r-upcase-string/" title="really-useful-r-upcase-string" rel="bookmark">really-useful-r-upcase-string</a>
     </h1>
     <div class="entry-content full-content">
@@ -441,122 +505,6 @@ http://biostatmatt.com/uploads/shotwell-interface-2011.pdf</li>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/11/librarians-and-python/" title="librarians-and-python" rel="bookmark">librarians-and-python</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I stumbled on these posts about python and IPython Notebook by "Data Scientist Training for Librarians":</p>
-
-<ul>
-<li><a href="http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/">http://altbibl.io/dst4l/exploratory-data-analysis-and-statistics-using-pandas-and-matplotlib/</a></li>
-<li><a href="http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/">http://altbibl.io/dst4l/pandas-munging-stats-and-visualization/</a></li>
-</ul>
-
-
-<p>I;ve been wanting to learn more python.  I don't think it'll be ready for statistical modelling for a while, but I a want to be ready when it is.  You can get my ipython notebook file for this here: <a href="/data/olive.ipynb">olive.ipynb</a>, but first run the following R code snippet to get the replication dataset 'olive.csv' into your home directory.</p>
-
-<h4>R Code: get the olive oil dataset</h4>
-
-<pre><code>install.packages("pgmm")
-require(pgmm)
-data(olive)
-names(olive) &lt;- tolower(names(olive))
-str(olive)
-write.csv(olive, "olive.csv", row.names = F)
-# actualy home might be easier for ipython to access
-write.csv(olive, "~/olive.csv", row.names = F)
-</code></pre>
-
-<p></p>
-
-
-<h3>OK now reproduce the example</h3>
-
-<p>I quite like the histograms from the second example.  Here is the raw code extracted from the ipynb</p>
-
-<h4>Code:</h4>
-
-<pre><code>%pylab inline
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-import matplotlib.colors as colors
-
-acidlist=['palmitic', 'palmitoleic', 'stearic', 'oleic', 'linoleic', 'linolenic', 'arachidic', 'eicosenoic']
-dfsub=df[acidlist].apply(lambda x: x/100.0)
-dfsub.head()
-
-rkeys=[1,2,3]
-rvals=['South','Sardinia','North']
-rmap={e[0]:e[1] for e in zip(rkeys,rvals)}
-rmap
-
-fig, axes=plt.subplots(figsize=(10,20), nrows=len(acidlist), ncols=1) # sets up the framework for the graphs. Acidlist is defined elsewhere, and is a list of the acids we’re interested in.
-i=0 # Sets a counter to 0
-
-for ax in axes.flatten(): # Starts a loop to go through our plot and render each row
-
-    acid=acidlist[i]
-    seriesacid=df[acid] # creates seriesacid and sets it to df[acid], a list of the percent composition of the acid in the current iteration that’s in each olive oil.
-
-    minmax=[seriesacid.min(), seriesacid.max()] # the minimum and maximum values plotted will be the minimum and maximum percentages that we find in the data
-
-    for k,g in df.groupby('region'):  # starts a loop in the loop to plot the values by region
-        style = {'histtype':'stepfilled', 'alpha':0.5, 'label':rmap[k], 'ax':ax}
-        g[acid].hist(**style)
-
-        ax.set_xlim(minmax)
-
-        ax.set_title(acid)
-
-        ax.grid(False)
-
-        #construct legend
-        ax.legend()
-    i=i+1 # increments the counter, to move the loop on to the next acid.
-
-    fig.tight_layout()
-</code></pre>
-
-<p></p>
-
-
-<p><img src="/images/acid.png" alt="acid.png" /></p>
-
-<h3>Conclusions</h3>
-
-<ul>
-<li>I am not sure how to do the transparency but the rest of it would make more sense to me with R</li>
-<li>Will try to reproduce in R for head-to-head shoot out.</li>
-<li>I also plan to look into the new <a href="http://trestletechnology.net/2013/11/ace-code-editor-in-shiny-shinyace/">shinyAce browser based R editor</a> for similar work</li>
-<li>I'm still really enjoying Emacs Orgmode for this kind of functionality though and thoroughly recommend <a href="http://kieranhealy.org/resources/emacs-starter-kit.html">KJ Healy's starter kit</a></li>
-<li>(I've installed and config thison Ubuntu, Windoze and Mac, but LaTeX and exporting R code can be tricky)</li>
-</ul>
-
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/Data Documentation" title="Data Documentation" rel="category tag">Data Documentation</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/11/librarians-and-python/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-11-06 00:00:00 +1100">06 Nov 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -634,6 +582,10 @@ for ax in axes.flatten(): # Starts a loop to go through our plot and render each
               <ul>
                 
                 <li>
+                  <a href="/2017/12/my-view-of-the-research-data-analysis-pipeline/" title="My view of the research data analysis pipeline" rel="bookmark">My view of the research data analysis pipeline</a>
+                </li>
+                
+                <li>
                   <a href="/2017/11/the-impact-of-scale/" title="The impact of scale on associations between disadvantage and hospitalization for heart diseases" rel="bookmark">The impact of scale on associations between disadvantage and hospitalization for heart diseases</a>
                 </li>
                 
@@ -647,10 +599,6 @@ for ax in axes.flatten(): # Starts a loop to go through our plot and render each
                 
                 <li>
                   <a href="/2016/12/one-health-ecohealth-conference-melbourne-dec-2016/" title="One Health Ecohealth Conference Melbourne Dec 2016" rel="bookmark">One Health Ecohealth Conference Melbourne Dec 2016</a>
-                </li>
-                
-                <li>
-                  <a href="/2016/09/update-ripping-data-from-georeferenced-images-with-qgis/" title="UPDATE re Ripping data from georeferenced images with QGIS" rel="bookmark">UPDATE re Ripping data from georeferenced images with QGIS</a>
                 </li>
                 
               </ul>
@@ -714,7 +662,7 @@ for ax in axes.flatten(): # Starts a loop to go through our plot and render each
                 
                 <li><a href="/categories/data management">data management (1)</a></li>
                 
-                <li><a href="/categories/swish">swish (3)</a></li>
+                <li><a href="/categories/swish">swish (4)</a></li>
                 
                 <li><a href="/categories/reproducible research pipelines">reproducible research pipelines (2)</a></li>
                 
