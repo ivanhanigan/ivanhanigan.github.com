@@ -6,6 +6,67 @@
 		<link>http://ivanhanigan.github.com</link>
 		
 			<item>
+				<title>Filling empty cells in columns with R</title>
+				<description>&lt;p&gt;Happy new year!&lt;/p&gt;
+
+&lt;p&gt;I have had a bit of a break and caught up with some of the older blog posts I did not find time for earlier in 2017.&lt;/p&gt;
+
+&lt;p&gt;This one caught my eye: &lt;a href=&quot;http://varianceexplained.org/r/start-blog/&quot;&gt;http://varianceexplained.org/r/start-blog/&lt;/a&gt; especially the line 'When you’ve given the same advice 3 times, write a blog post'. So I thought I'd write a blog post about a bit of R code advice. (Disclaimer: This wasn't originally my work, but I used this advice more than 3 times, so am sharing here. This is a function I got from my colleague Phil TnT).&lt;/p&gt;
+
+&lt;p&gt;In some cases I get data in a table that simplifies the presentation by only labelling one row in a set of rows like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span&gt;&lt;/span&gt;
+   person        fruit    suburb something
+      Tom      oranges   Scullin       &lt;span class=&quot;m&quot;&gt;3.0&lt;/span&gt;
+                apples                 &lt;span class=&quot;m&quot;&gt;6.0&lt;/span&gt;
+                 pears                 &lt;span class=&quot;m&quot;&gt;9.0&lt;/span&gt;
+              tim tams                 &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+ Gertrude       durian Charnwood       &lt;span class=&quot;m&quot;&gt;3.7&lt;/span&gt;
+          dragon fruit                 &lt;span class=&quot;m&quot;&gt;7.0&lt;/span&gt;
+               lychees                 &lt;span class=&quot;m&quot;&gt;4.9&lt;/span&gt;
+             pineapple               &lt;span class=&quot;m&quot;&gt;100.9&lt;/span&gt;
+                apples                &lt;span class=&quot;m&quot;&gt;98.0&lt;/span&gt;
+Pennelope      cashews   Higgins       &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+             beer nuts                 &lt;span class=&quot;m&quot;&gt;5.6&lt;/span&gt;
+              Pringles                 &lt;span class=&quot;m&quot;&gt;4.0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;&lt;/p&gt;
+
+&lt;p&gt;To use this like tidy data we need to fill these intervening cells.&lt;/p&gt;
+
+&lt;p&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;fill.col &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; col.name&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      s &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;which&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;col.name&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      item &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;col.name&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;s&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+      hold &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;list&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;item&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;    &lt;br/&gt;
+      &lt;span class=&quot;kr&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;i &lt;span class=&quot;kr&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hold&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; hold&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;item&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;ifelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;is.na&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; s&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; s&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+      x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;col.name&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;unlist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hold&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      x
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;d &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; fill.col&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;d&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;person&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+fill.col&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;d&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;suburb&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  person        fruit    suburb something
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;        Tom      oranges   Scullin       &lt;span class=&quot;m&quot;&gt;3.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;        Tom       apples   Scullin       &lt;span class=&quot;m&quot;&gt;6.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;        Tom        pears   Scullin       &lt;span class=&quot;m&quot;&gt;9.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;        Tom     tim tams   Scullin       &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;   Gertrude       durian Charnwood       &lt;span class=&quot;m&quot;&gt;3.7&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;   Gertrude dragon fruit Charnwood       &lt;span class=&quot;m&quot;&gt;7.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;7&lt;/span&gt;   Gertrude      lychees Charnwood       &lt;span class=&quot;m&quot;&gt;4.9&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;   Gertrude    pineapple Charnwood     &lt;span class=&quot;m&quot;&gt;100.9&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;9&lt;/span&gt;   Gertrude       apples Charnwood      &lt;span class=&quot;m&quot;&gt;98.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt; Pennelope      cashews   Higgins       &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;11&lt;/span&gt; Pennelope    beer nuts   Higgins       &lt;span class=&quot;m&quot;&gt;5.6&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;12&lt;/span&gt; Pennelope     Pringles   Higgins       &lt;span class=&quot;m&quot;&gt;4.0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;&lt;/p&gt;
+</description>
+				<published>2017-12-31 00:00:00 +1100</published>
+				<link>http://ivanhanigan.github.com/2017/12/fillcolumns-in-R/</link>
+			</item>
+		
+			<item>
 				<title>My view of the research data analysis pipeline</title>
 				<description>&lt;p&gt;I put these ideas down when I gave a talk for the Aust National Data Service (ANDS) training course for data librarians at universities.&lt;/p&gt;
 
@@ -119,9 +180,6 @@ Estimates of Long-Term Exposure for Health Research has been published in the jo
 “With this evidence we can make better choices on interventions to maximise the health benefits of reducing air pollution emissions while also delivering the lifestyle and economic prosperity afforded by burning fossil fuels for energy.”&lt;/p&gt;
 
 &lt;p&gt;The work is a collaboration between Dr Hanigan and colleagues from around Australia and the United States, including from University of Tasmania, University of Queensland, University of Sydney, CSIRO, Queensland University of Technology, University of New South Wales, University of Western Australia and the University of North Carolina.&lt;/p&gt;
-
-&lt;p&gt;Dr Hanigan is available for interview on 0428265976
-Contact the University of Canberra media team:  Marcus Butler: 0438 447 810 or Claudia Doman: 0408 826 362&lt;/p&gt;
 </description>
 				<published>2017-11-16 00:00:00 +1100</published>
 				<link>http://ivanhanigan.github.com/2017/11/new-paper-on-neighbourhood-level-air-pollution-for-health-research/</link>
@@ -487,52 +545,6 @@ $(document).ready(function () {
 </description>
 				<published>2016-08-03 00:00:00 +1000</published>
 				<link>http://ivanhanigan.github.com/2016/08/colours-to-use-for-maps/</link>
-			</item>
-		
-			<item>
-				<title>Australian Postal Areas In Geographical Vs Projected Coordinates</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;Notes re an old project &quot;POA2006_centroids transformations 2010-08-06&quot;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html&quot;&gt;https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;compared population weighted centroids with Geographic POA centroids&lt;/li&gt;
-&lt;li&gt;Postal Areas (POA) are not the same as Postcodes!  See &lt;a href=&quot;http://www.abs.gov.au/websitedbs/D3310114.nsf/4a256353001af3ed4b2562bb00121564/6b6e07234c98365aca25792d0010d730/$FILE/Postcodes%20&amp;amp;%20Postal%20Areas%20-%20Fact%20Sheet.pdf&quot;&gt;this fact sheet&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;But my old work gives the total areas as 695.6 square decimal degrees&lt;/li&gt;
-&lt;li&gt;This compares with the area of Australia at 7.692 million sq kms.&lt;/li&gt;
-&lt;li&gt;So this update uses Geoscience Australia Lambert to avoid distorting the area&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://spatialreference.org/ref/epsg/3112/&quot;&gt;http://spatialreference.org/ref/epsg/3112/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h1&gt;Download&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;/data/auspoa06_geocentroids_lambert_20160624.csv&quot;&gt;auspoa06_geocentroids_lambert_20160624.csv&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;name:poa06-area-lambert&amp;#39;&lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;setwd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;~/projects/POA_centroids/POA2006_centroids&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;swishdbtools&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-ch &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; connect2postgres2&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;delphe&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/p&gt;
-
-&lt;p&gt;fout_geo&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;dbGetQuery&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;ch&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;&amp;#39;select poa_2006,&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;  st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;st_y(st_centroid(st_transform(the_geom,3112))) as geocenty&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;from abs_poa.auspoa06&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-str&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;geoscience_australia_lambert_area_km2&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-write.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;data_derived/auspoa06_geocentroids_lambert_20160624.csv&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            row.names&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/p&gt;
-
-&lt;p&gt;plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fout_geo&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;m&quot;&gt;2507&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;&lt;/p&gt;
-</description>
-				<published>2016-06-24 00:00:00 +1000</published>
-				<link>http://ivanhanigan.github.com/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/</link>
 			</item>
 		
 	</channel>

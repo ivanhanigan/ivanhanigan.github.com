@@ -4,7 +4,7 @@
  <title>DisentangleThings</title>
  <link href="http://ivanhanigan.github.com/feed/" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2017-12-07T08:29:41+11:00</updated>
+ <updated>2017-12-31T23:28:04+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>ivanhanigan</name>
@@ -13,35 +13,64 @@
 
  
  <entry>
-   <title>My view of the research data analysis pipeline</title>
-   <link href="http://ivanhanigan.github.com/2017/12/my-view-of-the-research-data-analysis-pipeline/"/>
-   <updated>2017-12-07T00:00:00+11:00</updated>
-   <id>http://ivanhanigan.github.com/2017/12/my-view-of-the-research-data-analysis-pipeline</id>
-   <content type="html">&lt;p&gt;I put these ideas down when I gave a talk for the Aust National Data Service (ANDS) training course for data librarians at universities.&lt;/p&gt;
+   <title>Filling empty cells in columns with R</title>
+   <link href="http://ivanhanigan.github.com/2017/12/fillcolumns-in-R/"/>
+   <updated>2017-12-31T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2017/12/fillcolumns-in-R</id>
+   <content type="html">&lt;p&gt;Happy new year!&lt;/p&gt;
 
-&lt;ol&gt;
-&lt;li&gt;Finding out about data&lt;/li&gt;
-&lt;li&gt;Getting data&lt;/li&gt;
-&lt;li&gt;Putting data somewhere&lt;/li&gt;
-&lt;li&gt;Doing stuff with data&lt;/li&gt;
-&lt;li&gt;Finding out what has been done with data&lt;/li&gt;
-&lt;li&gt;Sharing data with others&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;I have had a bit of a break and caught up with some of the older blog posts I did not find time for earlier in 2017.&lt;/p&gt;
 
+&lt;p&gt;This one caught my eye: &lt;a href=&quot;http://varianceexplained.org/r/start-blog/&quot;&gt;http://varianceexplained.org/r/start-blog/&lt;/a&gt; especially the line 'When you’ve given the same advice 3 times, write a blog post'. So I thought I'd write a blog post about a bit of R code advice. (Disclaimer: This wasn't originally my work, but I used this advice more than 3 times, so am sharing here. This is a function I got from my colleague Phil TnT).&lt;/p&gt;
 
-&lt;p&gt;I suggest that the future needs actions that support each of these activities at the following levels:&lt;/p&gt;
+&lt;p&gt;In some cases I get data in a table that simplifies the presentation by only labelling one row in a set of rows like this:&lt;/p&gt;
 
-&lt;ol&gt;
-&lt;li&gt;Individual researcher&lt;/li&gt;
-&lt;li&gt;Research group&lt;/li&gt;
-&lt;li&gt;Research centre&lt;/li&gt;
-&lt;li&gt;Faculty/Institute&lt;/li&gt;
-&lt;li&gt;University&lt;/li&gt;
-&lt;li&gt;Multi-university collaborative groups (e.g. CRC or CRE)&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span&gt;&lt;/span&gt;
+   person        fruit    suburb something
+      Tom      oranges   Scullin       &lt;span class=&quot;m&quot;&gt;3.0&lt;/span&gt;
+                apples                 &lt;span class=&quot;m&quot;&gt;6.0&lt;/span&gt;
+                 pears                 &lt;span class=&quot;m&quot;&gt;9.0&lt;/span&gt;
+              tim tams                 &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+ Gertrude       durian Charnwood       &lt;span class=&quot;m&quot;&gt;3.7&lt;/span&gt;
+          dragon fruit                 &lt;span class=&quot;m&quot;&gt;7.0&lt;/span&gt;
+               lychees                 &lt;span class=&quot;m&quot;&gt;4.9&lt;/span&gt;
+             pineapple               &lt;span class=&quot;m&quot;&gt;100.9&lt;/span&gt;
+                apples                &lt;span class=&quot;m&quot;&gt;98.0&lt;/span&gt;
+Pennelope      cashews   Higgins       &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+             beer nuts                 &lt;span class=&quot;m&quot;&gt;5.6&lt;/span&gt;
+              Pringles                 &lt;span class=&quot;m&quot;&gt;4.0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;&lt;/p&gt;
 
+&lt;p&gt;To use this like tidy data we need to fill these intervening cells.&lt;/p&gt;
 
-&lt;p&gt;The government and private sectors may have some similarities, but I don't know.&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;fill.col &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; col.name&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      s &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;which&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;col.name&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      item &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;col.name&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;s&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+      hold &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;list&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;item&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;    &lt;br/&gt;
+      &lt;span class=&quot;kr&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;i &lt;span class=&quot;kr&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hold&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; hold&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;item&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;ifelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;is.na&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; s&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; s&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+      x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;col.name&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;unlist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hold&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      x
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;d &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; fill.col&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;d&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;person&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+fill.col&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;d&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;suburb&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  person        fruit    suburb something
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;        Tom      oranges   Scullin       &lt;span class=&quot;m&quot;&gt;3.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;        Tom       apples   Scullin       &lt;span class=&quot;m&quot;&gt;6.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;        Tom        pears   Scullin       &lt;span class=&quot;m&quot;&gt;9.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;        Tom     tim tams   Scullin       &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;   Gertrude       durian Charnwood       &lt;span class=&quot;m&quot;&gt;3.7&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;   Gertrude dragon fruit Charnwood       &lt;span class=&quot;m&quot;&gt;7.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;7&lt;/span&gt;   Gertrude      lychees Charnwood       &lt;span class=&quot;m&quot;&gt;4.9&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;   Gertrude    pineapple Charnwood     &lt;span class=&quot;m&quot;&gt;100.9&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;9&lt;/span&gt;   Gertrude       apples Charnwood      &lt;span class=&quot;m&quot;&gt;98.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt; Pennelope      cashews   Higgins       &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;11&lt;/span&gt; Pennelope    beer nuts   Higgins       &lt;span class=&quot;m&quot;&gt;5.6&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;12&lt;/span&gt; Pennelope     Pringles   Higgins       &lt;span class=&quot;m&quot;&gt;4.0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;&lt;/p&gt;
 </content>
  </entry>
  

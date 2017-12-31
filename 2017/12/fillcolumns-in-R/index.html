@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ivan Hanigan - Keeping an electronic lab notebook for computational statistics projects</title>
+    <title>Ivan Hanigan - Filling empty cells in columns with R</title>
     <meta name="author" content="Ivan Hanigan" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css">
     <link href="http://feeds.feedburner.com/Disentanglethings" rel="alternate" title="RSS" type="application/rss+xml" />
@@ -44,7 +44,7 @@
 
           <div class="full">
   <h1 class="entry-title">
-    <a href="/2015/10/keeping-an-electronic-lab-notebook-for-computational-statistics-projects/" title="Keeping an electronic lab notebook for computational statistics projects" rel="bookmark">Keeping an electronic lab notebook for computational statistics projects</a>
+    <a href="/2017/12/fillcolumns-in-R/" title="Filling empty cells in columns with R" rel="bookmark">Filling empty cells in columns with R</a>
   </h1>
   <!-- AddThis Button BEGIN -->
   <div class="addthis_toolbox addthis_default_style ">
@@ -55,141 +55,60 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <ul>
-<li>In my previous post on this topic <a href="http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/">http://ivanhanigan.github.io/2015/10/how-to-effectively-implement-electronic-lab-notebooks-in-epidemiology/</a> I summarised some recommendations for electronic lab notebooks</li>
-<li>I've collated from a variety of sources for managing computational statistics projects in a reproducible research Pipelines</li>
-<li>One thing I found while reading the literature around this topic is that the concepts are difficult to really grasp until I see them being used</li>
-<li>The example worklog from Scott Long was a good insight into his method, that I really got more out of the figure below than from descriptions of the concept</li>
-<li>screen shot taken from Long, S. (2012). Principles of Workflow in Data Analysis. Retrieved from <a href="http://www.indiana.edu/~wim/docs/2012-long-slides.pdf">http://www.indiana.edu/~wim/docs/2012-long-slides.pdf</a> (accessed 2015-10-23).</li>
-</ul>
+    <p>Happy new year!</p>
 
+<p>I have had a bit of a break and caught up with some of the older blog posts I did not find time for earlier in 2017.</p>
 
-<p><img src="/images/worklog-long.png" alt="/images/worklog-long.png" /></p>
+<p>This one caught my eye: <a href="http://varianceexplained.org/r/start-blog/">http://varianceexplained.org/r/start-blog/</a> especially the line 'When you’ve given the same advice 3 times, write a blog post'. So I thought I'd write a blog post about a bit of R code advice. (Disclaimer: This wasn't originally my work, but I used this advice more than 3 times, so am sharing here. This is a function I got from my colleague Phil TnT).</p>
 
-<p></p>
+<p>In some cases I get data in a table that simplifies the presentation by only labelling one row in a set of rows like this:</p>
 
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>
+   person        fruit    suburb something
+      Tom      oranges   Scullin       <span class="m">3.0</span>
+                apples                 <span class="m">6.0</span>
+                 pears                 <span class="m">9.0</span>
+              tim tams                 <span class="m">2.0</span>
+ Gertrude       durian Charnwood       <span class="m">3.7</span>
+          dragon fruit                 <span class="m">7.0</span>
+               lychees                 <span class="m">4.9</span>
+             pineapple               <span class="m">100.9</span>
+                apples                <span class="m">98.0</span>
+Pennelope      cashews   Higgins       <span class="m">2.0</span>
+             beer nuts                 <span class="m">5.6</span>
+              Pringles                 <span class="m">4.0</span></code></pre></figure></p>
 
-<ul>
-<li>I added a red box around an important aspect of this example, the communication of gory details, that are often difficult to track if not using a notebook to log our work</li>
-<li>ARGH! indeed.</li>
-</ul>
+<p>To use this like tidy data we need to fill these intervening cells.</p>
 
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span></p>
 
-<h2>Replication from Noble's description</h2>
+<p>fill.col <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> col.name<span class="p">)</span> <span class="p">{</span>
+      s <span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span><span class="o">!</span>x<span class="p">[[</span>col.name<span class="p">]]</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+      item <span class="o">&lt;-</span> x<span class="p">[[</span>col.name<span class="p">]][</span>s<span class="p">]</span>
+      hold <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="kp">length</span><span class="p">(</span>item<span class="p">))</span>    <br/>
+      <span class="kr">for</span><span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span> <span class="kp">length</span><span class="p">(</span>hold<span class="p">))</span> hold<span class="p">[[</span>i<span class="p">]]</span> <span class="o">&lt;-</span> <span class="kp">rep</span><span class="p">(</span>item<span class="p">[</span>i<span class="p">],</span> <span class="kp">ifelse</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>s<span class="p">[</span>i<span class="m">+1</span><span class="p">]),</span> <span class="kp">dim</span><span class="p">(</span>x<span class="p">)[</span><span class="m">1</span><span class="p">]</span> <span class="o">+</span> <span class="m">1</span><span class="p">,</span> s<span class="p">[</span>i<span class="m">+1</span><span class="p">])</span> <span class="o">-</span> s<span class="p">[</span>i<span class="p">])</span>
+      x<span class="p">[[</span>col.name<span class="p">]]</span> <span class="o">&lt;-</span> <span class="kp">unlist</span><span class="p">(</span>hold<span class="p">)</span>
+      x
+      <span class="p">}</span></p>
 
-<ul>
-<li>That looks good, but I also really liked the description in Noble's paper where scripts that do computations are linked to log entries</li>
-<li>This was something that I felt I wanted to see in action</li>
-<li>Without an example online, I had to have a go at creating one from the instructions</li>
-<li>I also had to make some modifications to the method because I want to have this set up work in a multidisciplinary team with some users on windows and others on linux, sharing the project on a network folder</li>
-</ul>
+<p>d <span class="o">&lt;-</span> fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;person&#39;</span><span class="p">)</span>
+fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;suburb&#39;</span><span class="p">)</span></p>
 
-
-<h2>My paraphrasing of Noble's description</h2>
-
-<ul>
-<li>Worklog: this is the main file, like a 'lab notebook' for the analyst to track their work.  This  document resides in the root of the project directory and records your progress in detail. Entries in the notebook should be dated, and they should be relatively verbose, with links or embedded images or tables displaying the results of the experiments that you performed. In addition to describing precisely what you did, the notebook should record your observations, conclusions, and ideas for future work</li>
-<li>For group work, this can also contain a 'working' folder for each person to store their messy day-to-day files that we don't want to clutter up the main folder (eg 'working_ivan')</li>
-</ul>
-
-
-<p>Conventions I used for writing the worklog entries are:</p>
-
-<ul>
-<li>Names follow this structure [**] [date in ISO 8601 YYYY-MM-DD] [meeting/notes/results] [with/from UserName] [Re: topic shortname]</li>
-<li>'meetings' are for both agenda preparation and also notes of discussion</li>
-<li>'notes' are such things as emailed information or ad hoc Discovery</li>
-<li>'results' are entries related to a section of the 'results' folder. That is, this kind of entry is in parallel to the results entry (see below), however the log contains a prose description of the experiment, whereas the results folder contains scripts etc of all the gory details.</li>
-</ul>
-
-
-<h2>Tests</h2>
-
-<ul>
-<li>I use Emacs on linux for most of my work but I need to share with windows users so tested out keeping the log in a MS word doc.  This got corrupted quickly I think because I edited in Libre office.</li>
-<li>I decided to try and just use a plain text format</li>
-<li>text files created in Ubuntu are so difficult to understand (read) when opened in Windows' Notepad. No matter how many lines have been used, all the lines appear in the same one line.
-To set the buffer coding to DOS style issue:</li>
-</ul>
-
-
-<p><code>M-x set-buffer-file-coding-system utf-8-dos</code></p>
-
-<h3>a couple of examples</h3>
-
-<ul>
-<li>As this is a plain text document opening it in emacs will not automatically render it in the Orgmode fashion</li>
-<li>To achieve this the command is <code>M-x org-mode</code> and the file looks like below</li>
-</ul>
-
-
-<p><img src="/images/worklog-ivan1.png" alt="/images/worklog-ivan1.png" /></p>
-
-<p></p>
-
-
-<ul>
-<li>From here I can keep adding new entries at the bottom, and have a section for URGENT ACTION a the top</li>
-<li>Orgmode can expand the entries by moving to that line and hitting TAB, or use the command <code>C-u C-u C-u TAB</code> to expand all branches</li>
-</ul>
-
-
-<p><img src="/images/worklog-ivan2.png" alt="/images/worklog-ivan2.png" /></p>
-
-<p></p>
-
-
-<h2>the 'Experiment Results' level is about work you might do on a single day, or over a week or two</h2>
-
-<ul>
-<li>Each results subfolder would have workflow scripts that does the work</li>
-<li>At this level each 'experiment' is written up in chronological order</li>
-<li>It is recommended to store every command used while performing the experiment preferably as an executable script that carries out the entire experiment automatically</li>
-<li>you should end up with a file that is parallel to the worklog entry</li>
-<li>The worklog contains a prose description of the experiment, whereas the driver script contains all the gory details</li>
-<li>this is the level I usually think of the distribution side of things</li>
-<li>You may want to pack up the results from one of these folders and email it to the collaborators, or decide on the one set of tables and figures to write into the manuscript for submission to a journal</li>
-<li>If this is accepted for publication, this is the one combined package of 'analytical data and code' that I would consider putting up online as supporting information for the paper.</li>
-</ul>
-
-
-<h3>Example</h3>
-
-<ul>
-<li>I followed Noble's advice to create a driver script to set up the folder structure:</li>
-<li>it is in my Github R package <code>disentangle</code></li>
-</ul>
-
-
-<pre><code>&gt; dir.create("exposures_blending")
-&gt; setwd("exposures_blending")
-&gt; disentangle::AdminTemplate()
-[1] TRUE
-&gt; dir.create("results")
-&gt; setwd("results")
-&gt; makeProject::makeProject("2015-10-23-preliminary-modelling")
-Creating Directories ...
-Creating Code Files ...
-Complete ...
-&gt; 
+<pre><code>  person        fruit    suburb something
 </code></pre>
 
-<p>This populates the folders as shown below</p>
-
-<p><img src="/images/worklog-ivan3.png" alt="/images/worklog-ivan3.png" /></p>
-
-<p></p>
-
-
-<h2>Conclusions</h2>
-
-<ul>
-<li>I feel pretty happy with this as a replication of Noble's method</li>
-<li>My colleagues can look at my work and see a high level log that links to the gory details of day to day life in the trenches</li>
-<li>The only downside I can see at the moment is that my colleagues on windows will see a text file that is pretty dense, and will not be as easy to navigate as a word document (or emacs org file)</li>
-<li>Perhaps notepad++ can be used instead.  On my windows machine I did a quick experiment with NPP and found that under the Language menu > Define your language there is a method to define code folding with ** as the opening.  Just need to define a closing tag.  I experimented with '---' which might be good, but ultimately I don't think my colleagues are going to want to do this on their machines.</li>
-</ul>
-
+<p><span class="m">1</span>        Tom      oranges   Scullin       <span class="m">3.0</span>
+<span class="m">2</span>        Tom       apples   Scullin       <span class="m">6.0</span>
+<span class="m">3</span>        Tom        pears   Scullin       <span class="m">9.0</span>
+<span class="m">4</span>        Tom     tim tams   Scullin       <span class="m">2.0</span>
+<span class="m">5</span>   Gertrude       durian Charnwood       <span class="m">3.7</span>
+<span class="m">6</span>   Gertrude dragon fruit Charnwood       <span class="m">7.0</span>
+<span class="m">7</span>   Gertrude      lychees Charnwood       <span class="m">4.9</span>
+<span class="m">8</span>   Gertrude    pineapple Charnwood     <span class="m">100.9</span>
+<span class="m">9</span>   Gertrude       apples Charnwood      <span class="m">98.0</span>
+<span class="m">10</span> Pennelope      cashews   Higgins       <span class="m">2.0</span>
+<span class="m">11</span> Pennelope    beer nuts   Higgins       <span class="m">5.6</span>
+<span class="m">12</span> Pennelope     Pringles   Higgins       <span class="m">4.0</span></code></pre></figure></p>
 
     <div class="clear"></div>
   </div>
@@ -206,12 +125,10 @@ Complete ...
     
     <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
     
-    <a href="/categories/Workflow tools" title="Workflow tools" rel="category tag">Workflow tools</a>
-    
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-10-23 00:00:00 +1100">23 Oct 2015</abbr>
+      <abbr class="published" title="2017-12-31 00:00:00 +1100">31 Dec 2017</abbr>
     </span>
   </p>
   <div class="clear"></div>
@@ -225,7 +142,7 @@ Complete ...
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'disentanglethings'; // required: replace example with your forum shortname
 
-    var disqus_url = "http://ivanhanigan.github.com/2015/10/keeping-an-electronic-lab-notebook-for-computational-statistics-projects/";
+    var disqus_url = "http://ivanhanigan.github.com/2017/12/fillcolumns-in-R/";
 
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

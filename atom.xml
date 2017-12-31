@@ -4,13 +4,75 @@
  <title>Ivan Hanigan</title>
  <link href="http://ivanhanigan.github.com/atom.xml" rel="self"/>
  <link href="http://ivanhanigan.github.com/"/>
- <updated>2017-12-07T08:29:41+11:00</updated>
+ <updated>2017-12-31T23:28:04+11:00</updated>
  <id>http://ivanhanigan.github.com/</id>
  <author>
    <name>Ivan Hanigan</name>
    <email>ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Filling empty cells in columns with R</title>
+   <link href="http://ivanhanigan.github.com/2017/12/fillcolumns-in-R/"/>
+   <updated>2017-12-31T00:00:00+11:00</updated>
+   <id>http://ivanhanigan.github.com/2017/12/fillcolumns-in-R</id>
+   <content type="html">&lt;p&gt;Happy new year!&lt;/p&gt;
+
+&lt;p&gt;I have had a bit of a break and caught up with some of the older blog posts I did not find time for earlier in 2017.&lt;/p&gt;
+
+&lt;p&gt;This one caught my eye: &lt;a href=&quot;http://varianceexplained.org/r/start-blog/&quot;&gt;http://varianceexplained.org/r/start-blog/&lt;/a&gt; especially the line 'When you’ve given the same advice 3 times, write a blog post'. So I thought I'd write a blog post about a bit of R code advice. (Disclaimer: This wasn't originally my work, but I used this advice more than 3 times, so am sharing here. This is a function I got from my colleague Phil TnT).&lt;/p&gt;
+
+&lt;p&gt;In some cases I get data in a table that simplifies the presentation by only labelling one row in a set of rows like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span&gt;&lt;/span&gt;
+   person        fruit    suburb something
+      Tom      oranges   Scullin       &lt;span class=&quot;m&quot;&gt;3.0&lt;/span&gt;
+                apples                 &lt;span class=&quot;m&quot;&gt;6.0&lt;/span&gt;
+                 pears                 &lt;span class=&quot;m&quot;&gt;9.0&lt;/span&gt;
+              tim tams                 &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+ Gertrude       durian Charnwood       &lt;span class=&quot;m&quot;&gt;3.7&lt;/span&gt;
+          dragon fruit                 &lt;span class=&quot;m&quot;&gt;7.0&lt;/span&gt;
+               lychees                 &lt;span class=&quot;m&quot;&gt;4.9&lt;/span&gt;
+             pineapple               &lt;span class=&quot;m&quot;&gt;100.9&lt;/span&gt;
+                apples                &lt;span class=&quot;m&quot;&gt;98.0&lt;/span&gt;
+Pennelope      cashews   Higgins       &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+             beer nuts                 &lt;span class=&quot;m&quot;&gt;5.6&lt;/span&gt;
+              Pringles                 &lt;span class=&quot;m&quot;&gt;4.0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;&lt;/p&gt;
+
+&lt;p&gt;To use this like tidy data we need to fill these intervening cells.&lt;/p&gt;
+
+&lt;p&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;fill.col &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; col.name&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      s &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;which&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;col.name&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      item &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;col.name&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;s&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+      hold &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;list&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;item&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;    &lt;br/&gt;
+      &lt;span class=&quot;kr&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;i &lt;span class=&quot;kr&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hold&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; hold&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;item&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;ifelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;is.na&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; s&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; s&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+      x&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;col.name&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;unlist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hold&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      x
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;d &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; fill.col&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;d&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;person&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+fill.col&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;d&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;suburb&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  person        fruit    suburb something
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;        Tom      oranges   Scullin       &lt;span class=&quot;m&quot;&gt;3.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;        Tom       apples   Scullin       &lt;span class=&quot;m&quot;&gt;6.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;        Tom        pears   Scullin       &lt;span class=&quot;m&quot;&gt;9.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;        Tom     tim tams   Scullin       &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;   Gertrude       durian Charnwood       &lt;span class=&quot;m&quot;&gt;3.7&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;   Gertrude dragon fruit Charnwood       &lt;span class=&quot;m&quot;&gt;7.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;7&lt;/span&gt;   Gertrude      lychees Charnwood       &lt;span class=&quot;m&quot;&gt;4.9&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;   Gertrude    pineapple Charnwood     &lt;span class=&quot;m&quot;&gt;100.9&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;9&lt;/span&gt;   Gertrude       apples Charnwood      &lt;span class=&quot;m&quot;&gt;98.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt; Pennelope      cashews   Higgins       &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;11&lt;/span&gt; Pennelope    beer nuts   Higgins       &lt;span class=&quot;m&quot;&gt;5.6&lt;/span&gt;
+&lt;span class=&quot;m&quot;&gt;12&lt;/span&gt; Pennelope     Pringles   Higgins       &lt;span class=&quot;m&quot;&gt;4.0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>My view of the research data analysis pipeline</title>
@@ -131,9 +193,6 @@ Estimates of Long-Term Exposure for Health Research has been published in the jo
 “With this evidence we can make better choices on interventions to maximise the health benefits of reducing air pollution emissions while also delivering the lifestyle and economic prosperity afforded by burning fossil fuels for energy.”&lt;/p&gt;
 
 &lt;p&gt;The work is a collaboration between Dr Hanigan and colleagues from around Australia and the United States, including from University of Tasmania, University of Queensland, University of Sydney, CSIRO, Queensland University of Technology, University of New South Wales, University of Western Australia and the University of North Carolina.&lt;/p&gt;
-
-&lt;p&gt;Dr Hanigan is available for interview on 0428265976
-Contact the University of Canberra media team:  Marcus Butler: 0438 447 810 or Claudia Doman: 0408 826 362&lt;/p&gt;
 </content>
  </entry>
  
@@ -3725,128 +3784,6 @@ It was that I was on Twitter at all.
 &lt;li&gt;I'm happy to report I feel comfortable now (a couple of years in) making regular open notebook entries to communicate what is going on in my 'Lonely Analyst' lab &lt;a href=&quot;http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/&quot;&gt;http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;but a couple of recent emails asking me for data that I published years ago &lt;a href=&quot;https://gislibrary-extreme-weather.anu.edu.au/poa_weather&quot;&gt;like this Australian Postcode Area Weather Estimates stuff&lt;/a&gt; made me think I really need to get my stuff exposed so it is &lt;strong&gt;LOT&lt;/strong&gt; more visible.&lt;/li&gt;
 &lt;/ul&gt;
-
-</content>
- </entry>
- 
- <entry>
-   <title>Complexity of Graphs Obfuscates, but Visual Grouping Helps Disentangle Things</title>
-   <link href="http://ivanhanigan.github.com/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things/"/>
-   <updated>2015-10-03T00:00:00+10:00</updated>
-   <id>http://ivanhanigan.github.com/2015/10/complexity-of-graphs-obfuscates-but-visual-grouping-helps-disentangle-things</id>
-   <content type="html">&lt;p&gt;Using diagrams has long been a technique used in science to describe the relationships (edges) between things (nodes).  Mathematics and geometry tools have been applied to ameliorate the problem of laying out the diagram for the most efficient use of space.  It is desirable to minimise the gaps between the nodes and also to ensure that lines do not overlap too much.  This is because the complexity of graphs obfuscates the details that we are trying to show. Visual grouping helps to disentangle the relationships.&lt;/p&gt;
-
-&lt;p&gt;As an example, the relationship between drought and suicide is a complex system
-where the effects are indirect. The focus is on a chain
-of intermediary causal factors. These questions are usually explored
-in the context of many other factors that describe human biological
-variables and the socio-economic milieu.&lt;/p&gt;
-
-&lt;p&gt;In this post I utilise the R package &lt;code&gt;DiagrammeR&lt;/code&gt; to construct a causal directed acyclic graph (DAG) of the putative effects of a set of selected causal factors from both natural and social capital theories.&lt;/p&gt;
-
-&lt;p&gt;The following code produces graph
-&lt;img src=&quot;/images/suicide-drought.png&quot; alt=&quot;/images/suicide-drought.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Or this interactive version &lt;a href=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;/viewhtml21f36d8c5d7d/index.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;iframe style=&quot;border: none;&quot; height=&quot;400&quot; width=&quot;600&quot; src=&quot;/viewhtml21f36d8c5d7d/index.html&quot;&gt;&lt;/iframe&gt;
-
-
-&lt;pre&gt;&lt;code class=&quot;r&quot;&gt;library(DiagrammeR)
-#### First create the outcome
-nodes_outcome &amp;lt;- create_nodes(nodes = c('suicide','depression','anxiety'),
-                        label = TRUE,
-                        colour = &quot;black&quot;)
-
-edges_outcome &amp;lt;- create_edges(from = c('depression','anxiety'),
-                        to =   c(&quot;suicide&quot;, &quot;suicide&quot;)
-                        )
-
-graph_outcome &amp;lt;- create_graph(nodes_df = nodes_outcome,
-                       edges_df = edges_outcome)
-# just test this out
-## render_graph(graph_outcome)
-
-#### now the social capital factors  
-nodes_social &amp;lt;- 
-  create_nodes(nodes =  c(&quot;stress&quot;, &quot;decreased community support&quot;, &quot;migration&quot;),
-               label = TRUE,
-               color = &quot;blue&quot;)
-
-edges_social &amp;lt;- create_edges(from =  c(&quot;stress&quot;, &quot;stress&quot;, &quot;decreased community support&quot;,
-                          &quot;migration&quot;),
-                        to =   c(&quot;anxiety&quot;, &quot;depression&quot;, &quot;anxiety&quot;,
-                          &quot;decreased community support&quot;)
-                        )
-graph_social &amp;lt;- create_graph(nodes_df = nodes_social,
-                       edges_df = edges_social)
-# render_graph(graph_social)
-
-#### now the financial capital factors
-nodes_financial &amp;lt;- 
-  create_nodes(nodes = c(&quot;employment&quot;, &quot;debt&quot;),
-               label = TRUE,
-               color = &quot;green&quot;)
-
-edges_financial &amp;lt;- create_edges(from = c(&quot;employment&quot;, &quot;employment&quot;, &quot;debt&quot;),
-                        to =   c(&quot;stress&quot;, &quot;debt&quot;, &quot;stress&quot;)
-                        )
-graph_financial &amp;lt;- create_graph(nodes_df = nodes_financial,
-                       edges_df = edges_financial)
-# render_graph(graph_financial)
-
-
-#### now the natural capital factors
-nodes_natural &amp;lt;- 
-  create_nodes(nodes = c(&quot;drought&quot;, &quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;),
-               label = TRUE,
-               color = &quot;red&quot;)
-
-edges_natural &amp;lt;- create_edges(from = c(&quot;drought&quot;, &quot;drought&quot;, &quot;declined agricultural productivity&quot;,
-                          &quot;declined agricultural productivity&quot;, &quot;declined agricultural productivity&quot;,
-                          &quot;decreased food security&quot;,
-                          &quot;drought&quot;),
-                        to =   c(&quot;declined agricultural productivity&quot;, &quot;decreased food security&quot;, &quot;decreased food security&quot;,
-                          &quot;anxiety&quot;, &quot;employment&quot;,
-                          &quot;anxiety&quot;,
-                          &quot;migration&quot;)
-                        )
-graph_natural &amp;lt;- create_graph(nodes_df = nodes_natural,
-                       edges_df = edges_natural)
-## render_graph(graph_natural)
-
-# use create_graph on separate nodes and edges data frames, one for each cluster
-# then access the dot codes for each
-gr0 &amp;lt;- graph_outcome$dot_code
-gr1 &amp;lt;- graph_social$dot_code
-gr2 &amp;lt;- graph_financial$dot_code
-gr3 &amp;lt;- graph_natural$dot_code
-# then replace the graph with subgraph
-gr0 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster0&quot;, gr0)
-gr1 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster1&quot;, gr1)
-gr2 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster2&quot;, gr2)
-gr3 &amp;lt;- gsub(&quot;digraph&quot;, &quot;subgraph cluster3&quot;, gr3)
-# and then combine the subgraphs into one graph
-gr_out &amp;lt;- sprintf(&quot;digraph{\n%s\n\n %s\n%s\n%s\n}&quot;, gr0, gr1, gr2, gr3)
-cat(gr_out)
-grViz(gr_out)
-# If graphviz is installed and on linux call it with a shell command
-sink(&quot;suicide-drought.dot&quot;)
-cat(gsub(&quot;'&quot;,'&quot;', gr_out))
-sink()
-system(&quot;dot -Tpng suicide-drought.dot -o suicide-drought.png&quot;)
-# Interactive
-nodes &amp;lt;- combine_nodes(nodes_outcome, nodes_social, nodes_natural, nodes_financial)
-edges &amp;lt;- combine_edges(edges_outcome, edges_social, edges_natural, edges_financial)
-
-# Render graph
-graph &amp;lt;- create_graph(nodes_df = nodes,
-                      edges_df = edges)
-
-render_graph(graph, output = &quot;visNetwork&quot;)    
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 </content>
  </entry>
