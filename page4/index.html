@@ -54,6 +54,78 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2016/02/r-base-graphics-are-fine-except-barplot/" title="R base graphics are fine except barplot" rel="bookmark">R base graphics are fine except barplot</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I concur with Jeff Leek that once spent time learning base graphics in R there is less incentive to learn ggplot2 <a href="http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/">http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/</a></p>
+
+<p>However I always hate the way <code>barplot</code> works.  Here is an example:</p>
+
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>qc <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="kp">textConnection</span><span class="p">(</span><span class="s">&quot;id,  OnlinePaper, Q, freq, totals,       prop</span>
+<span class="s">1,      Online,         ,1768,   9950, 0.17768844</span>
+<span class="s">2,      Online,      No ,4022,   9950, 0.40422111</span>
+<span class="s">3,      Online,     Yes ,4160,   9950, 0.41809045</span>
+<span class="s">4,       Paper,         , 256,   3355, 0.07630402</span>
+<span class="s">5,       Paper,      No , 979,   3355, 0.29180328</span>
+<span class="s">6,       Paper,     Yes ,2120,   3355, 0.63189270&quot;</span><span class="p">))</span></p>
+
+<p>qc1 <span class="o">&lt;-</span> cast<span class="p">(</span>qc<span class="p">,</span> OnlinePaper <span class="o">~</span> Q74 <span class="p">,</span> value <span class="o">=</span> <span class="s">&quot;prop&quot;</span><span class="p">)</span>
+qc1
+barplot<span class="p">(</span><span class="kp">as.matrix</span><span class="p">(</span>qc1<span class="p">),</span> beside <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> legend.text <span class="o">=</span> qc1<span class="p">[,</span><span class="m">1</span><span class="p">],</span> ylim <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span></code></pre></figure></p>
+
+<p><img src="/images/barplot_base.png" alt="/images/barplot_base.png" /></p>
+
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>ggplot<span class="p">(</span>data<span class="o">=</span>qc<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Q<span class="p">,</span> y<span class="o">=</span>prop<span class="p">,</span> fill<span class="o">=</span>OnlinePaper<span class="p">))</span> <span class="o">+</span>
+    geom_bar<span class="p">(</span>stat<span class="o">=</span><span class="s">&quot;identity&quot;</span><span class="p">,</span> position<span class="o">=</span>position_dodge<span class="p">())</span></code></pre></figure></p>
+
+<p><img src="/images/barplot_gg.png" alt="/images/barplot_gg.png" /></p>
+
+<h4>Going to extremes</h4>
+
+<p>I should say though that I have found barplot can produce very customised graphs that serve a specific purpose such as that below (I have de-identified the content as this is unpublished research)</p>
+
+<p><img src="/images/barplot-gonuts.png" alt="/images/barplot-gonuts.png" /></p>
+
+<p>This made heavy use of the following approach</p>
+
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># original by Joseph Guillaume 2009</span>
+SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>aggAllData<span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+  par<span class="p">(</span>mar<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">8</span><span class="p">,</span><span class="m">7</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+  bp<span class="o">&lt;-</span>barplot<span class="p">(</span>aggAllData<span class="p">,</span>
+              horiz<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span>
+              col<span class="o">=</span>gray.colors<span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>aggAllData<span class="p">)),</span>
+              las<span class="o">=</span><span class="m">1</span><span class="p">,</span> axisnames <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+  labels <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span><span class="kp">as.data.frame</span><span class="p">(</span>aggAllData<span class="p">))</span>
+  text<span class="p">(</span>bp<span class="p">,</span> par<span class="p">(</span><span class="s">&#39;usr&#39;</span><span class="p">)[</span><span class="m">3</span><span class="p">],</span> labels <span class="o">=</span> <span class="kp">labels</span><span class="p">,</span> srt <span class="o">=</span> <span class="m">45</span><span class="p">,</span>
+       adj <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">1.1</span><span class="p">,</span><span class="m">1.1</span><span class="p">),</span> xpd <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> cex<span class="o">=</span><span class="m">.9</span><span class="p">)</span>
+    <span class="kr">return</span><span class="p">(</span>bp<span class="p">)</span>
+<span class="p">}</span>
+<span class="c1"># with width = xvar (proportions)</span></code></pre></figure></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/exploratory data analysis" title="exploratory data analysis" rel="category tag">exploratory data analysis</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2016/02/r-base-graphics-are-fine-except-barplot/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2016-02-19 00:00:00 +1100">19 Feb 2016</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/" title="r-syntax-highlights-for-my-jekyll-powered-blog.md" rel="bookmark">r-syntax-highlights-for-my-jekyll-powered-blog.md</a>
     </h1>
     <div class="entry-content full-content">
@@ -520,59 +592,6 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2016/01/release-checklist-references/" title="Release checklist references" rel="bookmark">Release checklist references</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>Some good reading and best-practice advice</h2>
-
-<ul>
-<li>Driessen, V. (2010). A successful Git branching model. Nvie.Com. Retrieved January 28, 2016, from <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
-</ul>
-
-
-<object data="/images/nvie2010-2.pdf" type="application/pdf" width="675" height="800">
-  <p>Alternative text - include a link <a href="images/nvie2010-2.pdf.pdf">to the PDF!</a></p>
-</object>
-
-
-<ul>
-<li>Huff, K. D. (n.d.). A Software Release Checklist. Retrieved January 28, 2016, from <a href="http://bids.berkeley.edu/news/software-release-checklist">http://bids.berkeley.edu/news/software-release-checklist</a></li>
-</ul>
-
-
-<p><img src="/images/Huff2016.png" alt="/images/Huff2016.png" /></p>
-
-<ul>
-<li>Stanisic, L., Legrand, A., &amp; Danjean, V. (2015). An Effective Git And Org-Mode Based Workflow For Reproducible Research. ACM SIGOPS Operating Systems  …. Retrieved from <a href="http://dl.acm.org/citation.cfm?id=2723881">http://dl.acm.org/citation.cfm?id=2723881</a></li>
-</ul>
-
-
-<p><img src="/images/Stanisic2015.png" alt="/images/Stanisic2015.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2016/01/release-checklist-references/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2016-01-28 00:00:00 +1100">28 Jan 2016</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -650,6 +669,10 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
               <ul>
                 
                 <li>
+                  <a href="/2018/03/iucn-red-list-ecosystems-framework-applicability-to-health/" title="IUCN Red List Ecosystems Framework Applicability To Health Impact Assessments" rel="bookmark">IUCN Red List Ecosystems Framework Applicability To Health Impact Assessments</a>
+                </li>
+                
+                <li>
                   <a href="/2018/02/the-aus-air-pollution-nepm-is-about-protecting-human-health/" title="The Australian Air National Environment Protection Measure (NEPM) is about protecting human health" rel="bookmark">The Australian Air National Environment Protection Measure (NEPM) is about protecting human health</a>
                 </li>
                 
@@ -663,10 +686,6 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
                 
                 <li>
                   <a href="/2017/11/the-impact-of-scale/" title="The impact of scale on associations between disadvantage and hospitalization for heart diseases" rel="bookmark">The impact of scale on associations between disadvantage and hospitalization for heart diseases</a>
-                </li>
-                
-                <li>
-                  <a href="/2017/11/new-paper-on-neighbourhood-level-air-pollution-for-health-research/" title="New paper on neighbourhood level air pollution for health research" rel="bookmark">New paper on neighbourhood level air pollution for health research</a>
                 </li>
                 
               </ul>
@@ -752,7 +771,7 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
                 
                 <li><a href="/categories/air pollution">air pollution (1)</a></li>
                 
-                <li><a href="/categories/policy relevant research">policy relevant research (1)</a></li>
+                <li><a href="/categories/policy relevant research">policy relevant research (2)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
