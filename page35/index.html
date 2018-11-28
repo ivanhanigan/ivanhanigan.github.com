@@ -54,6 +54,309 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/04/reflections-bob-haining/" title="Reflections on Spatial Regression Class with Prof Bob Haining" rel="bookmark">Reflections on Spatial Regression Class with Prof Bob Haining</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p><head>
+<title>Reflections on a class with Prof Bob Haining</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="Reflections on a class with Prof Bob Haining"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-04-05"/>
+<meta name="author" content="ivan hanigan"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/></p>
+
+
+
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+
+
+<p></head>
+<body></p>
+
+<div id="preamble">
+
+</div>
+
+
+
+
+<div id="content">
+<!-- <h1 class="title">Reflections on a class with Prof Bob Haining</h1> -->
+
+
+<!-- <div id="table-of-contents"> -->
+<!-- <h2>Table of Contents</h2> -->
+<!-- <div id="text-table-of-contents"> -->
+<!-- <ul> -->
+<!-- <li><a href="#sec-1">1 Introduction</a></li> -->
+<!-- <li><a href="#sec-2">2 The Spatial Error Model</a></li> -->
+<!-- <li><a href="#sec-3">3 The Spatial Lag Model</a></li> -->
+<!-- <li><a href="#sec-4">4 Spatially Lagged Independent Variable(s)</a></li> -->
+<!-- <li><a href="#sec-5">5 Discussion</a> -->
+<!-- <ul> -->
+<!-- <li><a href="#sec-5-1">5.1 How to decide which model to fit?</a></li> -->
+<!-- </ul> -->
+<!-- </li> -->
+<!-- <li><a href="#sec-6">6 Conclusion</a></li> -->
+<!-- </ul> -->
+<!-- </div> -->
+<!-- </div> -->
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>I recently attended a class on spatial regression with Prof Bob
+Haining.  He described the issue of spatially correlated errors and
+the problems this poses in spatial regression.
+</p>
+<p>
+The key issue is that spatial data often violates the assumption in
+regression models that the errors are independent. 
+</p>
+<p>
+A simple regression model applied to spatial data based on ZONES:
+</p>
+
+
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + e_{i}\)
+
+<p>
+But with spatial data it is likely that the errors are spatially
+correlated.  This is likely to mean the point estimate of beta 1 is OK
+but the Standard Error is wrong.
+</p>
+<p>
+This might be due to the scale of the study units, which may not
+capture the variation of exposure and outcome adequately. Or there
+might be unmeasured explanatory variables that have not been accounted
+for.
+</p>
+<p>
+I am mostly concerned with EXPLANATORY modelling in which a particular
+exposure of interest is to be assessed.  Examples include a weather
+variable (temperature), an air pollutant (PM10) or some measure of
+socio-economic deprivation in an area (SEIFA scores in Australian
+census data).  In these models I tend to include a number of
+'nuisance' parameters to control for confounding; or interaction terms
+to account for effect modification.  In this type of model the
+performance of the model over-all is not that important, I just want
+to control for the most important confounders so that my estimate of
+the exposure of interest is as rigorous as possible.
+</p>
+<p>
+Therefore the problem that spatially correlated errors pose for these models is
+slightly different to that which affects models aimed at PREDICTION: I
+am not concerned so much with the model's fit to the data, rather the
+confidence around the point-estimate of the parameter for the exposure
+of interest.
+</p>
+<p>
+Simplistically I took away the following messages:
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> The Spatial Error Model</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>So we could model allowing for correlated errors:
+</p>
+
+
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \eta_{i}\)
+
+<p>
+Where:
+</p>
+<p>
+\(\eta_{i}\) = Spatially autocorrelated errors.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> The Spatial Lag Model</h2>
+<div class="outline-text-2" id="text-3">
+
+<p>Or we could include a term for the neighbours, thus absorbing the correlated errors:
+</p>
+
+
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \rho(Neighbours Y_{ij}) + e_{i}\)
+
+<p>
+Where:
+</p>
+<p>
+\(\rho_(Neighbours Y_{ij})\) = is an additional explanatory variable which is the value of the dependent variable in neighbouring areas. 
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Spatially Lagged Independent Variable(s)</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>This is almost a variation of the spatial lag model, except that we
+include a term for the exposure variable in the neighbours, and
+therefore 'smooth' the effect of the exposure from what was observed
+in any area to make it relevant to it's neighbours as well:
+</p>
+
+
+\(Y_{i} = \beta_{0} + ZONE_{i} + \beta_{1} X_{1i} + \beta_{2L} X_{2ij} + e_{i}\)
+
+<p>
+Where:
+</p>
+<p>
+\(\beta_{2L} X_{2ij}\) = is the independent variable X2 that is spatially lagged.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Discussion</h2>
+<div class="outline-text-2" id="text-5">
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> How to decide which model to fit?</h3>
+<div class="outline-text-3" id="text-5-1">
+
+<p>So the burning question is how to choose between the various spatial
+models? Prof Haining had some suggestions, but he noted that sometimes
+two could be equally appropriate.  He suggested that the spatial lag
+model makes the strong assumption that there is a relationship between
+the outcome in a neighbouring area with the index zone.  This suggests
+some kind of contagion or dispersion effect.  He was not keen to fit
+this model in circumstances where the causal mechanism did not support
+such a relationship, suggesting the spatially weighted error model was
+more suited, but that "in practice they often give the same result".
+</p>
+<p>
+In my situation where I am not concerned with the actual
+autocorrelation but with tightening up the standard error on my
+exposure of interest, I think I might plead forgiveness and try
+fitting the spatial lag model as it seems easier.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Conclusion</h2>
+<div class="outline-text-2" id="text-6">
+
+<p>Stay tuned.
+</p>
+</div>
+</div>
+</div>
+
+
+<p></body>
+</html></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/04/reflections-bob-haining/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-04-05 00:00:00 +1100">05 Apr 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2012/09/software-ism/" title="software-ism" rel="bookmark">software-ism</a>
     </h1>
     <div class="entry-content full-content">
@@ -300,55 +603,6 @@ Luckily my core reasearch interest is simpler: better understanding the dynamics
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2012/05/historical-evidence-of-dengue-in-southeastern-australia/" title="Historical GIS evidence of Dengue in the far southeast of Australia?" rel="bookmark">Historical GIS evidence of Dengue in the far southeast of Australia?</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h2>Dengue Fever (DF) and climate</h2>
-
-<p>DF is a mosquito borne virus that has high public health impact and is potentially strongly influenced by climate.</p>
-
-<p>There is an interesting story attached to this map from a paper by Russell et al 2009 <a href="http://www.google.com" title="Russell, Richard C, Bart J Currie, Michael D Lindsay, John S Mackenzie, Scott A Ritchie, and Peter I Whelan. Dengue and climate change in Australia: predictions for the future should incorporate knowledge from the past. Medical Journal of Australia 190, no. 5 (2009)">1</a> that draws together documentary references to historic Dengue Fever (DF) transmission, some as far south as Gosford and Bourke in NSW.</p>
-
-<p><img src="/images/Russell2009MJA.jpg" alt="Russel map of Dengue Virus" /></p>
-
-<p>This asserted southerly extent is much further south than that delineated in the Potential Climatic Niche model of Hales et al 2002 <a href="http://www.google.com" title="Hales, S., N. de Wet, J. Maindonald, and A. Woodward. Potential effect of population and climate changes on global distribution of dengue fever: an empirical model. The Lancet 360, no. 9336 (2002)">2</a> and is used as a basis to refute the veracity (and utility) of such a model.</p>
-
-<p>The Hales' model determined the potential transmission zone in Australia as being constrained much further north by levels of humidity (vapour pressure).  That predictive model was based on a regression of many climatic attributes of all locations of disease transmission in a global database.  There is an ongoing debate between the epidemiology and the entomology camps over this modelling.</p>
-
-<p>A key issue regarding this contentious map is a reference used by Russell et al <a href="http://www.google.com" title="Russell, Richard C, Bart J Currie, Michael D Lindsay, John S Mackenzie, Scott A Ritchie, and Peter I Whelan. Dengue and climate change in Australia: predictions for the future should incorporate knowledge from the past. Medical Journal of Australia 190, no. 5 (2009)">1</a> to dengue transmission having occurred inland at Bourke (30 S) and on the coast at Gosford  (33 S, 80 km north of Sydney) in the first half of the 1900s, (ref 13 Lee et al, 1987 &amp; ref 14 Lumley and Taylor 1943 ).  However, a text search of Lee et al revealed only one reference to Gosford  and that refers to the presence of vector mosquito Aedes aegypti (AE), but not dengue transmission.</p>
-
-<p>The second reference is by the entomologist Frank H Taylor who mentions Brooklyn NSW, on page 158 (paragraph 2) .. as "the most southerly discovered location of AE" (the vector of DF in this area). Now, Brooklyn is on the railway on the Hawkesbury just south of Gosford. Taylor talks about railways spreading the vector. Maybe AE was found in NSW in conjunction with steam trains and railway water tanks for steam trains (the railway to Bourke was opened in 1885).  There is no clear discussion in Lumley and Taylor of DF transmission around Brooklyn.</p>
-
-<p>It is possible that the references cited for this map are really just evidence of the vector distribution, not actual virus transmission.  It is also likely that the southern-most border of the AE vector would not be the southern-most fringe of DF transmission. This therefore casts doubt on Russell's map which suggests the southern limit of DF transmission to have been as far south as Gosford and Bourke in NSW (Bourke is also asserted by Russell et al as a known transmission site using these same references).</p>
-
-<p>What Russell may be doing is just connecting the two points - Brooklyn and Bourke (who knows if there is a single data point in between) and asserting that that line of southernmost AE proof is the southerly boundary of DF transmission.  Perhaps if AE got to Brooklyn it might also have got to Bourke .. and Bourke being hotter than Brooklyn, DF transmission may have occurred there .. but we need more evidence than Russell et al provide.</p>
-
-<p>(Thanks to my epidemiological friends for scouring the historical references with a thoroughly incredulous eye).</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2012/05/historical-evidence-of-dengue-in-southeastern-australia/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2012-05-02 00:00:00 +1000">02 May 2012</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -426,6 +680,10 @@ Luckily my core reasearch interest is simpler: better understanding the dynamics
               <ul>
                 
                 <li>
+                  <a href="/2018/11/climate-change-policy-inaction-threatens-lives/" title="Climate Change policy inaction threatens lives" rel="bookmark">Climate Change policy inaction threatens lives</a>
+                </li>
+                
+                <li>
                   <a href="/2018/03/iucn-red-list-ecosystems-framework-applicability-to-health/" title="IUCN Red List Ecosystems Framework Applicability To Health Impact Assessments" rel="bookmark">IUCN Red List Ecosystems Framework Applicability To Health Impact Assessments</a>
                 </li>
                 
@@ -439,10 +697,6 @@ Luckily my core reasearch interest is simpler: better understanding the dynamics
                 
                 <li>
                   <a href="/2017/12/my-view-of-the-research-data-analysis-pipeline/" title="My view of the research data analysis pipeline" rel="bookmark">My view of the research data analysis pipeline</a>
-                </li>
-                
-                <li>
-                  <a href="/2017/11/the-impact-of-scale/" title="The impact of scale on associations between disadvantage and hospitalization for heart diseases" rel="bookmark">The impact of scale on associations between disadvantage and hospitalization for heart diseases</a>
                 </li>
                 
               </ul>
@@ -526,9 +780,11 @@ Luckily my core reasearch interest is simpler: better understanding the dynamics
                 
                 <li><a href="/categories/swish">swish (3)</a></li>
                 
-                <li><a href="/categories/air pollution">air pollution (1)</a></li>
+                <li><a href="/categories/air pollution">air pollution (2)</a></li>
                 
-                <li><a href="/categories/policy relevant research">policy relevant research (2)</a></li>
+                <li><a href="/categories/policy relevant research">policy relevant research (3)</a></li>
+                
+                <li><a href="/categories/climate change">climate change (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
