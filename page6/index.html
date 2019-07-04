@@ -54,6 +54,41 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2016/01/validity-of-measurement/" title="Validity of measurement" rel="bookmark">Validity of measurement</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I have needed to describe validity recently and found it useful to paraphrase some of this statistics blog post: <a href="">http://andrewgelman.com/2015/04/28/whats-important-thing-statistics-thats-not-textbooks/</a></p>
+
+<p>I've been working a lot on air pollution modelling recently, where 'validation' is used to assess how well the modelled pollution predicted values represent the actual pollution observed. I tend to think of validity as formalised in statistical terms, i.e. as correlations between different measurements of the same thing, or between measurement and 'truth', and statistics are used for assessing and calibrating measurements.</p>
+
+<p>I am guessing that when applied to the validity behind a research proposal, the issue might be whether the measurement is suitable for addressing the issue the researcher (and research question) is interested in, and therefore supporting the researchers to make valid inferences from the outcome of statistical methods. I have heard lots of anecdotes from statisticians in which when they are asked to help with analysing data, their advice was essentially that in order for a valid analysis that addresses the research question one would rather need to have collected different measurements.</p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+      <a href="/categories/statistical modelling" title="statistical modelling" rel="category tag">statistical modelling</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2016/01/validity-of-measurement/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2016-01-18 00:00:00 +1100">18 Jan 2016</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
     </h1>
     <div class="entry-content full-content">
@@ -574,90 +609,6 @@ $ git push -u origin master
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/" title="Using scholar rankings to provide weights in systematic literature reviews part 1" rel="bookmark">Using scholar rankings to provide weights in systematic literature reviews part 1</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>I've been thinking alot recently about an approach used in this recent systematic review</li>
-</ul>
-
-
-<pre><code>Vins, H., Bell, J., Saha, S., &amp; Hess, J. (2015). The mental health
-outcomes of drought: A systematic review and causal process
-diagram. International Journal of Environmental Research and Public
-Health, 12(10), 13251–13275. doi:10.3390/ijerph121013251
-</code></pre>
-
-<p></p>
-
-
-<ul>
-<li>They identify causal pathways from papers and ascribe the supporting evidentiary weight based on the number of papers published with findings that support this cause-effect pathway</li>
-<li>The raw number of papers is probably not a good metric, prone to bias so I was thinking of ways to ascribe weight based on quality of journal or authors</li>
-<li>This is not supposed to replace the need to actually read the papers, but purely as an additional source of information</li>
-<li>This recent post on scholar metrics provided some impetus via h-indices
-<a href="http://datascienceplus.com/hindex-gindex-pubmed-rismed/">http://datascienceplus.com/hindex-gindex-pubmed-rismed/</a></li>
-<li>I also think this approach of text mining the abstracts could be useful <a href="http://tuxette.nathalievilla.org/?p=1682">http://tuxette.nathalievilla.org/?p=1682</a></li>
-</ul>
-
-
-<h3>Sanity check of the two options using myself as guinea pig</h3>
-
-<pre><code class="">library(RISmed)
-x &lt;- "hanigan+ic[Author]"
-res &lt;- EUtilsSummary(x, type="esearch", db="pubmed", datetype='pdat', mindate=1900, 
-  maxdate=2015, retmax=500)
-str(res)
-citations1 &lt;- Cited(res)
-citations &lt;- as.data.frame(citations1)
-citations &lt;- citations[order(citations$citations,decreasing=TRUE),]
-citations &lt;- as.data.frame(citations)
-str(citations)
-citations &lt;- cbind(id=rownames(citations),citations)
-citations$id&lt;- as.character(citations$id)
-citations$id&lt;- as.numeric(citations$id)
-hindex &lt;- max(which(citations$id&lt;=citations$citations))
-
-hindex
-# 5
-
-library(scholar)
-myid &lt;- "cGN1P0wAAAAJ"
-y &lt;- scholar::get_publications(myid)
-str(y)
-y[,c("author", "cites")]
-y$id &lt;- as.numeric(row.names(y))
-hindex2 &lt;- max(which(y$id&lt;=y$cites))
-hindex2
-# 15
-</code></pre>
-
-<h3>Clearly the pubmed and google scholar search engines makes a big difference to my score!</h3>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/12/using-scholar-rankings-to-provide-weights-in-systematic-literature-reviews-part-1/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-12-17 00:00:00 +1100">17 Dec 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -735,6 +686,10 @@ hindex2
               <ul>
                 
                 <li>
+                  <a href="/2019/07/tscourse-chicago-heatwave/" title="Time series regression in R course codes for Chicago Heatwave" rel="bookmark">Time series regression in R course codes for Chicago Heatwave</a>
+                </li>
+                
+                <li>
                   <a href="/2018/11/climate-change-policy-inaction-threatens-lives/" title="Climate Change policy inaction threatens lives" rel="bookmark">Climate Change policy inaction threatens lives</a>
                 </li>
                 
@@ -748,10 +703,6 @@ hindex2
                 
                 <li>
                   <a href="/2017/12/fillcolumns-in-R/" title="Filling empty cells in columns with R" rel="bookmark">Filling empty cells in columns with R</a>
-                </li>
-                
-                <li>
-                  <a href="/2017/12/my-view-of-the-research-data-analysis-pipeline/" title="My view of the research data analysis pipeline" rel="bookmark">My view of the research data analysis pipeline</a>
                 </li>
                 
               </ul>
@@ -831,7 +782,7 @@ hindex2
                 
                 <li><a href="/categories/data operation">data operation (2)</a></li>
                 
-                <li><a href="/categories/training">training (1)</a></li>
+                <li><a href="/categories/training">training (2)</a></li>
                 
                 <li><a href="/categories/swish">swish (3)</a></li>
                 
