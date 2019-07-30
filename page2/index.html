@@ -54,6 +54,88 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2017/12/fillcolumns-in-R/" title="Filling empty cells in columns with R" rel="bookmark">Filling empty cells in columns with R</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Happy new year!</p>
+
+<p>I have had a bit of a break and caught up with some of the older blog posts I did not find time for earlier in 2017.</p>
+
+<p>This one caught my eye: <a href="http://varianceexplained.org/r/start-blog/">http://varianceexplained.org/r/start-blog/</a> especially the line 'When you’ve given the same advice 3 times, write a blog post'. So I thought I'd write a blog post about a bit of R code advice. (Disclaimer: This wasn't originally my work, but I used this advice more than 3 times, so am sharing here. This is a function I got from my colleague Phil TnT).</p>
+
+<p>In some cases I get data in a table that simplifies the presentation by only labelling one row in a set of rows like this:</p>
+
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>
+   person        fruit    suburb something
+      Tom      oranges   Scullin       <span class="m">3.0</span>
+                apples                 <span class="m">6.0</span>
+                 pears                 <span class="m">9.0</span>
+              tim tams                 <span class="m">2.0</span>
+ Gertrude       durian Charnwood       <span class="m">3.7</span>
+          dragon fruit                 <span class="m">7.0</span>
+               lychees                 <span class="m">4.9</span>
+             pineapple               <span class="m">100.9</span>
+                apples                <span class="m">98.0</span>
+Pennelope      cashews   Higgins       <span class="m">2.0</span>
+             beer nuts                 <span class="m">5.6</span>
+              Pringles                 <span class="m">4.0</span></code></pre></figure></p>
+
+<p>To use this like tidy data we need to fill these intervening cells.</p>
+
+<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span></p>
+
+<p>fill.col <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> col.name<span class="p">)</span> <span class="p">{</span>
+      s <span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span><span class="o">!</span>x<span class="p">[[</span>col.name<span class="p">]]</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+      item <span class="o">&lt;-</span> x<span class="p">[[</span>col.name<span class="p">]][</span>s<span class="p">]</span>
+      hold <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="kp">length</span><span class="p">(</span>item<span class="p">))</span>    <br/>
+      <span class="kr">for</span><span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span> <span class="kp">length</span><span class="p">(</span>hold<span class="p">))</span> hold<span class="p">[[</span>i<span class="p">]]</span> <span class="o">&lt;-</span> <span class="kp">rep</span><span class="p">(</span>item<span class="p">[</span>i<span class="p">],</span> <span class="kp">ifelse</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>s<span class="p">[</span>i<span class="m">+1</span><span class="p">]),</span> <span class="kp">dim</span><span class="p">(</span>x<span class="p">)[</span><span class="m">1</span><span class="p">]</span> <span class="o">+</span> <span class="m">1</span><span class="p">,</span> s<span class="p">[</span>i<span class="m">+1</span><span class="p">])</span> <span class="o">-</span> s<span class="p">[</span>i<span class="p">])</span>
+      x<span class="p">[[</span>col.name<span class="p">]]</span> <span class="o">&lt;-</span> <span class="kp">unlist</span><span class="p">(</span>hold<span class="p">)</span>
+      x
+      <span class="p">}</span></p>
+
+<p>d <span class="o">&lt;-</span> fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;person&#39;</span><span class="p">)</span>
+fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;suburb&#39;</span><span class="p">)</span></p>
+
+<pre><code>  person        fruit    suburb something
+</code></pre>
+
+<p><span class="m">1</span>        Tom      oranges   Scullin       <span class="m">3.0</span>
+<span class="m">2</span>        Tom       apples   Scullin       <span class="m">6.0</span>
+<span class="m">3</span>        Tom        pears   Scullin       <span class="m">9.0</span>
+<span class="m">4</span>        Tom     tim tams   Scullin       <span class="m">2.0</span>
+<span class="m">5</span>   Gertrude       durian Charnwood       <span class="m">3.7</span>
+<span class="m">6</span>   Gertrude dragon fruit Charnwood       <span class="m">7.0</span>
+<span class="m">7</span>   Gertrude      lychees Charnwood       <span class="m">4.9</span>
+<span class="m">8</span>   Gertrude    pineapple Charnwood     <span class="m">100.9</span>
+<span class="m">9</span>   Gertrude       apples Charnwood      <span class="m">98.0</span>
+<span class="m">10</span> Pennelope      cashews   Higgins       <span class="m">2.0</span>
+<span class="m">11</span> Pennelope    beer nuts   Higgins       <span class="m">5.6</span>
+<span class="m">12</span> Pennelope     Pringles   Higgins       <span class="m">4.0</span></code></pre></figure></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2017/12/fillcolumns-in-R/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2017-12-31 00:00:00 +1100">31 Dec 2017</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2017/12/my-view-of-the-research-data-analysis-pipeline/" title="My view of the research data analysis pipeline" rel="bookmark">My view of the research data analysis pipeline</a>
     </h1>
     <div class="entry-content full-content">
@@ -290,53 +372,6 @@ package. This creates the graph view shown below.</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2016/12/one-health-ecohealth-conference-melbourne-dec-2016/" title="One Health Ecohealth Conference Melbourne Dec 2016" rel="bookmark">One Health Ecohealth Conference Melbourne Dec 2016</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I've just come out of an amazing 5 day conference on One Health (where animal health science meets human health science, and a whole lot of ecological thinking).</p>
-
-<p>It was truly terrifying to hear about the cascading risks to health from environmental change.  I was deeply affected by the story of monitoring worm infestation rates in children working in mines in the DRCongo, and saddened by the mass death of coral this year on the barrier reef (among many other tragic stories).</p>
-
-<p>There was good news too:</p>
-
-<ul>
-<li>Pepper and cinnamon fed to broiler chickens in India has been found to have antimicrobial properties</li>
-<li>Bhutan have made progress with rabies</li>
-<li>Yanks working with Ozzies are making progress on Hendra antibodies/vaccine for horses and humans</li>
-<li>I met some very inspiring early career researchers and students</li>
-<li>I met some equally inspiring senior scientists</li>
-<li>My drought index/Government Drought Declarations poster was viewed by the former head of the Gov. Department who was in charge of the drought declarations (we agreed that the underlying governmental decision rules are vague and multipurpose, and a climate index has great value when looking at human ecology)</li>
-</ul>
-
-
-<p>I also gathered some AVA CPD points (whatever they are!) as alerted by this certificate they sent me.</p>
-
-<p><img src="/images/ecohealth_cert.png" alt="/images/ecohealth_cert.png" /></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/training" title="training" rel="category tag">training</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2016/12/one-health-ecohealth-conference-melbourne-dec-2016/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2016-12-08 00:00:00 +1100">08 Dec 2016</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -414,6 +449,10 @@ package. This creates the graph view shown below.</p>
               <ul>
                 
                 <li>
+                  <a href="/2019/07/environmental-health-indicators/" title="Environmental health indicators" rel="bookmark">Environmental health indicators</a>
+                </li>
+                
+                <li>
                   <a href="/2019/07/tscourse-chicago-heatwave/" title="Time series regression in R course codes for Chicago Heatwave" rel="bookmark">Time series regression in R course codes for Chicago Heatwave</a>
                 </li>
                 
@@ -429,10 +468,6 @@ package. This creates the graph view shown below.</p>
                   <a href="/2018/02/the-aus-air-pollution-nepm-is-about-protecting-human-health/" title="The Australian Air National Environment Protection Measure (NEPM) is about protecting human health" rel="bookmark">The Australian Air National Environment Protection Measure (NEPM) is about protecting human health</a>
                 </li>
                 
-                <li>
-                  <a href="/2017/12/fillcolumns-in-R/" title="Filling empty cells in columns with R" rel="bookmark">Filling empty cells in columns with R</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Categories</h2>
               <ul>
@@ -442,7 +477,7 @@ package. This creates the graph view shown below.</p>
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/research methods">research methods (42)</a></li>
+                <li><a href="/categories/research methods">research methods (43)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 

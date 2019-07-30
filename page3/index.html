@@ -54,6 +54,53 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2016/12/one-health-ecohealth-conference-melbourne-dec-2016/" title="One Health Ecohealth Conference Melbourne Dec 2016" rel="bookmark">One Health Ecohealth Conference Melbourne Dec 2016</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>I've just come out of an amazing 5 day conference on One Health (where animal health science meets human health science, and a whole lot of ecological thinking).</p>
+
+<p>It was truly terrifying to hear about the cascading risks to health from environmental change.  I was deeply affected by the story of monitoring worm infestation rates in children working in mines in the DRCongo, and saddened by the mass death of coral this year on the barrier reef (among many other tragic stories).</p>
+
+<p>There was good news too:</p>
+
+<ul>
+<li>Pepper and cinnamon fed to broiler chickens in India has been found to have antimicrobial properties</li>
+<li>Bhutan have made progress with rabies</li>
+<li>Yanks working with Ozzies are making progress on Hendra antibodies/vaccine for horses and humans</li>
+<li>I met some very inspiring early career researchers and students</li>
+<li>I met some equally inspiring senior scientists</li>
+<li>My drought index/Government Drought Declarations poster was viewed by the former head of the Gov. Department who was in charge of the drought declarations (we agreed that the underlying governmental decision rules are vague and multipurpose, and a climate index has great value when looking at human ecology)</li>
+</ul>
+
+
+<p>I also gathered some AVA CPD points (whatever they are!) as alerted by this certificate they sent me.</p>
+
+<p><img src="/images/ecohealth_cert.png" alt="/images/ecohealth_cert.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/training" title="training" rel="category tag">training</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2016/12/one-health-ecohealth-conference-melbourne-dec-2016/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2016-12-08 00:00:00 +1100">08 Dec 2016</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2016/09/update-ripping-data-from-georeferenced-images-with-qgis/" title="UPDATE re Ripping data from georeferenced images with QGIS" rel="bookmark">UPDATE re Ripping data from georeferenced images with QGIS</a>
     </h1>
     <div class="entry-content full-content">
@@ -451,73 +498,6 @@ $(document).ready(function () {
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/" title="Australian Postal Areas In Geographical Vs Projected Coordinates" rel="bookmark">Australian Postal Areas In Geographical Vs Projected Coordinates</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-<li>Notes re an old project "POA2006_centroids transformations 2010-08-06"</li>
-<li><a href="https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html">https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html</a></li>
-<li>compared population weighted centroids with Geographic POA centroids</li>
-<li>Postal Areas (POA) are not the same as Postcodes!  See <a href="http://www.abs.gov.au/websitedbs/D3310114.nsf/4a256353001af3ed4b2562bb00121564/6b6e07234c98365aca25792d0010d730/$FILE/Postcodes%20&amp;%20Postal%20Areas%20-%20Fact%20Sheet.pdf">this fact sheet</a></li>
-<li>But my old work gives the total areas as 695.6 square decimal degrees</li>
-<li>This compares with the area of Australia at 7.692 million sq kms.</li>
-<li>So this update uses Geoscience Australia Lambert to avoid distorting the area</li>
-<li><a href="http://spatialreference.org/ref/epsg/3112/">http://spatialreference.org/ref/epsg/3112/</a></li>
-</ul>
-
-
-<h1>Download</h1>
-
-<ul>
-<li><a href="/data/auspoa06_geocentroids_lambert_20160624.csv">auspoa06_geocentroids_lambert_20160624.csv</a></li>
-</ul>
-
-
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="s">&#39;name:poa06-area-lambert&#39;</span>
-<span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/projects/POA_centroids/POA2006_centroids&quot;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span>swishdbtools<span class="p">)</span>
-ch <span class="o">&lt;-</span> connect2postgres2<span class="p">(</span><span class="s">&quot;delphe&quot;</span><span class="p">)</span></p>
-
-<p>fout_geo<span class="o">=</span>dbGetQuery<span class="p">(</span>ch<span class="p">,</span>
-<span class="s">&#39;select poa_2006,</span>
-<span class="s">  st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,</span>
-<span class="s">st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,</span>
-<span class="s">st_y(st_centroid(st_transform(the_geom,3112))) as geocenty</span>
-<span class="s">from abs_poa.auspoa06&#39;</span><span class="p">)</span>
-str<span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="kp">sum</span><span class="p">(</span>fout_geo<span class="o">$</span>geoscience_australia_lambert_area_km2<span class="p">)</span>
-write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="s">&#39;data_derived/auspoa06_geocentroids_lambert_20160624.csv&#39;</span><span class="p">,</span>
-            row.names<span class="o">=</span><span class="bp">F</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;,&#39;</span><span class="p">)</span></p>
-
-<p>plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</span><span class="o">:</span><span class="m">4</span><span class="p">])</span>
-<span class="kp">head</span><span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="kp">nrow</span><span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="m">2507</span></code></pre></figure></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2016/06/australian-postal-areas-in-geographical-vs-projected-coordinates/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2016-06-24 00:00:00 +1000">24 Jun 2016</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -595,6 +575,10 @@ write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="
               <ul>
                 
                 <li>
+                  <a href="/2019/07/environmental-health-indicators/" title="Environmental health indicators" rel="bookmark">Environmental health indicators</a>
+                </li>
+                
+                <li>
                   <a href="/2019/07/tscourse-chicago-heatwave/" title="Time series regression in R course codes for Chicago Heatwave" rel="bookmark">Time series regression in R course codes for Chicago Heatwave</a>
                 </li>
                 
@@ -610,10 +594,6 @@ write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="
                   <a href="/2018/02/the-aus-air-pollution-nepm-is-about-protecting-human-health/" title="The Australian Air National Environment Protection Measure (NEPM) is about protecting human health" rel="bookmark">The Australian Air National Environment Protection Measure (NEPM) is about protecting human health</a>
                 </li>
                 
-                <li>
-                  <a href="/2017/12/fillcolumns-in-R/" title="Filling empty cells in columns with R" rel="bookmark">Filling empty cells in columns with R</a>
-                </li>
-                
               </ul>
               <h2 class="widget-title">Categories</h2>
               <ul>
@@ -623,7 +603,7 @@ write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="
                 
                 <li><a href="/categories/overview">overview (7)</a></li>
                 
-                <li><a href="/categories/research methods">research methods (42)</a></li>
+                <li><a href="/categories/research methods">research methods (43)</a></li>
                 
                 <li><a href="/categories/disentangle things">disentangle things (4)</a></li>
                 
