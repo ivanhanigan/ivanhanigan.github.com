@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,152 +55,140 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h3>Background</h3>
-
+    <h3 id="background">Background</h3>
 <p>This is an example of using github for a Reproducible Research Report (RRR) using a casestudy of the  Hutchinson Drought Index.  The project is available under GNU licence at <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a>.</p>
 
-<h3>Aims</h3>
-
+<h3 id="aims">Aims</h3>
 <p>This example will clone the repository from github and run the replication codes using the replication datasets.</p>
 
-<h3>Materials and Methods</h3>
+<h3 id="materials-and-methods">Materials and Methods</h3>
 
 <ul>
-<li>assumes you are connected to the internet</li>
-<li>assumes you have git, a github account and ssh key set up</li>
-<li>assumes you have R and GDAL configured</li>
-<li>assumes BoM and ABS have kept their data in the locations I specified to download from</li>
+  <li>assumes you are connected to the internet</li>
+  <li>assumes you have git, a github account and ssh key set up</li>
+  <li>assumes you have R and GDAL configured</li>
+  <li>assumes BoM and ABS have kept their data in the locations I specified to download from</li>
 </ul>
 
+<h3 id="hutchinsons-drought-index">Hutchinsons Drought Index</h3>
 
-<h3>Hutchinsons Drought Index</h3>
-
-<p>The Hutchinson Drought Index (or Drought Severity Index) is a climatic drought index
+<p>The Hutchinson Drought Index (or Drought Severity Index) is a climatic drought index 
 that was designed to reflect agricultural droughts using only rainfall data.</p>
 
-<p>The index was invented by Professor Mike Hutchinson at the ANU in 1992 (1) and
-this project includes R codes written to describe the calculations
+<p>The index was invented by Professor Mike Hutchinson at the ANU in 1992 (1) and 
+this project includes R codes written to describe the calculations 
 and also to download data (2,3) to play with.</p>
 
-<h3>Results</h3>
+<h3 id="results">Results</h3>
 
-<h4>Replication Codes to run in the terminal</h4>
-
-<pre><code>git clone git@github.com:ivanhanigan/HutchinsonDroughtIndex.git ~/data/HutchinsonDroughtIndex
+<h4 id="replication-codes-to-run-in-the-terminal">Replication Codes to run in the terminal</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:ivanhanigan/HutchinsonDroughtIndex.git ~/data/HutchinsonDroughtIndex
 R
 setwd("~/data/HutchinsonDroughtIndex")
 source("HutchinsonDroughtIndex_go.r")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>WARNING this downloads 5.4MB from BoM and 19.9MB from ABS</li>
-<li>This runs the codes and produces graphs</li>
-<li>an alternative workflow would be to run the sweave file in the reports directory but I dont like that method as much and have set all the evaluation commands to false.</li>
-<li>it will run now that we have the graphs though, to create a report:</li>
+  <li>WARNING this downloads 5.4MB from BoM and 19.9MB from ABS</li>
+  <li>This runs the codes and produces graphs</li>
+  <li>an alternative workflow would be to run the sweave file in the reports directory but I dont like that method as much and have set all the evaluation commands to false.</li>
+  <li>it will run now that we have the graphs though, to create a report:</li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code>setwd("reports")
+<h4 id="code">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setwd("reports")
 Sweave("HutchinsonDroughtIndex_transformations_doc.Rnw")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>which creates a tex file that can create <a href="/pdfs/HutchinsonDroughtIndex_transformations_doc.pdf">this pdf</a></li>
-<li>but the simplest example I gave above will compute the index and create the graphs (one is shown below)</li>
+  <li>which creates a tex file that can create <a href="/pdfs/HutchinsonDroughtIndex_transformations_doc.pdf">this pdf</a></li>
+  <li>but the simplest example I gave above will compute the index and create the graphs (one is shown below)</li>
 </ul>
-
 
 <p><img src="/images/CentralWestDrought8283.png" alt="CentralWestDrought8283.png" /></p>
 
-<h3>So what actually happened?</h3>
+<h3 id="so-what-actually-happened">So what actually happened?</h3>
 
 <ul>
-<li>This project adheres to the <a href="http://stackoverflow.com/a/1434424">Reichian LCFD model of writing R code</a></li>
-<li>In this the code is bundled into modules Func (tools), Load, Do, Clean (check).  These live in the src directory (following teh White ProjectTemplate model - well almost, He would put tools/func into lib)</li>
-<li>then a main.r (or go.r) script calls these modules</li>
+  <li>This project adheres to the <a href="http://stackoverflow.com/a/1434424">Reichian LCFD model of writing R code</a></li>
+  <li>In this the code is bundled into modules Func (tools), Load, Do, Clean (check).  These live in the src directory (following teh White ProjectTemplate model - well almost, He would put tools/func into lib)</li>
+  <li>then a main.r (or go.r) script calls these modules</li>
 </ul>
 
-
-<h4>go.r</h4>
-
-<pre><code> source('src/HutchinsonDroughtIndex_tools.r')
+<h4 id="gor">go.r</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> source('src/HutchinsonDroughtIndex_tools.r')
  source('src/HutchinsonDroughtIndex_load.r')
  source('src/HutchinsonDroughtIndex_do.r')
  source('src/HutchinsonDroughtIndex_check.r')
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li><p>The really interesting bit is <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">a tool written for this project</a> that is called from within tools.r</p>
+  <li>
+    <p>The really interesting bit is <a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">a tool written for this project</a> that is called from within tools.r</p>
 
-<p>   source('src/HutchinsonDroughtIndex_tools_droughtIndex.r')</p></li>
+    <p>source(‘src/HutchinsonDroughtIndex_tools_droughtIndex.r’)</p>
+  </li>
 </ul>
-
 
 <p></p>
 
-
 <ul>
-<li>A keen reader would look in that script to find out exactly what the function does</li>
-<li>A keen author would push that function to an R package (a super keen bean would publish this on CRAN)</li>
+  <li>A keen reader would look in that script to find out exactly what the function does</li>
+  <li>A keen author would push that function to an R package (a super keen bean would publish this on CRAN)</li>
 </ul>
 
+<h3 id="discussion">Discussion</h3>
 
-<h3>Discussion</h3>
-
-<h4>Strengths:</h4>
-
-<ul>
-<li>full codes are provided to reproduce the data access, manipulation and analysis</li>
-<li>the gory details are hidden from the casual user</li>
-</ul>
-
-
-<h4>Weaknesses:</h4>
+<h4 id="strengths">Strengths:</h4>
 
 <ul>
-<li>the important details are hidden from the technical user</li>
-<li>the script depends on a bunch of things that might not be true</li>
+  <li>full codes are provided to reproduce the data access, manipulation and analysis</li>
+  <li>the gory details are hidden from the casual user</li>
 </ul>
 
-
-<h4>Conclusions</h4>
+<h4 id="weaknesses">Weaknesses:</h4>
 
 <ul>
-<li>This is an example of a self-contained RRR</li>
+  <li>the important details are hidden from the technical user</li>
+  <li>the script depends on a bunch of things that might not be true</li>
 </ul>
 
+<h4 id="conclusions">Conclusions</h4>
 
-<h3>References</h3>
+<ul>
+  <li>This is an example of a self-contained RRR</li>
+</ul>
 
+<h3 id="references">References</h3>
 <ol>
-<li><p>Smith, D. I, Hutchinson, M. F, &amp; McArthur, R. J. (1992) Climatic and
+  <li>
+    <p>Smith, D. I, Hutchinson, M. F, &amp; McArthur, R. J. (1992) Climatic and
 Agricultural Drought: Payments and Policy. (Centre for Resource and Environmental
-Studies, Australian National University, Canberra, Australia).<br/>
-http://fennerschool-research.anu.edu.au/spatio-temporal/publications/cres_paper1992.pdf</p></li>
-<li><p>Bureau of Meteorology High Quality Monthly precipitation data
-downloaded on 2012-01-09
-from ftp://ftp.bom.gov.au/anon/home/ncc/www/change/HQmonthlyR/HQ_monthly_prcp_txt.tar</p></li>
-<li><p>Australian Bureau of Statistics Statistical Divisions 2006
-downloaded on 2012-01-09
-from http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.0022006?OpenDocument</p></li>
+Studies, Australian National University, Canberra, Australia).<br />
+http://fennerschool-research.anu.edu.au/spatio-temporal/publications/cres_paper1992.pdf</p>
+  </li>
+  <li>
+    <p>Bureau of Meteorology High Quality Monthly precipitation data 
+downloaded on 2012-01-09 
+from ftp://ftp.bom.gov.au/anon/home/ncc/www/change/HQmonthlyR/HQ_monthly_prcp_txt.tar</p>
+  </li>
+  <li>
+    <p>Australian Bureau of Statistics Statistical Divisions 2006 
+downloaded on 2012-01-09 
+from http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.0022006?OpenDocument</p>
+  </li>
 </ol>
 
+<h3 id="acknowledgements">Acknowledgements</h3>
 
-<h3>Acknowledgements</h3>
-
-<p>Financial support was provided by Professor Tony McMichael's
-"Australia Fellowship" from the the National Health and Medical Research Council, via the
+<p>Financial support was provided by Professor Tony McMichael’s 
+“Australia Fellowship” from the the National Health and Medical Research Council, via the 
 National Centre for Epidemiology and Population Health, Australian National University.</p>
 
     <div class="clear"></div>
@@ -221,7 +209,7 @@ National Centre for Epidemiology and Population Health, Australian National Univ
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-11-06 00:00:00 +1100">06 Nov 2013</abbr>
+      <abbr class="published" title="2013-11-06 00:00:00 +0800">06 Nov 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>

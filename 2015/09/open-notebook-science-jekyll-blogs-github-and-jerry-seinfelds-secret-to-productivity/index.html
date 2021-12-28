@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,59 +55,51 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>The other day I reported that I've implemented a new open science task management regime <a href="http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/">http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/</a>.</p>
+    <p>The other day I reported that I’ve implemented a new open science task management regime <a href="http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/">http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/</a>.</p>
 
-<p>This was instigated by my renewed enthusiasm for open science after a few high profile papers have come out in the last few months imploring scientists to take action on shonky statistics and the "morass of poorly conducted data analyses, with errors ranging from trivial and strange to devastating" (Peng 2015) <a href="http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x">http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x</a>.</p>
+<p>This was instigated by my renewed enthusiasm for open science after a few high profile papers have come out in the last few months imploring scientists to take action on shonky statistics and the “morass of poorly conducted data analyses, with errors ranging from trivial and strange to devastating” (Peng 2015) <a href="http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x">http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x</a>.</p>
 
-<p>I believe that making ones electronic notebook open is one of the most obvious and easily achieved things to do toward that ambition.  I also think that keeping the TODO-list in the forefront of ones mind and continuously checking things off the list is a great boost for productivity and keeping on track.  This culminates in the advice to keep momentum by doing something toward the plan on a daily basis, no matter how trivial.  This is sometimes called Jerry Seinfeld's secret to productivity: Just keep at it. Don't break the streak. <a href="http://dirk.eddelbuettel.com/blog/2014/10/12/">http://dirk.eddelbuettel.com/blog/2014/10/12/</a>.</p>
+<p>I believe that making ones electronic notebook open is one of the most obvious and easily achieved things to do toward that ambition.  I also think that keeping the TODO-list in the forefront of ones mind and continuously checking things off the list is a great boost for productivity and keeping on track.  This culminates in the advice to keep momentum by doing something toward the plan on a daily basis, no matter how trivial.  This is sometimes called Jerry Seinfeld’s secret to productivity: Just keep at it. Don’t break the streak. <a href="http://dirk.eddelbuettel.com/blog/2014/10/12/">http://dirk.eddelbuettel.com/blog/2014/10/12/</a>.</p>
 
 <p>So what was holding me back from a really useful daily publication of my open notebook?  I showed last post how I manage tasks in Emac Orgmode (a task organiser and calendar/agenda rolled up with code execution for running R scripts etc).  I also write my blog posts in orgmode.</p>
 
-<p>The only problem with that set up was that I was still using the code from Charlie Park <a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a> which adds the inadequate commit description '<code>Latest build</code>' every time.  What I needed was a way to actually log a summary of work each day, so I can look back over the history and know I actually did something everyday and was not just gaming the system by committing random little non-work additions (I want to balance this by doing <em>some</em> work every day, but also take time off to read, exercise, socialize, and generally have fun).</p>
+<p>The only problem with that set up was that I was still using the code from Charlie Park <a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a> which adds the inadequate commit description ‘<code class="language-plaintext highlighter-rouge">Latest build</code>’ every time.  What I needed was a way to actually log a summary of work each day, so I can look back over the history and know I actually did something everyday and was not just gaming the system by committing random little non-work additions (I want to balance this by doing <em>some</em> work every day, but also take time off to read, exercise, socialize, and generally have fun).</p>
 
-<p>So anyway, the point of this post is to describe my revision to Charlie Park's code for building a jekyll blog:</p>
+<p>So anyway, the point of this post is to describe my revision to Charlie Park’s code for building a jekyll blog:</p>
 
-<h4>Code: put in ~/.bash_profile</h4>
-
-<pre><code>function bb() {
+<h4 id="code-put-in-bash_profile">Code: put in ~/.bash_profile</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function bb() {
   cd ~/projects/ivanhanigan.github.com.raw &amp;&amp; jekyll b &amp;&amp; cp -r    
   ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com &amp;&amp; 
   cd ~/projects/ivanhanigan.github.com &amp;&amp; git add . -A  &amp;&amp; 
   git commit -m "$*" &amp;&amp; 
   git push
 }
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>That bit about <code>$*</code> was a bit difficult for me to get working as this is the first time I have written a bash script in anger.  The alternative was to use <code>$1</code> and require the git commit message to be passed within quotes, which also makes sense but I did not do that.</li>
-<li>I also needed to change the terminal settings so that it always loads the bash_profile</li>
+  <li>That bit about <code class="language-plaintext highlighter-rouge">$*</code> was a bit difficult for me to get working as this is the first time I have written a bash script in anger.  The alternative was to use <code class="language-plaintext highlighter-rouge">$1</code> and require the git commit message to be passed within quotes, which also makes sense but I did not do that.</li>
+  <li>I also needed to change the terminal settings so that it always loads the bash_profile</li>
 </ul>
 
-
-<h4>Bash terminal</h4>
-
-<pre><code>Edit &gt; Profile preferences
+<h4 id="bash-terminal">Bash terminal</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Edit &gt; Profile preferences
 Title and Command &gt; Run command as a login shell 
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <ul>
-<li>And so now I just have to deposit a markdown blog post into the jekyll <code>_posts</code> folder and then</li>
+  <li>And so now I just have to deposit a markdown blog post into the jekyll <code class="language-plaintext highlighter-rouge">_posts</code> folder and then</li>
 </ul>
 
-
-<h4>Bash</h4>
-
-<pre><code>bb Add a meaningful commit message about todays progress
-</code></pre>
+<h4 id="bash">Bash</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bb Add a meaningful commit message about todays progress
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>There you have it, a meaningful message regarding what I have been doing towards my scientific output every day.</p>
 
@@ -115,15 +107,13 @@ Title and Command &gt; Run command as a login shell
 
 <p><img src="/images/seinfeld-streak-day9.png" alt="/images/seinfeld-streak-day9.png" /></p>
 
-<h4>References</h4>
-
-<pre><code>Peng, R. (2015). The reproducibility crisis in science: 
+<h4 id="references">References</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Peng, R. (2015). The reproducibility crisis in science: 
 A statistical counterattack. Significance, 12(3), 30–32. 
 doi:10.1111/j.1740-9713.2015.00827.x
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
     <div class="clear"></div>
   </div>
@@ -143,7 +133,7 @@ doi:10.1111/j.1740-9713.2015.00827.x
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-09-22 00:00:00 +1000">22 Sep 2015</abbr>
+      <abbr class="published" title="2015-09-22 00:00:00 +0800">22 Sep 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

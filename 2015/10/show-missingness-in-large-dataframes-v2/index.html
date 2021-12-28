@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,24 +56,21 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>UPDATE: the other day I blogged this but I needed to tweak things, so this is a re-post with extra</li>
-<li>UPDATE 2: Today an R blogger has posted a new solution <a href="/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger">/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</a></li>
+  <li>UPDATE: the other day I blogged this but I needed to tweak things, so this is a re-post with extra</li>
+  <li>UPDATE 2: Today an R blogger has posted a new solution <a href="/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger">/2015/12/show-missingness-in-large-dataframes-with-ggplot-thanks-to-r-blogger</a></li>
 </ul>
 
-
-<h2>The old post</h2>
+<h2 id="the-old-post">The old post</h2>
 
 <ul>
-<li>Sometime ago I saw this example of a method for assessing missing data in a large data frame <a href="http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/">http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/</a></li>
-<li>I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:</li>
+  <li>Sometime ago I saw this example of a method for assessing missing data in a large data frame <a href="http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/">http://flowingdata.com/2014/08/14/csv-fingerprint-spot-errors-in-your-data-at-a-glance/</a></li>
+  <li>I asked my colleague Grant about doing this in R and he whipped up the following code to generate such an image:</li>
 </ul>
-
 
 <p><img src="/images/bankstown_traffic_counts_full_listing_june_2014.svg" alt="/images/bankstown_traffic_counts_full_listing_june_2014.svg" /></p>
 
-<h4>Code</h4>
-
-<pre><code>misstable &lt;- function(atable){
+<h4 id="code">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>misstable &lt;- function(atable){
  op &lt;- par(bg = "white")
  plot(c(0, 400), c(0, 1000), type = "n", xlab="", ylab="",
      main = "Missing Data Table")
@@ -110,22 +107,18 @@
  }
  }
 }
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
-
 <ul>
-<li>Now things to note are that the function expects the data to be TRUE if Not NA and  FALSE if is NA</li>
-<li>so might need to massage things a bit first</li>
-<li>here is the small test Grant supplied</li>
+  <li>Now things to note are that the function expects the data to be TRUE if Not NA and  FALSE if is NA</li>
+  <li>so might need to massage things a bit first</li>
+  <li>here is the small test Grant supplied</li>
 </ul>
 
-
-<h4>Code</h4>
-
-<pre><code>require(grDevices)
-
+<h4 id="code-1">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(grDevices)
+   
 # Make a quick dataframe with true/false representing data availability
 locs=c("Australia","India","New Zealand","Sri Lanka","Uruguay","Somalia")
 f1=c(T,F,T,T,F,F)
@@ -135,19 +128,16 @@ atable=data.frame(locs,f1,f2,f3)
 atable
 #Draw the table.
 misstable(atable)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>here is the one I worked on today</li>
+  <li>here is the one I worked on today</li>
 </ul>
 
-
-<h4>Code</h4>
-
-<pre><code># having defined the input dir and input file tried reading the excel sheet (without head 3 rows)
+<h4 id="code-2">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># having defined the input dir and input file tried reading the excel sheet (without head 3 rows)
 #dat &lt;- readxl::read_excel(file.path(indir, infile), skip =3)
 # got lots of warnings()
 ## 50: In read_xlsx_(path, sheet, col_names = col_names, col_types = col_types,  ... :
@@ -175,7 +165,7 @@ dev.off()
 browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
 
 # cool, that is an effective way to look at the data
-</code></pre>
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -197,7 +187,7 @@ browseURL(file.path(outdir, gsub(".csv", ".svg", outfile))    )
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-10-28 00:00:00 +1100">28 Oct 2015</abbr>
+      <abbr class="published" title="2015-10-28 00:00:00 +0800">28 Oct 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

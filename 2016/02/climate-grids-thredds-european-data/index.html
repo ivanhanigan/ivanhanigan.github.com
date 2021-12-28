@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,16 +55,16 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>I've got netCDF data regarding temperature calculated from the daily E-OBS gridded dataset which is based on observational data with a spatial resolution of 0.22° on a
+    <p>I’ve got netCDF data regarding temperature calculated from the daily E-OBS gridded dataset which is based on observational data with a spatial resolution of 0.22° on a 
 rotated pole grid, with the north pole at 39.25N, 162W.  <a href="http://www.ecad.eu">http://www.ecad.eu</a>.</p>
 
-<p>The rotated grid is the same as used in many ENSEMBLES Regional Climate Models.  But I've never worked with the rotated grid projection before and so here is what I learnt.</p>
+<p>The rotated grid is the same as used in many ENSEMBLES Regional Climate Models.  But I’ve never worked with the rotated grid projection before and so here is what I learnt.</p>
 
-<h2>This is the actual geographic points, it shows a kind of fan of locations</h2>
+<h2 id="this-is-the-actual-geographic-points-it-shows-a-kind-of-fan-of-locations">This is the actual geographic points, it shows a kind of fan of locations</h2>
 
 <p><img src="/images/qc_actual_xy.png" alt="/images/qc_actual_xy.png" /></p>
 
-<pre><code class="{r}">#library(ncdf4)
+<pre><code class="language-{r}">#library(ncdf4)
 library(ncdf)
 library(raster)
 projdir &lt;- "~/projects/weather_european_eobs/eobs_temperature_tg_dataset"
@@ -130,10 +130,10 @@ setwd(projdir)
        count &lt;- varsize        # begin w/count=(nx,ny,nz,...,nt), reads entire var
        count[ndims] &lt;- 1       # change to count=(nx,ny,nz,...,1) to read 1 tstep
        data3 &lt;- get.var.ncdf( nc, var_i, start=start, count=count )
-
+        
        # Now read in the value of the timelike dimension
        timeval &lt;- get.var.ncdf( nc, var_i$dim[[ndims]]$name, start=i, count=1 )
-
+        
        print(paste("Data for variable",var_i$name,"at timestep",i,
                " (time value=",timeval,var_i$dim[[ndims]]$units,"):"))
        # [1] "Data for variable tg at timestep 1  (time value= 0 days since 1950-01-01 00:00 ):"      
@@ -204,20 +204,20 @@ lines(wrl)
 dev.off()
 </code></pre>
 
-<h2>This is the first graphic shown above, it shows a kind of fan of locations</h2>
+<h2 id="this-is-the-first-graphic-shown-above-it-shows-a-kind-of-fan-of-locations">This is the first graphic shown above, it shows a kind of fan of locations</h2>
 
-<pre><code class="{r}"># so what does the rotated grid look like in its own universe?
+<pre><code class="language-{r}"># so what does the rotated grid look like in its own universe?
 str(dat1$z)
 png("figures_and_tables/qc_rotated.png")
 image(dat1$z)
 dev.off()
 </code></pre>
 
-<h2>This is how it looks on rotated grid</h2>
+<h2 id="this-is-how-it-looks-on-rotated-grid">This is how it looks on rotated grid</h2>
 
 <p><img src="/images/qc_rotated.png" alt="images/qc_rotated.png" /></p>
 
-<pre><code class="{r}"># so now add in the temperatures, use the wgs latlongs
+<pre><code class="language-{r}"># so now add in the temperatures, use the wgs latlongs
 t &lt;- as.vector(dat1$z)
 dat3 &lt;- cbind.data.frame(coords, t)
 summary(dat3)
@@ -268,11 +268,11 @@ lines(world.trans, col="red")
 dev.off()
 </code></pre>
 
-<h2>This shows the rotated world countries</h2>
+<h2 id="this-shows-the-rotated-world-countries">This shows the rotated world countries</h2>
 
 <p><img src="/images/qc_rotated_grid_and_countries.png" alt="images/qc_rotated_grid_and_countries.png" /></p>
 
-<pre><code class="{r">pr.df &lt;- cbind.data.frame(coordinates(rcm.lambert.grid), dat3@data)
+<pre><code class="language-{r">pr.df &lt;- cbind.data.frame(coordinates(rcm.lambert.grid), dat3@data)
 coordinates(pr.df) &lt;- c(1,2) 
 l1  &lt;- list("sp.lines", world.trans)
 color.palette &lt;- colorRampPalette(c("yellow","cyan", "blue","purple"))
@@ -289,13 +289,14 @@ dev.off()
 #setwd(file.path(projdir, "data_derived"))
 #dir()
 # writeOGR(pr.df, "out.shp", "out", "ESRI Shapefile")
+
 </code></pre>
 
-<h2>this one has temperatures too</h2>
+<h2 id="this-one-has-temperatures-too">this one has temperatures too</h2>
 
 <p><img src="/images/qc_rotated_grid_and_countries2.png" alt="images/qc_rotated_grid_and_countries2.png" /></p>
 
-<h2>acknowledgement and citations.</h2>
+<h2 id="acknowledgement-and-citations">acknowledgement and citations.</h2>
 
 <p>E-OBS temperature and precipitation:</p>
 
@@ -306,7 +307,7 @@ ECA&amp;D project (http://www.ecad.eu)</p>
 <p>Haylock, M.R., N. Hofstra, A.M.G. Klein Tank, E.J. Klok, P.D. Jones,
 M. New. 2008: A European daily high-resolution gridded dataset of
 surface temperature and precipitation. J. Geophys. Res (Atmospheres),
-113, D20119, doi:10.1029/2008JD10201"</p>
+113, D20119, doi:10.1029/2008JD10201”</p>
 
     <div class="clear"></div>
   </div>
@@ -328,7 +329,7 @@ surface temperature and precipitation. J. Geophys. Res (Atmospheres),
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2016-02-02 00:00:00 +1100">02 Feb 2016</abbr>
+      <abbr class="published" title="2016-02-02 00:00:00 +0800">02 Feb 2016</abbr>
     </span>
   </p>
   <div class="clear"></div>

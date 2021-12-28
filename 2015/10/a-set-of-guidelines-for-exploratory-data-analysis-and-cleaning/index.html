@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -61,45 +61,43 @@ A key task of my role as data manager/analyst is to perform Exploratory Data Ana
 <p>I have put down this set of guidelines for my procedures to create standardised data structures, based on things that have been recommended in the literature [2-6] to make data as re-usable as possible. Here is a list of standard amendments undertaken during my EDA process:</p>
 
 <ul>
-<li>identify any out-of-range values (based on the specified units), or questionable data in general;</li>
-<li>rename all files and variables using lower_case_with_underscores naming convention;</li>
-<li>tabulate frequencies and variable distributions, note any outliers for review;</li>
-<li>identify any opportunities to make wide data longer, or many files that can be merged;</li>
-<li>If you have multiple linked tables, each table should include a column that allows those tables to be linked unambiguously (such as the site_ID variables); check that linking variables that link two or more data tables are identical in each table</li>
-<li>check that values in linked files marry up to values in other files (eg a site code in one file that is missing from the spatial data file);</li>
-<li>write as CSV with quote encapsulated strings (for archival purposes);</li>
-<li>code missing data as NA, or identify if these were actually censored;</li>
-<li>coerce dates to ISO 8601 to be in the the YYYY-MM-DD format, or MMM-YYYY;</li>
-<li>cast nominal variables that use integer codes as character;</li>
-<li>check that all value labels in enumerated lists are described (ie codes for “1” = “low”, “2” = “mid” and “3” = “high”);</li>
-<li>attempt to identify and split any combined variables (like season AND year like “winter-97” or species and comments ie “Banksia Dead”);</li>
-<li>review any species lists against current scientific name conventions, recommend any modifications;</li>
-<li>rename any non-conformant species lists (for instance including comments such as Alive/Dead) to “fauna_descriptor” or “flora_descriptor”;</li>
-<li>identify any characters in numeric or date variables and replace with NA, (add to a comments variable if possible);</li>
-<li>identify any values that Excel may try to convert to date type (for eg. site code “1-5” will appear as 5-Jan and should be rewritten as “site_1-5”);</li>
-<li>use a GIS to confirm spatial coordinates and add geographical coordinates in decimal degrees (GDA94) if only supplied in metres UTM or AMG (always request the datum and the zone);</li>
-<li>check what the coordinates refer to (e.g. approximate location of SW corner of 1ha plot).</li>
-<li>rename files to be consistent with all data in the LTERN Data Portal.  Our standardised names have been created using controlled vocabularies.  Packages and files are designated tracking numbers – this is denoted by a plot network code and a unique “Package” number ascribed to each data package.  Each data package contains one or more data table which is the smallest trackable unit (denoted by a unique “Table” number).</li>
-<li>while we prefer deposit of plain text CSV files, if we receive Excel spreadsheets we check for hidden rows or columns that might not be intended for publication (and  may have been deposited as an oversight).</li>
-<li>it is always best to open Excel workbooks and use the in-built export function to save as CSV files for further re-use.  While R packages and other tools exist to programmatically extract the data from Excel, few tools that interoperate with Excel actually get the all the bug/feature cases right.  It has been noted that
-"because working with data that has passed through Excel is hard to get right, data that has passed through Excel is often wrong." [7]</li>
+  <li>identify any out-of-range values (based on the specified units), or questionable data in general;</li>
+  <li>rename all files and variables using lower_case_with_underscores naming convention;</li>
+  <li>tabulate frequencies and variable distributions, note any outliers for review;</li>
+  <li>identify any opportunities to make wide data longer, or many files that can be merged;</li>
+  <li>If you have multiple linked tables, each table should include a column that allows those tables to be linked unambiguously (such as the site_ID variables); check that linking variables that link two or more data tables are identical in each table</li>
+  <li>check that values in linked files marry up to values in other files (eg a site code in one file that is missing from the spatial data file);</li>
+  <li>write as CSV with quote encapsulated strings (for archival purposes);</li>
+  <li>code missing data as NA, or identify if these were actually censored;</li>
+  <li>coerce dates to ISO 8601 to be in the the YYYY-MM-DD format, or MMM-YYYY;</li>
+  <li>cast nominal variables that use integer codes as character;</li>
+  <li>check that all value labels in enumerated lists are described (ie codes for “1” = “low”, “2” = “mid” and “3” = “high”);</li>
+  <li>attempt to identify and split any combined variables (like season AND year like “winter-97” or species and comments ie “Banksia Dead”);</li>
+  <li>review any species lists against current scientific name conventions, recommend any modifications;</li>
+  <li>rename any non-conformant species lists (for instance including comments such as Alive/Dead) to “fauna_descriptor” or “flora_descriptor”;</li>
+  <li>identify any characters in numeric or date variables and replace with NA, (add to a comments variable if possible);</li>
+  <li>identify any values that Excel may try to convert to date type (for eg. site code “1-5” will appear as 5-Jan and should be rewritten as “site_1-5”);</li>
+  <li>use a GIS to confirm spatial coordinates and add geographical coordinates in decimal degrees (GDA94) if only supplied in metres UTM or AMG (always request the datum and the zone);</li>
+  <li>check what the coordinates refer to (e.g. approximate location of SW corner of 1ha plot).</li>
+  <li>rename files to be consistent with all data in the LTERN Data Portal.  Our standardised names have been created using controlled vocabularies.  Packages and files are designated tracking numbers – this is denoted by a plot network code and a unique “Package” number ascribed to each data package.  Each data package contains one or more data table which is the smallest trackable unit (denoted by a unique “Table” number).</li>
+  <li>while we prefer deposit of plain text CSV files, if we receive Excel spreadsheets we check for hidden rows or columns that might not be intended for publication (and  may have been deposited as an oversight).</li>
+  <li>it is always best to open Excel workbooks and use the in-built export function to save as CSV files for further re-use.  While R packages and other tools exist to programmatically extract the data from Excel, few tools that interoperate with Excel actually get the all the bug/feature cases right.  It has been noted that
+“because working with data that has passed through Excel is hard to get right, data that has passed through Excel is often wrong.” [7]</li>
 </ul>
 
-
-<h2>References:</h2>
+<h2 id="references">References:</h2>
 
 <ol>
-<li>Lohr, S. <a href="http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0">http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0</a></li>
-<li>White, E., Baldridge, E., Brym, Z., Locey, K., McGlinn, D., &amp; Supp, S. (2013). Nine simple ways to make it easier to (re)use your data. Ideas in Ecology and Evolution, 6(2), 1–10. <a href="http://dx.doi.org/10.4033/iee.2013.6b.6.f">http://dx.doi.org/10.4033/iee.2013.6b.6.f</a></li>
-<li>Wickham, H. (Under Review). Tidy data. Journal of Statistical Software, VV(Ii).</li>
-<li>Leek, J. 2014. <a href="https://github.com/jtleek/datasharing">https://github.com/jtleek/datasharing</a></li>
-<li>Borer, E., Seabloom, E., Jones, M., and Schildhauer, M. 2009. Some Simple Guidelines for Effective Data Management. Bulletin of the Ecological Society of America 90:205–214. <a href="http://dx.doi.org/10.1890/0012-9623-90.2.205">http://dx.doi.org/10.1890/0012-9623-90.2.205</a></li>
-<li>Campbell, J. L., Rustad, L. E., Porter, J. H., Taylor, J. R., Dereszynski, E. W., Shanley, J. B., Gries, C., Henshaw, D. L., Martin, M. E., Sheldon, W. M., and Boose, E. R. 2013. Quantity is Nothing
+  <li>Lohr, S. <a href="http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0">http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0</a></li>
+  <li>White, E., Baldridge, E., Brym, Z., Locey, K., McGlinn, D., &amp; Supp, S. (2013). Nine simple ways to make it easier to (re)use your data. Ideas in Ecology and Evolution, 6(2), 1–10. <a href="http://dx.doi.org/10.4033/iee.2013.6b.6.f">http://dx.doi.org/10.4033/iee.2013.6b.6.f</a></li>
+  <li>Wickham, H. (Under Review). Tidy data. Journal of Statistical Software, VV(Ii).</li>
+  <li>Leek, J. 2014. <a href="https://github.com/jtleek/datasharing">https://github.com/jtleek/datasharing</a></li>
+  <li>Borer, E., Seabloom, E., Jones, M., and Schildhauer, M. 2009. Some Simple Guidelines for Effective Data Management. Bulletin of the Ecological Society of America 90:205–214. <a href="http://dx.doi.org/10.1890/0012-9623-90.2.205">http://dx.doi.org/10.1890/0012-9623-90.2.205</a></li>
+  <li>Campbell, J. L., Rustad, L. E., Porter, J. H., Taylor, J. R., Dereszynski, E. W., Shanley, J. B., Gries, C., Henshaw, D. L., Martin, M. E., Sheldon, W. M., and Boose, E. R. 2013. Quantity is Nothing
 without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioScience, 63,
 574-585. <a href="http://dx.doi.org/10.1525/bio.2013.63.7.10">http://dx.doi.org/10.1525/bio.2013.63.7.10</a></li>
-<li>Mount, J. 2014. Excel spreadsheets are hard to get right. <a href="http://www.win-vector.com/blog/2014/11/excel-spreadsheets-are-hard-to-get-right/">http://www.win-vector.com/blog/2014/11/excel-spreadsheets-are-hard-to-get-right/</a></li>
+  <li>Mount, J. 2014. Excel spreadsheets are hard to get right. <a href="http://www.win-vector.com/blog/2014/11/excel-spreadsheets-are-hard-to-get-right/">http://www.win-vector.com/blog/2014/11/excel-spreadsheets-are-hard-to-get-right/</a></li>
 </ol>
-
 
     <div class="clear"></div>
   </div>
@@ -119,7 +117,7 @@ without Quality: Automated QA/QC for Streaming Environmental Sensor Data. BioSci
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-10-14 00:00:00 +1100">14 Oct 2015</abbr>
+      <abbr class="published" title="2015-10-14 00:00:00 +0800">14 Oct 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

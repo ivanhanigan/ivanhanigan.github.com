@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -59,10 +59,8 @@
 
 <!-- begin_src R :session *R* :tangle NMMAPS-example/NMMAPS-example-code.r :exports none :eval no -->
 
-
-<h4>Code: get nmmaps data</h4>
-
-<pre><code># func
+<h4 id="code-get-nmmaps-data">Code: get nmmaps data</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># func
 if(!require(NMMAPSlite)) install.packages('NMMAPSlite');require(NMMAPSlite)
 require(mgcv)
 require(splines)
@@ -116,7 +114,7 @@ with(subset(data[,c(1,4,15:25)], agecat == '75p'),
 # I am worried about that outlier
 data$date[which(data$cvd &gt; 100)]
 # [1] "1995-07-15" "1995-07-16"
-
+ 
 ######################################################
 # do standard NMMAPS timeseries poisson GAM model
 numYears&lt;-length(names(table(data$yy)))
@@ -127,14 +125,14 @@ fit &lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx
 par(mfrow=c(2,2))
 plot(fit)
 dev.off()
-
+ 
 ######################################################
 # some diagnostics
 summary(fit)
 # note the R-sq.(adj) =   0.21
 gam.check(fit)
 # note the lack of a leverage plot.  for that we need glm
-
+ 
 ######################################################
 # do same model as glm
 fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
@@ -142,7 +140,7 @@ fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, 
 par(mfrow=c(2,2))
 termplot(fit2, se =T)
 dev.off()
-
+ 
 # plot prediction
 df$predictedCvd &lt;- predict(fit2, df, 'response')
 # baseline is given by the intercept
@@ -174,13 +172,13 @@ RsquaredGlm &lt;- function(o) {
 RsquaredGlm(fit2)
 # 0.51
 # the difference is presumably due to the arguments about how to account for unexplainable variance in the poisson distribution?
-
+ 
 # significance of spline terms
 drop1(fit2, test='Chisq')
 # also note AIC. best model includes all of these terms
 # BIC can be computed instead (but still labelled AIC) using
 drop1(fit2, test='Chisq', k = log(nrow(data)))
-
+ 
 # diagnostic plots
 par(mfrow=c(2,2))
 plot(fit2)
@@ -190,7 +188,7 @@ dev.off()
 # NB the numbers refer to the row.names attribute which still refer to the original dataset, not this subset
 df[row.names(df) %in% c(9354,9356),]$date
 # as suspected [1] "1995-07-15" "1995-07-16"
-
+ 
 ######################################################
 # so lets re run without these obs
 df2 &lt;- df[!row.names(df) %in% c(9354,9356),]
@@ -201,7 +199,7 @@ par(mfrow=c(2,2))
 plot(fit2)
 dev.off()
 # looks like a well behaved model now.
-
+ 
 # if we were still worried about any high leverage values we could identify these with
 df3 &lt;- na.omit(df2[,c('cvd','pm10tmean','tmax','dptp','time')])
 df3$hatvalue &lt;- hatvalues(fit2)
@@ -216,32 +214,32 @@ with(subset(df3, hatvalue &gt; hatThreshold), points(hatvalue, res, col = 'red',
 abline(0,0)
 segments(hatThreshold,-2,hatThreshold,15)
 dev.off()
-
+ 
 fit3 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = subset(df3, hatvalue &lt; hatThreshold), family = poisson)
 par(mfrow=c(2,2))
 termplot(fit3, se = T)
 # same same
 plot(fit3)
 # no better
-
+ 
 # or we could go nuts with a whole number of ways of estimating influence
 # check all influential observations
 infl &lt;- influence.measures(fit2)
 # which observations 'are' influential
 inflk &lt;- which(apply(infl$is.inf, 1, any))
 length(inflk)
-
-
+ 
+ 
 ######################################################
 # now what about serial autocorrelation in the residuals?
-
+ 
 par(mfrow = c(2,1))
 with(df3, acf(res))
 with(df3, pacf(res))
 dev.off()
-
-
-
+ 
+ 
+ 
 ######################################################
 # just check for overdispersion
 fit &lt;- gam(cvd ~ s(pm10tmean) + s(tmax) + s(dptp) + s(time, k= 7*numYears, fx=T), data = df, family = quasipoisson)
@@ -252,27 +250,27 @@ fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, 
 summary(fit2)
 # (Dispersion parameter for quasipoisson family taken to be 1.222640)
 # this is probably near enough to support a standard poisson model...
-
+ 
 # if we have overdispersion we can use QAIC (A quasi- mode does not have a likelihood and so does not have an AIC,  by definition)
 # we can use the poisson model and calculate the overdispersion
 fit2 &lt;- glm(cvd ~ pm10tmean + ns(tmax, df = 8) + ns(dptp, df = 4) + ns(time, df = 7*numYears), data = df, family = poisson)
 1- pchisq(deviance(fit2), df.residual(fit2))
-
+ 
 # QAIC, c is the variance inflation factor, the ratio of the residual deviance of the global (most complicated) model to the residual degrees of freedom
 c=deviance(fit2)/df.residual(fit2)
 QAIC.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1)
 QAIC.1
-
+ 
 # Actually lets use QAICc which is more conservative about parameters,
 QAICc.1=-2*logLik(fit2)/c + 2*(length(coef(fit2)) + 1) + 2*(length(coef(fit2)) + 1)*(length(coef(fit2)) + 1 + 1)/(nrow(na.omit(df[,c('cvd','pm10tmean','tmax','dptp','time')]))- (length(coef(fit2))+1)-1)
 QAICc.1
-
-
+ 
+ 
 ######################################################
 # the following is old work, some may be interesting
 # such as the use of sinusoidal wave instead of smooth function of time
-
-
+ 
+ 
 # # sine wave
 # timevar &lt;- as.data.frame(names(table(df$date)))
 # index &lt;- 1:length(names(table(df$date)))
@@ -280,24 +278,24 @@ QAICc.1
 # names(timevar) &lt;- c('date','timevar')
 # timevar$date &lt;- as.Date(timevar$date)
 # df &lt;- merge(df,timevar)
-
+ 
 # fit &lt;- gam(cvd ~ s(tmax) + s(dptp) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
 # summary(fit)
 # par(mfrow=c(3,2))
 # plot(fit, all.terms = T)
 # dev.off()
-
+ 
 # # now just explore the season fit
 # fit &lt;- gam(cvd ~ sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
 # yhat &lt;- predict(fit)
 # head(yhat)
-
+ 
 # with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(15,55)))
 # lines(df[,'date'],exp(yhat),col='red')
-
-
+ 
+ 
 # # drop1(fit, test= 'Chisq')
-
+ 
 # # drop1 only works in glm?
 # # fit with weather variables, use degrees of freedom estimated by gam
 # fit &lt;- glm(cvd ~ ns(tmax,8) + ns(dptp,2) + sin(timevar * 2 * pi) + cos(timevar * 2 * pi) + ns(time, df = numYears), data = df, family = poisson)
@@ -308,32 +306,32 @@ QAICc.1
 # par(mfrow=c(3,2))
 # termplot(fit, se=T)
 # dev.off()
-
+ 
 # # cyclic spline, overlay on prior sinusoidal
 # with(df, plot(date,cvd,type = 'l',col='grey', ylim = c(0,55)))
 # lines(df[,'date'],exp(yhat),col='red')
-
+ 
 # df$daynum &lt;- as.numeric(format(df$date, "%j"))
 # df[360:370,c('date','daynum')]
 # fit &lt;- gam(cvd ~ s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
 # yhat2 &lt;- predict(fit)
 # head(yhat2)
-
+ 
 # lines(df[,'date'],exp(yhat2),col='blue')
-
-
+ 
+ 
 # par(mfrow=c(1,2))
 # plot(fit)
-
-
+ 
+ 
 # # fit weather with season
 # fit &lt;- gam(cvd ~ s(tmax) + s(dptp) +
   # s(daynum, k=3, fx=T, bs = 'cp') +  s(time, k = numYears, fx = T), data = df, family = poisson)
 # par(mfrow=c(2,2))
 # plot(fit)
-
+ 
 # summary(fit)
-</code></pre>
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -353,7 +351,7 @@ QAICc.1
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-10-10 00:00:00 +1100">10 Oct 2013</abbr>
+      <abbr class="published" title="2013-10-10 00:00:00 +0800">10 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>

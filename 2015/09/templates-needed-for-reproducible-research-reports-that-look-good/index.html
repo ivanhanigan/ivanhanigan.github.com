@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -57,49 +57,45 @@
   <div class="entry-content full-content">
     <p>I read with interest the the Transparency and Openness Promotion (TOP) Committee templates for guidelines to enhance transparency in the science that journals publish.</p>
 
-<h4>Citation</h4>
+<h4 id="citation">Citation</h4>
 
-<pre><code>Supplementary Materials for Nosek, B. A., Alter, G., Banks, G. C.,
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Supplementary Materials for Nosek, B. A., Alter, G., Banks, G. C.,
 Borsboom, D., Bowman, S. D., Breckler, S. J., … Yarkoni,
 T. (2015). Promoting an open research culture. Science, 348(6242),
 1422–1425. doi:10.1126/science.aab2374
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <p>I think though that guidelines like the suggestion to copy-paste bits of the manuscript leave a bit to be desired:</p>
 
-<h4>Quote;</h4>
+<h4 id="quote">Quote;</h4>
 
-<pre><code>Authors document compliance by copy-pasting the relevant passages
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Authors document compliance by copy-pasting the relevant passages
 in the paper that address the question into the form. For example,
 when indicating how sample size was determined, authors copy paste
 into the form the text in the paper that describes how sample size
 was determined.
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <p>Reproducible Research Reports solve this problem by ensuring that the data preparation and analysis are executed in the same script that produces the manuscript, therefore a one-stop-shop for documentation of the entire study.</p>
 
-<h2>There is a need for Templates of Reproducible Research Reports (that look good!)</h2>
+<h2 id="there-is-a-need-for-templates-of-reproducible-research-reports-that-look-good">There is a need for Templates of Reproducible Research Reports (that look good!)</h2>
 
 <p>Rstudio provides very easy support for these documents if you use R.  In particular the option of a menu button to create a new report populates that report with the required header information and some example script to work off.  But the easiest option does not look so good.  This is the Rmarkdown option and it is very user friendly in terms of the markup language needed to write the descriptive language around your analysis (mostly plain text with a few simple options for heading styles etc) rather than the Sweave option which leads to the full blown LaTeX markup language that is a lot more complicated.</p>
 
-<h4>Boilerplate Rmarkdown header from Rstudio:</h4>
-
-<pre><code>---
+<h4 id="boilerplate-rmarkdown-header-from-rstudio">Boilerplate Rmarkdown header from Rstudio:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
 title: "Untitled"
 author: "Ivan C. Hanigan"
 date: "16 September 2015"
 output: html_document
 ---
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>This is great for quick reporting of work as you go, but I  primarily write for output that will be printed (e.g. pdf docs). More specifically, I need the concept of a page, and to have full control over the placement of table and figure ‘environments’, stuff that is easy in LaTeX (once you figure out some of the esoteric parts of that language).</p>
 
@@ -108,9 +104,8 @@ output: html_document
 
 <p>So I went back to some of the old Sweave/Latex templates I had put together and ported it into a markdown header.</p>
 
-<h4>Boilerplate Rmarkdown header for pretty report</h4>
-
-<pre><code>---
+<h4 id="boilerplate-rmarkdown-header-for-pretty-report">Boilerplate Rmarkdown header for pretty report</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
 title: "Untitled"
 author: "Ivan C. Hanigan"
 date: "16 September 2015"
@@ -137,27 +132,26 @@ documentclass: article
 classoption: a4paper
 bibliography: references.bib
 ---
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <p>Now the layout of tables and figures is done with latex</p>
 
-<h4>Code</h4>
+<h4 id="code">Code</h4>
 
-<pre><code>Using the xtable package allows results to be displyed in tables
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Using the xtable package allows results to be displyed in tables
 and has built in support for some R objects, so summrising the
 linear fit above in ~\ref{ATable}
-
+  
 ```{r, results='asis', type = 'tex'}
 library(xtable)    
 print(xtable(fit, caption="Example Table",
   digits=4,table.placement="ht",label="ATable"), comment = F)    
 ```
-
+   
 ## A Plot
-
+   
 Plots intergrate most easily if made seperately as can be seen in figure ~\ref{test}
 ```{r}
 png("Rmarkdownfig.png")
@@ -173,23 +167,22 @@ dev.off()
 \label{test}
 \end{figure}
 \clearpage
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <p>I also realised that if this was to be a full report of a scientific study it would need to include some of the machinery needed for bibliographies.</p>
 
-<h4>Stuff for bibliographies</h4>
+<h4 id="stuff-for-bibliographies">Stuff for bibliographies</h4>
 
-<pre><code>```{r, echo=F, results = 'hide', message = F, warning=F}
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```{r, echo=F, results = 'hide', message = F, warning=F}
 library("knitcitations")
 library("bibtex")
 cleanbib()
 cite_options(citation_format = "pandoc", check.entries = FALSE)
-
+ 
 bib &lt;- read.bibtex("C:/Users/Ivan/Dropbox/references/library.bib")
-
+ 
 ```
 
 &lt;!--Put data analysis and reporting here, then at the end of the doc--&gt;
@@ -197,16 +190,15 @@ bib &lt;- read.bibtex("C:/Users/Ivan/Dropbox/references/library.bib")
 ```{r, echo=F, message=F, eval=T}
 write.bibtex(file="references.bib")
 ```
-
+      
 # References
 
 &lt;!--The bib will then be written following the final subheading--&gt;
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h2>Conclusion</h2>
+<h2 id="conclusion">Conclusion</h2>
 
 <p>I hope this might help others develop their own templates for RRR that look great.</p>
 
@@ -230,7 +222,7 @@ write.bibtex(file="references.bib")
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-09-16 00:00:00 +1000">16 Sep 2015</abbr>
+      <abbr class="published" title="2015-09-16 00:00:00 +0800">16 Sep 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,24 +56,21 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>today I was in a meeting where the discussion turned to maps of crude incidence rates, age-standardised rates and regression models controlling for age</li>
-<li>If disease incidence does not vary with age then there is not much point in controlling for this,</li>
-<li>apart from the work done in exploratory data analysis to ascertain whether or not this is the case</li>
-<li>I proposed that if you've done all the work on age-specific rates needed to test if incidence varies with age, then you might as well present age adjusted rates seeing as you've already done the work anyway</li>
+  <li>today I was in a meeting where the discussion turned to maps of crude incidence rates, age-standardised rates and regression models controlling for age</li>
+  <li>If disease incidence does not vary with age then there is not much point in controlling for this,</li>
+  <li>apart from the work done in exploratory data analysis to ascertain whether or not this is the case</li>
+  <li>I proposed that if you’ve done all the work on age-specific rates needed to test if incidence varies with age, then you might as well present age adjusted rates seeing as you’ve already done the work anyway</li>
 </ul>
 
-
-<h3>An example</h3>
+<h3 id="an-example">An example</h3>
 
 <ul>
-<li>The project is highly confidential due to the nature of the data</li>
-<li>We;ll call the study location South Kingsland to protect the identity</li>
+  <li>The project is highly confidential due to the nature of the data</li>
+  <li>We;ll call the study location South Kingsland to protect the identity</li>
 </ul>
 
-
-<h4>R Code:</h4>
-
-<pre><code># get spatial data
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># get spatial data
 require(swishdbtools) # github package, under
                       # swish-climate-impact-assessment
 
@@ -104,20 +101,16 @@ dbSendQuery(ch,
 ## 43                OVERSEAS-OTHER                          &lt;NA&gt;
 ## 44                  Yarrabah (S)                          &lt;NA&gt;
 ## 45     Rowes Bay-Belgian gardens                          &lt;NA&gt;
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
-
-<h3>visualise with QGIS</h3>
-
+<h3 id="visualise-with-qgis">visualise with QGIS</h3>
 <p><img src="/images/southkingsland.png" alt="southkingsland.png" /></p>
 
-<h4>R Code:</h4>
-
-<pre><code># func
+<h4 id="r-code-1">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># func
 require(plyr)
-
+ 
 # load
 Tab2 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
 names(Tab2)
@@ -131,7 +124,7 @@ subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "
 summary(Tab2)
 ## remove any SLA with NA populations
 Tab2 &lt;- Tab2[which(!is.na(Tab2$popSLA)),]     
-
+ 
 # do
 ## first total cases by annualised pop
 analyte  &lt;- ddply(Tab2, c("SLA", "Year", "agegrp", "Sex"), summarise,
@@ -142,7 +135,7 @@ analyte  &lt;- ddply(Tab2, c("SLA", "Year", "agegrp", "Sex"), summarise,
 
 #subset(analyte, SLA == test_sla)
 subset(analyte, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1)
-
+ 
 ## now annual totals for study region
 analyte2  &lt;- ddply(analyte, c("Year", "agegrp"), summarise,
                   ninf=sum(ninf),
@@ -153,7 +146,7 @@ str(analyte2)
 qc &lt;- subset(analyte2,  Year == 2001)
 qc
 sum(qc$popSLA)
-
+ 
 ## now totals
 qc  &lt;- ddply(analyte2, c("Year"), summarise,
              ninf=sum(ninf),
@@ -178,33 +171,29 @@ png("graphs/south-kingsland-age-specific-rates.png")
 mp &lt;- barplot(analyte3$asr, names.arg = analyte3$agegrp)
 box()
 dev.off()
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
-
-<h3>Plot Age Specific Rates</h3>
+<h3 id="plot-age-specific-rates">Plot Age Specific Rates</h3>
 
 <p>Great so with that bit of work we should have an idea of the variation of incidence by age</p>
 
 <p><img src="/images/south-kingsland-age-specific-rates.png" alt="south-kingsland-age-specific-rates.png" /></p>
 
-<h1>Results and Discussion</h1>
+<h1 id="results-and-discussion">Results and Discussion</h1>
 
 <ul>
-<li>It looks like the incidence does vary with age</li>
-<li>TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)</li>
-<li>TODO make graphs by city, by sex</li>
-<li>age-standardised rates probably need different age categories, only 4 or 5?</li>
-<li>worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)</li>
+  <li>It looks like the incidence does vary with age</li>
+  <li>TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)</li>
+  <li>TODO make graphs by city, by sex</li>
+  <li>age-standardised rates probably need different age categories, only 4 or 5?</li>
+  <li>worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)</li>
 </ul>
 
-
-<h4>Clean up database!</h4>
-
-<pre><code>dbSendQuery(ch, "drop table sla")
+<h4 id="clean-up-database">Clean up database!</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dbSendQuery(ch, "drop table sla")
 dbSendQuery(ch, "drop table southkingsland")
-</code></pre>
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -224,7 +213,7 @@ dbSendQuery(ch, "drop table southkingsland")
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
+      <abbr class="published" title="2013-10-31 00:00:00 +0800">31 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>

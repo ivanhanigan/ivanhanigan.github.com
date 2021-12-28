@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,13 +56,12 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>UPDATE to post <a href="http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems">http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems</a></li>
-<li>Recall that RGDAL transforms and write out spatial data in GDA94 with a problem in that ArcGIS does not like the prj file and complains</li>
-<li>This seems an ok workaround</li>
+  <li>UPDATE to post <a href="http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems">http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems</a></li>
+  <li>Recall that RGDAL transforms and write out spatial data in GDA94 with a problem in that ArcGIS does not like the prj file and complains</li>
+  <li>This seems an ok workaround</li>
 </ul>
 
-
-<pre><code>infile &lt;- "western_sydney_passive_samplers_site_details.csv"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>infile &lt;- "western_sydney_passive_samplers_site_details.csv"
 indir &lt;- "data_derived"
 
 outdir &lt;- indir
@@ -70,7 +69,7 @@ outfile &lt;- file.path(outdir, gsub(".csv",".shp",infile))
 
 dat &lt;- read.csv(file.path(indir, infile), as.is=T)
 str(dat)
-
+  
 dat2 &lt;- SpatialPointsDataFrame(data.frame(x=dat$long, y=dat$lat), dat,
                                 proj4string=CRS(epsg$prj4[epsg$code %in% '4283'])
                                 )
@@ -82,7 +81,7 @@ writeOGR(dat2, outfile,
 download.file("http://spatialreference.org/ref/epsg/4283/prj/",
               gsub(".shp", ".prj", outfile), mode = "wb"
               )
-</code></pre>
+</code></pre></div></div>
 
 <p><img src="/images/samplers_sydney.png" alt="/images/samplers_sydney.png" /></p>
 
@@ -106,7 +105,7 @@ download.file("http://spatialreference.org/ref/epsg/4283/prj/",
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2016-01-29 00:00:00 +1100">29 Jan 2016</abbr>
+      <abbr class="published" title="2016-01-29 00:00:00 +0800">29 Jan 2016</abbr>
     </span>
   </p>
   <div class="clear"></div>

@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,9 +55,9 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the 'evidence tables' I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:</p>
+    <p>As I compile my papers for the thesis I am keeping notes for my presentation to discuss the results and scope of each study.  The work on the ‘evidence tables’ I described in the last two posts has proved useful here.  I allowed my self a breif distraction to dig out some code I had developed for a database of case studies demonstrating eco-social tipping points from historical evidence, and show here how to include bibtex info.  The bibtex key (from Mendeley in my case) is added to the database, and then the following code:</p>
 
-<pre><code>library(xtable)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>library(xtable)
 library(rpostgrestools) # my own work
 if(!exists("ch")) ch &lt;- connect2postgres2("data_inventory_hanigan_dev4")
 
@@ -74,10 +74,10 @@ align(tabcode) &lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7
 print(tabcode,  include.rownames = F, table.placement = '!ht',
       floating.environment='sidewaystable',
       sanitize.text.function = function(x) x)
-</code></pre>
+
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>Produces the below table:</p>
 
@@ -101,7 +101,7 @@ print(tabcode,  include.rownames = F, table.placement = '!ht',
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-11-15 00:00:00 +1100">15 Nov 2015</abbr>
+      <abbr class="published" title="2015-11-15 00:00:00 +0800">15 Nov 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

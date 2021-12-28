@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,44 +56,43 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>Notes re an old project "POA2006_centroids transformations 2010-08-06"</li>
-<li><a href="https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html">https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html</a></li>
-<li>compared population weighted centroids with Geographic POA centroids</li>
-<li>Postal Areas (POA) are not the same as Postcodes!  See <a href="http://www.abs.gov.au/websitedbs/D3310114.nsf/4a256353001af3ed4b2562bb00121564/6b6e07234c98365aca25792d0010d730/$FILE/Postcodes%20&amp;%20Postal%20Areas%20-%20Fact%20Sheet.pdf">this fact sheet</a></li>
-<li>But my old work gives the total areas as 695.6 square decimal degrees</li>
-<li>This compares with the area of Australia at 7.692 million sq kms.</li>
-<li>So this update uses Geoscience Australia Lambert to avoid distorting the area</li>
-<li><a href="http://spatialreference.org/ref/epsg/3112/">http://spatialreference.org/ref/epsg/3112/</a></li>
+  <li>Notes re an old project “POA2006_centroids transformations 2010-08-06”</li>
+  <li><a href="https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html">https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html</a></li>
+  <li>compared population weighted centroids with Geographic POA centroids</li>
+  <li>Postal Areas (POA) are not the same as Postcodes!  See <a href="http://www.abs.gov.au/websitedbs/D3310114.nsf/4a256353001af3ed4b2562bb00121564/6b6e07234c98365aca25792d0010d730/$FILE/Postcodes%20&amp;%20Postal%20Areas%20-%20Fact%20Sheet.pdf">this fact sheet</a></li>
+  <li>But my old work gives the total areas as 695.6 square decimal degrees</li>
+  <li>This compares with the area of Australia at 7.692 million sq kms.</li>
+  <li>So this update uses Geoscience Australia Lambert to avoid distorting the area</li>
+  <li><a href="http://spatialreference.org/ref/epsg/3112/">http://spatialreference.org/ref/epsg/3112/</a></li>
 </ul>
 
-
-<h1>Download</h1>
+<h1 id="download">Download</h1>
 
 <ul>
-<li><a href="/data/auspoa06_geocentroids_lambert_20160624.csv">auspoa06_geocentroids_lambert_20160624.csv</a></li>
+  <li><a href="/data/auspoa06_geocentroids_lambert_20160624.csv">auspoa06_geocentroids_lambert_20160624.csv</a></li>
 </ul>
 
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="s1">'name:poa06-area-lambert'</span><span class="w">
+</span><span class="n">setwd</span><span class="p">(</span><span class="s2">"~/projects/POA_centroids/POA2006_centroids"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">swishdbtools</span><span class="p">)</span><span class="w">
+</span><span class="n">ch</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">connect2postgres2</span><span class="p">(</span><span class="s2">"delphe"</span><span class="p">)</span><span class="w">
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="s">&#39;name:poa06-area-lambert&#39;</span>
-<span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/projects/POA_centroids/POA2006_centroids&quot;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span>swishdbtools<span class="p">)</span>
-ch <span class="o">&lt;-</span> connect2postgres2<span class="p">(</span><span class="s">&quot;delphe&quot;</span><span class="p">)</span></p>
+</span><span class="n">fout_geo</span><span class="o">=</span><span class="n">dbGetQuery</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span><span class="w">
+</span><span class="s1">'select poa_2006,
+  st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,
+st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,
+st_y(st_centroid(st_transform(the_geom,3112))) as geocenty
+from abs_poa.auspoa06'</span><span class="p">)</span><span class="w">
+</span><span class="n">str</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">)</span><span class="w">
+</span><span class="nf">sum</span><span class="p">(</span><span class="n">fout_geo</span><span class="o">$</span><span class="n">geoscience_australia_lambert_area_km2</span><span class="p">)</span><span class="w">
+</span><span class="n">write.table</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">,</span><span class="s1">'data_derived/auspoa06_geocentroids_lambert_20160624.csv'</span><span class="p">,</span><span class="w">
+            </span><span class="n">row.names</span><span class="o">=</span><span class="nb">F</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">','</span><span class="p">)</span><span class="w">
 
-<p>fout_geo<span class="o">=</span>dbGetQuery<span class="p">(</span>ch<span class="p">,</span>
-<span class="s">&#39;select poa_2006,</span>
-<span class="s">  st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,</span>
-<span class="s">st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,</span>
-<span class="s">st_y(st_centroid(st_transform(the_geom,3112))) as geocenty</span>
-<span class="s">from abs_poa.auspoa06&#39;</span><span class="p">)</span>
-str<span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="kp">sum</span><span class="p">(</span>fout_geo<span class="o">$</span>geoscience_australia_lambert_area_km2<span class="p">)</span>
-write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="s">&#39;data_derived/auspoa06_geocentroids_lambert_20160624.csv&#39;</span><span class="p">,</span>
-            row.names<span class="o">=</span><span class="bp">F</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;,&#39;</span><span class="p">)</span></p>
+</span><span class="n">plot</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">[,</span><span class="m">3</span><span class="o">:</span><span class="m">4</span><span class="p">])</span><span class="w">
+</span><span class="n">head</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">)</span><span class="w">
+</span><span class="n">nrow</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">)</span><span class="w">
+</span><span class="m">2507</span></code></pre></figure>
 
-<p>plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</span><span class="o">:</span><span class="m">4</span><span class="p">])</span>
-<span class="kp">head</span><span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="kp">nrow</span><span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="m">2507</span></code></pre></figure></p>
 
     <div class="clear"></div>
   </div>
@@ -113,7 +112,7 @@ write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2016-06-24 00:00:00 +1000">24 Jun 2016</abbr>
+      <abbr class="published" title="2016-06-24 00:00:00 +0800">24 Jun 2016</abbr>
     </span>
   </p>
   <div class="clear"></div>

@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,22 +55,20 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h4>Toward a standard and unambiguous format for sharing Year-Month data</h4>
+    <h4 id="toward-a-standard-and-unambiguous-format-for-sharing-year-month-data">Toward a standard and unambiguous format for sharing Year-Month data</h4>
 
 <ul>
-<li>I am working in a new job where we are recieving data from a lot of different groups</li>
-<li>we aim to review these datasets and then publish them for a wide audience of potential users</li>
-<li>therefore usability and interoperability is a key concern</li>
-<li>we recieved some data with Month and Year as Apr.12</li>
-<li>I know this is easy to convert to a date/time class with in R but wondered what a better format would be to recommend for our datasets to use to maximise utility downstream (especially for non R users)</li>
-<li>Apr.12 is assumed to be text in excel so need something else</li>
-<li>Apr-12 is assumed to be the twelfth of April this year (ie 12/4/2014)</li>
+  <li>I am working in a new job where we are recieving data from a lot of different groups</li>
+  <li>we aim to review these datasets and then publish them for a wide audience of potential users</li>
+  <li>therefore usability and interoperability is a key concern</li>
+  <li>we recieved some data with Month and Year as Apr.12</li>
+  <li>I know this is easy to convert to a date/time class with in R but wondered what a better format would be to recommend for our datasets to use to maximise utility downstream (especially for non R users)</li>
+  <li>Apr.12 is assumed to be text in excel so need something else</li>
+  <li>Apr-12 is assumed to be the twelfth of April this year (ie 12/4/2014)</li>
 </ul>
 
-
-<h4>In R the solution might be to use the zoo package</h4>
-
-<pre><code>require(zoo)
+<h4 id="in-r-the-solution-might-be-to-use-the-zoo-package">In R the solution might be to use the zoo package</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(zoo)
 as.yearmon("Apr.12", "%b.%y")
 # [1] "Apr 2012"
 
@@ -80,38 +78,33 @@ as.yearmon("apr12", "%b%y")
 # the default is YYYY-MM or similar
 as.yearmon("2012-04")
 as.yearmon("2012-4")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>So I went looking at how Excel and Access deal with this</li>
-<li>found that the best appeard to be MMM-YYYY in terms of how these software assume the data should look</li>
+  <li>So I went looking at how Excel and Access deal with this</li>
+  <li>found that the best appeard to be MMM-YYYY in terms of how these software assume the data should look</li>
 </ul>
 
-
-<h4>R Code:</h4>
-
-<pre><code>as.yearmon("Apr-2012", "%b-%Y")
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>as.yearmon("Apr-2012", "%b-%Y")
 
 # but will need to specify format because otherwise fails
 as.yearmon("Apr-2012")
 # NA
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h4>Conclusion</h4>
+<h4 id="conclusion">Conclusion</h4>
 
 <ul>
-<li>I recommend the MMM-YYYY option</li>
-<li>it is pretty good that in Excel it is assumed 1/04/2012</li>
-<li>and if MS access is set to date/time and format = mmm-yyyy is ok for data entry (but not importing)</li>
-<li>to import this use a shorttext type, then post-import, change to date/time with mmm-yyyy (the . failed)</li>
+  <li>I recommend the MMM-YYYY option</li>
+  <li>it is pretty good that in Excel it is assumed 1/04/2012</li>
+  <li>and if MS access is set to date/time and format = mmm-yyyy is ok for data entry (but not importing)</li>
+  <li>to import this use a shorttext type, then post-import, change to date/time with mmm-yyyy (the . failed)</li>
 </ul>
-
 
     <div class="clear"></div>
   </div>
@@ -133,7 +126,7 @@ as.yearmon("Apr-2012")
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2014-02-27 00:00:00 +1100">27 Feb 2014</abbr>
+      <abbr class="published" title="2014-02-27 00:00:00 +0800">27 Feb 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>

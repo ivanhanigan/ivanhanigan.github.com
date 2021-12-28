@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,17 +55,18 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>I use the R package <code>DiagrammeR</code> for creating graphs (the formal kind, connecting nodes with edges)
-- This package is great and I like how it interacts with the Graphviz program
-- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
-- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
-- In my utilities R package <code>github.com/ivanhanigan/disentangle</code> I have written functions that turn this table into a graphiviz DOT language script
-- Recently I have needed to unpack the list for a more itemized view
-- Both these functions are showcased below</p>
+    <p>I use the R package <code class="language-plaintext highlighter-rouge">DiagrammeR</code> for creating graphs (the formal kind, connecting nodes with edges)</p>
+<ul>
+  <li>This package is great and I like how it interacts with the Graphviz program</li>
+  <li>One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs</li>
+  <li>A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)</li>
+  <li>In my utilities R package <code class="language-plaintext highlighter-rouge">github.com/ivanhanigan/disentangle</code> I have written functions that turn this table into a graphiviz DOT language script</li>
+  <li>Recently I have needed to unpack the list for a more itemized view</li>
+  <li>Both these functions are showcased below</li>
+</ul>
 
-<h4>Code: newnode</h4>
-
-<pre><code># First create some test data, each step is a collection of edges 
+<h4 id="code-newnode">Code: newnode</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># First create some test data, each step is a collection of edges 
 # with inputs or outputs simple comma seperated lists
 dat &lt;- read.csv(textConnection('
 cluster ,  step    , inputs                    , outputs                                , description                      
@@ -79,7 +80,7 @@ D  ,  biomass revision, new estimates          , biomass_g                      
 '), stringsAsFactors = F, strip.white = T)    
 str(dat)
 # dat
-
+      
 # Now run the function and create a graph
 nodes &lt;- newnode(
   indat = dat,
@@ -96,10 +97,7 @@ sink()
 #DiagrammeR::grViz("Transformations.dot")
 system("dot -Tpng Transformations.dot -o Transformations.png")
 browseURL("Transformations.png")
-</code></pre>
-
-<p></p>
-
+</code></pre></div></div>
 
 <p></p>
 
@@ -107,18 +105,16 @@ browseURL("Transformations.png")
 
 <p><img src="/images/Transformations.png" alt="/images/Transformations.png" /></p>
 
-<h2>Now to showcase the tool that itemizes this list of inputs and outputs</h2>
+<h2 id="now-to-showcase-the-tool-that-itemizes-this-list-of-inputs-and-outputs">Now to showcase the tool that itemizes this list of inputs and outputs</h2>
 
 <ul>
-<li>The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs</li>
-<li>To add detail for each we need to unpack each list and create a new table with one row per node</li>
-<li>I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output</li>
+  <li>The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs</li>
+  <li>To add detail for each we need to unpack each list and create a new table with one row per node</li>
+  <li>I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output</li>
 </ul>
 
-
-<h4>Code: newnode_csv</h4>
-
-<pre><code>nodes_graphy &lt;- newnode_csv(
+<h4 id="code-newnode_csv">Code: newnode_csv</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nodes_graphy &lt;- newnode_csv(
   indat = dat,
   names_col = "step",
   in_col = "inputs",
@@ -148,12 +144,11 @@ knitr::kable(nodes_graphy)
 |C       |paper1           |output    |data package           |
 |D       |biomass revision |input     |new estimates          |
 |D       |biomass revision |output    |biomass_g              |
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<p>This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.</p>
+<p>This can now be useful for making a ‘shopping list’ of the data to aquire, transform, analyse or archive.</p>
 
     <div class="clear"></div>
   </div>
@@ -173,7 +168,7 @@ knitr::kable(nodes_graphy)
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-09-23 00:00:00 +1000">23 Sep 2015</abbr>
+      <abbr class="published" title="2015-09-23 00:00:00 +0800">23 Sep 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,39 +55,34 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>My work yesterday on implementing <a href="/2015/11/judging-the-evidence-using-a-literature-review-database">a lit review section of my data inventory database</a>
+    <p>My work yesterday on implementing <a href="/2015/11/judging-the-evidence-using-a-literature-review-database">a lit review section of my data inventory database</a> 
 went pretty well, and I tested this while collating information on the papers I compile into my thesis.</p>
 
 <p>However, as I worked through the information for each paper I realised that attaching this stuff at the EML/dataset level is not always going to work.
 In particular I have projects in which several papers are part of the one dataset.  To deal with this I have invented a non-EML relationship module for publications.
 So in my new schema the following is possible</p>
 
-<pre><code>eml/project/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eml/project/
            /dataset1/
                     /publication1
                     /publication2
            /dataset2/
                     /etc  
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <p>In this scenario a single dataset (ie bushfire smoke, temperature and mortality) can be used to write one paper focused on smoke, controlling for temperature.  Another paper on heatwaves, controlling for smoke. Indeed we might use time-series Poisson models for one and case-crossover design for the other (this is similar to what I did with Johnston and Morgan).</p>
 
-<p>So the simple thing to do is input these 'evidence tables' fields at the publication level, rather than the dataset as I did yesterday.</p>
+<p>So the simple thing to do is input these ‘evidence tables’ fields at the publication level, rather than the dataset as I did yesterday.</p>
 
 <p>This also partially solves my problem about aggregating these non-EML tags inside the text of the abstract, and worrying about parsing that to extract the elements of information.</p>
 
-<h2>The fields</h2>
+<h2 id="the-fields">The fields</h2>
 
 <!-- html table generated in R 3.2.2 by xtable 1.7-4 package -->
-
-
 <!-- Sat Nov 14 10:12:49 2015 -->
-
-
-<table border=1>
+<table border="1">
 <tr> <th> data_inventory_field </th> <th> description </th>  </tr>
   <tr> <td> Citation </td> <td> At a minimum author-date-journal, perhaps DOI? </td> </tr>
   <tr> <td> Key results </td> <td> Include both effect estimates and uncertainty </td> </tr>
@@ -100,12 +95,9 @@ So in my new schema the following is possible</p>
   <tr> <td> Method protocol </td> <td>  </td> </tr>
   <tr> <td> General Comments </td> <td>  </td> </tr>
    </table>
-
-
 <p></p>
 
-
-<h2>An example</h2>
+<h2 id="an-example">An example</h2>
 
 <p><img src="/images/datinv_pub.png" alt="/images/datinv_pub.png" /></p>
 
@@ -127,7 +119,7 @@ So in my new schema the following is possible</p>
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-11-14 00:00:00 +1100">14 Nov 2015</abbr>
+      <abbr class="published" title="2015-11-14 00:00:00 +0800">14 Nov 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

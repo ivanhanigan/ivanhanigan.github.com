@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -58,15 +58,14 @@
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>In my previous post I reviewed a paper by Noble 2009 that proposed recommendations for best practice ways to set up a data analysis pipeline <a href="http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/">http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/</a></li>
-<li>I was following up on a series of posts I made about other best practice recommendations <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/">http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/</a></li>
-<li>In the paper by Noble it is suggested that a one should use a 'driver script' to automate creation of a directory structure, this is the exact way that <code>ProjectTemplate</code> and <code>makeProject</code> work as I described them in the series of posts.</li>
-<li>I think Noble's framework offers something new to the recomendations I had canvassed, that is the idea of chronological order of the contents of the results directory.  I think this is an eminently sensible idea and thought that the R function <code>Sys.Date()</code> would be a great way to start off a project in this way.</li>
-<li>so I have put together the following R function, as an alternative to the <code>makeProject</code> core function, that I thought I'd name so that there may be a family of makeProject functions, so that analysts have a range of to choose from.  The other candidate would be <code>makeProjectLong</code>, which I will also put up before long.</li>
+  <li>In my previous post I reviewed a paper by Noble 2009 that proposed recommendations for best practice ways to set up a data analysis pipeline <a href="http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/">http://ivanhanigan.github.io/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/</a></li>
+  <li>I was following up on a series of posts I made about other best practice recommendations <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/">http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-3/</a></li>
+  <li>In the paper by Noble it is suggested that a one should use a ‘driver script’ to automate creation of a directory structure, this is the exact way that <code class="language-plaintext highlighter-rouge">ProjectTemplate</code> and <code class="language-plaintext highlighter-rouge">makeProject</code> work as I described them in the series of posts.</li>
+  <li>I think Noble’s framework offers something new to the recomendations I had canvassed, that is the idea of chronological order of the contents of the results directory.  I think this is an eminently sensible idea and thought that the R function <code class="language-plaintext highlighter-rouge">Sys.Date()</code> would be a great way to start off a project in this way.</li>
+  <li>so I have put together the following R function, as an alternative to the <code class="language-plaintext highlighter-rouge">makeProject</code> core function, that I thought I’d name so that there may be a family of makeProject functions, so that analysts have a range of to choose from.  The other candidate would be <code class="language-plaintext highlighter-rouge">makeProjectLong</code>, which I will also put up before long.</li>
 </ul>
 
-
-<pre><code>makeProjectNoble &lt;- function(rootdir = getwd()){
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>makeProjectNoble &lt;- function(rootdir = getwd()){
   if(!exists(rootdir)) dir.create(rootdir)
   dir.create(file.path(rootdir,'doc'))
   dir.create(file.path(rootdir,'doc','paper'))
@@ -81,31 +80,28 @@
   dir.create(file.path(rootdir,'results', Sys.Date())) 
   file.create(file.path(rootdir,'README.md'))
   }
-</code></pre>
+
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>Running this function will deploy the folders and files (I excluded the <code>bin</code> folder for compiled binaries, as I believe that many data analysts may not need that, and those who do are geeky enough to write their own driver scripts.</li>
+  <li>Running this function will deploy the folders and files (I excluded the <code class="language-plaintext highlighter-rouge">bin</code> folder for compiled binaries, as I believe that many data analysts may not need that, and those who do are geeky enough to write their own driver scripts.</li>
 </ul>
-
 
 <p><img src="/images/testProjectNoble.png" alt="/images/testProjectNoble.png" /></p>
 
 <ul>
-<li>The Rmarkdown script is waiting for the analysis plan to be pumped out, and work can begin</li>
+  <li>The Rmarkdown script is waiting for the analysis plan to be pumped out, and work can begin</li>
 </ul>
-
 
 <p><img src="/images/testProjectNobleMD.png" alt="/images/testProjectNobleMD.png" /></p>
 
-<h1>References</h1>
+<h1 id="references">References</h1>
 
 <ul>
-<li>Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">http://dx.doi.org/10.1371/journal.pcbi.1000424</a></li>
+  <li>Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">http://dx.doi.org/10.1371/journal.pcbi.1000424</a></li>
 </ul>
-
 
       <div class="clear"></div>
     </div>
@@ -122,7 +118,7 @@
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-10-12 00:00:00 +1100">12 Oct 2015</abbr>
+        <abbr class="published" title="2015-10-12 00:00:00 +0800">12 Oct 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -134,9 +130,8 @@
       <a href="/2015/10/coming-to-grips-with-citations-in-reproducible-research-reports/" title="Coming To Grips With Citations In Reproducible Research Reports" rel="bookmark">Coming To Grips With Citations In Reproducible Research Reports</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Introduction</h1>
-
-<p>Earlier this year I was pleased to stumble on to Petr Keil\'s <a href="http://www.petrkeil.com/?p=2401">Simple
+      <h1 id="introduction">Introduction</h1>
+<p>Earlier this year I was pleased to stumble on to Petr Keil's <a href="http://www.petrkeil.com/?p=2401">Simple
 template for scientific manuscripts in
 Rmarkdown</a> and the Github Repo
 <a href="https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template">https://github.com/petrkeil/Blog/tree/master/2015_03_12_R_ms_template</a>.</p>
@@ -147,70 +142,41 @@ found I needed to tweak the format of the citation style.  I tried
 out a bunch of other CSL files but none felt just right.  I tried out
 these after downloading from <a href="https://github.com/citation-style-language/styles">https://github.com/citation-style-language/styles</a>:</p>
 
-<pre><code>american-physiological-society.csl
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>american-physiological-society.csl
 annals-of-the-association-of-american-geographers.csl
 biomed-central.csl
 ecology.csl
 pnas.csl
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
-
-<h1>SO I hacked the CSL file</h1>
+<h1 id="so-i-hacked-the-csl-file">SO I hacked the CSL file</h1>
 
 <ul>
-<li>I used the <code>american-physiological-society.csl</code> to get stuff I wanted and pasted into the <code>mee.csl</code></li>
-<li>get the files from this link <a href="/rmarkdown_utils/CitationsInRmarkdown.Rmd">/rmarkdown_utils/CitationsInRmarkdown.Rmd</a></li>
-<li>get the files from this link <a href="/rmarkdown_utils/meemodified.csl">/rmarkdown_utils/meemodified.csl</a></li>
-<li>get the files from this link <a href="/rmarkdown_utils/refs.bib">/rmarkdown_utils/refs.bib</a></li>
+  <li>I used the <code class="language-plaintext highlighter-rouge">american-physiological-society.csl</code> to get stuff I wanted and pasted into the <code class="language-plaintext highlighter-rouge">mee.csl</code></li>
+  <li>get the files from this link <a href="/rmarkdown_utils/CitationsInRmarkdown.Rmd">/rmarkdown_utils/CitationsInRmarkdown.Rmd</a></li>
+  <li>get the files from this link <a href="/rmarkdown_utils/meemodified.csl">/rmarkdown_utils/meemodified.csl</a></li>
+  <li>get the files from this link <a href="/rmarkdown_utils/refs.bib">/rmarkdown_utils/refs.bib</a></li>
 </ul>
 
-
-<p>NB also that the csl file in petrkeil's repo is an older version from 2012 of the version in the citation-style repo called <code>methods-in-ecology-and-evolution</code>.  The differences are not large though.</p>
+<p>NB also that the csl file in petrkeil’s repo is an older version from 2012 of the version in the citation-style repo called <code class="language-plaintext highlighter-rouge">methods-in-ecology-and-evolution</code>.  The differences are not large though.</p>
 
 <h3><span class="header-section-number">1.1.1</span> Example 1:</h3>
-
-
 <p>The journal article by <span class="citation">Michener et al. (1997)</span> and another one <span class="citation">(Bodnar <em>et al.</em> 2004)</span> appear with their full URL even though I just want their DOI.</p>
-
-
 <h3><span class="header-section-number">1.1.2</span> Example 2:</h3>
-
-
 <p>Some recent papers <span class="citation">(Open Science Collaboration 2015; Aiken <em>et al.</em> 2015; Davey <em>et al.</em> 2015)</span> don’t have Volume info and I want to say [epub ahead of print].</p>
-
-
 <h3><span class="header-section-number">1.1.3</span> Example 3:</h3>
-
-
 <p>This blog post on ‘evidence based data analysis pipeline’ by <span class="citation">Peng (2013)</span> is one that definitely needs the URL and date accessed.</p>
 
-
-
-
 <h1>References</h1>
-
-
 <p>Aiken, A.M., Davey, C., Hargreaves, J.R. &amp; Hayes, R.J. (2015). Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication. <em>International Journal of Epidemiology</em>, dyv127. Retrieved from <a href="http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv127.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv127" class="uri">http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv127.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv127</a></p>
-
-
 <p>Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp; Smith, K.R. (2004). Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. <em>International journal of hygiene and environmental health</em>, <strong>207</strong>, 57–67. Retrieved from <a href="http://www.sciencedirect.com/science/article/pii/S1438463904702643" class="uri">http://www.sciencedirect.com/science/article/pii/S1438463904702643</a></p>
-
-
 <p>Davey, C., Aiken, A.M., Hayes, R.J. &amp; Hargreaves, J.R. (2015). Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial. <em>International Journal of Epidemiology</em>, dyv128. Retrieved from <a href="http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv128.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv128" class="uri">http://ije.oxfordjournals.org/content/early/2015/07/21/ije.dyv128.full http://www.ije.oxfordjournals.org/lookup/doi/10.1093/ije/dyv128</a></p>
-
-
 <p>Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp; Stafford, S.G. (1997). Nongeospatial metadata for the ecological sciences. <em>Ecological Applications</em>, <strong>7</strong>, 330–342. Retrieved from <a href="http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK" class="uri">http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK</a></p>
-
-
 <p>Open Science Collaboration. (2015). Estimating the reproducibility of psychological science. <em>Science</em>, <strong>349</strong>, aac4716–aac4716. Retrieved from <a href="http://www.sciencemag.org/cgi/doi/10.1126/science.aac4716" class="uri">http://www.sciencemag.org/cgi/doi/10.1126/science.aac4716</a></p>
-
-
 <p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. <em>Simply statistics</em>. Retrieved July 26, 2015, from <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/" class="uri">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a></p>
 
-
-<pre><code># first replace the &lt;macro name="access"&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># first replace the &lt;macro name="access"&gt;
 # with 
 &lt;macro name="access"&gt;
   &lt;choose&gt;
@@ -289,30 +255,17 @@ pnas.csl
           &lt;/else&gt;
         &lt;/choose&gt;
       &lt;/else-if&gt;
-</code></pre>
+</code></pre></div></div>
 
-<h2>Now use this modified csl in the header of the RMD file instead of mee.csl</h2>
+<h2 id="now-use-this-modified-csl-in-the-header-of-the-rmd-file-instead-of-meecsl">Now use this modified csl in the header of the RMD file instead of mee.csl</h2>
 
 <h1><span class="header-section-number">1.2</span> NEW References</h1>
-
-
 <p>Aiken, A.M., Davey, C., Hargreaves, J.R. &amp; Hayes, R.J. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a pure replication <em>International Journal of Epidemiology</em> (epub ahead of print July 2015). doi: <a href="http://dx.doi.org/10.1093/ije/dyv127">10.1093/ije/dyv127</a></p>
-
-
 <p>Bodnar, A., Castorina, R., Desai, M., Duramad, P., Fischer, S., Klepeis, N., Liang, S., Mehta, S., Naumoff, K., Noth, E.M., Schei, M., Tian, L., Vork, K.L. &amp; Smith, K.R. (2004).Lessons learned from ‘the skeptical environmentalist’: an environmental health perspective. <em>International journal of hygiene and environmental health</em> 207: 57–67, 2004.</p>
-
-
 <p>Davey, C., Aiken, A.M., Hayes, R.J. &amp; Hargreaves, J.R. (2015).Re-analysis of health and educational impacts of a school-based deworming programme in western Kenya: a statistical replication of a cluster quasi-randomized stepped-wedge trial <em>International Journal of Epidemiology</em> (epub ahead of print July 2015). doi: <a href="http://dx.doi.org/10.1093/ije/dyv128">10.1093/ije/dyv128</a></p>
-
-
 <p>Michener, W.K., Brunt, J.W., Helly, J.J., Kirchner, T.B. &amp; Stafford, S.G. (1997).Nongeospatial metadata for the ecological sciences <em>Ecological Applications</em> 7: 330–342, 1997. <a href="http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK">http://www.scopus.com/inward/record.url?scp=0030616825\&amp;partnerID=8YFLogxK</a></p>
-
-
 <p>Open Science Collaboration. (2015).Estimating the reproducibility of psychological science <em>Science</em> 349: aac4716–aac4716, 2015.</p>
-
-
 <p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. <em>Simply statistics</em>. <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a> [26 Jul. 2015]</p>
-
 
       <div class="clear"></div>
     </div>
@@ -329,7 +282,7 @@ pnas.csl
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-10-09 00:00:00 +1100">09 Oct 2015</abbr>
+        <abbr class="published" title="2015-10-09 00:00:00 +0800">09 Oct 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -341,72 +294,67 @@ pnas.csl
       <a href="/2015/10/a-quick-review-of-a-quick-guide-to-organizing-computational-biology-projects/" title="A quick review of a quick guide to organizing computational biology projects" rel="bookmark">A quick review of a quick guide to organizing computational biology projects</a>
     </h1>
     <div class="entry-content full-content">
-      <p>The organisation of material is a particularly vexatious topic.  For a data analysis project it is very important that the set of folders and files is logical and intuitive, as well as being well documented. The oft-heard exhortation by computer scientists to their users to 'Read The F-ing Manual' (RTFM) is perennial and rooted in the fundamental difficulty of readers to have the time required to read and digest the detailed information there-in.</p>
+      <p>The organisation of material is a particularly vexatious topic.  For a data analysis project it is very important that the set of folders and files is logical and intuitive, as well as being well documented. The oft-heard exhortation by computer scientists to their users to ‘Read The F-ing Manual’ (RTFM) is perennial and rooted in the fundamental difficulty of readers to have the time required to read and digest the detailed information there-in.</p>
 
 <ul>
-<li>In this post I review a paper that I was referred to by recent activity on the
-Mozillascience studyGroupLesson 'Open Science Utility Belt':
+  <li>In this post I review a paper that I was referred to by recent activity on the 
+Mozillascience studyGroupLesson ‘Open Science Utility Belt’:
 <a href="https://github.com/mozillascience/studyGroupLessons/issues/7">https://github.com/mozillascience/studyGroupLessons/issues/7</a></li>
-<li>That group also holds a journal club <a href="https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483">https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483</a> and they reviewed this paper:</li>
-<li>Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">http://dx.doi.org/10.1371/journal.pcbi.1000424</a></li>
+  <li>That group also holds a journal club <a href="https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483">https://github.com/minisciencegirl/studyGroup/issues/20#issuecomment-134750483</a> and they reviewed this paper:</li>
+  <li>Noble, W. S. (2009). A quick guide to organizing computational biology projects. PLoS Computational Biology, 5(7), 1–5. <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">http://dx.doi.org/10.1371/journal.pcbi.1000424</a></li>
 </ul>
 
-
-<p>I missed out so I thought I'd put my notes up here for reference:</p>
+<p>I missed out so I thought I’d put my notes up here for reference:</p>
 
 <ol>
-<li>core guiding principle is simple: Someone unfamiliar with your project should be able to look at your computer files and understand in detail what you did and why</li>
-<li>your future self may find it difficult to understand your current work.</li>
-<li>Noble's law: 'Everything you do, you will probably have to do over again'</li>
-<li>store all of the files relevant to one project in common root directory</li>
-<li>The exception to this rule is data/code that are used in multiple projects, they are standalone projects</li>
-<li>Within a given project, use a top-level organization that is logical first, then chronological  at the next level, and then logical organization next</li>
-<li>Core folders are <code>data</code>, <code>results</code>, <code>doc</code> (versus Berndt Weiss' <code>dat</code>, <code>ana</code>, <code>doc</code>)</li>
-<li>Chronological order?  'tempting to apply a similar, logical organization... this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform'</li>
+  <li>core guiding principle is simple: Someone unfamiliar with your project should be able to look at your computer files and understand in detail what you did and why</li>
+  <li>your future self may find it difficult to understand your current work.</li>
+  <li>Noble’s law: ‘Everything you do, you will probably have to do over again’</li>
+  <li>store all of the files relevant to one project in common root directory</li>
+  <li>The exception to this rule is data/code that are used in multiple projects, they are standalone projects</li>
+  <li>Within a given project, use a top-level organization that is logical first, then chronological  at the next level, and then logical organization next</li>
+  <li>Core folders are <code class="language-plaintext highlighter-rouge">data</code>, <code class="language-plaintext highlighter-rouge">results</code>, <code class="language-plaintext highlighter-rouge">doc</code> (versus Berndt Weiss’ <code class="language-plaintext highlighter-rouge">dat</code>, <code class="language-plaintext highlighter-rouge">ana</code>, <code class="language-plaintext highlighter-rouge">doc</code>)</li>
+  <li>Chronological order?  ‘tempting to apply a similar, logical organization… this approach is risky, because the logical structure of your final set of experiments may look drastically different from the form you initially designed. This is particularly true under the results directory, where you may not even know in advance what kinds of experiments you will need to perform’</li>
 </ol>
 
+<h3 id="recommended-folder-and-file-structures-httpdxdoiorg101371journalpcbi1000424g001">Recommended folder and file structures <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424.g001">http://dx.doi.org/10.1371/journal.pcbi.1000424.g001</a></h3>
 
-<h3>Recommended folder and file structures <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424.g001">http://dx.doi.org/10.1371/journal.pcbi.1000424.g001</a></h3>
-
-<pre><code class="r">/projectname (eg msms)/
-    /doc/
-        /ms-analysis.html 
-        /paper/
-            /msms.tex
-            /msms.pdf
-    /data/
-        /YYYY-MM-DD/
-            /yeast/
-                /README
-                /yeast.sqt
-            /worm/
-                /README
-                /worm.sqt
-    /src/
-        /ms-analysis.c
-    /bin/
-        /parse-sqt.py
-    /results/
-        /notebook.html 
-        /YYYY-MM-DD-1/
-            /runall
-            /split1/
-            /split2/
-        /YYYY-MM-DD-2/
-            /runall
-</code></pre>
-
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">/</span><span class="n">projectname</span><span class="w"> </span><span class="p">(</span><span class="n">eg</span><span class="w"> </span><span class="n">msms</span><span class="p">)</span><span class="o">/</span><span class="w">
+    </span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="w">
+        </span><span class="o">/</span><span class="n">ms</span><span class="o">-</span><span class="n">analysis.html</span><span class="w"> 
+        </span><span class="o">/</span><span class="n">paper</span><span class="o">/</span><span class="w">
+            </span><span class="o">/</span><span class="n">msms.tex</span><span class="w">
+            </span><span class="o">/</span><span class="n">msms.pdf</span><span class="w">
+    </span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="w">
+        </span><span class="o">/</span><span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="o">/</span><span class="w">
+            </span><span class="o">/</span><span class="n">yeast</span><span class="o">/</span><span class="w">
+                </span><span class="o">/</span><span class="n">README</span><span class="w">
+                </span><span class="o">/</span><span class="n">yeast.sqt</span><span class="w">
+            </span><span class="o">/</span><span class="n">worm</span><span class="o">/</span><span class="w">
+                </span><span class="o">/</span><span class="n">README</span><span class="w">
+                </span><span class="o">/</span><span class="n">worm.sqt</span><span class="w">
+    </span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="w">
+        </span><span class="o">/</span><span class="n">ms</span><span class="o">-</span><span class="n">analysis.c</span><span class="w">
+    </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="w">
+        </span><span class="o">/</span><span class="n">parse</span><span class="o">-</span><span class="n">sqt.py</span><span class="w">
+    </span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="w">
+        </span><span class="o">/</span><span class="n">notebook.html</span><span class="w"> 
+        </span><span class="o">/</span><span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="m">-1</span><span class="o">/</span><span class="w">
+            </span><span class="o">/</span><span class="n">runall</span><span class="w">
+            </span><span class="o">/</span><span class="n">split1</span><span class="o">/</span><span class="w">
+            </span><span class="o">/</span><span class="n">split2</span><span class="o">/</span><span class="w">
+        </span><span class="o">/</span><span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="m">-2</span><span class="o">/</span><span class="w">
+            </span><span class="o">/</span><span class="n">runall</span><span class="w">
+</span></code></pre></div></div>
 <p></p>
 
-
 <ol>
-<li>Use a driver script to automate creation of a directory structure</li>
-<li>maintain a chronologically organized lab notebook (I have been calling this a work 'log' sensu Scott Long's 2008 'Workflow book')</li>
-<li>create either a README file, or a command line driver script (he calls this <code>runall</code>, but see also <code>main.R</code> sensu the Reichian LCFD model)</li>
-<li>you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details</li>
-<li>Version Control.  'Nuff said! But how to build capacity with Github when all my colleagues seem so confused by it?</li>
+  <li>Use a driver script to automate creation of a directory structure</li>
+  <li>maintain a chronologically organized lab notebook (I have been calling this a work ‘log’ sensu Scott Long’s 2008 ‘Workflow book’)</li>
+  <li>create either a README file, or a command line driver script (he calls this <code class="language-plaintext highlighter-rouge">runall</code>, but see also <code class="language-plaintext highlighter-rouge">main.R</code> sensu the Reichian LCFD model)</li>
+  <li>you should end up with a file that is parallel to the lab notebook entry. The lab notebook contains a prose description of the exper- iment, whereas the driver script contains all the gory details</li>
+  <li>Version Control.  ‘Nuff said! But how to build capacity with Github when all my colleagues seem so confused by it?</li>
 </ol>
-
 
       <div class="clear"></div>
     </div>
@@ -423,7 +371,7 @@ Mozillascience studyGroupLesson 'Open Science Utility Belt':
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-10-07 00:00:00 +1100">07 Oct 2015</abbr>
+        <abbr class="published" title="2015-10-07 00:00:00 +0800">07 Oct 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -435,40 +383,36 @@ Mozillascience studyGroupLesson 'Open Science Utility Belt':
       <a href="/2015/10/naming-conventions-for-computer-files/" title="Naming Conventions For Computer Files" rel="bookmark">Naming Conventions For Computer Files</a>
     </h1>
     <div class="entry-content full-content">
-      <p>I'm working on a new Data Management Plan for a research group who
+      <p>I’m working on a new Data Management Plan for a research group who
 merge data from air pollution, meteorology, population census and
 health outcome datasets.  The folder organisation is pretty much under
 control now, but the file names are challenging.</p>
 
-<p>I'm searching for inspiration and was recommended this conversation:
+<p>I’m searching for inspiration and was recommended this conversation:
 <a href="https://github.com/minisciencegirl/studyGroup/issues/20">https://github.com/minisciencegirl/studyGroup/issues/20</a></p>
 
-<pre><code>File Organization and Naming:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>File Organization and Naming:
 ...
 I want to include details of what the settings were or what dataset I
 started out with. Rather than saving a file name a mile long
 "FlightHomLog2_av1_Euc_ArrayEucl_AvgLink", there must be many
 different better ways to organizing my file space.
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
 <p>There is a bunch of good advice already here, and I recommend the slides <a href="https://github.com/Reproducible-Science-Curriculum/rr-organization1/tree/master/slides/naming-slides">https://github.com/Reproducible-Science-Curriculum/rr-organization1/tree/master/slides/naming-slides</a> and the two PLOS articles, but I wanted to pull out the two things I think it is important to get right:</p>
 
 <ul>
-<li>ordering in lists</li>
-<li>substring chunks that can be extracted</li>
+  <li>ordering in lists</li>
+  <li>substring chunks that can be extracted</li>
 </ul>
 
+<p>I think that the substring chunks are explained well in the slides link above (summary, use ‘_’ or ‘-‘ to split the string), but I think that the ordering problem needs some thinking.</p>
 
-<p>I think that the substring chunks are explained well in the slides link above (summary, use '_' or '-' to split the string), but I think that the ordering problem needs some thinking.</p>
-
-<h2>Tidy Data:</h2>
+<h2 id="tidy-data">Tidy Data:</h2>
 
 <p>This all reminds me of words from Hadley Wickham about tidy data, and the order that columns should be arranged in tabular data.  The principles are similar I think.</p>
 
-<pre><code class="">A good ordering makes it easier to scan the raw values. One way of
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A good ordering makes it easier to scan the raw values. One way of
 organizing variables is by their role in the analysis: are values
 fixed by the design of the data collection, or are they measured
 during the course of the experiment? Fixed variables describe the
@@ -480,43 +424,37 @@ first, followed by measured variables, each ordered so that related
 variables are contiguous. Rows can then be ordered by the first
 variable, breaking ties with the second and subsequent (fixed)
 variables. 
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
 <p></p>
-
-
-<p>Wickham, H. (2014). Tidy Data. JSS Journal of Statistical Software, 59(10).
+<p>Wickham, H. (2014). Tidy Data. JSS Journal of Statistical Software, 59(10). 
 Retrieved from <a href="http://www.jstatsoft.org/">http://www.jstatsoft.org/</a></p>
 
-<h2>One way that we did this:</h2>
+<h2 id="one-way-that-we-did-this">One way that we did this:</h2>
 
 <p>Colleagues and I came up with the following protocol for an ecology and biodiversity database</p>
 
 <ol>
-<li>Project name (optional sub-project name)</li>
-<li>Data type (such as experimental unit, observational unit, and/or measurement methods)</li>
-<li>Geographic location (State, Country)</li>
-<li>Temporal frequency and coverge Annual or seasonal tranches</li>
+  <li>Project name (optional sub-project name)</li>
+  <li>Data type (such as experimental unit, observational unit, and/or measurement methods)</li>
+  <li>Geographic location (State, Country)</li>
+  <li>Temporal frequency and coverge Annual or seasonal tranches</li>
 </ol>
 
+<h2 id="tidy-data-generalisable-concepts-are-dimensions-and-variables">Tidy data generalisable concepts are dimensions and variables</h2>
 
-<h2>Tidy data generalisable concepts are dimensions and variables</h2>
+<p>The concept of dimensions and variables can be useful here, and especially for deciding on filenames.  Dimensions are fixed or change slowly while variables change more quickly .  For example the project name is ‘fixed’, that is it does not change across the files, but the sub-project name does change, just more slowly (say there may be 2-3 different sub-projects within a project). Then there may be a set of data types, and these ‘change’ more quickly than the sub-project name (by change I mean, there are more of them).  Then the geographic and temporal variables might change quickest of all.</p>
 
-<p>The concept of dimensions and variables can be useful here, and especially for deciding on filenames.  Dimensions are fixed or change slowly while variables change more quickly .  For example the project name is 'fixed', that is it does not change across the files, but the sub-project name does change, just more slowly (say there may be 2-3 different sub-projects within a project). Then there may be a set of data types, and these 'change' more quickly than the sub-project name (by change I mean, there are more of them).  Then the geographic and temporal variables might change quickest of all.</p>
-
-<p>So a general rule for the order of things can be stated
-The more fixed variables should come first (those things that don't change, or don't change much),
-followed by the more fluid variables (or things that change more across the project).
+<p>So a general rule for the order of things can be stated 
+The more fixed variables should come first (those things that don’t change, or don’t change much), 
+followed by the more fluid variables (or things that change more across the project). 
 List elements can then be ordered so that the groups of things that are similar will always be contiguous, and vary sequentially within clusters.</p>
 
 <p>Perhaps an example would be easier to understand.  Here is a set of file names that we constructed for one of our ecological field sites (project) and plots (sub-project or measurement location):</p>
 
-<h4>Notice we also had a controlled vocabulary of data types and their acronyms before starting this</h4>
+<h4 id="notice-we-also-had-a-controlled-vocabulary-of-data-types-and-their-acronyms-before-starting-this">Notice we also had a controlled vocabulary of data types and their acronyms before starting this</h4>
 
-<pre><code>| Filename                                                            | Title                                                                                                                                 |
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>| Filename                                                            | Title                                                                                                                                 |
 |---------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------|
 | asn_fnqr_soil_charact_robson_2011.csv                               | Soil Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2011                                                              |
 | asn_fnqr_soil_pit_robson_2012.csv                                   | Soil Pit Data, Water Content and Temperature, Far North Queensland Rainforest SuperSite, Robson Creek, 2012                           |
@@ -613,7 +551,8 @@ List elements can then be ordered so that the groups of things that are similar 
 | asn_fnqr_weather_robson_2012.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2012                                                   |
 | asn_fnqr_weather_robson_2013.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2013                                                   |
 | asn_fnqr_weather_robson_2014.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2014                                                   |
-</code></pre>
+
+</code></pre></div></div>
 
       <div class="clear"></div>
     </div>
@@ -630,7 +569,7 @@ List elements can then be ordered so that the groups of things that are similar 
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-10-05 00:00:00 +1100">05 Oct 2015</abbr>
+        <abbr class="published" title="2015-10-05 00:00:00 +0800">05 Oct 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -643,47 +582,42 @@ List elements can then be ordered so that the groups of things that are similar 
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>I was tooling around someone's blog and noticed a link to this interesting talk "Citation &amp; Productivity Benefits from Open Science" by <a href="https://github.com/BillMills">https://github.com/BillMills</a></li>
-<li>the slides markdown is here <a href="https://github.com/BillMills/practicalOpenScience/blob/gh-pages/outline.md">https://github.com/BillMills/practicalOpenScience/blob/gh-pages/outline.md</a></li>
-<li>the slide on "Open Communication" interested me, as I have turned up my open notebook blog to 11 recently with a couple of posts a week for the last few weeks</li>
-<li>the recommendation to "Blog Early And Blog Often" resonated here!</li>
-<li>I was intrigued by the comments</li>
+  <li>I was tooling around someone’s blog and noticed a link to this interesting talk “Citation &amp; Productivity Benefits from Open Science” by <a href="https://github.com/BillMills">https://github.com/BillMills</a></li>
+  <li>the slides markdown is here <a href="https://github.com/BillMills/practicalOpenScience/blob/gh-pages/outline.md">https://github.com/BillMills/practicalOpenScience/blob/gh-pages/outline.md</a></li>
+  <li>the slide on “Open Communication” interested me, as I have turned up my open notebook blog to 11 recently with a couple of posts a week for the last few weeks</li>
+  <li>the recommendation to “Blog Early And Blog Often” resonated here!</li>
+  <li>I was intrigued by the comments</li>
 </ul>
 
-
-<pre><code>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  
 used well, twitter can be a useful tool for frequent communication
 paradigms as a distributor and aggregator of links to the content in
 the other three bullet points. It can be really tough to stay on top
 of everyone's blog, everyone's issue tracker and everything else; by
 pushing links to our followers every time we have a new RFC out and
 vice versa, we greatly simplify this process. See this example.
-</code></pre>
-
+  
+</code></pre></div></div>
 <p></p>
-
-
 <ul>
-<li>the other three being: GitHub Issues/Working Open, Blogging/Journals of Brief Ideas and
-Study Preregistration/'publication bias'</li>
-<li>RFC means 'Request For Comments'</li>
-<li>and so I clicked on the link to this example <a href="https://twitter.com/MozillaScience/status/628990222651428864">https://twitter.com/MozillaScience/status/628990222651428864</a></li>
+  <li>the other three being: GitHub Issues/Working Open, Blogging/Journals of Brief Ideas and
+Study Preregistration/’publication bias’</li>
+  <li>RFC means ‘Request For Comments’</li>
+  <li>and so I clicked on the link to this example <a href="https://twitter.com/MozillaScience/status/628990222651428864">https://twitter.com/MozillaScience/status/628990222651428864</a></li>
 </ul>
-
 
 <p><img src="/images/twits.png" alt="/images/twits.png" /></p>
 
-<h2>Warning, Danger</h2>
+<h2 id="warning-danger">Warning, Danger</h2>
 
 <ul>
-<li>This seemed like a fascinating discussion, one that I have been thinking about a lot</li>
-<li>and writing up here <a href="https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets">https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets</a> in my thesis BUT...</li>
-<li>I also recently received this warning from a blogger I admire: <a href="http://charliepark.org/stepping-away-from-twitter/">http://charliepark.org/stepping-away-from-twitter/</a></li>
-<li>He warns strongly that people with my temperament for seeking feedback and approval may be hampered by using twitter too much:</li>
+  <li>This seemed like a fascinating discussion, one that I have been thinking about a lot</li>
+  <li>and writing up here <a href="https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets">https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets</a> in my thesis BUT…</li>
+  <li>I also recently received this warning from a blogger I admire: <a href="http://charliepark.org/stepping-away-from-twitter/">http://charliepark.org/stepping-away-from-twitter/</a></li>
+  <li>He warns strongly that people with my temperament for seeking feedback and approval may be hampered by using twitter too much:</li>
 </ul>
 
-
-<pre><code>Stepping Away From Twitter
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Stepping Away From Twitter
 June 12, 2015
 I recently noticed an interesting pattern.
 On days when I’m on Twitter, my ability to focus and 
@@ -692,28 +626,24 @@ get good work done falls off a cliff.
 It’s not just “when you read Twitter first-thing in the day”, 
 something I’ve heard people discuss. 
 It was that I was on Twitter at all.
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
-
-<h2>But there are clear benefits right?</h2>
-
-<ul>
-<li>So I had to take a step back from my recent explorations with linking up my social media and blogging interests</li>
-<li>Looking over what I am trying to achieve by keeping regular posts of my work, along with the need I feel to make sure people who are interested can <em>find</em> my work, I began to despair</li>
-<li>but then I kept digging around and see a lot of people I admire linking up twitter and more scientific communications</li>
-</ul>
-
-
-<h2>So what?</h2>
+<h2 id="but-there-are-clear-benefits-right">But there are clear benefits right?</h2>
 
 <ul>
-<li>I guess the real point of this post is to admit that I don't know how to use twitter</li>
-<li>I'm happy to report I feel comfortable now (a couple of years in) making regular open notebook entries to communicate what is going on in my 'Lonely Analyst' lab <a href="http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/">http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/</a></li>
-<li>but a couple of recent emails asking me for data that I published years ago <a href="https://gislibrary-extreme-weather.anu.edu.au/poa_weather">like this Australian Postcode Area Weather Estimates stuff</a> made me think I really need to get my stuff exposed so it is <strong>LOT</strong> more visible.</li>
+  <li>So I had to take a step back from my recent explorations with linking up my social media and blogging interests</li>
+  <li>Looking over what I am trying to achieve by keeping regular posts of my work, along with the need I feel to make sure people who are interested can <em>find</em> my work, I began to despair</li>
+  <li>but then I kept digging around and see a lot of people I admire linking up twitter and more scientific communications</li>
 </ul>
 
+<h2 id="so-what">So what?</h2>
+
+<ul>
+  <li>I guess the real point of this post is to admit that I don’t know how to use twitter</li>
+  <li>I’m happy to report I feel comfortable now (a couple of years in) making regular open notebook entries to communicate what is going on in my ‘Lonely Analyst’ lab <a href="http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/">http://simplystatistics.org/2013/08/09/embarrassing-typos-reveal-the-dangers-of-the-lonely-data-analyst/</a></li>
+  <li>but a couple of recent emails asking me for data that I published years ago <a href="https://gislibrary-extreme-weather.anu.edu.au/poa_weather">like this Australian Postcode Area Weather Estimates stuff</a> made me think I really need to get my stuff exposed so it is <strong>LOT</strong> more visible.</li>
+</ul>
 
       <div class="clear"></div>
     </div>
@@ -730,7 +660,7 @@ It was that I was on Twitter at all.
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-10-04 00:00:00 +1000">04 Oct 2015</abbr>
+        <abbr class="published" title="2015-10-04 00:00:00 +0800">04 Oct 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>

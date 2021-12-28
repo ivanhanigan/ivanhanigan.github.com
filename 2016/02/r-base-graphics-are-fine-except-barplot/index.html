@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -57,28 +57,28 @@
   <div class="entry-content full-content">
     <p>I concur with Jeff Leek that once spent time learning base graphics in R there is less incentive to learn ggplot2 <a href="http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/">http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/</a></p>
 
-<p>However I always hate the way <code>barplot</code> works.  Here is an example:</p>
+<p>However I always hate the way <code class="language-plaintext highlighter-rouge">barplot</code> works.  Here is an example:</p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>qc <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="kp">textConnection</span><span class="p">(</span><span class="s">&quot;id,  OnlinePaper, Q, freq, totals,       prop</span>
-<span class="s">1,      Online,         ,1768,   9950, 0.17768844</span>
-<span class="s">2,      Online,      No ,4022,   9950, 0.40422111</span>
-<span class="s">3,      Online,     Yes ,4160,   9950, 0.41809045</span>
-<span class="s">4,       Paper,         , 256,   3355, 0.07630402</span>
-<span class="s">5,       Paper,      No , 979,   3355, 0.29180328</span>
-<span class="s">6,       Paper,     Yes ,2120,   3355, 0.63189270&quot;</span><span class="p">))</span></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">qc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="n">textConnection</span><span class="p">(</span><span class="s2">"id,  OnlinePaper, Q, freq, totals,       prop
+1,      Online,         ,1768,   9950, 0.17768844
+2,      Online,      No ,4022,   9950, 0.40422111
+3,      Online,     Yes ,4160,   9950, 0.41809045
+4,       Paper,         , 256,   3355, 0.07630402
+5,       Paper,      No , 979,   3355, 0.29180328
+6,       Paper,     Yes ,2120,   3355, 0.63189270"</span><span class="p">))</span><span class="w">
 
-<p>qc1 <span class="o">&lt;-</span> cast<span class="p">(</span>qc<span class="p">,</span> OnlinePaper <span class="o">~</span> Q74 <span class="p">,</span> value <span class="o">=</span> <span class="s">&quot;prop&quot;</span><span class="p">)</span>
-qc1
-barplot<span class="p">(</span><span class="kp">as.matrix</span><span class="p">(</span>qc1<span class="p">),</span> beside <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> legend.text <span class="o">=</span> qc1<span class="p">[,</span><span class="m">1</span><span class="p">],</span> ylim <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span></code></pre></figure></p>
+</span><span class="n">qc1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cast</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span><span class="w"> </span><span class="n">OnlinePaper</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">Q74</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"prop"</span><span class="p">)</span><span class="w">
+</span><span class="n">qc1</span><span class="w">
+</span><span class="n">barplot</span><span class="p">(</span><span class="n">as.matrix</span><span class="p">(</span><span class="n">qc1</span><span class="p">),</span><span class="w"> </span><span class="n">beside</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">,</span><span class="w"> </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qc1</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span></code></pre></figure>
 
 <p><img src="/images/barplot_base.png" alt="/images/barplot_base.png" /></p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>ggplot<span class="p">(</span>data<span class="o">=</span>qc<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Q<span class="p">,</span> y<span class="o">=</span>prop<span class="p">,</span> fill<span class="o">=</span>OnlinePaper<span class="p">))</span> <span class="o">+</span>
-    geom_bar<span class="p">(</span>stat<span class="o">=</span><span class="s">&quot;identity&quot;</span><span class="p">,</span> position<span class="o">=</span>position_dodge<span class="p">())</span></code></pre></figure></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">qc</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">Q</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">prop</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">OnlinePaper</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">geom_bar</span><span class="p">(</span><span class="n">stat</span><span class="o">=</span><span class="s2">"identity"</span><span class="p">,</span><span class="w"> </span><span class="n">position</span><span class="o">=</span><span class="n">position_dodge</span><span class="p">())</span></code></pre></figure>
 
 <p><img src="/images/barplot_gg.png" alt="/images/barplot_gg.png" /></p>
 
-<h4>Going to extremes</h4>
+<h4 id="going-to-extremes">Going to extremes</h4>
 
 <p>I should say though that I have found barplot can produce very customised graphs that serve a specific purpose such as that below (I have de-identified the content as this is unpublished research)</p>
 
@@ -86,19 +86,20 @@ barplot<span class="p">(</span><span class="kp">as.matrix</span><span class="p">
 
 <p>This made heavy use of the following approach</p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># original by Joseph Guillaume 2009</span>
-SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>aggAllData<span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
-  par<span class="p">(</span>mar<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">8</span><span class="p">,</span><span class="m">7</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
-  bp<span class="o">&lt;-</span>barplot<span class="p">(</span>aggAllData<span class="p">,</span>
-              horiz<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span>
-              col<span class="o">=</span>gray.colors<span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>aggAllData<span class="p">)),</span>
-              las<span class="o">=</span><span class="m">1</span><span class="p">,</span> axisnames <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
-  labels <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span><span class="kp">as.data.frame</span><span class="p">(</span>aggAllData<span class="p">))</span>
-  text<span class="p">(</span>bp<span class="p">,</span> par<span class="p">(</span><span class="s">&#39;usr&#39;</span><span class="p">)[</span><span class="m">3</span><span class="p">],</span> labels <span class="o">=</span> <span class="kp">labels</span><span class="p">,</span> srt <span class="o">=</span> <span class="m">45</span><span class="p">,</span>
-       adj <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">1.1</span><span class="p">,</span><span class="m">1.1</span><span class="p">),</span> xpd <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> cex<span class="o">=</span><span class="m">.9</span><span class="p">)</span>
-    <span class="kr">return</span><span class="p">(</span>bp<span class="p">)</span>
-<span class="p">}</span>
-<span class="c1"># with width = xvar (proportions)</span></code></pre></figure></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1"># original by Joseph Guillaume 2009</span><span class="w">
+</span><span class="n">SideBySideBarPlot2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">aggAllData</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">par</span><span class="p">(</span><span class="n">mar</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">8</span><span class="p">,</span><span class="m">7</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">2</span><span class="p">))</span><span class="w">
+  </span><span class="n">bp</span><span class="o">&lt;-</span><span class="n">barplot</span><span class="p">(</span><span class="n">aggAllData</span><span class="p">,</span><span class="w">
+              </span><span class="n">horiz</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
+              </span><span class="n">col</span><span class="o">=</span><span class="n">gray.colors</span><span class="p">(</span><span class="n">nrow</span><span class="p">(</span><span class="n">aggAllData</span><span class="p">)),</span><span class="w">
+              </span><span class="n">las</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">axisnames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="n">labels</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">as.data.frame</span><span class="p">(</span><span class="n">aggAllData</span><span class="p">))</span><span class="w">
+  </span><span class="n">text</span><span class="p">(</span><span class="n">bp</span><span class="p">,</span><span class="w"> </span><span class="n">par</span><span class="p">(</span><span class="s1">'usr'</span><span class="p">)[</span><span class="m">3</span><span class="p">],</span><span class="w"> </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">labels</span><span class="p">,</span><span class="w"> </span><span class="n">srt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">45</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">adj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1.1</span><span class="p">,</span><span class="m">1.1</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">.9</span><span class="p">)</span><span class="w">
+    </span><span class="nf">return</span><span class="p">(</span><span class="n">bp</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="c1"># with width = xvar (proportions)</span></code></pre></figure>
+
 
     <div class="clear"></div>
   </div>
@@ -118,7 +119,7 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2016-02-19 00:00:00 +1100">19 Feb 2016</abbr>
+      <abbr class="published" title="2016-02-19 00:00:00 +0800">19 Feb 2016</abbr>
     </span>
   </p>
   <div class="clear"></div>

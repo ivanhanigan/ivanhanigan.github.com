@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,119 +55,106 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h2>Reproducibility</h2>
+    <h2 id="reproducibility">Reproducibility</h2>
 
 <ul>
-<li>A subset of the data and code used for this blog post is available at <a href="https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s">https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s</a></li>
-<li>Some parts of the data I used are not available due to shared Intellectual Property</li>
-<li>The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics</li>
-<li>The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.</li>
+  <li>A subset of the data and code used for this blog post is available at <a href="https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s">https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s</a></li>
+  <li>Some parts of the data I used are not available due to shared Intellectual Property</li>
+  <li>The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics</li>
+  <li>The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.</li>
 </ul>
 
-
-<h2>Introduction</h2>
+<h2 id="introduction">Introduction</h2>
 
 <p>The Aim is to aggregate Statistical Local Areas (SLAs, recently relabelled SA2) Australian Standard Geographical Classification (ASGC, recently relabelled ASGS) to achieve a greater level of privacy protection.
 The rules to achieve a geography amenable to statistical comparisons are:</p>
 
 <ul>
-<li>similar populations (around 20,000 to 30,000)</li>
-<li>homogenous Index of Relative Socioeconomic Disadvantage</li>
-<li>nested within the next level up in the ASGC/ASGS</li>
-<li>so that SSD (recently relabelled SA3) are not split.</li>
-<li>the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments</li>
-<li>This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.</li>
+  <li>similar populations (around 20,000 to 30,000)</li>
+  <li>homogenous Index of Relative Socioeconomic Disadvantage</li>
+  <li>nested within the next level up in the ASGC/ASGS</li>
+  <li>so that SSD (recently relabelled SA3) are not split.</li>
+  <li>the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments</li>
+  <li>This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.</li>
 </ul>
 
+<h2 id="results">Results</h2>
 
-<h2>Results</h2>
-
-<h3>Data Prep</h3>
+<h3 id="data-prep">Data Prep</h3>
 
 <ul>
-<li>The data were prepared as spatial files</li>
+  <li>The data were prepared as spatial files</li>
 </ul>
-
 
 <p><img src="/images/aggregation-of-sa2s.png" alt="alttext" /></p>
 
-<h3>Assess proposed split in Belconnen</h3>
+<h3 id="assess-proposed-split-in-belconnen">Assess proposed split in Belconnen</h3>
 
 <ul>
-<li>the proposed split in belconnen looks good</li>
-<li>This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score</li>
-<li>Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham</li>
-<li>Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence</li>
+  <li>the proposed split in belconnen looks good</li>
+  <li>This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score</li>
+  <li>Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham</li>
+  <li>Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence</li>
 </ul>
-
 
 <p><img src="/images/belco-split.png" alt="alttext" /></p>
 
-<h3>Assess the outliers</h3>
+<h3 id="assess-the-outliers">Assess the outliers</h3>
 
 <ul>
-<li>this can be done by identifying their component CCD SEIFA within new groups</li>
-<li>the seifa of CCD in outliers are compared to the others within their new groups</li>
+  <li>this can be done by identifying their component CCD SEIFA within new groups</li>
+  <li>the seifa of CCD in outliers are compared to the others within their new groups</li>
 </ul>
-
 
 <p><img src="/images/seifa-by-newgroups1.png" alt="alttext" /></p>
 
 <ul>
-<li>zoom in on croweded areas</li>
+  <li>zoom in on croweded areas</li>
 </ul>
-
 
 <p><img src="/images/seifa-by-newgroups1-2.png" alt="alttext" /></p>
 
 <!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-
-
 <!-- Tue Feb 18 22:03:04 2014 -->
+<table border="1">
+<tr> <th>  </th> <th> sa2_name.x </th> <th> new_sa2_group </th> <th> notes </th>  </tr>
+  <tr> <td align="right"> 12 </td> <td> Bruce </td> <td> Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar </td> <td> higher than neighbours </td> </tr>
+  <tr> <td align="right"> 14 </td> <td> Campbell </td> <td> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 20 </td> <td> Civic </td> <td> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 31 </td> <td> Fadden </td> <td> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 32 </td> <td> Farrer </td> <td> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </td> <td> higher than neighbours bar one ccd </td> </tr>
+  <tr> <td align="right"> 37 </td> <td> Forrest </td> <td> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </td> <td> higher than neighbours </td> </tr>
+  <tr> <td align="right"> 60 </td> <td> Isaacs </td> <td> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </td> <td> higher than neighbours bar one ccd </td> </tr>
+  <tr> <td align="right"> 64 </td> <td> Kingston - Barton </td> <td> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </td> <td> higher than neighbours </td> </tr>
+  <tr> <td align="right"> 71 </td> <td> Macarthur </td> <td> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 73 </td> <td> Macquarie </td> <td> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 87 </td> <td> O'Malley </td> <td> Chifley/ Lyons (ACT)/ O'Malley/ Phillip </td> <td> higher than neighbours </td> </tr>
+  <tr> <td align="right"> 89 </td> <td> Page </td> <td> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 98 </td> <td> Scullin </td> <td> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </td> <td> ok </td> </tr>
+   </table>
 
-
-<TABLE border=1>
-<TR> <TH>  </TH> <TH> sa2_name.x </TH> <TH> new_sa2_group </TH> <TH> notes </TH>  </TR>
-  <TR> <TD align="right"> 12 </TD> <TD> Bruce </TD> <TD> Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar </TD> <TD> higher than neighbours </TD> </TR>
-  <TR> <TD align="right"> 14 </TD> <TD> Campbell </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 20 </TD> <TD> Civic </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 31 </TD> <TD> Fadden </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 32 </TD> <TD> Farrer </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
-  <TR> <TD align="right"> 37 </TD> <TD> Forrest </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
-  <TR> <TD align="right"> 60 </TD> <TD> Isaacs </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
-  <TR> <TD align="right"> 64 </TD> <TD> Kingston - Barton </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
-  <TR> <TD align="right"> 71 </TD> <TD> Macarthur </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 73 </TD> <TD> Macquarie </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 87 </TD> <TD> O'Malley </TD> <TD> Chifley/ Lyons (ACT)/ O'Malley/ Phillip </TD> <TD> higher than neighbours </TD> </TR>
-  <TR> <TD align="right"> 89 </TD> <TD> Page </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 98 </TD> <TD> Scullin </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
-   </TABLE>
-
-
-<h3>Investigating areas: eg the Kingston - Barton area</h3>
+<h3 id="investigating-areas-eg-the-kingston---barton-area">Investigating areas: eg the Kingston - Barton area</h3>
 
 <ul>
-<li>we can zoom in on some of these areas</li>
+  <li>we can zoom in on some of these areas</li>
 </ul>
-
 
 <p><img src="/images/kingston-barton.png" alt="alttext" /></p>
 
-<h2>Conclusions</h2>
+<h2 id="conclusions">Conclusions</h2>
 
 <p>Basically, the problem comes from public housing policies in Canberra which distorts the effect of the housing market and land values in segregating rich from poor. Essentially, there are highly advantaged suburbs with pockets of disadvantaged public housing.</p>
 
-<p>Other 'problematic' features re this are:</p>
+<p>Other ‘problematic’ features re this are:</p>
 
 <ul>
-<li>proximity to ornamental lakes</li>
-<li>proximity to urban green space</li>
-<li>proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement -- but different to 'distance from urban centre'</li>
-<li>elevation, especially with a view.</li>
+  <li>proximity to ornamental lakes</li>
+  <li>proximity to urban green space</li>
+  <li>proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement – but different to ‘distance from urban centre’</li>
+  <li>elevation, especially with a view.</li>
 </ul>
 
-
-<p>Potentially the issue is going to be that this can't be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.</p>
+<p>Potentially the issue is going to be that this can’t be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.</p>
 
     <div class="clear"></div>
   </div>
@@ -187,7 +174,7 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2014-02-18 00:00:00 +1100">18 Feb 2014</abbr>
+      <abbr class="published" title="2014-02-18 00:00:00 +0800">18 Feb 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>

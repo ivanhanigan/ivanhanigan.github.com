@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,15 +56,13 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>I have been using RGDAL to transform and write out spatial data in GDA94</li>
-<li>It is a problem to know what I need to do to create the right prj file for ArcGIS to read without complaining</li>
-<li>I have an example of code below, that I used on a dataset I knew was in GDA94 when I read it in.  I want to do this mostly for when I have to convert from one to another, but I have done the manual hack a couple of times now and thought I better just check with an expert.</li>
+  <li>I have been using RGDAL to transform and write out spatial data in GDA94</li>
+  <li>It is a problem to know what I need to do to create the right prj file for ArcGIS to read without complaining</li>
+  <li>I have an example of code below, that I used on a dataset I knew was in GDA94 when I read it in.  I want to do this mostly for when I have to convert from one to another, but I have done the manual hack a couple of times now and thought I better just check with an expert.</li>
 </ul>
 
-
-<h4>R Code:</h4>
-
-<pre><code>infile &lt;- "ap_map"
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>infile &lt;- "ap_map"
 outfile &lt;- gsub("map", "map_GDA94.shp", infile)
 outfile
 setwd(indir)
@@ -95,42 +93,39 @@ setwd(projdir)
 # OLD GEOGCS["GRS 1980(IUGG, 1980)",DATUM["D_unknown",SPHEROID["GRS80",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]
 # NEW GEOGCS["GDA94",DATUM["D_GDA_1994",SPHEROID["GRS_1980",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]
 # checked with ArcMap and they align ok
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h2>I asked on of my colleagues and here is his reply</h2>
+<h2 id="i-asked-on-of-my-colleagues-and-here-is-his-reply">I asked on of my colleagues and here is his reply</h2>
 
 <ul>
-<li>I usually use the sp and maptools library, rather than the readOGR and writeOGR functions.  Generally my workflow, as an example of projecting a GDA94 zone 55 file to WGS84, would be something like:</li>
+  <li>I usually use the sp and maptools library, rather than the readOGR and writeOGR functions.  Generally my workflow, as an example of projecting a GDA94 zone 55 file to WGS84, would be something like:</li>
 </ul>
 
-
-<h4>R Code:</h4>
-
-<pre><code>shp &lt;- readShapePoly("myfile.shp")
+<h4 id="r-code-1">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shp &lt;- readShapePoly("myfile.shp")
 proj4string(shp) &lt;- "+proj=utm +zone=55 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
 shp2 &lt;- spTransform(shp, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))
 writePolyShape(shp2,"myfile_p.shp",proj4string=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
-
 <ul>
-<li><p>I've never <em>noticed</em> any problems doing this, the projection file is generated and I've never noticed any alignment problems in ArcMap.  It's true that I recall ArcMap sometimes displays an incorrect plaintext projection description, but things seem to be in the right place.</p></li>
-<li><p>Also, I don't really ever rely on EPSG numbers in R - I just grab the proj4 strings and try to use them directly.</p></li>
+  <li>
+    <p>I’ve never <em>noticed</em> any problems doing this, the projection file is generated and I’ve never noticed any alignment problems in ArcMap.  It’s true that I recall ArcMap sometimes displays an incorrect plaintext projection description, but things seem to be in the right place.</p>
+  </li>
+  <li>
+    <p>Also, I don’t really ever rely on EPSG numbers in R - I just grab the proj4 strings and try to use them directly.</p>
+  </li>
 </ul>
 
-
-<h2>TODO, see if PostGIS handles this OK</h2>
+<h2 id="todo-see-if-postgis-handles-this-ok">TODO, see if PostGIS handles this OK</h2>
 
 <ul>
-<li>I wonder if my FOSS GIS stack should still pass things through PostGIS as I suspect it does these things better.</li>
-<li>I might check the output if I run it through the DB use st_transform and then extract to shapefile.</li>
+  <li>I wonder if my FOSS GIS stack should still pass things through PostGIS as I suspect it does these things better.</li>
+  <li>I might check the output if I run it through the DB use st_transform and then extract to shapefile.</li>
 </ul>
-
 
     <div class="clear"></div>
   </div>
@@ -152,7 +147,7 @@ writePolyShape(shp2,"myfile_p.shp",proj4string=CRS("+proj=longlat +ellps=WGS84 +
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-10-16 00:00:00 +1100">16 Oct 2015</abbr>
+      <abbr class="published" title="2015-10-16 00:00:00 +0800">16 Oct 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

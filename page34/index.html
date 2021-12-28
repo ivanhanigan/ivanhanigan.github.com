@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -64,13 +64,13 @@ by funding bodies (such as the Aussie Research Council asking for deposit of fun
 
 <p><a href="http://en.wikipedia.org/wiki/Open_Notebook_Science">Open Notebook Science</a>
 (ONS) style is an extreme of transparent approaches to research.
-According to the wikipedia page it is the "practice of making the
+According to the wikipedia page it is the “practice of making the
 entire primary record of a research project publicly available online
-as it is recorded".</p>
+as it is recorded”.</p>
 
-<p>That's pretty extreme!  In my view a lot of stuff in the research project should probably be archived quickly and left to rot.</p>
+<p>That’s pretty extreme!  In my view a lot of stuff in the research project should probably be archived quickly and left to rot.</p>
 
-<p>I like the range of options available.  I think I'll go for <a href="http://onsclaims.wikispaces.com/">SCD or "Seclected Content / Delayed"</a> and show their image below.  In this model a portion of the open notebook and associated supporting raw data are available after some delay. I'll try to use this blog for weekly updates on progress for each project, and provide links off my 'Open Notebook' and 'Software' Tabs.</p>
+<p>I like the range of options available.  I think I’ll go for <a href="http://onsclaims.wikispaces.com/">SCD or “Seclected Content / Delayed”</a> and show their image below.  In this model a portion of the open notebook and associated supporting raw data are available after some delay. I’ll try to use this blog for weekly updates on progress for each project, and provide links off my ‘Open Notebook’ and ‘Software’ Tabs.</p>
 
 <p><img src="/images/ONS-SCD.png" alt="ONS-SCD.png" /></p>
 
@@ -89,7 +89,7 @@ as it is recorded".</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-09-13 00:00:00 +1000">13 Sep 2013</abbr>
+        <abbr class="published" title="2013-09-13 00:00:00 +0800">13 Sep 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -101,18 +101,16 @@ as it is recorded".</p>
       <a href="/2013/07/animated-maps/" title="animated-maps" rel="bookmark">animated-maps</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Animated maps to allow exploration of alternate levels of 'jitter'</h1>
+      <h1 id="animated-maps-to-allow-exploration-of-alternate-levels-of-jitter">Animated maps to allow exploration of alternate levels of ‘jitter’</h1>
+<p>In a <a href="http://www.ncbi.nlm.nih.gov/pubmed/22672028">previous project</a> we published a map of point locations that had been ‘jittered’, ie adding random noise to the latitude and longitude.  We did this by testing out a few maps and deciding on one that we thought protected privacy adequately whilst not destroying the spatial pattern we wished to display (evocatively).</p>
 
-<p>In a <a href="http://www.ncbi.nlm.nih.gov/pubmed/22672028">previous project</a> we published a map of point locations that had been 'jittered', ie adding random noise to the latitude and longitude.  We did this by testing out a few maps and deciding on one that we thought protected privacy adequately whilst not destroying the spatial pattern we wished to display (evocatively).</p>
-
-<p><img src="/jitter/Figure%202_FINAL.jpg" alt="Figure 2_FINAL.jpg" /></p>
+<p><img src="/jitter/Figure 2_FINAL.jpg" alt="Figure 2_FINAL.jpg" /></p>
 
 <p>I always wondered about a way to interactively do this and I think the animation package might do the trick, with the ability to step thru levels of jittering with the pause, fwd and back buttons.</p>
 
 <p><a href="/jitter/index.html">Clink here for the same data shown in a new animation</a>.</p>
 
-<h1>Reference</h1>
-
+<h1 id="reference">Reference</h1>
 <p>Vally, H., Peel, M., Dowse, G. K., Cameron, S., Codde, J. P., Hanigan, I., &amp; Lindsay, M. D. a. (2012). Geographic Information Systems used to describe the link between the risk of Ross River virus infection and proximity to the Leschenault estuary, WA. Australian and New Zealand Journal of Public Health, 36(3), 229–235. doi:10.1111/j.1753-6405.2012.00869.x</p>
 
       <div class="clear"></div>
@@ -130,7 +128,7 @@ as it is recorded".</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-07-30 00:00:00 +1000">30 Jul 2013</abbr>
+        <abbr class="published" title="2013-07-30 00:00:00 +0800">30 Jul 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -142,13 +140,13 @@ as it is recorded".</p>
       <a href="/2013/06/spatio-temporal-animations/" title="spatio-temporal-animations" rel="bookmark">spatio-temporal-animations</a>
     </h1>
     <div class="entry-content full-content">
-      <h2>Space time animations are cool</h2>
+      <h2 id="space-time-animations-are-cool">Space time animations are cool</h2>
 
 <p>This is a graphic I made a few years ago of temperature in Sydney.  It is a GAM with smoothing splines on longitude, latitude and time (t):</p>
 
-<pre><code>require(mgcv)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(mgcv)
 fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)  
-</code></pre>
+</code></pre></div></div>
 
 <p><img src="/button/spacetimegamSydney3hrTemp.gif" alt="spacetimegamSydney3hrTemp.gif" /></p>
 
@@ -158,8 +156,8 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
 
 <p>The secret to getting the play/pause/next buttons is to insert graphing code between:</p>
 
-<pre><code>saveHTML(..., outdir = getwd())
-</code></pre>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>saveHTML(..., outdir = getwd())
+</code></pre></div></div>
 
 <p>Unfortunately the rest of the code that accompanies the graphic above is too specific to my workflow that it is not reproducible.  That was back before (during the time that) I became obsessed with the prospect of <a href="http://swish-climate-impact-assessment.github.io/">creating reproducible data analysis workflows</a>.</p>
 
@@ -178,7 +176,7 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-06-06 00:00:00 +1000">06 Jun 2013</abbr>
+        <abbr class="published" title="2013-06-06 00:00:00 +0800">06 Jun 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -190,22 +188,65 @@ fit &lt;- gam(temp ~ te(lon,lat,t,d=c(2,1),bs=c("tp","cr")), data=jan06)
       <a href="/2013/05/data-dredging/" title="Complex Model Selection (or Data Dredging)" rel="bookmark">Complex Model Selection (or Data Dredging)</a>
     </h1>
     <div class="entry-content full-content">
-      <p><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head></p>
-
+      <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
 <!--<title>data dredging</title>-->
-
-
-<p><meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="data dredging"/>
-<meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-05-09 "/>
-<meta name="author" content="ivan hanigan"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/></p>
-
-
-
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="title" content="data dredging" />
+<meta name="generator" content="Org-mode" />
+<meta name="generated" content="2013-05-09 " />
+<meta name="author" content="ivan hanigan" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+  border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -252,8 +293,6 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
-
-
 <script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
 /**
  *
@@ -345,17 +384,12 @@ for the JavaScript code below.
     });
 /*]]>*///-->
 </script>
-
-
-<p></head>
-<body></p>
+</head>
+<body>
 
 <div id="preamble">
 
 </div>
-
-
-
 
 <div id="content">
 <h1 class="title">Toward Automated Model Selection</h1>
@@ -525,9 +559,8 @@ paste(formlas)
 </div>
 </div>
 
-
-<p></body>
-</html></p>
+</body>
+</html>
 
       <div class="clear"></div>
     </div>
@@ -544,7 +577,7 @@ paste(formlas)
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-05-09 00:00:00 +1000">09 May 2013</abbr>
+        <abbr class="published" title="2013-05-09 00:00:00 +0800">09 May 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -556,9 +589,9 @@ paste(formlas)
       <a href="/2013/04/pioz-et-al-2012-model-selection/" title="Pioz et al 2012 model selection" rel="bookmark">Pioz et al 2012 model selection</a>
     </h1>
     <div class="entry-content full-content">
-      <p>In the <a href="http://gis-forum.github.io/study.html">GIS forum SPDEP study group</a> we've been discussing the Bluetongue paper <a href="http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did-environmental-factors-influencing-the-velocity-of-blueton">http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did</a></p>
+      <p>In the <a href="http://gis-forum.github.io/study.html">GIS forum SPDEP study group</a> we’ve been discussing the Bluetongue paper <a href="http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did-environmental-factors-influencing-the-velocity-of-blueton">http://www.mendeley.com/research/why-did-bluetongue-spread-the-way-it-did</a></p>
 
-<p>I'd like to know more about the the Lagrange Multiplier tests and Francis
+<p>I’d like to know more about the the Lagrange Multiplier tests and Francis
 raised the <a href="http://ivanhanigan.github.io/2013/04/reflections-bob-haining/#comment-864167749">seminal Anselin 1988 paper for that</a></p>
 
 <p>But in this post I just wanted to summarise their model selection procedure in a flow diagram</p>
@@ -580,7 +613,7 @@ raised the <a href="http://ivanhanigan.github.io/2013/04/reflections-bob-haining
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-04-18 00:00:00 +1000">18 Apr 2013</abbr>
+        <abbr class="published" title="2013-04-18 00:00:00 +0800">18 Apr 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>

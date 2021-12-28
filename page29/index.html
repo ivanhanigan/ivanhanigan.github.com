@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -58,16 +58,14 @@
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>This is a quick post on Quantum GIS for spatial data visualisation</li>
-<li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
-<li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
-<li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
+  <li>This is a quick post on Quantum GIS for spatial data visualisation</li>
+  <li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
+  <li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
+  <li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
 </ul>
 
-
-<h4>R Code: use postgis to create area-concordance</h4>
-
-<pre><code>require(devtools)
+<h4 id="r-code-use-postgis-to-create-area-concordance">R Code: use postgis to create area-concordance</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(devtools)
 install_github("gisviz", "ivanhanigan")
 require(gisviz)
 require(swishdbtools)
@@ -77,7 +75,7 @@ temp_table &lt;- swish_temptable("gislibrary")
 temp_table &lt;- paste("public", temp_table$table, sep = ".")
 temp_table
 # this is going to be public.foo11c7673416ea
-
+ 
 sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
    source_zones_code = 'sla_id', target_table = "abs_sla.nswsla01",
    target_zones_code = "sla_code",
@@ -86,38 +84,32 @@ sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
    eval = F) 
 cat(sql)
 dbSendQuery(ch, sql)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
-<li>and add the layer to the map</li>
-<li>Style it how you like, I also added NSWSLA1991 over the top</li>
-<li>go into the "new print composer"</li>
+  <li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
+  <li>and add the layer to the map</li>
+  <li>Style it how you like, I also added NSWSLA1991 over the top</li>
+  <li>go into the “new print composer”</li>
 </ul>
-
 
 <p><img src="/images/qgis-new-print-composer.png" alt="qgis-new-print-composer.png" /></p>
 
 <p><img src="/images/qgis-add-new-map.png" alt="qgis-add-new-map.png" /></p>
 
-<h3>Results</h3>
-
+<h3 id="results">Results</h3>
 <ul>
-<li>hit the export to image and viola</li>
+  <li>hit the export to image and viola</li>
 </ul>
-
 
 <p><img src="/images/qgis-export-image.png" alt="qgis-export-image.png" /></p>
 
-<h3>Don't forget to clean up the database!</h3>
-
-<h4>R Code:</h4>
-
-<pre><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
-</code></pre>
+<h3 id="dont-forget-to-clean-up-the-database">Don’t forget to clean up the database!</h3>
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
+</code></pre></div></div>
 
       <div class="clear"></div>
     </div>
@@ -134,7 +126,7 @@ dbSendQuery(ch, sql)
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
+        <abbr class="published" title="2013-10-31 00:00:00 +0800">31 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -147,49 +139,40 @@ dbSendQuery(ch, sql)
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
-<li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
-<li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
-<li>The beta coefficient itself shouldn't be affected.</li>
-<li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
-<li>To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
-<li>I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
-<li>So I asked Sarunya for a discussion about her research</li>
+  <li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
+  <li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
+  <li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
+  <li>The beta coefficient itself shouldn’t be affected.</li>
+  <li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
+  <li>To date I’ve mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
+  <li>I’m preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
+  <li>So I asked Sarunya for a discussion about her research</li>
 </ul>
 
-
-<h3>Sarunya's model is essentially like this</h3>
-
-<h4>R Code:</h4>
-
-<pre><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
+<h3 id="sarunyas-model-is-essentially-like-this">Sarunya’s model is essentially like this</h3>
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
        ns(temp, df) + ns(humidity, df) +
        ns(time, df = 7*numYears) +
        SLA * ns(time, df = 2),
        data = analyte, family = poisson
        )
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
 <ul>
-<li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
-<li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
-<li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
-<li>therefore this study avoids the issue by it's intentional design to compare betas not se</li>
-<li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
-<li>this is fascinating in itself, but a separate issue for another post</li>
+  <li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
+  <li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
+  <li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
+  <li>therefore this study avoids the issue by it’s intentional design to compare betas not se</li>
+  <li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
+  <li>this is fascinating in itself, but a separate issue for another post</li>
 </ul>
 
-
-<h3>Conclusions</h3>
-
+<h3 id="conclusions">Conclusions</h3>
 <ul>
-<li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
-<li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
+  <li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
+  <li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure’s relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
 </ul>
-
 
 <p>THANKS Sarunya!</p>
 
@@ -208,7 +191,7 @@ dbSendQuery(ch, sql)
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
+        <abbr class="published" title="2013-10-31 00:00:00 +0800">31 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -221,24 +204,21 @@ dbSendQuery(ch, sql)
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>today I was in a meeting where the discussion turned to maps of crude incidence rates, age-standardised rates and regression models controlling for age</li>
-<li>If disease incidence does not vary with age then there is not much point in controlling for this,</li>
-<li>apart from the work done in exploratory data analysis to ascertain whether or not this is the case</li>
-<li>I proposed that if you've done all the work on age-specific rates needed to test if incidence varies with age, then you might as well present age adjusted rates seeing as you've already done the work anyway</li>
+  <li>today I was in a meeting where the discussion turned to maps of crude incidence rates, age-standardised rates and regression models controlling for age</li>
+  <li>If disease incidence does not vary with age then there is not much point in controlling for this,</li>
+  <li>apart from the work done in exploratory data analysis to ascertain whether or not this is the case</li>
+  <li>I proposed that if you’ve done all the work on age-specific rates needed to test if incidence varies with age, then you might as well present age adjusted rates seeing as you’ve already done the work anyway</li>
 </ul>
 
-
-<h3>An example</h3>
+<h3 id="an-example">An example</h3>
 
 <ul>
-<li>The project is highly confidential due to the nature of the data</li>
-<li>We;ll call the study location South Kingsland to protect the identity</li>
+  <li>The project is highly confidential due to the nature of the data</li>
+  <li>We;ll call the study location South Kingsland to protect the identity</li>
 </ul>
 
-
-<h4>R Code:</h4>
-
-<pre><code># get spatial data
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># get spatial data
 require(swishdbtools) # github package, under
                       # swish-climate-impact-assessment
 
@@ -269,20 +249,16 @@ dbSendQuery(ch,
 ## 43                OVERSEAS-OTHER                          &lt;NA&gt;
 ## 44                  Yarrabah (S)                          &lt;NA&gt;
 ## 45     Rowes Bay-Belgian gardens                          &lt;NA&gt;
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
-
-<h3>visualise with QGIS</h3>
-
+<h3 id="visualise-with-qgis">visualise with QGIS</h3>
 <p><img src="/images/southkingsland.png" alt="southkingsland.png" /></p>
 
-<h4>R Code:</h4>
-
-<pre><code># func
+<h4 id="r-code-1">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># func
 require(plyr)
-
+ 
 # load
 Tab2 &lt;- read.csv("data/dataset.csv", sep= ",", header = TRUE, stringsAsFactor = F)
 names(Tab2)
@@ -296,7 +272,7 @@ subset(Tab2, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1 &amp; Sex == "
 summary(Tab2)
 ## remove any SLA with NA populations
 Tab2 &lt;- Tab2[which(!is.na(Tab2$popSLA)),]     
-
+ 
 # do
 ## first total cases by annualised pop
 analyte  &lt;- ddply(Tab2, c("SLA", "Year", "agegrp", "Sex"), summarise,
@@ -307,7 +283,7 @@ analyte  &lt;- ddply(Tab2, c("SLA", "Year", "agegrp", "Sex"), summarise,
 
 #subset(analyte, SLA == test_sla)
 subset(analyte, SLA == test_sla &amp; Year == 2001 &amp; agegrp == 1)
-
+ 
 ## now annual totals for study region
 analyte2  &lt;- ddply(analyte, c("Year", "agegrp"), summarise,
                   ninf=sum(ninf),
@@ -318,7 +294,7 @@ str(analyte2)
 qc &lt;- subset(analyte2,  Year == 2001)
 qc
 sum(qc$popSLA)
-
+ 
 ## now totals
 qc  &lt;- ddply(analyte2, c("Year"), summarise,
              ninf=sum(ninf),
@@ -343,33 +319,29 @@ png("graphs/south-kingsland-age-specific-rates.png")
 mp &lt;- barplot(analyte3$asr, names.arg = analyte3$agegrp)
 box()
 dev.off()
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
-
-<h3>Plot Age Specific Rates</h3>
+<h3 id="plot-age-specific-rates">Plot Age Specific Rates</h3>
 
 <p>Great so with that bit of work we should have an idea of the variation of incidence by age</p>
 
 <p><img src="/images/south-kingsland-age-specific-rates.png" alt="south-kingsland-age-specific-rates.png" /></p>
 
-<h1>Results and Discussion</h1>
+<h1 id="results-and-discussion">Results and Discussion</h1>
 
 <ul>
-<li>It looks like the incidence does vary with age</li>
-<li>TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)</li>
-<li>TODO make graphs by city, by sex</li>
-<li>age-standardised rates probably need different age categories, only 4 or 5?</li>
-<li>worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)</li>
+  <li>It looks like the incidence does vary with age</li>
+  <li>TODO make graphs per year (the scale of the above graph is wrong - decades in the numerator but annualised pops in the denominator)</li>
+  <li>TODO make graphs by city, by sex</li>
+  <li>age-standardised rates probably need different age categories, only 4 or 5?</li>
+  <li>worth commenting on the liklihood that age is not important for time-series models at the city scale, unless age structure changes substantially over time (this is an analysis for the spatial pattern only)</li>
 </ul>
 
-
-<h4>Clean up database!</h4>
-
-<pre><code>dbSendQuery(ch, "drop table sla")
+<h4 id="clean-up-database">Clean up database!</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dbSendQuery(ch, "drop table sla")
 dbSendQuery(ch, "drop table southkingsland")
-</code></pre>
+</code></pre></div></div>
 
       <div class="clear"></div>
     </div>
@@ -386,7 +358,7 @@ dbSendQuery(ch, "drop table southkingsland")
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
+        <abbr class="published" title="2013-10-31 00:00:00 +0800">31 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -398,14 +370,11 @@ dbSendQuery(ch, "drop table southkingsland")
       <a href="/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/" title="morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry" rel="bookmark">morpho-and-reml-boilerplate-streamline-the-process-of-metadata-entry</a>
     </h1>
     <div class="entry-content full-content">
-      <p><body></p>
+      <body>
 
 <div id="preamble">
 
 </div>
-
-
-
 
 <div id="content">
 <h1 class="title">Disentangle Things</h1>
@@ -757,7 +726,7 @@ dir(<span style="color: #2aa198;">"data"</span>)
 
 
 <p>
-<img src="/images/morpho-reml-boilerplate.png" alt = "morpho-reml-boilerplate.png">
+<img src="/images/morpho-reml-boilerplate.png" alt="morpho-reml-boilerplate.png" />
 </p>
 <ul>
 <li>Also "the saved document is not valid for some reason"
@@ -766,7 +735,7 @@ dir(<span style="color: #2aa198;">"data"</span>)
 
 
 <p>
-<img src="/images/morpho-reml-boilerplate2.png" alt = "morpho-reml-boilerplate2.png">
+<img src="/images/morpho-reml-boilerplate2.png" alt="morpho-reml-boilerplate2.png" />
 </p></div>
 
 </div>
@@ -792,9 +761,8 @@ dir(<span style="color: #2aa198;">"data"</span>)
 </div>
 </div>
 
-
-<p></body>
-</html></p>
+</body>
+<p>&lt;/html&gt;</p>
 
       <div class="clear"></div>
     </div>
@@ -811,7 +779,7 @@ dir(<span style="color: #2aa198;">"data"</span>)
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-10-29 00:00:00 +1100">29 Oct 2013</abbr>
+        <abbr class="published" title="2013-10-29 00:00:00 +0800">29 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -825,78 +793,62 @@ dir(<span style="color: #2aa198;">"data"</span>)
     <div class="entry-content full-content">
       <p>I got this question today from a Drought researcher:</p>
 
-<h4>Question:</h4>
-
-<pre><code>There a table with 62 years * 12 months of rain data in mm. We
+<h4 id="question">Question:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>There a table with 62 years * 12 months of rain data in mm. We
 calculated the cumulative distribution using ecdf: empirical
 cumulative distribution function. So the table looks like this:
 Year Jan Feb Mach (…) each cell contains the cum dist.
-
+  
 We also got the number of months per year with less than X mm of
 rain. But he needs to know how many months are between the
 drought months, regardless the year. So, I thought that
 converting the data into a ts was going to facilitate the task,
 but it doesn’t, because now I don’t’ have columns and rows any
 longer.
-
+ 
 How do I handle a ts object to do for example an ifelse?
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
-
 <p>I answered:</p>
 
-<p>This looks a lot like the Hutchinson Drought Index which I've coded up here</p>
+<p>This looks a lot like the Hutchinson Drought Index which I’ve coded up here</p>
 
 <ul>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
-<li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
+  <li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
+  <li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
+  <li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
 </ul>
 
-
 <p>This is the key bit for counting consecutive months below a threshold</p>
-
-<h4>R Code:</h4>
-
-<pre><code>x&lt;-data$index&lt;=-1
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x&lt;-data$index&lt;=-1
 xx &lt;- (cumsum(!x) + 1) * x
 x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
 data$count&lt;-x2
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
-<p>
-I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
+<p>I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
 and looked in wonder at the structure and am amazed it works.</p>
 
 <p>I also really like the cumulative summing version a lot</p>
 
-<h4>R Code:</h4>
-
-<pre><code>data$sums&lt;-as.numeric(0)
+<h4 id="r-code-1">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data$sums&lt;-as.numeric(0)
 y &lt;- ifelse(data$index &gt;= -1, 0, data$index)
 f &lt;- data$index &lt; -1
 f &lt;- (cumsum(!f) + 1) * f
 z &lt;- unsplit(lapply(split(y,f),cumsum),f)
 data$sums &lt;- z
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
-<p>
-Several things I'd like to change.</p>
+<p>Several things I’d like to change.</p>
 
 <ul>
-<li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
-<li>I'd like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
-<li>I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
+  <li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
+  <li>I’d like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
+  <li>I was defeated by Mike’s request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
 </ul>
-
 
       <div class="clear"></div>
     </div>
@@ -913,7 +865,7 @@ Several things I'd like to change.</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2013-10-29 00:00:00 +1100">29 Oct 2013</abbr>
+        <abbr class="published" title="2013-10-29 00:00:00 +0800">29 Oct 2013</abbr>
       </span>
     </p>
     <div class="clear"></div>

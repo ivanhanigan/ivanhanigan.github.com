@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -59,56 +59,57 @@
 
 <p>I have had a bit of a break and caught up with some of the older blog posts I did not find time for earlier in 2017.</p>
 
-<p>This one caught my eye: <a href="http://varianceexplained.org/r/start-blog/">http://varianceexplained.org/r/start-blog/</a> especially the line 'When you’ve given the same advice 3 times, write a blog post'. So I thought I'd write a blog post about a bit of R code advice. (Disclaimer: This wasn't originally my work, but I used this advice more than 3 times, so am sharing here. This is a function I got from my colleague Phil TnT).</p>
+<p>This one caught my eye: <a href="http://varianceexplained.org/r/start-blog/">http://varianceexplained.org/r/start-blog/</a> especially the line ‘When you’ve given the same advice 3 times, write a blog post’. So I thought I’d write a blog post about a bit of R code advice. (Disclaimer: This wasn’t originally my work, but I used this advice more than 3 times, so am sharing here. This is a function I got from my colleague Phil TnT).</p>
 
 <p>In some cases I get data in a table that simplifies the presentation by only labelling one row in a set of rows like this:</p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>
-   person        fruit    suburb something
-      Tom      oranges   Scullin       <span class="m">3.0</span>
-                apples                 <span class="m">6.0</span>
-                 pears                 <span class="m">9.0</span>
-              tim tams                 <span class="m">2.0</span>
- Gertrude       durian Charnwood       <span class="m">3.7</span>
-          dragon fruit                 <span class="m">7.0</span>
-               lychees                 <span class="m">4.9</span>
-             pineapple               <span class="m">100.9</span>
-                apples                <span class="m">98.0</span>
-Pennelope      cashews   Higgins       <span class="m">2.0</span>
-             beer nuts                 <span class="m">5.6</span>
-              Pringles                 <span class="m">4.0</span></code></pre></figure></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w"> 
+   </span><span class="n">person</span><span class="w">        </span><span class="n">fruit</span><span class="w">    </span><span class="n">suburb</span><span class="w"> </span><span class="n">something</span><span class="w">
+      </span><span class="n">Tom</span><span class="w">      </span><span class="n">oranges</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">3.0</span><span class="w">
+                </span><span class="n">apples</span><span class="w">                 </span><span class="m">6.0</span><span class="w">
+                 </span><span class="n">pears</span><span class="w">                 </span><span class="m">9.0</span><span class="w">
+              </span><span class="n">tim</span><span class="w"> </span><span class="n">tams</span><span class="w">                 </span><span class="m">2.0</span><span class="w">
+ </span><span class="n">Gertrude</span><span class="w">       </span><span class="n">durian</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">       </span><span class="m">3.7</span><span class="w">
+          </span><span class="n">dragon</span><span class="w"> </span><span class="n">fruit</span><span class="w">                 </span><span class="m">7.0</span><span class="w">
+               </span><span class="n">lychees</span><span class="w">                 </span><span class="m">4.9</span><span class="w">
+             </span><span class="n">pineapple</span><span class="w">               </span><span class="m">100.9</span><span class="w">
+                </span><span class="n">apples</span><span class="w">                </span><span class="m">98.0</span><span class="w">
+</span><span class="n">Pennelope</span><span class="w">      </span><span class="n">cashews</span><span class="w">   </span><span class="n">Higgins</span><span class="w">       </span><span class="m">2.0</span><span class="w">
+             </span><span class="n">beer</span><span class="w"> </span><span class="n">nuts</span><span class="w">                 </span><span class="m">5.6</span><span class="w">
+              </span><span class="n">Pringles</span><span class="w">                 </span><span class="m">4.0</span></code></pre></figure>
 
 <p>To use this like tidy data we need to fill these intervening cells.</p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w"> 
 
-<p>fill.col <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> col.name<span class="p">)</span> <span class="p">{</span>
-      s <span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span><span class="o">!</span>x<span class="p">[[</span>col.name<span class="p">]]</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
-      item <span class="o">&lt;-</span> x<span class="p">[[</span>col.name<span class="p">]][</span>s<span class="p">]</span>
-      hold <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="kp">length</span><span class="p">(</span>item<span class="p">))</span>    <br/>
-      <span class="kr">for</span><span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span> <span class="kp">length</span><span class="p">(</span>hold<span class="p">))</span> hold<span class="p">[[</span>i<span class="p">]]</span> <span class="o">&lt;-</span> <span class="kp">rep</span><span class="p">(</span>item<span class="p">[</span>i<span class="p">],</span> <span class="kp">ifelse</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>s<span class="p">[</span>i<span class="m">+1</span><span class="p">]),</span> <span class="kp">dim</span><span class="p">(</span>x<span class="p">)[</span><span class="m">1</span><span class="p">]</span> <span class="o">+</span> <span class="m">1</span><span class="p">,</span> s<span class="p">[</span>i<span class="m">+1</span><span class="p">])</span> <span class="o">-</span> s<span class="p">[</span>i<span class="p">])</span>
-      x<span class="p">[[</span>col.name<span class="p">]]</span> <span class="o">&lt;-</span> <span class="kp">unlist</span><span class="p">(</span>hold<span class="p">)</span>
-      x
-      <span class="p">}</span></p>
+</span><span class="n">fill.col</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">col.name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">s</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">which</span><span class="p">(</span><span class="o">!</span><span class="n">x</span><span class="p">[[</span><span class="n">col.name</span><span class="p">]]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+      </span><span class="n">item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">x</span><span class="p">[[</span><span class="n">col.name</span><span class="p">]][</span><span class="n">s</span><span class="p">]</span><span class="w">
+      </span><span class="n">hold</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">vector</span><span class="p">(</span><span class="s1">'list'</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">item</span><span class="p">))</span><span class="w">      
+      </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">hold</span><span class="p">))</span><span class="w"> </span><span class="n">hold</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="m">+1</span><span class="p">]),</span><span class="w"> </span><span class="nf">dim</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="m">+1</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w">
+      </span><span class="n">x</span><span class="p">[[</span><span class="n">col.name</span><span class="p">]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">unlist</span><span class="p">(</span><span class="n">hold</span><span class="p">)</span><span class="w">
+      </span><span class="n">x</span><span class="w">
+      </span><span class="p">}</span><span class="w">
 
-<p>d <span class="o">&lt;-</span> fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;person&#39;</span><span class="p">)</span>
-fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;suburb&#39;</span><span class="p">)</span></p>
 
-<pre><code>  person        fruit    suburb something
-</code></pre>
 
-<p><span class="m">1</span>        Tom      oranges   Scullin       <span class="m">3.0</span>
-<span class="m">2</span>        Tom       apples   Scullin       <span class="m">6.0</span>
-<span class="m">3</span>        Tom        pears   Scullin       <span class="m">9.0</span>
-<span class="m">4</span>        Tom     tim tams   Scullin       <span class="m">2.0</span>
-<span class="m">5</span>   Gertrude       durian Charnwood       <span class="m">3.7</span>
-<span class="m">6</span>   Gertrude dragon fruit Charnwood       <span class="m">7.0</span>
-<span class="m">7</span>   Gertrude      lychees Charnwood       <span class="m">4.9</span>
-<span class="m">8</span>   Gertrude    pineapple Charnwood     <span class="m">100.9</span>
-<span class="m">9</span>   Gertrude       apples Charnwood      <span class="m">98.0</span>
-<span class="m">10</span> Pennelope      cashews   Higgins       <span class="m">2.0</span>
-<span class="m">11</span> Pennelope    beer nuts   Higgins       <span class="m">5.6</span>
-<span class="m">12</span> Pennelope     Pringles   Higgins       <span class="m">4.0</span></code></pre></figure></p>
+</span><span class="n">d</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fill.col</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="s1">'person'</span><span class="p">)</span><span class="w"> 
+</span><span class="n">fill.col</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="s1">'suburb'</span><span class="p">)</span><span class="w">  
+ 
+      </span><span class="n">person</span><span class="w">        </span><span class="n">fruit</span><span class="w">    </span><span class="n">suburb</span><span class="w"> </span><span class="n">something</span><span class="w">
+</span><span class="m">1</span><span class="w">        </span><span class="n">Tom</span><span class="w">      </span><span class="n">oranges</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">3.0</span><span class="w">
+</span><span class="m">2</span><span class="w">        </span><span class="n">Tom</span><span class="w">       </span><span class="n">apples</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">6.0</span><span class="w">
+</span><span class="m">3</span><span class="w">        </span><span class="n">Tom</span><span class="w">        </span><span class="n">pears</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">9.0</span><span class="w">
+</span><span class="m">4</span><span class="w">        </span><span class="n">Tom</span><span class="w">     </span><span class="n">tim</span><span class="w"> </span><span class="n">tams</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">2.0</span><span class="w">
+</span><span class="m">5</span><span class="w">   </span><span class="n">Gertrude</span><span class="w">       </span><span class="n">durian</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">       </span><span class="m">3.7</span><span class="w">
+</span><span class="m">6</span><span class="w">   </span><span class="n">Gertrude</span><span class="w"> </span><span class="n">dragon</span><span class="w"> </span><span class="n">fruit</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">       </span><span class="m">7.0</span><span class="w">
+</span><span class="m">7</span><span class="w">   </span><span class="n">Gertrude</span><span class="w">      </span><span class="n">lychees</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">       </span><span class="m">4.9</span><span class="w">
+</span><span class="m">8</span><span class="w">   </span><span class="n">Gertrude</span><span class="w">    </span><span class="n">pineapple</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">     </span><span class="m">100.9</span><span class="w">
+</span><span class="m">9</span><span class="w">   </span><span class="n">Gertrude</span><span class="w">       </span><span class="n">apples</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">      </span><span class="m">98.0</span><span class="w">
+</span><span class="m">10</span><span class="w"> </span><span class="n">Pennelope</span><span class="w">      </span><span class="n">cashews</span><span class="w">   </span><span class="n">Higgins</span><span class="w">       </span><span class="m">2.0</span><span class="w">
+</span><span class="m">11</span><span class="w"> </span><span class="n">Pennelope</span><span class="w">    </span><span class="n">beer</span><span class="w"> </span><span class="n">nuts</span><span class="w">   </span><span class="n">Higgins</span><span class="w">       </span><span class="m">5.6</span><span class="w">
+</span><span class="m">12</span><span class="w"> </span><span class="n">Pennelope</span><span class="w">     </span><span class="n">Pringles</span><span class="w">   </span><span class="n">Higgins</span><span class="w">       </span><span class="m">4.0</span></code></pre></figure>
+
 
     <div class="clear"></div>
   </div>
@@ -128,7 +129,7 @@ fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;s
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2017-12-31 00:00:00 +1100">31 Dec 2017</abbr>
+      <abbr class="published" title="2017-12-31 00:00:00 +0800">31 Dec 2017</abbr>
     </span>
   </p>
   <div class="clear"></div>

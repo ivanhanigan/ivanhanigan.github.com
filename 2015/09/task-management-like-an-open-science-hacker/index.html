@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -57,54 +57,45 @@
   <div class="entry-content full-content">
     <p>I just read this impressive paper and it has really given me a push toward making this open lab notebook</p>
 
-<h4>Citation</h4>
-
-<pre><code>Nosek, B. A., et al. (2015). Promoting an open research
+<h4 id="citation">Citation</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Nosek, B. A., et al. (2015). Promoting an open research
 culture. Science, 348(6242), 1422–1425. doi:10.1126/science.aab2374
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h4>Quote</h4>
-
-<pre><code>The situation is a classic collective action problem. Many individual researchers lack
+<h4 id="quote">Quote</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The situation is a classic collective action problem. Many individual researchers lack
 strong incentives to be more transparent, even though the credibility of science would 
 benefit if everyone were more transparent.
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
-
-<p>So I think I'll try to step up the pace of logging my daily scientific work.
+<p>So I think I’ll try to step up the pace of logging my daily scientific work.
 One super easy thing to do is to publish my daily log from my task management in orgmode.
 Indeed I am also reading at the moment this guy who says</p>
 
-<h4>Quote</h4>
-
-<pre><code>The core of your documentation is the research log.
-
+<h4 id="quote-1">Quote</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The core of your documentation is the research log.
+   
 Long, S. (2015). Reproducible Results and the Workflow of Data Analysis. 
 Retrieved from http://www.indiana.edu/~jslsoc/ftp/WIM/wf wim 2015 2015-08-21@3.pdf
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
 
 <p>Finally, I was struck by this reference <a href="http://rich-iannone.github.io/about/2014/10/28/introduction.html">http://rich-iannone.github.io/about/2014/10/28/introduction.html</a> to something about 365+ day GitHub streaks. It was covered earlier by Geoff Greer, and by Dirk Eddelbuettel.</p>
 
 <p>It seems the basic concept is that you can leverage off an obsessive tendency by making sure you do something toward ticking off items from the task list every day.  The impulse to not breaking the chain is supposed to give you inspiration to keep going.  I think this might work well for my temperatment.</p>
 
-<h2>Emacs and orgmode</h2>
+<h2 id="emacs-and-orgmode">Emacs and orgmode</h2>
 
-<p>The set up of my daily log is pretty simple. After being set up by kjhealy's starter kit.
+<p>The set up of my daily log is pretty simple. After being set up by kjhealy’s starter kit.
 Then I modified the org-agenda-files which was set in the main el file that kjhealy provided  and then with the command C-c a a emacs will display my calendar.</p>
 
 <p>When I open emacs in the morning I  open the agenda and this also opens research-log file.  I move to that buffer, then I use this key command to insert a new entry for todays date</p>
 
-<h4>CODE</h4>
-
-<pre><code> (define-skeleton org-journalentry
+<h4 id="code">CODE</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> (define-skeleton org-journalentry
    "Template for a journal entry."
    "project:"
    "*** " (format-time-string "%Y-%m-%d %a") " \n"
@@ -116,10 +107,9 @@ Then I modified the org-agenda-files which was set in the main el file that kjhe
    "#+end_src\n"
  )
  (global-set-key [C-S-f5] 'org-journalentry)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>This creates a new date, a stub of a TODO for anything ad hoc and a entry into my timesheet.csv file.</p>
 
@@ -127,30 +117,28 @@ Then I modified the org-agenda-files which was set in the main el file that kjhe
 
 <p><img src="/images/agenda.png" alt="img" /></p>
 
-<p>Great so I just moved this research-log orgmode file into my blog github repo, and with the help of charlie park's bash script I am good to go</p>
+<p>Great so I just moved this research-log orgmode file into my blog github repo, and with the help of charlie park’s bash script I am good to go</p>
 
-<h4>CODE</h4>
+<h4 id="code-1">CODE</h4>
 
-<pre><code>alias build_blog="cd ~/projects/ivanhanigan.github.com.raw; jekyll b;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alias build_blog="cd ~/projects/ivanhanigan.github.com.raw; jekyll b;
 cp -r ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com;
 cd ~/projects/ivanhanigan.github.com;git add .;git commit -am 'Latest build.';git push"
 alias bb="build_blog"
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>So this will put the resulting changes onto my open lab book website here <a href="https://raw.githubusercontent.com/ivanhanigan/ivanhanigan.github.com/master/work-log.org">https://raw.githubusercontent.com/ivanhanigan/ivanhanigan.github.com/master/work-log.org</a></p>
 
 <p>Things to note:</p>
 
 <ul>
-<li>I found this list of tips <a href="http://natashatherobot.com/streak-github-mistakes/">http://natashatherobot.com/streak-github-mistakes/</a></li>
-<li>In particular I realise I need to make my daily push by 4:50 PM in Canberra ACT as this is 11:50 PM the previous day for Github, Pacific Time (PT)</li>
-<li>I also will need to ensure I don't publish sensitive (or embarrasing entries).</li>
-<li>I'll try to keep the identity of my collaborators private as well, so just use their initials rather than names.</li>
+  <li>I found this list of tips <a href="http://natashatherobot.com/streak-github-mistakes/">http://natashatherobot.com/streak-github-mistakes/</a></li>
+  <li>In particular I realise I need to make my daily push by 4:50 PM in Canberra ACT as this is 11:50 PM the previous day for Github, Pacific Time (PT)</li>
+  <li>I also will need to ensure I don’t publish sensitive (or embarrasing entries).</li>
+  <li>I’ll try to keep the identity of my collaborators private as well, so just use their initials rather than names.</li>
 </ul>
-
 
     <div class="clear"></div>
   </div>
@@ -170,7 +158,7 @@ alias bb="build_blog"
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-09-13 00:00:00 +1000">13 Sep 2015</abbr>
+      <abbr class="published" title="2015-09-13 00:00:00 +0800">13 Sep 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

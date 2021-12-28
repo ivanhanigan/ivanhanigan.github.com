@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,29 +55,28 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h1>Aims</h1>
+    <h1 id="aims">Aims</h1>
 
-<p>I have worked on a function that turns a <code>data.frame</code> into a graphviz code in the dot language, with some of my preferred settings.  I realised that it might be useful for causal directed acyclic graphs.</p>
+<p>I have worked on a function that turns a <code class="language-plaintext highlighter-rouge">data.frame</code> into a graphviz code in the dot language, with some of my preferred settings.  I realised that it might be useful for causal directed acyclic graphs.</p>
 
-<p>Causal diagrams are useful for conceptualising the pathways of cause and effect.  These diagrams are sometimes simplly informal pictures but have also been developed in a more formal way to be used in modelling.  These formal developments use concepts derived from the mathmatical abstraction of Graphs (fundamentally Graphs  are networks of linked 'nodes', with the links being termed 'edges').  Causal diagrams can either be constructed to depict two things: first are feedback loops (a vexatious property of complex systems that confounds modelling) while second are more simple chain-of-events type pathways which proceed from an upstream cause to a downstream effect in a single direction, without cycles, called 'Directed Acyclic Graphs or DAGs.  The loop diagrams are out of the scope of this present blog post because the DAGs are much more easily addressed by the tool that I am describing.</p>
+<p>Causal diagrams are useful for conceptualising the pathways of cause and effect.  These diagrams are sometimes simplly informal pictures but have also been developed in a more formal way to be used in modelling.  These formal developments use concepts derived from the mathmatical abstraction of Graphs (fundamentally Graphs  are networks of linked ‘nodes’, with the links being termed ‘edges’).  Causal diagrams can either be constructed to depict two things: first are feedback loops (a vexatious property of complex systems that confounds modelling) while second are more simple chain-of-events type pathways which proceed from an upstream cause to a downstream effect in a single direction, without cycles, called ‘Directed Acyclic Graphs or DAGs.  The loop diagrams are out of the scope of this present blog post because the DAGs are much more easily addressed by the tool that I am describing.</p>
 
-<p>To begin I am going to build on this other guy's blog post on causal DAGs with R
+<p>To begin I am going to build on this other guy’s blog post on causal DAGs with R
   <a href="http://donlelek.github.io/2015/03/31/dags-with-r/">http://donlelek.github.io/2015/03/31/dags-with-r/</a>
 I wanted to add an interface for building these.</p>
 
 <p>Some background to the concepts that I use are provided in the references below.</p>
 
-<h1>Materials and Methods</h1>
+<h1 id="materials-and-methods">Materials and Methods</h1>
 
-<p>The DiagrammeR package which has been integrated within R-Studio has made access to the graphing tool <code>graphviz</code> much easier than it used to be.  My function <code>causal_dag</code> (avaiable in my <code>disentangle</code> github package) essentially constructs the required <code>nodes</code> and <code>edges</code> for that package to use.  Optionally we can also include <code>labels</code> to indicate the direction of the effect.</p>
+<p>The DiagrammeR package which has been integrated within R-Studio has made access to the graphing tool <code class="language-plaintext highlighter-rouge">graphviz</code> much easier than it used to be.  My function <code class="language-plaintext highlighter-rouge">causal_dag</code> (avaiable in my <code class="language-plaintext highlighter-rouge">disentangle</code> github package) essentially constructs the required <code class="language-plaintext highlighter-rouge">nodes</code> and <code class="language-plaintext highlighter-rouge">edges</code> for that package to use.  Optionally we can also include <code class="language-plaintext highlighter-rouge">labels</code> to indicate the direction of the effect.</p>
 
-<p>To use the tool all you need to do is create a list of <code>edges</code> and their associated <code>inputs</code> nodes and <code>outputs</code> nodes (as a comma separated values string) shown in the picture below.</p>
+<p>To use the tool all you need to do is create a list of <code class="language-plaintext highlighter-rouge">edges</code> and their associated <code class="language-plaintext highlighter-rouge">inputs</code> nodes and <code class="language-plaintext highlighter-rouge">outputs</code> nodes (as a comma separated values string) shown in the picture below.</p>
 
 <p><img src="/images/causal-ssheet.png" alt="causal-ssheet.png" /></p>
 
-<h4>Code:</h4>
-
-<pre><code># read in the sheet
+<h4 id="code">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># read in the sheet
 library(disentangle)
 library(stringr)
 causes &lt;- readxl::read_excel("causal-ssheet.xlsx")
@@ -87,21 +86,18 @@ cat(nodes)
 # The result is a formated graph in the dot language with some of my
 # preferred settings such as edges showing as 'records' and a spot to
 # write a description or include literature about each process
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>See the DOT code in the Appendix</li>
-<li>to render the graph now DiagrammeR can use this text string R object to render this to SVG</li>
-<li>I think it does not do PNG or PDF though so I still use graphviz and dot directly</li>
+  <li>See the DOT code in the Appendix</li>
+  <li>to render the graph now DiagrammeR can use this text string R object to render this to SVG</li>
+  <li>I think it does not do PNG or PDF though so I still use graphviz and dot directly</li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code>grViz(nodes)
+<h4 id="code-1">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>grViz(nodes)
 
 # But I also use graphviz directly to produce a publishable image in
 # pdf or png
@@ -110,82 +106,76 @@ cat(nodes)
 sink()# If graphviz is installed and on linux call it with a shell command
 #system("dot -Tpdf reproduce-donlelek.dot -o reproduce-donlelek.pdf")
 system("dot -Tpng reproduce-donlelek.dot -o reproduce-donlelek.png")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h1>Results</h1>
+<h1 id="results">Results</h1>
 
 <p>Here I have reproduced the work of donlelek</p>
 
 <p><img src="/images/reproduce-donlelek.png" alt="reproduce-donlelek.png" /></p>
 
-<h1>Future directions</h1>
+<h1 id="future-directions">Future directions</h1>
 
 <ul>
-<li>I'd like to make the edges implicit, so that the spreadsheet keeps track of the information about the causal process, but the graph just shows the lines connecting the nodes</li>
-<li>The edges are where the action is, so I need to add a direction of effect.  This would be in a <code>label</code> column and added in a [ label = 'abc' ] tag for each edge</li>
-<li>the rankdir option is LR to make this go sideways, which seems more the norm for causal DAGs, left to right.</li>
+  <li>I’d like to make the edges implicit, so that the spreadsheet keeps track of the information about the causal process, but the graph just shows the lines connecting the nodes</li>
+  <li>The edges are where the action is, so I need to add a direction of effect.  This would be in a <code class="language-plaintext highlighter-rouge">label</code> column and added in a [ label = ‘abc’ ] tag for each edge</li>
+  <li>the rankdir option is LR to make this go sideways, which seems more the norm for causal DAGs, left to right.</li>
 </ul>
 
-
-<h4>References</h4>
-
-<pre><code>Greenland, S., Pearl, J., &amp; Robins, J. M. (1999). Causal diagrams for
+<h4 id="references">References</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Greenland, S., Pearl, J., &amp; Robins, J. M. (1999). Causal diagrams for
 epidemiologic research. Epidemiology (Cambridge, Mass.), 10(1),
 37–48. doi:10.1097/00001648-199901000-00008
-
+ 
 Reid, C. E., Snowden, J. M., Kontgis, C., &amp; Tager, I. B. (2012). The
 role of ambient ozone in epidemiologic studies of heat-related
 mortality. Environmental Health Perspectives, 120(12),
 1627–30. doi:10.1289/ehp.1205251
-
+   
 Newell, B., &amp; Wasson, R. (2001). Social System vs Solar System: Why
 Policy Makers Need History. In: Conflict and Cooperation related to
 International Water Resources : Historical Perspectives. In World
 Water (Vol. 2002).
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
+<h1 id="appendix">Appendix</h1>
 
-<h1>Appendix</h1>
-
-<h4>Code:</h4>
-
-<pre><code>#####################################################################
+<h4 id="code-2">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#####################################################################
 # The following output is automatically created by newnode()
 # NOTE for some reason, to show on the blog, I had to replace all { braces with normal (
 #####################################################################
 digraph transformations (
-
+ 
 "Metritis" -&gt; "Fertility effects"
 "Cistic Ovarian Disease" -&gt; "Fertility effects"
 "Age" -&gt; "Fertility effects"
 "Fertility effects"  [ shape=record, label="(( ( Name | Description ) | ( Fertility effects |  ) ))"]
 "Fertility effects" -&gt; "Fertility"
-
-
+ 
+ 
 "Metritis" -&gt; "Cistic Ovarian effects"
 "Retained Placenta" -&gt; "Cistic Ovarian effects"
 "Age" -&gt; "Cistic Ovarian effects"
 "Cistic Ovarian effects"  [ shape=record, label="(( ( Name | Description ) | ( Cistic Ovarian effects |  ) ))"]
 "Cistic Ovarian effects" -&gt; "Cistic Ovarian Disease"
-
-
+ 
+ 
 "Retained Placenta" -&gt; "Metritis effects"
 "Metritis effects"  [ shape=record, label="(( ( Name | Description ) | ( Metritis effects |  ) ))"]
 "Metritis effects" -&gt; "Metritis"
-
-
+ 
+ 
  "Age" -&gt; "Retained Placenta effects"
 "Retained Placenta effects"  [ shape=record, label="(( ( Name | Description ) | ( Retained Placenta effects |  ) ))"]
 "Retained Placenta effects" -&gt; "Retained Placenta"
-
-
+ 
+ 
  )
-</code></pre>
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -205,7 +195,7 @@ digraph transformations (
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-09-19 00:00:00 +1000">19 Sep 2015</abbr>
+      <abbr class="published" title="2015-09-19 00:00:00 +0800">19 Sep 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

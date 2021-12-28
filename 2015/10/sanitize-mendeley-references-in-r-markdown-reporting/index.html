@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -57,7 +57,7 @@
   <div class="entry-content full-content">
     <p>A key challenge for Reproducible Research Reports in Rmarkdown remains adequate scholarly citation management; the machinery of scholarly citations and references.</p>
 
-<p>The <code>knitcitations</code> R package does a great job of working with bibtex bibliography files, however the bibtex manager that I use is Mendeley and it has implemented some rules on the way it handles special characters that forces the bibtex references into a state with some 'escaped' elements that breaks their presentation via <code>knitcitations</code>.</p>
+<p>The <code class="language-plaintext highlighter-rouge">knitcitations</code> R package does a great job of working with bibtex bibliography files, however the bibtex manager that I use is Mendeley and it has implemented some rules on the way it handles special characters that forces the bibtex references into a state with some ‘escaped’ elements that breaks their presentation via <code class="language-plaintext highlighter-rouge">knitcitations</code>.</p>
 
 <p>This is a post from my open notebook that shows the workaround I am using for sanitizing the Mendeley escaped underscores in URLS.</p>
 
@@ -65,46 +65,30 @@
 
 <p>There is considerable public health impact from the effects on mental of drought <span class="citation">(<span>Sarathi Biswas</span> 2012)</span>. It is proposed that the best method to disentangle the multifactorial nature of this causal mechanism is the ‘five-capitals’ framework, indeed this method may even enable understanding the human carrying capacity of ecosystems <span class="citation">(McMichael &amp; Butler 2002)</span>.</p>
 
-
-
-
 <p>McMichael, A.J. &amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. <em>International Union for the Scientific Study of Population Committee on Emerging Health Threats</em>. <a href="http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf">http://www.demogr.mpg.de/papers/workshops/020619{\_}paper25.pdf</a> [21 Sep. 2003]</p>
-
-
 <p><span>Sarathi Biswas</span>, P. (2012). Alcohol, drought lead to farmer’s suicide. <em>Daily News and Analysis</em>. <a href="http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976">http://www.dnaindia.com/pune/report{\_}alcohol-drought-lead-to-farmers-suicide{\_}1688976</a> [17 May 2012]</p>
-
-
-
 
 <p></p>
 
+<h2 id="see-those-pesky-curly-braces--and--around-the-underscores">See those pesky curly braces <code class="language-plaintext highlighter-rouge">{</code> and <code class="language-plaintext highlighter-rouge">}</code> around the underscores?</h2>
 
-<h2>See those pesky curly braces <code>{</code> and <code>}</code> around the underscores?</h2>
-
-<h2>The fix</h2>
-
+<h2 id="the-fix">The fix</h2>
 <p>The fix I am using is to sanitize each record where this is an issue as I build my document, so the mendeley version stays as-is, while the R version has been sanitized by removing the escape characters.</p>
 
-<pre><code># read mendeley bibtex file
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># read mendeley bibtex file
 bib &lt;- read.bibtex("~/references/library.bib")
 # ad hoc fix
 for(bibkey in c("SarathiBiswas2012", "Mcmichael2002a")){
   bib[ [ bibkey ] ]$url &lt;- gsub("\\{\\\\_\\}","_", bib[ [ bibkey ] ]$url)
 }
-</code></pre>
+</code></pre></div></div>
 
 <p>This is the result:</p>
 
 <p>McMichael, A.J. &amp; Butler, C.D. (2002). Global health trends: Evidence for and against sustainable progress. <em>International Union for the Scientific Study of Population Committee on Emerging Health Threats</em>. <a href="http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf">http://www.demogr.mpg.de/papers/workshops/020619_paper25.pdf</a> [21 Sep. 2003]</p>
-
-
 <p><span>Sarathi Biswas</span>, P. (2012). Alcohol, drought lead to farmer’s suicide. <em>Daily News and Analysis</em>. <a href="http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976">http://www.dnaindia.com/pune/report_alcohol-drought-lead-to-farmers-suicide_1688976</a> [17 May 2012]</p>
 
-
-
-
 <p></p>
-
 
     <div class="clear"></div>
   </div>
@@ -126,7 +110,7 @@ for(bibkey in c("SarathiBiswas2012", "Mcmichael2002a")){
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-10-24 00:00:00 +1100">24 Oct 2015</abbr>
+      <abbr class="published" title="2015-10-24 00:00:00 +0800">24 Oct 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

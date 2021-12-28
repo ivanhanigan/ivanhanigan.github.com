@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -57,78 +57,62 @@
   <div class="entry-content full-content">
     <p>I got this question today from a Drought researcher:</p>
 
-<h4>Question:</h4>
-
-<pre><code>There a table with 62 years * 12 months of rain data in mm. We
+<h4 id="question">Question:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>There a table with 62 years * 12 months of rain data in mm. We
 calculated the cumulative distribution using ecdf: empirical
 cumulative distribution function. So the table looks like this:
 Year Jan Feb Mach (…) each cell contains the cum dist.
-
+  
 We also got the number of months per year with less than X mm of
 rain. But he needs to know how many months are between the
 drought months, regardless the year. So, I thought that
 converting the data into a ts was going to facilitate the task,
 but it doesn’t, because now I don’t’ have columns and rows any
 longer.
-
+ 
 How do I handle a ts object to do for example an ifelse?
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
-
 <p>I answered:</p>
 
-<p>This looks a lot like the Hutchinson Drought Index which I've coded up here</p>
+<p>This looks a lot like the Hutchinson Drought Index which I’ve coded up here</p>
 
 <ul>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
-<li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
-<li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
+  <li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex">https://github.com/ivanhanigan/HutchinsonDroughtIndex</a></li>
+  <li><a href="https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r">https://github.com/ivanhanigan/HutchinsonDroughtIndex/blob/master/src/HutchinsonDroughtIndex_tools_droughtIndex.r</a></li>
+  <li>Also there is a completely reproducible example with BoM rainfall data at <a href="https://github.com/ivanhanigan/SuicideAndDroughtInNSW">https://github.com/ivanhanigan/SuicideAndDroughtInNSW</a></li>
 </ul>
 
-
 <p>This is the key bit for counting consecutive months below a threshold</p>
-
-<h4>R Code:</h4>
-
-<pre><code>x&lt;-data$index&lt;=-1
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x&lt;-data$index&lt;=-1
 xx &lt;- (cumsum(!x) + 1) * x
 x2&lt;-(seq_along(x) - match(xx, xx) + 1) * x
 data$count&lt;-x2
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
-<p>
-I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
+<p>I got it from <a href="https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html">https://stat.ethz.ch/pipermail/r-help/2007-June/134594.html</a>
 and looked in wonder at the structure and am amazed it works.</p>
 
 <p>I also really like the cumulative summing version a lot</p>
 
-<h4>R Code:</h4>
-
-<pre><code>data$sums&lt;-as.numeric(0)
+<h4 id="r-code-1">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data$sums&lt;-as.numeric(0)
 y &lt;- ifelse(data$index &gt;= -1, 0, data$index)
 f &lt;- data$index &lt; -1
 f &lt;- (cumsum(!f) + 1) * f
 z &lt;- unsplit(lapply(split(y,f),cumsum),f)
 data$sums &lt;- z
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
-<p>
-Several things I'd like to change.</p>
+<p>Several things I’d like to change.</p>
 
 <ul>
-<li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
-<li>I'd like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
-<li>I was defeated by Mike's request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
+  <li>I like the idea of using a wide dataset and ecdf rather than my loop thru months</li>
+  <li>I’d like to look into Joe Wheatley;s approach <a href="]http://joewheatley.net/20th-century-droughts/">http://joewheatley.net/20th-century-droughts/</a></li>
+  <li>I was defeated by Mike’s request to make a different threshold for breaking a drought than starting a drought.  went back to a for loop</li>
 </ul>
-
 
     <div class="clear"></div>
   </div>
@@ -148,7 +132,7 @@ Several things I'd like to change.</p>
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-10-29 00:00:00 +1100">29 Oct 2013</abbr>
+      <abbr class="published" title="2013-10-29 00:00:00 +0800">29 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>

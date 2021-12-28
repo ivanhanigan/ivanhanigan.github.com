@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,23 +55,20 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h1>Introduction</h1>
-
+    <h1 id="introduction">Introduction</h1>
 <p>Drought Declarations are made by government in Australia to determine when and where a drought is occuring.
 The Declarations are linked to agricultural and social support policies. We are working on a climatic drought index that should correlate with these Drought Declarations.  The New South Wales Government has provided us with spatial data from 1986 but they also have a graphical visualisation available for earlier times, especially noteworthy is the extreme 1982-1983 drought.
 This post is a document of the process I will try to derive spatial data from the image.</p>
 
-<h1>Methods</h1>
+<h1 id="methods">Methods</h1>
 
 <ul>
-<li>Follow instructions on this website <a href="http://www.qgistutorials.com/en/docs/advanced_georeferencing.html">http://www.qgistutorials.com/en/docs/advanced_georeferencing.html</a></li>
-<li>Try out the method on a month that is already available as spatial data, to assess precision.</li>
-<li>Then start mapping earlier data with no correlates.</li>
+  <li>Follow instructions on this website <a href="http://www.qgistutorials.com/en/docs/advanced_georeferencing.html">http://www.qgistutorials.com/en/docs/advanced_georeferencing.html</a></li>
+  <li>Try out the method on a month that is already available as spatial data, to assess precision.</li>
+  <li>Then start mapping earlier data with no correlates.</li>
 </ul>
 
-
-<h1>Data</h1>
-
+<h1 id="data">Data</h1>
 <p>Download the drought maps. The current maps are at:
 <a href="http://www.dpi.nsw.gov.au/content/agriculture/emergency/drought/planning-archive/climate/advance-retreat">http://www.dpi.nsw.gov.au/content/agriculture/emergency/drought/planning-archive/climate/advance-retreat</a></p>
 
@@ -80,61 +77,58 @@ This post is a document of the process I will try to derive spatial data from th
 
 <p><img src="images/drt-nswdpi-raw.png" alt="drt-nswdpi-raw" /></p>
 
-<h1>Results</h1>
+<h1 id="results">Results</h1>
 
-<h2>Step 1 - load the reference layer</h2>
-
-<ul>
-<li>Load up the NSW boundaries by selecting "Add PostGIS Layers" > Connect > gislibrary</li>
-<li>Then select a map layer of NSW</li>
-</ul>
-
-
-<h2>Step 2 - set up the raster data into the Georeferencer</h2>
+<h2 id="step-1---load-the-reference-layer">Step 1 - load the reference layer</h2>
 
 <ul>
-<li>Launch the Georeferencer from Raster > Georeferencer > Georeferencer.</li>
-<li>If you do not see that menu item, you will need to enable the Georeferencer GDAL plugin from Plugins > Manage and install Plugins > Installed.</li>
-<li>Zoom in on the month of interest</li>
-<li>Now click on the Add Point button on the toolbar and select an easily identifiable location on the image. Corners, intersections, poles etc. make good control points.</li>
-<li>Once you click on the image at a control point location, you will see a pop-up asking you to enter map coordinates. Click the button From map canvas.</li>
-<li>Find the same location in your reference layer and click there. The coordinates are auto-populated from your click on the map canvas. Click Ok. Similarly, choose at least 4 points on the image and add their coordinates from the reference layer.</li>
-<li>Now go to Settings > Transformation settings (yellow cog wheel).</li>
-<li>Choose the settings as shown below.</li>
-<li>Transformation type = Thin Plate Spline</li>
-<li>output raster = someting</li>
-<li>target EPS = 4283 (match what your reference layer is)</li>
-<li>Make sure the Load in QGIS when done button is checked. Click OK.</li>
-<li>Back in the Georeferencer window, go to File > Start georeferencing. This will start the process of warping the image using the GCPs and creating the target raster.</li>
+  <li>Load up the NSW boundaries by selecting “Add PostGIS Layers” &gt; Connect &gt; gislibrary</li>
+  <li>Then select a map layer of NSW</li>
 </ul>
 
-
-<h2>Step 3 - rip the data to a shapefile</h2>
+<h2 id="step-2---set-up-the-raster-data-into-the-georeferencer">Step 2 - set up the raster data into the Georeferencer</h2>
 
 <ul>
-<li>create a new shp (Layer > New)</li>
-<li>type = ploygon</li>
-<li>Specify CRS = EPSG:4283</li>
-<li>attribute = drought, text</li>
-<li>save to a shp like 'drt198610rip' and OK</li>
-<li>right-click, toggle editing, add new feature</li>
-<li>save layer edits</li>
+  <li>Launch the Georeferencer from Raster &gt; Georeferencer &gt; Georeferencer.</li>
+  <li>If you do not see that menu item, you will need to enable the Georeferencer GDAL plugin from Plugins &gt; Manage and install Plugins &gt; Installed.</li>
+  <li>Zoom in on the month of interest</li>
+  <li>Now click on the Add Point button on the toolbar and select an easily identifiable location on the image. Corners, intersections, poles etc. make good control points.</li>
+  <li>Once you click on the image at a control point location, you will see a pop-up asking you to enter map coordinates. Click the button From map canvas.</li>
+  <li>Find the same location in your reference layer and click there. The coordinates are auto-populated from your click on the map canvas. Click Ok. Similarly, choose at least 4 points on the image and add their coordinates from the reference layer.</li>
+  <li>Now go to Settings &gt; Transformation settings (yellow cog wheel).</li>
+  <li>Choose the settings as shown below.</li>
+  <li>Transformation type = Thin Plate Spline</li>
+  <li>output raster = someting</li>
+  <li>target EPS = 4283 (match what your reference layer is)</li>
+  <li>Make sure the Load in QGIS when done button is checked. Click OK.</li>
+  <li>Back in the Georeferencer window, go to File &gt; Start georeferencing. This will start the process of warping the image using the GCPs and creating the target raster.</li>
 </ul>
 
+<h2 id="step-3---rip-the-data-to-a-shapefile">Step 3 - rip the data to a shapefile</h2>
+
+<ul>
+  <li>create a new shp (Layer &gt; New)</li>
+  <li>type = ploygon</li>
+  <li>Specify CRS = EPSG:4283</li>
+  <li>attribute = drought, text</li>
+  <li>save to a shp like ‘drt198610rip’ and OK</li>
+  <li>right-click, toggle editing, add new feature</li>
+  <li>save layer edits</li>
+</ul>
 
 <p><img src="images/drt-edit-shapefile.png" alt="drt-edit-shapefile" /></p>
 
-<h1>Results</h1>
+<h1 id="results-1">Results</h1>
 
-<h2>This work</h2>
+<h2 id="this-work">This work</h2>
 
 <p><img src="images/drt198610rip.png" alt="drt198610rip" /></p>
 
-<h2>Compared to NSW DPI drought declarations data</h2>
+<h2 id="compared-to-nsw-dpi-drought-declarations-data">Compared to NSW DPI drought declarations data</h2>
 
 <p><img src="images/drt198610rip2.png" alt="drt198610rip2" /></p>
 
-<h1>Conclusion</h1>
+<h1 id="conclusion">Conclusion</h1>
 
 <p>The process produces data that is very prone to imprecision.  We may be able to use some extra data from before 1986 though.</p>
 
@@ -160,7 +154,7 @@ This post is a document of the process I will try to derive spatial data from th
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2016-08-30 00:00:00 +1000">30 Aug 2016</abbr>
+      <abbr class="published" title="2016-08-30 00:00:00 +0800">30 Aug 2016</abbr>
     </span>
   </p>
   <div class="clear"></div>

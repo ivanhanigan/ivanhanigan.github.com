@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -58,37 +58,34 @@
     </h1>
     <div class="entry-content full-content">
       <p>This post is about an effective and simple data management framework for analysis projects.
-This post introduces Josh Reich's LCFD framework, originally introduced in this answer on the stack overflow website here <a href="http://stackoverflow.com/a/1434424">http://stackoverflow.com/a/1434424</a>, and encoded into the makeProject R package <a href="http://cran.r-project.org/web/packages/makeProject/makeProject.pdf">http://cran.r-project.org/web/packages/makeProject/makeProject.pdf</a>.</p>
+This post introduces Josh Reich’s LCFD framework, originally introduced in this answer on the stack overflow website here <a href="http://stackoverflow.com/a/1434424">http://stackoverflow.com/a/1434424</a>, and encoded into the makeProject R package <a href="http://cran.r-project.org/web/packages/makeProject/makeProject.pdf">http://cran.r-project.org/web/packages/makeProject/makeProject.pdf</a>.</p>
 
-<h2>Literature Review Approach</h2>
+<h2 id="literature-review-approach">Literature Review Approach</h2>
 
 <p>This series of three posts is a summary of some of the most useful advice I have found based on my experience having implemented in my own work.</p>
 
 <p>This is the second post in a series of three entries regarding some evidence-based best practice approaches I have reviewed.  I have read many website articles and blog posts on a variety of approaches to the organisation of digital assets in a reporoducible research pipeline.
-The material I've gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.</p>
+The material I’ve gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.</p>
 
-<h2>Digital Assets Management for Reproducible Research</h2>
+<h2 id="digital-assets-management-for-reproducible-research">Digital Assets Management for Reproducible Research</h2>
 
 <p>The digital assets in a reproducible research pipeline include:</p>
 
 <ol>
-<li>Publication material (documents, figures, tables, literature)</li>
-<li>Data (raw measurements, data provided, data derived)</li>
-<li>Code (pre-processing, analysis and presentation)</li>
+  <li>Publication material (documents, figures, tables, literature)</li>
+  <li>Data (raw measurements, data provided, data derived)</li>
+  <li>Code (pre-processing, analysis and presentation)</li>
 </ol>
 
-
-<h2>How to use the <code>makeProject</code> package</h2>
+<h2 id="how-to-use-the-makeproject-package">How to use the <code class="language-plaintext highlighter-rouge">makeProject</code> package</h2>
 
 <ul>
-<li>The <code>makeProject</code> R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.</li>
-<li>The theory is very similar to the approach described in the previous post about Scott Long's batch script: wfsetupsingle.bat <a href="https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets">https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets</a></li>
+  <li>The <code class="language-plaintext highlighter-rouge">makeProject</code> R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.</li>
+  <li>The theory is very similar to the approach described in the previous post about Scott Long’s batch script: wfsetupsingle.bat <a href="https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets">https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets</a></li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code># choose your project dir
+<h4 id="code">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># choose your project dir
 setwd("~/projects")   
 library(makeProject)
 makeProject("makeProjectDemo")
@@ -101,47 +98,43 @@ matrix(dir("makeProjectDemo"))
 #[2,] "data"       
 #[3,] "DESCRIPTION"
 #[4,] "main.R"     
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>This has set up some simple and sensible tools for a data analysis.</li>
-<li>Let's have a look at the <code>main.R</code> script. This is the one file that is used to run all the modules of the project, found in the R scripts in the <code>code</code> folder.</li>
+  <li>This has set up some simple and sensible tools for a data analysis.</li>
+  <li>Let’s have a look at the <code class="language-plaintext highlighter-rouge">main.R</code> script. This is the one file that is used to run all the modules of the project, found in the R scripts in the <code class="language-plaintext highlighter-rouge">code</code> folder.</li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code># Project: makeProjectDemo
+<h4 id="code-1">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Project: makeProjectDemo
 # Author: Your Name
 # Maintainer: Who to complain to &lt;yourfault@somewhere.net&gt;
-
+ 
 # This is the main file for the project
 # It should do very little except call the other files
-
+ 
 ### Set the working directory
 setwd("/home/ivan_hanigan/projects/makeProjectDemo")
-
-
+ 
+ 
 ### Set any global variables here
 ####################
-
-
-
+ 
+ 
+ 
 ####################
-
-
+ 
+ 
 ### Run the code
 source("code/load.R")
 source("code/clean.R")
 source("code/func.R")
 source("code/do.R")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>I think that is very self-explanatory, but it does need some demonstration.  The next instalment in this three part blog post will describe the ProjectTemplate approach.  After that I will demonstrate ways that each of the three approaches can be used.</p>
 
@@ -160,7 +153,7 @@ source("code/do.R")
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-09-26 00:00:00 +1000">26 Sep 2015</abbr>
+        <abbr class="published" title="2015-09-26 00:00:00 +0800">26 Sep 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -175,52 +168,46 @@ source("code/do.R")
       <p>This will be a series of three posts that describe some key evidence based best practice methods that have helped me plan and organise files and folders for data analysis.  I have found these via books and on websites.</p>
 
 <ul>
-<li>Scott Long's Workflow for Data Analysis with Stata</li>
-<li>Josh Reich's Least Commonly Fouled up Data analysis (LCFD) framework</li>
-<li>John Myles White's ProjectTemplate</li>
+  <li>Scott Long’s Workflow for Data Analysis with Stata</li>
+  <li>Josh Reich’s Least Commonly Fouled up Data analysis (LCFD) framework</li>
+  <li>John Myles White’s ProjectTemplate</li>
 </ul>
 
-
-<h2>Toward evidence based best-practice data management systems</h2>
+<h2 id="toward-evidence-based-best-practice-data-management-systems">Toward evidence based best-practice data management systems</h2>
 
 <p>It is important for open science to have effective management of digital assets across the different phases of the research pipeline.  The traditional research pipeline moves from steps of hypothesis and design, measured data, analytic data, computational results (for figures, tables and numerical results), and reports (text and formatted manuscript).  Reproducible research pipelines extend traditional research by encoding the steps in code from a computer ‘scripting’ language, and distributing the data and code with publications.</p>
 
 <p>In this research pipeline context there are a large number of potential ways to manage digital assets (documents, data and code).  There are also many different motivating drivers that will affect the way that a scientist or group of scientists choose to manage their data and code.</p>
 
-<p>To deal with in house data management issues before starting and during analysis/reporting is critical for reproducible research.<br/>
-I argue that more effective research pipelines can be achieved if scientists adopt the 'convention over configuration' paradigm and adopt best-practice systems based on evidence.</p>
+<p>To deal with in house data management issues before starting and during analysis/reporting is critical for reproducible research.<br />
+I argue that more effective research pipelines can be achieved if scientists adopt the ‘convention over configuration’ paradigm and adopt best-practice systems based on evidence.</p>
 
-<h3>Long, S. (2015). Workflow for Reproducible Results.</h3>
+<h3 id="long-s-2015-workflow-for-reproducible-results">Long, S. (2015). Workflow for Reproducible Results.</h3>
 
 <p>For ages I was aware of the book from the Stata statistical program publishers <a href="http://www.indiana.edu/~jslsoc/web_workflow/wf_home.htm">http://www.indiana.edu/~jslsoc/web_workflow/wf_home.htm</a>:</p>
 
-<h4>Citation:</h4>
-
-<pre><code>Long, J. S. (2008). The Workflow of Data Analysis: 
+<h4 id="citation">Citation:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Long, J. S. (2008). The Workflow of Data Analysis: 
 Principles and Practice. Stata publishing.
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>Recently I stumbled across more recent workshop slides and tutorial material which I will discuss briefly.</p>
 
-<h4>Citation:</h4>
-
-<pre><code>Long, S. (2015). Workflow for Reproducible Results. 
+<h4 id="citation-1">Citation:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Long, S. (2015). Workflow for Reproducible Results. 
 IV : Managing digital assets Workflow for Tools for your WF. 
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>Retrieved from <a href="http://txrdc.tamu.edu/documents/WFtxcrdc2014_4-digital.pdf">http://txrdc.tamu.edu/documents/WFtxcrdc2014_4-digital.pdf</a></p>
 
 <p>Long suggests a lot of practical things to do, but I will just focus here on the recommended file and folder structure:</p>
 
-<h4>Recommended project directory structure:</h4>
-
-<pre><code>\ProjectAcronym
+<h4 id="recommended-project-directory-structure">Recommended project directory structure:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\ProjectAcronym
     \- History starting YYYY-MM-DD
     \- Hold then delete 
     \Admin
@@ -234,24 +221,18 @@ IV : Managing digital assets Workflow for Tools for your WF.
     \Resources 
     \Write 
     \Work
-</code></pre>
-
-<p></p>
-
-
+</code></pre></div></div>
 <p></p>
 
 <ul>
-<li>In another workshop report Long provides a useful tool to automatically create this structure on windows</li>
-<li>Long, S. (2012). Principles of Workflow in Data Analysis.
+  <li>In another workshop report Long provides a useful tool to automatically create this structure on windows</li>
+  <li>Long, S. (2012). Principles of Workflow in Data Analysis. 
 Retrieved from <a href="http://www.indiana.edu/~wim/docs/2012-long-slides.pdf">http://www.indiana.edu/~wim/docs/2012-long-slides.pdf</a></li>
-<li>a bash version would be useful for linux and mac users, but also the R language can do this on all platforms with the <code>dir.create</code> command</li>
+  <li>a bash version would be useful for linux and mac users, but also the R language can do this on all platforms with the <code class="language-plaintext highlighter-rouge">dir.create</code> command</li>
 </ul>
 
-
-<h4>Code: wfsetupsingle.bat</h4>
-
-<pre><code># wfsetupsingle.bat 
+<h4 id="code-wfsetupsinglebat">Code: wfsetupsingle.bat</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># wfsetupsingle.bat 
 REM workflow talk 2 \ wfsetupsingle.bat jsl 2009-07-12 
 REM directory structure for single person.
 FOR /F "tokens=2,3,4 delims=/- " %%a in ("%DATE%") do set CDATE=%%c-%%a-%%b 
@@ -264,15 +245,14 @@ md "Posted"
 md "Resources"
 md "Text\- Versions\" 
 md "Work\- To do"
-</code></pre>
+</code></pre></div></div>
 
-<h2>Critical reflections</h2>
+<h2 id="critical-reflections">Critical reflections</h2>
 
 <ul>
-<li>This recommendation is very sensible, especially the suggestion of moving things through the pipeline as they evolve from things being worked on (Write/Work) to later phases when they have been polished to a point that they can be put down while preparations for distrubuting them are made (Preposted) and then once they are sent off into downstream publication phases (Posted) they are locked for ever in a archival state.</li>
-<li>I am not particularly keen on the names that have been chosen (Resources, Write and Work are quite ambiguous terms).</li>
+  <li>This recommendation is very sensible, especially the suggestion of moving things through the pipeline as they evolve from things being worked on (Write/Work) to later phases when they have been polished to a point that they can be put down while preparations for distrubuting them are made (Preposted) and then once they are sent off into downstream publication phases (Posted) they are locked for ever in a archival state.</li>
+  <li>I am not particularly keen on the names that have been chosen (Resources, Write and Work are quite ambiguous terms).</li>
 </ul>
-
 
       <div class="clear"></div>
     </div>
@@ -289,7 +269,7 @@ md "Work\- To do"
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-09-25 00:00:00 +1000">25 Sep 2015</abbr>
+        <abbr class="published" title="2015-09-25 00:00:00 +0800">25 Sep 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -301,17 +281,18 @@ md "Work\- To do"
       <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
     </h1>
     <div class="entry-content full-content">
-      <p>I use the R package <code>DiagrammeR</code> for creating graphs (the formal kind, connecting nodes with edges)
-- This package is great and I like how it interacts with the Graphviz program
-- One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs
-- A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)
-- In my utilities R package <code>github.com/ivanhanigan/disentangle</code> I have written functions that turn this table into a graphiviz DOT language script
-- Recently I have needed to unpack the list for a more itemized view
-- Both these functions are showcased below</p>
+      <p>I use the R package <code class="language-plaintext highlighter-rouge">DiagrammeR</code> for creating graphs (the formal kind, connecting nodes with edges)</p>
+<ul>
+  <li>This package is great and I like how it interacts with the Graphviz program</li>
+  <li>One thing that I like to do in planning and organising data analysis projects is to make graphs and lists of the methods steps, inputs and Outputs</li>
+  <li>A simple way to organise these things is in a dataframe (table) with a column for each step (node) and two others for inputs and outputs (edges)</li>
+  <li>In my utilities R package <code class="language-plaintext highlighter-rouge">github.com/ivanhanigan/disentangle</code> I have written functions that turn this table into a graphiviz DOT language script</li>
+  <li>Recently I have needed to unpack the list for a more itemized view</li>
+  <li>Both these functions are showcased below</li>
+</ul>
 
-<h4>Code: newnode</h4>
-
-<pre><code># First create some test data, each step is a collection of edges 
+<h4 id="code-newnode">Code: newnode</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># First create some test data, each step is a collection of edges 
 # with inputs or outputs simple comma seperated lists
 dat &lt;- read.csv(textConnection('
 cluster ,  step    , inputs                    , outputs                                , description                      
@@ -325,7 +306,7 @@ D  ,  biomass revision, new estimates          , biomass_g                      
 '), stringsAsFactors = F, strip.white = T)    
 str(dat)
 # dat
-
+      
 # Now run the function and create a graph
 nodes &lt;- newnode(
   indat = dat,
@@ -342,10 +323,7 @@ sink()
 #DiagrammeR::grViz("Transformations.dot")
 system("dot -Tpng Transformations.dot -o Transformations.png")
 browseURL("Transformations.png")
-</code></pre>
-
-<p></p>
-
+</code></pre></div></div>
 
 <p></p>
 
@@ -353,18 +331,16 @@ browseURL("Transformations.png")
 
 <p><img src="/images/Transformations.png" alt="/images/Transformations.png" /></p>
 
-<h2>Now to showcase the tool that itemizes this list of inputs and outputs</h2>
+<h2 id="now-to-showcase-the-tool-that-itemizes-this-list-of-inputs-and-outputs">Now to showcase the tool that itemizes this list of inputs and outputs</h2>
 
 <ul>
-<li>The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs</li>
-<li>To add detail for each we need to unpack each list and create a new table with one row per node</li>
-<li>I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output</li>
+  <li>The original table has no capacity to add detail about each node as they are held as a list of inputs and outputs</li>
+  <li>To add detail for each we need to unpack each list and create a new table with one row per node</li>
+  <li>I decided to make this a long table with an identifier for each node about which step (edge) the node is an input or an output</li>
 </ul>
 
-
-<h4>Code: newnode_csv</h4>
-
-<pre><code>nodes_graphy &lt;- newnode_csv(
+<h4 id="code-newnode_csv">Code: newnode_csv</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nodes_graphy &lt;- newnode_csv(
   indat = dat,
   names_col = "step",
   in_col = "inputs",
@@ -394,12 +370,11 @@ knitr::kable(nodes_graphy)
 |C       |paper1           |output    |data package           |
 |D       |biomass revision |input     |new estimates          |
 |D       |biomass revision |output    |biomass_g              |
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<p>This can now be useful for making a 'shopping list' of the data to aquire, transform, analyse or archive.</p>
+<p>This can now be useful for making a ‘shopping list’ of the data to aquire, transform, analyse or archive.</p>
 
       <div class="clear"></div>
     </div>
@@ -416,7 +391,7 @@ knitr::kable(nodes_graphy)
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-09-23 00:00:00 +1000">23 Sep 2015</abbr>
+        <abbr class="published" title="2015-09-23 00:00:00 +0800">23 Sep 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -428,59 +403,51 @@ knitr::kable(nodes_graphy)
       <a href="/2015/09/open-notebook-science-jekyll-blogs-github-and-jerry-seinfelds-secret-to-productivity/" title="Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity" rel="bookmark">Open Notebook Science, Jekyll Blogs, Github and Jerry Seinfeld's Secret to Productivity</a>
     </h1>
     <div class="entry-content full-content">
-      <p>The other day I reported that I've implemented a new open science task management regime <a href="http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/">http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/</a>.</p>
+      <p>The other day I reported that I’ve implemented a new open science task management regime <a href="http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/">http://ivanhanigan.github.io/2015/09/task-management-like-an-open-science-hacker/</a>.</p>
 
-<p>This was instigated by my renewed enthusiasm for open science after a few high profile papers have come out in the last few months imploring scientists to take action on shonky statistics and the "morass of poorly conducted data analyses, with errors ranging from trivial and strange to devastating" (Peng 2015) <a href="http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x">http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x</a>.</p>
+<p>This was instigated by my renewed enthusiasm for open science after a few high profile papers have come out in the last few months imploring scientists to take action on shonky statistics and the “morass of poorly conducted data analyses, with errors ranging from trivial and strange to devastating” (Peng 2015) <a href="http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x">http://dx.doi.org/10.1111/j.1740-9713.2015.00827.x</a>.</p>
 
-<p>I believe that making ones electronic notebook open is one of the most obvious and easily achieved things to do toward that ambition.  I also think that keeping the TODO-list in the forefront of ones mind and continuously checking things off the list is a great boost for productivity and keeping on track.  This culminates in the advice to keep momentum by doing something toward the plan on a daily basis, no matter how trivial.  This is sometimes called Jerry Seinfeld's secret to productivity: Just keep at it. Don't break the streak. <a href="http://dirk.eddelbuettel.com/blog/2014/10/12/">http://dirk.eddelbuettel.com/blog/2014/10/12/</a>.</p>
+<p>I believe that making ones electronic notebook open is one of the most obvious and easily achieved things to do toward that ambition.  I also think that keeping the TODO-list in the forefront of ones mind and continuously checking things off the list is a great boost for productivity and keeping on track.  This culminates in the advice to keep momentum by doing something toward the plan on a daily basis, no matter how trivial.  This is sometimes called Jerry Seinfeld’s secret to productivity: Just keep at it. Don’t break the streak. <a href="http://dirk.eddelbuettel.com/blog/2014/10/12/">http://dirk.eddelbuettel.com/blog/2014/10/12/</a>.</p>
 
 <p>So what was holding me back from a really useful daily publication of my open notebook?  I showed last post how I manage tasks in Emac Orgmode (a task organiser and calendar/agenda rolled up with code execution for running R scripts etc).  I also write my blog posts in orgmode.</p>
 
-<p>The only problem with that set up was that I was still using the code from Charlie Park <a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a> which adds the inadequate commit description '<code>Latest build</code>' every time.  What I needed was a way to actually log a summary of work each day, so I can look back over the history and know I actually did something everyday and was not just gaming the system by committing random little non-work additions (I want to balance this by doing <em>some</em> work every day, but also take time off to read, exercise, socialize, and generally have fun).</p>
+<p>The only problem with that set up was that I was still using the code from Charlie Park <a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a> which adds the inadequate commit description ‘<code class="language-plaintext highlighter-rouge">Latest build</code>’ every time.  What I needed was a way to actually log a summary of work each day, so I can look back over the history and know I actually did something everyday and was not just gaming the system by committing random little non-work additions (I want to balance this by doing <em>some</em> work every day, but also take time off to read, exercise, socialize, and generally have fun).</p>
 
-<p>So anyway, the point of this post is to describe my revision to Charlie Park's code for building a jekyll blog:</p>
+<p>So anyway, the point of this post is to describe my revision to Charlie Park’s code for building a jekyll blog:</p>
 
-<h4>Code: put in ~/.bash_profile</h4>
-
-<pre><code>function bb() {
+<h4 id="code-put-in-bash_profile">Code: put in ~/.bash_profile</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function bb() {
   cd ~/projects/ivanhanigan.github.com.raw &amp;&amp; jekyll b &amp;&amp; cp -r    
   ~/projects/ivanhanigan.github.com.raw/_site/* ~/projects/ivanhanigan.github.com &amp;&amp; 
   cd ~/projects/ivanhanigan.github.com &amp;&amp; git add . -A  &amp;&amp; 
   git commit -m "$*" &amp;&amp; 
   git push
 }
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>That bit about <code>$*</code> was a bit difficult for me to get working as this is the first time I have written a bash script in anger.  The alternative was to use <code>$1</code> and require the git commit message to be passed within quotes, which also makes sense but I did not do that.</li>
-<li>I also needed to change the terminal settings so that it always loads the bash_profile</li>
+  <li>That bit about <code class="language-plaintext highlighter-rouge">$*</code> was a bit difficult for me to get working as this is the first time I have written a bash script in anger.  The alternative was to use <code class="language-plaintext highlighter-rouge">$1</code> and require the git commit message to be passed within quotes, which also makes sense but I did not do that.</li>
+  <li>I also needed to change the terminal settings so that it always loads the bash_profile</li>
 </ul>
 
-
-<h4>Bash terminal</h4>
-
-<pre><code>Edit &gt; Profile preferences
+<h4 id="bash-terminal">Bash terminal</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Edit &gt; Profile preferences
 Title and Command &gt; Run command as a login shell 
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <ul>
-<li>And so now I just have to deposit a markdown blog post into the jekyll <code>_posts</code> folder and then</li>
+  <li>And so now I just have to deposit a markdown blog post into the jekyll <code class="language-plaintext highlighter-rouge">_posts</code> folder and then</li>
 </ul>
 
-
-<h4>Bash</h4>
-
-<pre><code>bb Add a meaningful commit message about todays progress
-</code></pre>
+<h4 id="bash">Bash</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bb Add a meaningful commit message about todays progress
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>There you have it, a meaningful message regarding what I have been doing towards my scientific output every day.</p>
 
@@ -488,15 +455,13 @@ Title and Command &gt; Run command as a login shell
 
 <p><img src="/images/seinfeld-streak-day9.png" alt="/images/seinfeld-streak-day9.png" /></p>
 
-<h4>References</h4>
-
-<pre><code>Peng, R. (2015). The reproducibility crisis in science: 
+<h4 id="references">References</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Peng, R. (2015). The reproducibility crisis in science: 
 A statistical counterattack. Significance, 12(3), 30–32. 
 doi:10.1111/j.1740-9713.2015.00827.x
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
       <div class="clear"></div>
     </div>
@@ -513,7 +478,7 @@ doi:10.1111/j.1740-9713.2015.00827.x
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-09-22 00:00:00 +1000">22 Sep 2015</abbr>
+        <abbr class="published" title="2015-09-22 00:00:00 +0800">22 Sep 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -525,29 +490,28 @@ doi:10.1111/j.1740-9713.2015.00827.x
       <a href="/2015/09/my-newnode-r-function-useful-for-causal-directed-acyclic-graphs/" title="My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)" rel="bookmark">My Newnode R Function Useful For Causal Directed Acyclic Graphs (DAGs)</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Aims</h1>
+      <h1 id="aims">Aims</h1>
 
-<p>I have worked on a function that turns a <code>data.frame</code> into a graphviz code in the dot language, with some of my preferred settings.  I realised that it might be useful for causal directed acyclic graphs.</p>
+<p>I have worked on a function that turns a <code class="language-plaintext highlighter-rouge">data.frame</code> into a graphviz code in the dot language, with some of my preferred settings.  I realised that it might be useful for causal directed acyclic graphs.</p>
 
-<p>Causal diagrams are useful for conceptualising the pathways of cause and effect.  These diagrams are sometimes simplly informal pictures but have also been developed in a more formal way to be used in modelling.  These formal developments use concepts derived from the mathmatical abstraction of Graphs (fundamentally Graphs  are networks of linked 'nodes', with the links being termed 'edges').  Causal diagrams can either be constructed to depict two things: first are feedback loops (a vexatious property of complex systems that confounds modelling) while second are more simple chain-of-events type pathways which proceed from an upstream cause to a downstream effect in a single direction, without cycles, called 'Directed Acyclic Graphs or DAGs.  The loop diagrams are out of the scope of this present blog post because the DAGs are much more easily addressed by the tool that I am describing.</p>
+<p>Causal diagrams are useful for conceptualising the pathways of cause and effect.  These diagrams are sometimes simplly informal pictures but have also been developed in a more formal way to be used in modelling.  These formal developments use concepts derived from the mathmatical abstraction of Graphs (fundamentally Graphs  are networks of linked ‘nodes’, with the links being termed ‘edges’).  Causal diagrams can either be constructed to depict two things: first are feedback loops (a vexatious property of complex systems that confounds modelling) while second are more simple chain-of-events type pathways which proceed from an upstream cause to a downstream effect in a single direction, without cycles, called ‘Directed Acyclic Graphs or DAGs.  The loop diagrams are out of the scope of this present blog post because the DAGs are much more easily addressed by the tool that I am describing.</p>
 
-<p>To begin I am going to build on this other guy's blog post on causal DAGs with R
+<p>To begin I am going to build on this other guy’s blog post on causal DAGs with R
   <a href="http://donlelek.github.io/2015/03/31/dags-with-r/">http://donlelek.github.io/2015/03/31/dags-with-r/</a>
 I wanted to add an interface for building these.</p>
 
 <p>Some background to the concepts that I use are provided in the references below.</p>
 
-<h1>Materials and Methods</h1>
+<h1 id="materials-and-methods">Materials and Methods</h1>
 
-<p>The DiagrammeR package which has been integrated within R-Studio has made access to the graphing tool <code>graphviz</code> much easier than it used to be.  My function <code>causal_dag</code> (avaiable in my <code>disentangle</code> github package) essentially constructs the required <code>nodes</code> and <code>edges</code> for that package to use.  Optionally we can also include <code>labels</code> to indicate the direction of the effect.</p>
+<p>The DiagrammeR package which has been integrated within R-Studio has made access to the graphing tool <code class="language-plaintext highlighter-rouge">graphviz</code> much easier than it used to be.  My function <code class="language-plaintext highlighter-rouge">causal_dag</code> (avaiable in my <code class="language-plaintext highlighter-rouge">disentangle</code> github package) essentially constructs the required <code class="language-plaintext highlighter-rouge">nodes</code> and <code class="language-plaintext highlighter-rouge">edges</code> for that package to use.  Optionally we can also include <code class="language-plaintext highlighter-rouge">labels</code> to indicate the direction of the effect.</p>
 
-<p>To use the tool all you need to do is create a list of <code>edges</code> and their associated <code>inputs</code> nodes and <code>outputs</code> nodes (as a comma separated values string) shown in the picture below.</p>
+<p>To use the tool all you need to do is create a list of <code class="language-plaintext highlighter-rouge">edges</code> and their associated <code class="language-plaintext highlighter-rouge">inputs</code> nodes and <code class="language-plaintext highlighter-rouge">outputs</code> nodes (as a comma separated values string) shown in the picture below.</p>
 
 <p><img src="/images/causal-ssheet.png" alt="causal-ssheet.png" /></p>
 
-<h4>Code:</h4>
-
-<pre><code># read in the sheet
+<h4 id="code">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># read in the sheet
 library(disentangle)
 library(stringr)
 causes &lt;- readxl::read_excel("causal-ssheet.xlsx")
@@ -557,21 +521,18 @@ cat(nodes)
 # The result is a formated graph in the dot language with some of my
 # preferred settings such as edges showing as 'records' and a spot to
 # write a description or include literature about each process
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>See the DOT code in the Appendix</li>
-<li>to render the graph now DiagrammeR can use this text string R object to render this to SVG</li>
-<li>I think it does not do PNG or PDF though so I still use graphviz and dot directly</li>
+  <li>See the DOT code in the Appendix</li>
+  <li>to render the graph now DiagrammeR can use this text string R object to render this to SVG</li>
+  <li>I think it does not do PNG or PDF though so I still use graphviz and dot directly</li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code>grViz(nodes)
+<h4 id="code-1">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>grViz(nodes)
 
 # But I also use graphviz directly to produce a publishable image in
 # pdf or png
@@ -580,82 +541,76 @@ cat(nodes)
 sink()# If graphviz is installed and on linux call it with a shell command
 #system("dot -Tpdf reproduce-donlelek.dot -o reproduce-donlelek.pdf")
 system("dot -Tpng reproduce-donlelek.dot -o reproduce-donlelek.png")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h1>Results</h1>
+<h1 id="results">Results</h1>
 
 <p>Here I have reproduced the work of donlelek</p>
 
 <p><img src="/images/reproduce-donlelek.png" alt="reproduce-donlelek.png" /></p>
 
-<h1>Future directions</h1>
+<h1 id="future-directions">Future directions</h1>
 
 <ul>
-<li>I'd like to make the edges implicit, so that the spreadsheet keeps track of the information about the causal process, but the graph just shows the lines connecting the nodes</li>
-<li>The edges are where the action is, so I need to add a direction of effect.  This would be in a <code>label</code> column and added in a [ label = 'abc' ] tag for each edge</li>
-<li>the rankdir option is LR to make this go sideways, which seems more the norm for causal DAGs, left to right.</li>
+  <li>I’d like to make the edges implicit, so that the spreadsheet keeps track of the information about the causal process, but the graph just shows the lines connecting the nodes</li>
+  <li>The edges are where the action is, so I need to add a direction of effect.  This would be in a <code class="language-plaintext highlighter-rouge">label</code> column and added in a [ label = ‘abc’ ] tag for each edge</li>
+  <li>the rankdir option is LR to make this go sideways, which seems more the norm for causal DAGs, left to right.</li>
 </ul>
 
-
-<h4>References</h4>
-
-<pre><code>Greenland, S., Pearl, J., &amp; Robins, J. M. (1999). Causal diagrams for
+<h4 id="references">References</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Greenland, S., Pearl, J., &amp; Robins, J. M. (1999). Causal diagrams for
 epidemiologic research. Epidemiology (Cambridge, Mass.), 10(1),
 37–48. doi:10.1097/00001648-199901000-00008
-
+ 
 Reid, C. E., Snowden, J. M., Kontgis, C., &amp; Tager, I. B. (2012). The
 role of ambient ozone in epidemiologic studies of heat-related
 mortality. Environmental Health Perspectives, 120(12),
 1627–30. doi:10.1289/ehp.1205251
-
+   
 Newell, B., &amp; Wasson, R. (2001). Social System vs Solar System: Why
 Policy Makers Need History. In: Conflict and Cooperation related to
 International Water Resources : Historical Perspectives. In World
 Water (Vol. 2002).
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
+<h1 id="appendix">Appendix</h1>
 
-<h1>Appendix</h1>
-
-<h4>Code:</h4>
-
-<pre><code>#####################################################################
+<h4 id="code-2">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#####################################################################
 # The following output is automatically created by newnode()
 # NOTE for some reason, to show on the blog, I had to replace all { braces with normal (
 #####################################################################
 digraph transformations (
-
+ 
 "Metritis" -&gt; "Fertility effects"
 "Cistic Ovarian Disease" -&gt; "Fertility effects"
 "Age" -&gt; "Fertility effects"
 "Fertility effects"  [ shape=record, label="(( ( Name | Description ) | ( Fertility effects |  ) ))"]
 "Fertility effects" -&gt; "Fertility"
-
-
+ 
+ 
 "Metritis" -&gt; "Cistic Ovarian effects"
 "Retained Placenta" -&gt; "Cistic Ovarian effects"
 "Age" -&gt; "Cistic Ovarian effects"
 "Cistic Ovarian effects"  [ shape=record, label="(( ( Name | Description ) | ( Cistic Ovarian effects |  ) ))"]
 "Cistic Ovarian effects" -&gt; "Cistic Ovarian Disease"
-
-
+ 
+ 
 "Retained Placenta" -&gt; "Metritis effects"
 "Metritis effects"  [ shape=record, label="(( ( Name | Description ) | ( Metritis effects |  ) ))"]
 "Metritis effects" -&gt; "Metritis"
-
-
+ 
+ 
  "Age" -&gt; "Retained Placenta effects"
 "Retained Placenta effects"  [ shape=record, label="(( ( Name | Description ) | ( Retained Placenta effects |  ) ))"]
 "Retained Placenta effects" -&gt; "Retained Placenta"
-
-
+ 
+ 
  )
-</code></pre>
+</code></pre></div></div>
 
       <div class="clear"></div>
     </div>
@@ -672,7 +627,7 @@ digraph transformations (
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-09-19 00:00:00 +1000">19 Sep 2015</abbr>
+        <abbr class="published" title="2015-09-19 00:00:00 +0800">19 Sep 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>

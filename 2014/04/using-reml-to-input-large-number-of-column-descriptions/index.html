@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,18 +55,17 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting "save for later" but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.</p>
+    <p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting “save for later” but this got slower and apeared to freeze at the last minute…  Not sure if that last save worked at all.</p>
 
 <p>So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.</p>
 
 <p>First thing I tried was the constructed Column Definitions and Unit Definitions example from <a href="https://github.com/ropensci/EML">the README</a></p>
 
-<h4>R Code:</h4>
-
-<pre><code>#require(devtools)
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#require(devtools)
 #install_github("EML", "ROpenSci")
 require(EML)
-
+ 
 # The example from orig doco
 dat = data.set(river = c("SAC",  "SAC",   "AM"),
                spp   = c("king",  "king", "ccho"),
@@ -98,16 +97,14 @@ filename &lt;- file.path(morpho_db,maxid)
 # what is the number?
 filename
 write.csv(dat, filename, row.names =F, quote=F)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <p>So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.</p>
 
-<h4>EML Code:</h4>
-
-<pre><code>...
+<h4 id="eml-code">EML Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
 &lt;/dataFormat&gt;
 &lt;distribution scope="document"&gt; &lt;online&gt; &lt;url function="download"&gt;ecogrid://knb/hanigan.22.1&lt;/url&gt;
 &lt;/online&gt;
@@ -121,10 +118,9 @@ write.csv(dat, filename, row.names =F, quote=F)
 &lt;/distribution&gt;
 &lt;/physical&gt;
 ...
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>Which seems to have worked when we open it up again:</p>
 
@@ -132,9 +128,8 @@ write.csv(dat, filename, row.names =F, quote=F)
 
 <p>So now let;s try a large nuber of variables:</p>
 
-<h4>R Code:</h4>
-
-<pre><code># add lots of cols
+<h4 id="r-code-1">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># add lots of cols
 for(i in 5:100){
   dat[,i] &lt;-  sample(rnorm(100,1,2), 3)
 }
@@ -170,7 +165,7 @@ dat &lt;- data.set(dat,
                 unit.defs = unit.defs
                 )
 str(dat)
-
+ 
 eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
 eml_write(dat, file = "inst/doc/EML_example_wide.xml")
 # import to morpho, save and close
@@ -183,35 +178,35 @@ filename &lt;- file.path(morpho_db,maxid)
 filename
 write.csv(dat, filename, row.names =F, quote=F)
 # now add this into the EML morpho has created (25.2 in my case)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>Which now seems to have attached the variable defintions and dataTable adequately.</p>
 
 <h2><img src="/images/morpho-wide2.png" alt="morpho-wide2.png" /></h2>
-
 <p>name: using-reml-to-input-large-number-of-column-descriptions
 layout: post
 title: Using Reml To Input Large Number Of Column Descriptions
 date: 2014-04-24
 categories:</p>
+<ul>
+  <li>
+    <h2 id="data-documentation">Data Documentation</h2>
+  </li>
+</ul>
 
-<h2>- Data Documentation</h2>
-
-<p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting "save for later" but this got slower and apeared to freeze at the last minute...  Not sure if that last save worked at all.</p>
+<p>We recently hit an issue when using morpho to enter metadata for a large number of variables (~200).  The GUI form for entering definitions and units steps through each variable, but at about 60 or 70 it starts to slow down.  By the time we got to 160 it was taking more than 5 minutes to change to the next variable.  To safegaurd against losing work, we kept hitting “save for later” but this got slower and apeared to freeze at the last minute…  Not sure if that last save worked at all.</p>
 
 <p>So I;ve come back once more to the ROpenSci EML package which is looking like a really useful way to build metadata elements automatically, with Morpho being used to proved augmentation and finesse the documents.</p>
 
 <p>First thing I tried was the constructed Column Definitions and Unit Definitions example from <a href="https://github.com/ropensci/EML">the README</a></p>
 
-<h4>R Code:</h4>
-
-<pre><code>#require(devtools)
+<h4 id="r-code-2">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#require(devtools)
 #install_github("EML", "ROpenSci")
 require(EML)
-
+ 
 # The example from orig doco
 dat = data.set(river = c("SAC",  "SAC",   "AM"),
                spp   = c("king",  "king", "ccho"),
@@ -243,16 +238,14 @@ filename &lt;- file.path(morpho_db,maxid)
 # what is the number?
 filename
 write.csv(dat, filename, row.names =F, quote=F)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <p>So now to finish what we need to add into the EML that morpho has created (22.1 in my case)  just needs the reference to the dataTable.</p>
 
-<h4>EML Code:</h4>
-
-<pre><code>...
+<h4 id="eml-code-1">EML Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
 &lt;/dataFormat&gt;
 &lt;distribution scope="document"&gt; &lt;online&gt; &lt;url function="download"&gt;ecogrid://knb/hanigan.22.1&lt;/url&gt;
 &lt;/online&gt;
@@ -266,10 +259,9 @@ write.csv(dat, filename, row.names =F, quote=F)
 &lt;/distribution&gt;
 &lt;/physical&gt;
 ...
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>Which seems to have worked when we open it up again:</p>
 
@@ -277,9 +269,8 @@ write.csv(dat, filename, row.names =F, quote=F)
 
 <p>So now let;s try a large nuber of variables:</p>
 
-<h4>R Code:</h4>
-
-<pre><code># add lots of cols
+<h4 id="r-code-3">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># add lots of cols
 for(i in 5:100){
   dat[,i] &lt;-  sample(rnorm(100,1,2), 3)
 }
@@ -309,10 +300,10 @@ dat = data.set(dat,
 c(rep("count stuff", 95))
                  ),
 unit.defs = unit.defs
-
+                 
   )
 str(dat)
-
+ 
 eml_config(creator="Ivan Charles Hanigan &lt;ivan.hanigan@gmail.com&gt;")
 eml_write(dat, file = "inst/doc/EML_example_wide.xml")
 # import to morpho, save and close
@@ -324,10 +315,9 @@ filename &lt;- file.path(morpho_db,maxid)
 filename
 write.csv(dat, filename, row.names =F, quote=F)
 # now add this into the EML morpho has created (25.2 in my case)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>Which now seems to have attached the variable defintions and dataTable adequately.</p>
 
@@ -351,7 +341,7 @@ write.csv(dat, filename, row.names =F, quote=F)
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2014-04-24 00:00:00 +1000">24 Apr 2014</abbr>
+      <abbr class="published" title="2014-04-24 00:00:00 +0800">24 Apr 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>

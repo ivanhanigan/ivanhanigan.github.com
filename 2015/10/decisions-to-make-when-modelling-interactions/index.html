@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -71,17 +71,16 @@ exposure and response varies between different levels of the
 moderator. An example is provided by a paper we published, in which the
 relationship between proximity to wetlands and Ross River virus
 infection was found to be different for towns and rural areas, where the
-'urban' variable is the 'effect moderator'.</p>
+‘urban’ variable is the ‘effect moderator’.</p>
 
 <p>There are three common ways for data analysts to address this question
 in statistical models:</p>
 
 <ol>
-<li>multiple models for each group,</li>
-<li>interaction terms or</li>
-<li>re-parametrisation to explicitly depict interactions.</li>
+  <li>multiple models for each group,</li>
+  <li>interaction terms or</li>
+  <li>re-parametrisation to explicitly depict interactions.</li>
 </ol>
-
 
 <p>The first way is
 to split apart the dataset and conduct separate analyses of multiple
@@ -94,12 +93,12 @@ that by splitting the dataset one loses degrees of freedom and
 therefore statistical power.</p>
 
 <p>The second approach (which removes that limitation of the first option) is to
-fit interaction terms.  The example shown in Figure 1 is a multiplicative interaction model (Brambor 2006).
+fit interaction terms.  The example shown in Figure 1 is a multiplicative interaction model (Brambor 2006). 
 This  approach was not taken in the models reported in our paper, but can easily be implemented and shows that the function of distance was
-estimated to have different 'slopes' in each of the dichotomous urban
+estimated to have different ‘slopes’ in each of the dichotomous urban
 groups.</p>
 
-<p>The statistical method can be easily implemented in
+<p>The statistical method can be easily implemented in 
 software by including a multiplicative term between two variables,
 however in practice the resulting post estimation regression outputs
 can be difficult to interpret.  For example, say one wants to calculate
@@ -107,21 +106,20 @@ the effect and standard error for exposure X on health outcome Y with
 the interaction of the effect modifier Z.  The form of this model can
 be written as:</p>
 
-<p>$$ Y ~ \beta<em>{1}X + \beta</em>{2}Z + \beta_{3}XZ $$</p>
+\[Y ~ \beta_{1}X + \beta_{2}Z + \beta_{3}XZ\]
 
 <p>where B1, B2 and B3 are the regression coefficients estimated and  the term XZ is the interaction between exposure and effect modifier.</p>
 
 <p>The difficulty for interpretation comes when using this method for calculating the marginal effect of X on Y and the conditional standard error.  The specific method described in Brambor et al. is:</p>
 
 <ol>
-<li>Calculate the coefficients and the variance-covariance matrix from the regression model</li>
-<li>The marginal effect is $\beta<em>{1} + \beta</em>{3}XZ$ where Z is the level of the
+  <li>Calculate the coefficients and the variance-covariance matrix from the regression model</li>
+  <li>The marginal effect is $\beta_{1} + \beta_{3}XZ$ where Z is the level of the 
 modifying factor (0 or 1 in the dichotomous effect modifier case)</li>
-<li>The conditional standard error is:</li>
+  <li>The conditional standard error is:</li>
 </ol>
 
-
-<p>$$\sqrt{var(\beta<em>{1}) + Z<sup>2</sup> var(\beta</em>{3}) + 2Zcov(\beta<em>{1}\beta</em>{3})}$$</p>
+\[\sqrt{var(\beta_{1}) + Z^2 var(\beta_{3}) + 2Zcov(\beta_{1}\beta_{3})}\]
 
 <p>Therefore the strengths of this approach is that it does not reduce
 degrees of freedom and is straightforward to specify the model in
@@ -135,11 +133,10 @@ different drought exposure-response funcitons in each of the
 sub-groups. In the terms of Figure \ref{fig:effectmod.png} it is simple to:</p>
 
 <ol>
-<li>Calculate X1 = X * Z (i.e = exposure for condition is met, zero otherwise)</li>
-<li>Calculate X0 = X * (1-Z) (i.e. = exposure for NON-condition, zero for condition is TRUE)</li>
-<li>Instead of X, Z and XZ, fit X1, X0 and Z.  This model also contains three parameters and captures the same interactions as it is the same model with a different parametrisation.  The standard errors for the X1 and X0 are calculated directly from the regression.</li>
+  <li>Calculate X1 = X * Z (i.e = exposure for condition is met, zero otherwise)</li>
+  <li>Calculate X0 = X * (1-Z) (i.e. = exposure for NON-condition, zero for condition is TRUE)</li>
+  <li>Instead of X, Z and XZ, fit X1, X0 and Z.  This model also contains three parameters and captures the same interactions as it is the same model with a different parametrisation.  The standard errors for the X1 and X0 are calculated directly from the regression.</li>
 </ol>
-
 
 <p>This method is much easier to implement and interpret.  This is also
 considerably more flexible than the other two approaches.  A
@@ -148,7 +145,7 @@ required are more complicated, and there are inherently more
 possibilities for the data analyst to make errors in writing their
 code as they make these changes to the analytical data.</p>
 
-<pre><code># Demonstrating this with the data from the paper (available in table 2)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Demonstrating this with the data from the paper (available in table 2)
 ## the following code shows the different parametrisations for the effect modification by urban
 ## we show that the coeffs and se are equivalent but that the psuedo-R
 ## squared will be better when including all our data in stratified analysis
@@ -224,7 +221,7 @@ summa
 ## buffer_urban    0.03853    0.06352   0.607  0.54416
 ## buffer_eastern -0.24702    0.07921  -3.119  0.00182 **
 ## urban          -0.69938    0.36350  -1.924  0.05435 .
-</code></pre>
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -246,7 +243,7 @@ summa
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-10-31 00:00:00 +1100">31 Oct 2015</abbr>
+      <abbr class="published" title="2015-10-31 00:00:00 +0800">31 Oct 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

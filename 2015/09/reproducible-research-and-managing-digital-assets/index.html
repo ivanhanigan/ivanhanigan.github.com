@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -58,52 +58,46 @@
     <p>This will be a series of three posts that describe some key evidence based best practice methods that have helped me plan and organise files and folders for data analysis.  I have found these via books and on websites.</p>
 
 <ul>
-<li>Scott Long's Workflow for Data Analysis with Stata</li>
-<li>Josh Reich's Least Commonly Fouled up Data analysis (LCFD) framework</li>
-<li>John Myles White's ProjectTemplate</li>
+  <li>Scott Long’s Workflow for Data Analysis with Stata</li>
+  <li>Josh Reich’s Least Commonly Fouled up Data analysis (LCFD) framework</li>
+  <li>John Myles White’s ProjectTemplate</li>
 </ul>
 
-
-<h2>Toward evidence based best-practice data management systems</h2>
+<h2 id="toward-evidence-based-best-practice-data-management-systems">Toward evidence based best-practice data management systems</h2>
 
 <p>It is important for open science to have effective management of digital assets across the different phases of the research pipeline.  The traditional research pipeline moves from steps of hypothesis and design, measured data, analytic data, computational results (for figures, tables and numerical results), and reports (text and formatted manuscript).  Reproducible research pipelines extend traditional research by encoding the steps in code from a computer ‘scripting’ language, and distributing the data and code with publications.</p>
 
 <p>In this research pipeline context there are a large number of potential ways to manage digital assets (documents, data and code).  There are also many different motivating drivers that will affect the way that a scientist or group of scientists choose to manage their data and code.</p>
 
-<p>To deal with in house data management issues before starting and during analysis/reporting is critical for reproducible research.<br/>
-I argue that more effective research pipelines can be achieved if scientists adopt the 'convention over configuration' paradigm and adopt best-practice systems based on evidence.</p>
+<p>To deal with in house data management issues before starting and during analysis/reporting is critical for reproducible research.<br />
+I argue that more effective research pipelines can be achieved if scientists adopt the ‘convention over configuration’ paradigm and adopt best-practice systems based on evidence.</p>
 
-<h3>Long, S. (2015). Workflow for Reproducible Results.</h3>
+<h3 id="long-s-2015-workflow-for-reproducible-results">Long, S. (2015). Workflow for Reproducible Results.</h3>
 
 <p>For ages I was aware of the book from the Stata statistical program publishers <a href="http://www.indiana.edu/~jslsoc/web_workflow/wf_home.htm">http://www.indiana.edu/~jslsoc/web_workflow/wf_home.htm</a>:</p>
 
-<h4>Citation:</h4>
-
-<pre><code>Long, J. S. (2008). The Workflow of Data Analysis: 
+<h4 id="citation">Citation:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Long, J. S. (2008). The Workflow of Data Analysis: 
 Principles and Practice. Stata publishing.
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>Recently I stumbled across more recent workshop slides and tutorial material which I will discuss briefly.</p>
 
-<h4>Citation:</h4>
-
-<pre><code>Long, S. (2015). Workflow for Reproducible Results. 
+<h4 id="citation-1">Citation:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Long, S. (2015). Workflow for Reproducible Results. 
 IV : Managing digital assets Workflow for Tools for your WF. 
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>Retrieved from <a href="http://txrdc.tamu.edu/documents/WFtxcrdc2014_4-digital.pdf">http://txrdc.tamu.edu/documents/WFtxcrdc2014_4-digital.pdf</a></p>
 
 <p>Long suggests a lot of practical things to do, but I will just focus here on the recommended file and folder structure:</p>
 
-<h4>Recommended project directory structure:</h4>
-
-<pre><code>\ProjectAcronym
+<h4 id="recommended-project-directory-structure">Recommended project directory structure:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\ProjectAcronym
     \- History starting YYYY-MM-DD
     \- Hold then delete 
     \Admin
@@ -117,24 +111,18 @@ IV : Managing digital assets Workflow for Tools for your WF.
     \Resources 
     \Write 
     \Work
-</code></pre>
-
-<p></p>
-
-
+</code></pre></div></div>
 <p></p>
 
 <ul>
-<li>In another workshop report Long provides a useful tool to automatically create this structure on windows</li>
-<li>Long, S. (2012). Principles of Workflow in Data Analysis.
+  <li>In another workshop report Long provides a useful tool to automatically create this structure on windows</li>
+  <li>Long, S. (2012). Principles of Workflow in Data Analysis. 
 Retrieved from <a href="http://www.indiana.edu/~wim/docs/2012-long-slides.pdf">http://www.indiana.edu/~wim/docs/2012-long-slides.pdf</a></li>
-<li>a bash version would be useful for linux and mac users, but also the R language can do this on all platforms with the <code>dir.create</code> command</li>
+  <li>a bash version would be useful for linux and mac users, but also the R language can do this on all platforms with the <code class="language-plaintext highlighter-rouge">dir.create</code> command</li>
 </ul>
 
-
-<h4>Code: wfsetupsingle.bat</h4>
-
-<pre><code># wfsetupsingle.bat 
+<h4 id="code-wfsetupsinglebat">Code: wfsetupsingle.bat</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># wfsetupsingle.bat 
 REM workflow talk 2 \ wfsetupsingle.bat jsl 2009-07-12 
 REM directory structure for single person.
 FOR /F "tokens=2,3,4 delims=/- " %%a in ("%DATE%") do set CDATE=%%c-%%a-%%b 
@@ -147,15 +135,14 @@ md "Posted"
 md "Resources"
 md "Text\- Versions\" 
 md "Work\- To do"
-</code></pre>
+</code></pre></div></div>
 
-<h2>Critical reflections</h2>
+<h2 id="critical-reflections">Critical reflections</h2>
 
 <ul>
-<li>This recommendation is very sensible, especially the suggestion of moving things through the pipeline as they evolve from things being worked on (Write/Work) to later phases when they have been polished to a point that they can be put down while preparations for distrubuting them are made (Preposted) and then once they are sent off into downstream publication phases (Posted) they are locked for ever in a archival state.</li>
-<li>I am not particularly keen on the names that have been chosen (Resources, Write and Work are quite ambiguous terms).</li>
+  <li>This recommendation is very sensible, especially the suggestion of moving things through the pipeline as they evolve from things being worked on (Write/Work) to later phases when they have been polished to a point that they can be put down while preparations for distrubuting them are made (Preposted) and then once they are sent off into downstream publication phases (Posted) they are locked for ever in a archival state.</li>
+  <li>I am not particularly keen on the names that have been chosen (Resources, Write and Work are quite ambiguous terms).</li>
 </ul>
-
 
     <div class="clear"></div>
   </div>
@@ -175,7 +162,7 @@ md "Work\- To do"
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-09-25 00:00:00 +1000">25 Sep 2015</abbr>
+      <abbr class="published" title="2015-09-25 00:00:00 +0800">25 Sep 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

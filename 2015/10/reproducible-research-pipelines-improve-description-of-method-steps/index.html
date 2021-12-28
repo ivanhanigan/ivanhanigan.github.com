@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -71,45 +71,43 @@ hypothesis and design, measured data, analytic data, computational
 results (for figures, tables and numerical results), and reports (text
 and formatted manuscript).</p>
 
-<h2>Fundamental components of a reproducible research pipeline</h2>
+<h2 id="fundamental-components-of-a-reproducible-research-pipeline">Fundamental components of a reproducible research pipeline</h2>
 
 <p>The basic components of a pipeline are:</p>
 
 <ul>
-<li>Data Management Plan and Data Inventory</li>
-<li>Method steps</li>
-<li>Code</li>
-<li>Data storage</li>
-<li>Reports</li>
-<li>Distribution.</li>
+  <li>Data Management Plan and Data Inventory</li>
+  <li>Method steps</li>
+  <li>Code</li>
+  <li>Data storage</li>
+  <li>Reports</li>
+  <li>Distribution.</li>
 </ul>
 
-
-<h3>Method Steps</h3>
+<h3 id="method-steps">Method Steps</h3>
 
 <p>The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.</p>
 
 <p>A simple way to keep track of the steps, inputs and outputs is shown in the Table below.</p>
 
-<pre><code>library(stringr)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>library(stringr)
 steps &lt;- read.csv(textConnection('
 CLUSTER ,  STEP  , INPUTS                   , OUTPUTS                   
 A  ,  Step1      , "Input 1, Input 2"       , "Output 1"                 
 A  ,  Step2      ,  Input 3                  , Output 2                   
 B  ,  Step3      , "Output 1, Output 2"      , Output 3                  
 '), stringsAsFactors = F, strip.white = T)
-</code></pre>
 
+</code></pre></div></div>
 <p></p>
-
 
 <p>The steps and data listed in the Table above can be visualised.
 To achieve this an R function was written as part of this PhD project and is distributed in my own R package available on Github <a href="https://github.com/ivanhanigan/disentangle">https://github.com/ivanhanigan/disentangle</a>.
-This is the <code>newnode</code> function.  The function returns a string of text
-written in the <code>dot</code> language which can be rendered in R using the
-<code>DiagrammeR</code> package, or the standalone <code>graphviz</code> package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.</p>
+This is the <code class="language-plaintext highlighter-rouge">newnode</code> function.  The function returns a string of text
+written in the <code class="language-plaintext highlighter-rouge">dot</code> language which can be rendered in R using the
+<code class="language-plaintext highlighter-rouge">DiagrammeR</code> package, or the standalone <code class="language-plaintext highlighter-rouge">graphviz</code> package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.</p>
 
-<pre><code>library(disentangle); library(stringr)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>library(disentangle); library(stringr)
 nodes &lt;- newnode(indat = steps,   names_col = "STEP", in_col = "INPUTS",
   out_col = "OUTPUTS", 
   nchar_to_snip = 40)
@@ -118,10 +116,9 @@ cat(nodes);
 sink()
 # or DiagrammeR::grViz(nodes)
 system("dot -Tpdf fig-basic.dot -o fig-basic.pdf")
-</code></pre>
 
+</code></pre></div></div>
 <p></p>
-
 
 <p><img src="/images/fig-basic.png" alt="/images/fig-basic.png" /></p>
 
@@ -145,7 +142,7 @@ system("dot -Tpdf fig-basic.dot -o fig-basic.pdf")
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-10-18 00:00:00 +1100">18 Oct 2015</abbr>
+      <abbr class="published" title="2015-10-18 00:00:00 +0800">18 Oct 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

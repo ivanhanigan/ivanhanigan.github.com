@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,33 +56,28 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>Recently I got a lot of files with columns that are all missing.  I had to modify the 'data_dictionary' function to cope with these so have released version 1.1</li>
-<li><a href="http://ivanhanigan.github.io/disentangle/lib/disentangle_1.1.zip">Windows Version is Downloadable Here</a></li>
-<li>Linux and Mac users can just run this R code</li>
+  <li>Recently I got a lot of files with columns that are all missing.  I had to modify the ‘data_dictionary’ function to cope with these so have released version 1.1</li>
+  <li><a href="http://ivanhanigan.github.io/disentangle/lib/disentangle_1.1.zip">Windows Version is Downloadable Here</a></li>
+  <li>Linux and Mac users can just run this R code</li>
 </ul>
 
-
-<h4>R Code:</h4>
-
-<pre><code>require(devtools)
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(devtools)
 install_github("disentangle", "ivanhanigan")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>In my 'disentangle' package of miscellaneous tools, the data_dictionary function is designed to produce descriptive summary statistics in a familiar way to the FREQUENCIES command for SPSS</li>
-<li>I chose to emulate the SPSS output because I think it is a pretty decent summary statistics table, and there are loads of users who have already been introduced to this style of output</li>
-<li>I wrote it because I had not got exactly what I wanted from the reporttools or stargazer packages which also have similar summary stats functions</li>
-<li>I chose to call it data_dictionary because I think that the alternatives (like 'frequencise' or 'code_book' are not as immediately intuitive as to what you get)</li>
-<li>the function I wrote returns a data.frame with the variable name, a simplified type (character, number or date)</li>
+  <li>In my ‘disentangle’ package of miscellaneous tools, the data_dictionary function is designed to produce descriptive summary statistics in a familiar way to the FREQUENCIES command for SPSS</li>
+  <li>I chose to emulate the SPSS output because I think it is a pretty decent summary statistics table, and there are loads of users who have already been introduced to this style of output</li>
+  <li>I wrote it because I had not got exactly what I wanted from the reporttools or stargazer packages which also have similar summary stats functions</li>
+  <li>I chose to call it data_dictionary because I think that the alternatives (like ‘frequencise’ or ‘code_book’ are not as immediately intuitive as to what you get)</li>
+  <li>the function I wrote returns a data.frame with the variable name, a simplified type (character, number or date)</li>
 </ul>
 
-
-<h4>Code:data-dictionary-function-needed-upgrade-to-my-misc-package</h4>
-
-<pre><code># functions
+<h4 id="codedata-dictionary-function-needed-upgrade-to-my-misc-package">Code:data-dictionary-function-needed-upgrade-to-my-misc-package</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># functions
 require(devtools)
 install_github("disentangle", "ivanhanigan")
 require(disentangle)
@@ -108,44 +103,36 @@ dataDictionary &lt;- data_dictionary(civst_gend_sector,
                                   show_levels = -1)
 
 print(xtable(dataDictionary), type = "html", include.rownames = F)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-
-
 <!-- html table generated in R 3.1.0 by xtable 1.7-1 package -->
-
-
 <!-- Wed Jun 18 22:41:49 2014 -->
-
-
-<TABLE border=1>
-<TR> <TH> Variable </TH> <TH> Type </TH> <TH> Attributes </TH> <TH> Value </TH> <TH> Count </TH> <TH> Percent </TH>  </TR>
-  <TR> <TD> civil_status </TD> <TD> character </TD> <TD> divorced/widowed </TD> <TD>  </TD> <TD> 6 </TD> <TD align="right"> 33.33 </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> married </TD> <TD>  </TD> <TD> 6 </TD> <TD align="right"> 33.33 </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> single </TD> <TD>  </TD> <TD> 6 </TD> <TD align="right"> 33.33 </TD> </TR>
-  <TR> <TD> gender </TD> <TD> character </TD> <TD> female </TD> <TD>  </TD> <TD> 9 </TD> <TD align="right"> 50.00 </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> male </TD> <TD>  </TD> <TD> 9 </TD> <TD align="right"> 50.00 </TD> </TR>
-  <TR> <TD> activity_sector </TD> <TD> character </TD> <TD> primary </TD> <TD>  </TD> <TD> 6 </TD> <TD align="right"> 33.33 </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> secondary </TD> <TD>  </TD> <TD> 6 </TD> <TD align="right"> 33.33 </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> tertiary </TD> <TD>  </TD> <TD> 6 </TD> <TD align="right"> 33.33 </TD> </TR>
-  <TR> <TD> number_of_cases </TD> <TD> number </TD> <TD> Min. </TD> <TD> 0 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> 1st Qu. </TD> <TD> 5 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> Median </TD> <TD> 9 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> Mean </TD> <TD> 15.17 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> 3rd Qu. </TD> <TD> 17 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> Max. </TD> <TD> 50 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD> datevar </TD> <TD> date </TD> <TD> Min. </TD> <TD> 2014-05-26 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> 1st Qu. </TD> <TD> 2014-06-07 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> Median </TD> <TD> 2014-06-15 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> Mean </TD> <TD> 2014-06-14 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> 3rd Qu. </TD> <TD> 2014-06-18 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD>  </TD> <TD>  </TD> <TD> Max. </TD> <TD> 2014-07-05 </TD> <TD>  </TD> <TD align="right">  </TD> </TR>
-  <TR> <TD> missing_blahblah_variable </TD> <TD> missing </TD> <TD> NA's </TD> <TD>  </TD> <TD> 18 </TD> <TD align="right"> 100.00 </TD> </TR>
-  </TABLE>
-
+<table border="1">
+<tr> <th> Variable </th> <th> Type </th> <th> Attributes </th> <th> Value </th> <th> Count </th> <th> Percent </th>  </tr>
+  <tr> <td> civil_status </td> <td> character </td> <td> divorced/widowed </td> <td>  </td> <td> 6 </td> <td align="right"> 33.33 </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> married </td> <td>  </td> <td> 6 </td> <td align="right"> 33.33 </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> single </td> <td>  </td> <td> 6 </td> <td align="right"> 33.33 </td> </tr>
+  <tr> <td> gender </td> <td> character </td> <td> female </td> <td>  </td> <td> 9 </td> <td align="right"> 50.00 </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> male </td> <td>  </td> <td> 9 </td> <td align="right"> 50.00 </td> </tr>
+  <tr> <td> activity_sector </td> <td> character </td> <td> primary </td> <td>  </td> <td> 6 </td> <td align="right"> 33.33 </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> secondary </td> <td>  </td> <td> 6 </td> <td align="right"> 33.33 </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> tertiary </td> <td>  </td> <td> 6 </td> <td align="right"> 33.33 </td> </tr>
+  <tr> <td> number_of_cases </td> <td> number </td> <td> Min. </td> <td> 0 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> 1st Qu. </td> <td> 5 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> Median </td> <td> 9 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> Mean </td> <td> 15.17 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> 3rd Qu. </td> <td> 17 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> Max. </td> <td> 50 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td> datevar </td> <td> date </td> <td> Min. </td> <td> 2014-05-26 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> 1st Qu. </td> <td> 2014-06-07 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> Median </td> <td> 2014-06-15 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> Mean </td> <td> 2014-06-14 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> 3rd Qu. </td> <td> 2014-06-18 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td> Max. </td> <td> 2014-07-05 </td> <td>  </td> <td align="right">  </td> </tr>
+  <tr> <td> missing_blahblah_variable </td> <td> missing </td> <td> NA's </td> <td>  </td> <td> 18 </td> <td align="right"> 100.00 </td> </tr>
+  </table>
 
     <div class="clear"></div>
   </div>
@@ -165,7 +152,7 @@ print(xtable(dataDictionary), type = "html", include.rownames = F)
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2014-06-18 00:00:00 +1000">18 Jun 2014</abbr>
+      <abbr class="published" title="2014-06-18 00:00:00 +0800">18 Jun 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>

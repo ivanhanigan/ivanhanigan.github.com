@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,54 +55,51 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>In Eml the optional "project" module provides an overall description
+    <p>In Eml the optional “project” module provides an overall description
 of the larger-scale project or research context with which that
-dataset is associated. For the examples in our work the "project" will
+dataset is associated. For the examples in our work the “project” will
 most often be an LTER (Longterm Ecological Research Network) site that
-directed the research.  Accordingly, the "title" here consists of the
-name of the LTER site. The "personnel" group contains the same
-elements as "creator" and "contact", with the addition of a mandatory
-"role" element, and it is used to identify the lead PI and/or
+directed the research.  Accordingly, the “title” here consists of the
+name of the LTER site. The “personnel” group contains the same
+elements as “creator” and “contact”, with the addition of a mandatory
+“role” element, and it is used to identify the lead PI and/or
 information manager on the site. Other optional elements in the
-"project" module include "abstract", "funding",
-"studyAreaDescription", and "designDescription", each of which can be
+“project” module include “abstract”, “funding”,
+“studyAreaDescription”, and “designDescription”, each of which can be
 used to provide a richer textual description of the LTER site
 responsible for the research project being documented.  If used, the
-"abstract" includes basic information about the LTER site, such as its
-general history and administration, while "studyAreaDescription" is
+“abstract” includes basic information about the LTER site, such as its
+general history and administration, while “studyAreaDescription” is
 more of a physical description of the area where the site is
-located. This description may also include the "coverage" module,
+located. This description may also include the “coverage” module,
 which is fully discussed on page XX of this handbook, or the
-"citation" module, covered on page XX. The "funding" tag is textual
-and self-explanatory, but "designDescription" is best used for a
+“citation” module, covered on page XX. The “funding” tag is textual
+and self-explanatory, but “designDescription” is best used for a
 description of the site’s database information and availability.</p>
 
-<p>Morpho doesn't give all these options so you need to go to the EML file found in the "~/.morpho/..." directory and edit this with a text editor
-I think the order of the tags here might make a difference so I always put thye "abstract" tag after the "/personnel" tag.  I also think you might need this "para" tag:</p>
+<p>Morpho doesn’t give all these options so you need to go to the EML file found in the “~/.morpho/…” directory and edit this with a text editor
+I think the order of the tags here might make a difference so I always put thye “abstract” tag after the “/personnel” tag.  I also think you might need this “para” tag:</p>
 
-<h4>Code:linking-eml-packages-by-umbrella-project-inf</h4>
-
-<pre><code>&lt;abstract&gt; 
+<h4 id="codelinking-eml-packages-by-umbrella-project-inf">Code:linking-eml-packages-by-umbrella-project-inf</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;abstract&gt; 
   &lt;para&gt;Prof McMichael set up this group to develop new methods of researching Environmental (especially Climate Change) and Health
   &lt;/para&gt;
 &lt;/abstract&gt;
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
+<p>So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an “additionalLinks” node at the bottom of the EML:</p>
 
-<p>So this gives the overarching project a valid reference, but how to provde the links for interested readers to find out more?  First we can include a link to the project homepage from the eml/dataset/abstract node, but also we can provide URLs in a machine-readable way by inserting an "additionalLinks" node at the bottom of the EML:</p>
-
-<h4>Code:linking-eml-packages-by-umbrella-project-info</h4>
-
-<pre><code>&lt;additionalMetadata&gt;
+<h4 id="codelinking-eml-packages-by-umbrella-project-info">Code:linking-eml-packages-by-umbrella-project-info</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;additionalMetadata&gt;
   &lt;metadata&gt;
     &lt;additionalLinks&gt;
       &lt;url name="The name of the homepage"&gt;http://...&lt;/url&gt;
     &lt;/additionalLinks&gt;
   &lt;/metadata&gt;
 &lt;/additionalMetadata&gt;
-</code></pre>
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -122,7 +119,7 @@ I think the order of the tags here might make a difference so I always put thye 
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2014-04-21 00:00:00 +1000">21 Apr 2014</abbr>
+      <abbr class="published" title="2014-04-21 00:00:00 +0800">21 Apr 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>

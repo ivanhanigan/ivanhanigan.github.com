@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,16 +56,14 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>This is a quick post on Quantum GIS for spatial data visualisation</li>
-<li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
-<li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
-<li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
+  <li>This is a quick post on Quantum GIS for spatial data visualisation</li>
+  <li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
+  <li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
+  <li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
 </ul>
 
-
-<h4>R Code: use postgis to create area-concordance</h4>
-
-<pre><code>require(devtools)
+<h4 id="r-code-use-postgis-to-create-area-concordance">R Code: use postgis to create area-concordance</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(devtools)
 install_github("gisviz", "ivanhanigan")
 require(gisviz)
 require(swishdbtools)
@@ -75,7 +73,7 @@ temp_table &lt;- swish_temptable("gislibrary")
 temp_table &lt;- paste("public", temp_table$table, sep = ".")
 temp_table
 # this is going to be public.foo11c7673416ea
-
+ 
 sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
    source_zones_code = 'sla_id', target_table = "abs_sla.nswsla01",
    target_zones_code = "sla_code",
@@ -84,38 +82,32 @@ sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
    eval = F) 
 cat(sql)
 dbSendQuery(ch, sql)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
-<li>and add the layer to the map</li>
-<li>Style it how you like, I also added NSWSLA1991 over the top</li>
-<li>go into the "new print composer"</li>
+  <li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
+  <li>and add the layer to the map</li>
+  <li>Style it how you like, I also added NSWSLA1991 over the top</li>
+  <li>go into the “new print composer”</li>
 </ul>
-
 
 <p><img src="/images/qgis-new-print-composer.png" alt="qgis-new-print-composer.png" /></p>
 
 <p><img src="/images/qgis-add-new-map.png" alt="qgis-add-new-map.png" /></p>
 
-<h3>Results</h3>
-
+<h3 id="results">Results</h3>
 <ul>
-<li>hit the export to image and viola</li>
+  <li>hit the export to image and viola</li>
 </ul>
-
 
 <p><img src="/images/qgis-export-image.png" alt="qgis-export-image.png" /></p>
 
-<h3>Don't forget to clean up the database!</h3>
-
-<h4>R Code:</h4>
-
-<pre><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
-</code></pre>
+<h3 id="dont-forget-to-clean-up-the-database">Don’t forget to clean up the database!</h3>
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -135,7 +127,7 @@ dbSendQuery(ch, sql)
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
+      <abbr class="published" title="2013-10-31 00:00:00 +0800">31 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>

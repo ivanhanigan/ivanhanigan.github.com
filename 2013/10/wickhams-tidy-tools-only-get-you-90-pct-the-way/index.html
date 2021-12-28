@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,41 +55,33 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h4>Hadley Wickham's tidy tools</h4>
-
-<p>In this video at 8 mins 50 seconds he says "these four tools do 90% of the job"</p>
-
-<ul>
-<li>subset,</li>
-<li>transform,</li>
-<li>summarise, and</li>
-<li>arrange</li>
-<li>TODO I noticed <a href="http://www.rstudio.com/training/curriculum/data-manipulation.html">at the website for an Rstudio  course</a> transform has been replaced by mutate as one of the "four basic verbs of data manipulation".</li>
-</ul>
-
-
-<iframe src="//player.vimeo.com/video/33727555" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-
-<p> <p><a href="http://vimeo.com/33727555">Tidy Data</a> from <a href="http://vimeo.com/user2150538">Drew Conway</a> on <a href="https://vimeo.com">Vimeo</a>.</p></p>
-
-<p>So I thought what's the other 10?  Here's a few contenders for my work:</p>
+    <h4 id="hadley-wickhams-tidy-tools">Hadley Wickham’s tidy tools</h4>
+<p>In this video at 8 mins 50 seconds he says “these four tools do 90% of the job”</p>
 
 <ul>
-<li>merge</li>
-<li>reshape::cast and reshape::melt</li>
-<li>unlist</li>
-<li>t() transpose</li>
-<li>sprintf or paste</li>
+  <li>subset,</li>
+  <li>transform,</li>
+  <li>summarise, and</li>
+  <li>arrange</li>
+  <li>TODO I noticed <a href="http://www.rstudio.com/training/curriculum/data-manipulation.html">at the website for an Rstudio  course</a> transform has been replaced by mutate as one of the “four basic verbs of data manipulation”.</li>
 </ul>
 
+<iframe src="//player.vimeo.com/video/33727555" width="500" height="281" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+<p><a href="http://vimeo.com/33727555">Tidy Data</a> from <a href="http://vimeo.com/user2150538">Drew Conway</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
+<p>So I thought what’s the other 10?  Here’s a few contenders for my work:</p>
+
+<ul>
+  <li>merge</li>
+  <li>reshape::cast and reshape::melt</li>
+  <li>unlist</li>
+  <li>t() transpose</li>
+  <li>sprintf or paste</li>
+</ul>
 
 <p></p>
-
-
-<h4>R-subset</h4>
-
-<pre><code># Filter rows by criteria
+<h4 id="r-subset">R-subset</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Filter rows by criteria
 subset(airquality, Temp &gt; 90, select = c(Ozone, Temp))
 
 ## NB This is a convenience function intended for use interactively.  For
@@ -103,22 +95,14 @@ with(airquality,
 
 # OR
 
-airquality[airquality$Temp &gt; 90,  c("Ozone", "Temp")]
-</code></pre>
-
-<h4>R-transform</h4>
-
-<pre><code># New columns that are functions of other columns       
+airquality[airquality$Temp &gt; 90,  c("Ozone", "Temp")] #### R-transform
+# New columns that are functions of other columns       
 df &lt;- transform(airquality,
                 new = -Ozone,
                 Temp2 = (Temp-32)/1.8
                 )
-head(df)
-</code></pre>
-
-<h4>R-mutate</h4>
-
-<pre><code>require(plyr)
+head(df) #### R-mutate
+require(plyr)
 # same thing as transform
 df &lt;- mutate(airquality, new = -Ozone, Temp = (Temp - 32) / 1.8)    
 # Things transform can't do
@@ -126,12 +110,8 @@ df &lt;- mutate(airquality, Temp = (Temp - 32) / 1.8, OzT = Ozone / Temp)
 
 # mutate is rather faster than transform
 system.time(transform(baseball, avg_ab = ab / g))
-system.time(mutate(baseball, avg_ab = ab / g))
-</code></pre>
-
-<h4>R-summarise</h4>
-
-<pre><code># New data.frame where columns are functions of existing columns
+system.time(mutate(baseball, avg_ab = ab / g)) #### R-summarise
+# New data.frame where columns are functions of existing columns
 require(plyr)    
 df &lt;- ddply(.data = airquality,
             .variables = "Month",
@@ -141,11 +121,10 @@ df &lt;- ddply(.data = airquality,
             ndays = length(unique(Day))
             )
 head(df)
-</code></pre>
+</code></pre></div></div>
 
-<h4>Passing variables to ddply for summary</h4>
-
-<pre><code># Notice how the name of the variable Temp doesn't need quotes?
+<h4 id="passing-variables-to-ddply-for-summary">Passing variables to ddply for summary</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Notice how the name of the variable Temp doesn't need quotes?
 # this means that you need to hard code the names
 # But if you want to pass variables to this inside a function we need a
 # different approach.
@@ -172,11 +151,10 @@ df2 &lt;- summarise_df(x = airquality, by = "Month",
 head(df2)
 all.equal(df,df2)
 # TRUE
-</code></pre>
+</code></pre></div></div>
 
-<h4>Another alternative, if we want to pass the dataset as string too</h4>
-
-<pre><code>summarise_df2  &lt;- function(x, by, var1, var2, var3)
+<h4 id="another-alternative-if-we-want-to-pass-the-dataset-as-string-too">Another alternative, if we want to pass the dataset as string too</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>summarise_df2  &lt;- function(x, by, var1, var2, var3)
   {
     data_out &lt;- eval(
       parse(
@@ -200,15 +178,11 @@ df3 &lt;- summarise_df2(x = "airquality", by = "Month",
                      )
 head(df3)
 all.equal(df, df3)
-# TRUE
-</code></pre>
-
-<h4>R-arrange</h4>
-
-<pre><code># Re-order the rows of a data.frame
+# TRUE #### R-arrange
+# Re-order the rows of a data.frame
 df &lt;- arrange(airquality, Temp, Ozone)
 head(df)
-</code></pre>
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -228,7 +202,7 @@ head(df)
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-10-10 00:00:00 +1100">10 Oct 2013</abbr>
+      <abbr class="published" title="2013-10-10 00:00:00 +0800">10 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>

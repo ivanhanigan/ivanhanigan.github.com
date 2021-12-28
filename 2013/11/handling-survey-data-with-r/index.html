@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -57,41 +57,36 @@
   <div class="entry-content full-content">
     <p>R is generally very good for handling many different data types but</p>
 
-<h3>R has problems with survey data</h3>
+<h3 id="r-has-problems-with-survey-data">R has problems with survey data</h3>
 
 <p>This post is a stub about what packages Ive found with methods allowing to handle efficiently survey data: handle variable labels, values labels, and retrieve information about missing values</p>
 
-<h4>Base R:</h4>
-
-<pre><code>## Not run:
+<h4 id="base-r">Base R:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Not run:
 require(foreign)
 analyte  &lt;- read.spss(filename, to.data.frame=T) 
 varslist &lt;- as.data.frame(attributes(analyte)$variable.labels)
 # this gives a pretty useful thing to use
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
+<p>While I was digging around in <a href="http://mephisto.unige.ch/traminer">TraMineR</a> I found this link to Dataset, Emmanuel Rousseaux’s package for handling, documenting and describing data sets of survey data.</p>
 
-<p>While I was digging around in <a href="http://mephisto.unige.ch/traminer">TraMineR</a> I found this link to Dataset, Emmanuel Rousseaux's package for handling, documenting and describing data sets of survey data.</p>
-
-<h4>Code:Dataset, a package for handling-survey-data-with-r</h4>
-
-<pre><code>if(!require(Dataset)) install.packages("Dataset", repos="http://R-Forge.R-project.org");
+<h4 id="codedataset-a-package-for-handling-survey-data-with-r">Code:Dataset, a package for handling-survey-data-with-r</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if(!require(Dataset)) install.packages("Dataset", repos="http://R-Forge.R-project.org");
 require(Dataset)
 data(dds)
 str(dds)
 # cool
 description(dds$sexe)
 # excellent!
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
+<h3 id="conclusions">Conclusions</h3>
 
-<h3>Conclusions</h3>
-
-<p>I'm sure there are plenty of other approaches.  I'll add them as I find them'</p>
+<p>I’m sure there are plenty of other approaches.  I’ll add them as I find them’</p>
 
     <div class="clear"></div>
   </div>
@@ -111,7 +106,7 @@ description(dds$sexe)
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-11-06 00:00:00 +1100">06 Nov 2013</abbr>
+      <abbr class="published" title="2013-11-06 00:00:00 +0800">06 Nov 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>

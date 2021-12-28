@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,31 +55,28 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>I've learnt this lesson multiple times. It happens like this.  A solution is not immediately obvious in R so you might think of writing your own function.  Generally there is a solution you just did not google enough.
+    <p>I’ve learnt this lesson multiple times. It happens like this.  A solution is not immediately obvious in R so you might think of writing your own function.  Generally there is a solution you just did not google enough.
 This time I was tricked a little because the GIS functions have been bad for a long time but getting better very rapidly recently.  A little while ago I had a very successful
-outcome from using the <code>raster::extract</code> function on a large raster file
+outcome from using the <code class="language-plaintext highlighter-rouge">raster::extract</code> function on a large raster file
 to get the attributes for a set of points.  I needed to do the same
 thing but this time for a shapefile and points.  I looked at the
-raster package and saw you can use the <code>raster::intersect</code> function
+raster package and saw you can use the <code class="language-plaintext highlighter-rouge">raster::intersect</code> function
 here, and it worked on the small sample data I tested with but failed
 with the big dataset as it ran out of memory.  I assumed that R had not caught up with the GIS world yet and so I came up with this workaround below by splitting the points data layer into chunks.</p>
 
 <p>I then got access to ArcMap and was wondering whether it could do it, and it DID!
 So then I googled a bit and found the solution was simple:</p>
 
-<h4>Code:</h4>
-
-<pre><code>sp::over()
-</code></pre>
+<h4 id="code">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sp::over()
+</code></pre></div></div>
 
 <p></p>
 
-
 <p>Here is my hack in case I ever need to pull out the bit that does the splitting up of the points file, or the tryCatch():</p>
 
-<h4>Code:</h4>
-
-<pre><code>big_pt_intersect &lt;- function(pts, ply, chunks = 100){
+<h4 id="code-1">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>big_pt_intersect &lt;- function(pts, ply, chunks = 100){
   idx &lt;- split(pts@data, 1:chunks)
   #str(idx)
   for(i in 1:length(idx)){
@@ -93,23 +90,22 @@ So then I googled a bit and found the solution was simple:</p>
     chunk &lt;-  raster::intersect(qc, ply), 
     error = function(err){print(err)})
   if(!exists('chunk_out')){
-
+  
     chunk_out &lt;- chunk@data
   } else {
     chunk_out &lt;- rbind(chunk_out, chunk@data)
   }
   rm(chunk)
-
+  
   }
   #str(chunk_out)
   return(chunk_out)
 }
 # NB warning about split length multiple is not fatal, just due to nonequal chunks 
 # (ie the geocodes are 2009/100)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
     <div class="clear"></div>
   </div>
@@ -129,7 +125,7 @@ So then I googled a bit and found the solution was simple:</p>
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-09-17 00:00:00 +1000">17 Sep 2015</abbr>
+      <abbr class="published" title="2015-09-17 00:00:00 +0800">17 Sep 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

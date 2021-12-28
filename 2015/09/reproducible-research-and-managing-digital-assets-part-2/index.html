@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,37 +56,34 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <p>This post is about an effective and simple data management framework for analysis projects.
-This post introduces Josh Reich's LCFD framework, originally introduced in this answer on the stack overflow website here <a href="http://stackoverflow.com/a/1434424">http://stackoverflow.com/a/1434424</a>, and encoded into the makeProject R package <a href="http://cran.r-project.org/web/packages/makeProject/makeProject.pdf">http://cran.r-project.org/web/packages/makeProject/makeProject.pdf</a>.</p>
+This post introduces Josh Reich’s LCFD framework, originally introduced in this answer on the stack overflow website here <a href="http://stackoverflow.com/a/1434424">http://stackoverflow.com/a/1434424</a>, and encoded into the makeProject R package <a href="http://cran.r-project.org/web/packages/makeProject/makeProject.pdf">http://cran.r-project.org/web/packages/makeProject/makeProject.pdf</a>.</p>
 
-<h2>Literature Review Approach</h2>
+<h2 id="literature-review-approach">Literature Review Approach</h2>
 
 <p>This series of three posts is a summary of some of the most useful advice I have found based on my experience having implemented in my own work.</p>
 
 <p>This is the second post in a series of three entries regarding some evidence-based best practice approaches I have reviewed.  I have read many website articles and blog posts on a variety of approaches to the organisation of digital assets in a reporoducible research pipeline.
-The material I've gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.</p>
+The material I’ve gathered in my ongoing search and opportunistic readings regarding best practice in this area have been recommended by practitioners which provides some weight of evidence.  In addition I have implemented some aspects of the many techniques and the reproducibility of my own work has improved greatly.</p>
 
-<h2>Digital Assets Management for Reproducible Research</h2>
+<h2 id="digital-assets-management-for-reproducible-research">Digital Assets Management for Reproducible Research</h2>
 
 <p>The digital assets in a reproducible research pipeline include:</p>
 
 <ol>
-<li>Publication material (documents, figures, tables, literature)</li>
-<li>Data (raw measurements, data provided, data derived)</li>
-<li>Code (pre-processing, analysis and presentation)</li>
+  <li>Publication material (documents, figures, tables, literature)</li>
+  <li>Data (raw measurements, data provided, data derived)</li>
+  <li>Code (pre-processing, analysis and presentation)</li>
 </ol>
 
-
-<h2>How to use the <code>makeProject</code> package</h2>
+<h2 id="how-to-use-the-makeproject-package">How to use the <code class="language-plaintext highlighter-rouge">makeProject</code> package</h2>
 
 <ul>
-<li>The <code>makeProject</code> R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.</li>
-<li>The theory is very similar to the approach described in the previous post about Scott Long's batch script: wfsetupsingle.bat <a href="https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets">https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets</a></li>
+  <li>The <code class="language-plaintext highlighter-rouge">makeProject</code> R package is designed to create a folder and some R scripts that are useful for generic workflow tasks.</li>
+  <li>The theory is very similar to the approach described in the previous post about Scott Long’s batch script: wfsetupsingle.bat <a href="https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets">https://ivanhanigan.github.com/2015/09/reproducible-research-and-managing-digital-assets</a></li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code># choose your project dir
+<h4 id="code">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># choose your project dir
 setwd("~/projects")   
 library(makeProject)
 makeProject("makeProjectDemo")
@@ -99,47 +96,43 @@ matrix(dir("makeProjectDemo"))
 #[2,] "data"       
 #[3,] "DESCRIPTION"
 #[4,] "main.R"     
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>This has set up some simple and sensible tools for a data analysis.</li>
-<li>Let's have a look at the <code>main.R</code> script. This is the one file that is used to run all the modules of the project, found in the R scripts in the <code>code</code> folder.</li>
+  <li>This has set up some simple and sensible tools for a data analysis.</li>
+  <li>Let’s have a look at the <code class="language-plaintext highlighter-rouge">main.R</code> script. This is the one file that is used to run all the modules of the project, found in the R scripts in the <code class="language-plaintext highlighter-rouge">code</code> folder.</li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code># Project: makeProjectDemo
+<h4 id="code-1">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Project: makeProjectDemo
 # Author: Your Name
 # Maintainer: Who to complain to &lt;yourfault@somewhere.net&gt;
-
+ 
 # This is the main file for the project
 # It should do very little except call the other files
-
+ 
 ### Set the working directory
 setwd("/home/ivan_hanigan/projects/makeProjectDemo")
-
-
+ 
+ 
 ### Set any global variables here
 ####################
-
-
-
+ 
+ 
+ 
 ####################
-
-
+ 
+ 
 ### Run the code
 source("code/load.R")
 source("code/clean.R")
 source("code/func.R")
 source("code/do.R")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>I think that is very self-explanatory, but it does need some demonstration.  The next instalment in this three part blog post will describe the ProjectTemplate approach.  After that I will demonstrate ways that each of the three approaches can be used.</p>
 
@@ -161,7 +154,7 @@ source("code/do.R")
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-09-26 00:00:00 +1000">26 Sep 2015</abbr>
+      <abbr class="published" title="2015-09-26 00:00:00 +0800">26 Sep 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

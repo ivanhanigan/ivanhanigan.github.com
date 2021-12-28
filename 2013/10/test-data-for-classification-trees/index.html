@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,22 +55,23 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h4>A fictitious sample dataset</h4>
-
-<p>For discussion, I'll use a fictional example dataset that I'm using to work through some statistical theory related to Classification and Regression Trees (CART).
+    <h4 id="a-fictitious-sample-dataset">A fictitious sample dataset</h4>
+<p>For discussion, I’ll use a fictional example dataset that I’m using to work through some statistical theory related to Classification and Regression Trees (CART).
 In the motivating example use case we are interested in predicting the civil status (married, single, divorced/widowed) of individuals from their sex (male, female) and sector of activity (primary, secondary, tertiary). The data set is composed of 273 cases.</p>
 
 <p>The data (and related statistical theory) come from:</p>
 
 <ul>
-<li><p>Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf">This Link</a></p></li>
-<li><p>Ritschard, G., Pisetta, V., &amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf">This Link</a></p></li>
+  <li>
+    <p>Ritschard, G. (2006). Computing and using the deviance with classification trees. In Compstat 2006 - Proceedings in Computational Statistics 17th Symposium Held in Rome, Italy, 2006. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritschard_compstat06.pdf">This Link</a></p>
+  </li>
+  <li>
+    <p>Ritschard, G., Pisetta, V., &amp; Zighed, D. (2008). Inducing and evaluating classification trees with statistical implicative criteria. Statistical Implicative Analysis. Studies in Computational Intelligence Volume 127, pp 397-419. Retrieved from <a href="http://mephisto.unige.ch/pub/publications/gr/ritsch-pisetta-zighed_bookGras_rev.pdf">This Link</a></p>
+  </li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code># copy and paste the data from the PDF (Table 1 in both papers)
+<h4 id="code">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># copy and paste the data from the PDF (Table 1 in both papers)
 civst_gend_sector  &lt;- read.csv(textConnection(
     "civil_status gender activity_sector number_of_cases
          married   male         primary              50
@@ -97,17 +98,15 @@ divorced/widowed female        tertiary               2
 # for use later when I am exploring functions
 dir.create("inst/extdata", recursive=T)
 write.csv(civst_gend_sector, "inst/extdata/civst_gend_sector.csv", row.names = F)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>That is fine and good, we can use the case weights option to include number of cases but sometimes we want to use one row per person.
 In the next chunk of code I;ll reformat the data, and also add another fictitious variable called income and contrive an example where a certain group earns less based on their activity sector.</p>
 
-<h4>Code:</h4>
-
-<pre><code>df &lt;- as.data.frame(matrix(NA, nrow = 0, ncol = 3))
+<h4 id="code-1">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df &lt;- as.data.frame(matrix(NA, nrow = 0, ncol = 3))
 for(i in 1:nrow(civst_gend_sector))
     {
     #    i &lt;- 1
@@ -117,7 +116,7 @@ for(i in 1:nrow(civst_gend_sector))
             {
               df &lt;- rbind(df, civst_gend_sector[i,1:3])              
             }
-
+ 
     }
 
 df$income  &lt;- rnorm(nrow(df), 1000,200)
@@ -126,37 +125,33 @@ df$income[df$gender == "male" &amp; df$activity == "secondary"]  &lt;- df$income
 str(df)
 # save this for use later
 write.csv(df, "inst/extdata/civst_gend_sector_full.csv", row.names = F)
-</code></pre>
+</code></pre></div></div>
 
-<h4>Motivating reason for using these data</h4>
-
+<h4 id="motivating-reason-for-using-these-data">Motivating reason for using these data</h4>
 <p>Classification and Regression Tree models (also referred to as Decision Trees) are one of the building blocks of data mining and a great tool for Exploratory Data Analysis.</p>
 
-<p>I've mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.</p>
+<p>I’ve mostly used Regression Trees in the past but recently got some work with social science data where Classification Trees were needed.  I wanted to assess the deviance as well as the misclassification error rate for measuring the descriptive power of the tree.  While this is a easy with Regression Trees it became obvious that it was not so easy with Classification Trees.  This is because Classification Trees are most often evaluated by means of the error rate. The problem with the error rate is that it is not that helpful for assessing the descriptive capacity of the tree.</p>
 
 <p>For example if we look at the reduction in deviance between the Null model and the fitted tree we can say that the tree explains about XYZ% of the variation. We can also test if this is a statistically significant reduction based on a chi-squared test.</p>
 
 <p>Consider this example from page 310 of Hastie, T., Tibshirani, R., &amp; Friedman, J. (2001). The elements of statistical learning. 2nd Edition:</p>
 
 <ul>
-<li>in a two-class problem with 400 observations in each class (denote this by (400, 400))</li>
-<li>suppose one split created nodes (300, 100) and (100, 300),</li>
-<li>the other created nodes (200, 400) and (200, 0).</li>
-<li>Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.</li>
+  <li>in a two-class problem with 400 observations in each class (denote this by (400, 400))</li>
+  <li>suppose one split created nodes (300, 100) and (100, 300),</li>
+  <li>the other created nodes (200, 400) and (200, 0).</li>
+  <li>Both splits produce a misclassification rate of 0.25, but the second split produces a pure node and is probably preferable.</li>
 </ul>
 
+<p>During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write… I thought would publish it properly.</p>
 
-<p>During the course of my research to try to identify the best available method to implement in my analysis I found a useful series of papers by Ritschard, with a worked example using SPSS.  I hope to translate that to R in the future, but the first thing I did was grab the example data used in several of those papers out of the PDF.  So seeing as this was a public dataset (I use a lot of restricted data) and because I want to be able to use it to demonstrate the use of any R functions I find or write... I thought would publish it properly.</p>
-
-<h4>The Tree Model</h4>
-
-<p>So just before we leave Ritschard and the CART method, let's just fit the model.  Let's also install my R utilities package "disentangle", to test that we can access the data from it.</p>
+<h4 id="the-tree-model">The Tree Model</h4>
+<p>So just before we leave Ritschard and the CART method, let’s just fit the model.  Let’s also install my R utilities package “disentangle”, to test that we can access the data from it.</p>
 
 <p>In this analysis the civil status is the outcome (or response or decision or dependent) variable, while sex and activity sector are the predictors (or condition or independent variables).</p>
 
-<h4>Code:</h4>
-
-<pre><code># func
+<h4 id="code-2">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># func
 require(rpart)
 require(partykit) 
 require(devtools)
@@ -177,16 +172,15 @@ fit &lt;- rpart(civil_status ~ gender + activity_sector,
              control=rpart.control(minsplit=1))
 # NB need minsplit to be adjusted for weights.
 summary(fit)
-
+  
 # report
 dir.create("images")
 png("images/fit1.png", 1000, 480)
 plot(as.party(fit))
 dev.off()
-</code></pre>
+</code></pre></div></div>
 
-<h4>The Result</h4>
-
+<h4 id="the-result">The Result</h4>
 <p><img src="/images/fit1.png" alt="fit1.png" /></p>
 
     <div class="clear"></div>
@@ -207,7 +201,7 @@ dev.off()
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-10-10 00:00:00 +1100">10 Oct 2013</abbr>
+      <abbr class="published" title="2013-10-10 00:00:00 +0800">10 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>

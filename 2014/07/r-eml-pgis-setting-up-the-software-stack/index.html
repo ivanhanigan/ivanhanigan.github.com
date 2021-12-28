@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,81 +55,67 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h2>r-eml</h2>
+    <h2 id="r-eml">r-eml</h2>
 
 <ul>
-<li>this is the R package for authoring EML</li>
+  <li>this is the R package for authoring EML</li>
 </ul>
 
-
-<h2>pgis</h2>
+<h2 id="pgis">pgis</h2>
 
 <ul>
-<li>This is a spatial database</li>
+  <li>This is a spatial database</li>
 </ul>
 
-
-<h2>System Description</h2>
+<h2 id="system-description">System Description</h2>
 
 <ul>
-<li>Ubuntu 12.04 LTS</li>
-<li>Macpro Tower</li>
+  <li>Ubuntu 12.04 LTS</li>
+  <li>Macpro Tower</li>
 </ul>
 
+<h2 id="eml-is-a-useful-beast">EML is a useful beast</h2>
 
-<h2>EML is a useful beast</h2>
-
-<h3>setting-up-the-software-stack</h3>
+<h3 id="setting-up-the-software-stack">setting-up-the-software-stack</h3>
 
 <ul>
-<li>First I needed devtools and this required RCurl linux package dependencies</li>
+  <li>First I needed devtools and this required RCurl linux package dependencies</li>
 </ul>
 
-
-<h4>Code</h4>
-
-<pre><code>sudo apt-get install libcurl libcurl-devel libcurl4-gnutls-dev
-</code></pre>
+<h4 id="code">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install libcurl libcurl-devel libcurl4-gnutls-dev
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>Now trying to install EML</li>
+  <li>Now trying to install EML</li>
 </ul>
 
-
-<h4>Code</h4>
-
-<pre><code>require(devtools)
+<h4 id="code-1">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(devtools)
 install_github("EML", "ropensci")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>then XML Depends</li>
+  <li>then XML Depends</li>
 </ul>
 
-
-<h4>Code</h4>
-
-<pre><code>sudo apt-get install libcurl4-openssl-dev libxml2-dev
+<h4 id="code-2">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install libcurl4-openssl-dev libxml2-dev
 sudo apt-get install r-cran-xml
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>rJava can be difficult, I was really dreading this but eventually stackoverflow to the rescue!</li>
+  <li>rJava can be difficult, I was really dreading this but eventually stackoverflow to the rescue!</li>
 </ul>
 
-
-<h4>Code</h4>
-
-<pre><code>sudo apt-get install openjdk-7-*
+<h4 id="code-3">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install openjdk-7-*
 sudo apt-get install r-cran-rjava
 update-java-alternatives -l
 sudo update-java-alternatives -s java-1.7.0-openjdk-amd64 
@@ -137,68 +123,56 @@ sudo R CMD javareconf
 R
 install.packages("rJava")
 library(rJava)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>now complaining about ‘RHTMLForms’ and ‘RWordXML’</li>
+  <li>now complaining about ‘RHTMLForms’ and ‘RWordXML’</li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code>install_github("RHTMLForms", "omegahat")
+<h4 id="code-4">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>install_github("RHTMLForms", "omegahat")
 install.packages("RWordXML", repos="http://www.omegahat.org/R", type="source")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>on we go</li>
+  <li>on we go</li>
 </ul>
 
-
-<h4>Code</h4>
-
-<pre><code>install.packages(c("knitr", "rfigshare", "testthat", "RCurl", "dataone", "rrdf"))
-</code></pre>
+<h4 id="code-5">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>install.packages(c("knitr", "rfigshare", "testthat", "RCurl", "dataone", "rrdf"))
+</code></pre></div></div>
 
 <p></p>
 
-
-<h2>RGDAL</h2>
+<h2 id="rgdal">RGDAL</h2>
 
 <ul>
-<li>Spatial toolbox</li>
+  <li>Spatial toolbox</li>
 </ul>
 
-
-<h4>Code</h4>
-
-<pre><code>sudo apt-get update
+<h4 id="code-6">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install libgdal1-dev libproj-dev
 gdal-config --version
 sudo R
 install.packages("rgdal")
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h2>PostgreSQL 9.3</h2>
+<h2 id="postgresql-93">PostgreSQL 9.3</h2>
 
 <ul>
-<li>following comes from <a href="http://technobytz.com/install-postgresql-9-3-ubuntu.html">http://technobytz.com/install-postgresql-9-3-ubuntu.html</a></li>
+  <li>following comes from <a href="http://technobytz.com/install-postgresql-9-3-ubuntu.html">http://technobytz.com/install-postgresql-9-3-ubuntu.html</a></li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code>sudo apt-get update
+<h4 id="code-7">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get update
 sudo apt-get -y install python-software-properties
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" &gt;&gt; /etc/apt/sources.list.d/postgresql.list'
@@ -215,21 +189,18 @@ sudo nano /etc/postgresql/9.3/main/postgresql.conf
 # listenaddresses = *
 sudo services postgresql restart
 sudo ufw allow from my.ip.address.0/24 to any port 5432
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h2>PostGIS 2.0</h2>
+<h2 id="postgis-20">PostGIS 2.0</h2>
 
 <ul>
-<li>following comes from <a href="http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html">http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html</a></li>
+  <li>following comes from <a href="http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html">http://technobytz.com/install-postgis-postgresql-9-3-ubuntu.html</a></li>
 </ul>
 
-
-<h4>Code:</h4>
-
-<pre><code>sudo apt-get update
+<h4 id="code-8">Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get update
 sudo apt-get install postgresql-9.3-postgis-2.1 -f
 sudo su
 su - postgres
@@ -249,22 +220,19 @@ grant select on table spatial_ref_sys to public_group;
 grant select on table geography_columns to public_group;
 grant select on table raster_columns to public_group;
 grant select on table raster_overviews to public_group;
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h2>For transforming AGD 66 to GDA94</h2>
+<h2 id="for-transforming-agd-66-to-gda94">For transforming AGD 66 to GDA94</h2>
 
 <ul>
-<li>A special transformations grid file is required to be added to the PROJ.4 files for reprojecting the Australian projections AGD66 to GDA94.</li>
-<li>Thanks to <a href="https://github.com/josephguillaume">Joe Guillaume</a> and <a href="http://stackoverflow.com/users/103225/fmark">Francis Markham</a> for providing this solution.</li>
+  <li>A special transformations grid file is required to be added to the PROJ.4 files for reprojecting the Australian projections AGD66 to GDA94.</li>
+  <li>Thanks to <a href="https://github.com/josephguillaume">Joe Guillaume</a> and <a href="http://stackoverflow.com/users/103225/fmark">Francis Markham</a> for providing this solution.</li>
 </ul>
 
-
-<h4>Code: transformations grid for Australian projections</h4>
-
-<pre><code>cd /usr/share/proj
+<h4 id="code-transformations-grid-for-australian-projections">Code: transformations grid for Australian projections</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /usr/share/proj
 wget http://www.icsm.gov.au/gda/gdatm/national66.zip  
 unzip national66.zip
 mv "A66 National (13.09.01).gsb" aust_national_agd66_13.09.01.gsb
@@ -276,49 +244,43 @@ proj4text='+proj=longlat +ellps=aust_SA +nadgrids=aust_national_agd66_13.09.01.g
 where srid=4202;
 \q
 exit
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
 
-
-<h2>make a spatial dataset</h2>
-
-<h4>Code</h4>
-
-<pre><code>require(devtools)
+<h2 id="make-a-spatial-dataset">make a spatial dataset</h2>
+<h4 id="code-9">Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(devtools)
 install_github("swishdbtools", "swish-climate-impact-assessment")
 require(swishdbtools)
 require(ggmap)
-
+ 
 ch  &lt;- connect2postgres2("postgis_ltern")
-
+ 
 location_names &lt;- c("linnaeus way acton canberra act", "biology place acton canberra act")
 locations &lt;- geocode(location_names)
 locations &lt;- cbind(location_names, locations)
-
+ 
 dbWriteTable(ch, "anu_gisforum_locations", locations, row.names = F)
 sql &lt;- points2geom("public", "anu_gisforum_locations", col_lat = "lat", col_long = "lon")
 cat(sql)
 dbSendQuery(ch,
             sql
             )
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h2>This can now be shown in Quantum GIS</h2>
+<h2 id="this-can-now-be-shown-in-quantum-gis">This can now be shown in Quantum GIS</h2>
 
 <p><img src="/images/gisforum_locations.png" alt="images/gisforum_locations.png" /></p>
 
-<h3>TODO:</h3>
+<h3 id="todo">TODO:</h3>
 
 <ul>
-<li>add EML for this using R</li>
-<li>finesse with Morpho (requires further Java shennanigans)</li>
-<li>publish something to KNB using R dataone package</li>
+  <li>add EML for this using R</li>
+  <li>finesse with Morpho (requires further Java shennanigans)</li>
+  <li>publish something to KNB using R dataone package</li>
 </ul>
-
 
     <div class="clear"></div>
   </div>
@@ -338,7 +300,7 @@ dbSendQuery(ch,
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2014-07-12 00:00:00 +1000">12 Jul 2014</abbr>
+      <abbr class="published" title="2014-07-12 00:00:00 +0800">12 Jul 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>

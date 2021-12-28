@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,46 +56,42 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>Studies of extreme weather events such as drought require long term climate data</li>
-<li>these are available at continental scale derived from</li>
-<li>observations from a network of weather stations that are interpolated to a surface</li>
-<li>I have been working on techniques with R and online resources (the Australian Water Availabilty Project AWAP) to make working with these long term climatology datasets easier.</li>
-<li>The package is in development at <a href="https://github.com/swish-climate-impact-assessment/awaptools">https://github.com/swish-climate-impact-assessment/awaptools</a></li>
+  <li>Studies of extreme weather events such as drought require long term climate data</li>
+  <li>these are available at continental scale derived from</li>
+  <li>observations from a network of weather stations that are interpolated to a surface</li>
+  <li>I have been working on techniques with R and online resources (the Australian Water Availabilty Project AWAP) to make working with these long term climatology datasets easier.</li>
+  <li>The package is in development at <a href="https://github.com/swish-climate-impact-assessment/awaptools">https://github.com/swish-climate-impact-assessment/awaptools</a></li>
 </ul>
 
-
-<h2>Case Study</h2>
+<h2 id="case-study">Case Study</h2>
 
 <ul>
-<li>aim is need to look at seasonal rainfall means.</li>
-<li>first thing is to download the data (I'm also working on a Rstudio server to host these data, as a Virtual Lab).</li>
-<li>data = multiple years of monthly rainfall data in a raster grid format.</li>
-<li>aim = combine rainfall in a seasonal basis in one grid</li>
-<li>(i.e. M-J-J-A-S-O 1900, 1901 etc.) calculate mean of each cell.</li>
-<li>assumption1 = filenames have year, month embedded so they will be sorted in order when listed</li>
-<li>assumption2 = all months are available, from 1:12 for all years in</li>
-<li>study period</li>
-<li>notes:</li>
-<li>this requires the files are listed in the right order by name, and all months are present. might be better to use grep on the file name and strsplit/substr to extract the month identifier more precisely?</li>
+  <li>aim is need to look at seasonal rainfall means.</li>
+  <li>first thing is to download the data (I’m also working on a Rstudio server to host these data, as a Virtual Lab).</li>
+  <li>data = multiple years of monthly rainfall data in a raster grid format.</li>
+  <li>aim = combine rainfall in a seasonal basis in one grid</li>
+  <li>(i.e. M-J-J-A-S-O 1900, 1901 etc.) calculate mean of each cell.</li>
+  <li>assumption1 = filenames have year, month embedded so they will be sorted in order when listed</li>
+  <li>assumption2 = all months are available, from 1:12 for all years in</li>
+  <li>study period</li>
+  <li>notes:</li>
+  <li>this requires the files are listed in the right order by name, and all months are present. might be better to use grep on the file name and strsplit/substr to extract the month identifier more precisely?</li>
 </ul>
 
-
-<h3>Results</h3>
+<h3 id="results">Results</h3>
 
 <p><img src="/images/season_hot.png" alt="alttext" /></p>
 
-<h3>I'm looking for collaboration on this!</h3>
+<h3 id="im-looking-for-collaboration-on-this">I’m looking for collaboration on this!</h3>
 
 <ul>
-<li>I've been in contact with:</li>
-<li><a href="https://github.com/RationShop/rain_r/wiki/The-Rain-Project">https://github.com/RationShop/rain_r/wiki/The-Rain-Project</a></li>
-<li>I apologise to windoze users but feel a bit like <a href="http://librestats.com/2014/02/24/how-to-make-a-bad-password-with-r/">this guy</a> when recomending how to install:</li>
+  <li>I’ve been in contact with:</li>
+  <li><a href="https://github.com/RationShop/rain_r/wiki/The-Rain-Project">https://github.com/RationShop/rain_r/wiki/The-Rain-Project</a></li>
+  <li>I apologise to windoze users but feel a bit like <a href="http://librestats.com/2014/02/24/how-to-make-a-bad-password-with-r/">this guy</a> when recomending how to install:</li>
 </ul>
 
-
-<h4>quote:</h4>
-
-<pre><code>probably the easiest way to do this is to use
+<h4 id="quote">quote:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>probably the easiest way to do this is to use
 Hadley's devtools package.  Assuming you have devtools and my package's
 dependencies.  If you're using Linux or the BSD's, this should just
 work.  Welcome to the good life, player.  I think this will work out
@@ -104,14 +100,12 @@ you strange people get anything done amazes me.  At the least,
 Im guessing you have to install Rtools first.  
 You could also just source all the R scripts like 
 some kind of barbarian
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h4>R Code:</h4>
-
-<pre><code># depends
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># depends
 require(swishdbtools)
 if(!require(raster)) install.packages("raster", dependencies = T); require(raster)
 if(!require(rgdal)) install.packages("rgdal", dependencies = T); require(rgdal)
@@ -123,7 +117,7 @@ require(awaptools)
 
 homedir &lt;- "~/data/AWAP_GRIDS/data"
 outdir &lt;- "~/data/AWAP_GRIDS/data-seasonal-vignette"
-
+ 
 # first make sure there are no left over files from previous runs
 #oldfiles &lt;- list.files(pattern = '.tif', full.names=T) 
 #for(oldfile in oldfiles)
@@ -133,7 +127,7 @@ outdir &lt;- "~/data/AWAP_GRIDS/data-seasonal-vignette"
 #}
 ################################################
 setwd(homedir)
-
+ 
 # local customisations
 workdir  &lt;- homedir
 setwd(workdir)
@@ -145,7 +139,7 @@ startdate &lt;- "2013-01-01"
 enddate &lt;- "2014-01-31"
 # do
 load_monthly(start_date = startdate, end_date = enddate)
-
+ 
 # do
 filelist &lt;- dir(pattern = "grid.Z$")
 for(fname in filelist)
@@ -158,12 +152,12 @@ for(fname in filelist)
   writeRaster(r, fout, format="GTiff",  overwrite = TRUE)
   file.remove(fin)
 }
-
+ 
 cfiles &lt;- list.files(pattern = '.tif', full.names=T) 
 # loop thru
 # NEED TO SET THE FILESOFSEASEON_I counter EACH TIME YOU start
-
-
+ 
+ 
 for(season in c("hot", "cool"))
 {
   # season &lt;- "hot" # for labelling
@@ -175,16 +169,16 @@ for(season in c("hot", "cool"))
     filesOfSeason_i &lt;- c(11,12,13,14,15,16) 
     endat &lt;- lengthYears - 1
   }
-
+  
   for (year in 1:endat){ 
     ## setup for checking month 
     # year  &lt;- 1 #endat
-
-
+    
+    
     ## checking
     print(cat("####################\n\n"))
     print(cfiles[filesOfSeason_i])
-
+    
     b &lt;- brick(stack(cfiles[filesOfSeason_i])) 
     ## calculate mean 
     m &lt;- mean(b) 
@@ -194,7 +188,7 @@ for(season in c("hot", "cool"))
     filesOfSeason_i &lt;- filesOfSeason_i + 12
   } 
 }
-
+ 
 ##### now we will overall average
 setwd(outdir)
 for(season in c("cool", "hot"))
@@ -208,19 +202,19 @@ for(season in c("cool", "hot"))
   # image(m) 
   writeRaster(m, file.path(outdir,sprintf("season_%s.tif", season)), drivername="GTiff")
 }
-
+ 
 # qc
 cool &lt;- raster("season_cool.tif")
 hot &lt;- raster("season_hot.tif")
 par(mfrow = c(2,1))
 image(cool)
 image(hot)
-
+ 
 # just summer rainfall
 png("season_hot.png")
 image(hot)
 dev.off()
-</code></pre>
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -242,7 +236,7 @@ dev.off()
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2014-02-28 00:00:00 +1100">28 Feb 2014</abbr>
+      <abbr class="published" title="2014-02-28 00:00:00 +0800">28 Feb 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>

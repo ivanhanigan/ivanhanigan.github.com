@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,28 +55,24 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h1>Update</h1>
-
+    <h1 id="update">Update</h1>
 <ul>
-<li>This is an update to my previous post:  <a href="http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/">http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/</a></li>
-<li>I was worried about the available metadata with those netcdf data I was working with so contacted Dr Brad Evans at EMAST who set me straight:</li>
+  <li>This is an update to my previous post:  <a href="http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/">http://ivanhanigan.github.io/2014/12/climate-grids-and-thredds-server-experimenting/</a></li>
+  <li>I was worried about the available metadata with those netcdf data I was working with so contacted Dr Brad Evans at EMAST who set me straight:</li>
 </ul>
 
-
-<h4>QUOTE:</h4>
-
-<pre><code>"you need to use ncdf4  - not ncdf  ...
+<h4 id="quote">QUOTE:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"you need to use ncdf4  - not ncdf  ...
 because they are netcdf4 files and not netcdf3 files. 
 This is poorly explained in the R community.
 All of the netcdf files from Australian providers (AusCover, BoM, etc...) 
 have been in netcdf4 for a couple of years now."
-</code></pre>
+</code></pre></div></div>
 
-<h1>So here is the revised code using ncdf4 library:</h1>
+<h1 id="so-here-is-the-revised-code-using-ncdf4-library">So here is the revised code using ncdf4 library:</h1>
 
-<h4>CODE</h4>
-
-<pre><code># sudo apt-get install r-cran-ncdf4 
+<h4 id="code">CODE</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># sudo apt-get install r-cran-ncdf4 
 library(ncdf4)
 library(raster)
 strt &lt;-'2012-01-01'
@@ -88,7 +84,7 @@ for(i in 1:length(dates)){
  # i=1
   date_i &lt;- dates[i]
   infile &lt;- sprintf("http://dapds00.nci.org.au/thredds/dodsC/rr9/Climate/eMAST/ANUClimate/0_01deg/v1m0_aus/day/land/tmin/e_01/2012/eMAST_ANUClimate_day_tmin_v1m0_%s.nc", gsub("-", "", date_i))
-
+ 
   nc &lt;- nc_open(infile)
   str(nc)
   print(nc)
@@ -99,10 +95,10 @@ for(i in 1:length(dates)){
   xmax &lt;- max(nc.att$dim[[1]]$vals)
   ymin &lt;- min(nc.att$dim[[2]]$vals)
   ymax &lt;- max(nc.att$dim[[2]]$vals)
-
+ 
   print(c(xmin,xmax))
   print(c(ymin,ymax))
-
+ 
   r &lt;- raster(t(vals),
               xmn=xmin, xmx=xmax,
               ymn=ymin, ymx=ymax)
@@ -110,21 +106,18 @@ for(i in 1:length(dates)){
   plot(r)
   nc_close(nc)
 }
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
-<h1>RESULTS 1: METADATA</h1>
+<h1 id="results-1-metadata">RESULTS 1: METADATA</h1>
 
 <ul>
-<li>the result is I now have a lot more metdata returned to my R workspace</li>
+  <li>the result is I now have a lot more metdata returned to my R workspace</li>
 </ul>
 
-
-<h4>EXERPT</h4>
-
-<pre><code>[...]
+<h4 id="exerpt">EXERPT</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[...]
 [1] "        licence_copyright: Copyright 2009-2013 ANU. Rights owned by The Australian National University (ANU). Rights licensed subject to TERN  Attribution (TERN-BY)."
 [1] "        short_desc: Australian coverage, ANUClimate 1.0, 0.01 degree grid, 1970-2012"
 [1] "        summary: Minimum daily temperature, for the Australian continent between 1970-2012. Daily temperature regulates rates of plant growth and determines critical conditions such as frost on flowering and fruiting. Modelled by expressing each daily value as a difference anomaly with respect to the gridded 1976-2005 mean daily minimum temperature for each month as provided by eMAST_ANUClimate_mmn_tmin_v1m0_1976_2005. The daily anomalies were interpolated by trivariate thin plate smoothing spline functions of longitude, latitude and vertically exaggerated elevation using ANUSPLIN Version 4.5. There was an average of 671 Bureau of Meteorology data points available for each day between 1970 and 2012. Automated quality assessment rejected on average 3 data values per day with extreme studentised residuals. These were commonly associated with days following missing observations. The root mean square of all individual cross validation residuals provided by the spline analysis is 1.5 degrees Celsius. A comprehensive assessment of the analysis and the factors contributing to the quality of the final interpolated daily minimum temperature grids is in preparation."
@@ -158,40 +151,35 @@ for(i in 1:length(dates)){
 [1] "        publisher_name: Ecosystem Modelling and Scaling Infrastructure (eMAST) Facility: Macquarie University"
 [1] "        publisher_email: eMAST.data@mq.edu.au"
 [1] "        publisher_url: http://www.emast.org.au/"
-</code></pre>
+</code></pre></div></div>
 
-<h1>RESULTS 2: Grid data</h1>
+<h1 id="results-2-grid-data">RESULTS 2: Grid data</h1>
 
 <ul>
-<li>I still get lots of good data</li>
+  <li>I still get lots of good data</li>
 </ul>
-
 
 <p><img src="/images/thredds2.png" alt="/images/thredds2.png" /></p>
 
 <p></p>
 
-
-<h1>NOTE I still need that weird transpose</h1>
+<h1 id="note-i-still-need-that-weird-transpose">NOTE I still need that weird transpose</h1>
 
 <ul>
-<li>I note that the weird hacky transpose is still required</li>
+  <li>I note that the weird hacky transpose is still required</li>
 </ul>
 
-
-<h4>CODE</h4>
-
-<pre><code># NB weird hacky transpose still required or else you get this
+<h4 id="code-1">CODE</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># NB weird hacky transpose still required or else you get this
 r &lt;- raster(vals,
             xmn=xmin, xmx=xmax,
             ymn=ymin, ymx=ymax)
-
+ 
 #str(r)
 plot(r)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p><img src="/images/thredds2raw.png" alt="/images/thredds2raw.png" /></p>
 
@@ -213,7 +201,7 @@ plot(r)
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-07-27 00:00:00 +1000">27 Jul 2015</abbr>
+      <abbr class="published" title="2015-07-27 00:00:00 +0800">27 Jul 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

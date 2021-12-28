@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -57,119 +57,106 @@
       <a href="/2014/02/aggregation-of-statistical-local-areas/" title="Aggregation Of Statistical Local Areas" rel="bookmark">Aggregation Of Statistical Local Areas</a>
     </h1>
     <div class="entry-content full-content">
-      <h2>Reproducibility</h2>
+      <h2 id="reproducibility">Reproducibility</h2>
 
 <ul>
-<li>A subset of the data and code used for this blog post is available at <a href="https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s">https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s</a></li>
-<li>Some parts of the data I used are not available due to shared Intellectual Property</li>
-<li>The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics</li>
-<li>The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.</li>
+  <li>A subset of the data and code used for this blog post is available at <a href="https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s">https://github.com/ivanhanigan/aggregation-of-slas-or-sa2s</a></li>
+  <li>Some parts of the data I used are not available due to shared Intellectual Property</li>
+  <li>The spatial data and SEIFA Socioeconomic index data are publicly available from the Australian Bureau of Statistics</li>
+  <li>The New Groups categories were generously contributed by John Glover of the Public Health Information Development Unit, The University of Adelaide.</li>
 </ul>
 
-
-<h2>Introduction</h2>
+<h2 id="introduction">Introduction</h2>
 
 <p>The Aim is to aggregate Statistical Local Areas (SLAs, recently relabelled SA2) Australian Standard Geographical Classification (ASGC, recently relabelled ASGS) to achieve a greater level of privacy protection.
 The rules to achieve a geography amenable to statistical comparisons are:</p>
 
 <ul>
-<li>similar populations (around 20,000 to 30,000)</li>
-<li>homogenous Index of Relative Socioeconomic Disadvantage</li>
-<li>nested within the next level up in the ASGC/ASGS</li>
-<li>so that SSD (recently relabelled SA3) are not split.</li>
-<li>the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments</li>
-<li>This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.</li>
+  <li>similar populations (around 20,000 to 30,000)</li>
+  <li>homogenous Index of Relative Socioeconomic Disadvantage</li>
+  <li>nested within the next level up in the ASGC/ASGS</li>
+  <li>so that SSD (recently relabelled SA3) are not split.</li>
+  <li>the SA2s can be aggregated through a process of assigning alike areas to groups, and reviewing/adjusting these assignments</li>
+  <li>This document contains some suggestions for adjusting groupings to better reflect differences in the level of disadvantage, while still adhering to the rules outlined.</li>
 </ul>
 
+<h2 id="results">Results</h2>
 
-<h2>Results</h2>
-
-<h3>Data Prep</h3>
+<h3 id="data-prep">Data Prep</h3>
 
 <ul>
-<li>The data were prepared as spatial files</li>
+  <li>The data were prepared as spatial files</li>
 </ul>
-
 
 <p><img src="/images/aggregation-of-sa2s.png" alt="alttext" /></p>
 
-<h3>Assess proposed split in Belconnen</h3>
+<h3 id="assess-proposed-split-in-belconnen">Assess proposed split in Belconnen</h3>
 
 <ul>
-<li>the proposed split in belconnen looks good</li>
-<li>This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score</li>
-<li>Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham</li>
-<li>Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence</li>
+  <li>the proposed split in belconnen looks good</li>
+  <li>This involves splitting Belconnen West (old SLA group) into two regions. The first generally has much higher proportion of individuals in a bottom quintile SES score</li>
+  <li>Group 1 =  Belconnen/ Charnwood/ Florey/ Higgins/ Holt/ Latham</li>
+  <li>Group 2 =  Flynn (ACT)/ Fraser/ Melba/ Spence</li>
 </ul>
-
 
 <p><img src="/images/belco-split.png" alt="alttext" /></p>
 
-<h3>Assess the outliers</h3>
+<h3 id="assess-the-outliers">Assess the outliers</h3>
 
 <ul>
-<li>this can be done by identifying their component CCD SEIFA within new groups</li>
-<li>the seifa of CCD in outliers are compared to the others within their new groups</li>
+  <li>this can be done by identifying their component CCD SEIFA within new groups</li>
+  <li>the seifa of CCD in outliers are compared to the others within their new groups</li>
 </ul>
-
 
 <p><img src="/images/seifa-by-newgroups1.png" alt="alttext" /></p>
 
 <ul>
-<li>zoom in on croweded areas</li>
+  <li>zoom in on croweded areas</li>
 </ul>
-
 
 <p><img src="/images/seifa-by-newgroups1-2.png" alt="alttext" /></p>
 
 <!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-
-
 <!-- Tue Feb 18 22:03:04 2014 -->
+<table border="1">
+<tr> <th>  </th> <th> sa2_name.x </th> <th> new_sa2_group </th> <th> notes </th>  </tr>
+  <tr> <td align="right"> 12 </td> <td> Bruce </td> <td> Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar </td> <td> higher than neighbours </td> </tr>
+  <tr> <td align="right"> 14 </td> <td> Campbell </td> <td> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 20 </td> <td> Civic </td> <td> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 31 </td> <td> Fadden </td> <td> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 32 </td> <td> Farrer </td> <td> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </td> <td> higher than neighbours bar one ccd </td> </tr>
+  <tr> <td align="right"> 37 </td> <td> Forrest </td> <td> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </td> <td> higher than neighbours </td> </tr>
+  <tr> <td align="right"> 60 </td> <td> Isaacs </td> <td> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </td> <td> higher than neighbours bar one ccd </td> </tr>
+  <tr> <td align="right"> 64 </td> <td> Kingston - Barton </td> <td> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </td> <td> higher than neighbours </td> </tr>
+  <tr> <td align="right"> 71 </td> <td> Macarthur </td> <td> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 73 </td> <td> Macquarie </td> <td> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 87 </td> <td> O'Malley </td> <td> Chifley/ Lyons (ACT)/ O'Malley/ Phillip </td> <td> higher than neighbours </td> </tr>
+  <tr> <td align="right"> 89 </td> <td> Page </td> <td> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </td> <td> ok </td> </tr>
+  <tr> <td align="right"> 98 </td> <td> Scullin </td> <td> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </td> <td> ok </td> </tr>
+   </table>
 
-
-<TABLE border=1>
-<TR> <TH>  </TH> <TH> sa2_name.x </TH> <TH> new_sa2_group </TH> <TH> notes </TH>  </TR>
-  <TR> <TD align="right"> 12 </TD> <TD> Bruce </TD> <TD> Bruce/ Evatt/ Giralang/ Kaleen/ Lawson/ McKellar </TD> <TD> higher than neighbours </TD> </TR>
-  <TR> <TD align="right"> 14 </TD> <TD> Campbell </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 20 </TD> <TD> Civic </TD> <TD> Acton/ Braddon/ Campbell/ Civic/ Reid/ Turner </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 31 </TD> <TD> Fadden </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 32 </TD> <TD> Farrer </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
-  <TR> <TD align="right"> 37 </TD> <TD> Forrest </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
-  <TR> <TD align="right"> 60 </TD> <TD> Isaacs </TD> <TD> Farrer/ Isaacs/ Mawson/ Pearce/ Torrens </TD> <TD> higher than neighbours bar one ccd </TD> </TR>
-  <TR> <TD align="right"> 64 </TD> <TD> Kingston - Barton </TD> <TD> Forrest/ Griffith (ACT)/ Kingston - Barton/ Narrabundah/ Red Hill (ACT) </TD> <TD> higher than neighbours </TD> </TR>
-  <TR> <TD align="right"> 71 </TD> <TD> Macarthur </TD> <TD> Fadden/ Gowrie (ACT)/ Macarthur/ Monash </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 73 </TD> <TD> Macquarie </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 87 </TD> <TD> O'Malley </TD> <TD> Chifley/ Lyons (ACT)/ O'Malley/ Phillip </TD> <TD> higher than neighbours </TD> </TR>
-  <TR> <TD align="right"> 89 </TD> <TD> Page </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
-  <TR> <TD align="right"> 98 </TD> <TD> Scullin </TD> <TD> Aranda/ Cook/ Hawker/ Macquarie/ Page/ Scullin/ Weetangera </TD> <TD> ok </TD> </TR>
-   </TABLE>
-
-
-<h3>Investigating areas: eg the Kingston - Barton area</h3>
+<h3 id="investigating-areas-eg-the-kingston---barton-area">Investigating areas: eg the Kingston - Barton area</h3>
 
 <ul>
-<li>we can zoom in on some of these areas</li>
+  <li>we can zoom in on some of these areas</li>
 </ul>
-
 
 <p><img src="/images/kingston-barton.png" alt="alttext" /></p>
 
-<h2>Conclusions</h2>
+<h2 id="conclusions">Conclusions</h2>
 
 <p>Basically, the problem comes from public housing policies in Canberra which distorts the effect of the housing market and land values in segregating rich from poor. Essentially, there are highly advantaged suburbs with pockets of disadvantaged public housing.</p>
 
-<p>Other 'problematic' features re this are:</p>
+<p>Other ‘problematic’ features re this are:</p>
 
 <ul>
-<li>proximity to ornamental lakes</li>
-<li>proximity to urban green space</li>
-<li>proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement -- but different to 'distance from urban centre'</li>
-<li>elevation, especially with a view.</li>
+  <li>proximity to ornamental lakes</li>
+  <li>proximity to urban green space</li>
+  <li>proximity to rural residential hubs (walaroo road?  hall?).  This is a bit of a reverse statement – but different to ‘distance from urban centre’</li>
+  <li>elevation, especially with a view.</li>
 </ul>
 
-
-<p>Potentially the issue is going to be that this can't be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.</p>
+<p>Potentially the issue is going to be that this can’t be solved if you want to maintain SA2 as the base level - the distinctions are going to be at an SA1 or even mesh block level.</p>
 
       <div class="clear"></div>
     </div>
@@ -186,7 +173,7 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2014-02-18 00:00:00 +1100">18 Feb 2014</abbr>
+        <abbr class="published" title="2014-02-18 00:00:00 +0800">18 Feb 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -199,22 +186,24 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>Last year I wrote to a Professor to let them know some numbers that quantified their effect estimate (computed be exponentiating their beta coefficient) described in their results section was inconsistent with the numbers in their table (the raw coefficients).</li>
-<li>Happily the recalculation showed that they had underestimated the effect size and their conclusions were not wrong, but erroneously conservative.</li>
-<li>Previously I would use Sweave documents to keep track of all my calculations, but I was still copy-and-pasting the key numbers into the text.</li>
-<li>I've become more interested now in using Inline R Outputs (called Sexpr - S expressions)</li>
-<li>This is also the first time I've created a report using the Palatino font, on the advice of a new colleague of mine.</li>
-<li>I popped up a <a href="https://github.com/ivanhanigan/DataDocumentation">Github repo with a Sweave template for Reproducible Reports with a few notes I made</a>.  Which looks like</li>
+  <li>Last year I wrote to a Professor to let them know some numbers that quantified their effect estimate (computed be exponentiating their beta coefficient) described in their results section was inconsistent with the numbers in their table (the raw coefficients).</li>
+  <li>Happily the recalculation showed that they had underestimated the effect size and their conclusions were not wrong, but erroneously conservative.</li>
+  <li>Previously I would use Sweave documents to keep track of all my calculations, but I was still copy-and-pasting the key numbers into the text.</li>
+  <li>I’ve become more interested now in using Inline R Outputs (called Sexpr - S expressions)</li>
+  <li>This is also the first time I’ve created a report using the Palatino font, on the advice of a new colleague of mine.</li>
+  <li>I popped up a <a href="https://github.com/ivanhanigan/DataDocumentation">Github repo with a Sweave template for Reproducible Reports with a few notes I made</a>.  Which looks like</li>
 </ul>
-
 
 <p><img src="/images/sexpr.png" alt="/images/sexpr.png" /></p>
 
 <ul>
-<li><p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.pdf">PDF output is here</a></p></li>
-<li><p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.Rnw">Sweave file is here</a></p></li>
+  <li>
+    <p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.pdf">PDF output is here</a></p>
+  </li>
+  <li>
+    <p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.Rnw">Sweave file is here</a></p>
+  </li>
 </ul>
-
 
       <div class="clear"></div>
     </div>
@@ -231,7 +220,7 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2014-02-12 00:00:00 +1100">12 Feb 2014</abbr>
+        <abbr class="published" title="2014-02-12 00:00:00 +0800">12 Feb 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -243,58 +232,54 @@ The rules to achieve a geography amenable to statistical comparisons are:</p>
       <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
     </h1>
     <div class="entry-content full-content">
-      <p>Yesterday I had the opportunity to review the Tree based modelling methods we are implementing in a study I'm working on at the moment.
+      <p>Yesterday I had the opportunity to review the Tree based modelling methods we are implementing in a study I’m working on at the moment.
 I based the discussion on <a href="http://www.tandfonline.com/doi/abs/10.1080/00330124.2012.724347">a paper from 2012</a>, along with <a href="/pdfs/TreeModelNotes.pdf">some notes I have made related to the use of these methods in our context</a>.
 I had an hour and a half with a couple of senior statisticians and a bunch of sociologists at the study group yesterday.</p>
 
-<h4>My main question for the group was:</h4>
+<h4 id="my-main-question-for-the-group-was">My main question for the group was:</h4>
 
 <ul>
-<li>What do you think of the proposition that these models are suitable for "studies that test hypotheses generated from multiple theories"?</li>
+  <li>What do you think of the proposition that these models are suitable for “studies that test hypotheses generated from multiple theories”?</li>
 </ul>
 
+<p>The statisticians where underwhelmed by the Cutts study, but thought the stats method was “neat” and one had not heard of tree models before (!).</p>
 
-<p>The statisticians where underwhelmed by the Cutts study, but thought the stats method was "neat" and one had not heard of tree models before (!).</p>
-
-<h4>Key outcomes of that session were:</h4>
+<h4 id="key-outcomes-of-that-session-were">Key outcomes of that session were:</h4>
 
 <ul>
-<li><p>First stage PCA</p>
-
-<ul>
-<li>Q: did they need to do the PCA first stage to either a) reduce the the large number of potentially collinear variables or b) to control for measurement error?</li>
-<li>A: No they didn't need the PCA.  The large number, collinearity and measurement efficacy are dealt with by the tree based methods (ie cross-validation on steroids, grouping primary and surrogate splits, etc).  Also the trees have an advantage with the large number of predictors in that they are non-parametric and able to automatically detect interactions whereas PCA is parametric and typically assumes linearity. (Note that I saw Steve afterward and he is still not convinced.  Maybe he will respond to this with some description of the reason why not?)</li>
+  <li>First stage PCA
+    <ul>
+      <li>Q: did they need to do the PCA first stage to either a) reduce the the large number of potentially collinear variables or b) to control for measurement error?</li>
+      <li>A: No they didn’t need the PCA.  The large number, collinearity and measurement efficacy are dealt with by the tree based methods (ie cross-validation on steroids, grouping primary and surrogate splits, etc).  Also the trees have an advantage with the large number of predictors in that they are non-parametric and able to automatically detect interactions whereas PCA is parametric and typically assumes linearity. (Note that I saw Steve afterward and he is still not convinced.  Maybe he will respond to this with some description of the reason why not?)</li>
+    </ul>
+  </li>
+  <li>Rescaling the variables
+    <ul>
+      <li>Q: Did they need to centre each variable on the grand sample mean so that the relative weight of each variable was even?</li>
+      <li>A: No the tree models are not effected by this, and it reduced the interpret-ability of the decision tree graphic.  The PCA is effected, however, and maybe that is why they did it.</li>
+    </ul>
+  </li>
+  <li>Multiple working hypotheses
+    <ul>
+      <li>Q: What do you think of the Cutts et al proposition that these models are suitable for “studies that test hypotheses generated from multiple theories”?</li>
+      <li>A: It is a promising approach.  Not clear from this study if it is successful but the proposition is plausible.  It has more of a chance than the General Linear Model approach which cannot (this point was made categorically by one of the statisticians).  It will be important to be very clear about what exactly each of the “Theories” are predicting, so that the explanatory power attributable to those variables from one “theory” can be compared with that of the other theories.  The ability to uncover complex interactions is very attractive (extrovert/introvert personality type interacting with group demographics etc) but it also increases the potential for spurious results (and ‘chasing the noise’) ergo the need to base inferences on what the theories predict, not just on what the data reveal.</li>
+    </ul>
+  </li>
+  <li>
+    <p>In general we thought that authors had overdone the stats.  It showed what ‘could’ be done with trees and forests, but possibly not what ‘should’ be done.</p>
+  </li>
+  <li>Is the A3 variable really missing from ctree output but dominant in the randomForest in Figure3?
+    <ul>
+      <li>when another group I’m in reviewed it last year it was noted as odd that fig3 has A3 most important in randomforest but does not appear in ctree. At the time I thought this might be due to the cross validation like in the rpart or tree package, but it turns out that ctree does not do that….</li>
+      <li>Mislabelling is a possibility as these graphics appear to be edited from the default produced by the ‘party’ package.</li>
+      <li>However, it also reasonable that these results could be correct. ctree (and rpart, tree, etc.) use greedy algorithms, meaning that the best local split is used even if this is suboptimal globally.</li>
+      <li>Basically there are algorithmic reasons that this might be a true difference between ctree and randomforest.  It might just have been the way the cookie crumbled for the ctree’s best local split which may not have survived through the randomForest’s  thousands of iterations.</li>
+      <li>But on page 569 they do say “total knowledge is lowest among those whod do not think that they are empowered and are unaware of information sources” which implies to me that the top or left-most node might be mis-labelled I3 when it is actually A3.</li>
+      <li>this would give the appropriate left most box plot (ie I3 &lt;= -0.22 &amp; A3 &lt;= -0.64 gives lowest total knowledge??)</li>
+      <li>at the group yesterday people also generally suspected mislabelling, given the dominance of A3 in randomforest.</li>
+    </ul>
+  </li>
 </ul>
-</li>
-<li><p>Rescaling the variables</p>
-
-<ul>
-<li>Q: Did they need to centre each variable on the grand sample mean so that the relative weight of each variable was even?</li>
-<li>A: No the tree models are not effected by this, and it reduced the interpret-ability of the decision tree graphic.  The PCA is effected, however, and maybe that is why they did it.</li>
-</ul>
-</li>
-<li><p>Multiple working hypotheses</p>
-
-<ul>
-<li>Q: What do you think of the Cutts et al proposition that these models are suitable for "studies that test hypotheses generated from multiple theories"?</li>
-<li>A: It is a promising approach.  Not clear from this study if it is successful but the proposition is plausible.  It has more of a chance than the General Linear Model approach which cannot (this point was made categorically by one of the statisticians).  It will be important to be very clear about what exactly each of the "Theories" are predicting, so that the explanatory power attributable to those variables from one "theory" can be compared with that of the other theories.  The ability to uncover complex interactions is very attractive (extrovert/introvert personality type interacting with group demographics etc) but it also increases the potential for spurious results (and 'chasing the noise') ergo the need to base inferences on what the theories predict, not just on what the data reveal.</li>
-</ul>
-</li>
-<li><p>In general we thought that authors had overdone the stats.  It showed what 'could' be done with trees and forests, but possibly not what 'should' be done.</p></li>
-<li><p>Is the A3 variable really missing from ctree output but dominant in the randomForest in Figure3?</p>
-
-<ul>
-<li>when another group I'm in reviewed it last year it was noted as odd that fig3 has A3 most important in randomforest but does not appear in ctree. At the time I thought this might be due to the cross validation like in the rpart or tree package, but it turns out that ctree does not do that....</li>
-<li>Mislabelling is a possibility as these graphics appear to be edited from the default produced by the 'party' package.</li>
-<li>However, it also reasonable that these results could be correct. ctree (and rpart, tree, etc.) use greedy algorithms, meaning that the best local split is used even if this is suboptimal globally.</li>
-<li>Basically there are algorithmic reasons that this might be a true difference between ctree and randomforest.  It might just have been the way the cookie crumbled for the ctree's best local split which may not have survived through the randomForest's  thousands of iterations.</li>
-<li>But on page 569 they do say "total knowledge is lowest among those whod do not think that they are empowered and are unaware of information sources" which implies to me that the top or left-most node might be mis-labelled I3 when it is actually A3.</li>
-<li>this would give the appropriate left most box plot (ie I3 &lt;= -0.22 &amp; A3 &lt;= -0.64 gives lowest total knowledge??)</li>
-<li>at the group yesterday people also generally suspected mislabelling, given the dominance of A3 in randomforest.</li>
-</ul>
-</li>
-</ul>
-
 
       <div class="clear"></div>
     </div>
@@ -313,7 +298,7 @@ I had an hour and a half with a couple of senior statisticians and a bunch of so
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2014-01-23 00:00:00 +1100">23 Jan 2014</abbr>
+        <abbr class="published" title="2014-01-23 00:00:00 +0800">23 Jan 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -325,62 +310,61 @@ I had an hour and a half with a couple of senior statisticians and a bunch of so
       <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Aim</h1>
+      <h1 id="aim">Aim</h1>
 
 <ul>
-<li>The <a href="https://github.com/ropensci/EML">EML R package</a> uses the Ecological Metadata Language (EML) approach that allows archiving of very heterogeneous data without having to standardize everything into a narrow and pre-defined syntax.</li>
-<li>XML files in specificed schemas involve strict criteria and are thus best generated by software.</li>
-<li>Morpho is an application that provides another GUI based method of generating EML but is a rather tedious tool for generating EML files. Unfortunately, without the ability to script inputs or automatically detect existing data structures, we are forced through the rather arduous process of adding all metadata annotation each time.</li>
-<li>The aim of this experiment is to use the EML package to create some advanced metadata quickly and then finish this off with Morpho, using <a href="http://en.wikipedia.org/wiki/Boilerplate_code">"boilerplate code"</a> wherever possible.</li>
-<li>this builds on my previous post <a href="http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry">http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry</a></li>
+  <li>The <a href="https://github.com/ropensci/EML">EML R package</a> uses the Ecological Metadata Language (EML) approach that allows archiving of very heterogeneous data without having to standardize everything into a narrow and pre-defined syntax.</li>
+  <li>XML files in specificed schemas involve strict criteria and are thus best generated by software.</li>
+  <li>Morpho is an application that provides another GUI based method of generating EML but is a rather tedious tool for generating EML files. Unfortunately, without the ability to script inputs or automatically detect existing data structures, we are forced through the rather arduous process of adding all metadata annotation each time.</li>
+  <li>The aim of this experiment is to use the EML package to create some advanced metadata quickly and then finish this off with Morpho, using <a href="http://en.wikipedia.org/wiki/Boilerplate_code">“boilerplate code”</a> wherever possible.</li>
+  <li>this builds on my previous post <a href="http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry">http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry</a></li>
 </ul>
 
-
-<h1>Background</h1>
+<h1 id="background">Background</h1>
 
 <ul>
-<li>I am basically very lazy when it comes to entering metadata and when I use the Morpho package for metadata data entry I get frustrated with having to step through ever SINGLE variable and use the drop down menus etc to describe them as essentially "number" or "text"</li>
-<li>A big reason I like Morpho is because Metacat is a great data portal and Kepler is a promising scientific workflow tool, and all three are produced by the same group so it would be great to get them working together...</li>
-<li>Morpho and Metacat are open source software designed to host all kinds of ecological data. More information about it can be found <a href="http://knb.ecoinformatics.org/index.jsp">here</a></li>
-<li>More info about the Metacat Data Portal System is <a href="https://knb.ecoinformatics.org/knb/docs/">here</a>.</li>
-<li>For technical reasons, I'm running an older version of the Morpho software because I'm working with an older version of the  Metacat portal software and so are also constrained to running the older Morpho version too (but will be upgrading soon).</li>
-<li>You might want to look at the background of the Ecological Metadata Language (EML) standard.  I like this page <a href="http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html">http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html</a> along with the references he cites at the bottom.</li>
+  <li>I am basically very lazy when it comes to entering metadata and when I use the Morpho package for metadata data entry I get frustrated with having to step through ever SINGLE variable and use the drop down menus etc to describe them as essentially “number” or “text”</li>
+  <li>A big reason I like Morpho is because Metacat is a great data portal and Kepler is a promising scientific workflow tool, and all three are produced by the same group so it would be great to get them working together…</li>
+  <li>Morpho and Metacat are open source software designed to host all kinds of ecological data. More information about it can be found <a href="http://knb.ecoinformatics.org/index.jsp">here</a></li>
+  <li>More info about the Metacat Data Portal System is <a href="https://knb.ecoinformatics.org/knb/docs/">here</a>.</li>
+  <li>For technical reasons, I’m running an older version of the Morpho software because I’m working with an older version of the  Metacat portal software and so are also constrained to running the older Morpho version too (but will be upgrading soon).</li>
+  <li>You might want to look at the background of the Ecological Metadata Language (EML) standard.  I like this page <a href="http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html">http://carlboettiger.info/2013/06/23/notes-on-leveraging-the-ecological-markup-language.html</a> along with the references he cites at the bottom.</li>
 </ul>
 
-
-<h1>Material</h1>
+<h1 id="material">Material</h1>
 
 <ul>
-<li><p>To tie this experiment back to something that is actually useful for a scientist, I will use the field-based example data on the effects on mulgara of removing spinifex, from:</p>
+  <li>
+    <p>To tie this experiment back to something that is actually useful for a scientist, I will use the field-based example data on the effects on mulgara of removing spinifex, from:</p>
 
-<p>  McCarthy, M. a., &amp; Masters, P. (2005). Profiting from prior
+    <p>McCarthy, M. a., &amp; Masters, P. (2005). Profiting from prior
   information in Bayesian analyses of ecological data. Journal of
   Applied Ecology, 42(6),
-  1012–1019. doi:10.1111/j.1365-2664.2005.01101.x</p></li>
-<li><p>Brief description is:</p>
+  1012–1019. doi:10.1111/j.1365-2664.2005.01101.x</p>
+  </li>
+  <li>
+    <p>Brief description is:</p>
 
-<p>  an experimental manipulation of habitat was conducted by Masters,
+    <p>an experimental manipulation of habitat was conducted by Masters,
   Dickman &amp; Crowther (2003) in which vegetation cover of a site in
   arid inland Australia was reduced and the response of the mammal
-  fauna monitored.</p></li>
-<li><p>you can find the data in the download file from <a href="http://www.nceas.ucsb.edu/~mccarthy/research.html">the "Code for analysing the mulgara experiment" from here</a></p></li>
-<li>I first checked that these data aren;t already on <a href="https://knb.ecoinformatics.org/m/">the KNB repository</a></li>
-<li>I searched for Marsupial, Australia, Mulgara and etc, finding no hits.</li>
-<li>We will assume that these data are not already published there.</li>
+  fauna monitored.</p>
+  </li>
+  <li>you can find the data in the download file from <a href="http://www.nceas.ucsb.edu/~mccarthy/research.html">the “Code for analysing the mulgara experiment” from here</a></li>
+  <li>I first checked that these data aren;t already on <a href="https://knb.ecoinformatics.org/m/">the KNB repository</a></li>
+  <li>I searched for Marsupial, Australia, Mulgara and etc, finding no hits.</li>
+  <li>We will assume that these data are not already published there.</li>
 </ul>
 
-
-<h1>Methods</h1>
+<h1 id="methods">Methods</h1>
 
 <ul>
-<li>Step one install the github version of EML and <a href="http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/#sec-1-9">a function I wrote for this a while back</a></li>
-<li>Note that I made a few changes since that post <a href="https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r">https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r</a></li>
+  <li>Step one install the github version of EML and <a href="http://ivanhanigan.github.io/2013/10/morpho-and-reml-streamline-the-process-of-metadata-entry/#sec-1-9">a function I wrote for this a while back</a></li>
+  <li>Note that I made a few changes since that post <a href="https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r">https://github.com/ivanhanigan/disentangle/blob/master/R/reml_boilerplate.r</a></li>
 </ul>
 
-
-<h4>R Code:</h4>
-
-<pre><code># func
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># func
 library("devtools")
 install_github("EML", "ropensci")       
 library("EML")
@@ -418,39 +402,33 @@ reml_boilerplate(
   ,
   desc = "Experimental data: effect of cover reduction on mulgara Dasycercus cristicauda"
   )
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>Now open morpho and under file > import browse to this  data directory and import.</li>
-<li>Got several warnings, about unable to display data, and an older version that could be updated</li>
+  <li>Now open morpho and under file &gt; import browse to this  data directory and import.</li>
+  <li>Got several warnings, about unable to display data, and an older version that could be updated</li>
 </ul>
 
-
-<h1>Results</h1>
-
+<h1 id="results">Results</h1>
 <ul>
-<li>Result does not display  in morpho</li>
+  <li>Result does not display  in morpho</li>
 </ul>
-
 
 <p><img src="/images/mulgara-morpho-import.png" alt="mulgara-morpho-import.png" /></p>
 
-<h1>Discussion</h1>
+<h1 id="discussion">Discussion</h1>
 
 <ul>
-<li>There is something different about the way the EML R package writes the data and what Morpho 1.8 is expecting.</li>
+  <li>There is something different about the way the EML R package writes the data and what Morpho 1.8 is expecting.</li>
 </ul>
 
-
-<h1>Conclusions</h1>
+<h1 id="conclusions">Conclusions</h1>
 
 <ul>
-<li>Further research is required.</li>
+  <li>Further research is required.</li>
 </ul>
-
 
       <div class="clear"></div>
     </div>
@@ -467,7 +445,7 @@ reml_boilerplate(
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2014-01-21 00:00:00 +1100">21 Jan 2014</abbr>
+        <abbr class="published" title="2014-01-21 00:00:00 +0800">21 Jan 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -481,34 +459,32 @@ reml_boilerplate(
     <div class="entry-content full-content">
       <p>A while ago I posted about <a href="http://ivanhanigan.github.io/2013/11/sharing-and-extending-research-protocols/">sharing-and-extending-research-protocols</a>.</p>
 
-<p>I've started a new experiment for hosting a discussion around issues, suggesting new issues, agreeing on solutions, toward an agreement on methods that could become a protocol:
+<p>I’ve started a new experiment for hosting a discussion around issues, suggesting new issues, agreeing on solutions, toward an agreement on methods that could become a protocol:
 <a href="http://ivanhanigan.github.com/datasharing">http://ivanhanigan.github.com/datasharing</a>.</p>
 
 <p>I forked the material from the original author Jeff Leek <a href="https://github.com/jtleek/datasharing/network">https://github.com/jtleek/datasharing/network</a>.</p>
 
 <p>The goal of my experiment is something along the lines of the Prometheus Wiki <a href="http://prometheuswiki.publish.csiro.au">http://prometheuswiki.publish.csiro.au</a>​ which is a site for sharing research protocols. That idea is to give people a place to post research protocols since everyone develops them and then mentions them in papers but they rarely make it online in a usable format.</p>
 
-<p>But I was talking with an user of that and he complained it lacked a kind of "dynamic collaboration with a front-end markup system in place that was integrated with a good website-type backend".  This is what the github site might be able to do.</p>
+<p>But I was talking with an user of that and he complained it lacked a kind of “dynamic collaboration with a front-end markup system in place that was integrated with a good website-type backend”.  This is what the github site might be able to do.</p>
 
 <p>I discussed with a colleague and he seemed to be receptive to experimenting with this, so long as it was not more cumbersome than:</p>
 
 <ul>
-<li>shooting off an email with a list of points or</li>
-<li>catching me in the tea room and saying "by the way - missing values should never be -9999"</li>
-<li>and then these being copied into a master document we all share.</li>
+  <li>shooting off an email with a list of points or</li>
+  <li>catching me in the tea room and saying “by the way - missing values should never be -9999”</li>
+  <li>and then these being copied into a master document we all share.</li>
 </ul>
 
-
-<p>The system I'm using in the proposed experiment uses the hi-tech tools gh-pages with disqus comments.  This let's:</p>
+<p>The system I’m using in the proposed experiment uses the hi-tech tools gh-pages with disqus comments.  This let’s:</p>
 
 <ul>
-<li>casual users chip in their two cents worth quickly via the  comments,</li>
-<li>users can vote up or vote down other peoples comments,</li>
-<li>track the discussion via their emails (if they choose that option),</li>
-<li>but those wanting  deeper involvement can fork and edit the pages and then submit pull  requests to the lead author.</li>
-<li>Github's wiki and issues tracking functionality also could be used for serious development.</li>
+  <li>casual users chip in their two cents worth quickly via the  comments,</li>
+  <li>users can vote up or vote down other peoples comments,</li>
+  <li>track the discussion via their emails (if they choose that option),</li>
+  <li>but those wanting  deeper involvement can fork and edit the pages and then submit pull  requests to the lead author.</li>
+  <li>Github’s wiki and issues tracking functionality also could be used for serious development.</li>
 </ul>
-
 
       <div class="clear"></div>
     </div>
@@ -525,7 +501,7 @@ reml_boilerplate(
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2014-01-14 00:00:00 +1100">14 Jan 2014</abbr>
+        <abbr class="published" title="2014-01-14 00:00:00 +0800">14 Jan 2014</abbr>
       </span>
     </p>
     <div class="clear"></div>

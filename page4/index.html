@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -58,44 +58,43 @@
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>Notes re an old project "POA2006_centroids transformations 2010-08-06"</li>
-<li><a href="https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html">https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html</a></li>
-<li>compared population weighted centroids with Geographic POA centroids</li>
-<li>Postal Areas (POA) are not the same as Postcodes!  See <a href="http://www.abs.gov.au/websitedbs/D3310114.nsf/4a256353001af3ed4b2562bb00121564/6b6e07234c98365aca25792d0010d730/$FILE/Postcodes%20&amp;%20Postal%20Areas%20-%20Fact%20Sheet.pdf">this fact sheet</a></li>
-<li>But my old work gives the total areas as 695.6 square decimal degrees</li>
-<li>This compares with the area of Australia at 7.692 million sq kms.</li>
-<li>So this update uses Geoscience Australia Lambert to avoid distorting the area</li>
-<li><a href="http://spatialreference.org/ref/epsg/3112/">http://spatialreference.org/ref/epsg/3112/</a></li>
+  <li>Notes re an old project “POA2006_centroids transformations 2010-08-06”</li>
+  <li><a href="https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html">https://alliance.anu.edu.au/access/content/group/bf77d6fc-d1e1-401c-806a-25fbe06a82d0/PostGIS%20wiki%20files/POA2006_centroid/POA2006_centroids_transformations_doc.html</a></li>
+  <li>compared population weighted centroids with Geographic POA centroids</li>
+  <li>Postal Areas (POA) are not the same as Postcodes!  See <a href="http://www.abs.gov.au/websitedbs/D3310114.nsf/4a256353001af3ed4b2562bb00121564/6b6e07234c98365aca25792d0010d730/$FILE/Postcodes%20&amp;%20Postal%20Areas%20-%20Fact%20Sheet.pdf">this fact sheet</a></li>
+  <li>But my old work gives the total areas as 695.6 square decimal degrees</li>
+  <li>This compares with the area of Australia at 7.692 million sq kms.</li>
+  <li>So this update uses Geoscience Australia Lambert to avoid distorting the area</li>
+  <li><a href="http://spatialreference.org/ref/epsg/3112/">http://spatialreference.org/ref/epsg/3112/</a></li>
 </ul>
 
-
-<h1>Download</h1>
+<h1 id="download">Download</h1>
 
 <ul>
-<li><a href="/data/auspoa06_geocentroids_lambert_20160624.csv">auspoa06_geocentroids_lambert_20160624.csv</a></li>
+  <li><a href="/data/auspoa06_geocentroids_lambert_20160624.csv">auspoa06_geocentroids_lambert_20160624.csv</a></li>
 </ul>
 
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="s1">'name:poa06-area-lambert'</span><span class="w">
+</span><span class="n">setwd</span><span class="p">(</span><span class="s2">"~/projects/POA_centroids/POA2006_centroids"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">swishdbtools</span><span class="p">)</span><span class="w">
+</span><span class="n">ch</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">connect2postgres2</span><span class="p">(</span><span class="s2">"delphe"</span><span class="p">)</span><span class="w">
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="s">&#39;name:poa06-area-lambert&#39;</span>
-<span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/projects/POA_centroids/POA2006_centroids&quot;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span>swishdbtools<span class="p">)</span>
-ch <span class="o">&lt;-</span> connect2postgres2<span class="p">(</span><span class="s">&quot;delphe&quot;</span><span class="p">)</span></p>
+</span><span class="n">fout_geo</span><span class="o">=</span><span class="n">dbGetQuery</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span><span class="w">
+</span><span class="s1">'select poa_2006,
+  st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,
+st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,
+st_y(st_centroid(st_transform(the_geom,3112))) as geocenty
+from abs_poa.auspoa06'</span><span class="p">)</span><span class="w">
+</span><span class="n">str</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">)</span><span class="w">
+</span><span class="nf">sum</span><span class="p">(</span><span class="n">fout_geo</span><span class="o">$</span><span class="n">geoscience_australia_lambert_area_km2</span><span class="p">)</span><span class="w">
+</span><span class="n">write.table</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">,</span><span class="s1">'data_derived/auspoa06_geocentroids_lambert_20160624.csv'</span><span class="p">,</span><span class="w">
+            </span><span class="n">row.names</span><span class="o">=</span><span class="nb">F</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">','</span><span class="p">)</span><span class="w">
 
-<p>fout_geo<span class="o">=</span>dbGetQuery<span class="p">(</span>ch<span class="p">,</span>
-<span class="s">&#39;select poa_2006,</span>
-<span class="s">  st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,</span>
-<span class="s">st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,</span>
-<span class="s">st_y(st_centroid(st_transform(the_geom,3112))) as geocenty</span>
-<span class="s">from abs_poa.auspoa06&#39;</span><span class="p">)</span>
-str<span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="kp">sum</span><span class="p">(</span>fout_geo<span class="o">$</span>geoscience_australia_lambert_area_km2<span class="p">)</span>
-write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="s">&#39;data_derived/auspoa06_geocentroids_lambert_20160624.csv&#39;</span><span class="p">,</span>
-            row.names<span class="o">=</span><span class="bp">F</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;,&#39;</span><span class="p">)</span></p>
+</span><span class="n">plot</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">[,</span><span class="m">3</span><span class="o">:</span><span class="m">4</span><span class="p">])</span><span class="w">
+</span><span class="n">head</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">)</span><span class="w">
+</span><span class="n">nrow</span><span class="p">(</span><span class="n">fout_geo</span><span class="p">)</span><span class="w">
+</span><span class="m">2507</span></code></pre></figure>
 
-<p>plot<span class="p">(</span>fout_geo<span class="p">[,</span><span class="m">3</span><span class="o">:</span><span class="m">4</span><span class="p">])</span>
-<span class="kp">head</span><span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="kp">nrow</span><span class="p">(</span>fout_geo<span class="p">)</span>
-<span class="m">2507</span></code></pre></figure></p>
 
       <div class="clear"></div>
     </div>
@@ -112,7 +111,7 @@ write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2016-06-24 00:00:00 +1000">24 Jun 2016</abbr>
+        <abbr class="published" title="2016-06-24 00:00:00 +0800">24 Jun 2016</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -125,13 +124,12 @@ write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="
     </h1>
     <div class="entry-content full-content">
       <ul>
-<li>Re my old post: <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps">/2013/10/spatial-lag-and-timeseries-model-with-nmmaps</a></li>
-<li>Today I updated my repo from just looking at spatiotemporal regression to now also look at multilevel (aka mixed-effects/random-effects) models</li>
-<li>The new site is based on the minimal theme by orderedlist: <a href="http://ivanhanigan.github.io/spatiotemporal-multilevel-models">http://ivanhanigan.github.io/spatiotemporal-multilevel-models</a></li>
-<li>That also means I've had to move some of my old codes to the now location</li>
-<li><a href="http://ivanhanigan.github.io/spatiotemporal-multilevel-models/spatiotemporal-multilevel-models.html">http://ivanhanigan.github.io/spatiotemporal-multilevel-models/spatiotemporal-multilevel-models.html</a></li>
+  <li>Re my old post: <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps">/2013/10/spatial-lag-and-timeseries-model-with-nmmaps</a></li>
+  <li>Today I updated my repo from just looking at spatiotemporal regression to now also look at multilevel (aka mixed-effects/random-effects) models</li>
+  <li>The new site is based on the minimal theme by orderedlist: <a href="http://ivanhanigan.github.io/spatiotemporal-multilevel-models">http://ivanhanigan.github.io/spatiotemporal-multilevel-models</a></li>
+  <li>That also means I’ve had to move some of my old codes to the now location</li>
+  <li><a href="http://ivanhanigan.github.io/spatiotemporal-multilevel-models/spatiotemporal-multilevel-models.html">http://ivanhanigan.github.io/spatiotemporal-multilevel-models/spatiotemporal-multilevel-models.html</a></li>
 </ul>
-
 
       <div class="clear"></div>
     </div>
@@ -148,7 +146,7 @@ write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2016-05-22 00:00:00 +1000">22 May 2016</abbr>
+        <abbr class="published" title="2016-05-22 00:00:00 +0800">22 May 2016</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -160,78 +158,67 @@ write.table<span class="p">(</span>fout_geo<span class="p">,</span><span class="
       <a href="/2016/05/judging-the-evidence-part2/" title="Judging the evidence part 2" rel="bookmark">Judging the evidence part 2</a>
     </h1>
     <div class="entry-content full-content">
-      <p>I previously reported on a lecture slide deck called 'Judging the Evidence' by  Adrian Sleigh for a course PUBH7001 Introduction to Epidemiology, April 30, 2001.  <a href="http://ivanhanigan.github.com/2015/11/judging-the-evidence-using-a-literature-review-database">http://ivanhanigan.github.com/2015/11/judging-the-evidence-using-a-literature-review-database</a></p>
+      <p>I previously reported on a lecture slide deck called ‘Judging the Evidence’ by  Adrian Sleigh for a course PUBH7001 Introduction to Epidemiology, April 30, 2001.  <a href="http://ivanhanigan.github.com/2015/11/judging-the-evidence-using-a-literature-review-database">http://ivanhanigan.github.com/2015/11/judging-the-evidence-using-a-literature-review-database</a></p>
 
 <p>I have also now extracted several slides into a template outline for reviewing epidemiological and other research.</p>
 
-<h4>Adrian Sleigh's Protocol</h4>
-
-<h5>Object of Study, Hypotheses or Research Questions</h5>
-
-<ol>
-<li>Purpose of Study:  Objectives of study; why was it done?</li>
-<li>Reference Population:
-
-<ul>
-<li>To whom do authors generalize results?</li>
-<li>To whom should the findings be generalized?</li>
-</ul>
-</li>
-</ol>
-
-
-<h5>Sampling</h5>
-
-<p>From the Reference Pop (target population) -></p>
-
-<p>Source Pop -> Eligible population</p>
-
-<p><code>
-The source population may be defined directly, as a matter of defining its membership criteria; or the definition may be indirect, as the catchment population of a defined way of identifying cases of the illness. The catchment population is, at any given time, the totality of those in the ‘were-would’ state of:  were the illness now to occur, it would be ‘caught’ by that case identification scheme Source: Miettinen OS, 2007 [http://www.teachepi.org/documents/courses/fundamentals/Pai_Lecture6_Selection%20bias.pdf](http://www.teachepi.org/documents/courses/fundamentals/Pai_Lecture6_Selection%20bias.pdf)
-</code></p>
-
-<h5>Sample Pop:</h5>
+<h4 id="adrian-sleighs-protocol">Adrian Sleigh’s Protocol</h4>
+<h5 id="object-of-study-hypotheses-or-research-questions">Object of Study, Hypotheses or Research Questions</h5>
 
 <ol>
-<li>Refusals, Dropouts</li>
-<li>Participants  ->  Study Pop</li>
+  <li>Purpose of Study:  Objectives of study; why was it done?</li>
+  <li>Reference Population:
+    <ul>
+      <li>To whom do authors generalize results?</li>
+      <li>To whom should the findings be generalized?</li>
+    </ul>
+  </li>
 </ol>
 
+<h5 id="sampling">Sampling</h5>
 
-<h5>Design of study</h5>
+<p>From the Reference Pop (target population) -&gt;</p>
 
+<p>Source Pop -&gt; Eligible population</p>
+
+<p>`
+The source population may be defined directly, as a matter of defining its membership criteria; or the definition may be indirect, as the catchment population of a defined way of identifying cases of the illness. The catchment population is, at any given time, the totality of those in the ‘were-would’ state of:  were the illness now to occur, it would be ‘caught’ by that case identification scheme Source: Miettinen OS, 2007 <a href="http://www.teachepi.org/documents/courses/fundamentals/Pai_Lecture6_Selection%20bias.pdf">http://www.teachepi.org/documents/courses/fundamentals/Pai_Lecture6_Selection%20bias.pdf</a>
+`</p>
+
+<h5 id="sample-pop">Sample Pop:</h5>
 <ol>
-<li>Study setting: Where and when was the study done?  What were the circumstances?  Ethics?</li>
-<li>Type of study: Experimental vs natural, descriptive vs analytical (trial, cohort, case-control, prevalence, ecological, case-report, etc).  If case-control or cohort, was the timing of data collection retrospective or prospective?</li>
-<li>Subjects: Who (number, age, sex, etc.)?  How were they selected?</li>
-<li>Comparison groups: What control group or standard of comparison?  How appropriate?</li>
-<li>Study size: Was the sample size adequate to give you confidence in the finding of "no association</li>
-<li>Bias and Confounding
-
-<ul>
-<li>a) Selection bias: Were groups comparable for subjects who entered and stayed in study?  Selection influenced by exposure (c-c) or effect (cohort) under study?  Drop-outs?</li>
-<li>b) Confounding: Control of potential confounding variables in design of the study - matching or subject restriction?</li>
-</ul>
-</li>
+  <li>Refusals, Dropouts</li>
+  <li>Participants  -&gt;  Study Pop</li>
 </ol>
 
-
-<h5>Observations</h5>
-
+<h5 id="design-of-study">Design of study</h5>
 <ol>
-<li>Procedure: How are the variables in the study defined and measured, ie how were data collected?</li>
-<li>Definition of terms: Are definitions of diagnostic criteria, measurements and outcome unambiguous?  Could be reproduced?</li>
-<li>Bias and Confounding
-
-<ul>
-<li>a) Observation bias: Were study groups comparable for measurements or mode of observation?  Mis-classification in determining exposure or disease categories? Differential between groups, or 'random'?</li>
-<li>b) Confounding: Information recorded on variables that could confound the association under study (to permit adjustment in the analysis)?</li>
-</ul>
-</li>
+  <li>Study setting: Where and when was the study done?  What were the circumstances?  Ethics?</li>
+  <li>Type of study: Experimental vs natural, descriptive vs analytical (trial, cohort, case-control, prevalence, ecological, case-report, etc).  If case-control or cohort, was the timing of data collection retrospective or prospective?</li>
+  <li>Subjects: Who (number, age, sex, etc.)?  How were they selected?</li>
+  <li>Comparison groups: What control group or standard of comparison?  How appropriate?</li>
+  <li>Study size: Was the sample size adequate to give you confidence in the finding of “no association</li>
+  <li>Bias and Confounding
+    <ul>
+      <li>a) Selection bias: Were groups comparable for subjects who entered and stayed in study?  Selection influenced by exposure (c-c) or effect (cohort) under study?  Drop-outs?</li>
+      <li>b) Confounding: Control of potential confounding variables in design of the study - matching or subject restriction?</li>
+    </ul>
+  </li>
 </ol>
 
+<h5 id="observations">Observations</h5>
+<ol>
+  <li>Procedure: How are the variables in the study defined and measured, ie how were data collected?</li>
+  <li>Definition of terms: Are definitions of diagnostic criteria, measurements and outcome unambiguous?  Could be reproduced?</li>
+  <li>Bias and Confounding
+    <ul>
+      <li>a) Observation bias: Were study groups comparable for measurements or mode of observation?  Mis-classification in determining exposure or disease categories? Differential between groups, or ‘random’?</li>
+      <li>b) Confounding: Information recorded on variables that could confound the association under study (to permit adjustment in the analysis)?</li>
+    </ul>
+  </li>
+</ol>
 
-<h3>THANKS Prof Sleigh!</h3>
+<h3 id="thanks-prof-sleigh">THANKS Prof Sleigh!</h3>
 
       <div class="clear"></div>
     </div>
@@ -248,7 +235,7 @@ The source population may be defined directly, as a matter of defining its membe
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2016-05-10 00:00:00 +1000">10 May 2016</abbr>
+        <abbr class="published" title="2016-05-10 00:00:00 +0800">10 May 2016</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -262,28 +249,28 @@ The source population may be defined directly, as a matter of defining its membe
     <div class="entry-content full-content">
       <p>I concur with Jeff Leek that once spent time learning base graphics in R there is less incentive to learn ggplot2 <a href="http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/">http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/</a></p>
 
-<p>However I always hate the way <code>barplot</code> works.  Here is an example:</p>
+<p>However I always hate the way <code class="language-plaintext highlighter-rouge">barplot</code> works.  Here is an example:</p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>qc <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="kp">textConnection</span><span class="p">(</span><span class="s">&quot;id,  OnlinePaper, Q, freq, totals,       prop</span>
-<span class="s">1,      Online,         ,1768,   9950, 0.17768844</span>
-<span class="s">2,      Online,      No ,4022,   9950, 0.40422111</span>
-<span class="s">3,      Online,     Yes ,4160,   9950, 0.41809045</span>
-<span class="s">4,       Paper,         , 256,   3355, 0.07630402</span>
-<span class="s">5,       Paper,      No , 979,   3355, 0.29180328</span>
-<span class="s">6,       Paper,     Yes ,2120,   3355, 0.63189270&quot;</span><span class="p">))</span></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">qc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="n">textConnection</span><span class="p">(</span><span class="s2">"id,  OnlinePaper, Q, freq, totals,       prop
+1,      Online,         ,1768,   9950, 0.17768844
+2,      Online,      No ,4022,   9950, 0.40422111
+3,      Online,     Yes ,4160,   9950, 0.41809045
+4,       Paper,         , 256,   3355, 0.07630402
+5,       Paper,      No , 979,   3355, 0.29180328
+6,       Paper,     Yes ,2120,   3355, 0.63189270"</span><span class="p">))</span><span class="w">
 
-<p>qc1 <span class="o">&lt;-</span> cast<span class="p">(</span>qc<span class="p">,</span> OnlinePaper <span class="o">~</span> Q74 <span class="p">,</span> value <span class="o">=</span> <span class="s">&quot;prop&quot;</span><span class="p">)</span>
-qc1
-barplot<span class="p">(</span><span class="kp">as.matrix</span><span class="p">(</span>qc1<span class="p">),</span> beside <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> legend.text <span class="o">=</span> qc1<span class="p">[,</span><span class="m">1</span><span class="p">],</span> ylim <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span></code></pre></figure></p>
+</span><span class="n">qc1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cast</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span><span class="w"> </span><span class="n">OnlinePaper</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">Q74</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"prop"</span><span class="p">)</span><span class="w">
+</span><span class="n">qc1</span><span class="w">
+</span><span class="n">barplot</span><span class="p">(</span><span class="n">as.matrix</span><span class="p">(</span><span class="n">qc1</span><span class="p">),</span><span class="w"> </span><span class="n">beside</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">,</span><span class="w"> </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qc1</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span></code></pre></figure>
 
 <p><img src="/images/barplot_base.png" alt="/images/barplot_base.png" /></p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>ggplot<span class="p">(</span>data<span class="o">=</span>qc<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Q<span class="p">,</span> y<span class="o">=</span>prop<span class="p">,</span> fill<span class="o">=</span>OnlinePaper<span class="p">))</span> <span class="o">+</span>
-    geom_bar<span class="p">(</span>stat<span class="o">=</span><span class="s">&quot;identity&quot;</span><span class="p">,</span> position<span class="o">=</span>position_dodge<span class="p">())</span></code></pre></figure></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">qc</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">Q</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">prop</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">OnlinePaper</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">geom_bar</span><span class="p">(</span><span class="n">stat</span><span class="o">=</span><span class="s2">"identity"</span><span class="p">,</span><span class="w"> </span><span class="n">position</span><span class="o">=</span><span class="n">position_dodge</span><span class="p">())</span></code></pre></figure>
 
 <p><img src="/images/barplot_gg.png" alt="/images/barplot_gg.png" /></p>
 
-<h4>Going to extremes</h4>
+<h4 id="going-to-extremes">Going to extremes</h4>
 
 <p>I should say though that I have found barplot can produce very customised graphs that serve a specific purpose such as that below (I have de-identified the content as this is unpublished research)</p>
 
@@ -291,19 +278,20 @@ barplot<span class="p">(</span><span class="kp">as.matrix</span><span class="p">
 
 <p>This made heavy use of the following approach</p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># original by Joseph Guillaume 2009</span>
-SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>aggAllData<span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
-  par<span class="p">(</span>mar<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">8</span><span class="p">,</span><span class="m">7</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
-  bp<span class="o">&lt;-</span>barplot<span class="p">(</span>aggAllData<span class="p">,</span>
-              horiz<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span>
-              col<span class="o">=</span>gray.colors<span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>aggAllData<span class="p">)),</span>
-              las<span class="o">=</span><span class="m">1</span><span class="p">,</span> axisnames <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
-  labels <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span><span class="kp">as.data.frame</span><span class="p">(</span>aggAllData<span class="p">))</span>
-  text<span class="p">(</span>bp<span class="p">,</span> par<span class="p">(</span><span class="s">&#39;usr&#39;</span><span class="p">)[</span><span class="m">3</span><span class="p">],</span> labels <span class="o">=</span> <span class="kp">labels</span><span class="p">,</span> srt <span class="o">=</span> <span class="m">45</span><span class="p">,</span>
-       adj <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">1.1</span><span class="p">,</span><span class="m">1.1</span><span class="p">),</span> xpd <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> cex<span class="o">=</span><span class="m">.9</span><span class="p">)</span>
-    <span class="kr">return</span><span class="p">(</span>bp<span class="p">)</span>
-<span class="p">}</span>
-<span class="c1"># with width = xvar (proportions)</span></code></pre></figure></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1"># original by Joseph Guillaume 2009</span><span class="w">
+</span><span class="n">SideBySideBarPlot2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">aggAllData</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">par</span><span class="p">(</span><span class="n">mar</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">8</span><span class="p">,</span><span class="m">7</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">2</span><span class="p">))</span><span class="w">
+  </span><span class="n">bp</span><span class="o">&lt;-</span><span class="n">barplot</span><span class="p">(</span><span class="n">aggAllData</span><span class="p">,</span><span class="w">
+              </span><span class="n">horiz</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
+              </span><span class="n">col</span><span class="o">=</span><span class="n">gray.colors</span><span class="p">(</span><span class="n">nrow</span><span class="p">(</span><span class="n">aggAllData</span><span class="p">)),</span><span class="w">
+              </span><span class="n">las</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">axisnames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="n">labels</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">as.data.frame</span><span class="p">(</span><span class="n">aggAllData</span><span class="p">))</span><span class="w">
+  </span><span class="n">text</span><span class="p">(</span><span class="n">bp</span><span class="p">,</span><span class="w"> </span><span class="n">par</span><span class="p">(</span><span class="s1">'usr'</span><span class="p">)[</span><span class="m">3</span><span class="p">],</span><span class="w"> </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">labels</span><span class="p">,</span><span class="w"> </span><span class="n">srt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">45</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">adj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1.1</span><span class="p">,</span><span class="m">1.1</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">.9</span><span class="p">)</span><span class="w">
+    </span><span class="nf">return</span><span class="p">(</span><span class="n">bp</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="c1"># with width = xvar (proportions)</span></code></pre></figure>
+
 
       <div class="clear"></div>
     </div>
@@ -320,7 +308,7 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2016-02-19 00:00:00 +1100">19 Feb 2016</abbr>
+        <abbr class="published" title="2016-02-19 00:00:00 +0800">19 Feb 2016</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -332,43 +320,40 @@ SideBySideBarPlot2 <span class="o">&lt;-</span> <span class="kr">function</span>
       <a href="/2016/02/r-syntax-highlights-for-my-jekyll-powered-blog/" title="r-syntax-highlights-for-my-jekyll-powered-blog.md" rel="bookmark">r-syntax-highlights-for-my-jekyll-powered-blog.md</a>
     </h1>
     <div class="entry-content full-content">
-      <h2>Syntax Highlights</h2>
+      <h2 id="syntax-highlights">Syntax Highlights</h2>
 
 <p>Until today I had no idea how to make code pretty in my blog posts which go to github after being first rendered locally so I can get the categories and tags.</p>
 
-<p>Because github disables any plugins when it processes your blog I took Charlie Park's advice. <a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a></p>
+<p>Because github disables any plugins when it processes your blog I took Charlie Park’s advice. <a href="http://charliepark.org/jekyll-with-plugins/">http://charliepark.org/jekyll-with-plugins/</a></p>
 
 <p>This blog post solved it for me <a href="http://tuxette.nathalievilla.org/?p=1574">http://tuxette.nathalievilla.org/?p=1574</a></p>
 
-<p>The trick is to write <code>highlighter:      pygments</code> into the <code>_config.yml</code> and then:</p>
+<p>The trick is to write <code class="language-plaintext highlighter-rouge">highlighter:      pygments</code> into the <code class="language-plaintext highlighter-rouge">_config.yml</code> and then:</p>
 
-<pre><code>% highlight r % # with curly braces
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% highlight r % # with curly braces
 data("iris")
 plot(iris$Sepal.Length ~ iris$Sepal.Width)
 dat &lt;- rnorm(1000,1,2)
 % endhighlight % # with curly braces
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
 
 <p>Will render as:</p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>data<span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
-plot<span class="p">(</span>iris<span class="o">$</span>Sepal.Length <span class="o">~</span> iris<span class="o">$</span>Sepal.Width<span class="p">)</span>
-dat <span class="o">&lt;-</span> rnorm<span class="p">(</span><span class="m">1000</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">)</span></code></pre></figure></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">data</span><span class="p">(</span><span class="s2">"iris"</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">iris</span><span class="o">$</span><span class="n">Sepal.Length</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">iris</span><span class="o">$</span><span class="n">Sepal.Width</span><span class="p">)</span><span class="w">
+</span><span class="n">dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rnorm</span><span class="p">(</span><span class="m">1000</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">)</span></code></pre></figure>
 
 <p>But I also pushed this to another site that I do use gh-pages to build and it sent me an email complaining:</p>
 
-<pre><code>You are attempting to use the 'pygments' highlighter, 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You are attempting to use the 'pygments' highlighter, 
 which is currently unsupported on GitHub Pages. 
 Your site will use 'rouge' for highlighting instead. 
 To suppress this warning, change the 'highlighter' value to 
 'rouge' in your '_config.yml'. 
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p>So there.</p>
 
@@ -385,7 +370,7 @@ To suppress this warning, change the 'highlighter' value to
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2016-02-14 00:00:00 +1100">14 Feb 2016</abbr>
+        <abbr class="published" title="2016-02-14 00:00:00 +0800">14 Feb 2016</abbr>
       </span>
     </p>
     <div class="clear"></div>

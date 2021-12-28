@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -56,49 +56,40 @@
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
     <ul>
-<li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
-<li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
-<li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
-<li>The beta coefficient itself shouldn't be affected.</li>
-<li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
-<li>To date I've mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
-<li>I'm preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
-<li>So I asked Sarunya for a discussion about her research</li>
+  <li>Yesterday I met with Sarunya Sujaritpong a PhD student working with <a href="http://ivanhanigan.github.io/2013/10/spatially-structured-time-series-with-nmmaps/">spatially structured time-series models as described previously</a></li>
+  <li>Her supervisor Keith Dear has given me a lot of good stats advice in the past and one bit I keep thinking about is that a time series model can be fit for multiple spatial areal units of the same city and residual spatial auto-correlation in the errors should not be too much of a concern</li>
+  <li>The problem would be if you get strong spatial autocorrelation of the residuals this indicates that the assumption of independent errors is violated and you will have tighter confidence intervals around the coefficients of interest than is really the case, inflating the signficance estimated for the relative risk</li>
+  <li>The beta coefficient itself shouldn’t be affected.</li>
+  <li>So long as biostatisticians like Keith are comfortable with not addressing this issue in spatially structured time-series that is great but I see people are <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0043360">starting to include this in their models</a></li>
+  <li>To date I’ve mostly seen it done in spatial (cross sectional) data analysis, not spatial times-series</li>
+  <li>I’m preparing for the day when I might need to address this for a reviewer and would like to know what to do about it in case that happens</li>
+  <li>So I asked Sarunya for a discussion about her research</li>
 </ul>
 
-
-<h3>Sarunya's model is essentially like this</h3>
-
-<h4>R Code:</h4>
-
-<pre><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
+<h3 id="sarunyas-model-is-essentially-like-this">Sarunya’s model is essentially like this</h3>
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fit &lt;- glm(deaths ~ pollutant1 + pollutant2 + pollutant ... +
        ns(temp, df) + ns(humidity, df) +
        ns(time, df = 7*numYears) +
        SLA * ns(time, df = 2),
        data = analyte, family = poisson
        )
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
 <ul>
-<li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
-<li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
-<li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
-<li>therefore this study avoids the issue by it's intentional design to compare betas not se</li>
-<li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
-<li>this is fascinating in itself, but a separate issue for another post</li>
+  <li>SLA is Statistical Local Area (now called SA2, like a suburb)</li>
+  <li>Sarunya explained that the research question was if the magnitude of the coeff on pollutant1 differed between this model and the old style of model where an entire city is used as the unit of analysis per day and exposure estimates are calculated as averages across several monitoring stations in the city</li>
+  <li>turns out that this comparison is still valid EVEN IF THE STANDARD ERROR IS BIASED DUE TO RESIDUAL SPATIAL AUTOCORRELATION</li>
+  <li>therefore this study avoids the issue by it’s intentional design to compare betas not se</li>
+  <li>Interestingly Sarunya explained that the stats theory suggests that even if the exposure precision is increased (exposure misclassification bias is decreased) the se on the beta will not be affected.</li>
+  <li>this is fascinating in itself, but a separate issue for another post</li>
 </ul>
 
-
-<h3>Conclusions</h3>
-
+<h3 id="conclusions">Conclusions</h3>
 <ul>
-<li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
-<li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure's relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
+  <li>So it looks like the extent a study might need to consider the issue of potential residual spatial autocorrelation depends alot on what questions are being asked and what inferences will be attempted from the results</li>
+  <li>if the aim of the study is to estimate the magnitude AND CONFIDENCE INTERVALS of an exposure’s relative risk (especially some novel exposure such as interstellar space dust across the suburbs) then the issue might become important to address.</li>
 </ul>
-
 
 <p>THANKS Sarunya!</p>
 
@@ -120,7 +111,7 @@
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2013-10-31 00:00:00 +1100">31 Oct 2013</abbr>
+      <abbr class="published" title="2013-10-31 00:00:00 +0800">31 Oct 2013</abbr>
     </span>
   </p>
   <div class="clear"></div>

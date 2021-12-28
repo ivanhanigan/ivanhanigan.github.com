@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,40 +55,36 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>I'm working on a new Data Management Plan for a research group who
+    <p>I’m working on a new Data Management Plan for a research group who
 merge data from air pollution, meteorology, population census and
 health outcome datasets.  The folder organisation is pretty much under
 control now, but the file names are challenging.</p>
 
-<p>I'm searching for inspiration and was recommended this conversation:
+<p>I’m searching for inspiration and was recommended this conversation:
 <a href="https://github.com/minisciencegirl/studyGroup/issues/20">https://github.com/minisciencegirl/studyGroup/issues/20</a></p>
 
-<pre><code>File Organization and Naming:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>File Organization and Naming:
 ...
 I want to include details of what the settings were or what dataset I
 started out with. Rather than saving a file name a mile long
 "FlightHomLog2_av1_Euc_ArrayEucl_AvgLink", there must be many
 different better ways to organizing my file space.
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
 <p>There is a bunch of good advice already here, and I recommend the slides <a href="https://github.com/Reproducible-Science-Curriculum/rr-organization1/tree/master/slides/naming-slides">https://github.com/Reproducible-Science-Curriculum/rr-organization1/tree/master/slides/naming-slides</a> and the two PLOS articles, but I wanted to pull out the two things I think it is important to get right:</p>
 
 <ul>
-<li>ordering in lists</li>
-<li>substring chunks that can be extracted</li>
+  <li>ordering in lists</li>
+  <li>substring chunks that can be extracted</li>
 </ul>
 
+<p>I think that the substring chunks are explained well in the slides link above (summary, use ‘_’ or ‘-‘ to split the string), but I think that the ordering problem needs some thinking.</p>
 
-<p>I think that the substring chunks are explained well in the slides link above (summary, use '_' or '-' to split the string), but I think that the ordering problem needs some thinking.</p>
-
-<h2>Tidy Data:</h2>
+<h2 id="tidy-data">Tidy Data:</h2>
 
 <p>This all reminds me of words from Hadley Wickham about tidy data, and the order that columns should be arranged in tabular data.  The principles are similar I think.</p>
 
-<pre><code class="">A good ordering makes it easier to scan the raw values. One way of
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A good ordering makes it easier to scan the raw values. One way of
 organizing variables is by their role in the analysis: are values
 fixed by the design of the data collection, or are they measured
 during the course of the experiment? Fixed variables describe the
@@ -100,43 +96,37 @@ first, followed by measured variables, each ordered so that related
 variables are contiguous. Rows can then be ordered by the first
 variable, breaking ties with the second and subsequent (fixed)
 variables. 
-</code></pre>
-
+</code></pre></div></div>
 <p></p>
-
-
 <p></p>
-
-
-<p>Wickham, H. (2014). Tidy Data. JSS Journal of Statistical Software, 59(10).
+<p>Wickham, H. (2014). Tidy Data. JSS Journal of Statistical Software, 59(10). 
 Retrieved from <a href="http://www.jstatsoft.org/">http://www.jstatsoft.org/</a></p>
 
-<h2>One way that we did this:</h2>
+<h2 id="one-way-that-we-did-this">One way that we did this:</h2>
 
 <p>Colleagues and I came up with the following protocol for an ecology and biodiversity database</p>
 
 <ol>
-<li>Project name (optional sub-project name)</li>
-<li>Data type (such as experimental unit, observational unit, and/or measurement methods)</li>
-<li>Geographic location (State, Country)</li>
-<li>Temporal frequency and coverge Annual or seasonal tranches</li>
+  <li>Project name (optional sub-project name)</li>
+  <li>Data type (such as experimental unit, observational unit, and/or measurement methods)</li>
+  <li>Geographic location (State, Country)</li>
+  <li>Temporal frequency and coverge Annual or seasonal tranches</li>
 </ol>
 
+<h2 id="tidy-data-generalisable-concepts-are-dimensions-and-variables">Tidy data generalisable concepts are dimensions and variables</h2>
 
-<h2>Tidy data generalisable concepts are dimensions and variables</h2>
+<p>The concept of dimensions and variables can be useful here, and especially for deciding on filenames.  Dimensions are fixed or change slowly while variables change more quickly .  For example the project name is ‘fixed’, that is it does not change across the files, but the sub-project name does change, just more slowly (say there may be 2-3 different sub-projects within a project). Then there may be a set of data types, and these ‘change’ more quickly than the sub-project name (by change I mean, there are more of them).  Then the geographic and temporal variables might change quickest of all.</p>
 
-<p>The concept of dimensions and variables can be useful here, and especially for deciding on filenames.  Dimensions are fixed or change slowly while variables change more quickly .  For example the project name is 'fixed', that is it does not change across the files, but the sub-project name does change, just more slowly (say there may be 2-3 different sub-projects within a project). Then there may be a set of data types, and these 'change' more quickly than the sub-project name (by change I mean, there are more of them).  Then the geographic and temporal variables might change quickest of all.</p>
-
-<p>So a general rule for the order of things can be stated
-The more fixed variables should come first (those things that don't change, or don't change much),
-followed by the more fluid variables (or things that change more across the project).
+<p>So a general rule for the order of things can be stated 
+The more fixed variables should come first (those things that don’t change, or don’t change much), 
+followed by the more fluid variables (or things that change more across the project). 
 List elements can then be ordered so that the groups of things that are similar will always be contiguous, and vary sequentially within clusters.</p>
 
 <p>Perhaps an example would be easier to understand.  Here is a set of file names that we constructed for one of our ecological field sites (project) and plots (sub-project or measurement location):</p>
 
-<h4>Notice we also had a controlled vocabulary of data types and their acronyms before starting this</h4>
+<h4 id="notice-we-also-had-a-controlled-vocabulary-of-data-types-and-their-acronyms-before-starting-this">Notice we also had a controlled vocabulary of data types and their acronyms before starting this</h4>
 
-<pre><code>| Filename                                                            | Title                                                                                                                                 |
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>| Filename                                                            | Title                                                                                                                                 |
 |---------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------|
 | asn_fnqr_soil_charact_robson_2011.csv                               | Soil Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2011                                                              |
 | asn_fnqr_soil_pit_robson_2012.csv                                   | Soil Pit Data, Water Content and Temperature, Far North Queensland Rainforest SuperSite, Robson Creek, 2012                           |
@@ -233,7 +223,8 @@ List elements can then be ordered so that the groups of things that are similar 
 | asn_fnqr_weather_robson_2012.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2012                                                   |
 | asn_fnqr_weather_robson_2013.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2013                                                   |
 | asn_fnqr_weather_robson_2014.csv                                    | Weather Station Data, Far North Queensland Rainforest SuperSite, Robson Creek, 2014                                                   |
-</code></pre>
+
+</code></pre></div></div>
 
     <div class="clear"></div>
   </div>
@@ -253,7 +244,7 @@ List elements can then be ordered so that the groups of things that are similar 
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2015-10-05 00:00:00 +1100">05 Oct 2015</abbr>
+      <abbr class="published" title="2015-10-05 00:00:00 +0800">05 Oct 2015</abbr>
     </span>
   </p>
   <div class="clear"></div>

@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,60 +55,55 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <h2>Introduction</h2>
+    <h2 id="introduction">Introduction</h2>
+<p>I’ve been thinking alot about workflows recently.  I’m talking about the data, code, decisions etc bound up in the flow of material going through any project in the collective program of work we have going on at the Centre I work at.
+The group are facing tough questions about how we do things; and why.  So in my reflections I’ve reviewed some links I’d saved and present below a unified summary version called the…</p>
 
-<p>I've been thinking alot about workflows recently.  I'm talking about the data, code, decisions etc bound up in the flow of material going through any project in the collective program of work we have going on at the Centre I work at.
-The group are facing tough questions about how we do things; and why.  So in my reflections I've reviewed some links I'd saved and present below a unified summary version called the...</p>
-
-<h2>Shane-Weiss-Reich-White.worg approach </h2>
-
-<p>This a synthesis I've put together of approaches to managing code in complex data analysis projects. It's named after key exponents on various blogs, wikis and web Q-and-A sites.</p>
+<h2 id="shane-weiss-reich-whiteworg-approach">Shane-Weiss-Reich-White.worg approach</h2>
+<p>This a synthesis I’ve put together of approaches to managing code in complex data analysis projects. It’s named after key exponents on various blogs, wikis and web Q-and-A sites.</p>
 
 <p>Stackoverflow user <a href="http://stackoverflow.com/users/163053/shane" title="Shane">Shane</a> posted <a href="http://stackoverflow.com/a/2292913" title="Shane's Post">this excellent comment to stackoverflow</a> to:</p>
 
-<p>"start off with one R file as you start a project (or a set of files like in the <a href="https://github.com/berndweiss" title="Bernd Weiss">Bernd Weiss</a> and <a href="http://stackoverflow.com/users/136862/josh-reich" title="Josh Reich">Josh Reich</a> examples), and progressively add to it (so that it grows in size) as you make discoveries."</p>
+<p>“start off with one R file as you start a project (or a set of files like in the <a href="https://github.com/berndweiss" title="Bernd Weiss">Bernd Weiss</a> and <a href="http://stackoverflow.com/users/136862/josh-reich" title="Josh Reich">Josh Reich</a> examples), and progressively add to it (so that it grows in size) as you make discoveries.”</p>
 
-<p><a href="https://github.com/berndweiss" title="Bernd Weiss">Bernd Weiss'</a> projects have:</p>
+<p><a href="https://github.com/berndweiss" title="Bernd Weiss">Bernd Weiss’</a> projects have:</p>
 
 <ul>
-<li>analysis,</li>
-<li>data and</li>
-<li>document directories and</li>
-<li>README.org (an Emacs org-mode file).</li>
+  <li>analysis,</li>
+  <li>data and</li>
+  <li>document directories and</li>
+  <li>README.org (an Emacs org-mode file).</li>
 </ul>
 
-
-<p>Bernd and Jeromy Anglim had an interesting discussion about this workflow in <a href="http://stats.stackexchange.com/a/4506" title="Bernd and Jeromy discuss the Weiss approach on stackexchange">this post at stackexchange</a>.  Especially note that Bernd recommends that every publication, presentation or semester/class etc. has its own git repository.  BUT that "there is one real downside: using the same dataset in different publications means to maintain different versions of 'initialization code' (define missing values, generate new variables etc.). To overcome this problem, Bernd decided to maintain ONE study/dataset-related repository which contains the original init-file. For each publication, presentation etc. use a copy of the original data-file as well as of the init-file (in R via file.copy()). Of course, whenever you create a new variable you'll need to modify the original init-file and do a file.copy() (which is the most annoying part of the approach)."</p>
+<p>Bernd and Jeromy Anglim had an interesting discussion about this workflow in <a href="http://stats.stackexchange.com/a/4506" title="Bernd and Jeromy discuss the Weiss approach on stackexchange">this post at stackexchange</a>.  Especially note that Bernd recommends that every publication, presentation or semester/class etc. has its own git repository.  BUT that “there is one real downside: using the same dataset in different publications means to maintain different versions of ‘initialization code’ (define missing values, generate new variables etc.). To overcome this problem, Bernd decided to maintain ONE study/dataset-related repository which contains the original init-file. For each publication, presentation etc. use a copy of the original data-file as well as of the init-file (in R via file.copy()). Of course, whenever you create a new variable you’ll need to modify the original init-file and do a file.copy() (which is the most annoying part of the approach).”</p>
 
 <p><a href="http://stackoverflow.com/users/136862/josh-reich" title="Josh Reich">Josh Reich</a> breaks projects into 4 pieces:</p>
 
 <ul>
-<li>load.R,</li>
-<li>clean.R,</li>
-<li>func.R and</li>
-<li>do.R</li>
+  <li>load.R,</li>
+  <li>clean.R,</li>
+  <li>func.R and</li>
+  <li>do.R</li>
 </ul>
 
-
-<p><a href="http://www.johnmyleswhite.com/about/" title="John Myles White">John Myles White's</a> leads the <a href="http://projecttemplate.net/architecture.html" title="ProjectTemplate">ProjectTemplate</a> package that has 'create.project(minimal = TRUE)' which creates the layout:</p>
+<p><a href="http://www.johnmyleswhite.com/about/" title="John Myles White">John Myles White’s</a> leads the <a href="http://projecttemplate.net/architecture.html" title="ProjectTemplate">ProjectTemplate</a> package that has ‘create.project(minimal = TRUE)’ which creates the layout:</p>
 
 <ul>
-<li>cache,</li>
-<li>config,</li>
-<li>data,</li>
-<li>munge,</li>
-<li>src, and</li>
-<li>README</li>
+  <li>cache,</li>
+  <li>config,</li>
+  <li>data,</li>
+  <li>munge,</li>
+  <li>src, and</li>
+  <li>README</li>
 </ul>
 
+<p>I’ve just added reports.  If a project is a little bit bigger than minimal I’ll add admin, metadata, versions etc etc. I contributed that idea to the ProjectTemplate discussion list… but those guys seem to mostly use the default minimal = FALSE which creates all the possible directories including reports.  I’ll try to keep it simple and just bolt on whatever bits suit my needs as I go.</p>
 
-<p>I've just added reports.  If a project is a little bit bigger than minimal I'll add admin, metadata, versions etc etc. I contributed that idea to the ProjectTemplate discussion list... but those guys seem to mostly use the default minimal = FALSE which creates all the possible directories including reports.  I'll try to keep it simple and just bolt on whatever bits suit my needs as I go.</p>
+<h2 id="which-code-editor-is-the-best">Which Code Editor is the Best?</h2>
+<p>And finally the meta work holding the project together is the code editor.  Despite the old joke which describes Emacs as <a href="http://upsilon.cc/~zack/blog/posts/2008/10/from_Vim_to_Emacs_-_part_1/" title="Why Emacs">“a great operating system, lacking only a decent editor”</a>, this editor has killer functions for managing code.  Check out <a href="http://orgmode.org/worg/" title="worg">worg the Emacs Org-Mode Community</a>. Recently proponents of worg wrote <a href="http://www.jstatsoft.org/v46/i03/paper" title="Orgmode takes over the data analysis world">this article</a>.  Previously I’ve REALLY enjoyed <a href="http://sourceforge.net/projects/npptor/" title="NPPtoR">NPPtoR</a> (only available under windoof).</p>
 
-<h2>Which Code Editor is the Best?</h2>
+<p>In the words of <a href="http://stackoverflow.com/users/37751/jd-long" title="JD Long">JD Long</a> in response to <a href="http://stackoverflow.com/a/2292913" title="Shane's Post">Shane</a> “The choice of the specific tool is more idiosyncratic and not near as important as using SOMETHING.”</p>
 
-<p>And finally the meta work holding the project together is the code editor.  Despite the old joke which describes Emacs as <a href="http://upsilon.cc/~zack/blog/posts/2008/10/from_Vim_to_Emacs_-_part_1/" title="Why Emacs">"a great operating system, lacking only a decent editor"</a>, this editor has killer functions for managing code.  Check out <a href="http://orgmode.org/worg/" title="worg">worg the Emacs Org-Mode Community</a>. Recently proponents of worg wrote <a href="http://www.jstatsoft.org/v46/i03/paper" title="Orgmode takes over the data analysis world">this article</a>.  Previously I've REALLY enjoyed <a href="http://sourceforge.net/projects/npptor/" title="NPPtoR">NPPtoR</a> (only available under windoof).</p>
-
-<p>In the words of <a href="http://stackoverflow.com/users/37751/jd-long" title="JD Long">JD Long</a> in response to <a href="http://stackoverflow.com/a/2292913" title="Shane's Post">Shane</a> "The choice of the specific tool is more idiosyncratic and not near as important as using SOMETHING."</p>
 
     <div class="clear"></div>
   </div>
@@ -128,7 +123,7 @@ The group are facing tough questions about how we do things; and why.  So in my 
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2012-03-20 00:00:00 +1100">20 Mar 2012</abbr>
+      <abbr class="published" title="2012-03-20 00:00:00 +0800">20 Mar 2012</abbr>
     </span>
   </p>
   <div class="clear"></div>

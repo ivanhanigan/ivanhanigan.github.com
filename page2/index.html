@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -61,56 +61,57 @@
 
 <p>I have had a bit of a break and caught up with some of the older blog posts I did not find time for earlier in 2017.</p>
 
-<p>This one caught my eye: <a href="http://varianceexplained.org/r/start-blog/">http://varianceexplained.org/r/start-blog/</a> especially the line 'When you’ve given the same advice 3 times, write a blog post'. So I thought I'd write a blog post about a bit of R code advice. (Disclaimer: This wasn't originally my work, but I used this advice more than 3 times, so am sharing here. This is a function I got from my colleague Phil TnT).</p>
+<p>This one caught my eye: <a href="http://varianceexplained.org/r/start-blog/">http://varianceexplained.org/r/start-blog/</a> especially the line ‘When you’ve given the same advice 3 times, write a blog post’. So I thought I’d write a blog post about a bit of R code advice. (Disclaimer: This wasn’t originally my work, but I used this advice more than 3 times, so am sharing here. This is a function I got from my colleague Phil TnT).</p>
 
 <p>In some cases I get data in a table that simplifies the presentation by only labelling one row in a set of rows like this:</p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>
-   person        fruit    suburb something
-      Tom      oranges   Scullin       <span class="m">3.0</span>
-                apples                 <span class="m">6.0</span>
-                 pears                 <span class="m">9.0</span>
-              tim tams                 <span class="m">2.0</span>
- Gertrude       durian Charnwood       <span class="m">3.7</span>
-          dragon fruit                 <span class="m">7.0</span>
-               lychees                 <span class="m">4.9</span>
-             pineapple               <span class="m">100.9</span>
-                apples                <span class="m">98.0</span>
-Pennelope      cashews   Higgins       <span class="m">2.0</span>
-             beer nuts                 <span class="m">5.6</span>
-              Pringles                 <span class="m">4.0</span></code></pre></figure></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w"> 
+   </span><span class="n">person</span><span class="w">        </span><span class="n">fruit</span><span class="w">    </span><span class="n">suburb</span><span class="w"> </span><span class="n">something</span><span class="w">
+      </span><span class="n">Tom</span><span class="w">      </span><span class="n">oranges</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">3.0</span><span class="w">
+                </span><span class="n">apples</span><span class="w">                 </span><span class="m">6.0</span><span class="w">
+                 </span><span class="n">pears</span><span class="w">                 </span><span class="m">9.0</span><span class="w">
+              </span><span class="n">tim</span><span class="w"> </span><span class="n">tams</span><span class="w">                 </span><span class="m">2.0</span><span class="w">
+ </span><span class="n">Gertrude</span><span class="w">       </span><span class="n">durian</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">       </span><span class="m">3.7</span><span class="w">
+          </span><span class="n">dragon</span><span class="w"> </span><span class="n">fruit</span><span class="w">                 </span><span class="m">7.0</span><span class="w">
+               </span><span class="n">lychees</span><span class="w">                 </span><span class="m">4.9</span><span class="w">
+             </span><span class="n">pineapple</span><span class="w">               </span><span class="m">100.9</span><span class="w">
+                </span><span class="n">apples</span><span class="w">                </span><span class="m">98.0</span><span class="w">
+</span><span class="n">Pennelope</span><span class="w">      </span><span class="n">cashews</span><span class="w">   </span><span class="n">Higgins</span><span class="w">       </span><span class="m">2.0</span><span class="w">
+             </span><span class="n">beer</span><span class="w"> </span><span class="n">nuts</span><span class="w">                 </span><span class="m">5.6</span><span class="w">
+              </span><span class="n">Pringles</span><span class="w">                 </span><span class="m">4.0</span></code></pre></figure>
 
 <p>To use this like tidy data we need to fill these intervening cells.</p>
 
-<p><figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span></p>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w"> 
 
-<p>fill.col <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> col.name<span class="p">)</span> <span class="p">{</span>
-      s <span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span><span class="o">!</span>x<span class="p">[[</span>col.name<span class="p">]]</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
-      item <span class="o">&lt;-</span> x<span class="p">[[</span>col.name<span class="p">]][</span>s<span class="p">]</span>
-      hold <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="kp">length</span><span class="p">(</span>item<span class="p">))</span>    <br/>
-      <span class="kr">for</span><span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span> <span class="kp">length</span><span class="p">(</span>hold<span class="p">))</span> hold<span class="p">[[</span>i<span class="p">]]</span> <span class="o">&lt;-</span> <span class="kp">rep</span><span class="p">(</span>item<span class="p">[</span>i<span class="p">],</span> <span class="kp">ifelse</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>s<span class="p">[</span>i<span class="m">+1</span><span class="p">]),</span> <span class="kp">dim</span><span class="p">(</span>x<span class="p">)[</span><span class="m">1</span><span class="p">]</span> <span class="o">+</span> <span class="m">1</span><span class="p">,</span> s<span class="p">[</span>i<span class="m">+1</span><span class="p">])</span> <span class="o">-</span> s<span class="p">[</span>i<span class="p">])</span>
-      x<span class="p">[[</span>col.name<span class="p">]]</span> <span class="o">&lt;-</span> <span class="kp">unlist</span><span class="p">(</span>hold<span class="p">)</span>
-      x
-      <span class="p">}</span></p>
+</span><span class="n">fill.col</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">col.name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">s</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">which</span><span class="p">(</span><span class="o">!</span><span class="n">x</span><span class="p">[[</span><span class="n">col.name</span><span class="p">]]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+      </span><span class="n">item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">x</span><span class="p">[[</span><span class="n">col.name</span><span class="p">]][</span><span class="n">s</span><span class="p">]</span><span class="w">
+      </span><span class="n">hold</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">vector</span><span class="p">(</span><span class="s1">'list'</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">item</span><span class="p">))</span><span class="w">      
+      </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">hold</span><span class="p">))</span><span class="w"> </span><span class="n">hold</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="m">+1</span><span class="p">]),</span><span class="w"> </span><span class="nf">dim</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="m">+1</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w">
+      </span><span class="n">x</span><span class="p">[[</span><span class="n">col.name</span><span class="p">]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">unlist</span><span class="p">(</span><span class="n">hold</span><span class="p">)</span><span class="w">
+      </span><span class="n">x</span><span class="w">
+      </span><span class="p">}</span><span class="w">
 
-<p>d <span class="o">&lt;-</span> fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;person&#39;</span><span class="p">)</span>
-fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;suburb&#39;</span><span class="p">)</span></p>
 
-<pre><code>  person        fruit    suburb something
-</code></pre>
 
-<p><span class="m">1</span>        Tom      oranges   Scullin       <span class="m">3.0</span>
-<span class="m">2</span>        Tom       apples   Scullin       <span class="m">6.0</span>
-<span class="m">3</span>        Tom        pears   Scullin       <span class="m">9.0</span>
-<span class="m">4</span>        Tom     tim tams   Scullin       <span class="m">2.0</span>
-<span class="m">5</span>   Gertrude       durian Charnwood       <span class="m">3.7</span>
-<span class="m">6</span>   Gertrude dragon fruit Charnwood       <span class="m">7.0</span>
-<span class="m">7</span>   Gertrude      lychees Charnwood       <span class="m">4.9</span>
-<span class="m">8</span>   Gertrude    pineapple Charnwood     <span class="m">100.9</span>
-<span class="m">9</span>   Gertrude       apples Charnwood      <span class="m">98.0</span>
-<span class="m">10</span> Pennelope      cashews   Higgins       <span class="m">2.0</span>
-<span class="m">11</span> Pennelope    beer nuts   Higgins       <span class="m">5.6</span>
-<span class="m">12</span> Pennelope     Pringles   Higgins       <span class="m">4.0</span></code></pre></figure></p>
+</span><span class="n">d</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fill.col</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="s1">'person'</span><span class="p">)</span><span class="w"> 
+</span><span class="n">fill.col</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="s1">'suburb'</span><span class="p">)</span><span class="w">  
+ 
+      </span><span class="n">person</span><span class="w">        </span><span class="n">fruit</span><span class="w">    </span><span class="n">suburb</span><span class="w"> </span><span class="n">something</span><span class="w">
+</span><span class="m">1</span><span class="w">        </span><span class="n">Tom</span><span class="w">      </span><span class="n">oranges</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">3.0</span><span class="w">
+</span><span class="m">2</span><span class="w">        </span><span class="n">Tom</span><span class="w">       </span><span class="n">apples</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">6.0</span><span class="w">
+</span><span class="m">3</span><span class="w">        </span><span class="n">Tom</span><span class="w">        </span><span class="n">pears</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">9.0</span><span class="w">
+</span><span class="m">4</span><span class="w">        </span><span class="n">Tom</span><span class="w">     </span><span class="n">tim</span><span class="w"> </span><span class="n">tams</span><span class="w">   </span><span class="n">Scullin</span><span class="w">       </span><span class="m">2.0</span><span class="w">
+</span><span class="m">5</span><span class="w">   </span><span class="n">Gertrude</span><span class="w">       </span><span class="n">durian</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">       </span><span class="m">3.7</span><span class="w">
+</span><span class="m">6</span><span class="w">   </span><span class="n">Gertrude</span><span class="w"> </span><span class="n">dragon</span><span class="w"> </span><span class="n">fruit</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">       </span><span class="m">7.0</span><span class="w">
+</span><span class="m">7</span><span class="w">   </span><span class="n">Gertrude</span><span class="w">      </span><span class="n">lychees</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">       </span><span class="m">4.9</span><span class="w">
+</span><span class="m">8</span><span class="w">   </span><span class="n">Gertrude</span><span class="w">    </span><span class="n">pineapple</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">     </span><span class="m">100.9</span><span class="w">
+</span><span class="m">9</span><span class="w">   </span><span class="n">Gertrude</span><span class="w">       </span><span class="n">apples</span><span class="w"> </span><span class="n">Charnwood</span><span class="w">      </span><span class="m">98.0</span><span class="w">
+</span><span class="m">10</span><span class="w"> </span><span class="n">Pennelope</span><span class="w">      </span><span class="n">cashews</span><span class="w">   </span><span class="n">Higgins</span><span class="w">       </span><span class="m">2.0</span><span class="w">
+</span><span class="m">11</span><span class="w"> </span><span class="n">Pennelope</span><span class="w">    </span><span class="n">beer</span><span class="w"> </span><span class="n">nuts</span><span class="w">   </span><span class="n">Higgins</span><span class="w">       </span><span class="m">5.6</span><span class="w">
+</span><span class="m">12</span><span class="w"> </span><span class="n">Pennelope</span><span class="w">     </span><span class="n">Pringles</span><span class="w">   </span><span class="n">Higgins</span><span class="w">       </span><span class="m">4.0</span></code></pre></figure>
+
 
       <div class="clear"></div>
     </div>
@@ -127,7 +128,7 @@ fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;s
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2017-12-31 00:00:00 +1100">31 Dec 2017</abbr>
+        <abbr class="published" title="2017-12-31 00:00:00 +0800">31 Dec 2017</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -142,28 +143,26 @@ fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;s
       <p>I put these ideas down when I gave a talk for the Aust National Data Service (ANDS) training course for data librarians at universities.</p>
 
 <ol>
-<li>Finding out about data</li>
-<li>Getting data</li>
-<li>Putting data somewhere</li>
-<li>Doing stuff with data</li>
-<li>Finding out what has been done with data</li>
-<li>Sharing data with others</li>
+  <li>Finding out about data</li>
+  <li>Getting data</li>
+  <li>Putting data somewhere</li>
+  <li>Doing stuff with data</li>
+  <li>Finding out what has been done with data</li>
+  <li>Sharing data with others</li>
 </ol>
-
 
 <p>I suggest that the future needs actions that support each of these activities at the following levels:</p>
 
 <ol>
-<li>Individual researcher</li>
-<li>Research group</li>
-<li>Research centre</li>
-<li>Faculty/Institute</li>
-<li>University</li>
-<li>Multi-university collaborative groups (e.g. CRC or CRE)</li>
+  <li>Individual researcher</li>
+  <li>Research group</li>
+  <li>Research centre</li>
+  <li>Faculty/Institute</li>
+  <li>University</li>
+  <li>Multi-university collaborative groups (e.g. CRC or CRE)</li>
 </ol>
 
-
-<p>The government and private sectors may have some similarities, but I don't know.</p>
+<p>The government and private sectors may have some similarities, but I don’t know.</p>
 
       <div class="clear"></div>
     </div>
@@ -180,7 +179,7 @@ fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;s
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2017-12-07 00:00:00 +1100">07 Dec 2017</abbr>
+        <abbr class="published" title="2017-12-07 00:00:00 +0800">07 Dec 2017</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -192,7 +191,7 @@ fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;s
       <a href="/2017/11/the-impact-of-scale/" title="The impact of scale on associations between disadvantage and hospitalization for heart diseases" rel="bookmark">The impact of scale on associations between disadvantage and hospitalization for heart diseases</a>
     </h1>
     <div class="entry-content full-content">
-      <h1>Disadvantage and disease hidden in plain sight: University of Canberra study</h1>
+      <h1 id="disadvantage-and-disease-hidden-in-plain-sight-university-of-canberra-study">Disadvantage and disease hidden in plain sight: University of Canberra study</h1>
 
 <p>Disease mapping has been used as a modern tool for identifying risks and informing public health policy, but researchers at the University of Canberra say the real story of socio-economic disadvantage and disease is often hidden.</p>
 
@@ -202,7 +201,7 @@ fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;s
 
 <p>HRI’s data scientist and lead author of the report, Dr Ivan Hanigan, said that “in order to protect the anonymity of health data, government authorities prefer large scale mapping, which impacts the evidence they need for policy responses. It’s left them with little detail and a picture that doesn’t reflect reality,” Dr Hanigan said.</p>
 
-<p>“The salt-and-pepper approach to Canberra’s public housing and high-density living, which means low socio-economic groups are spread out throughout the city’s suburbs, hides the disadvantage when studied at certain scales. Current disease mapping often shows a uniform level of health problems at suburb level or above, but by drilling it down to a smaller, neighbourhood level you begin to see a very different story," Dr Hanigan said.</p>
+<p>“The salt-and-pepper approach to Canberra’s public housing and high-density living, which means low socio-economic groups are spread out throughout the city’s suburbs, hides the disadvantage when studied at certain scales. Current disease mapping often shows a uniform level of health problems at suburb level or above, but by drilling it down to a smaller, neighbourhood level you begin to see a very different story,” Dr Hanigan said.</p>
 
 <p>He said that, for example, it is globally well known that socio-economic disadvantage is associated with more heart disease problems.</p>
 
@@ -235,7 +234,7 @@ fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;s
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2017-11-29 00:00:00 +1100">29 Nov 2017</abbr>
+        <abbr class="published" title="2017-11-29 00:00:00 +0800">29 Nov 2017</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -257,24 +256,23 @@ fill.col<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;s
 
 <p>In our paper that has just been accepted for publication in the journal Environmental Science &amp; Technology we implemented a high-tech method called the Bayesian Maximum Entropy (BME) model to blend data based on our prior knowledge of the probabilities and uncertainty surrounding the information sources. We brought together all the different NO2 data from measuring stations (monitors), chemical transport models (physical models that mimic the dispersion of emissions and weather patterns), and statistical ‘land use regression’ models (which incorporated satellite-based data) to estimate neighbourhood level annual average NO2 concentrations in Sydney. Our validation assessment using independent data from a separate set of samples showed an improvement compared to either the land use regression and chemical transport model used alone.</p>
 
-<h2>How low should we go? Is there a ‘safe’ low threshold of air pollution for Australians?</h2>
+<h2 id="how-low-should-we-go-is-there-a-safe-low-threshold-of-air-pollution-for-australians">How low should we go? Is there a ‘safe’ low threshold of air pollution for Australians?</h2>
 
 <p>Future outputs of our work will seek to enable the policy and management communities to develop further improvements to air pollution maps and to explore health cost-benefit estimates under various emission reduction scenarios. For example, the Australian National Environment Protection Council decides on the National Environment Protection Measures (NEPMs) which have the goal of achieving a safe threshold of exposure in our cities. The results of our research will inform these stakeholders as they revise the regulations, and try to achieve the National Clean Air Agreement (made between the Commonwealth and each state and territory jurisdictions) which aims to implement strengthened laws that move to even tighter standards on air pollution emissions by 2025.</p>
 
-<h2>Key talking points:</h2>
+<h2 id="key-talking-points">Key talking points:</h2>
 
 <ul>
-<li>Air pollution health impacts are well known from studies in high concentration cities (e.g. Rome) but there is a lack of knowledge about how low we need to go to minimise health impacts.</li>
-<li>Sydney has globally low levels of NO2 (a traffic related air pollutant) and this makes Australia one of the best places in the world to study this low end of the exposure spectrum.</li>
-<li>Our study produced an air pollution map with the best validation statistics for NO2 made so far for Sydney, at a scale of hundreds of metres.</li>
-<li>These more precise exposure estimates will produce better knowledge about the health impacts.</li>
-<li>With this evidence we can make better choices on regulatory interventions that seek to maximise the health benefits of reducing air pollution emissions while also delivering the lifestyle and economic prosperity afforded by burning fossil fuel for energy.</li>
+  <li>Air pollution health impacts are well known from studies in high concentration cities (e.g. Rome) but there is a lack of knowledge about how low we need to go to minimise health impacts.</li>
+  <li>Sydney has globally low levels of NO2 (a traffic related air pollutant) and this makes Australia one of the best places in the world to study this low end of the exposure spectrum.</li>
+  <li>Our study produced an air pollution map with the best validation statistics for NO2 made so far for Sydney, at a scale of hundreds of metres.</li>
+  <li>These more precise exposure estimates will produce better knowledge about the health impacts.</li>
+  <li>With this evidence we can make better choices on regulatory interventions that seek to maximise the health benefits of reducing air pollution emissions while also delivering the lifestyle and economic prosperity afforded by burning fossil fuel for energy.</li>
 </ul>
 
+<h2 id="media-release">Media release</h2>
 
-<h2>Media release</h2>
-
-<h3>A breath of fresh air – new pollution research from Australia</h3>
+<h3 id="a-breath-of-fresh-air--new-pollution-research-from-australia">A breath of fresh air – new pollution research from Australia</h3>
 
 <p>Calculating whether traffic-related air pollution exposure can make us sick even at low levels has stumped experts around the world, but new research from a collaboration among eight universities and the CSIRO is now filling in the blanks.
 Nitrogen dioxide (NO2) is a pollutant mostly emitted by traffic and has been associated with respiratory and cardiovascular health problems.</p>
@@ -288,7 +286,7 @@ Estimates of Long-Term Exposure for Health Research has been published in the jo
 
 <p>“Using the very precise air quality monitors installed around Sydney, along with sophisticated modelling by my collaborators, we are gaining insights that other studies have missed about the lower levels of NO2 exposure. We’ve been able to produce the best maps so far of air pollution for Sydney, and the scale is down to a hundred metres or so.”</p>
 
-<p>Previous analysis used scales of several kilometres, Dr Hanigan says his new maps are much closer to the level of detail needed to accurately determine health impacts and plan for the future.
+<p>Previous analysis used scales of several kilometres, Dr Hanigan says his new maps are much closer to the level of detail needed to accurately determine health impacts and plan for the future. 
 “I expect health policy experts, infrastructure planners and even environmental managers will be keenly interested in this analysis,” he said. “This work can help to develop improvements to Australia’s air pollution regulations and lead to better health cost-benefit estimates for emission reduction scenarios.”
 “With this evidence we can make better choices on interventions to maximise the health benefits of reducing air pollution emissions while also delivering the lifestyle and economic prosperity afforded by burning fossil fuels for energy.”</p>
 
@@ -309,7 +307,7 @@ Estimates of Long-Term Exposure for Health Research has been published in the jo
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2017-11-16 00:00:00 +1100">16 Nov 2017</abbr>
+        <abbr class="published" title="2017-11-16 00:00:00 +0800">16 Nov 2017</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -324,15 +322,14 @@ Estimates of Long-Term Exposure for Health Research has been published in the jo
       <p>Our paper on a computational environment for reproducible workflows for climate change assessments is available for free access for limited time until Jan 28 via <a href="https://authors.elsevier.com/a/1UBJF5c6cKey5~">https://authors.elsevier.com/a/1UBJF5c6cKey5~</a></p>
 
 <ul>
-<li>Guru, S., Hanigan, I. C., Nguyen, H. A., Burns, E., Stein, J., Blanchard, W., Lindenmayer, D., Clancy, T. (2016). Development of a cloud-based platform for reproducible science: A case study of an IUCN Red List of Ecosystems Assessment. Ecological Informatics, 36, 221–230. <a href="http://doi.org/10.1016/j.ecoinf.2016.08.003">http://doi.org/10.1016/j.ecoinf.2016.08.003</a>.</li>
+  <li>Guru, S., Hanigan, I. C., Nguyen, H. A., Burns, E., Stein, J., Blanchard, W., Lindenmayer, D., Clancy, T. (2016). Development of a cloud-based platform for reproducible science: A case study of an IUCN Red List of Ecosystems Assessment. Ecological Informatics, 36, 221–230. <a href="http://doi.org/10.1016/j.ecoinf.2016.08.003">http://doi.org/10.1016/j.ecoinf.2016.08.003</a>.</li>
 </ul>
-
 
 <p>In this project we re-implemented a previously created project from an ArcGIS and R scripted process into a reproducible workflow in Kepler. That original analysis was for a climate change risk assessment using the IUCN Red list of Ecosystems Assessment framework and was done for Mountain Ash forests located in the Central Highlands of Victoria, Australia.  This served as our case study.</p>
 
 <p>Our aim was to demonstrate how this could be implemented as a more reproducible workflow and how it could be disseminated by creating a standalone computation environment for sharing the entire operating system and toolchain along with the work. The IT infrastructure we developed offers analysis tools as a “Platform as a Service” in a virtual desktop offered as a “Desktop as a Service” at <a href="https://www.coesra.org.au">https://www.coesra.org.au</a> and new features are under development at <a href="https://portal.coesra.org.au">https://portal.coesra.org.au</a>.  A R package of generic functions was created <a href="https://bitbucket.org/coesra/iucnecosystemriskassessment/src">https://bitbucket.org/coesra/iucnecosystemriskassessment/src</a>, and execution is possible as a pipeline of R scripts <a href="https://bitbucket.org/coesra/iucn_ecosystemriskassessment_mountainashforests">https://bitbucket.org/coesra/iucn_ecosystemriskassessment_mountainashforests</a> as well as a Kepler workflow.</p>
 
-<p>I made heavy use of the flowchart R function 'newnode' which I wrote as part of my
+<p>I made heavy use of the flowchart R function ‘newnode’ which I wrote as part of my
 PhD project (and is distributed in my own misc R package available
 on Github <a href="https://github.com/ivanhanigan/disentangle">https://github.com/ivanhanigan/disentangle</a>. This function takes a simple data.frame of steps, inputs and outputs and returns a string of text
 written in the dot language which can be rendered in R using
@@ -342,7 +339,6 @@ package. This creates the graph view shown below.</p>
 <object data="/images/iucn-criteria-Conceptual_workflow-v1-3-1.pdf" type="application/pdf" width="675" height="800">
   <p>Alternative text - include a link <a href="images/iucn-criteria-Conceptual_workflow-v1-3-1.pdf">to the PDF!</a></p>
 </object>
-
 
       <div class="clear"></div>
     </div>
@@ -365,7 +361,7 @@ package. This creates the graph view shown below.</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2017-01-03 00:00:00 +1100">03 Jan 2017</abbr>
+        <abbr class="published" title="2017-01-03 00:00:00 +0800">03 Jan 2017</abbr>
       </span>
     </p>
     <div class="clear"></div>

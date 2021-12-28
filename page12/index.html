@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -65,112 +65,110 @@ of intermediary causal factors. These questions are usually explored
 in the context of many other factors that describe human biological
 variables and the socio-economic milieu.</p>
 
-<p>In this post I utilise the R package <code>DiagrammeR</code> to construct a causal directed acyclic graph (DAG) of the putative effects of a set of selected causal factors from both natural and social capital theories.</p>
+<p>In this post I utilise the R package <code class="language-plaintext highlighter-rouge">DiagrammeR</code> to construct a causal directed acyclic graph (DAG) of the putative effects of a set of selected causal factors from both natural and social capital theories.</p>
 
-<p>The following code produces graph
+<p>The following code produces graph 
 <img src="/images/suicide-drought.png" alt="/images/suicide-drought.png" /></p>
 
 <p>Or this interactive version <a href="/viewhtml21f36d8c5d7d/index.html">/viewhtml21f36d8c5d7d/index.html</a></p>
 
 <iframe style="border: none;" height="400" width="600" src="/viewhtml21f36d8c5d7d/index.html"></iframe>
 
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">DiagrammeR</span><span class="p">)</span><span class="w">
+</span><span class="c1">#### First create the outcome</span><span class="w">
+</span><span class="n">nodes_outcome</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'suicide'</span><span class="p">,</span><span class="s1">'depression'</span><span class="p">,</span><span class="s1">'anxiety'</span><span class="p">),</span><span class="w">
+                        </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
+                        </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">)</span><span class="w">
 
-<pre><code class="r">library(DiagrammeR)
-#### First create the outcome
-nodes_outcome &lt;- create_nodes(nodes = c('suicide','depression','anxiety'),
-                        label = TRUE,
-                        colour = "black")
+</span><span class="n">edges_outcome</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_edges</span><span class="p">(</span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'depression'</span><span class="p">,</span><span class="s1">'anxiety'</span><span class="p">),</span><span class="w">
+                        </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="nf">c</span><span class="p">(</span><span class="s2">"suicide"</span><span class="p">,</span><span class="w"> </span><span class="s2">"suicide"</span><span class="p">)</span><span class="w">
+                        </span><span class="p">)</span><span class="w">
 
-edges_outcome &lt;- create_edges(from = c('depression','anxiety'),
-                        to =   c("suicide", "suicide")
-                        )
+</span><span class="n">graph_outcome</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nodes_outcome</span><span class="p">,</span><span class="w">
+                       </span><span class="n">edges_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">edges_outcome</span><span class="p">)</span><span class="w">
+</span><span class="c1"># just test this out</span><span class="w">
+</span><span class="c1">## render_graph(graph_outcome)</span><span class="w">
+                        
+</span><span class="c1">#### now the social capital factors  </span><span class="w">
+</span><span class="n">nodes_social</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> 
+  </span><span class="n">create_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="nf">c</span><span class="p">(</span><span class="s2">"stress"</span><span class="p">,</span><span class="w"> </span><span class="s2">"decreased community support"</span><span class="p">,</span><span class="w"> </span><span class="s2">"migration"</span><span class="p">),</span><span class="w">
+               </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
+               </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">)</span><span class="w">
 
-graph_outcome &lt;- create_graph(nodes_df = nodes_outcome,
-                       edges_df = edges_outcome)
-# just test this out
-## render_graph(graph_outcome)
+</span><span class="n">edges_social</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_edges</span><span class="p">(</span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="nf">c</span><span class="p">(</span><span class="s2">"stress"</span><span class="p">,</span><span class="w"> </span><span class="s2">"stress"</span><span class="p">,</span><span class="w"> </span><span class="s2">"decreased community support"</span><span class="p">,</span><span class="w">
+                          </span><span class="s2">"migration"</span><span class="p">),</span><span class="w">
+                        </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="nf">c</span><span class="p">(</span><span class="s2">"anxiety"</span><span class="p">,</span><span class="w"> </span><span class="s2">"depression"</span><span class="p">,</span><span class="w"> </span><span class="s2">"anxiety"</span><span class="p">,</span><span class="w">
+                          </span><span class="s2">"decreased community support"</span><span class="p">)</span><span class="w">
+                        </span><span class="p">)</span><span class="w">
+</span><span class="n">graph_social</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nodes_social</span><span class="p">,</span><span class="w">
+                       </span><span class="n">edges_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">edges_social</span><span class="p">)</span><span class="w">
+</span><span class="c1"># render_graph(graph_social)</span><span class="w">
 
-#### now the social capital factors  
-nodes_social &lt;- 
-  create_nodes(nodes =  c("stress", "decreased community support", "migration"),
-               label = TRUE,
-               color = "blue")
+</span><span class="c1">#### now the financial capital factors</span><span class="w">
+</span><span class="n">nodes_financial</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> 
+  </span><span class="n">create_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"employment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"debt"</span><span class="p">),</span><span class="w">
+               </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
+               </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"green"</span><span class="p">)</span><span class="w">
 
-edges_social &lt;- create_edges(from =  c("stress", "stress", "decreased community support",
-                          "migration"),
-                        to =   c("anxiety", "depression", "anxiety",
-                          "decreased community support")
-                        )
-graph_social &lt;- create_graph(nodes_df = nodes_social,
-                       edges_df = edges_social)
-# render_graph(graph_social)
-
-#### now the financial capital factors
-nodes_financial &lt;- 
-  create_nodes(nodes = c("employment", "debt"),
-               label = TRUE,
-               color = "green")
-
-edges_financial &lt;- create_edges(from = c("employment", "employment", "debt"),
-                        to =   c("stress", "debt", "stress")
-                        )
-graph_financial &lt;- create_graph(nodes_df = nodes_financial,
-                       edges_df = edges_financial)
-# render_graph(graph_financial)
+</span><span class="n">edges_financial</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_edges</span><span class="p">(</span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"employment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"employment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"debt"</span><span class="p">),</span><span class="w">
+                        </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="nf">c</span><span class="p">(</span><span class="s2">"stress"</span><span class="p">,</span><span class="w"> </span><span class="s2">"debt"</span><span class="p">,</span><span class="w"> </span><span class="s2">"stress"</span><span class="p">)</span><span class="w">
+                        </span><span class="p">)</span><span class="w">
+</span><span class="n">graph_financial</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nodes_financial</span><span class="p">,</span><span class="w">
+                       </span><span class="n">edges_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">edges_financial</span><span class="p">)</span><span class="w">
+</span><span class="c1"># render_graph(graph_financial)</span><span class="w">
 
 
-#### now the natural capital factors
-nodes_natural &lt;- 
-  create_nodes(nodes = c("drought", "declined agricultural productivity", "decreased food security"),
-               label = TRUE,
-               color = "red")
+</span><span class="c1">#### now the natural capital factors</span><span class="w">
+</span><span class="n">nodes_natural</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> 
+  </span><span class="n">create_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"drought"</span><span class="p">,</span><span class="w"> </span><span class="s2">"declined agricultural productivity"</span><span class="p">,</span><span class="w"> </span><span class="s2">"decreased food security"</span><span class="p">),</span><span class="w">
+               </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
+               </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">)</span><span class="w">
 
-edges_natural &lt;- create_edges(from = c("drought", "drought", "declined agricultural productivity",
-                          "declined agricultural productivity", "declined agricultural productivity",
-                          "decreased food security",
-                          "drought"),
-                        to =   c("declined agricultural productivity", "decreased food security", "decreased food security",
-                          "anxiety", "employment",
-                          "anxiety",
-                          "migration")
-                        )
-graph_natural &lt;- create_graph(nodes_df = nodes_natural,
-                       edges_df = edges_natural)
-## render_graph(graph_natural)
+</span><span class="n">edges_natural</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_edges</span><span class="p">(</span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"drought"</span><span class="p">,</span><span class="w"> </span><span class="s2">"drought"</span><span class="p">,</span><span class="w"> </span><span class="s2">"declined agricultural productivity"</span><span class="p">,</span><span class="w">
+                          </span><span class="s2">"declined agricultural productivity"</span><span class="p">,</span><span class="w"> </span><span class="s2">"declined agricultural productivity"</span><span class="p">,</span><span class="w">
+                          </span><span class="s2">"decreased food security"</span><span class="p">,</span><span class="w">
+                          </span><span class="s2">"drought"</span><span class="p">),</span><span class="w">
+                        </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="nf">c</span><span class="p">(</span><span class="s2">"declined agricultural productivity"</span><span class="p">,</span><span class="w"> </span><span class="s2">"decreased food security"</span><span class="p">,</span><span class="w"> </span><span class="s2">"decreased food security"</span><span class="p">,</span><span class="w">
+                          </span><span class="s2">"anxiety"</span><span class="p">,</span><span class="w"> </span><span class="s2">"employment"</span><span class="p">,</span><span class="w">
+                          </span><span class="s2">"anxiety"</span><span class="p">,</span><span class="w">
+                          </span><span class="s2">"migration"</span><span class="p">)</span><span class="w">
+                        </span><span class="p">)</span><span class="w">
+</span><span class="n">graph_natural</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nodes_natural</span><span class="p">,</span><span class="w">
+                       </span><span class="n">edges_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">edges_natural</span><span class="p">)</span><span class="w">
+</span><span class="c1">## render_graph(graph_natural)</span><span class="w">
 
-# use create_graph on separate nodes and edges data frames, one for each cluster
-# then access the dot codes for each
-gr0 &lt;- graph_outcome$dot_code
-gr1 &lt;- graph_social$dot_code
-gr2 &lt;- graph_financial$dot_code
-gr3 &lt;- graph_natural$dot_code
-# then replace the graph with subgraph
-gr0 &lt;- gsub("digraph", "subgraph cluster0", gr0)
-gr1 &lt;- gsub("digraph", "subgraph cluster1", gr1)
-gr2 &lt;- gsub("digraph", "subgraph cluster2", gr2)
-gr3 &lt;- gsub("digraph", "subgraph cluster3", gr3)
-# and then combine the subgraphs into one graph
-gr_out &lt;- sprintf("digraph{\n%s\n\n %s\n%s\n%s\n}", gr0, gr1, gr2, gr3)
-cat(gr_out)
-grViz(gr_out)
-# If graphviz is installed and on linux call it with a shell command
-sink("suicide-drought.dot")
-cat(gsub("'",'"', gr_out))
-sink()
-system("dot -Tpng suicide-drought.dot -o suicide-drought.png")
-# Interactive
-nodes &lt;- combine_nodes(nodes_outcome, nodes_social, nodes_natural, nodes_financial)
-edges &lt;- combine_edges(edges_outcome, edges_social, edges_natural, edges_financial)
-
-# Render graph
-graph &lt;- create_graph(nodes_df = nodes,
-                      edges_df = edges)
-
-render_graph(graph, output = "visNetwork")    
-</code></pre>
+</span><span class="c1"># use create_graph on separate nodes and edges data frames, one for each cluster</span><span class="w">
+</span><span class="c1"># then access the dot codes for each</span><span class="w">
+</span><span class="n">gr0</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">graph_outcome</span><span class="o">$</span><span class="n">dot_code</span><span class="w">
+</span><span class="n">gr1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">graph_social</span><span class="o">$</span><span class="n">dot_code</span><span class="w">
+</span><span class="n">gr2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">graph_financial</span><span class="o">$</span><span class="n">dot_code</span><span class="w">
+</span><span class="n">gr3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">graph_natural</span><span class="o">$</span><span class="n">dot_code</span><span class="w">
+</span><span class="c1"># then replace the graph with subgraph</span><span class="w">
+</span><span class="n">gr0</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">"digraph"</span><span class="p">,</span><span class="w"> </span><span class="s2">"subgraph cluster0"</span><span class="p">,</span><span class="w"> </span><span class="n">gr0</span><span class="p">)</span><span class="w">
+</span><span class="n">gr1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">"digraph"</span><span class="p">,</span><span class="w"> </span><span class="s2">"subgraph cluster1"</span><span class="p">,</span><span class="w"> </span><span class="n">gr1</span><span class="p">)</span><span class="w">
+</span><span class="n">gr2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">"digraph"</span><span class="p">,</span><span class="w"> </span><span class="s2">"subgraph cluster2"</span><span class="p">,</span><span class="w"> </span><span class="n">gr2</span><span class="p">)</span><span class="w">
+</span><span class="n">gr3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">"digraph"</span><span class="p">,</span><span class="w"> </span><span class="s2">"subgraph cluster3"</span><span class="p">,</span><span class="w"> </span><span class="n">gr3</span><span class="p">)</span><span class="w">
+</span><span class="c1"># and then combine the subgraphs into one graph</span><span class="w">
+</span><span class="n">gr_out</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sprintf</span><span class="p">(</span><span class="s2">"digraph{\n%s\n\n %s\n%s\n%s\n}"</span><span class="p">,</span><span class="w"> </span><span class="n">gr0</span><span class="p">,</span><span class="w"> </span><span class="n">gr1</span><span class="p">,</span><span class="w"> </span><span class="n">gr2</span><span class="p">,</span><span class="w"> </span><span class="n">gr3</span><span class="p">)</span><span class="w">
+</span><span class="n">cat</span><span class="p">(</span><span class="n">gr_out</span><span class="p">)</span><span class="w">
+</span><span class="n">grViz</span><span class="p">(</span><span class="n">gr_out</span><span class="p">)</span><span class="w">
+</span><span class="c1"># If graphviz is installed and on linux call it with a shell command</span><span class="w">
+</span><span class="n">sink</span><span class="p">(</span><span class="s2">"suicide-drought.dot"</span><span class="p">)</span><span class="w">
+</span><span class="n">cat</span><span class="p">(</span><span class="n">gsub</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span><span class="s1">'"'</span><span class="p">,</span><span class="w"> </span><span class="n">gr_out</span><span class="p">))</span><span class="w">
+</span><span class="n">sink</span><span class="p">()</span><span class="w">
+</span><span class="n">system</span><span class="p">(</span><span class="s2">"dot -Tpng suicide-drought.dot -o suicide-drought.png"</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Interactive</span><span class="w">
+</span><span class="n">nodes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">combine_nodes</span><span class="p">(</span><span class="n">nodes_outcome</span><span class="p">,</span><span class="w"> </span><span class="n">nodes_social</span><span class="p">,</span><span class="w"> </span><span class="n">nodes_natural</span><span class="p">,</span><span class="w"> </span><span class="n">nodes_financial</span><span class="p">)</span><span class="w">
+</span><span class="n">edges</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">combine_edges</span><span class="p">(</span><span class="n">edges_outcome</span><span class="p">,</span><span class="w"> </span><span class="n">edges_social</span><span class="p">,</span><span class="w"> </span><span class="n">edges_natural</span><span class="p">,</span><span class="w"> </span><span class="n">edges_financial</span><span class="p">)</span><span class="w">
+  
+</span><span class="c1"># Render graph</span><span class="w">
+</span><span class="n">graph</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_graph</span><span class="p">(</span><span class="n">nodes_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nodes</span><span class="p">,</span><span class="w">
+                      </span><span class="n">edges_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">edges</span><span class="p">)</span><span class="w">
+  
+</span><span class="n">render_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"visNetwork"</span><span class="p">)</span><span class="w">    
+</span></code></pre></div></div>
 
 <p></p>
-
 
       <div class="clear"></div>
     </div>
@@ -187,7 +185,7 @@ render_graph(graph, output = "visNetwork")
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-10-03 00:00:00 +1000">03 Oct 2015</abbr>
+        <abbr class="published" title="2015-10-03 00:00:00 +0800">03 Oct 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -199,21 +197,18 @@ render_graph(graph, output = "visNetwork")
       <a href="/2015/10/research-protocol-for-manitoba-centre-for-health-policy/" title="Research Protocol For Manitoba Centre For Health Policy" rel="bookmark">Research Protocol For Manitoba Centre For Health Policy</a>
     </h1>
     <div class="entry-content full-content">
-      <h4>Version control</h4>
-
-<pre><code>2013-12-02: This post was originally released
+      <h4 id="version-control">Version control</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2013-12-02: This post was originally released
 2015-10-02: The URL to the University Manitoba guidelines changed and has been updated.
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>When we started a three year project on bushfire smoke we did some planning</li>
-<li>We had a deep discussion about this research management protocol from University Manitoba Centre for Health Policy <a href="http://umanitoba.ca/faculties/health_sciences/medicine/units/community_health_sciences/departmental_units/mchp/protocol/media/manage_guidelines.pdf">http://umanitoba.ca/faculties/health_sciences/medicine/units/community_health_sciences/departmental_units/mchp/protocol/media/manage_guidelines.pdf</a></li>
-<li>That URL has changed several times since I first downloaded the guidelines, so I will also host a copy here <a href="/pdfs/UManitoba_MCHP_manage_guidelines.pdf">UManitoba_MCHP_manage_guidelines.pdf</a></li>
+  <li>When we started a three year project on bushfire smoke we did some planning</li>
+  <li>We had a deep discussion about this research management protocol from University Manitoba Centre for Health Policy <a href="http://umanitoba.ca/faculties/health_sciences/medicine/units/community_health_sciences/departmental_units/mchp/protocol/media/manage_guidelines.pdf">http://umanitoba.ca/faculties/health_sciences/medicine/units/community_health_sciences/departmental_units/mchp/protocol/media/manage_guidelines.pdf</a></li>
+  <li>That URL has changed several times since I first downloaded the guidelines, so I will also host a copy here <a href="/pdfs/UManitoba_MCHP_manage_guidelines.pdf">UManitoba_MCHP_manage_guidelines.pdf</a></li>
 </ul>
-
 
 <div id="content">
 <h1 class="title">Data Management Plan Checklist</h1>
@@ -289,7 +284,7 @@ render_graph(graph, output = "visNetwork")
 <p>These guidelines come from:
 </p>
 <p>
-\noindent <a href="http://umanitoba.ca/faculties/medicine/units/mchp/protocol/media/manage_guidelines.pdf">http://umanitoba.ca/faculties/medicine/units/mchp/protocol/media/manage_guidelines.pdf</a><br/>
+\noindent <a href="http://umanitoba.ca/faculties/medicine/units/mchp/protocol/media/manage_guidelines.pdf">http://umanitoba.ca/faculties/medicine/units/mchp/protocol/media/manage_guidelines.pdf</a><br />
 </p>
 <p>
 Most of the material below is taken verbatim from the original. Unfortunately many of the items described below have links to internal MCHP documents that we cannot access.  Nonetheless the structure of the guidelines provides a useful skeleton to frame our thinking. 
@@ -487,131 +482,131 @@ Concept Dictionary. The deliverable glossary is another resource typically integ
 
 <p>NOTE this is a diversion from the MCHP guidelines.  These recommended directories are from a combination of sources that we have synthesised.
 </p><ul>
-<li id="sec-1-4-4-1">Background: concise summaries: possibly many documents for main project and any main analyses based on the 1:3:25 paradigm: one page of main messages; a three-page executive summary; 25 pages of detailed findings.<br/>
+<li id="sec-1-4-4-1">Background: concise summaries: possibly many documents for main project and any main analyses based on the 1:3:25 paradigm: one page of main messages; a three-page executive summary; 25 pages of detailed findings.<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-2">Proposals: for documents related to grant applications.<br/>
+<li id="sec-1-4-4-2">Proposals: for documents related to grant applications.<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-3">Approvals: for ethics applications.<br/>
+<li id="sec-1-4-4-3">Approvals: for ethics applications.<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-4">Budget: spreadsheets and so-forth.<br/>
+<li id="sec-1-4-4-4">Budget: spreadsheets and so-forth.<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-5">Data<br/>
+<li id="sec-1-4-4-5">Data<br />
 <ul>
-<li id="sec-1-4-4-5-1">dataset1<br/>
+<li id="sec-1-4-4-5-1">dataset1<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-5-2">dataset2<br/>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6">Paper1<br/>
-<ul>
-<li id="sec-1-4-4-6-1">Data<br/>
-<ul>
-<li id="sec-1-4-4-6-1-1">merged dataset1 and 2<br/>
+<li id="sec-1-4-4-5-2">dataset2<br />
 </li>
 </ul>
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-6-2">Analysis (also see <a href="http://projecttemplate.net">http://projecttemplate.net</a> for a programmer oriented template)<br/>
+<li id="sec-1-4-4-6">Paper1<br />
 <ul>
-<li id="sec-1-4-4-6-2-1">exploratory analyses<br/>
-</li>
-</ul>
+<li id="sec-1-4-4-6-1">Data<br />
 <ul>
-<li id="sec-1-4-4-6-2-2">data cleaning<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-3">main analysis<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-4">sensitivity analysis<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-5">data checking<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-6">model checking<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-4-4-6-2-7">internal review<br/>
+<li id="sec-1-4-4-6-1-1">merged dataset1 and 2<br />
 </li>
 </ul>
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-6-3">Document<br/>
+<li id="sec-1-4-4-6-2">Analysis (also see <a href="http://projecttemplate.net">http://projecttemplate.net</a> for a programmer oriented template)<br />
 <ul>
-<li id="sec-1-4-4-6-3-1">Draft<br/>
+<li id="sec-1-4-4-6-2-1">exploratory analyses<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-6-3-2">Journal1<br/>
-<ul>
-<li id="sec-1-4-4-6-3-2-1">rejected? :-(<br/>
-</li>
-</ul>
+<li id="sec-1-4-4-6-2-2">data cleaning<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-6-3-3">Journal2<br/>
-<ul>
-<li id="sec-1-4-4-6-3-3-1">Response to reviews<br/>
-</li>
-</ul>
-</li>
-</ul>
+<li id="sec-1-4-4-6-2-3">main analysis<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-6-4">Versions: folders named by date - dump entire copies of the project at certain milestones/change points<br/>
+<li id="sec-1-4-4-6-2-4">sensitivity analysis<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-6-5">Archiving final data with final published paper<br/>
+<li id="sec-1-4-4-6-2-5">data checking<br />
+</li>
+</ul>
+<ul>
+<li id="sec-1-4-4-6-2-6">model checking<br />
+</li>
+</ul>
+<ul>
+<li id="sec-1-4-4-6-2-7">internal review<br />
 </li>
 </ul>
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-7">Papers 2, 3, etc: same structure as paper 1 hopefully the project spawns several papers<br/>
+<li id="sec-1-4-4-6-3">Document<br />
+<ul>
+<li id="sec-1-4-4-6-3-1">Draft<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-8">Communication: details of communication with stakeholders and decision makers<br/>
+<li id="sec-1-4-4-6-3-2">Journal1<br />
+<ul>
+<li id="sec-1-4-4-6-3-2-1">rejected? :-(<br />
+</li>
+</ul>
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-9">Meetings: for organisation and records of meetings<br/>
+<li id="sec-1-4-4-6-3-3">Journal2<br />
+<ul>
+<li id="sec-1-4-4-6-3-3-1">Response to reviews<br />
+</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-10">Contact details. table contacts lists<br/>
+<li id="sec-1-4-4-6-4">Versions: folders named by date - dump entire copies of the project at certain milestones/change points<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-11">Completion: checklists to make sure project completion is systematic.  Factor in a critical reflection of lessons learnt.<br/>
+<li id="sec-1-4-4-6-5">Archiving final data with final published paper<br />
+</li>
+</ul>
 </li>
 </ul>
 <ul>
-<li id="sec-1-4-4-12">References<br/>
+<li id="sec-1-4-4-7">Papers 2, 3, etc: same structure as paper 1 hopefully the project spawns several papers<br />
+</li>
+</ul>
+<ul>
+<li id="sec-1-4-4-8">Communication: details of communication with stakeholders and decision makers<br />
+</li>
+</ul>
+<ul>
+<li id="sec-1-4-4-9">Meetings: for organisation and records of meetings<br />
+</li>
+</ul>
+<ul>
+<li id="sec-1-4-4-10">Contact details. table contacts lists<br />
+</li>
+</ul>
+<ul>
+<li id="sec-1-4-4-11">Completion: checklists to make sure project completion is systematic.  Factor in a critical reflection of lessons learnt.<br />
+</li>
+</ul>
+<ul>
+<li id="sec-1-4-4-12">References<br />
 </li>
 </ul>
 </div>
@@ -633,7 +628,7 @@ Concept Dictionary. The deliverable glossary is another resource typically integ
 
 <p>provides opportunities for feedback/ discussion from everyone and for documenting key project decisions. Responses on any given issue would normally be copied to every project member, with the expectation of receiving feedback within a reasonable period of time - e.g.,a few days). The Research Coordinator should be copied on ALL project correspondence in order to keep the information up to date on the project website.
 </p><ul>
-<li id="sec-1-5-1-1">E-mail etiquette (internal)<br/>
+<li id="sec-1-5-1-1">E-mail etiquette (internal)<br />
 </li>
 </ul>
 </div>
@@ -646,11 +641,11 @@ Concept Dictionary. The deliverable glossary is another resource typically integ
 
 <p>Regularly-scheduled meetings or conference calls should include all project members where possible. Research Coordinators typically arrange project team meetings and take meeting minutes, while Research Support typically arranges the Working Group meetings.
 </p><ul>
-<li id="sec-1-5-2-1">Tips for taking notes (internal)<br/>
+<li id="sec-1-5-2-1">Tips for taking notes (internal)<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-5-2-2">Outlook calendar<br/>
+<li id="sec-1-5-2-2">Outlook calendar<br />
 Used for booking rooms, it displays information on room availability and may include schedules of team members.
 </li>
 </ul>
@@ -672,11 +667,11 @@ Used for booking rooms, it displays information on room availability and may inc
 
 <p>Time spent on projects should be entered by all MCHP employees who are members of the project team.
 </p><ul>
-<li id="sec-1-6-1-1">website for time entry (internal)<br/>
+<li id="sec-1-6-1-1">website for time entry (internal)<br />
 </li>
 </ul>
 <ul>
-<li id="sec-1-6-1-2">procedures for time entry (internal)<br/>
+<li id="sec-1-6-1-2">procedures for time entry (internal)<br />
 
 </li>
 </ul>
@@ -711,12 +706,12 @@ Used for booking rooms, it displays information on room availability and may inc
 
 <p>Making sure the numbers "make sense". Carrying out these checks requires spelling out who will do which checks.
 </p><ul>
-<li id="sec-1-7-1-1">Data Validity Checks<br/>
+<li id="sec-1-7-1-1">Data Validity Checks<br />
 A variety of things to check for at various stages of the study. Programming can be reviewed, for example, by checking to ensure all programs have used the right exclusions, the correct definitions, etc. , and output has been accurately transferred to graphs, tables, and maps for the report.
 </li>
 </ul>
 <ul>
-<li id="sec-1-7-1-2">Discrepancies between data sources<br/>
+<li id="sec-1-7-1-2">Discrepancies between data sources<br />
 In this case it is MCHP and Manitoba Health Reports - an example of cross-checking against another source of data.
 </li>
 </ul>
@@ -771,8 +766,7 @@ In this case it is MCHP and Manitoba Health Reports - an example of cross-checki
 </div>
 </div>
 
-
-<p></body></p>
+<p>&lt;/body&gt;</p>
 
       <div class="clear"></div>
     </div>
@@ -791,7 +785,7 @@ In this case it is MCHP and Manitoba Health Reports - an example of cross-checki
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-10-02 00:00:00 +1000">02 Oct 2015</abbr>
+        <abbr class="published" title="2015-10-02 00:00:00 +0800">02 Oct 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -883,7 +877,7 @@ and formatted manuscript).</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-10-01 00:00:00 +1000">01 Oct 2015</abbr>
+        <abbr class="published" title="2015-10-01 00:00:00 +0800">01 Oct 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -901,7 +895,7 @@ interpretation. My PhD thesis proposes that
 reproducible research pipelines address the problem of
 adequate documentation of data analysis.</p>
 
-<p>A graphical view of the reproducible research pipeline concept is shown below.  The ideas  were introduced into epidemiology by Peng et al in 2006, although Peng has more recently been using the terms 'evidence based data analysis pipeline' (Peng 2013) and 'Data Science Pipeline' (Peng 2015). Both terms are useful, but I chose to follow the original phrase.  The graphical version shown below was introduced by Solymos and Feher (2008).</p>
+<p>A graphical view of the reproducible research pipeline concept is shown below.  The ideas  were introduced into epidemiology by Peng et al in 2006, although Peng has more recently been using the terms ‘evidence based data analysis pipeline’ (Peng 2013) and ‘Data Science Pipeline’ (Peng 2015). Both terms are useful, but I chose to follow the original phrase.  The graphical version shown below was introduced by Solymos and Feher (2008).</p>
 
 <p><img src="/images/reproduciblepipeline2.png" alt="img" /></p>
 
@@ -919,15 +913,22 @@ results), and reports (text and formatted manuscript).</p>
 
 <p>This model of the research pipeline sees a new relationship possible between the author and the reader.  They approach the results and understandings of the research from opposite directions. Readers can dig deeper into the research to verify results or conduct similar studies. Reproducibility exists along a spectrum from minimum reproducibility that can be achieved by providing measured or analytic data and the analytic code. More reproducibility is gained by providing processing code necessary to transform original measured data into tidy data for analysis. Full reproducibility would include all stages of the pipeline.</p>
 
-<h2>References</h2>
+<h2 id="references">References</h2>
 
 <ul>
-<li><p>Peng, R.D., Dominici, F. &amp; Zeger, S.L. (2006). Reproducible epidemiologic research. American Journal of Epidemiology, 163, 783–789.  Retrieved from <a href="http://dx.doi.org/10.1093/aje/kwj093">http://dx.doi.org/10.1093/aje/kwj093</a></p></li>
-<li><p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. Simply statistics. Retrieved from <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a></p></li>
-<li><p>Peng, R.D. (2015). Report Writing for Data Science in R. leanpub. Retrieved from <a href="https://leanpub.com/reportwriting">https://leanpub.com/reportwriting</a></p></li>
-<li><p>Sólymos, P. &amp; Fehér, Z. (2008). The mefa package: a tool for reproducible data processing in biogeography. International Biogeography Society Newsletter.  Retrieved from <a href="http://biogeography.blogspot.com.au/2008/04/mefa-package-tool-for-reproducible-data.html">http://biogeography.blogspot.com.au/2008/04/mefa-package-tool-for-reproducible-data.html</a></p></li>
+  <li>
+    <p>Peng, R.D., Dominici, F. &amp; Zeger, S.L. (2006). Reproducible epidemiologic research. American Journal of Epidemiology, 163, 783–789.  Retrieved from <a href="http://dx.doi.org/10.1093/aje/kwj093">http://dx.doi.org/10.1093/aje/kwj093</a></p>
+  </li>
+  <li>
+    <p>Peng, R.D. (2013). Implementing Evidence-based Data Analysis: Treading a New Path for Reproducible Research. Simply statistics. Retrieved from <a href="http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/">http://simplystatistics.org/2013/09/05/implementing-evidence-based-data-analysis-treading-a-new-path-for-reproducible-research-part-3/</a></p>
+  </li>
+  <li>
+    <p>Peng, R.D. (2015). Report Writing for Data Science in R. leanpub. Retrieved from <a href="https://leanpub.com/reportwriting">https://leanpub.com/reportwriting</a></p>
+  </li>
+  <li>
+    <p>Sólymos, P. &amp; Fehér, Z. (2008). The mefa package: a tool for reproducible data processing in biogeography. International Biogeography Society Newsletter.  Retrieved from <a href="http://biogeography.blogspot.com.au/2008/04/mefa-package-tool-for-reproducible-data.html">http://biogeography.blogspot.com.au/2008/04/mefa-package-tool-for-reproducible-data.html</a></p>
+  </li>
 </ul>
-
 
       <div class="clear"></div>
     </div>
@@ -946,7 +947,7 @@ results), and reports (text and formatted manuscript).</p>
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-09-28 00:00:00 +1000">28 Sep 2015</abbr>
+        <abbr class="published" title="2015-09-28 00:00:00 +0800">28 Sep 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>
@@ -958,49 +959,42 @@ results), and reports (text and formatted manuscript).</p>
       <a href="/2015/09/reproducible-research-and-managing-digital-assets-part-3/" title="Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale" rel="bookmark">Reproducible Research And Managing Digital Assets Part 3 of 3. ProjectTemplate is appropriate for large scale</a>
     </h1>
     <div class="entry-content full-content">
-      <h2>Recap on this series of three posts</h2>
-
+      <h2 id="recap-on-this-series-of-three-posts">Recap on this series of three posts</h2>
 <ul>
-<li>The <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets/">first post</a> showed the recommended files and folders for a data analysis project from Scott Long</li>
-<li>That recommendation was pretty complex, with a few folders that I felt did not jump out as super-useful</li>
-<li>The <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-2/">second post</a> showed a very simple template from the R community called makeProject</li>
-<li>I really like that one as it seems to be the minimum amount of stuff needed to make things work.</li>
+  <li>The <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets/">first post</a> showed the recommended files and folders for a data analysis project from Scott Long</li>
+  <li>That recommendation was pretty complex, with a few folders that I felt did not jump out as super-useful</li>
+  <li>The <a href="http://ivanhanigan.github.io/2015/09/reproducible-research-and-managing-digital-assets-part-2/">second post</a> showed a very simple template from the R community called makeProject</li>
+  <li>I really like that one as it seems to be the minimum amount of stuff needed to make things work.</li>
 </ul>
 
-
-<h2>The ProjectTemplate framework</h2>
+<h2 id="the-projecttemplate-framework">The ProjectTemplate framework</h2>
 
 <ul>
-<li>I have been using John Myles Whites ProjectTemplate R package <a href="http://projecttemplate.net/">http://projecttemplate.net/</a> for ages</li>
-<li>I really like the ease with which I can get up and running a new project</li>
-<li>and the ease with which I can pick up an old project and start adding new work</li>
+  <li>I have been using John Myles Whites ProjectTemplate R package <a href="http://projecttemplate.net/">http://projecttemplate.net/</a> for ages</li>
+  <li>I really like the ease with which I can get up and running a new project</li>
+  <li>and the ease with which I can pick up an old project and start adding new work</li>
 </ul>
 
-
-<h4>Quote from John's first post</h4>
-
-<pre><code>My inspiration for this approach comes from the rails command from
+<h4 id="quote-from-johns-first-post">Quote from John’s first post</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>My inspiration for this approach comes from the rails command from
 Ruby on Rails, which initializes a new Rails project with the proper
 skeletal structure automatically. Also taken from Rails is
 ProjectTemplate’s approach of preferring convention over
 configuration: the automatic data and library loading as well as the
 automatic testing work out of the box because assumptions are made
 about the directory structure and naming conventions that will be used
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
-
 
 <p><a href="http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/">http://www.johnmyleswhite.com/notebook/2010/08/26/projecttemplate/</a></p>
 
 <ul>
-<li>I dont know anything about RoR but this philosophy works really well for my R programming too</li>
+  <li>I dont know anything about RoR but this philosophy works really well for my R programming too</li>
 </ul>
 
-
-<h4>R Code</h4>
-
-<pre><code>if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
+<h4 id="r-code">R Code</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if(!require(ProjectTemplate)) install.packages(ProjectTemplate); require(ProjectTemplate)
 setwd("~/projects")
 create.project("my-project")
 setwd('my-project')
@@ -1010,26 +1004,22 @@ dir()
 ## [11] "README"      "reports"     "src"         "tests"       "TODO"   
 ##### these are very sensible default directories to create a modular
 ##### analysis workflow.  See the project homepage for descriptions
-
+ 
 # now all you need to do whenever you start a new day 
 load.project()
 # and your workspace will be recreated and any new data automagically analysed in
 # the manner you want
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
+<h2 id="advanced-usage-of-projecttemplate">Advanced usage of ProjectTemplate</h2>
 
-<h2>Advanced usage of ProjectTemplate</h2>
-
-<p><body></p>
+<body>
 
 <div id="preamble">
 
 </div>
-
-
-
 
 <div id="content">
 <h1 class="title">ProjectTemplate Demo</h1>
@@ -1703,8 +1693,7 @@ analysisTemplate()
 </div>
 </div>
 
-
-<p></body></p>
+</body>
 
       <div class="clear"></div>
     </div>
@@ -1721,7 +1710,7 @@ analysisTemplate()
 	-->
     <p class="by-line">
       <span class="date full-date">
-        <abbr class="published" title="2015-09-27 00:00:00 +1000">27 Sep 2015</abbr>
+        <abbr class="published" title="2015-09-27 00:00:00 +0800">27 Sep 2015</abbr>
       </span>
     </p>
     <div class="clear"></div>

@@ -24,7 +24,7 @@
             <li> <a href="/blog/">Notes</a></li> 
             <li><a href="/research/">About Open Notebooks</a></li>
             <li><a href="/projects/">Projects</a></li>
-            <li><a href="/cv/">CV</a></li>
+            <li><a href="http://orcid.org/0000-0002-6360-6793">CV</a></li>
             <li><a href="http://lmgtfy.com/?q=site%3Aivanhanigan.github.io">Search this Site</a></li> 
           </ul>
         </div>
@@ -55,11 +55,10 @@
   </div>
   <!-- AddThis Button END -->
   <div class="entry-content full-content">
-    <p>We encountered a strange issue Morpho 1.8 has when ingesting a CSV with zero length strings as missing data.  An example of what this looks like is given below in the mulgara example dataset I;ve shown before.  I have added some rows with missing data as zero length strings (these are the ",," after the fictional value Treat = 0.5).</p>
+    <p>We encountered a strange issue Morpho 1.8 has when ingesting a CSV with zero length strings as missing data.  An example of what this looks like is given below in the mulgara example dataset I;ve shown before.  I have added some rows with missing data as zero length strings (these are the “,,” after the fictional value Treat = 0.5).</p>
 
-<h4>R Code:</h4>
-
-<pre><code>datatext &lt;- 'Treat, Before, After1, After2
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>datatext &lt;- 'Treat, Before, After1, After2
 a,,-9999,9999
 a,,-9999,9999
 a,,-9999,9999
@@ -80,54 +79,48 @@ a,,-9999,9999
 1,  1.609437912,    0,      1.098612289'
 analyte &lt;- read.csv(textConnection(datatext))
 write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= "", quote=F)
-</code></pre>
+</code></pre></div></div>
 
 <p></p>
 
-
 <ul>
-<li>Unfortunately for this blog entry, the example above doesn;t exhibit the problem!</li>
-<li>you can see what happens by selecting the "treat consecutive delimiters as as one" option</li>
-<li>showing that the data from the 3rd and 4th cols shifts to the right</li>
-<li>this is what happened to us but we were not able to modify this behaviour by changing that option!</li>
-<li>The problem only occurred when we had a file big file (200+ columns)</li>
-<li>the problem occured at col 23, shown in the image below</li>
+  <li>Unfortunately for this blog entry, the example above doesn;t exhibit the problem!</li>
+  <li>you can see what happens by selecting the “treat consecutive delimiters as as one” option</li>
+  <li>showing that the data from the 3rd and 4th cols shifts to the right</li>
+  <li>this is what happened to us but we were not able to modify this behaviour by changing that option!</li>
+  <li>The problem only occurred when we had a file big file (200+ columns)</li>
+  <li>the problem occured at col 23, shown in the image below</li>
 </ul>
-
 
 <p><img src="/images/morpho-bug-empty-na3.png" alt="morpho-bug-empty-na3.png" /></p>
 
 <ul>
-<li>this column is ftyp[12] which has 62 rows of missing and then some text codes.</li>
-<li>the next 24th column is  aerial[10] and it is this one that is then read incorrectly by morpho.  The importer makes the error of reading blanks for the first few rows and then *, even though in reality it is * and then date 1/06/2006 (shown in the image below)</li>
+  <li>this column is ftyp[12] which has 62 rows of missing and then some text codes.</li>
+  <li>the next 24th column is  aerial[10] and it is this one that is then read incorrectly by morpho.  The importer makes the error of reading blanks for the first few rows and then *, even though in reality it is * and then date 1/06/2006 (shown in the image below)</li>
 </ul>
-
 
 <p><img src="/images/morpho-bug-empty-na2.1.png" alt="morpho-bug-empty-na2.1.png" /></p>
 
 <ul>
-<li>and finally col 25 fire[13] now appears as * and the date 1/06/2006 but it should be a different number of *s and the date 2/04/2007 further down</li>
+  <li>and finally col 25 fire[13] now appears as * and the date 1/06/2006 but it should be a different number of *s and the date 2/04/2007 further down</li>
 </ul>
-
 
 <p><img src="/images/morpho-bug-empty-na2.png" alt="morpho-bug-empty-na2.png" /></p>
 
-<h3>Workaround</h3>
+<h3 id="workaround">Workaround</h3>
 
 <ul>
-<li>to deal with this in this case we replaced all zero length strings as "NA"</li>
-<li>this is probably a good idea in most cases, except when NA is not an appropriate value and so in those cases we replaced with the word "blank"</li>
+  <li>to deal with this in this case we replaced all zero length strings as “NA”</li>
+  <li>this is probably a good idea in most cases, except when NA is not an appropriate value and so in those cases we replaced with the word “blank”</li>
 </ul>
 
-
-<h3>Conclusions</h3>
+<h3 id="conclusions">Conclusions</h3>
 
 <ul>
-<li>This issue is probably rare and might be fixed in the newer version of Morpho</li>
-<li>We don;t use new morpho because we are still using the old metacat</li>
-<li>I thought it worth reporting here</li>
+  <li>This issue is probably rare and might be fixed in the newer version of Morpho</li>
+  <li>We don;t use new morpho because we are still using the old metacat</li>
+  <li>I thought it worth reporting here</li>
 </ul>
-
 
     <div class="clear"></div>
   </div>
@@ -147,7 +140,7 @@ write.csv(analyte, "inst/extdata/morpho-bug-empty-na.csv", row.names = F, na= ""
   </p>
   <p class="by-line">
     <span class="date full-date">
-      <abbr class="published" title="2014-05-02 00:00:00 +1000">02 May 2014</abbr>
+      <abbr class="published" title="2014-05-02 00:00:00 +0800">02 May 2014</abbr>
     </span>
   </p>
   <div class="clear"></div>
