@@ -54,6 +54,92 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/02/gantting-like-a-hacker/" title="gantting-like-a-hacker" rel="bookmark">gantting-like-a-hacker</a>
+    </h1>
+    <div class="entry-content full-content">
+      <h3 id="background">Background</h3>
+<ul>
+  <li><a href="http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html">“Blogging like a Hacker”</a> has become a paradigm for programmers who want to link their code to their blogs.</li>
+  <li>I’ve followed this paradigm for a while to support my scientific projects, enhancing their transparency and reproducibility.</li>
+  <li>I’ve started a new project where I need to also manage project management and planning (following <a href="http://medepi.com/2012/02/05/project-mgmt/">Tomas Aragon’s tutorial</a>)</li>
+  <li>I propose that the same methods I use in scientific programming and blogging like a hacker can be used in “Gantting like a Hacker”</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>The title for this post is also influenced by the poste over at [Geek</td>
+          <td>Manager](http://blog.geekmanager.co.uk/2007/05/02/using-the-best-plan-format/).</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>That post says taht “Premature Gannting” is the act of making a “huge Gantt chart (often in MS Project).”</li>
+  <li>Gannting like a Hacker is doing this in a scripted environment, without relying on closed-source proprietry software such as the Windoze options.</li>
+  <li>The community of bloggers (mostly geeks) who are following a style of blogging that originated with the invention of Jekyll, <a href="http://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html">unveiled in this post by Tom Preston-Werner</a>; GitHub’s co-founder (aka mojombo).</li>
+  <li>This experiment uses Taskjuggler and Emacs Orgmode</li>
+</ul>
+
+<h3 id="materials-and-methods">Materials and Methods</h3>
+
+<ul>
+  <li>Use Ubuntu 12.04 Long Term Support (LTS)</li>
+  <li>with Ruby</li>
+</ul>
+
+<h4 id="codeinstall-task-juggler">Code:install task juggler</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install taskjuggler
+</code></pre></div></div>
+
+<p></p>
+
+<h3 id="gantt-charts-with-emacs-orgmode">Gantt charts with Emacs Orgmode</h3>
+
+<ul>
+  <li>I’m using an Emacs tool to use TaskJuggler to handle the task scheduling and creation of Gantt chart suitable for <a href="http://orgmode.org/worg/org-tutorials/org-taskjuggler.html">a Pointy-haired Boss</a>.</li>
+  <li>I hated using the Orgmode script to compile the parts of the Gantt chart so I wrote <a href="https://raw.github.com/ivanhanigan/disentangle/gh-pages/gantt-tj3/gantt-tj3-build.R">this R script</a> to convert a spreadsheet into an Orgmode script</li>
+  <li>the spreadsheet is organised in a fairly simple way shown below.</li>
+</ul>
+
+<p><img src="/images/gantt-chart-sheet.png" alt="alttext" /></p>
+
+<h3 id="results">Results</h3>
+<ul>
+  <li>and executing my script will convert this into a Emacs orgmode file that will export to a taskjuggler file (use C-c C-e j) and viola!</li>
+</ul>
+
+<p><img src="/images/gantt-chart.png" alt="alttext" /></p>
+
+<h3 id="conclusions">Conclusions</h3>
+
+<ul>
+  <li>This simplifies the Orgmode taskjuggler creation</li>
+  <li>A drawback is that it has to go through the Emacs export function.</li>
+</ul>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/gantting-like-a-hacker/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-02-22 00:00:00 +0800">22 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/02/aggregation-of-statistical-local-areas/" title="Aggregation Of Statistical Local Areas" rel="bookmark">Aggregation Of Statistical Local Areas</a>
     </h1>
     <div class="entry-content full-content">
@@ -452,62 +538,6 @@ reml_boilerplate(
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/github-gh-pages-and-disqus-commentsdatasharing/" title="Github, gh-pages and disqus comments" rel="bookmark">Github, gh-pages and disqus comments</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>A while ago I posted about <a href="http://ivanhanigan.github.io/2013/11/sharing-and-extending-research-protocols/">sharing-and-extending-research-protocols</a>.</p>
-
-<p>I’ve started a new experiment for hosting a discussion around issues, suggesting new issues, agreeing on solutions, toward an agreement on methods that could become a protocol:
-<a href="http://ivanhanigan.github.com/datasharing">http://ivanhanigan.github.com/datasharing</a>.</p>
-
-<p>I forked the material from the original author Jeff Leek <a href="https://github.com/jtleek/datasharing/network">https://github.com/jtleek/datasharing/network</a>.</p>
-
-<p>The goal of my experiment is something along the lines of the Prometheus Wiki <a href="http://prometheuswiki.publish.csiro.au">http://prometheuswiki.publish.csiro.au</a>​ which is a site for sharing research protocols. That idea is to give people a place to post research protocols since everyone develops them and then mentions them in papers but they rarely make it online in a usable format.</p>
-
-<p>But I was talking with an user of that and he complained it lacked a kind of “dynamic collaboration with a front-end markup system in place that was integrated with a good website-type backend”.  This is what the github site might be able to do.</p>
-
-<p>I discussed with a colleague and he seemed to be receptive to experimenting with this, so long as it was not more cumbersome than:</p>
-
-<ul>
-  <li>shooting off an email with a list of points or</li>
-  <li>catching me in the tea room and saying “by the way - missing values should never be -9999”</li>
-  <li>and then these being copied into a master document we all share.</li>
-</ul>
-
-<p>The system I’m using in the proposed experiment uses the hi-tech tools gh-pages with disqus comments.  This let’s:</p>
-
-<ul>
-  <li>casual users chip in their two cents worth quickly via the  comments,</li>
-  <li>users can vote up or vote down other peoples comments,</li>
-  <li>track the discussion via their emails (if they choose that option),</li>
-  <li>but those wanting  deeper involvement can fork and edit the pages and then submit pull  requests to the lead author.</li>
-  <li>Github’s wiki and issues tracking functionality also could be used for serious development.</li>
-</ul>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/github-gh-pages-and-disqus-commentsdatasharing/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-01-14 00:00:00 +0800">14 Jan 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -536,7 +566,7 @@ reml_boilerplate(
           <div id="carrington-about" class="widget">
             <div class="about">
               <h2 class="widget-title">About</h2>
-              <p>I am a Human Ecologist, Epidemiologist and Data Scientist at the University of Sydney.</p>
+              <p>I am an Environmental Epidemiologist and Senior Lecturer in Climate Change and Health at Curtin University in Western Australia.</p>
               <a class="more" href="/about">more →</a>
 
             </div>
@@ -585,6 +615,10 @@ reml_boilerplate(
               <ul>
                 
                 <li>
+                  <a href="/2022/10/MJA-Lancet-Countdown-report-2022/" title="MJA-Lancet Countdown report 2022" rel="bookmark">MJA-Lancet Countdown report 2022</a>
+                </li>
+                
+                <li>
                   <a href="/2019/07/environmental-health-indicators/" title="Environmental health indicators" rel="bookmark">Environmental health indicators</a>
                 </li>
                 
@@ -598,10 +632,6 @@ reml_boilerplate(
                 
                 <li>
                   <a href="/2018/03/iucn-red-list-ecosystems-framework-applicability-to-health/" title="IUCN Red List Ecosystems Framework Applicability To Health Impact Assessments" rel="bookmark">IUCN Red List Ecosystems Framework Applicability To Health Impact Assessments</a>
-                </li>
-                
-                <li>
-                  <a href="/2018/02/the-aus-air-pollution-nepm-is-about-protecting-human-health/" title="The Australian Air National Environment Protection Measure (NEPM) is about protecting human health" rel="bookmark">The Australian Air National Environment Protection Measure (NEPM) is about protecting human health</a>
                 </li>
                 
               </ul>
@@ -689,7 +719,7 @@ reml_boilerplate(
                 
                 <li><a href="/categories/policy relevant research">policy relevant research (3)</a></li>
                 
-                <li><a href="/categories/climate change">climate change (1)</a></li>
+                <li><a href="/categories/climate change">climate change (2)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
