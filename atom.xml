@@ -4,13 +4,25 @@
  <title>Ivan Hanigan</title>
  <link href="http://ivanhanigan.github.io/atom.xml" rel="self"/>
  <link href="http://ivanhanigan.github.io/"/>
- <updated>2022-10-30T00:56:10+08:00</updated>
+ <updated>2022-12-17T21:00:22+08:00</updated>
  <id>http://ivanhanigan.github.io/</id>
  <author>
    <name>Ivan Hanigan</name>
    <email>ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Bushfire Smoke and Mortality in Sydney NSW</title>
+   <link href="http://ivanhanigan.github.io/2022/12/bushfire-smoke-mortality-in-sydney-nsw/"/>
+   <updated>2022-12-17T00:00:00+08:00</updated>
+   <id>http://ivanhanigan.github.io/2022/12/bushfire-smoke-mortality-in-sydney-nsw</id>
+   <content type="html">&lt;p&gt;My colleagues and I have just published:&lt;/p&gt;
+
+&lt;p&gt;E. Jegasothy, I.C. Hanigan, J. Van Buskirk, G.G. Morgan, B. Jalaludin, F.H. Johnston, Y. Guo, R.A. Broome, Acute health effects of bushfire smoke on mortality in Sydney, Australia, Environment International (2022), doi: https://doi.org/10.1016/j.envint.2022.107684&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>MJA-Lancet Countdown report 2022</title>
@@ -3252,85 +3264,6 @@ document generation.
       &lt;li&gt;this is the level I usually think of managing the distribution side of things.  I will want to pack up the results and email to my collaborators, or decide on the one set of tables and figures to write into the manuscript for submission to a journal.  If this is accepted for publication, this is the one combined package of ‘analytical data and code’ that I would consider putting up online (to github) as supporting information for the paper.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ul&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>GIS Issues when R is Used for Transforming Coordinate Systems</title>
-   <link href="http://ivanhanigan.github.io/2015/10/gis-issues-when-r-used-transforming-coordinate-systems/"/>
-   <updated>2015-10-16T00:00:00+08:00</updated>
-   <id>http://ivanhanigan.github.io/2015/10/gis-issues-when-r-used-transforming-coordinate-systems</id>
-   <content type="html">&lt;ul&gt;
-  &lt;li&gt;I have been using RGDAL to transform and write out spatial data in GDA94&lt;/li&gt;
-  &lt;li&gt;It is a problem to know what I need to do to create the right prj file for ArcGIS to read without complaining&lt;/li&gt;
-  &lt;li&gt;I have an example of code below, that I used on a dataset I knew was in GDA94 when I read it in.  I want to do this mostly for when I have to convert from one to another, but I have done the manual hack a couple of times now and thought I better just check with an expert.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;r-code&quot;&gt;R Code:&lt;/h4&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;infile &amp;lt;- &quot;ap_map&quot;
-outfile &amp;lt;- gsub(&quot;map&quot;, &quot;map_GDA94.shp&quot;, infile)
-outfile
-setwd(indir)
-shp &amp;lt;- readOGR(&quot;.&quot;, infile)
-setwd(projdir)
-plot(shp, add = T)
-#str(shp)
-shp@proj4string@projargs
-#[1] &quot;+proj=longlat +ellps=GRS80 +no_defs&quot;
-# confirm this is GDA94
-epsg &amp;lt;- make_EPSG()
-str(epsg)
-epsg[grep(4283, epsg$code),]
-#     code    note                                                       prj4
-# 212 4283 # GDA94   +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
-# Arcmap sees this as GRS 1980(IUGG, 1980) which I think is the same thing
-# to be on the safe side I will force it to refer to GDA94
-shp2 &amp;lt;- spTransform(shp, CRS(&quot;+init=epsg:4283&quot;))
-shp2@proj4string@projargs
-#now write
-setwd(outdir)
-dir()
-writeOGR(shp2,  outfile, gsub(&quot;.shp&quot;, &quot;&quot;, outfile), driver = &quot;ESRI Shapefile&quot;)
-setwd(projdir)
-# Checking this shows it did not write the correct prj file, but I believe that this is because the GDA94 definition is not different to the WGS80 params.
-# one other option is to manually replace that prj file with the correct text found at http://spatialreference.org/ref/epsg/4283/
-# SO I did this to avoid any future confusions
-# OLD GEOGCS[&quot;GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;D_unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.017453292519943295]]
-# NEW GEOGCS[&quot;GDA94&quot;,DATUM[&quot;D_GDA_1994&quot;,SPHEROID[&quot;GRS_1980&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.017453292519943295]]
-# checked with ArcMap and they align ok
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;i-asked-on-of-my-colleagues-and-here-is-his-reply&quot;&gt;I asked on of my colleagues and here is his reply&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I usually use the sp and maptools library, rather than the readOGR and writeOGR functions.  Generally my workflow, as an example of projecting a GDA94 zone 55 file to WGS84, would be something like:&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;r-code-1&quot;&gt;R Code:&lt;/h4&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;shp &amp;lt;- readShapePoly(&quot;myfile.shp&quot;)
-proj4string(shp) &amp;lt;- &quot;+proj=utm +zone=55 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&quot;
-shp2 &amp;lt;- spTransform(shp, CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;))
-writePolyShape(shp2,&quot;myfile_p.shp&quot;,proj4string=CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;I’ve never &lt;em&gt;noticed&lt;/em&gt; any problems doing this, the projection file is generated and I’ve never noticed any alignment problems in ArcMap.  It’s true that I recall ArcMap sometimes displays an incorrect plaintext projection description, but things seem to be in the right place.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Also, I don’t really ever rely on EPSG numbers in R - I just grab the proj4 strings and try to use them directly.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;todo-see-if-postgis-handles-this-ok&quot;&gt;TODO, see if PostGIS handles this OK&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I wonder if my FOSS GIS stack should still pass things through PostGIS as I suspect it does these things better.&lt;/li&gt;
-  &lt;li&gt;I might check the output if I run it through the DB use st_transform and then extract to shapefile.&lt;/li&gt;
 &lt;/ul&gt;
 </content>
  </entry>
