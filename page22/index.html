@@ -54,6 +54,84 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Yesterday I had the opportunity to review the Tree based modelling methods we are implementing in a study I’m working on at the moment.
+I based the discussion on <a href="http://www.tandfonline.com/doi/abs/10.1080/00330124.2012.724347">a paper from 2012</a>, along with <a href="/pdfs/TreeModelNotes.pdf">some notes I have made related to the use of these methods in our context</a>.
+I had an hour and a half with a couple of senior statisticians and a bunch of sociologists at the study group yesterday.</p>
+
+<h4 id="my-main-question-for-the-group-was">My main question for the group was:</h4>
+
+<ul>
+  <li>What do you think of the proposition that these models are suitable for “studies that test hypotheses generated from multiple theories”?</li>
+</ul>
+
+<p>The statisticians where underwhelmed by the Cutts study, but thought the stats method was “neat” and one had not heard of tree models before (!).</p>
+
+<h4 id="key-outcomes-of-that-session-were">Key outcomes of that session were:</h4>
+
+<ul>
+  <li>First stage PCA
+    <ul>
+      <li>Q: did they need to do the PCA first stage to either a) reduce the the large number of potentially collinear variables or b) to control for measurement error?</li>
+      <li>A: No they didn’t need the PCA.  The large number, collinearity and measurement efficacy are dealt with by the tree based methods (ie cross-validation on steroids, grouping primary and surrogate splits, etc).  Also the trees have an advantage with the large number of predictors in that they are non-parametric and able to automatically detect interactions whereas PCA is parametric and typically assumes linearity. (Note that I saw Steve afterward and he is still not convinced.  Maybe he will respond to this with some description of the reason why not?)</li>
+    </ul>
+  </li>
+  <li>Rescaling the variables
+    <ul>
+      <li>Q: Did they need to centre each variable on the grand sample mean so that the relative weight of each variable was even?</li>
+      <li>A: No the tree models are not effected by this, and it reduced the interpret-ability of the decision tree graphic.  The PCA is effected, however, and maybe that is why they did it.</li>
+    </ul>
+  </li>
+  <li>Multiple working hypotheses
+    <ul>
+      <li>Q: What do you think of the Cutts et al proposition that these models are suitable for “studies that test hypotheses generated from multiple theories”?</li>
+      <li>A: It is a promising approach.  Not clear from this study if it is successful but the proposition is plausible.  It has more of a chance than the General Linear Model approach which cannot (this point was made categorically by one of the statisticians).  It will be important to be very clear about what exactly each of the “Theories” are predicting, so that the explanatory power attributable to those variables from one “theory” can be compared with that of the other theories.  The ability to uncover complex interactions is very attractive (extrovert/introvert personality type interacting with group demographics etc) but it also increases the potential for spurious results (and ‘chasing the noise’) ergo the need to base inferences on what the theories predict, not just on what the data reveal.</li>
+    </ul>
+  </li>
+  <li>
+    <p>In general we thought that authors had overdone the stats.  It showed what ‘could’ be done with trees and forests, but possibly not what ‘should’ be done.</p>
+  </li>
+  <li>Is the A3 variable really missing from ctree output but dominant in the randomForest in Figure3?
+    <ul>
+      <li>when another group I’m in reviewed it last year it was noted as odd that fig3 has A3 most important in randomforest but does not appear in ctree. At the time I thought this might be due to the cross validation like in the rpart or tree package, but it turns out that ctree does not do that….</li>
+      <li>Mislabelling is a possibility as these graphics appear to be edited from the default produced by the ‘party’ package.</li>
+      <li>However, it also reasonable that these results could be correct. ctree (and rpart, tree, etc.) use greedy algorithms, meaning that the best local split is used even if this is suboptimal globally.</li>
+      <li>Basically there are algorithmic reasons that this might be a true difference between ctree and randomforest.  It might just have been the way the cookie crumbled for the ctree’s best local split which may not have survived through the randomForest’s  thousands of iterations.</li>
+      <li>But on page 569 they do say “total knowledge is lowest among those whod do not think that they are empowered and are unaware of information sources” which implies to me that the top or left-most node might be mis-labelled I3 when it is actually A3.</li>
+      <li>this would give the appropriate left most box plot (ie I3 &lt;= -0.22 &amp; A3 &lt;= -0.64 gives lowest total knowledge??)</li>
+      <li>at the group yesterday people also generally suspected mislabelling, given the dominance of A3 in randomforest.</li>
+    </ul>
+  </li>
+</ul>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+      <a href="/categories/overview" title="overview" rel="category tag">overview</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-01-23 00:00:00 +0800">23 Jan 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/01/morpho-and-reml-use-case-marsupial-mulgara-dasycercus-cristicauda/" title="Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda" rel="bookmark">Morpho And R-EML Use Case Marsupial mulgara Dasycercus cristicauda</a>
     </h1>
     <div class="entry-content full-content">
@@ -399,44 +477,6 @@ dev.off()
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/12/extend-Rs-data-frame-class-with-metadata/" title="extend-Rs-data-frame-class-with-metadata" rel="bookmark">extend-Rs-data-frame-class-with-metadata</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>“reml now extends R’s data.frame class by introducing the data.set class which includes additional metadata required by EML”
-<a href="https://github.com/ropensci/reml">https://github.com/ropensci/reml</a></p>
-
-<p>and
-“I’d like to define a class that acts just like a data.frame, just like the data.table class does, but contains some additional metadata (e.g. the units associated with the columns) and has some additional methods associated with it (e.g. that might do something with those units) while also working with any function that simply knows how to handle data.frame objects.
-How might this be done?”
-<a href="http://carlboettiger.info/2013/09/11/extending-data-frame-class.html">http://carlboettiger.info/2013/09/11/extending-data-frame-class.html</a></p>
-
-<p>Also this guys attempt was interesting (I like TraMineR too!)
-<a href="http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/">http://ivanhanigan.github.io/2013/11/handling-survey-data-with-r/</a></p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/12/extend-Rs-data-frame-class-with-metadata/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-12-24 00:00:00 +0800">24 Dec 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -514,6 +554,10 @@ How might this be done?”
               <ul>
                 
                 <li>
+                  <a href="/2023/05/heat-and-violence/" title="Heat and violence" rel="bookmark">Heat and violence</a>
+                </li>
+                
+                <li>
                   <a href="/2022/12/bushfire-smoke-mortality-in-sydney-nsw/" title="Bushfire Smoke and Mortality in Sydney NSW" rel="bookmark">Bushfire Smoke and Mortality in Sydney NSW</a>
                 </li>
                 
@@ -527,10 +571,6 @@ How might this be done?”
                 
                 <li>
                   <a href="/2019/07/tscourse-chicago-heatwave/" title="Time series regression in R course codes for Chicago Heatwave" rel="bookmark">Time series regression in R course codes for Chicago Heatwave</a>
-                </li>
-                
-                <li>
-                  <a href="/2018/11/climate-change-policy-inaction-threatens-lives/" title="Climate Change policy inaction threatens lives" rel="bookmark">Climate Change policy inaction threatens lives</a>
                 </li>
                 
               </ul>
@@ -621,6 +661,8 @@ How might this be done?”
                 <li><a href="/categories/climate change">climate change (2)</a></li>
                 
                 <li><a href="/categories/bushfire smoke">bushfire smoke (1)</a></li>
+                
+                <li><a href="/categories/heat">heat (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>

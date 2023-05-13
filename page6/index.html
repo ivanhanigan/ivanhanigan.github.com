@@ -54,6 +54,65 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/" title="UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'" rel="bookmark">UPDATE to post 'GIS Issues when R is Used for Transforming Coordinate Systems'</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+  <li>UPDATE to post <a href="http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems">http://ivanhanigan.github.com//2015/10/gis-issues-when-r-used-transforming-coordinate-systems</a></li>
+  <li>Recall that RGDAL transforms and write out spatial data in GDA94 with a problem in that ArcGIS does not like the prj file and complains</li>
+  <li>This seems an ok workaround</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>infile &lt;- "western_sydney_passive_samplers_site_details.csv"
+indir &lt;- "data_derived"
+
+outdir &lt;- indir
+outfile &lt;- file.path(outdir, gsub(".csv",".shp",infile))
+
+dat &lt;- read.csv(file.path(indir, infile), as.is=T)
+str(dat)
+  
+dat2 &lt;- SpatialPointsDataFrame(data.frame(x=dat$long, y=dat$lat), dat,
+                                proj4string=CRS(epsg$prj4[epsg$code %in% '4283'])
+                                )
+
+writeOGR(dat2, outfile,
+         outdir, driver='ESRI Shapefile'
+         )
+# fix the prj file 
+download.file("http://spatialreference.org/ref/epsg/4283/prj/",
+              gsub(".shp", ".prj", outfile), mode = "wb"
+              )
+</code></pre></div></div>
+
+<p><img src="/images/samplers_sydney.png" alt="/images/samplers_sydney.png" /></p>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/Data Operation" title="Data Operation" rel="category tag">Data Operation</a>
+      
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2016/01/gis-issues-when-r-used-transforming-coordinate-systems/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2016-01-29 00:00:00 +0800">29 Jan 2016</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2016/01/release-checklist-references/" title="Release checklist references" rel="bookmark">Release checklist references</a>
     </h1>
     <div class="entry-content full-content">
@@ -341,116 +400,6 @@ that prevent replication of results
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/" title="We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it" rel="bookmark">We have a statistically rigorous and scientifically meaningful definition of replication. Let's use it</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>Researchers writing about the ‘Reproducibility Crisis’ often conflate
-the terms reproducibility, repeatability and replicability, but it is
-quite important to distinguish these.  There is a great discussion of
-the distinction in the SimplyStatistics blog post titled: <a href="http://simplystatistics.org/2015/10/20/we-need-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication">We need a statistically rigorous and
-scientifically meaningful definition of
-replication</a>.
-But I actually now think <em>we DO have that definition!</em> It is the
-that repeatability is the same
-as replication and involves a new sample with new measurement errors
-while reproducibility uses the same data to recalculate the result.</p>
-
-<p>I think it is vital that we labour the point so that the
-distinction between repeatability and reproducibility is made clear.</p>
-
-<p>I follow the definition that ‘reproducible’ is exact re-computation
-whereas repeatable/replicable is a new analysis, of a new sample,
-yielding a new result (plus or minus some variance from measurement
-error), and if the original study is replicated then the same
-conclusions are reached from the new analysis.</p>
-
-<p>I used this paragraph and recent reference in my thesis:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reproducibility is defined as ‘the ability to recompute data analytic
-results given an observed dataset and knowledge of the data analysis
-pipeline’ (Leek &amp; Peng 2015). This definition distinguishes
-reproducibility from replicability which is ‘the chance that an
-independent experiment targeting the same scientific question will
-produce a consistent result’ (Leek &amp; Peng 2015).  
-
-Leek, J.T. &amp; Peng, R.D. (2015). Opinion: Reproducible research can
-still be wrong: Adopting a prevention approach. Proceedings of the
-National Academy of Sciences of the United States of America, 112(6),
-1645–1646.  
-</code></pre></div></div>
-
-<p></p>
-
-<p>But I am also a big fan of the the definitions in Peng 2011 and Cassey 2006.</p>
-
-<ul>
-  <li>Peng 2011:</li>
-</ul>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>With replication, independent investigators address a scientific
-hypothesis and build up evidence for or against it...
-
-Reproducibility calls for the data and computer code used to analyze
-the data be made available to others. This standard falls short of
-full replication because the same data are analysed again, rather than
-analysing independently collected data.
-
-Peng, R. D. (2011). Reproducible research in computational
-science. Science, 334(6060), 1226–1227. doi:10.1126/science.1213847
-
-</code></pre></div></div>
-
-<p></p>
-
-<ul>
-  <li>Cassey 2006:</li>
-</ul>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[For a repeatable study] a third party must be able to perform a study
-using identical methodological proto- cols and analyze the resulting
-data in an identical manner... [Further] a published result
-must be presented in a manner that allows for a quantitative
-comparison in a later study...
-
-We consider a study reproducible if, from the information presented in
-the study, a third party could replicate the re- ported results
-identically. 
-
-CASSEY, P., &amp; BLACKBURN, T. M. (2006). Reproducibility and
-Repeatability in Ecology. BioScience,
-56(12), 958. doi:10.1641/0006-3568
-</code></pre></div></div>
-
-<p></p>
-
-<p>To fully endorse any scientific claims, the experimental findings should be completely repeatable by many independent investigators who ‘address areplicated hypothesis and build up evidence for or against it’ (Peng, 2011). It is important to note that the exact results need not be computed in a repeatable study. This is because experimentation involves probability, and if performed again, with a different sample and new set of measurement errors some variance between experiments is to be expected.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/reproducible research" title="reproducible research" rel="category tag">reproducible research</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2016/01/we-have-a-statistically-rigorous-and-scientifically-meaningful-definition-of-replication/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2016-01-12 00:00:00 +0800">12 Jan 2016</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -528,6 +477,10 @@ Repeatability in Ecology. BioScience,
               <ul>
                 
                 <li>
+                  <a href="/2023/05/heat-and-violence/" title="Heat and violence" rel="bookmark">Heat and violence</a>
+                </li>
+                
+                <li>
                   <a href="/2022/12/bushfire-smoke-mortality-in-sydney-nsw/" title="Bushfire Smoke and Mortality in Sydney NSW" rel="bookmark">Bushfire Smoke and Mortality in Sydney NSW</a>
                 </li>
                 
@@ -541,10 +494,6 @@ Repeatability in Ecology. BioScience,
                 
                 <li>
                   <a href="/2019/07/tscourse-chicago-heatwave/" title="Time series regression in R course codes for Chicago Heatwave" rel="bookmark">Time series regression in R course codes for Chicago Heatwave</a>
-                </li>
-                
-                <li>
-                  <a href="/2018/11/climate-change-policy-inaction-threatens-lives/" title="Climate Change policy inaction threatens lives" rel="bookmark">Climate Change policy inaction threatens lives</a>
                 </li>
                 
               </ul>
@@ -635,6 +584,8 @@ Repeatability in Ecology. BioScience,
                 <li><a href="/categories/climate change">climate change (2)</a></li>
                 
                 <li><a href="/categories/bushfire smoke">bushfire smoke (1)</a></li>
+                
+                <li><a href="/categories/heat">heat (1)</a></li>
                 
               </ul>
               <h2 class="widget-title">Entries grouped by Tags</h2>
