@@ -4,13 +4,67 @@
  <title>Ivan Hanigan</title>
  <link href="http://ivanhanigan.github.io/atom.xml" rel="self"/>
  <link href="http://ivanhanigan.github.io/"/>
- <updated>2023-05-13T12:16:22+08:00</updated>
+ <updated>2024-01-02T21:13:47+08:00</updated>
  <id>http://ivanhanigan.github.io/</id>
  <author>
    <name>Ivan Hanigan</name>
    <email>ivan.hanigan@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Personal academic website with jekyll</title>
+   <link href="http://ivanhanigan.github.io/2024/01/personal-academic-website-with-jekyll/"/>
+   <updated>2024-01-02T00:00:00+08:00</updated>
+   <id>http://ivanhanigan.github.io/2024/01/personal-academic-website-with-jekyll</id>
+   <content type="html">&lt;p&gt;Having a personal academic website is great for developing and coordinating information that you can publish about your work and others can find out about you.&lt;/p&gt;
+
+&lt;p&gt;There are a range of options from very simple approaches like the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;postcards&lt;/code&gt; package in R &lt;a href=&quot;https://github.com/seankross/postcards&quot;&gt;https://github.com/seankross/postcards&lt;/a&gt; or the more complicated approach using the &lt;a href=&quot;https://github.com/alshedivat/al-folio&quot;&gt;https://github.com/alshedivat/al-folio&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;My own blog and some other websites I created are based on some markdown templates I borrowed from other authors on github, and they all use the Jekyll static site generator framework. I have found that using jekyll on my Ubuntu linux computers is fairly straightforward but I am keen to also be able to develop sites on windoze computers.  Therefore I am going to embark on an experiment to set up a jekyll site generator using WSL, and I will use this post to document the steps I take.&lt;/p&gt;
+
+&lt;p&gt;Steps:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Open powershell as Admin, ran &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wsl --install&lt;/code&gt; but this just showed the wsl help text, so I found instructions that let me know if wsl is already installed, but no linux system distribution has been enabled this happens, so in my case I had to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wsl --list --online&lt;/code&gt; and choose a distro. I chose &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ubuntu&lt;/code&gt; which I assume will default to the latest version&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo apt update&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;upgrade&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;install depends
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt install make build-essential curl git tree -y&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;install ruby
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo apt install ruby ruby-dev -y&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;need to tell Ruby’s gem package manager to place gems in our user’s home folder.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nano ~/.bashrc&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;export GEM_HOME=$HOME/gems&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;export PATH=$HOME/gems/bin:$PATH&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Save and close the file, then activate the environment variable with the following command: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;source ~/.bashrc&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gem install jekyll bundler&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Try it out
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll new jekyll.example.com&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cd jekyll.example.com&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle add webrick&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;References:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://learn.microsoft.com/en-us/windows/wsl/install&quot;&gt;https://learn.microsoft.com/en-us/windows/wsl/install&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.howtoforge.com/how-to-install-jekyll-on-ubuntu-22-04/&quot;&gt;https://www.howtoforge.com/how-to-install-jekyll-on-ubuntu-22-04/&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/installation/windows/&quot;&gt;https://jekyllrb.com/docs/installation/windows/&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Heat and violence</title>
@@ -370,7 +424,7 @@ For example in the US &lt;a href=&quot;https://www.colorado.gov/pacific/performa
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fill.col&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col.name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
       &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;which&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col.name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
       &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col.name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hold&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'list'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;      
+      &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hold&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;list&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;      
       &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ifelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;is.na&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
       &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col.name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unlist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
       &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -378,8 +432,8 @@ For example in the US &lt;a href=&quot;https://www.colorado.gov/pacific/performa
 
 
 
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fill.col&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'person'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fill.col&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'suburb'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fill.col&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;person&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fill.col&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;suburb&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  
  
       &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;        &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fruit&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suburb&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;something&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;        &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Tom&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;      &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oranges&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;   &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Scullin&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;       &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3.0&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -797,7 +851,7 @@ library(RColorBrewer)
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Loading required package: RColorBrewer&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&quot;r&quot;&gt;&lt;code&gt;par(mfrow = c(3,3))
-for(col_i in c('YlGn','RdPu', 'PuRd', 'BrBG', 'RdBu', 'RdYlBu', 'Set3', 'Set1')){
+for(col_i in c(&apos;YlGn&apos;,&apos;RdPu&apos;, &apos;PuRd&apos;, &apos;BrBG&apos;, &apos;RdBu&apos;, &apos;RdYlBu&apos;, &apos;Set3&apos;, &apos;Set1&apos;)){
   display.brewer.pal(n = 5, name = col_i)
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAAA2FBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZpAAZrYAaDcBhXEFcbAse7Yxo1Q3frg6AAA6ZmY6kNtNr0pmAABmOgBmZgBmZmZmtv94xnl6AXeAsdOAzcGN08eQOgCQkLaQtpCQ29uQ2/+Sxd6YAEOYTqOmYRqr2em2ZgC225C2/7a2//++utrC5pnFG4rKACDXGRzXtdjbkDrb///dHHffZbDfwn3kGhzx7vb0pYL19fX3aKH39/f7gHL7tLn9rmH+6+L/fwD/tmb/25D//7P//7b//7///8z//9v////PxuwGAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAfx0lEQVR4nO3cC3tbeXfWYWfaqaEFjwk0UMjbDifBC7R4aDmfZALx9/9GaB8kbUlL8ZpnktiS7/u6ZuJIW3Kuvfz/aWtL8s0TAJGbl/4HAFwqAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgND3Cuj/y/3b2D+M/Z3Y34p9p0lk/lfuf8T+a+zfxf5R7KVH9EX/KffvY38d+w+xfxbLdqyACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRAC98roABXR0ABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQE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gAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBYEVEA7BFRABbQgoALaIaACKqAFARXQDgEVUAEtCKiAdgiogApoQUAFtENABVRACwIqoB0CKqACWhBQAe0QUAEV0IKACmiHgAqogBa+V0ABro6AAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUICShASEABQgIKEBJQgJCAAoQE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&quot; title=&quot;&quot; alt=&quot;&quot; width=&quot;672&quot; /&gt;&lt;/p&gt;
@@ -805,7 +859,7 @@ for(col_i in c('YlGn','RdPu', 'PuRd', 'BrBG', 'RdBu', 'RdYlBu', 'Set3', 'Set1'))
 &lt;li&gt;A machine-readable approach to color specification is as hexadecimal triplets.&lt;/li&gt;
 &lt;li&gt;Here is how the RColorBrewer RdYlBu palette is actually stored:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;pre class=&quot;r&quot;&gt;&lt;code&gt;for(col_i in c('YlGn','RdPu', 'PuRd', 'BrBG', 'RdBu', 'RdYlBu', 'Set3', 'Set1')){
+&lt;pre class=&quot;r&quot;&gt;&lt;code&gt;for(col_i in c(&apos;YlGn&apos;,&apos;RdPu&apos;, &apos;PuRd&apos;, &apos;BrBG&apos;, &apos;RdBu&apos;, &apos;RdYlBu&apos;, &apos;Set3&apos;, &apos;Set1&apos;)){
   print(col_i)
   print(brewer.pal(n = 5, name = col_i))
 }&lt;/code&gt;&lt;/pre&gt;
@@ -833,7 +887,7 @@ brewer.pal(n = 10, name = &amp;quot;RdYlBu&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;li&gt;From &lt;a href=&quot;http://www.stat.ubc.ca/~jenny/STAT545A/block14_colors.html&quot; class=&quot;uri&quot;&gt;http://www.stat.ubc.ca/~jenny/STAT545A/block14_colors.html&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;we can see how to turn this into info for ArcGIS or other graphic design software.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;pre class=&quot;r&quot;&gt;&lt;code&gt;The leading # is just there by convention. Parse the hexadecimal string like so: #rrggbb, where rr, gg, and bb refer to color intensity in the red, green, and blue channels, respectively. Each is specified as a two-digit base 16 number, which is the meaning of &amp;quot;hexadecimal&amp;quot; (or &amp;quot;hex&amp;quot; for short). Here's a table relating base 16 numbers to the beloved base 10 system.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;r&quot;&gt;&lt;code&gt;The leading # is just there by convention. Parse the hexadecimal string like so: #rrggbb, where rr, gg, and bb refer to color intensity in the red, green, and blue channels, respectively. Each is specified as a two-digit base 16 number, which is the meaning of &amp;quot;hexadecimal&amp;quot; (or &amp;quot;hex&amp;quot; for short). Here&apos;s a table relating base 16 numbers to the beloved base 10 system.&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&quot;all-colour-palettes&quot; class=&quot;section level2&quot;&gt;
 &lt;h2&gt;All colour palettes&lt;/h2&gt;
@@ -851,10 +905,10 @@ par(mfrow=c(2,2))
 ### Generate random data matrix
 rand.data &amp;lt;- replicate(8,rnorm(100,100,sd=1.5))
 
-### Draw a box plot, with each box coloured by the 'Set3' palette
+### Draw a box plot, with each box coloured by the &apos;Set3&apos; palette
 boxplot(rand.data,col=brewer.pal(8,&amp;quot;Set3&amp;quot;))
 
-### Draw plot of counts coloured by the 'Set3' pallatte
+### Draw plot of counts coloured by the &apos;Set3&apos; pallatte
 br.range &amp;lt;- seq(min(rand.data),max(rand.data),length.out=10)
 results &amp;lt;- sapply(1:ncol(rand.data),function(x) hist(rand.data[,x],plot=F,br=br.range)$counts)
 plot(x=br.range,ylim=range(results),type=&amp;quot;n&amp;quot;,ylab=&amp;quot;Counts&amp;quot;)
@@ -885,7 +939,7 @@ barplot(table.data,col=cols)&lt;/code&gt;&lt;/pre&gt;
 
 // add bootstrap table styles to pandoc tables
 $(document).ready(function () {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $(&apos;tr.header&apos;).parent(&apos;thead&apos;).parent(&apos;table&apos;).addClass(&apos;table table-condensed&apos;);
 });
 
 &lt;/script&gt;
@@ -926,21 +980,21 @@ $(document).ready(function () {
   &lt;li&gt;&lt;a href=&quot;/data/auspoa06_geocentroids_lambert_20160624.csv&quot;&gt;auspoa06_geocentroids_lambert_20160624.csv&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;s1&quot;&gt;'name:poa06-area-lambert'&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;s1&quot;&gt;&apos;name:poa06-area-lambert&apos;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setwd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;~/projects/POA_centroids/POA2006_centroids&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;swishdbtools&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect2postgres2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;delphe&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fout_geo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dbGetQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'select poa_2006,
+&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;select poa_2006,
   st_area(st_transform(the_geom, 3112))/1000000 as Geoscience_Australia_Lambert_area_km2,
 st_x(st_centroid(st_transform(the_geom,3112))) as geocentx,
 st_y(st_centroid(st_transform(the_geom,3112))) as geocenty
-from abs_poa.auspoa06'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+from abs_poa.auspoa06&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fout_geo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fout_geo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;geoscience_australia_lambert_area_km2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write.table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fout_geo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'data_derived/auspoa06_geocentroids_lambert_20160624.csv'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-            &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row.names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;','&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write.table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fout_geo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;data_derived/auspoa06_geocentroids_lambert_20160624.csv&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row.names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;,&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fout_geo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fout_geo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -1078,7 +1132,7 @@ The source population may be defined directly, as a matter of defining its membe
               &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gray.colors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;aggAllData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
               &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;las&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;axisnames&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;aggAllData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;par&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'usr'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;srt&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;par&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;usr&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;srt&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
        &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;adj&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xpd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;.9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -1118,11 +1172,11 @@ dat &amp;lt;- rnorm(1000,1,2)
 
 &lt;p&gt;But I also pushed this to another site that I do use gh-pages to build and it sent me an email complaining:&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;You are attempting to use the 'pygments' highlighter, 
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;You are attempting to use the &apos;pygments&apos; highlighter, 
 which is currently unsupported on GitHub Pages. 
-Your site will use 'rouge' for highlighting instead. 
-To suppress this warning, change the 'highlighter' value to 
-'rouge' in your '_config.yml'. 
+Your site will use &apos;rouge&apos; for highlighting instead. 
+To suppress this warning, change the &apos;highlighter&apos; value to 
+&apos;rouge&apos; in your &apos;_config.yml&apos;. 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;/p&gt;
@@ -1182,7 +1236,7 @@ for(i in 1:length(file_list))
 setwd(projdir)
 
 # now we can go through all days, I set this up as a loop over ncdf files then days, 
-# but I'll probably try to set this up to directly use the netCDF aggregation functions available and avoid looping 
+# but I&apos;ll probably try to set this up to directly use the netCDF aggregation functions available and avoid looping 
 # for(j in 1:length(file_list))
   #{
     j = 1
@@ -1327,7 +1381,7 @@ setwd(projdir)
 # need to look at the website to get this info
 # http://opendap.knmi.nl/knmi/thredds/dodsC/e-obs_0.22rotated/tg_0.22deg_rot_v12.0.nc.html
 print(nc)
-# it doesn't seem like there is this info in the ncdf file?
+# it doesn&apos;t seem like there is this info in the ncdf file?
 get.var.ncdf(nc, &quot;projection&quot;)
 rcm.lonlat.grid &amp;lt;- SpatialPoints(coords)
 # now set this to wgs84
@@ -1452,11 +1506,11 @@ dat &amp;lt;- read.csv(file.path(indir, infile), as.is=T)
 str(dat)
   
 dat2 &amp;lt;- SpatialPointsDataFrame(data.frame(x=dat$long, y=dat$lat), dat,
-                                proj4string=CRS(epsg$prj4[epsg$code %in% '4283'])
+                                proj4string=CRS(epsg$prj4[epsg$code %in% &apos;4283&apos;])
                                 )
 
 writeOGR(dat2, outfile,
-         outdir, driver='ESRI Shapefile'
+         outdir, driver=&apos;ESRI Shapefile&apos;
          )
 # fix the prj file 
 download.file(&quot;http://spatialreference.org/ref/epsg/4283/prj/&quot;,
@@ -1992,7 +2046,7 @@ sceptics to gather around as though it were a piece of the true cross.
 This file – thousands of lines of annotations kept on the process of
 re-developing a computer model of the climate form figures submitted
 by weather stations around the world and other historical data sets –
-holds a personal commentary written by an un-named developer (let's
+holds a personal commentary written by an un-named developer (let&apos;s
 call him Harry), frustrated and often tied up in knots, working late
 into the night and the weekend trying to squeeze differently-formatted
 numbers into a consistent narrative.  
@@ -2046,28 +2100,28 @@ numbers into a consistent narrative.
 &lt;/ul&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-    the 'Experiment Results' level is about work you might do on a 
+    the &apos;Experiment Results&apos; level is about work you might do on a 
        single day, or over a week
 
-    Workflow scripts: At this level each 'experiment' is written up in
+    Workflow scripts: At this level each &apos;experiment&apos; is written up in
     chronological order, as entries to the Worklog at the meso level
 
-    Noble recommends 'create either a README file, in which I store
+    Noble recommends &apos;create either a README file, in which I store
     every command line that I used while performing the experi- ment,
     or a driver script (I usually call this runall) that carries out
-    the entire experiment automatically'...
+    the entire experiment automatically&apos;...
 
-    and 'you should end up with a file that is parallel to the lab
+    and &apos;you should end up with a file that is parallel to the lab
     notebook entry. The lab notebook contains a prose description of
     the exper- iment, whereas the driver script contains all the gory
-    details.'
+    details.&apos;
 
     this is the level I usually think of managing the distribution
     side of things. I will want to pack up the results and email to my
     collaborators, or decide on the one set of tables and figures to
     write into the manuscript for submission to a journal. If this is
     accepted for publication, this is the one combined package of
-    'analytical data and code' that I would consider putting up online
+    &apos;analytical data and code&apos; that I would consider putting up online
     (to github) as supporting information for the paper.
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -2135,7 +2189,7 @@ Health, 12(10), 13251–13275. doi:10.3390/ijerph121013251
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;library(RISmed)
 x &amp;lt;- &quot;hanigan+ic[Author]&quot;
-res &amp;lt;- EUtilsSummary(x, type=&quot;esearch&quot;, db=&quot;pubmed&quot;, datetype='pdat', mindate=1900, 
+res &amp;lt;- EUtilsSummary(x, type=&quot;esearch&quot;, db=&quot;pubmed&quot;, datetype=&apos;pdat&apos;, mindate=1900, 
   maxdate=2015, retmax=500)
 str(res)
 citations1 &amp;lt;- Cited(res)
@@ -2352,7 +2406,7 @@ $ ls */ACORN/monthly_*/{TURQ,ROT}/*/*.nc
 &lt;p&gt;In the words of Hadley Wickham the order that data should be
 arranged in follows some generic principles:&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;'A good ordering makes it easier to scan the raw values. One way of
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&apos;A good ordering makes it easier to scan the raw values. One way of
 organizing variables is by their role in the analysis: are values
 fixed by the design of the data collection, or are they measured
 during the course of the experiment? Fixed variables describe the
@@ -2363,7 +2417,7 @@ are what we actually measure in the study. Fixed variables should come
 first, followed by measured variables, each ordered so that related
 variables are contiguous. Rows can then be ordered by the first
 variable, breaking ties with the second and subsequent (fixed)
-variables.'
+variables.&apos;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;&lt;/p&gt;
 &lt;h3 id=&quot;an-exemplar&quot;&gt;An exemplar&lt;/h3&gt;
@@ -2462,13 +2516,13 @@ dat &amp;lt;- dbGetQuery(ch,
        research_question, study_extent, outcomes, exposures,  covariates, method_protocol,
         general_comments
   FROM publication
-  where key_results is not null and key_results != '';
+  where key_results is not null and key_results != &apos;&apos;;
 &quot;)
 names(dat) &amp;lt;- gsub(&quot;_&quot;, &quot; &quot;, names(dat))
 tabcode &amp;lt;- xtable(dat[,1:8])
-align(tabcode) &amp;lt;-  c( 'l', 'p{.7in}','p{.8in}','p{1.7in}', 'p{1.7in}', 'p{1.7in}','p{1.8in}','p{1.7in}', 'p{1.7in}')
-print(tabcode,  include.rownames = F, table.placement = '!ht',
-      floating.environment='sidewaystable',
+align(tabcode) &amp;lt;-  c( &apos;l&apos;, &apos;p{.7in}&apos;,&apos;p{.8in}&apos;,&apos;p{1.7in}&apos;, &apos;p{1.7in}&apos;, &apos;p{1.7in}&apos;,&apos;p{1.8in}&apos;,&apos;p{1.7in}&apos;, &apos;p{1.7in}&apos;)
+print(tabcode,  include.rownames = F, table.placement = &apos;!ht&apos;,
+      floating.environment=&apos;sidewaystable&apos;,
       sanitize.text.function = function(x) x)
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -2610,9 +2664,9 @@ This may make it hard to parse.  The simple solution is to try to keep each elem
 &lt;/ul&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;End the introductory phrase preceding a list of bullet points in a
-colon. If the individual bullet points are sentence fragments, don't
+colon. If the individual bullet points are sentence fragments, don&apos;t
 use a full stop, comma or semi-colon. Leave it bare until the last
-bullet point, and then use a full stop. Don't use capitals. Use full
+bullet point, and then use a full stop. Don&apos;t use capitals. Use full
 stops if each bullet point is a complete sentence.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </content>
@@ -2720,7 +2774,7 @@ code as they make these changes to the analytical data.&lt;/p&gt;
 
 # model 0 effect in eastern
 d_eastern
-fit &amp;lt;- glm(cases~ buffer + offset(log(1+pops)),family='poisson', data=d_eastern )
+fit &amp;lt;- glm(cases~ buffer + offset(log(1+pops)),family=&apos;poisson&apos;, data=d_eastern )
 summa &amp;lt;- summary(fit)
 summa
 ## Coefficients:
@@ -2729,7 +2783,7 @@ summa
 ## buffer      -0.24702    0.07921  -3.119  0.00182 **
 
 # model 1 effect in urban
-fit1 &amp;lt;- glm(cases~ buffer + offset(log(1+pops)),family='poisson', data=d_urban )
+fit1 &amp;lt;- glm(cases~ buffer + offset(log(1+pops)),family=&apos;poisson&apos;, data=d_urban )
 summa &amp;lt;- summary(fit1)
 summa
 ## Coefficients:
@@ -2745,7 +2799,7 @@ str(dat2)
 dat2
 
 # model 2 is a multiplicative term
-fit2 &amp;lt;- glm(cases ~ buffer * urban + offset(log(1+pops)), family = 'poisson', data = dat2)
+fit2 &amp;lt;- glm(cases ~ buffer * urban + offset(log(1+pops)), family = &apos;poisson&apos;, data = dat2)
 summa &amp;lt;- summary(fit2)
 summa
 ## Coefficients:
@@ -2779,7 +2833,7 @@ conditional_se
 dat2$buffer_urban &amp;lt;- dat2$buffer * dat2$urban
 dat2$buffer_eastern &amp;lt;- dat2$buffer * (1-dat2$urban)
 
-fit3 &amp;lt;- glm(cases ~ buffer_urban + buffer_eastern + urban + offset(log(1+pops)), family = 'poisson', data = dat2)
+fit3 &amp;lt;- glm(cases ~ buffer_urban + buffer_eastern + urban + offset(log(1+pops)), family = &apos;poisson&apos;, data = dat2)
 summa &amp;lt;- summary(fit3)
 summa
 
@@ -2884,12 +2938,12 @@ misstable(atable)
 #dat &amp;lt;- readxl::read_excel(file.path(indir, infile), skip =3)
 # got lots of warnings()
 ## 50: In read_xlsx_(path, sheet, col_names = col_names, col_types = col_types,  ... :
-##   [1278, 4]: expecting date: got '[NULL]'
+##   [1278, 4]: expecting date: got &apos;[NULL]&apos;
 # I always worry about using excel connections so open in excel (in windows) 
 # and save as to convert to CSV
 dat &amp;lt;- read.csv(file.path(indir, gsub(&quot;.xlsx&quot;, &quot;.csv&quot;, infile)), skip =3, stringsAsFactor = F)
 str(dat)
-# 'data.frame':     1396 obs. of  167 variables:
+# &apos;data.frame&apos;:     1396 obs. of  167 variables:
 # but most of the cols and a third of the rows are empty!
 # check missings
 dat2 &amp;lt;- data.frame(id = 1:nrow(dat), dat)
@@ -3139,80 +3193,6 @@ Complete ...
   &lt;li&gt;The only downside I can see at the moment is that my colleagues on windows will see a text file that is pretty dense, and will not be as easy to navigate as a word document (or emacs org file)&lt;/li&gt;
   &lt;li&gt;Perhaps notepad++ can be used instead.  On my windows machine I did a quick experiment with NPP and found that under the Language menu &amp;gt; Define your language there is a method to define code folding with ** as the opening.  Just need to define a closing tag.  I experimented with ‘—’ which might be good, but ultimately I don’t think my colleagues are going to want to do this on their machines.&lt;/li&gt;
 &lt;/ul&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Reproducible research pipelines improve description of method steps</title>
-   <link href="http://ivanhanigan.github.io/2015/10/reproducible-research-pipelines-improve-description-of-method-steps/"/>
-   <updated>2015-10-18T00:00:00+08:00</updated>
-   <id>http://ivanhanigan.github.io/2015/10/reproducible-research-pipelines-improve-description-of-method-steps</id>
-   <content type="html">&lt;p&gt;Adequately documenting the methods and results of data analysis helps
-safeguard against errors of execution and
-interpretation. It is proposed that
-reproducible research pipelines address the problem of
-adequate documentation of data analysis.&lt;/p&gt;
-
-&lt;p&gt;This is because they make it easy to
-check the methods. Assumptions are easy to challenge and results
-verified in new analyses. Reproducible research pipelines extend
-traditional research.  They do this by encoding the steps in a
-computer ‘scripting’ language and distributing the data and code with
-publications.  Traditional research moves through the steps of
-hypothesis and design, measured data, analytic data, computational
-results (for figures, tables and numerical results), and reports (text
-and formatted manuscript).&lt;/p&gt;
-
-&lt;h2 id=&quot;fundamental-components-of-a-reproducible-research-pipeline&quot;&gt;Fundamental components of a reproducible research pipeline&lt;/h2&gt;
-
-&lt;p&gt;The basic components of a pipeline are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Data Management Plan and Data Inventory&lt;/li&gt;
-  &lt;li&gt;Method steps&lt;/li&gt;
-  &lt;li&gt;Code&lt;/li&gt;
-  &lt;li&gt;Data storage&lt;/li&gt;
-  &lt;li&gt;Reports&lt;/li&gt;
-  &lt;li&gt;Distribution.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;method-steps&quot;&gt;Method Steps&lt;/h3&gt;
-
-&lt;p&gt;The method step is the key atomic unit of a scientific pipeline.  It consists of inputs, outputs and a rationale for why the step is taken.&lt;/p&gt;
-
-&lt;p&gt;A simple way to keep track of the steps, inputs and outputs is shown in the Table below.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;library(stringr)
-steps &amp;lt;- read.csv(textConnection('
-CLUSTER ,  STEP  , INPUTS                   , OUTPUTS                   
-A  ,  Step1      , &quot;Input 1, Input 2&quot;       , &quot;Output 1&quot;                 
-A  ,  Step2      ,  Input 3                  , Output 2                   
-B  ,  Step3      , &quot;Output 1, Output 2&quot;      , Output 3                  
-'), stringsAsFactors = F, strip.white = T)
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;The steps and data listed in the Table above can be visualised.
-To achieve this an R function was written as part of this PhD project and is distributed in my own R package available on Github &lt;a href=&quot;https://github.com/ivanhanigan/disentangle&quot;&gt;https://github.com/ivanhanigan/disentangle&lt;/a&gt;.
-This is the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;newnode&lt;/code&gt; function.  The function returns a string of text
-written in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dot&lt;/code&gt; language which can be rendered in R using the
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiagrammeR&lt;/code&gt; package, or the standalone &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;graphviz&lt;/code&gt; package.   This creates the graph of this pipeline shown in Figure below.  Note that a new field was added for Descriptions as these are highly recommended.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;library(disentangle); library(stringr)
-nodes &amp;lt;- newnode(indat = steps,   names_col = &quot;STEP&quot;, in_col = &quot;INPUTS&quot;,
-  out_col = &quot;OUTPUTS&quot;, 
-  nchar_to_snip = 40)
-sink(&quot;fig-basic.dot&quot;);
-cat(nodes);
-sink()
-# or DiagrammeR::grViz(nodes)
-system(&quot;dot -Tpdf fig-basic.dot -o fig-basic.pdf&quot;)
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/fig-basic.png&quot; alt=&quot;/images/fig-basic.png&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  

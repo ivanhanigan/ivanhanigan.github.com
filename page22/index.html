@@ -54,6 +54,53 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2014/02/template-reproducible-research-with-r-tex-and-sweave/" title="Template Reproducible Research with R TEX and Sweave" rel="bookmark">Template Reproducible Research with R TEX and Sweave</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+  <li>Last year I wrote to a Professor to let them know some numbers that quantified their effect estimate (computed be exponentiating their beta coefficient) described in their results section was inconsistent with the numbers in their table (the raw coefficients).</li>
+  <li>Happily the recalculation showed that they had underestimated the effect size and their conclusions were not wrong, but erroneously conservative.</li>
+  <li>Previously I would use Sweave documents to keep track of all my calculations, but I was still copy-and-pasting the key numbers into the text.</li>
+  <li>I’ve become more interested now in using Inline R Outputs (called Sexpr - S expressions)</li>
+  <li>This is also the first time I’ve created a report using the Palatino font, on the advice of a new colleague of mine.</li>
+  <li>I popped up a <a href="https://github.com/ivanhanigan/DataDocumentation">Github repo with a Sweave template for Reproducible Reports with a few notes I made</a>.  Which looks like</li>
+</ul>
+
+<p><img src="/images/sexpr.png" alt="/images/sexpr.png" /></p>
+
+<ul>
+  <li>
+    <p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.pdf">PDF output is here</a></p>
+  </li>
+  <li>
+    <p>The <a href="https://github.com/ivanhanigan/DataDocumentation/blob/master/src/sexpr.Rnw">Sweave file is here</a></p>
+  </li>
+</ul>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2014/02/template-reproducible-research-with-r-tex-and-sweave/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2014-02-12 00:00:00 +0800">12 Feb 2014</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2014/01/studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses/" title="studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses" rel="bookmark">studygroup-review-of-tree-based-models-for-testing-multiple-working-hypotheses</a>
     </h1>
     <div class="entry-content full-content">
@@ -405,78 +452,6 @@ reml_boilerplate(
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2014/01/tumbarumba-supersite-dem/" title="tumbarumba-supersite-dem" rel="bookmark">tumbarumba-supersite-dem</a>
-    </h1>
-    <div class="entry-content full-content">
-      <ul>
-  <li>The first dataset I downloaded from ASN for playing around with was the Tumba Lidar.</li>
-  <li>I had thought it might be better to offer this as a OGC service rather than downloadable geotiff</li>
-  <li>just in terms of the size firstly (104MB)</li>
-  <li>but I also soon realised it would need some specialised tweaking which non-GIS users might struggle a bit and could avoid if the serverside data is set up by a GIS specialist (although can we assume only GIS specialists will download this kind of data)?</li>
-  <li>kudos to <a href="http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object">http://stackoverflow.com/questions/11966503/how-to-replace-nas-in-a-raster-object</a></li>
-</ul>
-
-<h4 id="codetumbarumba-supersite-dem">Code:tumbarumba-supersite-dem</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setwd("~/data/supersite/tumba-lidar")
-require(raster)
-fname  &lt;- dir(pattern = "tif$")
-fname
-r  &lt;- raster(fname)
-str(r)
-dfr &lt;- as.data.frame(r)
-summary(dfr)
-# the -1 code looks like it might be missing?  They are around the edge.
-rna &lt;- reclassify(r, cbind(-1, 1197))
-png("tumba-lidar.png")
-plot(rna, col=terrain.colors(100), xlab = "eastings (m)", ylab = "northings (m)")
-title("Tumbarumba Supersite Digital Elevation Model")
-title(sub = "packageId=lloyd.374.2")
-dev.off()
-</code></pre></div></div>
-
-<p></p>
-
-<p><img src="/images/tumba-lidar.png" alt="tumba-lidar.png" /></p>
-
-<h4 id="alternately-use-a-geoserver">Alternately use a geoserver</h4>
-
-<ul>
-  <li>If we use a Geoserver we could set it up so people can view this without downloading the data</li>
-  <li>following the instructions <a href="http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html">http://suite.opengeo.org/opengeo-docs/processing/contour/setup.html</a></li>
-  <li>using the ANU GIS library server</li>
-</ul>
-
-<iframe style="border: none;" height="400" width="600" src="http://brawn.anu.edu.au:8081/geoexplorer/viewer/#maps/1"></iframe>
-<p>;</p>
-
-<ul>
-  <li>PS the map might take a minute to show up, not sure why, might ask the sysadmin to look at the server performance</li>
-</ul>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/research methods" title="research methods" rel="category tag">research methods</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2014/01/tumbarumba-supersite-dem/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2014-01-03 00:00:00 +0800">03 Jan 2014</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -554,6 +529,10 @@ dev.off()
               <ul>
                 
                 <li>
+                  <a href="/2024/01/personal-academic-website-with-jekyll/" title="Personal academic website with jekyll" rel="bookmark">Personal academic website with jekyll</a>
+                </li>
+                
+                <li>
                   <a href="/2023/05/heat-and-violence/" title="Heat and violence" rel="bookmark">Heat and violence</a>
                 </li>
                 
@@ -567,10 +546,6 @@ dev.off()
                 
                 <li>
                   <a href="/2019/07/environmental-health-indicators/" title="Environmental health indicators" rel="bookmark">Environmental health indicators</a>
-                </li>
-                
-                <li>
-                  <a href="/2019/07/tscourse-chicago-heatwave/" title="Time series regression in R course codes for Chicago Heatwave" rel="bookmark">Time series regression in R course codes for Chicago Heatwave</a>
                 </li>
                 
               </ul>
@@ -636,7 +611,7 @@ dev.off()
                 
                 <li><a href="/categories/reproducible research">reproducible research (2)</a></li>
                 
-                <li><a href="/categories/writing">writing (1)</a></li>
+                <li><a href="/categories/writing">writing (2)</a></li>
                 
                 <li><a href="/categories/climate data">climate data (1)</a></li>
                 

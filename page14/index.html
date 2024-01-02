@@ -54,6 +54,122 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2015/09/reproducible-research-and-managing-digital-assets/" title="Reproducible Research And Managing Digital Assets (1 of 3). Scott Long wrote a book and some great tutorial slides" rel="bookmark">Reproducible Research And Managing Digital Assets (1 of 3). Scott Long wrote a book and some great tutorial slides</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>This will be a series of three posts that describe some key evidence based best practice methods that have helped me plan and organise files and folders for data analysis.  I have found these via books and on websites.</p>
+
+<ul>
+  <li>Scott Long’s Workflow for Data Analysis with Stata</li>
+  <li>Josh Reich’s Least Commonly Fouled up Data analysis (LCFD) framework</li>
+  <li>John Myles White’s ProjectTemplate</li>
+</ul>
+
+<h2 id="toward-evidence-based-best-practice-data-management-systems">Toward evidence based best-practice data management systems</h2>
+
+<p>It is important for open science to have effective management of digital assets across the different phases of the research pipeline.  The traditional research pipeline moves from steps of hypothesis and design, measured data, analytic data, computational results (for figures, tables and numerical results), and reports (text and formatted manuscript).  Reproducible research pipelines extend traditional research by encoding the steps in code from a computer ‘scripting’ language, and distributing the data and code with publications.</p>
+
+<p>In this research pipeline context there are a large number of potential ways to manage digital assets (documents, data and code).  There are also many different motivating drivers that will affect the way that a scientist or group of scientists choose to manage their data and code.</p>
+
+<p>To deal with in house data management issues before starting and during analysis/reporting is critical for reproducible research.<br />
+I argue that more effective research pipelines can be achieved if scientists adopt the ‘convention over configuration’ paradigm and adopt best-practice systems based on evidence.</p>
+
+<h3 id="long-s-2015-workflow-for-reproducible-results">Long, S. (2015). Workflow for Reproducible Results.</h3>
+
+<p>For ages I was aware of the book from the Stata statistical program publishers <a href="http://www.indiana.edu/~jslsoc/web_workflow/wf_home.htm">http://www.indiana.edu/~jslsoc/web_workflow/wf_home.htm</a>:</p>
+
+<h4 id="citation">Citation:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Long, J. S. (2008). The Workflow of Data Analysis: 
+Principles and Practice. Stata publishing.
+</code></pre></div></div>
+
+<p></p>
+
+<p>Recently I stumbled across more recent workshop slides and tutorial material which I will discuss briefly.</p>
+
+<h4 id="citation-1">Citation:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Long, S. (2015). Workflow for Reproducible Results. 
+IV : Managing digital assets Workflow for Tools for your WF. 
+</code></pre></div></div>
+
+<p></p>
+
+<p>Retrieved from <a href="http://txrdc.tamu.edu/documents/WFtxcrdc2014_4-digital.pdf">http://txrdc.tamu.edu/documents/WFtxcrdc2014_4-digital.pdf</a></p>
+
+<p>Long suggests a lot of practical things to do, but I will just focus here on the recommended file and folder structure:</p>
+
+<h4 id="recommended-project-directory-structure">Recommended project directory structure:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\ProjectAcronym
+    \- History starting YYYY-MM-DD
+    \- Hold then delete 
+    \Admin
+    \Documentation 
+    \Posted
+         \Paper 1
+             \Correspondence 
+             \Text
+             \Analysis
+    \PrePosted 
+    \Resources 
+    \Write 
+    \Work
+</code></pre></div></div>
+<p></p>
+
+<ul>
+  <li>In another workshop report Long provides a useful tool to automatically create this structure on windows</li>
+  <li>Long, S. (2012). Principles of Workflow in Data Analysis. 
+Retrieved from <a href="http://www.indiana.edu/~wim/docs/2012-long-slides.pdf">http://www.indiana.edu/~wim/docs/2012-long-slides.pdf</a></li>
+  <li>a bash version would be useful for linux and mac users, but also the R language can do this on all platforms with the <code class="language-plaintext highlighter-rouge">dir.create</code> command</li>
+</ul>
+
+<h4 id="code-wfsetupsinglebat">Code: wfsetupsingle.bat</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># wfsetupsingle.bat 
+REM workflow talk 2 \ wfsetupsingle.bat jsl 2009-07-12 
+REM directory structure for single person.
+FOR /F "tokens=2,3,4 delims=/- " %%a in ("%DATE%") do set CDATE=%%c-%%a-%%b 
+md "- History starting \%cdate%" 
+md "- Hold then delete " 
+md "- Pre posted " 
+md "- To clean" 
+md "Documentation" 
+md "Posted" 
+md "Resources"
+md "Text\- Versions\" 
+md "Work\- To do"
+</code></pre></div></div>
+
+<h2 id="critical-reflections">Critical reflections</h2>
+
+<ul>
+  <li>This recommendation is very sensible, especially the suggestion of moving things through the pipeline as they evolve from things being worked on (Write/Work) to later phases when they have been polished to a point that they can be put down while preparations for distrubuting them are made (Preposted) and then once they are sent off into downstream publication phases (Posted) they are locked for ever in a archival state.</li>
+  <li>I am not particularly keen on the names that have been chosen (Resources, Write and Work are quite ambiguous terms).</li>
+</ul>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2015/09/reproducible-research-and-managing-digital-assets/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2015-09-25 00:00:00 +0800">25 Sep 2015</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2015/09/organising-graph-nodes-and-edges-in-a-dataframe/" title="Organising Graph Nodes And Edges In A Dataframe" rel="bookmark">Organising Graph Nodes And Edges In A Dataframe</a>
     </h1>
     <div class="entry-content full-content">
@@ -489,182 +605,6 @@ So then I googled a bit and found the solution was simple:</p>
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/" title="Templates are Needed for Reproducible Research Reports (that Look Good)" rel="bookmark">Templates are Needed for Reproducible Research Reports (that Look Good)</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I read with interest the the Transparency and Openness Promotion (TOP) Committee templates for guidelines to enhance transparency in the science that journals publish.</p>
-
-<h4 id="citation">Citation</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Supplementary Materials for Nosek, B. A., Alter, G., Banks, G. C.,
-Borsboom, D., Bowman, S. D., Breckler, S. J., … Yarkoni,
-T. (2015). Promoting an open research culture. Science, 348(6242),
-1422–1425. doi:10.1126/science.aab2374
-</code></pre></div></div>
-
-<p></p>
-
-<p>I think though that guidelines like the suggestion to copy-paste bits of the manuscript leave a bit to be desired:</p>
-
-<h4 id="quote">Quote;</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Authors document compliance by copy-pasting the relevant passages
-in the paper that address the question into the form. For example,
-when indicating how sample size was determined, authors copy paste
-into the form the text in the paper that describes how sample size
-was determined.
-</code></pre></div></div>
-
-<p></p>
-
-<p>Reproducible Research Reports solve this problem by ensuring that the data preparation and analysis are executed in the same script that produces the manuscript, therefore a one-stop-shop for documentation of the entire study.</p>
-
-<h2 id="there-is-a-need-for-templates-of-reproducible-research-reports-that-look-good">There is a need for Templates of Reproducible Research Reports (that look good!)</h2>
-
-<p>Rstudio provides very easy support for these documents if you use R.  In particular the option of a menu button to create a new report populates that report with the required header information and some example script to work off.  But the easiest option does not look so good.  This is the Rmarkdown option and it is very user friendly in terms of the markup language needed to write the descriptive language around your analysis (mostly plain text with a few simple options for heading styles etc) rather than the Sweave option which leads to the full blown LaTeX markup language that is a lot more complicated.</p>
-
-<h4 id="boilerplate-rmarkdown-header-from-rstudio">Boilerplate Rmarkdown header from Rstudio:</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
-title: "Untitled"
-author: "Ivan C. Hanigan"
-date: "16 September 2015"
-output: html_document
----
-</code></pre></div></div>
-
-<p></p>
-
-<p>This is great for quick reporting of work as you go, but I  primarily write for output that will be printed (e.g. pdf docs). More specifically, I need the concept of a page, and to have full control over the placement of table and figure ‘environments’, stuff that is easy in LaTeX (once you figure out some of the esoteric parts of that language).</p>
-
-<p>To achieve a simple writing environment in Markdown but with the powerful layout options of LaTeX I reviewed this guys work but I think it takes it to an uneccessary level of complicated-ness
-<a href="https://github.com/jhollist/manuscriptPackage">https://github.com/jhollist/manuscriptPackage</a>.</p>
-
-<p>So I went back to some of the old Sweave/Latex templates I had put together and ported it into a markdown header.</p>
-
-<h4 id="boilerplate-rmarkdown-header-for-pretty-report">Boilerplate Rmarkdown header for pretty report</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
-title: "Untitled"
-author: "Ivan C. Hanigan"
-date: "16 September 2015"
-header-includes:
-  - \usepackage{graphicx}
-  - \usepackage{fancyhdr} 
-  - \pagestyle{fancy} 
-  - \usepackage{lastpage}
-  - \usepackage{float} 
-  - \floatstyle{boxed} 
-  - \restylefloat{figure} 
-  - \usepackage{url} 
-  - \usepackage{color}
-  - \lhead{Left Header}
-  - \chead{Rmarkdown Rocks}
-  - \rhead{\today}
-  - \lfoot{Left Footer}
-  - \cfoot{Centre Footer}
-  - \rfoot{\thepage\ of \pageref{LastPage}}  
-output: 
-  pdf_document:
-    toc: false
-documentclass: article
-classoption: a4paper
-bibliography: references.bib
----
-</code></pre></div></div>
-
-<p></p>
-
-<p>Now the layout of tables and figures is done with latex</p>
-
-<h4 id="code">Code</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Using the xtable package allows results to be displyed in tables
-and has built in support for some R objects, so summrising the
-linear fit above in ~\ref{ATable}
-  
-```{r, results='asis', type = 'tex'}
-library(xtable)    
-print(xtable(fit, caption="Example Table",
-  digits=4,table.placement="ht",label="ATable"), comment = F)    
-```
-   
-## A Plot
-   
-Plots intergrate most easily if made seperately as can be seen in figure ~\ref{test}
-```{r}
-png("Rmarkdownfig.png")
-plot(x,y,main="Example Plot",xlab="X Variable",ylab="Y Variable")
-abline(fit,col="Red")
-dev.off()
-```
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=.5\textwidth]{Rmarkdownfig.png}
-\end{center}
-\caption{Some Plot}
-\label{test}
-\end{figure}
-\clearpage
-</code></pre></div></div>
-
-<p></p>
-
-<p>I also realised that if this was to be a full report of a scientific study it would need to include some of the machinery needed for bibliographies.</p>
-
-<h4 id="stuff-for-bibliographies">Stuff for bibliographies</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```{r, echo=F, results = 'hide', message = F, warning=F}
-library("knitcitations")
-library("bibtex")
-cleanbib()
-cite_options(citation_format = "pandoc", check.entries = FALSE)
- 
-bib &lt;- read.bibtex("C:/Users/Ivan/Dropbox/references/library.bib")
- 
-```
-
-&lt;!--Put data analysis and reporting here, then at the end of the doc--&gt;
-
-```{r, echo=F, message=F, eval=T}
-write.bibtex(file="references.bib")
-```
-      
-# References
-
-&lt;!--The bib will then be written following the final subheading--&gt;
-</code></pre></div></div>
-
-<p></p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>I hope this might help others develop their own templates for RRR that look great.</p>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/disentangle" title="disentangle" rel="category tag">disentangle</a>
-      
-      <a href="/categories/reproducible research reports" title="reproducible research reports" rel="category tag">reproducible research reports</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2015/09/templates-needed-for-reproducible-research-reports-that-look-good/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2015-09-16 00:00:00 +0800">16 Sep 2015</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -742,6 +682,10 @@ write.bibtex(file="references.bib")
               <ul>
                 
                 <li>
+                  <a href="/2024/01/personal-academic-website-with-jekyll/" title="Personal academic website with jekyll" rel="bookmark">Personal academic website with jekyll</a>
+                </li>
+                
+                <li>
                   <a href="/2023/05/heat-and-violence/" title="Heat and violence" rel="bookmark">Heat and violence</a>
                 </li>
                 
@@ -755,10 +699,6 @@ write.bibtex(file="references.bib")
                 
                 <li>
                   <a href="/2019/07/environmental-health-indicators/" title="Environmental health indicators" rel="bookmark">Environmental health indicators</a>
-                </li>
-                
-                <li>
-                  <a href="/2019/07/tscourse-chicago-heatwave/" title="Time series regression in R course codes for Chicago Heatwave" rel="bookmark">Time series regression in R course codes for Chicago Heatwave</a>
                 </li>
                 
               </ul>
@@ -824,7 +764,7 @@ write.bibtex(file="references.bib")
                 
                 <li><a href="/categories/reproducible research">reproducible research (2)</a></li>
                 
-                <li><a href="/categories/writing">writing (1)</a></li>
+                <li><a href="/categories/writing">writing (2)</a></li>
                 
                 <li><a href="/categories/climate data">climate data (1)</a></li>
                 

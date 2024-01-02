@@ -54,6 +54,80 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2024/01/personal-academic-website-with-jekyll/" title="Personal academic website with jekyll" rel="bookmark">Personal academic website with jekyll</a>
+    </h1>
+    <div class="entry-content full-content">
+      <p>Having a personal academic website is great for developing and coordinating information that you can publish about your work and others can find out about you.</p>
+
+<p>There are a range of options from very simple approaches like the <code class="language-plaintext highlighter-rouge">postcards</code> package in R <a href="https://github.com/seankross/postcards">https://github.com/seankross/postcards</a> or the more complicated approach using the <a href="https://github.com/alshedivat/al-folio">https://github.com/alshedivat/al-folio</a>.</p>
+
+<p>My own blog and some other websites I created are based on some markdown templates I borrowed from other authors on github, and they all use the Jekyll static site generator framework. I have found that using jekyll on my Ubuntu linux computers is fairly straightforward but I am keen to also be able to develop sites on windoze computers.  Therefore I am going to embark on an experiment to set up a jekyll site generator using WSL, and I will use this post to document the steps I take.</p>
+
+<p>Steps:</p>
+
+<ol>
+  <li>Open powershell as Admin, ran <code class="language-plaintext highlighter-rouge">wsl --install</code> but this just showed the wsl help text, so I found instructions that let me know if wsl is already installed, but no linux system distribution has been enabled this happens, so in my case I had to run <code class="language-plaintext highlighter-rouge">wsl --list --online</code> and choose a distro. I chose <code class="language-plaintext highlighter-rouge">Ubuntu</code> which I assume will default to the latest version</li>
+  <li><code class="language-plaintext highlighter-rouge">sudo apt update</code> and <code class="language-plaintext highlighter-rouge">upgrade</code></li>
+  <li>install depends
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">apt install make build-essential curl git tree -y</code></li>
+    </ul>
+  </li>
+  <li>install ruby
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">sudo apt install ruby ruby-dev -y</code></li>
+    </ul>
+  </li>
+  <li>need to tell Ruby’s gem package manager to place gems in our user’s home folder.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">nano ~/.bashrc</code></li>
+      <li><code class="language-plaintext highlighter-rouge">export GEM_HOME=$HOME/gems</code></li>
+      <li><code class="language-plaintext highlighter-rouge">export PATH=$HOME/gems/bin:$PATH</code></li>
+      <li>Save and close the file, then activate the environment variable with the following command: <code class="language-plaintext highlighter-rouge">source ~/.bashrc</code></li>
+      <li><code class="language-plaintext highlighter-rouge">gem install jekyll bundler</code></li>
+    </ul>
+  </li>
+  <li>Try it out
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">jekyll new jekyll.example.com</code></li>
+      <li><code class="language-plaintext highlighter-rouge">cd jekyll.example.com</code></li>
+      <li><code class="language-plaintext highlighter-rouge">bundle add webrick</code></li>
+      <li><code class="language-plaintext highlighter-rouge">jekyll serve</code></li>
+    </ul>
+  </li>
+  <li>References:
+    <ul>
+      <li><a href="https://learn.microsoft.com/en-us/windows/wsl/install">https://learn.microsoft.com/en-us/windows/wsl/install</a></li>
+      <li><a href="https://www.howtoforge.com/how-to-install-jekyll-on-ubuntu-22-04/">https://www.howtoforge.com/how-to-install-jekyll-on-ubuntu-22-04/</a></li>
+      <li><a href="https://jekyllrb.com/docs/installation/windows/">https://jekyllrb.com/docs/installation/windows/</a></li>
+    </ul>
+  </li>
+</ol>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/writing" title="writing" rel="category tag">writing</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2024/01/personal-academic-website-with-jekyll/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2024-01-02 00:00:00 +0800">02 Jan 2024</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2023/05/heat-and-violence/" title="Heat and violence" rel="bookmark">Heat and violence</a>
     </h1>
     <div class="entry-content full-content">
@@ -271,57 +345,6 @@ applied in estimating the burden of respiratory illnesses associated with anthro
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2019/07/tscourse-chicago-heatwave/" title="Time series regression in R course codes for Chicago Heatwave" rel="bookmark">Time series regression in R course codes for Chicago Heatwave</a>
-    </h1>
-    <div class="entry-content full-content">
-      <p>I am giving a talk and R demonstration tomorrow for the Epidemiology Special Interest Group (EPISIG) on Time series regression in R for heat and heatwave analysis.</p>
-
-<p>I hope some of the audience will bring their laptop and use install.packages(‘dlnm’) to follow along.</p>
-
-<p>Below are links to the training resources I will use:</p>
-
-<h2 id="distributed-lag-non-linear-models-dlnm-package--recent-tscourse">Distributed Lag Non-Linear Models (DLNM) package + recent “TSCOURSE”:</h2>
-
-<ul>
-  <li>Antonio Gasparrini, London School of Hygiene and Tropical Medicine</li>
-  <li>CAR Workshop “Advanced modelling techniques for time series analysis using R”. Woolcock
-Institute, Sydney - 05 April 2019. <a href="http://www.ag-myresearch.com/tscourse.html">http://www.ag-myresearch.com/tscourse.html</a></li>
-  <li>Online tutorial for Climate Change impact assessment in London
-<a href="https://github.com/gasparrini/2019_vicedo-cabrera_Epidem_Rcodedata">https://github.com/gasparrini/2019_vicedo-cabrera_Epidem_Rcodedata</a></li>
-</ul>
-
-<h2 id="codes-for-todays-talk">Codes for today’s talk</h2>
-
-<ul>
-  <li>I modified the TSCOURSE codes from London CO to Chicago heatwave
-<a href="https://github.com/ivanhanigan/spatiotemporal-multilevel-models/blob/master/4_2_time_series_analysis/tscourse-chicago.R">https://github.com/ivanhanigan/spatiotemporal-multilevel-models/blob/master/4_2_time_series_analysis/tscourse-chicago.R</a></li>
-  <li>If your laptop doesn’t have R or R-studio try <a href="https://coesra.tern.org.au">https://coesra.tern.org.au</a></li>
-</ul>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/training" title="training" rel="category tag">training</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2019/07/tscourse-chicago-heatwave/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2019-07-04 00:00:00 +0800">04 Jul 2019</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -395,6 +418,10 @@ Institute, Sydney - 05 April 2019. <a href="http://www.ag-myresearch.com/tscours
               <ul>
                 
                 <li>
+                  <a href="/2024/01/personal-academic-website-with-jekyll/" title="Personal academic website with jekyll" rel="bookmark">Personal academic website with jekyll</a>
+                </li>
+                
+                <li>
                   <a href="/2023/05/heat-and-violence/" title="Heat and violence" rel="bookmark">Heat and violence</a>
                 </li>
                 
@@ -408,10 +435,6 @@ Institute, Sydney - 05 April 2019. <a href="http://www.ag-myresearch.com/tscours
                 
                 <li>
                   <a href="/2019/07/environmental-health-indicators/" title="Environmental health indicators" rel="bookmark">Environmental health indicators</a>
-                </li>
-                
-                <li>
-                  <a href="/2019/07/tscourse-chicago-heatwave/" title="Time series regression in R course codes for Chicago Heatwave" rel="bookmark">Time series regression in R course codes for Chicago Heatwave</a>
                 </li>
                 
               </ul>
@@ -477,7 +500,7 @@ Institute, Sydney - 05 April 2019. <a href="http://www.ag-myresearch.com/tscours
                 
                 <li><a href="/categories/reproducible research">reproducible research (2)</a></li>
                 
-                <li><a href="/categories/writing">writing (1)</a></li>
+                <li><a href="/categories/writing">writing (2)</a></li>
                 
                 <li><a href="/categories/climate data">climate data (1)</a></li>
                 
