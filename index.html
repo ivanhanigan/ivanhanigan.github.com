@@ -61,59 +61,119 @@
 
 <p>There are a range of options from very simple approaches like the <code class="language-plaintext highlighter-rouge">postcards</code> package in R <a href="https://github.com/seankross/postcards">https://github.com/seankross/postcards</a> or the more complicated approach using the <a href="https://github.com/alshedivat/al-folio">https://github.com/alshedivat/al-folio</a>.</p>
 
-<p>My own blog and some other websites (<a href="https://ivanhanigan.github.io/Ivan-Hanigan-CV/">e.g. My Online CV</a>) I created are based on some markdown templates I borrowed from other authors on github, and they all use the Jekyll static site generator framework. I have found that using jekyll on my Ubuntu linux computers is fairly straightforward but I am keen to also be able to develop sites on windoze computers.  Therefore I am going to embark on an experiment to set up a jekyll site generator using WSL, and I will use this post to document the steps I take.</p>
+<p>My own blog and some other websites I created (<a href="https://ivanhanigan.github.io/Ivan-Hanigan-CV/">e.g. My Online CV</a>) are based on some markdown templates I borrowed from other authors on github, and they all use the Jekyll static site generator framework. I have found that using jekyll on my Ubuntu linux computers is fairly straightforward but I am keen to also be able to develop sites on windoze computers.  Therefore I am going to embark on an experiment to set up a jekyll site generator using windows sub linux (WSL) as I think that running linux alongside windows applications gives a lot of access to powerful tools and a range of software from both windoze-land and linux-land. I will use this post to document the steps I take.</p>
 
-<p>Steps:</p>
+<h1 id="steps">Steps:</h1>
 
-<ol>
-  <li>Open powershell as Admin, ran <code class="language-plaintext highlighter-rouge">wsl --install</code> but this just showed the wsl help text, so I found instructions that let me know if wsl is already installed, but no linux system distribution has been enabled this happens, so in my case I had to run <code class="language-plaintext highlighter-rouge">wsl --list --online</code> and choose a distro. I chose <code class="language-plaintext highlighter-rouge">Ubuntu</code> which I assume will default to the latest version</li>
-  <li><code class="language-plaintext highlighter-rouge">sudo apt update</code> and <code class="language-plaintext highlighter-rouge">upgrade</code></li>
-  <li>install depends
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">sudo apt install make build-essential curl git tree -y</code></li>
-    </ul>
-  </li>
-  <li>install ruby
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">sudo apt install ruby ruby-dev -y</code></li>
-    </ul>
-  </li>
-  <li>need to tell Ruby’s gem package manager to place gems in our user’s home folder.
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">nano ~/.bashrc</code></li>
-      <li><code class="language-plaintext highlighter-rouge">export GEM_HOME=$HOME/gems</code></li>
-      <li><code class="language-plaintext highlighter-rouge">export PATH=$HOME/gems/bin:$PATH</code></li>
-      <li>Save and close the file, then activate the environment variable with the following command: <code class="language-plaintext highlighter-rouge">source ~/.bashrc</code></li>
-      <li><code class="language-plaintext highlighter-rouge">gem install jekyll bundler</code></li>
-    </ul>
-  </li>
-  <li>Try it out
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">jekyll new jekyll.example.com</code></li>
-      <li><code class="language-plaintext highlighter-rouge">cd jekyll.example.com</code></li>
-      <li><code class="language-plaintext highlighter-rouge">bundle add webrick</code></li>
-      <li><code class="language-plaintext highlighter-rouge">jekyll serve</code></li>
-    </ul>
-  </li>
-  <li>References:
-    <ul>
-      <li><a href="https://learn.microsoft.com/en-us/windows/wsl/install">https://learn.microsoft.com/en-us/windows/wsl/install</a></li>
-      <li><a href="https://www.howtoforge.com/how-to-install-jekyll-on-ubuntu-22-04/">https://www.howtoforge.com/how-to-install-jekyll-on-ubuntu-22-04/</a></li>
-      <li><a href="https://jekyllrb.com/docs/installation/windows/">https://jekyllrb.com/docs/installation/windows/</a></li>
-    </ul>
-  </li>
-</ol>
+<h2 id="1-install-wsl">1. Install WSL</h2>
 
-<h2 id="additional-work">additional work</h2>
+<p>Open powershell as Admin, ran</p>
 
-<ol>
-  <li>Pandoc: for converting between document file types, especially markdown to html
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">sudo apt install pandoc</code></li>
-      <li>some cool examples are here: <a href="https://zatta.link/en/web/top3-tools-for-convert-markdown-to-html.html">https://zatta.link/en/web/top3-tools-for-convert-markdown-to-html.html</a></li>
-    </ul>
-  </li>
-</ol>
+<div class="code-header">
+  <button class="copy-code-button">
+    Copy code to clipboard
+  </button>
+</div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wsl <span class="nt">--install</span>
+</code></pre></div></div>
+
+<p>but this just showed the wsl help text, so I found instructions that let me know if wsl is already installed, but no linux system distribution has been enabled this happens, so in my case I had to run <code class="language-plaintext highlighter-rouge">wsl --list --online</code> and choose a distro. I chose <code class="language-plaintext highlighter-rouge">Ubuntu</code> which I assume will default to the latest version</p>
+
+<h2 id="2-install-dependencies">2. install dependencies</h2>
+
+<div class="code-header">
+  <button class="copy-code-button">
+    Copy code to clipboard
+  </button>
+</div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt upgrade
+<span class="nb">sudo </span>apt <span class="nb">install </span>make build-essential curl git tree <span class="nt">-y</span>
+</code></pre></div></div>
+
+<h2 id="3-install-ruby">3. install ruby</h2>
+
+<div class="code-header">
+  <button class="copy-code-button">
+    Copy code to clipboard
+  </button>
+</div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>ruby ruby-dev <span class="nt">-y</span>
+</code></pre></div></div>
+
+<h2 id="4-need-to-tell-rubys-gem-package-manager-to-place-gems-in-our-users-home-folder">4. need to tell Ruby’s gem package manager to place gems in our user’s home folder.</h2>
+
+<div class="code-header">
+  <button class="copy-code-button">
+    Copy code to clipboard
+  </button>
+</div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano ~/.bashrc
+<span class="nb">export </span><span class="nv">GEM_HOME</span><span class="o">=</span><span class="nv">$HOME</span>/gems
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/gems/bin:<span class="nv">$PATH</span>
+</code></pre></div></div>
+
+<p>Save and close the file, then activate the environment variable with the following command:</p>
+
+<div class="code-header">
+  <button class="copy-code-button">
+    Copy code to clipboard
+  </button>
+</div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">source</span> ~/.bashrc
+</code></pre></div></div>
+
+<p>Install Jekyll</p>
+
+<div class="code-header">
+  <button class="copy-code-button">
+    Copy code to clipboard
+  </button>
+</div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem <span class="nb">install </span>jekyll bundler
+</code></pre></div></div>
+
+<h2 id="5-try-it-out">5. Try it out</h2>
+
+<div class="code-header">
+  <button class="copy-code-button">
+    Copy code to clipboard
+  </button>
+</div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jekyll new jekyll.example.com
+<span class="nb">cd </span>jekyll.example.com
+bundle add webrick
+jekyll serve
+</code></pre></div></div>
+
+<h2 id="6-references">6. References:</h2>
+<p><a href="https://learn.microsoft.com/en-us/windows/wsl/install">https://learn.microsoft.com/en-us/windows/wsl/install</a></p>
+
+<p><a href="https://www.howtoforge.com/how-to-install-jekyll-on-ubuntu-22-04/">https://www.howtoforge.com/how-to-install-jekyll-on-ubuntu-22-04/</a></p>
+
+<p><a href="https://jekyllrb.com/docs/installation/windows/">https://jekyllrb.com/docs/installation/windows/</a></p>
+
+<h1 id="additional-stuff">additional stuff</h1>
+
+<h2 id="1-pandoc-for-converting-between-document-file-types-especially-markdown-to-html">1. Pandoc: for converting between document file types, especially markdown to html</h2>
+
+<div class="code-header">
+  <button class="copy-code-button">
+    Copy code to clipboard
+  </button>
+</div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>pandoc
+</code></pre></div></div>
+
+<p>Some cool examples are here: <a href="https://zatta.link/en/web/top3-tools-for-convert-markdown-to-html.html">https://zatta.link/en/web/top3-tools-for-convert-markdown-to-html.html</a></p>
 
       <div class="clear"></div>
     </div>
@@ -368,6 +428,8 @@ applied in estimating the burden of respiratory illnesses associated with anthro
   </span>
 </div>
 <!-- <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=SChamberlain"></script> -->
+<script src="/assets/scripts/copyCode.js"></script>
+
 
         </div>
         <div id="sidebar">
