@@ -54,6 +54,87 @@
 
   <div class="full">
     <h1 class="entry-title">
+      <a href="/2013/10/quantum-gis-visualisations/" title="quantum-gis-visualisations" rel="bookmark">quantum-gis-visualisations</a>
+    </h1>
+    <div class="entry-content full-content">
+      <ul>
+  <li>This is a quick post on Quantum GIS for spatial data visualisation</li>
+  <li>it is also a follow up on <a href="http://swish-climate-impact-assessment.github.io/2013/06/test-gislibrary/">this post about area concordance</a></li>
+  <li>Quantum GIS is getting pretty good but is still a bit tricky to make good looking maps</li>
+  <li>QGIS can use <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">remote PostGIS geodatabases on the Cloud as the backend</a></li>
+</ul>
+
+<h4 id="r-code-use-postgis-to-create-area-concordance">R Code: use postgis to create area-concordance</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(devtools)
+install_github("gisviz", "ivanhanigan")
+require(gisviz)
+require(swishdbtools)
+ch &lt;- connect2postgres2("gislibrary")
+# make a temporary tablename, to avoid clobbering
+temp_table &lt;- swish_temptable("gislibrary")
+temp_table &lt;- paste("public", temp_table$table, sep = ".")
+temp_table
+# this is going to be public.foo11c7673416ea
+ 
+sql &lt;- postgis_concordance(conn = ch, source_table = "abs_sla.nswsla91",
+   source_zones_code = 'sla_id', target_table = "abs_sla.nswsla01",
+   target_zones_code = "sla_code",
+   into = temp_table, tolerance = 0.01,
+   subset_target_table = "cast(sla_code as text) like '105%'", 
+   eval = F) 
+cat(sql)
+dbSendQuery(ch, sql)
+</code></pre></div></div>
+
+<p></p>
+
+<ul>
+  <li>now connect to PostGIS using QGIS <a href="http://swish-climate-impact-assessment.github.io/2013/04/quantumgis-and-postgis/">as described in this tute</a></li>
+  <li>and add the layer to the map</li>
+  <li>Style it how you like, I also added NSWSLA1991 over the top</li>
+  <li>go into the “new print composer”</li>
+</ul>
+
+<p><img src="/images/qgis-new-print-composer.png" alt="qgis-new-print-composer.png" /></p>
+
+<p><img src="/images/qgis-add-new-map.png" alt="qgis-add-new-map.png" /></p>
+
+<h3 id="results">Results</h3>
+<ul>
+  <li>hit the export to image and viola</li>
+</ul>
+
+<p><img src="/images/qgis-export-image.png" alt="qgis-export-image.png" /></p>
+
+<h3 id="dont-forget-to-clean-up-the-database">Don’t forget to clean up the database!</h3>
+<h4 id="r-code">R Code:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dbSendQuery(ch, sprintf("drop table %s", temp_table))
+</code></pre></div></div>
+
+      <div class="clear"></div>
+    </div>
+    <p class="alt-font tight">
+      Posted in&nbsp;
+      
+      <a href="/categories/spatial" title="spatial" rel="category tag">spatial</a>
+      
+    </p>
+    <!--
+	<p class="comments-link">
+      <a href='/2013/10/quantum-gis-visualisations/#disqus_thread'>Comments</a>
+    </p>
+	-->
+    <p class="by-line">
+      <span class="date full-date">
+        <abbr class="published" title="2013-10-31 00:00:00 +0800">31 Oct 2013</abbr>
+      </span>
+    </p>
+    <div class="clear"></div>
+  </div>
+  <div class="rule"><hr/></div>
+
+  <div class="full">
+    <h1 class="entry-title">
       <a href="/2013/10/notes-on-spatial-stats-meeting-with-sarunya-sujaritpong/" title="notes-on-spatial-stats-meeting-with-sarunya-sujaritpong" rel="bookmark">notes-on-spatial-stats-meeting-with-sarunya-sujaritpong</a>
     </h1>
     <div class="entry-content full-content">
@@ -791,49 +872,6 @@ data$sums &lt;- z
   </div>
   <div class="rule"><hr/></div>
 
-  <div class="full">
-    <h1 class="entry-title">
-      <a href="/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/" title="spatial-lag-and-timeseries-model-with-nmmaps" rel="bookmark">spatial-lag-and-timeseries-model-with-nmmaps</a>
-    </h1>
-    <div class="entry-content full-content">
-      <h3 id="update">UPDATE</h3>
-
-<ul>
-  <li>I have renamed the repo.  See <a href="/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE">/2016/05/spatial-lag-and-timeseries-model-with-nmmaps-UPDATE</a></li>
-</ul>
-
-<h3 id="old-post">OLD POST</h3>
-
-<ul>
-  <li>Today I chatted with Phil Kokic at CSIRO Mathematics, Informatics and Statistics about the way the spatially lagged neighbours variable absorbs any residual spatial correlation in the errors</li>
-  <li>We agreed that this is a pretty minimal attempt, not as good as a spatial error model but pretty easy to implement</li>
-  <li>I’ve hacked together some very very ugly code to construct the lagged variable</li>
-  <li><a href="http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3">http://ivanhanigan.github.io/spatiotemporal-regression-models/#sec-3</a></li>
-  <li>There may be errors, it’s been a long day, but I won’t have a chance to check back on this till next week so I thought I’d put it out there as is.</li>
-</ul>
-
-      <div class="clear"></div>
-    </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      
-      <a href="/categories/spatial dependence" title="spatial dependence" rel="category tag">spatial dependence</a>
-      
-    </p>
-    <!--
-	<p class="comments-link">
-      <a href='/2013/10/spatial-lag-and-timeseries-model-with-nmmaps/#disqus_thread'>Comments</a>
-    </p>
-	-->
-    <p class="by-line">
-      <span class="date full-date">
-        <abbr class="published" title="2013-10-28 00:00:00 +0800">28 Oct 2013</abbr>
-      </span>
-    </p>
-    <div class="clear"></div>
-  </div>
-  <div class="rule"><hr/></div>
-
 
 <div class="pagination">
   <span class="previous">
@@ -913,6 +951,10 @@ data$sums &lt;- z
               <ul>
                 
                 <li>
+                  <a href="/2026/05/three-ideas-changed-how-i-write-forever/" title="These three ideas changed how I write forever" rel="bookmark">These three ideas changed how I write forever</a>
+                </li>
+                
+                <li>
                   <a href="/2024/01/personal-academic-website-with-jekyll/" title="Personal academic website with jekyll" rel="bookmark">Personal academic website with jekyll</a>
                 </li>
                 
@@ -926,10 +968,6 @@ data$sums &lt;- z
                 
                 <li>
                   <a href="/2022/10/MJA-Lancet-Countdown-report-2022/" title="MJA-Lancet Countdown report 2022" rel="bookmark">MJA-Lancet Countdown report 2022</a>
-                </li>
-                
-                <li>
-                  <a href="/2019/07/environmental-health-indicators/" title="Environmental health indicators" rel="bookmark">Environmental health indicators</a>
                 </li>
                 
               </ul>
@@ -995,7 +1033,7 @@ data$sums &lt;- z
                 
                 <li><a href="/categories/reproducible research">reproducible research (2)</a></li>
                 
-                <li><a href="/categories/writing">writing (2)</a></li>
+                <li><a href="/categories/writing">writing (3)</a></li>
                 
                 <li><a href="/categories/climate data">climate data (1)</a></li>
                 
